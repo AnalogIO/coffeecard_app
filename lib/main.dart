@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:coffeecard/base/text_styles.dart';
 
 void main() {
   runApp(MyApp());
@@ -97,6 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Text('Font test', style: AppTextStyle.explainerBold),
             Text(
               'You have pushed the button this many times:',
             ),
