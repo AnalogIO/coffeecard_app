@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:coffeecard/base/text_styles.dart';
+import 'package:coffeecard/base/style/text_styles.dart';
 
 void main() {
   runApp(MyApp());

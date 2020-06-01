@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:coffeecard/base/fonts.dart';
-import 'package:coffeecard/base/colors.dart';
+import 'package:coffeecard/base/style/fonts.dart';
+import 'package:coffeecard/base/style/colors.dart';
 
 abstract class AppTextStyle {
   // Heading text
