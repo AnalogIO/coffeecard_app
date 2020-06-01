@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:flutter/material.dart';
 
 abstract class AppFont {
   static final String heading = Platform.isIOS ? 'SF UI Display' : 'Roboto';
