@@ -1,0 +1,27 @@
+name: Flutter build and test
+
+on: [push, pull_request] 
+
+jobs:
+  test:
+    name: Build and test codebase
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v1
+      - name: Setup Flutter environment
+        uses: subosito/flutter-action@v1
+        with:
+          flutter-version: '1.17.2'
+          channel: 'stable'
+      - name: Download dependencies
+        run: flutter pub get
+      - name: Static Analyses
+        run: flutter  analyze
+      - name: Run tests
+        run: flutter test --coverage
+      - name: Upload test report to Codecov
+        uses: codecov/codecov-action@v1
+        with:
+          file: coverage/lcov.info
