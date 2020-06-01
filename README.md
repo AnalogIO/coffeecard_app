@@ -5,6 +5,15 @@
 We are rewriting our Coffee card app for Cafe Analog to a new cross platform one in Flutter. 
 With the coffee card app, users are able to buy and use clip card in Cafe Analog @ IT University of Copenhagen.
 
+## SDKs
+
+We are building the Flutter app with these SDK versions
+
+| SDK       | Version   |
+| --------- | --------- |
+| Dart      | 2.8.3     |
+| Flutter   | 1.17.2    |
+
 ## Contributing
 
 We are invite everyone to report issues and create pull requests to the repository. 
