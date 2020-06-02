@@ -37,30 +37,30 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _currentPageIndex = 0;
 
-  List pages = [
+  List _pages = [
     {
       'title': 'Tickets',
       'icon': Icons.style,
-      'page': TicketsPage()
+      'body': TicketsPage()
     },
     {
       'title': 'Receipts',
       'icon': Icons.receipt,
-      'page': ReceiptsPage()
+      'body': ReceiptsPage()
     },
     {
       'title': 'Stats',
       'icon': Icons.trending_up,
-      'page': StatsPage()
+      'body': StatsPage()
     },
     {
       'title': 'Settings',
       'icon': Icons.settings,
-      'page': SettingsPage()
+      'body': SettingsPage()
     },
   ];
 
-  get _currentPage => pages[_currentPageIndex];
+  get _currentPage => _pages[_currentPageIndex];
 
   void _onBottomNavTapped(int index) {
     setState(() {
@@ -78,7 +78,7 @@ class _HomePageState extends State<HomePage> {
           style: AppTextStyle.pageTitle
         ),
       ),
-      body: _currentPage['page'],
+      body: _currentPage['body'],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentPageIndex,
         onTap: _onBottomNavTapped,
@@ -87,9 +87,9 @@ class _HomePageState extends State<HomePage> {
         selectedItemColor: AppColor.white,
         unselectedItemColor: AppColor.white.withOpacity(0.5),
         selectedFontSize: 12,
-        items: List.generate(pages.length, (index) => BottomNavigationBarItem(
-            icon: Icon(pages[index]['icon']),
-            title: Text(pages[index]['title'], style: AppTextStyle.medium)
+        items: List.generate(_pages.length, (index) => BottomNavigationBarItem(
+            icon: Icon(_pages[index]['icon']),
+            title: Text(_pages[index]['title'], style: AppTextStyle.medium)
           )
         ),
       )
