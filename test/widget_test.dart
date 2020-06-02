@@ -16,15 +16,15 @@ void main() {
     await tester.pumpWidget(MyApp());
 
     // Verify that our app bar title reads 'Tickets'.
-    expect(find.text('Tickets'), findsOneWidget);
-    expect(find.text('Receipts'), findsNothing);
+    expect(find.text('Tickets'), findsWidgets);
+    expect(find.text('Receipts'), findsOneWidget);
 
     // Tap the Receipts icon in the navigation bar and trigger a frame.
     await tester.tap(find.byIcon(Icons.receipt));
     await tester.pump();
 
     // Verify that we have changed pages.
-    expect(find.text('Tickets'), findsNothing);
-    expect(find.text('Receipts'), findsOneWidget);
+    expect(find.text('Tickets'), findsOneWidget);
+    expect(find.text('Receipts'), findsWidgets);
   });
 }
