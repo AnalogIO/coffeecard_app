@@ -30,6 +30,9 @@ abstract class AppTextStyle {
   );
 
   // Body text
+  static final TextStyle medium = TextStyle(
+    fontWeight: FontWeight.w500,
+  );
   static final TextStyle price = TextStyle(
     color: AppColor.primary,
     fontSize: 18,
