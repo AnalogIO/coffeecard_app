@@ -12,4 +12,7 @@ abstract class Strings {
   static const receiptsNavTitle = receiptsPageTitle;
   static const statsNavTitle = 'Stats';
   static const settingsNavTitle = settingsPageTitle;
+
+  // Test strings.
+  static const ticketsPageTestString = 'Test string for Tickets page ☕';
 }
