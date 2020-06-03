@@ -15,7 +15,7 @@ abstract class AppColor {
   static const Color error = Color(0xffFF4D00);
 
   /// Creates a swatch from a given Color.
-  /// https://medium.com/@filipvk/creating-a-custom-color-swatch-in-flutter-554bcdcb27f3
+  //  https://medium.com/@filipvk/creating-a-custom-color-swatch-in-flutter-554bcdcb27f3
   static MaterialColor createMaterialColor(Color color) {
     List strengths = <double>[.05];
     Map swatch = <int, Color>{};
