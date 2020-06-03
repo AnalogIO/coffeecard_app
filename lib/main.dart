@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:coffeecard/base/strings.dart';
+import 'package:coffeecard/base/style/theme.dart';
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 
@@ -18,13 +19,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: Strings.appTitle,
-      theme: ThemeData(
-        primarySwatch: AppColor.createMaterialColor(AppColor.primary),
-        primaryColor: AppColor.primary,
-        brightness: Brightness.dark,
-        backgroundColor: AppColor.background,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
+      theme: analogTheme,
       home: HomePage(),
     );
   }
