@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Cafe Analog',
+      title: Strings.appTitle,
       theme: ThemeData(
         primarySwatch: AppColor.createMaterialColor(AppColor.primary),
         primaryColor: AppColor.primary,
@@ -39,22 +40,26 @@ class _HomePageState extends State<HomePage> {
 
   List _pages = [
     {
-      'title': 'Tickets',
+      'appBarTitle': Strings.ticketsPageTitle,
+      'navBarTitle': Strings.ticketsNavTitle,
       'icon': Icons.style,
       'body': TicketsPage()
     },
     {
-      'title': 'Receipts',
+      'appBarTitle': Strings.receiptsPageTitle,
+      'navBarTitle': Strings.receiptsNavTitle,
       'icon': Icons.receipt,
       'body': ReceiptsPage()
     },
     {
-      'title': 'Stats',
+      'appBarTitle': Strings.statsPageTitle,
+      'navBarTitle': Strings.statsNavTitle,
       'icon': Icons.trending_up,
       'body': StatsPage()
     },
     {
-      'title': 'Settings',
+      'appBarTitle': Strings.settingsPageTitle,
+      'navBarTitle': Strings.settingsNavTitle,
       'icon': Icons.settings,
       'body': SettingsPage()
     },
@@ -74,7 +79,7 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: AppColor.background,
       appBar: AppBar(
         title: Text(
-          _currentPage['title'],
+          _currentPage['appBarTitle'],
           style: AppTextStyle.pageTitle
         ),
       ),
@@ -89,7 +94,7 @@ class _HomePageState extends State<HomePage> {
         selectedFontSize: 12,
         items: List.generate(_pages.length, (index) => BottomNavigationBarItem(
             icon: Icon(_pages[index]['icon']),
-            title: Text(_pages[index]['title'], style: AppTextStyle.medium)
+            title: Text(_pages[index]['navBarTitle'], style: AppTextStyle.medium)
           )
         ),
       )
