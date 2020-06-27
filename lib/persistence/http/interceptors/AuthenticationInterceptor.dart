@@ -1,4 +1,4 @@
-import 'package:coffeecard/persistance/storage/SecureStorage.dart';
+import 'package:coffeecard/persistence/storage/SecureStorage.dart';
 import 'package:dio/dio.dart';
 
 class AuthenticationInterceptor extends InterceptorsWrapper {
