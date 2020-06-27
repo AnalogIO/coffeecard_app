@@ -1,11 +1,10 @@
 import 'package:coffeecard/model/AppConfig.dart';
-import 'package:coffeecard/persistance/http/RestClient.dart';
-import 'package:coffeecard/persistance/repositories/AppConfigRepository.dart';
+import 'package:coffeecard/persistence/http/RestClient.dart';
+import 'package:coffeecard/persistence/repositories/AppConfigRepository.dart';
 import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 
 class _AppConfigRepository implements AppConfigRepository {
-
   final RestClient _restClient;
   final Logger _logger;
 
@@ -17,8 +16,9 @@ class _AppConfigRepository implements AppConfigRepository {
       switch (obj.runtimeType) {
         case DioError:
           final httpResponse = (obj as DioError).response;
-          _logger.e("API Error ${httpResponse.statusCode} ${httpResponse.statusMessage}");
-              break;
+          _logger.e(
+              "API Error ${httpResponse.statusCode} ${httpResponse.statusMessage}");
+          break;
       }
     });
   }

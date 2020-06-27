@@ -1,7 +1,7 @@
 import 'package:coffeecard/model/Login.dart';
-import 'package:coffeecard/persistance/http/RestClient.dart';
-import 'package:coffeecard/persistance/repositories/AccountRepository.dart';
-import 'package:coffeecard/persistance/storage/SecureStorage.dart';
+import 'package:coffeecard/persistence/http/RestClient.dart';
+import 'package:coffeecard/persistence/repositories/AccountRepository.dart';
+import 'package:coffeecard/persistence/storage/SecureStorage.dart';
 import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 
