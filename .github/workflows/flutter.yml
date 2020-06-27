@@ -17,6 +17,8 @@ jobs:
           channel: 'stable'
       - name: Download dependencies
         run: flutter pub get
+      - name: Generate code
+        run: scripts/.generate-code.sh code
       - name: Static Analyses
         run: flutter  analyze
       - name: Run tests
