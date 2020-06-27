@@ -1,0 +1,9 @@
+# Custom flutter analyze rules used to avoid certain analyzer rules
+#
+# Avoid adding rules if they are not strictly needed to be avoided.
+
+analyzer:
+  errors:
+    # unused element are normally has an INFO severity but due to a bug in flutter analyzer,
+    # INFO rules make flutter analyzer fail. For this time we ignore unused_element rules
+    unused_element: ignore
