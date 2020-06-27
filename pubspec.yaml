@@ -35,6 +35,9 @@ dependencies:
   json_annotation: ^3.0.1
   json_serializable: ^3.3.0
 
+  # storage
+  flutter_secure_storage: ^3.3.3
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
