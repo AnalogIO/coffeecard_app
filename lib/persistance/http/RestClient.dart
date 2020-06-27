@@ -1,4 +1,6 @@
 import 'package:coffeecard/model/AppConfig.dart';
+import 'package:coffeecard/model/Login.dart';
+import 'package:coffeecard/model/Token.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -13,4 +15,7 @@ abstract class RestClient {
 
   @GET("​/api​/v1​/AppConfig")
   Future<AppConfig> getAppConfig();
+
+  @POST("/api/v1/Account/login")
+  Future<Token> login(@Body() Login login);
 }
