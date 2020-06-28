@@ -5,12 +5,12 @@ import 'package:coffeecard/persistence/storage/SecureStorage.dart';
 import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 
-class _AccountRepository implements AccountRepository {
+class AccountRepositoryImpl implements AccountRepository {
   final RestClient _restClient;
   final Logger _logger;
   final SecureStorage _storage;
 
-  _AccountRepository(this._restClient, this._logger, this._storage);
+  AccountRepositoryImpl(this._restClient, this._logger, this._storage);
 
   @override
   Future login(String userName, String password) async {
