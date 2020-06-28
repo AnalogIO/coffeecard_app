@@ -49,6 +49,9 @@ dev_dependencies:
   retrofit_generator: any
   build_runner: any
 
+  # unit testing
+  mockito: ^4.1.1
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
