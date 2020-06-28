@@ -11,4 +11,11 @@ class Token {
   factory Token.fromJson(Map<String, dynamic> json) => _$TokenFromJson(json);
 
   Map<String, dynamic> toJson() => _$TokenToJson(this);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) || other is Token && runtimeType == other.runtimeType && token == other.token;
+
+  @override
+  int get hashCode => token.hashCode;
 }
