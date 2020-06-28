@@ -38,6 +38,9 @@ dependencies:
   # storage
   flutter_secure_storage: ^3.3.3
 
+  # dependency injection
+  get_it: ^4.0.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
