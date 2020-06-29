@@ -1,4 +1,4 @@
-import 'package:coffeecard/persistence/storage/SecureStorage.dart';
+import 'package:coffeecard/persistence/storage/secure_storage.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logger/logger.dart';

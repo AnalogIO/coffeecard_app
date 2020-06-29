@@ -1,5 +1,5 @@
-import 'package:coffeecard/persistence/http/interceptors/AuthenticationInterceptor.dart';
-import 'package:coffeecard/persistence/storage/SecureStorage.dart';
+import 'package:coffeecard/persistence/http/interceptors/authentication_interceptor.dart';
+import 'package:coffeecard/persistence/storage/secure_storage.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
