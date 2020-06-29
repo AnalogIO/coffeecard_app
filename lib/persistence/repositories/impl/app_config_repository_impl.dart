@@ -1,6 +1,6 @@
-import 'package:coffeecard/model/AppConfig.dart';
-import 'package:coffeecard/persistence/http/RestClient.dart';
-import 'package:coffeecard/persistence/repositories/AppConfigRepository.dart';
+import 'package:coffeecard/model/app_config.dart';
+import 'package:coffeecard/persistence/http/rest_client.dart';
+import 'package:coffeecard/persistence/repositories/app_config_repository.dart';
 import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 

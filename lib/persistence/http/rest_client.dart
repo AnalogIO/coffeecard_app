@@ -1,10 +1,10 @@
-import 'package:coffeecard/model/AppConfig.dart';
-import 'package:coffeecard/model/Login.dart';
-import 'package:coffeecard/model/Token.dart';
+import 'package:coffeecard/model/app_config.dart';
+import 'package:coffeecard/model/login.dart';
+import 'package:coffeecard/model/token.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
-part 'RestClient.g.dart';
+part 'rest_client.g.dart';
 
 @RestApi()
 abstract class RestClient {
