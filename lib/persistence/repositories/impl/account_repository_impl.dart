@@ -16,16 +16,13 @@ class AccountRepositoryImpl implements AccountRepository {
   Future login(String userName, String password) async {
     var login = Login(userName, password, "");
 
-    var token = await _restClient.login(login).catchError((Object obj) {
-      switch (obj.runtimeType) {
-        case DioError:
-          final httpResponse = (obj as DioError).response;
-          _logger.e(
-              "API Error ${httpResponse.statusCode} ${httpResponse.statusMessage}");
-          break;
-      }
-    });
-
-    await _storage.saveToken(token.token);
+    try {
+      var token = await _restClient.login(login);
+      await _storage.saveToken(token.token);
+    } on DioError catch (error) {
+      final httpResponse = error.response;
+      _logger.e("API Error ${httpResponse.statusCode} ${httpResponse.statusMessage}");
+      rethrow;
+    }
   }
 }
