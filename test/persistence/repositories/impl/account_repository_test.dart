@@ -53,7 +53,8 @@ void main() {
       when(mockClient.login(any)).thenAnswer((_) => new Future.error(DioError(response: Response(statusCode: 400, statusMessage: "some error"))));
 
       // Act
-      await repository.login("testmail@mail.com", "SomePassword");
+      expect(
+          () async => await repository.login("testmail@mail.com", "SomePassword"), throwsA(isInstanceOf<DioError>()));
 
       // Assert
       verifyNever(mockStorage.saveToken(any));
