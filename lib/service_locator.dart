@@ -1,10 +1,10 @@
-import 'package:coffeecard/persistence/http/RestClient.dart';
-import 'package:coffeecard/persistence/http/interceptors/AuthenticationInterceptor.dart';
-import 'package:coffeecard/persistence/repositories/AccountRepository.dart';
-import 'package:coffeecard/persistence/repositories/AppConfigRepository.dart';
-import 'package:coffeecard/persistence/repositories/impl/AccountRepositoryImpl.dart';
-import 'package:coffeecard/persistence/repositories/impl/AppConfigRepositoryImpl.dart';
-import 'package:coffeecard/persistence/storage/SecureStorage.dart';
+import 'package:coffeecard/persistence/http/coffee_card_api_client.dart';
+import 'package:coffeecard/persistence/http/interceptors/authentication_interceptor.dart';
+import 'package:coffeecard/persistence/repositories/account_repository.dart';
+import 'package:coffeecard/persistence/repositories/app_config_repository.dart';
+import 'package:coffeecard/persistence/repositories/impl/account_repository_impl.dart';
+import 'package:coffeecard/persistence/repositories/impl/app_config_repository_impl.dart';
+import 'package:coffeecard/persistence/storage/secure_storage.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
@@ -25,10 +25,10 @@ void configureServices() {
   _dio.options.connectTimeout = 30000; // 30s
   _dio.options.receiveTimeout = 30000; // 30s
 
-  sl.registerSingleton<RestClient>(RestClient(_dio, baseUrl: RestClient.DEBUG_URL));
+  sl.registerSingleton<CoffeeCardApiClient>(CoffeeCardApiClient(_dio, baseUrl: CoffeeCardApiClient.testUrl));
 
   // Repositories
   sl.registerFactory<AccountRepository>(
-      () => AccountRepositoryImpl(sl<RestClient>(), sl<Logger>(), sl<SecureStorage>()));
-  sl.registerFactory<AppConfigRepository>(() => AppConfigRepositoryImpl(sl<RestClient>(), sl<Logger>()));
+      () => AccountRepositoryImpl(sl<CoffeeCardApiClient>(), sl<Logger>(), sl<SecureStorage>()));
+  sl.registerFactory<AppConfigRepository>(() => AppConfigRepositoryImpl(sl<CoffeeCardApiClient>(), sl<Logger>()));
 }
