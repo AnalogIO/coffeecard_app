@@ -4,14 +4,14 @@ import 'package:coffeecard/model/token.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
-part 'rest_client.g.dart';
+part 'coffee_card_api_client.g.dart';
 
 @RestApi()
-abstract class RestClient {
-  static const String PRODUCTION_URL = "https://analogio.dk/clippy";
-  static const String DEBUG_URL = "https://beta.analogio.dk/api/clippy";
+abstract class CoffeeCardApiClient {
+  static const String productionUrl = "https://analogio.dk/clippy";
+  static const String testUrl = "https://beta.analogio.dk/api/clippy";
 
-  factory RestClient(Dio dio, {String baseUrl}) = _RestClient;
+  factory CoffeeCardApiClient(Dio dio, {String baseUrl}) = _CoffeeCardApiClient;
 
   @GET("​/api​/v1​/AppConfig")
   Future<AppConfig> getAppConfig();

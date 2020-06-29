@@ -1,11 +1,11 @@
 import 'package:coffeecard/model/app_config.dart';
-import 'package:coffeecard/persistence/http/rest_client.dart';
+import 'package:coffeecard/persistence/http/coffee_card_api_client.dart';
 import 'package:coffeecard/persistence/repositories/app_config_repository.dart';
 import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 
 class AppConfigRepositoryImpl implements AppConfigRepository {
-  final RestClient _restClient;
+  final CoffeeCardApiClient _restClient;
   final Logger _logger;
 
   AppConfigRepositoryImpl(this._restClient, this._logger);
