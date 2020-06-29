@@ -1,21 +1,21 @@
-import 'package:coffeecard/model/Login.dart';
-import 'package:coffeecard/model/Token.dart';
-import 'package:coffeecard/persistence/http/RestClient.dart';
-import 'package:coffeecard/persistence/repositories/impl/AccountRepositoryImpl.dart';
-import 'package:coffeecard/persistence/storage/SecureStorage.dart';
+import 'package:coffeecard/model/login.dart';
+import 'package:coffeecard/model/token.dart';
+import 'package:coffeecard/persistence/http/coffee_card_api_client.dart';
+import 'package:coffeecard/persistence/repositories/impl/account_repository_impl.dart';
+import 'package:coffeecard/persistence/storage/secure_storage.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logger/logger.dart';
 import 'package:mockito/mockito.dart';
 
-class MockRestClient extends Mock implements RestClient {}
+class MockCoffeeCardApiClient extends Mock implements CoffeeCardApiClient {}
 class MockSecureStorage extends Mock implements SecureStorage {}
 
 void main() {
   group("AccountRepository", () {
     test("AccountRepository.login() given username and password calls RestClient", () async {
       // Arrange
-      var mockClient = MockRestClient();
+      var mockClient = MockCoffeeCardApiClient();
       var mockStorage = MockSecureStorage();
       var repository = AccountRepositoryImpl(mockClient, Logger(), mockStorage);
 
@@ -30,7 +30,7 @@ void main() {
 
     test("AccountRepository.login() given username and password with a successful response from RestClient saves Token", () async {
       // Arrange
-      var mockClient = MockRestClient();
+      var mockClient = MockCoffeeCardApiClient();
       var mockStorage = MockSecureStorage();
       var repository = AccountRepositoryImpl(mockClient, Logger(), mockStorage);
 
@@ -46,7 +46,7 @@ void main() {
 
     test("AccountRepository.login() given username and password with a un-successful response from RestClient does not save Token", () async {
       // Arrange
-      var mockClient = MockRestClient();
+      var mockClient = MockCoffeeCardApiClient();
       var mockStorage = MockSecureStorage();
       var repository = AccountRepositoryImpl(mockClient, Logger(), mockStorage);
 
