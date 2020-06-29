@@ -1,12 +1,12 @@
 # Code generation
 
-`RestClient` is implemented using `Dio`, `JsonSerializable` and `Retrofit` which use code generation with the flutter build runner.
+`CoffeeCardApiClient` is implemented using `Dio`, `JsonSerializable` and `Retrofit` which use code generation with the flutter build runner.
 
 ## Conventions
 
 **@RestApi**
-The `RestClient` is made as an abstract class where the implementation is code generated. 
-RestClient classes annotated with `@RestApi` using the `import 'package:retrofit/retrofit.dart'` package and declaring the partial file `part 'RestClient.g.dart';` will be auto-generated.
+The `CoffeeCardApiClient` is made as an abstract class where the implementation is code generated. 
+RestClient classes annotated with `@RestApi` using the `import 'package:retrofit/retrofit.dart'` package and declaring the partial file `part 'coffee_card_api_client.g.dart';` will be auto-generated.
 
 **Model classes**
 Model classes (de)serialized by the the RestClient are generated using the `JsonSerializableGeneator`. 
