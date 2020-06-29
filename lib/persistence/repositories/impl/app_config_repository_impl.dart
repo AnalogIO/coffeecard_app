@@ -12,14 +12,12 @@ class AppConfigRepositoryImpl implements AppConfigRepository {
 
   @override
   Future<AppConfig> getAppConfig() async {
-    return await _restClient.getAppConfig().catchError((Object obj) {
-      switch (obj.runtimeType) {
-        case DioError:
-          final httpResponse = (obj as DioError).response;
-          _logger.e(
-              "API Error ${httpResponse.statusCode} ${httpResponse.statusMessage}");
-          break;
-      }
-    });
+    try {
+      return await _restClient.getAppConfig();
+    } on DioError catch (error) {
+      final httpResponse = error.response;
+      _logger.e("API Error ${httpResponse.statusCode} ${httpResponse.statusMessage}");
+      rethrow;
+    }
   }
 }
