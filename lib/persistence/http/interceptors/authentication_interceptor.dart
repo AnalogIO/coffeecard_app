@@ -17,9 +17,4 @@ class AuthenticationInterceptor extends InterceptorsWrapper {
 
     return super.onRequest(options);
   }
-
-  @override
-  Future onError(DioError err) {
-    return super.onError(err);
-  }
 }
