@@ -25,7 +25,7 @@ void main() {
       await repository.login("testmail@mail.com", "SomePassword");
 
       // Assert
-      verify(mockClient.login(Login("testmail@mail.com", "SomePassword", "")));
+      verify(mockClient.login(Login("testmail@mail.com", "SomePassword", "2.0.0")));
     });
 
     test("AccountRepository.login() given username and password with a successful response from RestClient saves Token", () async {
