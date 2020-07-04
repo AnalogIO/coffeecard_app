@@ -14,7 +14,8 @@ class AccountRepositoryImpl implements AccountRepository {
 
   @override
   Future login(String userName, String password) async {
-    var login = Login(userName, password, "");
+    // TODO (jar): Handle or disable app versioning for API calls
+    var login = Login(userName, password, "2.0.0");
 
     try {
       var token = await _restClient.login(login);
