@@ -1,6 +1,10 @@
+import 'package:coffeecard/model/account/email.dart';
+import 'package:coffeecard/model/account/user_id.dart';
 import 'package:coffeecard/model/app_config.dart';
-import 'package:coffeecard/model/login.dart';
-import 'package:coffeecard/model/token.dart';
+import 'package:coffeecard/model/account/login.dart';
+import 'package:coffeecard/model/account/user.dart';
+import 'package:coffeecard/model/account/register_user.dart';
+import 'package:coffeecard/model/account/token.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -16,6 +20,22 @@ abstract class CoffeeCardApiClient {
   @GET("​/api​/v1​/AppConfig")
   Future<AppConfig> getAppConfig();
 
+  @POST("/api/v1/Account/register")
+  Future<void> register(@Body() RegisterUser register);
+
   @POST("/api/v1/Account/login")
   Future<Token> login(@Body() Login login);
+
+  @GET("/api/v1/Account")
+  Future<User> getUser();
+
+  @POST("/api/v1/Account")
+  Future<User> updateUser(@Body() User user);
+
+  @GET("/api/v1/Account")
+  Future<User> getUserById(@Body() UserId userId);
+
+  @POST("/api/v1/Account/forgotpassword")
+  Future<HttpResponse<String>> forgottenPassword(@Body() Email email);
+
 }

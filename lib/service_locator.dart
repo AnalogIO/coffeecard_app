@@ -21,7 +21,7 @@ void configureServices() {
 
   // Rest Client, Dio http client
   var _dio = Dio();
-  _dio.interceptors.add(AuthenticationInterceptor(sl<SecureStorage>()));
+  //_dio.interceptors.add(AuthenticationInterceptor(sl<SecureStorage>()));
   _dio.options.connectTimeout = 30000; // 30s
   _dio.options.receiveTimeout = 30000; // 30s
 
