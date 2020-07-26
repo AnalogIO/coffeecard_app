@@ -21,7 +21,7 @@ class LoginPage extends StatelessWidget {
               Container(height: 16),
               Text('Sign in', style: AppTextStyle.pageTitle),
               Container(height: 16),
-              LoginTextField(error: false, placeholder: "Email..."),              
+              LoginTextField(error: false, placeholder: "Email..."),
             ],
           ),
         ),
