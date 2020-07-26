@@ -11,8 +11,8 @@ void main() {
 
   group("SecureStorage", () {
     test("SecureStorage.saveToken() given token saves token to FlutterSecureStorage", () async {
-      var mockFlutterSecureStorage = MockFlutterSecureStorage();
-      var secureStorage = SecureStorage(mockFlutterSecureStorage, Logger());
+      final mockFlutterSecureStorage = MockFlutterSecureStorage();
+      final secureStorage = SecureStorage(mockFlutterSecureStorage, Logger());
 
       await secureStorage.saveToken("someToken");
 
@@ -20,8 +20,8 @@ void main() {
     });
 
     test("SecureStorage.readToken() reads token from FlutterSecureStorage", () async {
-      var mockFlutterSecureStorage = MockFlutterSecureStorage();
-      var secureStorage = SecureStorage(mockFlutterSecureStorage, Logger());
+      final mockFlutterSecureStorage = MockFlutterSecureStorage();
+      final secureStorage = SecureStorage(mockFlutterSecureStorage, Logger());
 
       await secureStorage.readToken();
 

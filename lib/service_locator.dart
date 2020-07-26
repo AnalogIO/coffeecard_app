@@ -20,8 +20,8 @@ void configureServices() {
   sl.registerSingleton(SecureStorage(FlutterSecureStorage(), sl<Logger>()));
 
   // Rest Client, Dio http client
-  var _dio = Dio();
-  //_dio.interceptors.add(AuthenticationInterceptor(sl<SecureStorage>()));
+  final _dio = Dio();
+  _dio.interceptors.add(AuthenticationInterceptor(sl<SecureStorage>()));
   _dio.options.connectTimeout = 30000; // 30s
   _dio.options.receiveTimeout = 30000; // 30s
 

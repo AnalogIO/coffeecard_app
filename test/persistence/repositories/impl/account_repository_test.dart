@@ -1,6 +1,4 @@
-import 'dart:io';
 
-import 'package:coffeecard/model/account/email.dart';
 import 'package:coffeecard/model/account/login.dart';
 import 'package:coffeecard/model/account/register_user.dart';
 import 'package:coffeecard/model/account/token.dart';
@@ -20,9 +18,9 @@ void main() {
   group("AccountRepository", () {
     test("AccountRepository.login() given username and password calls RestClient", () async {
       // Arrange
-      var mockClient = MockCoffeeCardApiClient();
-      var mockStorage = MockSecureStorage();
-      var repository = AccountRepositoryImpl(mockClient, Logger(), mockStorage);
+      final mockClient = MockCoffeeCardApiClient();
+      final mockStorage = MockSecureStorage();
+      final repository = AccountRepositoryImpl(mockClient, Logger(), mockStorage);
 
       when(mockClient.login(any)).thenAnswer((_) => Future.value(Token("empty")));
 
@@ -35,11 +33,11 @@ void main() {
 
     test("AccountRepository.login() given username and password with a successful response from RestClient saves Token", () async {
       // Arrange
-      var mockClient = MockCoffeeCardApiClient();
-      var mockStorage = MockSecureStorage();
-      var repository = AccountRepositoryImpl(mockClient, Logger(), mockStorage);
+      final mockClient = MockCoffeeCardApiClient();
+      final mockStorage = MockSecureStorage();
+      final repository = AccountRepositoryImpl(mockClient, Logger(), mockStorage);
 
-      var token = Token("someToken");
+      final token = Token("someToken");
       when(mockClient.login(any)).thenAnswer((_) => Future.value(token));
 
       // Act
@@ -51,15 +49,15 @@ void main() {
 
     test("AccountRepository.login() given username and password with a un-successful response from RestClient does not save Token", () async {
       // Arrange
-      var mockClient = MockCoffeeCardApiClient();
-      var mockStorage = MockSecureStorage();
-      var repository = AccountRepositoryImpl(mockClient, Logger(), mockStorage);
+      final mockClient = MockCoffeeCardApiClient();
+      final mockStorage = MockSecureStorage();
+      final repository = AccountRepositoryImpl(mockClient, Logger(), mockStorage);
 
-      when(mockClient.login(any)).thenAnswer((_) => new Future.error(DioError(response: Response(statusCode: 400, statusMessage: "some error"))));
+      when(mockClient.login(any)).thenAnswer((_) => Future.error(DioError(response: Response(statusCode: 400, statusMessage: "some error"))));
 
       // Act
       expect(
-          () async => await repository.login("testmail@mail.com", "SomePassword"), throwsA(isInstanceOf<DioError>()));
+          () async => repository.login("testmail@mail.com", "SomePassword"), throwsA(isInstanceOf<DioError>()));
 
       // Assert
       verifyNever(mockStorage.saveToken(any));
@@ -67,9 +65,9 @@ void main() {
 
     test("AccountRepository.register() given register_user object calls RestClient", () async {
       // Arrange
-      var mockClient = MockCoffeeCardApiClient();
-      var mockStorage = MockSecureStorage();
-      var repository = AccountRepositoryImpl(mockClient, Logger(), mockStorage);
+      final mockClient = MockCoffeeCardApiClient();
+      final mockStorage = MockSecureStorage();
+      final repository = AccountRepositoryImpl(mockClient, Logger(), mockStorage);
 
       when(mockClient.register(any)).thenAnswer((_) => Future.value("Success, your user was created"));
 
