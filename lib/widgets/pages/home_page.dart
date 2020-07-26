@@ -17,7 +17,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _currentPageIndex = 0;
 
-  List _pages = [
+  final List _pages = [
     {
       'appBarTitle': Strings.ticketsPageTitle,
       'navBarTitle': Strings.ticketsNavTitle,
@@ -44,7 +44,7 @@ class _HomePageState extends State<HomePage> {
     },
   ];
 
-  get _currentPage => _pages[_currentPageIndex];
+  dynamic get _currentPage => _pages[_currentPageIndex];
 
   void _onBottomNavTapped(int index) {
     setState(() {

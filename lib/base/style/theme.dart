@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:coffeecard/base/style/colors.dart';
 
-final analogTheme = ThemeData(
+final ThemeData analogTheme = ThemeData(
   primarySwatch: AppColor.createMaterialColor(AppColor.primary),
   primaryColor: AppColor.primary,
   brightness: Brightness.light,

@@ -12,8 +12,8 @@ void main() {
   group("AppConfigRepository", () {
     test("AppConfigRepository.getAppConfig() calls RestClient", () async {
       // Arrange
-      var mockClient = MockCoffeeCardApiClient();
-      var repository = AppConfigRepositoryImpl(mockClient, Logger());
+      final mockClient = MockCoffeeCardApiClient();
+      final repository = AppConfigRepositoryImpl(mockClient, Logger());
 
       when(mockClient.getAppConfig()).thenAnswer((_) => Future.value(AppConfig(EnvironmentType.Test, "APPDK")));
 
@@ -26,13 +26,13 @@ void main() {
 
     test("AppConfigRepository.getAppConfig() calling RestClient throwing Error rethrows Error", () async {
       // Arrange
-      var mockClient = MockCoffeeCardApiClient();
-      var repository = AppConfigRepositoryImpl(mockClient, Logger());
+      final mockClient = MockCoffeeCardApiClient();
+      final repository = AppConfigRepositoryImpl(mockClient, Logger());
 
-      when(mockClient.getAppConfig()).thenAnswer((_) => new Future.error(DioError(response: Response(statusCode: 400, statusMessage: "some error"))));
+      when(mockClient.getAppConfig()).thenAnswer((_) => Future.error(DioError(response: Response(statusCode: 400, statusMessage: "some error"))));
 
       // Act, Assert
-      expect(() async => await repository.getAppConfig(), throwsA(isInstanceOf<DioError>()));
+      expect(() async => repository.getAppConfig(), throwsA(isInstanceOf<DioError>()));
     });
   });
 }
