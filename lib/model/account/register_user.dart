@@ -10,9 +10,9 @@ class RegisterUser {
 
   RegisterUser(this.name, this.email, this.password);
 
-  factory RegisterUser.fromJson(Map<String, dynamic> json) => _$RegisterFromJson(json);
+  factory RegisterUser.fromJson(Map<String, dynamic> json) => _$RegisterUserFromJson(json);
 
-  Map<String, dynamic> toJson() => _$RegisterToJson(this);
+  Map<String, dynamic> toJson() => _$RegisterUserToJson(this);
 
   @override
   bool operator ==(Object other) =>
