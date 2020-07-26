@@ -1,8 +1,10 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/theme.dart';
 import 'package:coffeecard/service_locator.dart';
-import 'package:coffeecard/widgets/pages/home_page.dart';
+// import 'package:coffeecard/widgets/pages/home_page.dart';
+import 'package:coffeecard/widgets/pages/login_page.dart';
 import 'package:flutter/material.dart';
+
 
 void main() {
   configureServices();
@@ -15,7 +17,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: Strings.appTitle,
       theme: analogTheme,
-      home: HomePage(),
+      // home: HomePage(),
+      home: LoginPage(),
     );
   }
 }
