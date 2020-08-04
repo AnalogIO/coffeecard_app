@@ -6,12 +6,13 @@ import '../../../blocs/login/login_bloc.dart';
 class LoginTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocListener<LoginBloc, LoginState>(
-        listener: (context, state) {
+    return BlocConsumer<LoginBloc, LoginState>(
+        listener: (context, state) {},
+        builder: (context, state) {
         return Padding(
         padding: EdgeInsets.only(top: 32, bottom: 16),
         child: Text(
-          state.username, //TODO Fix this
+          "state.username", //TODO Fix this
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           textAlign: TextAlign.center,

@@ -6,8 +6,10 @@ import '../../../blocs/login/login_bloc.dart';
 class LoginInputPassword extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocListener<LoginBloc, LoginState>(
+    return BlocConsumer<LoginBloc, LoginState>(
         listener: (context, state) {
+        },
+        builder: (context, state) {
         return Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: List.generate(4, (i) {

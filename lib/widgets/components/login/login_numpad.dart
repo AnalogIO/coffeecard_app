@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
 import '../../../base/style/colors.dart';
 import '../../../blocs/login/login_bloc.dart';
 
@@ -16,8 +15,10 @@ enum NumpadActions {
 class Numpad extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocListener<LoginBloc, LoginState>(
+    return BlocConsumer<LoginBloc, LoginState>(
         listener: (context, state) {
+        },
+        builder: (context, state) {
         return Container(
           color: (state.onPage == OnPage.inputEmail)
             ? AppColor.primary
