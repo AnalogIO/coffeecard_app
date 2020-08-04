@@ -23,7 +23,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     if (event == LoginNumpadPressed){
       yield* mapNumpadPressedToEvent(event);
     }
-    else if (event == LoginEmailEntered){
+    else if (event == LoginEmailChanged){
       yield* mapEmailEntered(event);
     }
   }
@@ -45,7 +45,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
-  Stream<LoginState> mapEmailEntered(LoginEmailEntered event) async* {
+  Stream<LoginState> mapEmailEntered(LoginEmailChanged event) async* {
     try {
       validateEmail(event.email);
 
