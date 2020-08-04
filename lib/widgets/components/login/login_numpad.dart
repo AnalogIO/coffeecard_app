@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import '../../../base/style/colors.dart';
 import '../../../blocs/login/login_bloc.dart';
@@ -15,15 +16,15 @@ enum NumpadActions {
 class Numpad extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Consumer<LoginState>(
-      builder: (context, state, child) {
+    return BlocListener<LoginBloc, LoginState>(
+        listener: (context, state) {
         return Container(
-          color: (state.isPageEmail)
+          color: (state.onPage == OnPage.inputEmail)
             ? AppColor.primary
             : AppColor.white,
           padding: EdgeInsets.only(top: 16, bottom: 24),
           child: Visibility(
-            visible: !state.isPageEmail,
+            visible: state.onPage != OnPage.inputEmail,
             maintainSize: true,
             maintainAnimation: true,
             maintainState: true,
@@ -89,17 +90,14 @@ class NumpadButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<LoginState>(
-      builder: (context, state, child) {
+    return BlocBuilder<LoginBloc, LoginState>(
+        buildWhen: (previous, current) => previous.username != current.username,
+        builder: (context, state) {
         return FlatButton(
           onPressed: () {
             HapticFeedback.lightImpact();
-            if (action == NumpadActions.reset) state.password = "";
-            if (action == NumpadActions.add) {
-              state.password += text;
-              // TODO Handle login success /maybe make state.isLoggedIn?
-              if (state.token.isNotEmpty) Navigator.pushReplacementNamed(context, "/home");
-            }
+            if (action == NumpadActions.reset) {context.bloc<LoginBloc>().add(LoginNumpadPressed("reset")); }
+            else if (action == NumpadActions.add) {context.bloc<LoginBloc>().add(LoginNumpadPressed(text)); }
           },
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 12),

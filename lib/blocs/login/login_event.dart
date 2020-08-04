@@ -2,12 +2,15 @@ part of 'login_bloc.dart';
 
 abstract class LoginEvent extends Equatable {
   const LoginEvent();
+
+  @override
+  List<Object> get props => [];
 }
 
-class LoginEmailEntered extends LoginEvent {
+class LoginEmailChanged extends LoginEvent {
   final String email;
 
-  const LoginEmailEntered(this.email);
+  const LoginEmailChanged(this.email);
 
   String get typedEmail => email;
 
@@ -22,9 +25,7 @@ class LoginEmailEntered extends LoginEvent {
 class LoginNumpadPressed extends LoginEvent {
   final String keyPress;
 
-  const LoginNumpadPressed({
-    this.keyPress,
-  });
+  const LoginNumpadPressed(this.keyPress);
 
   String get pressedKey => keyPress;
 
@@ -34,4 +35,8 @@ class LoginNumpadPressed extends LoginEvent {
   @override
   String toString() =>
       'NumpadPressed { keyPress: $keyPress }';
+}
+
+class LoginEmailSubmitted extends LoginEvent {
+  const LoginEmailSubmitted();
 }

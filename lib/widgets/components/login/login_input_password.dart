@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../base/style/colors.dart';
 import '../../../blocs/login/login_bloc.dart';
 
 class LoginInputPassword extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Consumer<LoginState>(
-      builder: (context, state, child) {
+    return BlocListener<LoginBloc, LoginState>(
+        listener: (context, state) {
         return Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: List.generate(4, (i) {

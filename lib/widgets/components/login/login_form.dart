@@ -1,25 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import '../../../blocs/login/login_bloc.dart';
 
 import 'login_input_email.dart';
 import 'login_input_password.dart';
 
-class LoginForm extends StatefulWidget {
-  @override
-  LoginFormState createState() => LoginFormState();
-}
 
-class LoginFormState extends State<LoginForm> {
-  final _formKey = GlobalKey<FormState>();
+class LoginForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<LoginState>(
-      builder: (context, state, child) {
+    return BlocListener<LoginBloc, LoginState>(
+        listener: (context, state) {
         return Visibility(
           visible: state.onPage == OnPage.inputEmail,
-          child: BlockProvider(child: LoginInputEmail(_formKey)),
+          child: LoginInputEmail(),
           replacement: LoginInputPassword()
         );
       }
