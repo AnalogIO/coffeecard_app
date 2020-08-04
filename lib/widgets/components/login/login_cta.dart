@@ -6,8 +6,10 @@ import '../../../blocs/login/login_bloc.dart';
 class LoginCTA extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocListener<LoginBloc, LoginState>(
+    return BlocConsumer<LoginBloc, LoginState>(
         listener: (context, state) {
+        },
+        builder: (context, state) {
         return FlatButton(
           onPressed: () => state.toString(), //TODO Fix this
           child: Text(

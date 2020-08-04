@@ -8,4 +8,9 @@ final ThemeData analogTheme = ThemeData(
   cursorColor: AppColor.secondary,
   backgroundColor: AppColor.background,
   visualDensity: VisualDensity.adaptivePlatformDensity,
+  primaryTextTheme: TextTheme(title: TextStyle(color: AppColor.white)),
+  primaryIconTheme: IconThemeData(color: AppColor.background),
+  canvasColor: AppColor.background,
 );
+
+

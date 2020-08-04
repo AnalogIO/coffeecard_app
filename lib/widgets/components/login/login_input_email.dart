@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
 import '../../../base/style/colors.dart';
 import '../../../blocs/login/login_bloc.dart';
 
 class LoginInputEmail extends StatelessWidget {
   const LoginInputEmail();
 
-  get _inputField =>  BlocListener<LoginBloc, LoginState>(
-  listener: (context, state) {
-      final errorBorder = OutlineInputBorder(
-        borderSide: BorderSide(color: AppColor.highlight, width: 4),
-        borderRadius: BorderRadius.all(Radius.circular(32)),
-      );
+  get _inputField =>  BlocConsumer<LoginBloc, LoginState>(
+  listener: (context, state) {},
+  builder: (context, state) {
+    final errorBorder = OutlineInputBorder(
+      borderSide: BorderSide(color: AppColor.highlight, width: 4),
+      borderRadius: BorderRadius.all(Radius.circular(32)),
+    );
       return TextField(
         textInputAction: TextInputAction.next,
         
@@ -33,7 +33,6 @@ class LoginInputEmail extends StatelessWidget {
         autofocus: true,
         
         onChanged: (email) {context.bloc<LoginBloc>().add(LoginEmailChanged(email) ); }
-
       );
     }
   );
