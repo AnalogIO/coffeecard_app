@@ -10,6 +10,9 @@ import 'package:coffeecard/widgets/pages/stats_page.dart';
 import 'package:coffeecard/widgets/pages/settings_page.dart';
 
 class HomePage extends StatefulWidget {
+  static Route route() {
+    return MaterialPageRoute<void>(builder: (_) => HomePage());
+  }
   @override
   _HomePageState createState() => _HomePageState();
 }

@@ -24,6 +24,7 @@ class LoginInputEmail extends StatelessWidget {
           fillColor: AppColor.white,
           filled: true,
           errorBorder: errorBorder,
+          errorText: state.error,
           focusedErrorBorder: errorBorder,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(32)),

@@ -9,7 +9,7 @@ final ThemeData analogTheme = ThemeData(
   backgroundColor: AppColor.background,
   visualDensity: VisualDensity.adaptivePlatformDensity,
   primaryTextTheme: TextTheme(title: TextStyle(color: AppColor.white)),
-  primaryIconTheme: IconThemeData(color: AppColor.background),
+  primaryIconTheme: IconThemeData(color: AppColor.primary),
   canvasColor: AppColor.background,
 );
 
