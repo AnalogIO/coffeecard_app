@@ -34,11 +34,11 @@ class AccountRepositoryImpl implements AccountRepository {
   }
 
   @override
-  Future login(String userName, String password) async {
+  Future login(String username, String password) async {
     final bytes = utf8.encode(password);
     final passwordHash = sha256.convert(bytes);
     final base64Pass = base64Encode(passwordHash.bytes);
-    final login = Login(userName, base64Pass, "2.1.0"); //TODO get the version number from somewhere
+    final login = Login(username, base64Pass, "2.1.0"); //TODO get the version number from somewhere
 
     try {
       final token = await _restClient.login(login);
