@@ -8,11 +8,12 @@ class LoginTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<LoginBloc, LoginState>(
         listener: (context, state) {},
+        buildWhen: (previous, current) => previous.onPage != current.onPage,
         builder: (context, state) {
         return Padding(
         padding: EdgeInsets.only(top: 32, bottom: 16),
         child: Text(
-          "state.username", //TODO Fix this
+          (state.onPage == OnPage.inputEmail) ? "Sign in" : state.username,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           textAlign: TextAlign.center,

@@ -16,7 +16,7 @@ class LoginInputPassword extends StatelessWidget {
             return PasswordCircle(
               index: i,
               passwordLength: state.password.length,
-              isError: false //TODO fix this
+              isError: state.error.isNotEmpty
             );
           })
         );

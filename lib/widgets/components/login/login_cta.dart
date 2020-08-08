@@ -1,3 +1,4 @@
+import 'package:coffeecard/widgets/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../base/style/colors.dart';
@@ -9,11 +10,12 @@ class LoginCTA extends StatelessWidget {
     return BlocConsumer<LoginBloc, LoginState>(
         listener: (context, state) {
         },
+        buildWhen: (previous, current) => previous.onPage != current.onPage,
         builder: (context, state) {
         return FlatButton(
-          onPressed: () => state.toString(), //TODO Fix this
+          onPressed: () => (state.onPage == OnPage.inputEmail) ? Navigator.push(context, HomePage.route()) : {context.bloc<LoginBloc>().add(LoginGoBack()) }, //TODO Replace homepage with a register page
           child: Text(
-            "state.ctaText", //TODO fix this
+            (state.onPage == OnPage.inputEmail ? "Don't have an account? Make one >>" : "Sign in using another account >>"),
             style: TextStyle(
               color: AppColor.white,
               fontSize: 12,

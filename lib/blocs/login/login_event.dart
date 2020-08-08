@@ -40,3 +40,7 @@ class LoginNumpadPressed extends LoginEvent {
 class LoginEmailSubmitted extends LoginEvent {
   const LoginEmailSubmitted();
 }
+
+class LoginGoBack extends LoginEvent {
+  const LoginGoBack();
+}

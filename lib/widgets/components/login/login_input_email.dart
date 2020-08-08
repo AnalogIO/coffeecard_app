@@ -24,7 +24,7 @@ class LoginInputEmail extends StatelessWidget {
           fillColor: AppColor.white,
           filled: true,
           errorBorder: errorBorder,
-          errorText: state.error,
+          errorText: (state.error.isEmpty) ? null : state.error,
           focusedErrorBorder: errorBorder,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(32)),
@@ -33,7 +33,8 @@ class LoginInputEmail extends StatelessWidget {
         ),
         autofocus: true,
         
-        onChanged: (email) {context.bloc<LoginBloc>().add(LoginEmailChanged(email) ); }
+        onChanged: (email) {context.bloc<LoginBloc>().add(LoginEmailChanged(email) ); },
+        onSubmitted: (email) => {context.bloc<LoginBloc>().add(LoginEmailSubmitted()) },
       );
     }
   );
@@ -41,7 +42,7 @@ class LoginInputEmail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LoginBloc, LoginState>(
-      buildWhen: (previous, current) => previous.username != current.username,
+      //buildWhen: (previous, current) => previous.username != current.username || previous.error != current.error,
       builder: (context, state) {
         return SizedBox(height: 50,
           child: Form(

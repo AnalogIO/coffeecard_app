@@ -14,16 +14,17 @@ class _LoginInputHintState extends State<LoginInputHint> {
     return BlocConsumer<LoginBloc, LoginState>(
         listener: (context, state) {
         },
+        buildWhen: (previous, current) => previous.error != current.error || previous.onPage != current.onPage,
         builder: (context, state) {
         return Padding(
           padding: EdgeInsets.only(top: 16, bottom: 12),
           child: Text(
-            (true) //TODO fix this
-              ? "state.hintText"
-              : "state.errorText",
+            (state.error.isEmpty)
+              ? ((state.onPage == OnPage.inputPassword) ? "Enter passcode" : "")
+              : state.error,
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: (true) //TODO fix this
+              color: (state.error.isEmpty)
                 ? AppColor.white
                 : AppColor.highlight,
               fontSize: 14
