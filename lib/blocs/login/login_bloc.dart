@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:coffeecard/persistence/repositories/authentication_repository.dart';
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-import '../../persistence/repositories/account_repository.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
@@ -15,13 +15,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc({
     @required AuthenticationRepository this.authenticationRepository,
   })  : assert(authenticationRepository != null),
-        super(const LoginState(password: "", onPage: OnPage.inputEmail));
+        super(const LoginState(username: "", error: "", password: "", onPage: OnPage.inputEmail));
 
   @override
   Stream<LoginState> mapEventToState(
     LoginEvent event,
   ) async* {
-    // TODO: implement mapEventToState
     if (event is LoginNumpadPressed){
       yield* mapNumpadPressedToEvent(event);
     }
@@ -30,39 +29,55 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
     else if (event is LoginEmailChanged)
       yield* mapLoginEmailChanged(event);
+    else if (event is LoginGoBack)
+      yield* mapLoginGoBack(event);
   }
 
   Stream<LoginState> mapNumpadPressedToEvent(LoginNumpadPressed event) async* {
     try {
       if (event.keyPress == "reset")
         {
-          yield state.copyWith(username: state.username, password: state.password.substring(0, state.password.length - 1));
+          final currentPassword = state.password;
+          if (currentPassword.length > 0)
+            yield state.copyWith(username: state.username, password: currentPassword.substring(0, currentPassword.length - 1));
         }
       else {
-        var currentInput = state.password + event.keyPress;
-        if (currentInput.length == 4){
-          yield state.copyWith(password: currentInput);
-          await authenticationRepository.logIn(username: state.username, password: currentInput);
+        var newPassword = state.password + event.keyPress;
+        if (newPassword.length == 4){
+          yield state.copyWith(password: newPassword);
+          await authenticationRepository.logIn(username: state.username, password: newPassword);
         }
         else {
-          yield state.copyWith(password: currentInput);
+          yield state.copyWith(password: newPassword, error: "");
         }
       }
     }
     catch (error){
-      yield state.copyWith(password: "", error: error.toString()); //TODO do proper error handling
+      if (error is DioError)
+        {
+          Map<String, dynamic> errorMessage = error.response.data;
+          yield state.copyWith(password: "", error: errorMessage["message"] );
+        }
+      else
+        yield state.copyWith(password: "", error: error.toString()); //TODO do proper error handling
     }
   }
 
   Stream<LoginState> mapLoginEmailSubmitted(LoginEmailSubmitted event) async* {
       if (validateEmail(state.username))
-        yield state.copyWith(password: "", onPage: OnPage.inputPassword); //The empty string is the initial value of the password
+        yield state.copyWith(error: "" , onPage: OnPage.inputPassword);
+      else if (state.username.isEmpty)
+        yield state.copyWith(error: "Enter an email");
       else
         yield state.copyWith(error: "Enter a valid email");
   }
 
   Stream<LoginState> mapLoginEmailChanged(LoginEmailChanged event) async* {
     yield state.copyWith(username: event.email);
+  }
+
+  Stream<LoginState> mapLoginGoBack(LoginGoBack event) async* {
+    yield state.copyWith(onPage: OnPage.inputEmail, password: "");
   }
 
   bool validateEmail(String email){

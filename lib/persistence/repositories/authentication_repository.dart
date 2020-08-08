@@ -12,7 +12,6 @@ class AuthenticationRepository {
   AuthenticationRepository(AccountRepository this.accountRepository);
 
   Stream<AuthenticationStatus> get status async* { //TODO Magic happens, figure out what is going on
-    await Future<void>.delayed(const Duration(seconds: 1));
     yield AuthenticationStatus.unauthenticated;
     yield* _controller.stream;
   }

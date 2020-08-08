@@ -13,7 +13,8 @@ class LoginForm extends StatelessWidget {
     return BlocConsumer<LoginBloc, LoginState>(
         listener: (context, state) {
       },
-    builder: (context, state) {
+      buildWhen: (previous, current) => previous.onPage != current.onPage,
+      builder: (context, state) {
       return Visibility(
           visible: state.onPage == OnPage.inputEmail,
           child: LoginInputEmail(),

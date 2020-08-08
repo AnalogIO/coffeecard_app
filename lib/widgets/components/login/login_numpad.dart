@@ -97,6 +97,7 @@ class NumpadButton extends StatelessWidget {
         return FlatButton(
           onPressed: () {
             HapticFeedback.lightImpact();
+            //TODO add a case for the last button i.e. biometric/ forgotten
             if (action == NumpadActions.reset) {context.bloc<LoginBloc>().add(LoginNumpadPressed("reset")); }
             else if (action == NumpadActions.add) {context.bloc<LoginBloc>().add(LoginNumpadPressed(text)); }
           },
