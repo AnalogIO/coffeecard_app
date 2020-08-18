@@ -42,7 +42,8 @@ dependencies:
   get_it: ^4.0.2
 
   # State management
-  flutter_bloc: ^5.0.0
+  flutter_bloc: ^6.0.0
+
 
   # Utility
   meta: ^1.1.6
@@ -58,6 +59,7 @@ dev_dependencies:
 
   # unit testing
   mockito: ^4.1.1
+  bloc_test: ^7.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

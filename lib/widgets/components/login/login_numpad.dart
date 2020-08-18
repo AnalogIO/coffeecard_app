@@ -92,7 +92,7 @@ class NumpadButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LoginBloc, LoginState>(
-        buildWhen: (previous, current) => previous.username != current.username,
+        buildWhen: (previous, current) => previous.email != current.email,
         builder: (context, state) {
         return FlatButton(
           onPressed: () {

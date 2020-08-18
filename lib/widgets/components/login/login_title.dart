@@ -13,7 +13,7 @@ class LoginTitle extends StatelessWidget {
         return Padding(
         padding: EdgeInsets.only(top: 32, bottom: 16),
         child: Text(
-          (state.onPage == OnPage.inputEmail) ? "Sign in" : state.username,
+          (state.onPage == OnPage.inputEmail) ? "Sign in" : state.email,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           textAlign: TextAlign.center,

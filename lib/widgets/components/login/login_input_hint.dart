@@ -3,12 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../base/style/colors.dart';
 import '../../../blocs/login/login_bloc.dart';
 
-class LoginInputHint extends StatefulWidget {
-  @override
-  _LoginInputHintState createState() => _LoginInputHintState();
-}
-
-class _LoginInputHintState extends State<LoginInputHint> {
+class LoginInputHint extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<LoginBloc, LoginState>(

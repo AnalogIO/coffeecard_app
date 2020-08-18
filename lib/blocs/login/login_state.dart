@@ -2,30 +2,34 @@ part of 'login_bloc.dart';
 
 class LoginState extends Equatable {
   final String password;
-  final String username;
+  final String email;
   final String error;
   final OnPage onPage;
 
-  const LoginState({this.username, this.password, this.onPage, this.error});
-  String get currentPasswordInput => password;
-  String get usernameInput => username;
+  const LoginState({this.email = "", this.password = "", this.onPage = OnPage.inputEmail, this.error = ""});
+
 
   LoginState copyWith({
     OnPage onPage,
-    String username,
+    String email,
     String password,
     String error,
   }) {
     return LoginState(
       onPage: onPage ?? this.onPage,
-      username: username ?? this.username,
+      email: email ?? this.email,
       password: password ?? this.password,
       error: error ?? this.error
     );
   }
 
   @override
-  List<Object> get props => [password, username, error, onPage];
+  List<Object> get props => [password, email, error, onPage];
+
+  @override
+  String toString() {
+    return 'LoginState{password: $password, email: $email, error: $error, onPage: $onPage}';
+  }
 }
 
 enum OnPage {
