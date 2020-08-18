@@ -15,7 +15,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc({
     @required AuthenticationRepository this.authenticationRepository,
   })  : assert(authenticationRepository != null),
-        super(const LoginState(username: "", error: "", password: "", onPage: OnPage.inputEmail));
+        super(const LoginState());
 
   @override
   Stream<LoginState> mapEventToState(
@@ -39,13 +39,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         {
           final currentPassword = state.password;
           if (currentPassword.length > 0)
-            yield state.copyWith(username: state.username, password: currentPassword.substring(0, currentPassword.length - 1));
+            yield state.copyWith(email: state.email, password: currentPassword.substring(0, currentPassword.length - 1));
         }
       else {
         var newPassword = state.password + event.keyPress;
         if (newPassword.length == 4){
           yield state.copyWith(password: newPassword);
-          await authenticationRepository.logIn(username: state.username, password: newPassword);
+          await authenticationRepository.logIn(username: state.email, password: newPassword);
         }
         else {
           yield state.copyWith(password: newPassword, error: "");
@@ -64,16 +64,16 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   Stream<LoginState> mapLoginEmailSubmitted(LoginEmailSubmitted event) async* {
-      if (validateEmail(state.username))
+      if (validateEmail(state.email))
         yield state.copyWith(error: "" , onPage: OnPage.inputPassword);
-      else if (state.username.isEmpty)
+      else if (state.email.isEmpty)
         yield state.copyWith(error: "Enter an email");
       else
         yield state.copyWith(error: "Enter a valid email");
   }
 
   Stream<LoginState> mapLoginEmailChanged(LoginEmailChanged event) async* {
-    yield state.copyWith(username: event.email);
+    yield state.copyWith(email: event.email);
   }
 
   Stream<LoginState> mapLoginGoBack(LoginGoBack event) async* {

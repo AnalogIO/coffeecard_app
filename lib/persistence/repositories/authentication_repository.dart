@@ -11,7 +11,7 @@ class AuthenticationRepository {
 
   AuthenticationRepository(AccountRepository this.accountRepository);
 
-  Stream<AuthenticationStatus> get status async* { //TODO Magic happens, figure out what is going on
+  Stream<AuthenticationStatus> get status async* {
     yield AuthenticationStatus.unauthenticated;
     yield* _controller.stream;
   }

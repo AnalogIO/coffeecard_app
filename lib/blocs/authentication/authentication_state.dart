@@ -19,4 +19,9 @@ class AuthenticationState extends Equatable {
 
   @override
   List<Object> get props => [status, user];
+
+  @override
+  String toString() {
+    return 'AuthenticationState{status: $status, user: $user}';
+  }
 }
