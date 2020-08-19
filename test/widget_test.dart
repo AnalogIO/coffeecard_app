@@ -13,7 +13,7 @@ import 'package:coffeecard/main.dart';
 void main() {
   testWidgets('Change pages from navbar', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(MyApp());
+    await tester.pumpWidget(const App());
 
     // Verify that our app reads 'Tickets' at least once
     // (once in the app bar and once in the navigation bar).

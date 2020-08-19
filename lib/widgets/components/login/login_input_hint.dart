@@ -12,7 +12,7 @@ class LoginInputHint extends StatelessWidget {
         buildWhen: (previous, current) => previous.error != current.error || previous.onPage != current.onPage,
         builder: (context, state) {
         return Padding(
-          padding: EdgeInsets.only(top: 16, bottom: 12),
+          padding: const EdgeInsets.only(top: 16, bottom: 12),
           child: Text(
             (state.error.isEmpty)
               ? ((state.onPage == OnPage.inputPassword) ? "Enter passcode" : "")

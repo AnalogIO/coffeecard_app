@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/services.dart'; // Haptic feedback
 import '../../../base/style/colors.dart';
 import '../../../blocs/login/login_bloc.dart';
-
-import 'package:flutter/services.dart'; // Haptic feedback
 
 enum NumpadActions {
   add,
@@ -23,7 +22,7 @@ class Numpad extends StatelessWidget {
           color: (state.onPage == OnPage.inputEmail)
             ? AppColor.primary
             : AppColor.white,
-          padding: EdgeInsets.only(top: 16, bottom: 24),
+          padding: const EdgeInsets.only(top: 16, bottom: 24),
           child: Visibility(
             visible: state.onPage != OnPage.inputEmail,
             maintainSize: true,
@@ -37,17 +36,17 @@ class Numpad extends StatelessWidget {
                   verticalInside: BorderSide(color: AppColor.lightGray, width: 2),
                 ),
                 children: <TableRow>[
-                  TableRow(children: [
+                  const TableRow(children: [
                     NumpadButton(text: "1"),
                     NumpadButton(text: "2"),
                     NumpadButton(text: "3")
                   ]),
-                  TableRow(children: [
+                  const TableRow(children: [
                     NumpadButton(text: "4"),
                     NumpadButton(text: "5"),
                     NumpadButton(text: "6")
                   ]),
-                  TableRow(children: [
+                  const TableRow(children: [
                     NumpadButton(text: "7"),
                     NumpadButton(text: "8"),
                     NumpadButton(text: "9")
@@ -60,7 +59,7 @@ class Numpad extends StatelessWidget {
                         action: NumpadActions.reset
                       )
                     ),
-                    NumpadButton(text: "0"),
+                    const NumpadButton(text: "0"),
                     TableCell(
                       verticalAlignment: TableCellVerticalAlignment.fill,
                       child: NumpadButton(
@@ -83,7 +82,7 @@ class NumpadButton extends StatelessWidget {
   final String text;
   final IconData icon;
   final NumpadActions action;
-  NumpadButton({
+  const NumpadButton({
     this.text,
     this.icon,
     this.action = NumpadActions.add
@@ -98,7 +97,7 @@ class NumpadButton extends StatelessWidget {
           onPressed: () {
             HapticFeedback.lightImpact();
             //TODO add a case for the last button i.e. biometric/ forgotten
-            if (action == NumpadActions.reset) {context.bloc<LoginBloc>().add(LoginNumpadPressed("reset")); }
+            if (action == NumpadActions.reset) {context.bloc<LoginBloc>().add(const LoginNumpadPressed("reset")); }
             else if (action == NumpadActions.add) {context.bloc<LoginBloc>().add(LoginNumpadPressed(text)); }
           },
           child: Padding(

@@ -13,9 +13,9 @@ class LoginCTA extends StatelessWidget {
         buildWhen: (previous, current) => previous.onPage != current.onPage,
         builder: (context, state) {
         return FlatButton(
-          onPressed: () => (state.onPage == OnPage.inputEmail) ? Navigator.push(context, HomePage.route()) : {context.bloc<LoginBloc>().add(LoginGoBack()) }, //TODO Replace homepage with a register page
+          onPressed: () => (state.onPage == OnPage.inputEmail) ? Navigator.push(context, HomePage.route()) : {context.bloc<LoginBloc>().add(const LoginGoBack()) }, //TODO Replace homepage with a register page
           child: Text(
-            (state.onPage == OnPage.inputEmail ? "Don't have an account? Make one >>" : "Sign in using another account >>"),
+            state.onPage == OnPage.inputEmail ? "Don't have an account? Make one >>" : "Sign in using another account >>",
             style: TextStyle(
               color: AppColor.white,
               fontSize: 12,

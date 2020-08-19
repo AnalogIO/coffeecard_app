@@ -3,7 +3,7 @@ import 'package:coffeecard/model/account/user.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-// ignore: must_be_immutable
+// ignore: must_be_immutable, avoid_implementing_value_types
 class MockUser extends Mock implements User {}
 
 void main() {
@@ -11,8 +11,8 @@ void main() {
     group('AuthenticationState.unknown', () {
       test('supports value comparisons', () {
         expect(
-          AuthenticationState.unknown(),
-          AuthenticationState.unknown(),
+          const AuthenticationState.unknown(),
+          const AuthenticationState.unknown(),
         );
       });
     });
@@ -30,8 +30,8 @@ void main() {
     group('AuthenticationState.unauthenticated', () {
       test('supports value comparisons', () {
         expect(
-          AuthenticationState.unauthenticated(),
-          AuthenticationState.unauthenticated(),
+          const AuthenticationState.unauthenticated(),
+          const AuthenticationState.unauthenticated(),
         );
       });
     });

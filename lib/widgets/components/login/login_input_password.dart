@@ -37,14 +37,14 @@ class PasswordCircle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool current = index == passwordLength;
-    bool previous = index < passwordLength;
+    final bool current = index == passwordLength;
+    final bool previous = index < passwordLength;
 
     Color fill = AppColor.white.withAlpha(70);
 
     double opacity = 1; // TODO Use
-    double borderWidth = 0;
-    Color borderColor = Colors.transparent;
+    const double borderWidth = 0;
+    final Color borderColor = Colors.transparent;
 
     if (current) {
       opacity = 0;
@@ -65,7 +65,7 @@ class PasswordCircle extends StatelessWidget {
     return Container(
       width: 20,
       height: 20,
-      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
       decoration: BoxDecoration(
         color: fill,
         shape: BoxShape.circle,

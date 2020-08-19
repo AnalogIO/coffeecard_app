@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:coffeecard/model/account/user.dart';
 
-import '../../persistence/repositories/authentication_repository.dart';
-import '../../persistence/repositories/account_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
+import '../../persistence/repositories/account_repository.dart';
+import '../../persistence/repositories/authentication_repository.dart';
 
 /*
 * Large parts of this file is taken from the flutter login example in https://github.com/felangel/bloc as of the d505e54 commit

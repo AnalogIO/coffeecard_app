@@ -13,7 +13,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final AuthenticationRepository authenticationRepository;
 
   LoginBloc({
-    @required AuthenticationRepository this.authenticationRepository,
+    @required this.authenticationRepository,
   })  : assert(authenticationRepository != null),
         super(const LoginState());
 
@@ -27,10 +27,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     else if (event is LoginEmailSubmitted){
       yield* mapLoginEmailSubmitted(event);
     }
-    else if (event is LoginEmailChanged)
+    else if (event is LoginEmailChanged) {
       yield* mapLoginEmailChanged(event);
-    else if (event is LoginGoBack)
+    }
+    else if (event is LoginGoBack) {
       yield* mapLoginGoBack(event);
+    }
   }
 
   Stream<LoginState> mapNumpadPressedToEvent(LoginNumpadPressed event) async* {
@@ -38,11 +40,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       if (event.keyPress == "reset")
         {
           final currentPassword = state.password;
-          if (currentPassword.length > 0)
+          if (currentPassword.isNotEmpty) {
             yield state.copyWith(email: state.email, password: currentPassword.substring(0, currentPassword.length - 1));
+          }
         }
       else {
-        var newPassword = state.password + event.keyPress;
+        final newPassword = state.password + event.keyPress;
         if (newPassword.length == 4){
           yield state.copyWith(password: newPassword);
           await authenticationRepository.logIn(username: state.email, password: newPassword);
@@ -55,21 +58,23 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     catch (error){
       if (error is DioError)
         {
-          Map<String, dynamic> errorMessage = error.response.data;
-          yield state.copyWith(password: "", error: errorMessage["message"] );
+          final Map<String, dynamic> errorMessage = error.response.data as Map<String, dynamic>;
+          yield state.copyWith(password: "", error: errorMessage["message"] as String );
         }
-      else
+      else {
         yield state.copyWith(password: "", error: error.toString()); //TODO do proper error handling
+      }
     }
   }
 
   Stream<LoginState> mapLoginEmailSubmitted(LoginEmailSubmitted event) async* {
-      if (validateEmail(state.email))
+      if (validateEmail(state.email)) {
         yield state.copyWith(error: "" , onPage: OnPage.inputPassword);
-      else if (state.email.isEmpty)
+      } else if (state.email.isEmpty) {
         yield state.copyWith(error: "Enter an email");
-      else
+      } else {
         yield state.copyWith(error: "Enter a valid email");
+      }
   }
 
   Stream<LoginState> mapLoginEmailChanged(LoginEmailChanged event) async* {

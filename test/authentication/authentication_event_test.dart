@@ -16,8 +16,8 @@ void main() {
     group('AuthenticationStatusChanged', () {
       test('supports value comparisons', () {
         expect(
-          AuthenticationStatusChanged(AuthenticationStatus.unknown),
-          AuthenticationStatusChanged(AuthenticationStatus.unknown),
+          const AuthenticationStatusChanged(AuthenticationStatus.unknown),
+          const AuthenticationStatusChanged(AuthenticationStatus.unknown),
         );
       });
     });

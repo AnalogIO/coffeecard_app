@@ -1,5 +1,4 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/theme.dart';
 import 'package:coffeecard/persistence/repositories/account_repository.dart';
 import 'package:coffeecard/persistence/repositories/authentication_repository.dart';
@@ -14,18 +13,7 @@ import 'widgets/pages/splash.dart';
 
 void main() {
   configureServices();
-  runApp(App());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: Strings.appTitle,
-      theme: analogTheme,
-      home: LoginPage(),
-    );
-  }
+  runApp(const App());
 }
 
 class App extends StatelessWidget {

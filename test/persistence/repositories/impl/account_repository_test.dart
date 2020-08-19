@@ -69,6 +69,7 @@ void main() {
       final mockStorage = MockSecureStorage();
       final repository = AccountRepositoryImpl(mockClient, Logger(), mockStorage);
 
+      // ignore: void_checks
       when(mockClient.register(any)).thenAnswer((_) => Future.value("Success, your user was created"));
 
       // Act
