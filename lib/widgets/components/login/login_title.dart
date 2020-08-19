@@ -11,7 +11,7 @@ class LoginTitle extends StatelessWidget {
         buildWhen: (previous, current) => previous.onPage != current.onPage,
         builder: (context, state) {
         return Padding(
-        padding: EdgeInsets.only(top: 32, bottom: 16),
+        padding: const EdgeInsets.only(top: 32, bottom: 16),
         child: Text(
           (state.onPage == OnPage.inputEmail) ? "Sign in" : state.email,
           maxLines: 1,

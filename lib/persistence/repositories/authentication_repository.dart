@@ -9,7 +9,7 @@ class AuthenticationRepository {
   final _controller = StreamController<AuthenticationStatus>();
   final AccountRepository accountRepository;
 
-  AuthenticationRepository(AccountRepository this.accountRepository);
+  AuthenticationRepository(this.accountRepository);
 
   Stream<AuthenticationStatus> get status async* {
     yield AuthenticationStatus.unauthenticated;

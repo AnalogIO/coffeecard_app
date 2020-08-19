@@ -17,9 +17,8 @@ class LoginForm extends StatelessWidget {
       builder: (context, state) {
       return Visibility(
           visible: state.onPage == OnPage.inputEmail,
-          child: LoginInputEmail(),
-          replacement: LoginInputPassword()
-      );
+          replacement: LoginInputPassword(),
+          child: const LoginInputEmail(),);
       }
     );
   }

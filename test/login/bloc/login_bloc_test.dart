@@ -16,7 +16,7 @@ class FakeDioError extends Fake
 
 class FakeResponse extends Fake implements Response {
   @override
-  final data = {"message": "Error from the API"};
+  final Map<String, String> data = {"message": "Error from the API"};
 }
 
 void main() {
@@ -37,7 +37,7 @@ void main() {
     });
 
     test('initial state is LoginState', () {
-      expect(loginBloc.state, LoginState());
+      expect(loginBloc.state, const LoginState());
     });
 
     group('LoginEmailSubmitted', () {
@@ -105,6 +105,7 @@ void main() {
           when(authenticationRepository.logIn(
             username: 'test@test.dk',
             password: '1234',
+          // ignore: void_checks
           )).thenAnswer((_) => Future.value('user'));
           return loginBloc;
         },
@@ -119,10 +120,10 @@ void main() {
         },
         expect: const <LoginState>[
           LoginState(
-            email: ('test@test.dk'),
+            email: 'test@test.dk',
           ),
           LoginState(
-            email: ('test@test.dk'),
+            email: 'test@test.dk',
             onPage: OnPage.inputPassword,
           ),
           LoginState(
@@ -168,10 +169,10 @@ void main() {
         },
         expect: const <LoginState>[
           LoginState(
-            email: ('test@test.dk'),
+            email: 'test@test.dk',
           ),
           LoginState(
-            email: ('test@test.dk'),
+            email: 'test@test.dk',
             onPage: OnPage.inputPassword,
           ),
           LoginState(
@@ -197,7 +198,6 @@ void main() {
           LoginState(
             email: 'test@test.dk',
             onPage: OnPage.inputPassword,
-            password: '',
             error: "Error from the API"
           ),
         ],
@@ -226,7 +226,6 @@ void main() {
           ),
           LoginState(
             email: "test@test.dk",
-            onPage: OnPage.inputEmail
           )
         ],
       );

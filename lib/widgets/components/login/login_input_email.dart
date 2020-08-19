@@ -6,10 +6,10 @@ import '../../../blocs/login/login_bloc.dart';
 class LoginInputEmail extends StatelessWidget {
   const LoginInputEmail();
 
-  get _inputField =>  BlocConsumer<LoginBloc, LoginState>(
+  BlocConsumer<LoginBloc, LoginState> get _inputField =>  BlocConsumer<LoginBloc, LoginState>(
   listener: (context, state) {},
   builder: (context, state) {
-    final errorBorder = OutlineInputBorder(
+    const errorBorder = OutlineInputBorder(
       borderSide: BorderSide(color: AppColor.highlight, width: 4),
       borderRadius: BorderRadius.all(Radius.circular(32)),
     );
@@ -19,14 +19,14 @@ class LoginInputEmail extends StatelessWidget {
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
           hintText: "Email...",
-          contentPadding: EdgeInsets.fromLTRB(24, 16, 64, 16),
-          errorStyle: TextStyle(color: AppColor.highlight, height: 0, fontSize: 0),
+          contentPadding: const EdgeInsets.fromLTRB(24, 16, 64, 16),
+          errorStyle: const TextStyle(color: AppColor.highlight, height: 0, fontSize: 0),
           fillColor: AppColor.white,
           filled: true,
           errorBorder: errorBorder,
           errorText: (state.error.isEmpty) ? null : state.error,
           focusedErrorBorder: errorBorder,
-          border: OutlineInputBorder(
+          border: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(32)),
             borderSide: BorderSide.none
           )
@@ -34,7 +34,7 @@ class LoginInputEmail extends StatelessWidget {
         autofocus: true,
         
         onChanged: (email) {context.bloc<LoginBloc>().add(LoginEmailChanged(email) ); },
-        onSubmitted: (email) => {context.bloc<LoginBloc>().add(LoginEmailSubmitted()) },
+        onSubmitted: (email) => {context.bloc<LoginBloc>().add(const LoginEmailSubmitted()) },
       );
     }
   );
@@ -56,9 +56,9 @@ class LoginInputEmail extends StatelessWidget {
                       alignment: Alignment.topRight,
                       child: IconButton(
                         splashColor: Colors.transparent,
-                        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
                         icon: Icon(Icons.arrow_forward),
-                        onPressed: () {context.bloc<LoginBloc>().add(LoginEmailSubmitted()); },
+                        onPressed: () {context.bloc<LoginBloc>().add(const LoginEmailSubmitted()); },
                         tooltip: "Submit",
                       )
                   )
