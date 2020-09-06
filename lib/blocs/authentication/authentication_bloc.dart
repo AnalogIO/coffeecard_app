@@ -81,7 +81,7 @@ class AuthenticationBloc
       case AuthenticationStatus.unauthenticated:
         return const AuthenticationState.unauthenticated();
       case AuthenticationStatus.authenticated:
-        final user = await _tryGetUser(); //TODO Yield an authenticating event for a loading/splash screen that the main method can change to
+        final user = User("name", "email", "password", 1, false); //TODO Yield an authenticating event for a loading/splash screen that the main method can change to
         return user != null
             ? AuthenticationState.authenticated(user)
             : const AuthenticationState.unauthenticated();

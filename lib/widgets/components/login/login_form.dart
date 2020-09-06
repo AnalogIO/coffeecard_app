@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../blocs/login/login_bloc.dart';
 
-import 'login_input_email.dart';
+import '../../login_text_field.dart';
 import 'login_input_password.dart';
 
 
@@ -18,7 +18,8 @@ class LoginForm extends StatelessWidget {
       return Visibility(
           visible: state.onPage == OnPage.inputEmail,
           replacement: LoginInputPassword(),
-          child: const LoginInputEmail(),);
+          child: const LoginTextField(),
+        );
       }
     );
   }
