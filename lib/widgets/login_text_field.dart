@@ -21,64 +21,51 @@ class LoginTextField extends StatefulWidget {
 class _LoginTextFieldState extends State<LoginTextField> {
   @override
   Widget build(BuildContext context) {
-    final border = OutlineInputBorder(
+    final _border = OutlineInputBorder(
       borderSide: widget.error
         ? BorderSide(color: AppColor.error, width: 2)
         : BorderSide.none,
       borderRadius: BorderRadius.circular(32)
     );
 
+    void submit() {
+      throw UnimplementedError();
+    }
+
     final inputDecoration = InputDecoration(
       hintText: widget.placeholder,
       hintStyle: TextStyle(color: AppColor.gray),
 
       border: OutlineInputBorder(),
-      enabledBorder: border,
-      focusedBorder: border,
+      enabledBorder: _border,
+      focusedBorder: _border,
 
       filled: true,
       fillColor: AppColor.white,
 
+      suffixIcon: IconButton(
+        enableFeedback: true,
+        splashColor: Colors.transparent,
+        icon: Icon(Icons.arrow_forward),
+        onPressed: () => submit(),
+        tooltip: 'Go',
+      ),
+
       contentPadding: EdgeInsets.only(
-        top: 12,
-        bottom: 12,
+        top: 13,
+        bottom: 13,
         left: 24,
         right: 64
       ),
     );
 
-    void submit({bool tappedArrow = false}) {
-      if (tappedArrow) HapticFeedback.vibrate();
-
-      Scaffold.of(context).showSnackBar(SnackBar(
-        behavior: SnackBarBehavior.floating,
-        content: Text('Enter your passcode')
-      ));
-    }
-
-    return SizedBox(
-      height: 45,
-      child: Stack(
-        children: <Widget>[
-          TextField(
-            autofocus: true,
-            keyboardType: TextInputType.emailAddress,
-            decoration: inputDecoration,
-            style: TextStyle(color: AppColor.primary),
-            cursorWidth: 1,
-          ),
-          Container(
-            alignment: Alignment.centerRight,
-            child: IconButton(
-              enableFeedback: true,
-              splashColor: Colors.transparent,
-              icon: Icon(Icons.arrow_forward),
-              onPressed: () => submit(tappedArrow: true),
-              tooltip: 'Submit',
-            ),
-          ),
-        ],
-      ),
+    return TextField(
+      autofocus: true,
+      keyboardType: TextInputType.emailAddress,
+      decoration: inputDecoration,
+      style: TextStyle(color: AppColor.primary),
+      cursorWidth: 1,
+      onSubmitted: (_) => submit(),
     );
   }
 }

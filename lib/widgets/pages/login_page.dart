@@ -12,7 +12,7 @@ class LoginPage extends StatelessWidget {
       body: Center(
         child: Container(
           padding: EdgeInsets.all(16),
-          constraints: BoxConstraints(maxWidth: 350),
+          constraints: BoxConstraints(maxWidth: 300),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -21,7 +21,7 @@ class LoginPage extends StatelessWidget {
               Container(height: 16),
               Text('Sign in', style: AppTextStyle.pageTitle),
               Container(height: 16),
-              LoginTextField(error: false),              
+              LoginTextField(error: false, placeholder: "Email..."),              
             ],
           ),
         ),
