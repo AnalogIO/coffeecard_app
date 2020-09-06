@@ -78,11 +78,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   Stream<LoginState> mapLoginEmailChanged(LoginEmailChanged event) async* {
-    yield state.copyWith(email: event.email);
+    yield state.copyWith(email: event.email, error: "");
   }
 
   Stream<LoginState> mapLoginGoBack(LoginGoBack event) async* {
-    yield state.copyWith(onPage: OnPage.inputEmail, password: "");
+    yield state.copyWith(onPage: OnPage.inputEmail, email: "" , password: "");
   }
 
   bool validateEmail(String email){
