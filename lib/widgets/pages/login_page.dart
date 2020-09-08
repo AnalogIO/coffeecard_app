@@ -2,6 +2,7 @@ import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/blocs/login/login_bloc.dart';
 import 'package:coffeecard/persistence/repositories/authentication_repository.dart';
 import 'package:coffeecard/widgets/analog_logo.dart';
+import 'package:coffeecard/widgets/components/loading_overlay.dart';
 import 'package:coffeecard/widgets/components/login/login_cta.dart';
 import 'package:coffeecard/widgets/components/login/login_input_hint.dart';
 import 'package:coffeecard/widgets/components/login/login_input_password.dart';
@@ -20,22 +21,26 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final overlay = LoadingOverlay.of(context);
     return Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: AppColor.primary,
         body: Center(
             child: Container(
-                padding: EdgeInsets.all(16),
-                constraints: BoxConstraints(maxWidth: 300),
+                padding: const EdgeInsets.all(16),
+                constraints: const BoxConstraints(maxWidth: 300),
                 child: BlocProvider(
                     create: (context) {
                       return LoginBloc(
                           authenticationRepository:
                               sl.get<AuthenticationRepository>());
                     },
-                    child: Column(
-                      children: <Widget>[LoginUpper(), Numpad()],
-                    )))));
+                    child: BlocListener<LoginBloc, LoginState>(
+                        listenWhen: (previous, current) => previous.isLoading != current.isLoading,
+                        listener: (context, state) => (state.isLoading) ? overlay.show() : overlay.hide(),
+                        child: Column(
+                            children: <Widget>[LoginUpper(), Numpad()],
+                        ))))));
   }
 }
 
