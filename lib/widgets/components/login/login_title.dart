@@ -6,8 +6,7 @@ import '../../../blocs/login/login_bloc.dart';
 class LoginTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<LoginBloc, LoginState>(
-        listener: (context, state) {},
+    return BlocBuilder<LoginBloc, LoginState>(
         buildWhen: (previous, current) => previous.onPage != current.onPage,
         builder: (context, state) {
         return Padding(
