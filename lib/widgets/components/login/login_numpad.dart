@@ -14,9 +14,7 @@ enum NumpadActions {
 class Numpad extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<LoginBloc, LoginState>(
-        listener: (context, state) {
-        },
+    return BlocBuilder<LoginBloc, LoginState>(
         builder: (context, state) {
         return Container(
           color: (state.onPage == OnPage.inputEmail)
@@ -90,10 +88,7 @@ class NumpadButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginBloc, LoginState>(
-        buildWhen: (previous, current) => previous.email != current.email,
-        builder: (context, state) {
-        return FlatButton(
+    return FlatButton(
           onPressed: () {
             HapticFeedback.lightImpact();
             //TODO add a case for the last button i.e. biometric/ forgotten
@@ -109,6 +104,4 @@ class NumpadButton extends StatelessWidget {
           )
         );
       }
-    );
-  }
 }

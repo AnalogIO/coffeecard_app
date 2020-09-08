@@ -10,8 +10,7 @@ class LoginTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<LoginBloc, LoginState>(
-        listener: (context, state) {},
+    return BlocBuilder<LoginBloc, LoginState>(
         buildWhen: (previous, current) => previous.onPage != current.onPage || previous.error != current.error,
         builder: (context, state) {
           final _border = OutlineInputBorder(
