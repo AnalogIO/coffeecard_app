@@ -8,8 +8,8 @@ final ThemeData analogTheme = ThemeData(
   cursorColor: AppColor.secondary,
   backgroundColor: AppColor.background,
   visualDensity: VisualDensity.adaptivePlatformDensity,
-  primaryTextTheme: TextTheme(title: TextStyle(color: AppColor.white)),
-  primaryIconTheme: IconThemeData(color: AppColor.primary),
+  primaryTextTheme: const TextTheme(headline6: TextStyle(color: AppColor.white)),
+  primaryIconTheme: const IconThemeData(color: AppColor.primary),
   canvasColor: AppColor.background,
 );
 

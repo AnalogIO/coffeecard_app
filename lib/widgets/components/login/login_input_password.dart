@@ -42,12 +42,12 @@ class PasswordCircle extends StatelessWidget {
 
     Color fill = AppColor.white.withAlpha(70);
 
-    double opacity = 1; // TODO Use
+    //double opacity = 1; // TODO Use
     const double borderWidth = 0;
     final Color borderColor = Colors.transparent;
 
     if (current) {
-      opacity = 0;
+      //opacity = 0; // TODO Use
       // borderColor = AppColors.creamLighter;
       // borderWidth = 4;
     }

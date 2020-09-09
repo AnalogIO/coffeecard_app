@@ -8,12 +8,6 @@ import 'package:mockito/mockito.dart';
 class MockAuthenticationRepository extends Mock
     implements AuthenticationRepository {}
 
-class FakeDioError extends Fake
-    implements DioError {
-  @override
-  Response response = FakeResponse();
-}
-
 class FakeResponse extends Fake implements Response {
   @override
   final Map<String, String> data = {"message": "Error from the API"};
@@ -22,12 +16,10 @@ class FakeResponse extends Fake implements Response {
 void main() {
   LoginBloc loginBloc;
   MockAuthenticationRepository authenticationRepository;
-  FakeDioError dioError;
 
   setUp(() {
     authenticationRepository = MockAuthenticationRepository();
     loginBloc = LoginBloc(authenticationRepository: authenticationRepository);
-    dioError = FakeDioError();
   });
 
   group('LoginBloc', () {
@@ -106,7 +98,7 @@ void main() {
             username: 'test@test.dk',
             password: '1234',
           // ignore: void_checks
-          )).thenAnswer((_) => Future.value('user'));
+          )).thenAnswer((_) => Future.value(''));
           return loginBloc;
         },
         act: (bloc) {
@@ -145,6 +137,11 @@ void main() {
             email: 'test@test.dk',
             onPage: OnPage.inputPassword,
             password: '1234',
+            isLoading: true,
+          ),
+          LoginState(
+            email: 'test@test.dk',
+            onPage: OnPage.inputPassword,
           ),
         ],
       );
@@ -155,7 +152,7 @@ void main() {
           when(authenticationRepository.logIn(
             username: 'test@test.dk',
             password: '1234',
-          )).thenThrow(dioError);
+          )).thenAnswer((_) => Future(() => "Error from the API"));
           return loginBloc;
         },
         act: (bloc) {
@@ -193,6 +190,7 @@ void main() {
           LoginState(
             email: 'test@test.dk',
             onPage: OnPage.inputPassword,
+            isLoading: true,
             password: '1234',
           ),
           LoginState(
@@ -225,7 +223,6 @@ void main() {
             onPage: OnPage.inputPassword
           ),
           LoginState(
-            email: "test@test.dk",
           )
         ],
       );

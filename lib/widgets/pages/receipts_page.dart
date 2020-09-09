@@ -9,16 +9,15 @@ class ReceiptsPage extends StatelessWidget {
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
+          children: const <Widget>[
             AppTextField(),
             AppTextField(),
             AppTextField(
               disabled: true,
-              label: 'I\'m disabled!',
+              label: "I'm disabled!",
               value: 'Cant touch this',
             ),
             AppTextField(
-              disabled: false,
               value: 'Default value?',
             ),
           ],

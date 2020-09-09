@@ -17,6 +17,6 @@ class SecureStorage {
 
   /// read token from secure storage, might be nullable
   Future<String> readToken() async {
-    return await _storage.read(key: _userTokenKey);
+    return _storage.read(key: _userTokenKey);
   }
 }
