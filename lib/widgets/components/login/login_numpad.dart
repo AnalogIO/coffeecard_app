@@ -29,7 +29,7 @@ class Numpad extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 32),
               child: Table(
-                border: TableBorder(
+                border: const TableBorder(
                   horizontalInside: BorderSide(color: AppColor.lightGray, width: 2),
                   verticalInside: BorderSide(color: AppColor.lightGray, width: 2),
                 ),

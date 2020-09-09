@@ -52,24 +52,24 @@ class AppTextField extends StatefulWidget {
 class _AppTextFieldState extends State<AppTextField> {
   @override
   Widget build(BuildContext context) {
-    UnderlineInputBorder defaultBorder = UnderlineInputBorder(
+    const UnderlineInputBorder defaultBorder = UnderlineInputBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
-      borderSide: BorderSide(color: AppColor.gray, width: 1)
+      borderSide: BorderSide(color: AppColor.gray)
     );
     return TextField(
       enabled: !widget.disabled,
       decoration: InputDecoration(
         border: defaultBorder,
         enabledBorder: defaultBorder,
-        focusedBorder: UnderlineInputBorder(
+        focusedBorder: const UnderlineInputBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
           borderSide: BorderSide(color: AppColor.secondary, width: 2)
         ),
         labelText: widget.label,
-        labelStyle: TextStyle(color: AppColor.secondary),
+        labelStyle: const TextStyle(color: AppColor.secondary),
         filled: true,
         fillColor: AppColor.white/*.withOpacity(0.5)*/, // TODO Change depending on focus
-        contentPadding: EdgeInsets.only(
+        contentPadding: const EdgeInsets.only(
           top: 8,
           bottom: 12,
           left: 16,
@@ -77,7 +77,7 @@ class _AppTextFieldState extends State<AppTextField> {
         ),
       ),
       cursorWidth: 1,
-      style: TextStyle(color: AppColor.primary),
+      style: const TextStyle(color: AppColor.primary),
     );
   }
 }

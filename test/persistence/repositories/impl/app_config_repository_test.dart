@@ -15,7 +15,7 @@ void main() {
       final mockClient = MockCoffeeCardApiClient();
       final repository = AppConfigRepositoryImpl(mockClient, Logger());
 
-      when(mockClient.getAppConfig()).thenAnswer((_) => Future.value(AppConfig(EnvironmentType.Test, "APPDK")));
+      when(mockClient.getAppConfig()).thenAnswer((_) => Future.value(AppConfig(EnvironmentType.test, "APPDK")));
 
       // Act
       await repository.getAppConfig();

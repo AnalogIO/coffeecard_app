@@ -20,34 +20,14 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _currentPageIndex = 0;
 
-  final List _pages = [
-    {
-      'appBarTitle': Strings.ticketsPageTitle,
-      'navBarTitle': Strings.ticketsNavTitle,
-      'icon': Icons.style,
-      'body': TicketsPage()
-    },
-    {
-      'appBarTitle': Strings.receiptsPageTitle,
-      'navBarTitle': Strings.receiptsNavTitle,
-      'icon': Icons.receipt,
-      'body': ReceiptsPage()
-    },
-    {
-      'appBarTitle': Strings.statsPageTitle,
-      'navBarTitle': Strings.statsNavTitle,
-      'icon': Icons.trending_up,
-      'body': StatsPage()
-    },
-    {
-      'appBarTitle': Strings.settingsPageTitle,
-      'navBarTitle': Strings.settingsNavTitle,
-      'icon': Icons.settings,
-      'body': SettingsPage()
-    },
+  final List<Page> _pages = [
+    Page( Strings.ticketsPageTitle, Strings.ticketsNavTitle, Icons.style, TicketsPage() ),
+    Page( Strings.receiptsPageTitle, Strings.receiptsNavTitle, Icons.receipt, ReceiptsPage() ),
+    Page( Strings.statsPageTitle, Strings.statsNavTitle, Icons.trending_up, StatsPage() ),
+    Page( Strings.settingsPageTitle, Strings.settingsNavTitle, Icons.settings, SettingsPage() ),
   ];
 
-  dynamic get _currentPage => _pages[_currentPageIndex];
+  Page get _currentPage => _pages[_currentPageIndex];
 
   void _onBottomNavTapped(int index) {
     setState(() {
@@ -58,28 +38,37 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.background,
-      appBar: AppBar(
-        title: Text(
-          _currentPage['appBarTitle'],
-          style: AppTextStyle.pageTitle
+        backgroundColor: AppColor.background,
+        appBar: AppBar(
+          title: Text(
+              _currentPage.appBarTitle,
+              style: AppTextStyle.pageTitle
+          ),
         ),
-      ),
-      body: _currentPage['body'],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentPageIndex,
-        onTap: _onBottomNavTapped,
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: AppColor.primary,
-        selectedItemColor: AppColor.white,
-        unselectedItemColor: AppColor.white.withOpacity(0.5),
-        selectedFontSize: 12,
-        items: List.generate(_pages.length, (index) => BottomNavigationBarItem(
-            icon: Icon(_pages[index]['icon']),
-            title: Text(_pages[index]['navBarTitle'], style: AppTextStyle.medium)
+        body: _currentPage.body,
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: _currentPageIndex,
+          onTap: _onBottomNavTapped,
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: AppColor.primary,
+          selectedItemColor: AppColor.white,
+          unselectedItemColor: AppColor.white.withOpacity(0.5),
+          selectedFontSize: 12,
+          items: List.generate(_pages.length, (index) => BottomNavigationBarItem(
+              icon: Icon(_pages[index].icon),
+              title: Text(_pages[index].navBarTitle, style: AppTextStyle.medium)
           )
-        ),
-      )
+          ),
+        )
     );
   }
+}
+
+class Page{
+  final String appBarTitle;
+  final String navBarTitle;
+  final IconData icon;
+  final Widget body;
+
+  const Page(this.appBarTitle, this.navBarTitle, this.icon, this.body,);
 }

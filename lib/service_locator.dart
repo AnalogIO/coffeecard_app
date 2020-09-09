@@ -18,7 +18,7 @@ void configureServices() {
   sl.registerSingleton(Logger());
 
   // Storage
-  sl.registerSingleton(SecureStorage(FlutterSecureStorage(), sl<Logger>()));
+  sl.registerSingleton(SecureStorage(const FlutterSecureStorage(), sl<Logger>()));
 
   // Rest Client, Dio http client
   final _dio = Dio();

@@ -38,7 +38,7 @@ class MockAuthenticationRepository extends Mock
 class MockAccountRepository extends Mock implements AccountRepository {}
 
 void main() {
-  final user = User("test@test.dk", "", "", 1, false);
+  final user = User(email: "test@test.dk", name: "", password: "", programmeId: 1,privacyActivated: false);
   AuthenticationRepository authenticationRepository;
   AccountRepository accountRepository;
 
