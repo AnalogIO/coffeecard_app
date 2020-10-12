@@ -31,15 +31,13 @@ class LoginPage extends StatelessWidget {
                 constraints: const BoxConstraints(maxWidth: 300),
                 child: BlocProvider(
                     create: (context) {
-                      return LoginBloc(
-                          authenticationRepository:
-                              sl.get<AuthenticationRepository>());
+                      return LoginBloc(authenticationRepository: sl.get<AuthenticationRepository>());
                     },
                     child: BlocListener<LoginBloc, LoginState>(
                         listenWhen: (previous, current) => previous.isLoading != current.isLoading,
                         listener: (context, state) => (state.isLoading) ? overlay.show() : overlay.hide(),
                         child: Column(
-                            children: <Widget>[LoginUpper(), Numpad()],
+                          children: <Widget>[LoginUpper(), Numpad()],
                         ))))));
   }
 }

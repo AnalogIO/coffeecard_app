@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../blocs/login/login_bloc.dart';
 
+import '../../../blocs/login/login_bloc.dart';
 import '../../login_text_field.dart';
 import 'login_input_password.dart';
 
@@ -14,7 +14,8 @@ class LoginForm extends StatelessWidget {
       buildWhen: (previous, current) => previous.onPage != current.onPage,
       builder: (context, state) {
       return Visibility(
-          visible: state.onPage == OnPage.inputEmail,
+        // TODO Consider if this is best practice. Consideration: Shall it be the responsibility of LoginState to know which page the UI is on?
+            visible: state.onPage == OnPage.inputEmail,
           replacement: LoginInputPassword(),
           child: const LoginTextField(),
         );

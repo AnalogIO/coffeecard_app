@@ -4,7 +4,6 @@ import 'package:coffeecard/persistence/repositories/account_repository.dart';
 import 'package:coffeecard/persistence/repositories/authentication_repository.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/widgets/pages/home_page.dart';
-// import 'package:coffeecard/widgets/pages/home_page.dart';
 import 'package:coffeecard/widgets/pages/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,15 +19,13 @@ void main() {
 class App extends StatelessWidget {
   const App({
     Key key,
-  })  : super(key: key);
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-     return BlocProvider(
-        create: (_) => AuthenticationBloc(
-          accountRepository: sl.get<AccountRepository>(),
-          authenticationRepository: sl.get<AuthenticationRepository>()),
-             child: AppView());
+    return BlocProvider(
+        create: (_) => AuthenticationBloc(sl.get<AuthenticationRepository>(), sl.get<AccountRepository>()),
+        child: AppView());
   }
 }
 
@@ -55,7 +52,7 @@ class _AppViewState extends State<AppView> {
               case AuthenticationStatus.authenticated:
                 _navigator.pushAndRemoveUntil<void>(
                   HomePage.route(),
-                      (route) => false,
+                  (route) => false,
                 );
                 break;
               case AuthenticationStatus.unauthenticated:

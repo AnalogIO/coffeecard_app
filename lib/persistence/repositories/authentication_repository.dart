@@ -1,11 +1,13 @@
 import 'dart:async';
 
 import 'package:coffeecard/persistence/repositories/account_repository.dart';
+import 'package:coffeecard/utils/exception_extractor.dart';
 import 'package:dio/dio.dart';
-import 'package:meta/meta.dart';
+import 'package:equatable/equatable.dart';
 
 enum AuthenticationStatus { unknown, authenticated, unauthenticated }
 
+// TODO Consider how to differentiate between a repository communicating with the restClient/persisting vs a "state" repository
 class AuthenticationRepository {
   final _controller = StreamController<AuthenticationStatus>();
   final AccountRepository accountRepository;
@@ -17,36 +19,40 @@ class AuthenticationRepository {
     yield* _controller.stream;
   }
 
-  Future<String> logIn({
-    @required String username,
-    @required String password,
-  }) async {
-    assert(username != null);
-    assert(password != null);
-
+  Future<LoginStatus> logIn(String username, String password) async {
     try {
-      await accountRepository.login(username, password); //If the login fails an exception will be propagated to the caller
+      await accountRepository.login(username, password);
 
       _controller.add(AuthenticationStatus.authenticated);
 
-      return "";
+      return SuccessfulLogin();
+    } on DioError catch (error) {
+      final errorMessage = getDIOError(error);
+      return FailedLogin(errorMessage);
     }
-    on DioError catch (error){
-      return getDIOError(error);
-    }
-
-
   }
 
   void logOut() {
-    throw UnimplementedError; //TODO implement by deleting token in storage?
+    throw UnimplementedError;
+    //TODO implement by deleting token in storage?
     //_controller.add(AuthenticationStatus.unauthenticated);
   }
 
   void dispose() => _controller.close();
 }
 
-String getDIOError(DioError error){
-  final Map<String, dynamic> errorMessage = error.response.data as Map<String, dynamic>;
-  return errorMessage["message"] as String;
+abstract class LoginStatus extends Equatable {}
+
+class SuccessfulLogin extends LoginStatus {
+  @override
+  List<Object> get props => [];
+}
+
+class FailedLogin extends LoginStatus {
+  final String error;
+
+  FailedLogin(this.error);
+
+  @override
+  List<Object> get props => [error];
 }
