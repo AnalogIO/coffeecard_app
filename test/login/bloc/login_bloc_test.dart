@@ -5,8 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-class MockAuthenticationRepository extends Mock
-    implements AuthenticationRepository {}
+class MockAuthenticationRepository extends Mock implements AuthenticationRepository {}
 
 class FakeResponse extends Fake implements Response {
   @override
@@ -24,8 +23,7 @@ void main() {
 
   group('LoginBloc', () {
     test('throws AssertionError when authenticationRepository is null', () {
-      expect(() => LoginBloc(authenticationRepository: null),
-          throwsAssertionError);
+      expect(() => LoginBloc(authenticationRepository: null), throwsAssertionError);
     });
 
     test('initial state is LoginState', () {
@@ -35,17 +33,12 @@ void main() {
     group('LoginEmailSubmitted', () {
       blocTest<LoginBloc, LoginState>(
         "Empty email field submitted updates error",
-        build: () =>
-        loginBloc
-        ,
+        build: () => loginBloc,
         act: (bloc) {
-          bloc
-            ..add(const LoginEmailChanged(''))
-            ..add(const LoginEmailSubmitted());
+          bloc..add(const LoginEmailChanged(''))..add(const LoginEmailSubmitted());
         },
         expect: const <LoginState>[
-          LoginState(
-          ),
+          LoginState(),
           LoginState(
             error: "Enter an email",
           ),
@@ -54,17 +47,12 @@ void main() {
 
       blocTest<LoginBloc, LoginState>(
         "Malformed email field submitted updates error",
-        build: () =>
-        loginBloc
-        ,
+        build: () => loginBloc,
         act: (bloc) {
-          bloc
-            ..add(const LoginEmailChanged('test'))
-            ..add(const LoginEmailSubmitted());
+          bloc..add(const LoginEmailChanged('test'))..add(const LoginEmailSubmitted());
         },
         expect: const <LoginState>[
-          LoginState( email: "test"
-          ),
+          LoginState(email: "test"),
           LoginState(
             email: "test",
             error: "Enter a valid email",
@@ -72,21 +60,14 @@ void main() {
         ],
       );
 
-      blocTest<LoginBloc, LoginState>(
-          "Valid email submitted updates OnPage and email value in state",
-          build: () =>
-          loginBloc
-          ,
+      blocTest<LoginBloc, LoginState>("Valid email submitted updates OnPage and email value in state",
+          build: () => loginBloc,
           act: (bloc) {
-            bloc
-              ..add(const LoginEmailChanged("test@test.dk"))
-              ..add(const LoginEmailSubmitted());
+            bloc..add(const LoginEmailChanged("test@test.dk"))..add(const LoginEmailSubmitted());
           },
           expect: const <LoginState>[
             LoginState(email: "test@test.dk"),
-            LoginState(
-                email: "test@test.dk",
-                onPage: OnPage.inputPassword)
+            LoginState(email: "test@test.dk", onPage: OnPage.inputPassword)
           ]);
     });
 
@@ -95,10 +76,9 @@ void main() {
         "login method is called when pin is 4 digits",
         build: () {
           when(authenticationRepository.logIn(
-            username: 'test@test.dk',
-            password: '1234',
-          // ignore: void_checks
-          )).thenAnswer((_) => Future.value(''));
+            'test@test.dk', '1234',
+            // ignore: void_checks
+          )).thenAnswer((_) => Future(() => SuccessfulLogin()));
           return loginBloc;
         },
         act: (bloc) {
@@ -149,10 +129,8 @@ void main() {
       blocTest<LoginBloc, LoginState>(
         'updates error when logIn fails with error from api',
         build: () {
-          when(authenticationRepository.logIn(
-            username: 'test@test.dk',
-            password: '1234',
-          )).thenAnswer((_) => Future(() => "Error from the API"));
+          when(authenticationRepository.logIn('test@test.dk', '1234'))
+              .thenAnswer((_) => Future(() => FailedLogin("Error from the API")));
           return loginBloc;
         },
         act: (bloc) {
@@ -193,11 +171,7 @@ void main() {
             isLoading: true,
             password: '1234',
           ),
-          LoginState(
-            email: 'test@test.dk',
-            onPage: OnPage.inputPassword,
-            error: "Error from the API"
-          ),
+          LoginState(email: 'test@test.dk', onPage: OnPage.inputPassword, error: "Error from the API"),
         ],
       );
     });
@@ -205,9 +179,7 @@ void main() {
     group('LoginGoBack', () {
       blocTest<LoginBloc, LoginState>(
         "LoginGoBack returns to email input",
-        build: () =>
-        loginBloc
-        ,
+        build: () => loginBloc,
         act: (bloc) {
           bloc
             ..add(const LoginEmailChanged('test@test.dk'))
@@ -218,12 +190,8 @@ void main() {
           LoginState(
             email: "test@test.dk",
           ),
-          LoginState(
-            email: "test@test.dk",
-            onPage: OnPage.inputPassword
-          ),
-          LoginState(
-          )
+          LoginState(email: "test@test.dk", onPage: OnPage.inputPassword),
+          LoginState()
         ],
       );
     });
@@ -231,25 +199,17 @@ void main() {
     group('LoginNumpadPressed', () {
       blocTest<LoginBloc, LoginState>(
         "LoginNumpadPressed reset removes one digit from pin",
-        build: () =>
-        loginBloc
-        ,
+        build: () => loginBloc,
         act: (bloc) {
-          bloc
-            ..add(const LoginNumpadPressed('1'))
-            ..add(const LoginNumpadPressed('2'))
-            ..add(const LoginNumpadPressed('reset'));
+          bloc..add(const LoginNumpadPressed('1'))..add(const LoginNumpadPressed('2'))..add(
+              const LoginNumpadPressed('reset'));
         },
         expect: const <LoginState>[
           LoginState(
             password: "1",
           ),
-          LoginState(
-            password: "12"
-          ),
-          LoginState(
-            password: "1"
-          )
+          LoginState(password: "12"),
+          LoginState(password: "1")
         ],
       );
     });

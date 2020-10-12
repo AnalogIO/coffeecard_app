@@ -36,22 +36,23 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   Stream<LoginState> mapNumpadPressedToEvent(LoginNumpadPressed event) async* {
     try {
-      if (event.keyPress == "reset")
-        {
-          final currentPassword = state.password;
-          if (currentPassword.isNotEmpty) {
-            yield state.copyWith(email: state.email, password: currentPassword.substring(0, currentPassword.length - 1), error: "");
-          }
-          else{
-            yield state.copyWith(error: "");
-          }
+      // TODO Avoid string reference to enumeration. Idea: Refactor NumpadPressed Event to have Numpad actions and value (named parameter)
+
+      if (event.keyPress == "reset") {
+        final currentPassword = state.password;
+        if (currentPassword.isNotEmpty) {
+          yield state.copyWith(
+              email: state.email, password: currentPassword.substring(0, currentPassword.length - 1), error: "");
+        } else {
+          yield state.copyWith(error: "");
         }
+      }
       else { //User pressed any of the numbers
         final newPassword = state.password + event.keyPress;
-        if (newPassword.length == 4){ //The user typed their entire pin
+        if (newPassword.length == 4) { //The user typed their entire pin
           yield state.copyWith(password: newPassword, isLoading: true);
 
-          final error =  await authenticationRepository.logIn(username: state.email, password: newPassword);
+          final error = await authenticationRepository.logIn(state.email, newPassword);
 
           yield state.copyWith(password: "", error: error, isLoading: false);
         }
