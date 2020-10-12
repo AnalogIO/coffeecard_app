@@ -8,7 +8,7 @@ import 'package:coffeecard/widgets/components/login/login_input_hint.dart';
 import 'package:coffeecard/widgets/components/login/login_input_password.dart';
 import 'package:coffeecard/widgets/components/login/login_numpad.dart';
 import 'package:coffeecard/widgets/components/login/login_title.dart';
-import 'package:coffeecard/widgets/login_text_field.dart';
+import 'package:coffeecard/widgets/components/login/login_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -34,8 +34,8 @@ class LoginPage extends StatelessWidget {
                       return LoginBloc(authenticationRepository: sl.get<AuthenticationRepository>());
                     },
                     child: BlocListener<LoginBloc, LoginState>(
-                        listenWhen: (previous, current) => previous.isLoading != current.isLoading,
-                        listener: (context, state) => (state.isLoading) ? overlay.show() : overlay.hide(),
+                        listenWhen: (previous, current) => previous is LoginStateLoading || current is LoginStateLoading,
+                        listener: (context, state) => (state is LoginStateLoading) ? overlay.show() : overlay.hide(),
                         child: Column(
                           children: <Widget>[LoginUpper(), Numpad()],
                         ))))));

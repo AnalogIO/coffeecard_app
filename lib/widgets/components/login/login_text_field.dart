@@ -11,10 +11,10 @@ class LoginTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LoginBloc, LoginState>(
-        buildWhen: (previous, current) => previous.onPage != current.onPage || previous.error != current.error,
+        buildWhen: (previous, current) => previous.onPage != current.onPage || current is LoginStateError || previous is LoginStateError  ,
         builder: (context, state) {
           final _border = OutlineInputBorder(
-              borderSide: state.error.isNotEmpty
+              borderSide: state is LoginStateError
                   ? const BorderSide(color: AppColor.error, width: 2)
                   : BorderSide.none,
               borderRadius: BorderRadius.circular(32));
@@ -24,9 +24,9 @@ class LoginTextField extends StatelessWidget {
           }
 
           final inputDecoration = InputDecoration(
-            hintText: (state.error.isEmpty)
-                ? ((state.onPage == OnPage.inputPassword) ? "Enter passcode" : "")
-                : state.error,
+            hintText: (state is LoginStateError)
+                ? state.error
+                : ((state.onPage == OnPage.inputPassword) ? "Enter passcode" : ""),
             hintStyle: const TextStyle(color: AppColor.gray),
             border: const OutlineInputBorder(),
             enabledBorder: _border,
