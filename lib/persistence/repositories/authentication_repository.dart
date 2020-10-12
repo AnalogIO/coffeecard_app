@@ -49,10 +49,10 @@ class SuccessfulLogin extends LoginStatus {
 }
 
 class FailedLogin extends LoginStatus {
-  final String error;
+  final String errorMessage;
 
-  FailedLogin(this.error);
+  FailedLogin(this.errorMessage);
 
   @override
-  List<Object> get props => [error];
+  List<Object> get props => [errorMessage];
 }

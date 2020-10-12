@@ -14,7 +14,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc({
     @required this.authenticationRepository,
   })  : assert(authenticationRepository != null),
-        super(const LoginState());
+        super(const LoginState("", "", OnPage.inputEmail));
 
   @override
   Stream<LoginState> mapEventToState(
@@ -42,46 +42,52 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         final currentPassword = state.password;
         if (currentPassword.isNotEmpty) {
           yield state.copyWith(
-              email: state.email, password: currentPassword.substring(0, currentPassword.length - 1), error: "");
+              email: state.email, password: currentPassword.substring(0, currentPassword.length - 1));
         } else {
-          yield state.copyWith(error: "");
+          yield state.copyWith();
         }
       }
       else { //User pressed any of the numbers
         final newPassword = state.password + event.keyPress;
         if (newPassword.length == 4) { //The user typed their entire pin
-          yield state.copyWith(password: newPassword, isLoading: true);
+          yield LoginStateLoading(state.email, state.password, state.onPage);
 
           final error = await authenticationRepository.logIn(state.email, newPassword);
 
-          yield state.copyWith(password: "", error: error, isLoading: false);
+          if (error is FailedLogin){
+            yield state.copyToErrorState(password: "", error: error.errorMessage);
+          }
+          else {
+            yield state.copyWith(password: "");
+          }
         }
         else { //User is typing their pin
-          yield state.copyWith(password: newPassword, error: "");
+          yield state.copyWith(password: newPassword);
         }
       }
     }
     catch (error){
-        yield state.copyWith(password: "", error: error.toString()); //TODO do proper error handling
+        yield state.copyToErrorState(error: error.toString()); //TODO do proper error handling
     }
   }
 
   Stream<LoginState> mapLoginEmailSubmitted(LoginEmailSubmitted event) async* {
       if (validateEmail(state.email)) {
-        yield state.copyWith(error: "" , onPage: OnPage.inputPassword);
+        yield state.copyWith(onPage: OnPage.inputPassword);
       } else if (state.email.isEmpty) {
-        yield state.copyWith(error: "Enter an email");
+        yield state.copyToErrorState(error: "Enter an email");
       } else {
-        yield state.copyWith(error: "Enter a valid email");
+        yield state.copyToErrorState(error: "Enter a valid email");
       }
   }
 
   Stream<LoginState> mapLoginEmailChanged(LoginEmailChanged event) async* {
-    yield state.copyWith(email: event.email, error: "");
+    yield state.copyWith(email: event.email);
   }
 
+  //TODO Consider removing this method??
   Stream<LoginState> mapLoginGoBack(LoginGoBack event) async* {
-    yield state.copyWith(onPage: OnPage.inputEmail, email: "" , password: "", error: "");
+    yield state.copyWith(onPage: OnPage.inputEmail, email: "" , password: "");
   }
 
   bool validateEmail(String email){

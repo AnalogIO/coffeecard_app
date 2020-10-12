@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../blocs/login/login_bloc.dart';
-import '../../login_text_field.dart';
 import 'login_input_password.dart';
+import 'login_text_field.dart';
 
 
 class LoginForm extends StatelessWidget {

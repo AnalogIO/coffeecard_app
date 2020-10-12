@@ -9,16 +9,18 @@ class LoginInputHint extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<LoginBloc, LoginState>(
         listener: (context, state) {},
-        buildWhen: (previous, current) => previous.error != current.error || previous.onPage != current.onPage,
+        buildWhen: (previous, current) => current is LoginStateError || previous is LoginStateError || previous.onPage != current.onPage,
         builder: (context, state) {
           return Padding(
             padding: const EdgeInsets.only(top: 16, bottom: 12),
             child: Text(
               // TODO Use specialized subclasses of LoginState to handle e.g. errors
               // TODO Store strings in Global file (reuse and potentially localization)
-              (state.error.isEmpty) ? ((state.onPage == OnPage.inputPassword) ? "Enter passcode" : "") : state.error,
+              (state is LoginStateError) ? state.error  : ((state.onPage == OnPage.inputPassword)
+                                                        ? "Enter passcode"
+                                                        : ""),
               textAlign: TextAlign.center,
-              style: TextStyle(color: (state.error.isEmpty) ? AppColor.white : AppColor.highlight, fontSize: 14),
+              style: TextStyle(color: (state is LoginStateError) ? AppColor.highlight : AppColor.white, fontSize: 14),
             ),
           );
         });
