@@ -15,5 +15,5 @@ class AppConfig {
 }
 
 enum EnvironmentType {
-  Production, Test
+  production, test
 }

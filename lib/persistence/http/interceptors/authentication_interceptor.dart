@@ -12,7 +12,7 @@ class AuthenticationInterceptor extends InterceptorsWrapper {
     final token = await _storage.readToken();
 
     if (token != null) {
-      options.headers["Authorization"] = "Bearer ${token}";
+      options.headers["Authorization"] = "Bearer $token";
     }
 
     return super.onRequest(options);

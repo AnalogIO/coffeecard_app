@@ -10,12 +10,12 @@ void main() {
   group("AuthenticationInterceptor", () {
     test("AuthenticationInterceptor.onRequest() when token is not null adds a Authorization header", () async {
       // Arrange
-      var mockSecureStorage = MockSecureStorage();
+      final mockSecureStorage = MockSecureStorage();
       when(mockSecureStorage.readToken()).thenAnswer((_) => Future.value("someToken"));
 
-      var authenticationInterceptor = AuthenticationInterceptor(mockSecureStorage);
+      final authenticationInterceptor = AuthenticationInterceptor(mockSecureStorage);
 
-      var options = RequestOptions();
+      final options = RequestOptions();
 
       // Act
       await authenticationInterceptor.onRequest(options);
@@ -26,12 +26,12 @@ void main() {
 
     test("AuthenticationInterceptor.onRequest() when token is null does not add a Authorization header", () async {
       // Arrange
-      var mockSecureStorage = MockSecureStorage();
+      final mockSecureStorage = MockSecureStorage();
       when(mockSecureStorage.readToken()).thenAnswer((_) => Future.value(null));
 
-      var authenticationInterceptor = AuthenticationInterceptor(mockSecureStorage);
+      final authenticationInterceptor = AuthenticationInterceptor(mockSecureStorage);
 
-      var options = RequestOptions();
+      final options = RequestOptions();
 
       // Act
       await authenticationInterceptor.onRequest(options);
