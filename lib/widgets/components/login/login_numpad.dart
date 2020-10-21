@@ -5,7 +5,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../base/style/colors.dart';
 import '../../../blocs/login/login_bloc.dart';
 
-enum NumpadActions { add, reset, biometric, forgot }
+//enum NumpadActions { add, reset, biometric, forgot }
+abstract class NumpadAction {
+  const NumpadAction();
+}
+class NumpadActionReset extends NumpadAction{
+  const NumpadActionReset();
+}
+class NumpadActionBiometric extends NumpadAction{
+  const NumpadActionBiometric();
+}
+class NumpadActionAdd extends NumpadAction{
+  final String keypress;
+  const NumpadActionAdd({this.keypress});
+}
 
 class Numpad extends StatelessWidget {
   @override
@@ -33,11 +46,11 @@ class Numpad extends StatelessWidget {
                   TableRow(children: [
                     TableCell(
                         verticalAlignment: TableCellVerticalAlignment.fill,
-                        child: NumpadButton(icon: Icons.backspace, action: NumpadActions.reset)),
+                        child: NumpadButton(icon: Icons.backspace, action: const NumpadActionReset())),
                     const NumpadButton(text: "0"),
                     TableCell(
                         verticalAlignment: TableCellVerticalAlignment.fill,
-                        child: NumpadButton(icon: Icons.fingerprint, action: NumpadActions.biometric))
+                        child: NumpadButton(icon: Icons.fingerprint, action: const NumpadActionBiometric()))
                   ]),
                 ],
               ),
@@ -50,9 +63,9 @@ class Numpad extends StatelessWidget {
 class NumpadButton extends StatelessWidget {
   final String text;
   final IconData icon;
-  final NumpadActions action;
+  final NumpadAction action;
 
-  const NumpadButton({this.text, this.icon, this.action = NumpadActions.add});
+  const NumpadButton({this.text, this.icon, this.action = const NumpadActionAdd()});
 
   @override
   Widget build(BuildContext context) {
@@ -60,10 +73,10 @@ class NumpadButton extends StatelessWidget {
         onPressed: () {
           HapticFeedback.lightImpact();
           //TODO add a case for the last button i.e. biometric/ forgotten
-          if (action == NumpadActions.reset) {
-            context.bloc<LoginBloc>().add(const LoginNumpadPressed("reset"));
-          } else if (action == NumpadActions.add) {
-            context.bloc<LoginBloc>().add(LoginNumpadPressed(text));
+          if (action is NumpadActionAdd) {
+            context.bloc<LoginBloc>().add(LoginNumpadPressed(NumpadActionAdd(keypress: text)));
+          } else {
+            context.bloc<LoginBloc>().add(LoginNumpadPressed(action));
           }
         },
         child: Padding(

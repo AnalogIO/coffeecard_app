@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:coffeecard/persistence/repositories/authentication_repository.dart';
+import 'package:coffeecard/widgets/components/login/login_numpad.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
@@ -36,9 +37,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   Stream<LoginState> mapNumpadPressedToEvent(LoginNumpadPressed event) async* {
     try {
-      // TODO Avoid string reference to enumeration. Idea: Refactor NumpadPressed Event to have Numpad actions and value (named parameter)
-
-      if (event.keyPress == "reset") {
+      final action = event.numpadAction;
+      if (action is NumpadActionReset) {
         final currentPassword = state.password;
         if (currentPassword.isNotEmpty) {
           yield state.copyWith(
@@ -47,17 +47,17 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           yield state.copyWith();
         }
       }
-      else { //User pressed any of the numbers
-        final newPassword = state.password + event.keyPress;
+      else if (action is NumpadActionAdd) { //User pressed any of the numbers
+        final newPassword = state.password + action.keypress;
         if (newPassword.length == 4) { //The user typed their entire pin
           yield LoginStateLoading(state.email, state.password, state.onPage);
 
-          final error = await authenticationRepository.logIn(state.email, newPassword);
+          final loginStatus = await authenticationRepository.logIn(state.email, newPassword);
 
-          if (error is FailedLogin){
-            yield state.copyToErrorState(password: "", error: error.errorMessage);
+          if (loginStatus is FailedLogin){
+            yield state.copyToErrorState(password: "", error: loginStatus.errorMessage);
           }
-          else {
+          else { //The user logged in successfully
             yield state.copyWith(password: "");
           }
         }

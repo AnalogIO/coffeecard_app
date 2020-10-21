@@ -7,7 +7,7 @@ class LoadingOverlay {
   BuildContext _context;
 
   void hide (){
-    Navigator.of(_context).pop();
+    Navigator.of(_context).maybePop();
   }
   void show() {
     showDialog(context: _context,

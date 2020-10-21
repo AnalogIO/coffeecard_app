@@ -23,18 +23,16 @@ class LoginEmailChanged extends LoginEvent {
 }
 
 class LoginNumpadPressed extends LoginEvent {
-  final String keyPress;
+  final NumpadAction numpadAction;
 
-  const LoginNumpadPressed(this.keyPress);
-
-  String get pressedKey => keyPress;
-
+  const LoginNumpadPressed(this.numpadAction);
+  
   @override
-  List<Object> get props => [keyPress];
+  List<Object> get props => [numpadAction];
 
   @override
   String toString() =>
-      'NumpadPressed { keyPress: $keyPress }';
+      'NumpadPressed { keyPress: $numpadAction }';
 }
 
 class LoginEmailSubmitted extends LoginEvent {
