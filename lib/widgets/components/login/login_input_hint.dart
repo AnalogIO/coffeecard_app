@@ -14,7 +14,6 @@ class LoginInputHint extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.only(top: 16, bottom: 12),
             child: Text(
-              // TODO Use specialized subclasses of LoginState to handle e.g. errors
               // TODO Store strings in Global file (reuse and potentially localization)
               (state is LoginStateError) ? state.error  : ((state.onPage == OnPage.inputPassword)
                                                         ? "Enter passcode"

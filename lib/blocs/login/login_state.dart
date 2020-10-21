@@ -20,7 +20,7 @@ class LoginState extends Equatable {
   }
   
   LoginStateError copyToErrorState({String email, String password, String error,}){
-    return LoginStateError(email ?? this.email, password ?? this.password, error, onPage);
+    return LoginStateError(email ?? this.email, password ?? this.password, onPage, error);
   }
 
   @override
@@ -39,7 +39,15 @@ class LoginStateLoading extends LoginState {
 class LoginStateError extends LoginState {
   final String error;
   
-  const LoginStateError(String email, String password, this.error,  OnPage onPage) : super(email, password, onPage);
+  const LoginStateError(String email, String password, OnPage onPage, this.error ) : super(email, password, onPage);
+
+  @override
+  List<Object> get props => [error, password, email, onPage];
+
+  @override
+  String toString() {
+    return 'LoginStateError{error: $error, email: $email, password: $password, onPage: $onPage}';
+  }
 }
 
 enum OnPage {
