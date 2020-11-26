@@ -50,7 +50,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       else if (action is NumpadActionAdd) { //User pressed any of the numbers
         final newPassword = state.password + action.keypress;
         if (newPassword.length == 4) { //The user typed their entire pin
-          yield LoginStateLoading(state.email, state.password, state.onPage);
+          yield LoginStateLoading(state.email, newPassword, state.onPage);
 
           final loginStatus = await authenticationRepository.logIn(state.email, newPassword);
 

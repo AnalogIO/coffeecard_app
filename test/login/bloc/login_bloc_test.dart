@@ -1,6 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:coffeecard/blocs/login/login_bloc.dart';
 import 'package:coffeecard/persistence/repositories/authentication_repository.dart';
+import 'package:coffeecard/widgets/components/login/login_numpad.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
@@ -27,7 +28,7 @@ void main() {
     });
 
     test('initial state is LoginState', () {
-      expect(loginBloc.state, const LoginState());
+      expect(loginBloc.state, const LoginState("", "", OnPage.inputEmail));
     });
 
     group('LoginEmailSubmitted', () {
@@ -38,10 +39,8 @@ void main() {
           bloc..add(const LoginEmailChanged(''))..add(const LoginEmailSubmitted());
         },
         expect: const <LoginState>[
-          LoginState(),
-          LoginState(
-            error: "Enter an email",
-          ),
+          LoginState("", "", OnPage.inputEmail),
+          LoginStateError("", "", OnPage.inputEmail, "Enter an email")
         ],
       );
 
@@ -49,13 +48,12 @@ void main() {
         "Malformed email field submitted updates error",
         build: () => loginBloc,
         act: (bloc) {
-          bloc..add(const LoginEmailChanged('test'))..add(const LoginEmailSubmitted());
+          bloc..add(const LoginEmailChanged('test'))
+              ..add(const LoginEmailSubmitted());
         },
         expect: const <LoginState>[
-          LoginState(email: "test"),
-          LoginState(
-            email: "test",
-            error: "Enter a valid email",
+          LoginState("test", "", OnPage.inputEmail),
+          LoginStateError("test", "",  OnPage.inputEmail, "Enter a valid email",
           ),
         ],
       );
@@ -63,11 +61,12 @@ void main() {
       blocTest<LoginBloc, LoginState>("Valid email submitted updates OnPage and email value in state",
           build: () => loginBloc,
           act: (bloc) {
-            bloc..add(const LoginEmailChanged("test@test.dk"))..add(const LoginEmailSubmitted());
+            bloc..add(const LoginEmailChanged("test@test.dk"))
+                ..add(const LoginEmailSubmitted());
           },
           expect: const <LoginState>[
-            LoginState(email: "test@test.dk"),
-            LoginState(email: "test@test.dk", onPage: OnPage.inputPassword)
+            LoginState("test@test.dk", "", OnPage.inputEmail),
+            LoginState("test@test.dk", "" , OnPage.inputPassword)
           ]);
     });
 
@@ -85,43 +84,46 @@ void main() {
           bloc
             ..add(const LoginEmailChanged('test@test.dk'))
             ..add(const LoginEmailSubmitted())
-            ..add(const LoginNumpadPressed('1'))
-            ..add(const LoginNumpadPressed('2'))
-            ..add(const LoginNumpadPressed('3'))
-            ..add(const LoginNumpadPressed('4'));
+            ..add(const LoginNumpadPressed(NumpadActionAdd(keypress: '1')))
+            ..add(const LoginNumpadPressed(NumpadActionAdd(keypress: '2')))
+            ..add(const LoginNumpadPressed(NumpadActionAdd(keypress: '3')))
+            ..add(const LoginNumpadPressed(NumpadActionAdd(keypress: '4')));
         },
         expect: const <LoginState>[
           LoginState(
-            email: 'test@test.dk',
+            'test@test.dk',
+            '',
+            OnPage.inputEmail
           ),
           LoginState(
-            email: 'test@test.dk',
-            onPage: OnPage.inputPassword,
+            'test@test.dk',
+            '',
+            OnPage.inputPassword,
           ),
           LoginState(
-            email: 'test@test.dk',
-            onPage: OnPage.inputPassword,
-            password: '1',
+            'test@test.dk',
+            '1',
+            OnPage.inputPassword,
           ),
           LoginState(
-            email: 'test@test.dk',
-            onPage: OnPage.inputPassword,
-            password: '12',
+            'test@test.dk',
+            '12',
+            OnPage.inputPassword,
           ),
           LoginState(
-            email: 'test@test.dk',
-            onPage: OnPage.inputPassword,
-            password: '123',
+            'test@test.dk',
+            '123',
+            OnPage.inputPassword,
+          ),
+          LoginStateLoading(
+            'test@test.dk',
+            '1234',
+            OnPage.inputPassword,
           ),
           LoginState(
-            email: 'test@test.dk',
-            onPage: OnPage.inputPassword,
-            password: '1234',
-            isLoading: true,
-          ),
-          LoginState(
-            email: 'test@test.dk',
-            onPage: OnPage.inputPassword,
+            'test@test.dk',
+            '',
+            OnPage.inputPassword,
           ),
         ],
       );
@@ -137,41 +139,43 @@ void main() {
           bloc
             ..add(const LoginEmailChanged('test@test.dk'))
             ..add(const LoginEmailSubmitted())
-            ..add(const LoginNumpadPressed('1'))
-            ..add(const LoginNumpadPressed('2'))
-            ..add(const LoginNumpadPressed('3'))
-            ..add(const LoginNumpadPressed('4'));
+            ..add(const LoginNumpadPressed(NumpadActionAdd(keypress: '1')))
+            ..add(const LoginNumpadPressed(NumpadActionAdd(keypress: '2')))
+            ..add(const LoginNumpadPressed(NumpadActionAdd(keypress: '3')))
+            ..add(const LoginNumpadPressed(NumpadActionAdd(keypress: '4')));
         },
         expect: const <LoginState>[
           LoginState(
-            email: 'test@test.dk',
+              'test@test.dk',
+              '',
+              OnPage.inputEmail
           ),
           LoginState(
-            email: 'test@test.dk',
-            onPage: OnPage.inputPassword,
+            'test@test.dk',
+            '',
+            OnPage.inputPassword,
           ),
           LoginState(
-            email: 'test@test.dk',
-            onPage: OnPage.inputPassword,
-            password: '1',
+            'test@test.dk',
+            '1',
+            OnPage.inputPassword,
           ),
           LoginState(
-            email: 'test@test.dk',
-            onPage: OnPage.inputPassword,
-            password: '12',
+            'test@test.dk',
+            '12',
+            OnPage.inputPassword,
           ),
           LoginState(
-            email: 'test@test.dk',
-            onPage: OnPage.inputPassword,
-            password: '123',
+            'test@test.dk',
+            '123',
+            OnPage.inputPassword,
           ),
-          LoginState(
-            email: 'test@test.dk',
-            onPage: OnPage.inputPassword,
-            isLoading: true,
-            password: '1234',
+          LoginStateLoading(
+            'test@test.dk',
+            '1234',
+            OnPage.inputPassword,
           ),
-          LoginState(email: 'test@test.dk', onPage: OnPage.inputPassword, error: "Error from the API"),
+          LoginStateError('test@test.dk', '', OnPage.inputPassword, "Error from the API"),
         ],
       );
     });
@@ -188,10 +192,18 @@ void main() {
         },
         expect: const <LoginState>[
           LoginState(
-            email: "test@test.dk",
+            "test@test.dk",
+            '',
+            OnPage.inputEmail
           ),
-          LoginState(email: "test@test.dk", onPage: OnPage.inputPassword),
-          LoginState()
+          LoginState(
+              "test@test.dk",
+              '',
+              OnPage.inputPassword),
+          LoginState(
+              "",
+              "",
+              OnPage.inputEmail)
         ],
       );
     });
@@ -201,15 +213,26 @@ void main() {
         "LoginNumpadPressed reset removes one digit from pin",
         build: () => loginBloc,
         act: (bloc) {
-          bloc..add(const LoginNumpadPressed('1'))..add(const LoginNumpadPressed('2'))..add(
-              const LoginNumpadPressed('reset'));
+          bloc..add(const LoginNumpadPressed(NumpadActionAdd(keypress: '1')))
+              ..add(const LoginNumpadPressed(NumpadActionAdd(keypress: '2')))
+              ..add(const LoginNumpadPressed(NumpadActionReset()));
         },
         expect: const <LoginState>[
           LoginState(
-            password: "1",
+            '',
+            "1",
+            OnPage.inputEmail
           ),
-          LoginState(password: "12"),
-          LoginState(password: "1")
+          LoginState(
+              '',
+              "12",
+              OnPage.inputEmail
+          ),
+          LoginState(
+              '',
+              "1",
+              OnPage.inputEmail
+          ),
         ],
       );
     });

@@ -27,7 +27,6 @@ class LoginPage extends StatelessWidget {
         backgroundColor: AppColor.primary,
         body: Center(
             child: Container(
-                padding: const EdgeInsets.all(16),
                 constraints: const BoxConstraints(maxWidth: 300),
                 child: BlocProvider(
                     create: (context) {
@@ -50,7 +49,7 @@ class LoginUpper extends StatelessWidget {
         builder: (context, state) {
           return Expanded(
               child: Container(
-                  //padding: const EdgeInsets.fromLTRB(60, 0, 60, 60),
+                  padding: const EdgeInsets.all(16),
                   color: AppColor.primary,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
