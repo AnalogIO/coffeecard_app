@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:coffeecard/blocs/login/login_bloc.dart';
+import 'package:coffeecard/widgets/components/login/login_numpad.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -14,7 +15,7 @@ void main() {
 
     group('LoginPasswordChanged', () {
       test('supports value comparisons', () {
-        expect(LoginNumpadPressed(password), LoginNumpadPressed(password));
+        expect(LoginNumpadPressed(NumpadActionAdd(keypress: password)), LoginNumpadPressed(NumpadActionAdd(keypress: password)));
       });
     });
 

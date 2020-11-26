@@ -28,7 +28,7 @@ class LoginState extends Equatable {
 
   @override
   String toString() {
-    return 'LoginState{password: $password, email: $email';
+    return 'LoginState{password: $password, email: $email, onPage: $onPage}';
   }
 }
 
