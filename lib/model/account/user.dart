@@ -10,7 +10,7 @@ class User {
   int programmeId;
   String password;
 
-  User({this.name, this.email, this.password, this.programmeId, this.privacyActivated});
+  User({required this.name, required this.email, required this.password, required this.programmeId, required this.privacyActivated});
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 

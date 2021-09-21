@@ -55,8 +55,8 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
     try {
       final user = await _accountRepository.getUser();
       return user;
-    } on Exception {
-      return null; //TODO proper error handling
+    } on Exception catch (e) {
+      throw e; //TODO proper error handling
     }
   }
 }
