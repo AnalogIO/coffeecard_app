@@ -8,7 +8,7 @@ class AuthenticationInterceptor extends InterceptorsWrapper {
 
   /// Try retrieve authentication token from storage and add authentication header if found
   @override
-  Future onRequest(RequestOptions options) async {
+  Future onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
     final token = await _storage.readToken();
 
     if (token != null) {
