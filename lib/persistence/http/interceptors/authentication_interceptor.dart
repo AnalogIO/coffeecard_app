@@ -15,6 +15,6 @@ class AuthenticationInterceptor extends InterceptorsWrapper {
       options.headers["Authorization"] = "Bearer $token";
     }
 
-    return super.onRequest(options);
+    return super.onRequest(options, handler);
   }
 }
