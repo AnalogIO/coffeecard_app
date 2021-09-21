@@ -18,7 +18,7 @@ abstract class CoffeeCardApiClient {
 
   factory CoffeeCardApiClient(Dio dio, {String baseUrl}) = _CoffeeCardApiClient;
 
-  @GET("​/api​/v1​/AppConfig")
+  @GET("/api/v1/AppConfig")
   Future<AppConfig> getAppConfig();
 
   @POST("/api/v1/Account/register")
