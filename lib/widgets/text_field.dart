@@ -35,10 +35,10 @@ class AppTextField extends StatefulWidget {
   final String value;
   final String label;
   final bool disabled;
-  final bool autofocus;
+  final bool? autofocus;
 
   const AppTextField({
-    Key key,
+    Key? key, // TODO key is set to nullable
     this.value = '',
     this.label = 'Label',
     this.disabled = false,

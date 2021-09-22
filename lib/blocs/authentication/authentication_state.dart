@@ -1,6 +1,9 @@
 part of 'authentication_bloc.dart';
 
 class AuthenticationState extends Equatable {
+  final AuthenticationStatus status;
+  final User? user; //TODO Consider if should be nullable. It would make sense bc of the Unknown/Unauthenticated state
+
   const AuthenticationState._({
     this.status = AuthenticationStatus.unknown,
     this.user,
@@ -12,11 +15,8 @@ class AuthenticationState extends Equatable {
 
   const AuthenticationState.unauthenticated() : this._(status: AuthenticationStatus.unauthenticated);
 
-  final AuthenticationStatus status;
-  final User user;
-
   @override
-  List<Object> get props => [status, user];
+  List<Object?> get props => [status, user];
 
   @override
   String toString() {

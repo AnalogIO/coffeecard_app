@@ -13,7 +13,9 @@ part 'authentication_state.dart';
 class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> {
   final AuthenticationRepository _authenticationRepository;
   final AccountRepository _accountRepository;
-  StreamSubscription<AuthenticationStatus> _authenticationStatusSubscription;
+
+  // TODO Consider if should be late (makes it nullable). The field is not set in constructor since it accesses authenticationRepository
+  late StreamSubscription<AuthenticationStatus> _authenticationStatusSubscription;
 
   AuthenticationBloc(this._authenticationRepository, this._accountRepository)
       : super(const AuthenticationState.unknown()) {

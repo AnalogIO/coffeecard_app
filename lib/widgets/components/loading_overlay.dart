@@ -10,9 +10,12 @@ class LoadingOverlay {
     Navigator.of(_context).maybePop();
   }
   void show() {
-    showDialog(context: _context,
-               barrierDismissible: false,
-               child: _LoadingScreen());
+    showDialog(
+        context: _context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return _LoadingScreen();
+        });
   }
   LoadingOverlay.__create(this._context);
 

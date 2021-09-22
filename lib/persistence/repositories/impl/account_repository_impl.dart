@@ -1,18 +1,16 @@
 import 'dart:convert';
 
+import 'package:coffeecard/model/account/email.dart';
 import 'package:coffeecard/model/account/login.dart';
 import 'package:coffeecard/model/account/register_user.dart';
 import 'package:coffeecard/model/account/user.dart';
-import 'package:coffeecard/model/account/email.dart';
 import 'package:coffeecard/model/account/user_id.dart';
-
 import 'package:coffeecard/persistence/http/coffee_card_api_client.dart';
 import 'package:coffeecard/persistence/repositories/account_repository.dart';
 import 'package:coffeecard/persistence/storage/secure_storage.dart';
+import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
-
-import 'package:crypto/crypto.dart';
 
 
 class AccountRepositoryImpl implements AccountRepository {
@@ -28,7 +26,7 @@ class AccountRepositoryImpl implements AccountRepository {
       await _restClient.register(register);
     } on DioError catch (error) {
       final httpResponse = error.response;
-      _logger.e("API Error ${httpResponse.statusCode} ${httpResponse.statusMessage}");
+      _logger.e("API Error ${httpResponse?.statusCode} ${httpResponse?.statusMessage}");
       rethrow;
     }
   }
@@ -45,7 +43,7 @@ class AccountRepositoryImpl implements AccountRepository {
       await _storage.saveToken(token.token);
     } on DioError catch (error) {
       final httpResponse = error.response;
-      _logger.e("API Error ${httpResponse.statusCode} ${httpResponse.statusMessage}");
+      _logger.e("API Error ${httpResponse?.statusCode} ${httpResponse?.statusMessage}");
       rethrow;
     }
   }
@@ -57,7 +55,7 @@ class AccountRepositoryImpl implements AccountRepository {
       return user;
     } on DioError catch (error) {
       final httpResponse = error.response;
-      _logger.e("API Error ${httpResponse.statusCode} ${httpResponse.statusMessage}");
+      _logger.e("API Error ${httpResponse?.statusCode} ${httpResponse?.statusMessage}");
       rethrow;
     }
   }
@@ -69,7 +67,7 @@ class AccountRepositoryImpl implements AccountRepository {
       return updatedUser;
     } on DioError catch (error) {
       final httpResponse = error.response;
-      _logger.e("API Error ${httpResponse.statusCode} ${httpResponse.statusMessage}");
+      _logger.e("API Error ${httpResponse?.statusCode} ${httpResponse?.statusMessage}");
       rethrow;
     }
   }
@@ -81,7 +79,7 @@ class AccountRepositoryImpl implements AccountRepository {
       return user;
     } on DioError catch (error) {
       final httpResponse = error.response;
-      _logger.e("API Error ${httpResponse.statusCode} ${httpResponse.statusMessage}");
+      _logger.e("API Error ${httpResponse?.statusCode} ${httpResponse?.statusMessage}");
       rethrow;
     }
   }
@@ -92,7 +90,7 @@ class AccountRepositoryImpl implements AccountRepository {
       await _restClient.forgottenPassword(email);
     } on DioError catch (error) {
       final httpResponse = error.response;
-      _logger.e("API Error ${httpResponse.statusCode} ${httpResponse.statusMessage}");
+      _logger.e("API Error ${httpResponse?.statusCode} ${httpResponse?.statusMessage}");
       rethrow;
     }
   }

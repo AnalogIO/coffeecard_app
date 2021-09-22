@@ -20,7 +20,7 @@ class LoginTextField extends StatelessWidget {
               borderRadius: BorderRadius.circular(32));
 
           void submit() {
-            context.bloc<LoginBloc>().add(const LoginEmailSubmitted()) ;
+            context.read<LoginBloc>().add(const LoginEmailSubmitted());
           }
 
           final inputDecoration = InputDecoration(
@@ -50,7 +50,9 @@ class LoginTextField extends StatelessWidget {
             style: const TextStyle(color: AppColor.primary),
             cursorWidth: 1,
             onSubmitted: (_) => submit(),
-            onChanged: (email) {context.bloc<LoginBloc>().add(LoginEmailChanged(email) ); },
+            onChanged: (email) {
+              context.read<LoginBloc>().add(LoginEmailChanged(email));
+            },
           );
         });
   }
