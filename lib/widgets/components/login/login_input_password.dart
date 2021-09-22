@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../../base/style/colors.dart';
 import '../../../blocs/login/login_bloc.dart';
 
@@ -29,11 +30,7 @@ class PasswordCircle extends StatelessWidget {
   final int index;
   final int passwordLength;
   final bool isError;
-  const PasswordCircle({
-    this.index,
-    this.passwordLength,
-    this.isError
-  });
+  const PasswordCircle({required this.index, required this.passwordLength, required this.isError});
 
   @override
   Widget build(BuildContext context) {

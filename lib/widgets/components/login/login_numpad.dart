@@ -23,12 +23,10 @@ class NumpadActionBiometric extends NumpadAction{
 }
 class NumpadActionAdd extends NumpadAction{
   final String keypress;
-  const NumpadActionAdd({this.keypress});
+  const NumpadActionAdd({required this.keypress});
 
   @override
-  List<Object> get props {
-    return [keypress];
-  }
+  List<Object> get props => [keypress];
 }
 
 class Numpad extends StatelessWidget {
@@ -72,11 +70,12 @@ class Numpad extends StatelessWidget {
 }
 
 class NumpadButton extends StatelessWidget {
-  final String text;
-  final IconData icon;
+  final String? text;
+  final IconData? icon; //TODO iconData set to nullable as it is not used
   final NumpadAction action;
 
-  const NumpadButton({this.text, this.icon, this.action = const NumpadActionAdd()});
+  const NumpadButton(
+      {this.text, this.icon, this.action = const NumpadActionAdd(keypress: '')}); //TODO Add required keypress string
 
   @override
   Widget build(BuildContext context) {
@@ -85,15 +84,15 @@ class NumpadButton extends StatelessWidget {
           HapticFeedback.lightImpact();
           //TODO add a case for the last button i.e. biometric/ forgotten
           if (action is NumpadActionAdd) {
-            context.bloc<LoginBloc>().add(LoginNumpadPressed(NumpadActionAdd(keypress: text)));
+            context.read<LoginBloc>().add(LoginNumpadPressed(NumpadActionAdd(keypress: text!)));
           } else {
-            context.bloc<LoginBloc>().add(LoginNumpadPressed(action));
+            context.read<LoginBloc>().add(LoginNumpadPressed(action));
           }
         },
         child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 12),
             child: (icon != null)
                 ? Icon(icon, size: 32)
-                : Text(text, style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold))));
+                : Text(text!, style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold))));
   }
 }

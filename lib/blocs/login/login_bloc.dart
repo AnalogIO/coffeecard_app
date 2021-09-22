@@ -4,7 +4,6 @@ import 'package:bloc/bloc.dart';
 import 'package:coffeecard/persistence/repositories/authentication_repository.dart';
 import 'package:coffeecard/widgets/components/login/login_numpad.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
@@ -13,18 +12,16 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final AuthenticationRepository authenticationRepository;
 
   LoginBloc({
-    @required this.authenticationRepository,
-  })  : assert(authenticationRepository != null),
-        super(const LoginState("", "", OnPage.inputEmail));
+    required this.authenticationRepository,
+  }) : super(const LoginState("", "", OnPage.inputEmail));
 
   @override
   Stream<LoginState> mapEventToState(
     LoginEvent event,
   ) async* {
-    if (event is LoginNumpadPressed){
+    if (event is LoginNumpadPressed) {
       yield* mapNumpadPressedToEvent(event);
-    }
-    else if (event is LoginEmailSubmitted){
+    } else if (event is LoginEmailSubmitted) {
       yield* mapLoginEmailSubmitted(event);
     }
     else if (event is LoginEmailChanged) {

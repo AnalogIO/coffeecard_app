@@ -16,7 +16,7 @@ class AppConfigRepositoryImpl implements AppConfigRepository {
       return await _restClient.getAppConfig();
     } on DioError catch (error) {
       final httpResponse = error.response;
-      _logger.e("API Error ${httpResponse.statusCode} ${httpResponse.statusMessage}");
+      _logger.e("API Error ${httpResponse?.statusCode} ${httpResponse?.statusMessage}");
       rethrow;
     }
   }

@@ -7,19 +7,13 @@ class LoginState extends Equatable {
 
   const LoginState(this.email, this.password, this.onPage);
 
-  LoginState copyWith({
-    String email,
-    String password,
-    OnPage onPage
-  }) {
-    return LoginState(
-        email ?? this.email,
-        password ?? this.password,
-        onPage ?? this.onPage
-    );
+  // TODO Set to nullable as it uses the ?? null aware operator
+  LoginState copyWith({String? email, String? password, OnPage? onPage}) {
+    return LoginState(email ?? this.email, password ?? this.password, onPage ?? this.onPage);
   }
-  
-  LoginStateError copyToErrorState({String email, String password, String error,}){
+
+  // TODO Set to nullable as it uses the ?? null aware operator
+  LoginStateError copyToErrorState({String? email, String? password, required String error}) {
     return LoginStateError(email ?? this.email, password ?? this.password, onPage, error);
   }
 
@@ -38,7 +32,7 @@ class LoginStateLoading extends LoginState {
 
 class LoginStateError extends LoginState {
   final String error;
-  
+
   const LoginStateError(String email, String password, OnPage onPage, this.error ) : super(email, password, onPage);
 
   @override
