@@ -13,8 +13,8 @@ We are building the Flutter app with these SDK versions
 
 | SDK       | Version   |
 | --------- | --------- |
-| Dart      | 2.8.3     |
-| Flutter   | 1.17.2    |
+| Dart      | 2.14.2    |
+| Flutter   | 2.5.1     |
 
 ## Contributing
 
