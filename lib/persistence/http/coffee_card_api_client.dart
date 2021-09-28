@@ -14,7 +14,7 @@ part 'coffee_card_api_client.g.dart';
 @RestApi()
 abstract class CoffeeCardApiClient {
   static const String productionUrl = "https://analogio.dk/clippy";
-  static const String testUrl = "https://beta.analogio.dk/api/clippy";
+  static const String testUrl = "https://analogio.dk/clippy";
 
   factory CoffeeCardApiClient(Dio dio, {String baseUrl}) = _CoffeeCardApiClient;
 
