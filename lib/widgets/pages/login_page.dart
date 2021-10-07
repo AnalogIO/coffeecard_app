@@ -1,6 +1,6 @@
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/blocs/login/login_bloc.dart';
-import 'package:coffeecard/persistence/repositories/authentication_repository.dart';
+import 'package:coffeecard/persistence/repositories/authentication_service.dart';
 import 'package:coffeecard/widgets/analog_logo.dart';
 import 'package:coffeecard/widgets/components/loading_overlay.dart';
 import 'package:coffeecard/widgets/components/login/login_cta.dart';
@@ -28,17 +28,11 @@ class LoginPage extends StatelessWidget {
         body: Center(
             child: BlocProvider(
                 create: (context) {
-                  return LoginBloc(
-                      authenticationRepository:
-                          sl.get<AuthenticationRepository>());
+                  return LoginBloc(authenticationService: sl.get<AuthenticationService>());
                 },
                 child: BlocListener<LoginBloc, LoginState>(
-                    listenWhen: (previous, current) =>
-                        previous is LoginStateLoading ||
-                        current is LoginStateLoading,
-                    listener: (context, state) => (state is LoginStateLoading)
-                        ? overlay.show()
-                        : overlay.hide(),
+                    listenWhen: (previous, current) => previous is LoginStateLoading || current is LoginStateLoading,
+                    listener: (context, state) => (state is LoginStateLoading) ? overlay.show() : overlay.hide(),
                     child: Column(
                       children: <Widget>[LoginUpper(), Numpad()],
                     )))));

@@ -4,24 +4,22 @@ import 'package:bloc/bloc.dart';
 import 'package:coffeecard/model/account/user.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../persistence/repositories/account_repository.dart';
-import '../../persistence/repositories/authentication_repository.dart';
+import '../../persistence/repositories/authentication_service.dart';
 
 part 'authentication_event.dart';
+
 part 'authentication_state.dart';
 
 class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> {
-  final AuthenticationRepository _authenticationRepository;
-  final AccountRepository _accountRepository;
+  final AuthenticationService _authenticationService;
 
   // TODO Consider if should be late (makes it nullable). The field is not set in constructor since it accesses authenticationRepository
   late StreamSubscription<AuthenticationStatus> _authenticationStatusSubscription;
 
-  AuthenticationBloc(this._authenticationRepository, this._accountRepository)
-      : super(const AuthenticationState.unknown()) {
+  AuthenticationBloc(this._authenticationService) : super(const AuthenticationState.unknown()) {
     // Adds the internally to itself and creates a proper response in mapEventToState
     _authenticationStatusSubscription =
-        _authenticationRepository.status.listen((status) => add(AuthenticationStatusChanged(status)));
+        _authenticationService.status.listen((status) => add(AuthenticationStatusChanged(status)));
   }
 
   @override
@@ -29,15 +27,8 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
     if (event is AuthenticationStatusChanged) {
       yield await _mapAuthenticationStatusChangedToState(event);
     } else if (event is AuthenticationLogoutRequested) {
-      _authenticationRepository.logOut();
+      _authenticationService.logOut();
     }
-  }
-
-  @override
-  Future<void> close() {
-    _authenticationStatusSubscription.cancel();
-    _authenticationRepository.dispose();
-    return super.close();
   }
 
   Future<AuthenticationState> _mapAuthenticationStatusChangedToState(AuthenticationStatusChanged event) async {
@@ -45,20 +36,18 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
       case AuthenticationStatus.unauthenticated:
         return const AuthenticationState.unauthenticated();
       case AuthenticationStatus.authenticated:
-        final user =
-            await _tryGetUser(); //TODO Yield an authenticating event for a loading/splash screen that the main method can change to
-        return user != null ? AuthenticationState.authenticated(user) : const AuthenticationState.unauthenticated();
+        //TODO Yield an authenticating event for a loading/splash screen that the main method can change to
+        //TODO Hamdle error handling
+        return AuthenticationState.authenticated(await _authenticationService.getUser());
       default:
         return const AuthenticationState.unknown();
     }
   }
 
-  Future<User> _tryGetUser() async {
-    try {
-      final user = await _accountRepository.getUser();
-      return user;
-    } on Exception catch (e) {
-      throw e; //TODO proper error handling
-    }
+  @override
+  Future<void> close() {
+    _authenticationStatusSubscription.cancel();
+    _authenticationService.dispose();
+    return super.close();
   }
 }

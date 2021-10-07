@@ -3,7 +3,7 @@ part of 'login_bloc.dart';
 class LoginState extends Equatable {
   final String password;
   final String email;
-  final OnPage onPage;
+  final OnPage onPage; //TODO This should not be the responsiblity of the LoginState
 
   const LoginState(this.email, this.password, this.onPage);
 

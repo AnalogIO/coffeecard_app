@@ -1,7 +1,7 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/theme.dart';
 import 'package:coffeecard/persistence/repositories/account_repository.dart';
-import 'package:coffeecard/persistence/repositories/authentication_repository.dart';
+import 'package:coffeecard/persistence/repositories/authentication_service.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/widgets/pages/home_page.dart';
 import 'package:coffeecard/widgets/pages/login_page.dart';
@@ -25,8 +25,9 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (_) => AuthenticationBloc(sl.get<AuthenticationRepository>(), sl.get<AccountRepository>()),
-        child: AppView());
+      create: (_) => AuthenticationBloc(sl.get<AuthenticationService>()),
+      child: AppView(),
+    );
   }
 }
 

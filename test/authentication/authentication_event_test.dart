@@ -1,5 +1,5 @@
 import 'package:coffeecard/blocs/authentication/authentication_bloc.dart';
-import 'package:coffeecard/persistence/repositories/authentication_repository.dart';
+import 'package:coffeecard/persistence/repositories/authentication_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

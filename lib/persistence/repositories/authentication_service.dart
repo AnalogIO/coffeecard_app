@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:coffeecard/model/account/user.dart';
 import 'package:coffeecard/persistence/repositories/account_repository.dart';
 import 'package:coffeecard/utils/exception_extractor.dart';
 import 'package:dio/dio.dart';
@@ -7,12 +8,11 @@ import 'package:equatable/equatable.dart';
 
 enum AuthenticationStatus { unknown, authenticated, unauthenticated }
 
-// TODO Consider how to differentiate between a repository communicating with the restClient/persisting vs a "state" repository
-class AuthenticationRepository {
+class AuthenticationService {
   final _controller = StreamController<AuthenticationStatus>();
   final AccountRepository accountRepository;
 
-  AuthenticationRepository(this.accountRepository);
+  AuthenticationService(this.accountRepository);
 
   Stream<AuthenticationStatus> get status async* {
     yield AuthenticationStatus.unauthenticated;
@@ -38,15 +38,19 @@ class AuthenticationRepository {
     //_controller.add(AuthenticationStatus.unauthenticated);
   }
 
+  Future<User> getUser() async {
+    return accountRepository.getUser();
+  }
+
   void dispose() => _controller.close();
 }
 
-abstract class LoginStatus extends Equatable {}
-
-class SuccessfulLogin extends LoginStatus {
+abstract class LoginStatus extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+class SuccessfulLogin extends LoginStatus {}
 
 class FailedLogin extends LoginStatus {
   final String errorMessage;

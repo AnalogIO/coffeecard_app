@@ -1,12 +1,12 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:coffeecard/blocs/login/login_bloc.dart';
-import 'package:coffeecard/persistence/repositories/authentication_repository.dart';
+import 'package:coffeecard/persistence/repositories/authentication_service.dart';
 import 'package:coffeecard/widgets/components/login/login_numpad.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-class MockAuthenticationRepository extends Mock implements AuthenticationRepository {}
+class MockAuthenticationRepository extends Mock implements AuthenticationService {}
 
 class FakeResponse extends Fake implements Response {
   @override
@@ -19,12 +19,12 @@ void main() {
 
   setUp(() {
     authenticationRepository = MockAuthenticationRepository();
-    loginBloc = LoginBloc(authenticationRepository: authenticationRepository);
+    loginBloc = LoginBloc(authenticationService: authenticationRepository);
   });
 
   group('LoginBloc', () {
     test('throws AssertionError when authenticationRepository is null', () {
-      expect(() => LoginBloc(authenticationRepository: null), throwsAssertionError);
+      expect(() => LoginBloc(authenticationService: null), throwsAssertionError);
     });
 
     test('initial state is LoginState', () {
