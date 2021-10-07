@@ -2,7 +2,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:coffeecard/blocs/authentication/authentication_bloc.dart';
 import 'package:coffeecard/model/account/user.dart';
 import 'package:coffeecard/persistence/repositories/account_repository.dart';
-import 'package:coffeecard/persistence/repositories/authentication_repository.dart';
+import 'package:coffeecard/persistence/repositories/authentication_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
@@ -32,13 +32,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 * */
 
-class MockAuthenticationRepository extends Mock implements AuthenticationRepository {}
+class MockAuthenticationRepository extends Mock implements AuthenticationService {}
 
 class MockAccountRepository extends Mock implements AccountRepository {}
 
 void main() {
   final user = User(email: "test@test.dk", name: "", password: "", programmeId: 1, privacyActivated: false);
-  AuthenticationRepository authenticationRepository;
+  AuthenticationService authenticationRepository;
   AccountRepository accountRepository;
 
   setUp(() {
