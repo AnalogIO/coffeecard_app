@@ -15,4 +15,8 @@ abstract class Strings {
 
   // Test strings.
   static const ticketsPageTestString = 'Test string for Tickets page ☕';
+
+  // // Login email hint and errors
+  // static const loginPasscodeHint = 'Enter passcode';
+  // static const loginPasscodeEmpty = 'Enter a passcode';
 }

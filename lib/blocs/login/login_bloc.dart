@@ -1,96 +1,55 @@
-import 'dart:async';
-
-import 'package:bloc/bloc.dart';
-import 'package:coffeecard/persistence/repositories/authentication_service.dart';
-import 'package:coffeecard/widgets/components/login/login_numpad.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'login_event.dart';
-
 part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  final AuthenticationService authenticationService;
-
-  LoginBloc({
-    required this.authenticationService,
-  }) : super(const LoginState("", "", OnPage.inputEmail));
-
-  @override
-  Stream<LoginState> mapEventToState(
-    LoginEvent event,
-  ) async* {
-    if (event is LoginNumpadPressed) {
-      yield* mapNumpadPressedToEvent(event);
-    } else if (event is LoginEmailSubmitted) {
-      yield* mapLoginEmailSubmitted(event);
-    } else if (event is LoginEmailChanged) {
-      yield* mapLoginEmailChanged(event);
-    } else if (event is LoginGoBack) {
-      yield* mapLoginGoBack(event);
-    }
-  }
-
-  Stream<LoginState> mapNumpadPressedToEvent(LoginNumpadPressed event) async* {
-    try {
-      final action = event.numpadAction;
-      if (action is NumpadActionReset) {
-        final currentPassword = state.password;
-        if (currentPassword.isNotEmpty) {
-          yield state.copyWith(email: state.email, password: currentPassword.substring(0, currentPassword.length - 1));
-        } else {
-          yield state.copyWith();
-        }
-      } else if (action is NumpadActionAdd) {
-        //User pressed any of the numbers
-        final newPassword = state.password + action.keypress;
-        if (newPassword.length == 4) {
-          //The user typed their entire pin
-          yield LoginStateLoading(state.email, newPassword, state.onPage);
-
-          final loginStatus = await authenticationService.logIn(state.email, newPassword);
-
-          if (loginStatus is FailedLogin) {
-            yield state.copyToErrorState(password: "", error: loginStatus.errorMessage);
-          } else {
-            //The user logged in successfully
-            yield state.copyWith(password: "");
-          }
-        } else {
-          //User is typing their pin
-          yield state.copyWith(password: newPassword);
-        }
+  LoginBloc() : super(const LoginState()) {
+    on<LoginEmailChange>((event, emit) {
+      emit(state.copyWith(email: event.email));
+    });
+    on<LoginEmailSubmit>((event, emit) {
+      final email = state.email.trim();
+      if (email.isEmpty) {
+        emit(state.copyWith(error: 'Please enter an email'));
+      } else if (!isValidEmail(email)) {
+        emit(state.copyWith(error: 'Please enter a valid email'));
+      } else {
+        emit(state.copyWith(route: LoginRoute.passcode, passcode: '12'));
       }
-    } catch (error) {
-      yield state.copyToErrorState(error: error.toString()); //TODO do proper error handling
-    }
+    });
+    on<LoginPasscodeInput>((event, emit) {
+      final newPasscode = state.passcode + event.input;
+      final loading = newPasscode.length == 4;
+      emit(
+        state.copyWith(passcode: newPasscode, loading: loading),
+      );
+      if (loading) {}
+    });
+    // on<LoginAsAnotherUser>((event, emit) {
+    //   // TODO: logout
+    //   emit(
+    //     state.copyWith(
+    //       email: '',
+    //       route: LoginRoute.email,
+    //       passcode: '',
+    //     ),
+    //   );
+    // });
+    on<LoginEvent>((event, emit) {
+      print(state);
+      print(event.runtimeType);
+    });
   }
 
-  Stream<LoginState> mapLoginEmailSubmitted(LoginEmailSubmitted event) async* {
-    if (validateEmail(state.email)) {
-      yield state.copyWith(onPage: OnPage.inputPassword);
-    } else if (state.email.isEmpty) {
-      yield state.copyToErrorState(error: "Enter an email");
-    } else {
-      yield state.copyToErrorState(error: "Enter a valid email");
-    }
-  }
-
-  Stream<LoginState> mapLoginEmailChanged(LoginEmailChanged event) async* {
-    yield state.copyWith(email: event.email);
-  }
-
-  //TODO Consider removing this method??
-  Stream<LoginState> mapLoginGoBack(LoginGoBack event) async* {
-    yield state.copyWith(onPage: OnPage.inputEmail, email: "", password: "");
-  }
-
-  bool validateEmail(String email) {
-    final RegExp regExEmail = RegExp(
-        r"^[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+"); //[^@ \\t\\r\\n] matches for anything other than @, space, tab, new lines and repetitions of a non-whitespace character.
-    if (regExEmail.hasMatch(email)) {
-      return true;
-    }
-    return false;
-  }
+  bool isValidEmail(String email) =>
+      RegExp(r'^[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+').hasMatch(email);
 }
+
+// extension EmailValidator on String {
+//   // [^@ \\t\\r\\n] matches for anything other than @, space,
+//   // tab, newlines and repetitions of a non-whitespace character.
+//   bool isValidEmail() =>
+//       RegExp(r"^[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+").hasMatch(this);
+// }

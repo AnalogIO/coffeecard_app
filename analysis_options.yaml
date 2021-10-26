@@ -4,19 +4,19 @@
 
 include: package:lint/analysis_options.yaml
 
-
 linter:
   rules:
     avoid_classes_with_only_static_members: false
-    argument_type_not_assignable: false #Consider if it should be included or not
+    argument_type_not_assignable: false # Consider if it should be included or not
+    prefer_single_quotes: true
+    avoid_relative_lib_imports: true
 
 analyzer:
+  strong-mode:
+    implicit-casts: false
   exclude:
     - lib/persistence/http/*.g.dart
   errors:
-    # unused element are normally has an INFO severity but due to a bug in flutter analyzer,
-    # INFO rules make flutter analyzer fail. For this time we ignore unused_element rules
-    unused_element: ignore
     invalid_assignment: warning
     missing_return: error
     dead_code: info
