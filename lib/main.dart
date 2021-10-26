@@ -3,8 +3,8 @@ import 'package:coffeecard/base/style/theme.dart';
 import 'package:coffeecard/persistence/repositories/account_repository.dart';
 import 'package:coffeecard/persistence/repositories/authentication_service.dart';
 import 'package:coffeecard/service_locator.dart';
+import 'package:coffeecard/widgets/pages/entry/login_router.dart';
 import 'package:coffeecard/widgets/pages/home_page.dart';
-import 'package:coffeecard/widgets/pages/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -53,13 +53,13 @@ class _AppViewState extends State<AppView> {
             switch (state.status) {
               case AuthenticationStatus.authenticated:
                 _navigator!.pushAndRemoveUntil<void>(
-                  HomePage.route(),
+                  HomePage.route,
                   (route) => false,
                 );
                 break;
               case AuthenticationStatus.unauthenticated:
                 _navigator!.pushAndRemoveUntil<void>(
-                  LoginPage.route(),
+                  LoginRouter.route,
                   (route) => false,
                 );
                 break;
@@ -70,7 +70,7 @@ class _AppViewState extends State<AppView> {
           child: child,
         );
       },
-      onGenerateRoute: (_) => SplashPage.route(),
+      onGenerateRoute: (_) => SplashPage.route,
     );
   }
 }

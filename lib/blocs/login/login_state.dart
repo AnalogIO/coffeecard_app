@@ -1,50 +1,44 @@
 part of 'login_bloc.dart';
 
+enum LoginRoute { email, passcode, biometric }
+
 class LoginState extends Equatable {
-  final String password;
   final String email;
-  final OnPage onPage; //TODO This should not be the responsiblity of the LoginState
+  final String passcode;
+  final String? error;
+  final bool loading;
+  final LoginRoute route;
 
-  const LoginState(this.email, this.password, this.onPage);
+  const LoginState({
+    this.email = '',
+    this.passcode = '',
+    this.error,
+    this.loading = false,
+    this.route = LoginRoute.email,
+  });
 
-  // TODO Set to nullable as it uses the ?? null aware operator
-  LoginState copyWith({String? email, String? password, OnPage? onPage}) {
-    return LoginState(email ?? this.email, password ?? this.password, onPage ?? this.onPage);
-  }
+  bool get hasError => error != null;
 
-  // TODO Set to nullable as it uses the ?? null aware operator
-  LoginStateError copyToErrorState({String? email, String? password, required String error}) {
-    return LoginStateError(email ?? this.email, password ?? this.password, onPage, error);
+  LoginState copyWith({
+    String? email,
+    String? passcode,
+    String? error,
+    bool loading = false,
+    LoginRoute? route,
+  }) {
+    return LoginState(
+      email: email ?? this.email,
+      passcode: passcode ?? this.passcode,
+      error: error,
+      loading: loading,
+      route: route ?? this.route,
+    );
   }
 
   @override
-  List<Object> get props => [password, email, onPage];
+  List<Object> get props => [route, loading, error ?? false, passcode, email];
 
   @override
-  String toString() {
-    return 'LoginState{password: $password, email: $email, onPage: $onPage}';
-  }
-}
-
-class LoginStateLoading extends LoginState {
-  const LoginStateLoading(String email, String password, OnPage onPage) : super(email, password, onPage);
-}
-
-class LoginStateError extends LoginState {
-  final String error;
-
-  const LoginStateError(String email, String password, OnPage onPage, this.error ) : super(email, password, onPage);
-
-  @override
-  List<Object> get props => [error, password, email, onPage];
-
-  @override
-  String toString() {
-    return 'LoginStateError{error: $error, email: $email, password: $password, onPage: $onPage}';
-  }
-}
-
-enum OnPage {
-  inputEmail,
-  inputPassword,
+  String toString() =>
+      'route: $route, loading: $loading, error: ${error ?? false}, passcode: $passcode, email: $email';
 }

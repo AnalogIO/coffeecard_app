@@ -7,38 +7,51 @@ abstract class LoginEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class LoginEmailChanged extends LoginEvent {
+// Email events
+
+class LoginEmailSubmit extends LoginEvent {
+  const LoginEmailSubmit();
+}
+
+class LoginEmailChange extends LoginEvent {
   final String email;
 
-  const LoginEmailChanged(this.email);
-
-  String get typedEmail => email;
+  const LoginEmailChange(this.email);
 
   @override
   List<Object> get props => [email];
-
-  @override
-  String toString() =>
-      'LoginEmailEntered { email: $email }';
 }
 
-class LoginNumpadPressed extends LoginEvent {
-  final NumpadAction numpadAction;
+// Passcode events
 
-  const LoginNumpadPressed(this.numpadAction);
-  
-  @override
-  List<Object> get props => [numpadAction];
+class LoginPasscodeSubmit extends LoginEvent {}
 
+class LoginPasscodeInput extends LoginEvent {
+  final String input;
+
+  const LoginPasscodeInput(this.input);
+
+  // TODO test if this prevents the input "22.."
   @override
-  String toString() =>
-      'NumpadPressed { keyPress: $numpadAction }';
+  List<Object> get props => [input];
 }
 
-class LoginEmailSubmitted extends LoginEvent {
-  const LoginEmailSubmitted();
+class LoginAsAnotherUser extends LoginEvent {
+  /// Request to clear state and navigate to mail page.
+  /// Should have same behavior as logging out.
+  const LoginAsAnotherUser();
 }
 
-class LoginGoBack extends LoginEvent {
-  const LoginGoBack();
+class LoginClearPasscode extends LoginEvent {
+  const LoginClearPasscode();
+}
+
+// TODO Maybe add a "changeTo" field.
+class LoginChangeAuthentication extends LoginEvent {
+  /// A change between passcode and biometric authentication.
+  const LoginChangeAuthentication();
+}
+
+class LoginForgotPasscode extends LoginEvent {
+  const LoginForgotPasscode();
 }

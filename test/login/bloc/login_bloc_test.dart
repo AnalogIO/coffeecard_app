@@ -1,12 +1,13 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:coffeecard/blocs/login/login_bloc.dart';
 import 'package:coffeecard/persistence/repositories/authentication_service.dart';
-import 'package:coffeecard/widgets/components/login/login_numpad.dart';
+import 'package:coffeecard/widgets/components/entry/login/login_numpad.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-class MockAuthenticationRepository extends Mock implements AuthenticationService {}
+class MockAuthenticationRepository extends Mock
+    implements AuthenticationService {}
 
 class FakeResponse extends Fake implements Response {
   @override
@@ -24,7 +25,8 @@ void main() {
 
   group('LoginBloc', () {
     test('throws AssertionError when authenticationRepository is null', () {
-      expect(() => LoginBloc(authenticationService: null), throwsAssertionError);
+      expect(
+          () => LoginBloc(authenticationService: null), throwsAssertionError);
     });
 
     test('initial state is LoginState', () {
@@ -36,7 +38,9 @@ void main() {
         "Empty email field submitted updates error",
         build: () => loginBloc,
         act: (bloc) {
-          bloc..add(const LoginEmailChanged(''))..add(const LoginEmailSubmitted());
+          bloc
+            ..add(const LoginEmailChanged(''))
+            ..add(const LoginEmailSubmitted());
         },
         expect: const <LoginState>[
           LoginState("", "", OnPage.inputEmail),
@@ -48,25 +52,32 @@ void main() {
         "Malformed email field submitted updates error",
         build: () => loginBloc,
         act: (bloc) {
-          bloc..add(const LoginEmailChanged('test'))
-              ..add(const LoginEmailSubmitted());
+          bloc
+            ..add(const LoginEmailChanged('test'))
+            ..add(const LoginEmailSubmitted());
         },
         expect: const <LoginState>[
           LoginState("test", "", OnPage.inputEmail),
-          LoginStateError("test", "",  OnPage.inputEmail, "Enter a valid email",
+          LoginStateError(
+            "test",
+            "",
+            OnPage.inputEmail,
+            "Enter a valid email",
           ),
         ],
       );
 
-      blocTest<LoginBloc, LoginState>("Valid email submitted updates OnPage and email value in state",
+      blocTest<LoginBloc, LoginState>(
+          "Valid email submitted updates OnPage and email value in state",
           build: () => loginBloc,
           act: (bloc) {
-            bloc..add(const LoginEmailChanged("test@test.dk"))
-                ..add(const LoginEmailSubmitted());
+            bloc
+              ..add(const LoginEmailChanged("test@test.dk"))
+              ..add(const LoginEmailSubmitted());
           },
           expect: const <LoginState>[
             LoginState("test@test.dk", "", OnPage.inputEmail),
-            LoginState("test@test.dk", "" , OnPage.inputPassword)
+            LoginState("test@test.dk", "", OnPage.inputPassword)
           ]);
     });
 
@@ -90,11 +101,7 @@ void main() {
             ..add(const LoginNumpadPressed(NumpadActionAdd(keypress: '4')));
         },
         expect: const <LoginState>[
-          LoginState(
-            'test@test.dk',
-            '',
-            OnPage.inputEmail
-          ),
+          LoginState('test@test.dk', '', OnPage.inputEmail),
           LoginState(
             'test@test.dk',
             '',
@@ -132,7 +139,8 @@ void main() {
         'updates error when logIn fails with error from api',
         build: () {
           when(authenticationRepository.logIn('test@test.dk', '1234'))
-              .thenAnswer((_) => Future(() => FailedLogin("Error from the API")));
+              .thenAnswer(
+                  (_) => Future(() => FailedLogin("Error from the API")));
           return loginBloc;
         },
         act: (bloc) {
@@ -145,11 +153,7 @@ void main() {
             ..add(const LoginNumpadPressed(NumpadActionAdd(keypress: '4')));
         },
         expect: const <LoginState>[
-          LoginState(
-              'test@test.dk',
-              '',
-              OnPage.inputEmail
-          ),
+          LoginState('test@test.dk', '', OnPage.inputEmail),
           LoginState(
             'test@test.dk',
             '',
@@ -175,7 +179,8 @@ void main() {
             '1234',
             OnPage.inputPassword,
           ),
-          LoginStateError('test@test.dk', '', OnPage.inputPassword, "Error from the API"),
+          LoginStateError(
+              'test@test.dk', '', OnPage.inputPassword, "Error from the API"),
         ],
       );
     });
@@ -191,19 +196,9 @@ void main() {
             ..add(const LoginGoBack());
         },
         expect: const <LoginState>[
-          LoginState(
-            "test@test.dk",
-            '',
-            OnPage.inputEmail
-          ),
-          LoginState(
-              "test@test.dk",
-              '',
-              OnPage.inputPassword),
-          LoginState(
-              "",
-              "",
-              OnPage.inputEmail)
+          LoginState("test@test.dk", '', OnPage.inputEmail),
+          LoginState("test@test.dk", '', OnPage.inputPassword),
+          LoginState("", "", OnPage.inputEmail)
         ],
       );
     });
@@ -213,26 +208,15 @@ void main() {
         "LoginNumpadPressed reset removes one digit from pin",
         build: () => loginBloc,
         act: (bloc) {
-          bloc..add(const LoginNumpadPressed(NumpadActionAdd(keypress: '1')))
-              ..add(const LoginNumpadPressed(NumpadActionAdd(keypress: '2')))
-              ..add(const LoginNumpadPressed(NumpadActionReset()));
+          bloc
+            ..add(const LoginNumpadPressed(NumpadActionAdd(keypress: '1')))
+            ..add(const LoginNumpadPressed(NumpadActionAdd(keypress: '2')))
+            ..add(const LoginNumpadPressed(NumpadActionReset()));
         },
         expect: const <LoginState>[
-          LoginState(
-            '',
-            "1",
-            OnPage.inputEmail
-          ),
-          LoginState(
-              '',
-              "12",
-              OnPage.inputEmail
-          ),
-          LoginState(
-              '',
-              "1",
-              OnPage.inputEmail
-          ),
+          LoginState('', "1", OnPage.inputEmail),
+          LoginState('', "12", OnPage.inputEmail),
+          LoginState('', "1", OnPage.inputEmail),
         ],
       );
     });
