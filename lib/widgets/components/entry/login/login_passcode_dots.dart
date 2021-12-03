@@ -6,8 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class LoginPasscodeDots extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<LoginBloc, LoginState>(
-      listener: (context, state) {},
+    return BlocBuilder<LoginBloc, LoginState>(
       builder: (context, state) {
         return Row(
           mainAxisAlignment: MainAxisAlignment.center,
