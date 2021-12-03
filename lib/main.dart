@@ -2,7 +2,7 @@ import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/theme.dart';
 import 'package:coffeecard/persistence/repositories/authentication_service.dart';
 import 'package:coffeecard/service_locator.dart';
-import 'package:coffeecard/widgets/routers/entry_router.dart';
+import 'package:coffeecard/widgets/routers/login_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -34,7 +34,7 @@ class AppView extends StatelessWidget {
     return MaterialApp(
       title: Strings.appTitle,
       theme: analogTheme,
-      home: EntryRouter(),
+      home: LoginRouter(),
     );
   }
 }

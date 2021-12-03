@@ -34,6 +34,7 @@ abstract class LoginPage extends StatelessWidget {
       },
       listener: (context, state) {
         if (state.loginSuccess) {
+          // FIXME: E/flutter ( 5318): [ERROR:flutter/lib/ui/ui_dart_state.cc(209)] Unhandled Exception: 'package:flutter/src/widgets/routes.dart': Failed assertion: line 1386 pos 12: 'scope != null': is not true.
           Navigator.of(context).pushAndRemoveUntil(
             HomePage.route,
             (route) => false,
