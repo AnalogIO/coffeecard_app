@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class LoginCTA extends StatelessWidget {
   final String text;
-  final void Function() onPressed;
+  final void Function(BuildContext) onPressed;
 
   const LoginCTA({
     Key? key,
@@ -14,7 +14,7 @@ class LoginCTA extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: onPressed,
+      onPressed: () => onPressed(context),
       child: Text(
         text,
         style: const TextStyle(

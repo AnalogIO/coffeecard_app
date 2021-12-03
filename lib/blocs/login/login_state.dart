@@ -8,6 +8,7 @@ class LoginState extends Equatable {
   final String? error;
   final bool loading;
   final LoginRoute route;
+  final bool loginSuccess;
 
   const LoginState({
     this.email = '',
@@ -15,6 +16,7 @@ class LoginState extends Equatable {
     this.error,
     this.loading = false,
     this.route = LoginRoute.email,
+    this.loginSuccess = false,
   });
 
   bool get hasError => error != null;
@@ -25,6 +27,7 @@ class LoginState extends Equatable {
     String? error,
     bool loading = false,
     LoginRoute? route,
+    bool? loginSuccess,
   }) {
     return LoginState(
       email: email ?? this.email,
@@ -32,6 +35,7 @@ class LoginState extends Equatable {
       error: error,
       loading: loading,
       route: route ?? this.route,
+      loginSuccess: loginSuccess ?? this.loginSuccess,
     );
   }
 

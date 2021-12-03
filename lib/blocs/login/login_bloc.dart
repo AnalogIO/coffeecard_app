@@ -1,3 +1,4 @@
+import 'package:coffeecard/persistence/repositories/authentication_service.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -5,7 +6,9 @@ part 'login_event.dart';
 part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  LoginBloc() : super(const LoginState()) {
+  final AuthenticationService authService;
+
+  LoginBloc({required this.authService}) : super(const LoginState()) {
     on<LoginEmailChange>((event, emit) {
       emit(state.copyWith(email: event.email));
     });
@@ -16,27 +19,40 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       } else if (!isValidEmail(email)) {
         emit(state.copyWith(error: 'Please enter a valid email'));
       } else {
-        emit(state.copyWith(route: LoginRoute.passcode, passcode: '12'));
+        emit(state.copyWith(route: LoginRoute.passcode, passcode: ''));
       }
     });
-    on<LoginPasscodeInput>((event, emit) {
+    on<LoginPasscodeInput>((event, emit) async {
       final newPasscode = state.passcode + event.input;
       final loading = newPasscode.length == 4;
       emit(
-        state.copyWith(passcode: newPasscode, loading: loading),
+        state.copyWith(
+          passcode: newPasscode,
+          loading: loading,
+        ),
       );
-      if (loading) {}
+      if (loading) {
+        final loginStatus = await authService.logIn(state.email, newPasscode);
+        if (loginStatus is FailedLogin) {
+          emit(state.copyWith(passcode: '', error: loginStatus.errorMessage));
+        } else {
+          emit(state.copyWith(loginSuccess: true));
+        }
+      }
     });
-    // on<LoginAsAnotherUser>((event, emit) {
-    //   // TODO: logout
-    //   emit(
-    //     state.copyWith(
-    //       email: '',
-    //       route: LoginRoute.email,
-    //       passcode: '',
-    //     ),
-    //   );
-    // });
+    on<LoginClearPasscode>((event, emit) {
+      emit(state.copyWith(passcode: ''));
+    });
+    on<LoginAsAnotherUser>((event, emit) {
+      // TODO: logout
+      emit(
+        state.copyWith(
+          email: '',
+          passcode: '',
+          route: LoginRoute.email,
+        ),
+      );
+    });
     on<LoginEvent>((event, emit) {
       print(state);
       print(event.runtimeType);
