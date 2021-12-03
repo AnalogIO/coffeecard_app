@@ -2,21 +2,25 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:logger/logger.dart';
 
 class SecureStorage {
-  static const _userTokenKey = "authentication_token";
+  static const _emailKey = 'email';
+  static const _tokenKey = 'authentication_token';
 
   final FlutterSecureStorage _storage;
   final Logger _logger;
 
-  SecureStorage(this._storage, this._logger);
+  SecureStorage(this._logger) : _storage = const FlutterSecureStorage();
 
-  /// save token to secure storage
-  Future<void> saveToken(String token) async {
-    await _storage.write(key: _userTokenKey, value: token);
-    _logger.d("Token added to Secure Storage");
+  Future<void> saveEmailAndToken(String email, String token) async {
+    await _storage.write(key: _emailKey, value: email);
+    await _storage.write(key: _tokenKey, value: token);
+    _logger.d('Email ($email) and token added to Secure Storage');
   }
 
-  /// read token from secure storage, might be nullable
+  Future<String?> readEmail() async {
+    return _storage.read(key: _emailKey);
+  }
+
   Future<String?> readToken() async {
-    return _storage.read(key: _userTokenKey);
+    return _storage.read(key: _tokenKey);
   }
 }
