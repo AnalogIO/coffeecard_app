@@ -17,9 +17,7 @@ class LoginRouter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) {
-        return LoginBloc(authService: sl.get<AuthenticationService>());
-      },
+      create: (_) => LoginBloc(authService: sl.get<AuthenticationService>()),
       child: BlocBuilder<LoginBloc, LoginState>(
         buildWhen: (previous, current) => previous.route != current.route,
         // Converted to non-nullable via the ! operator. Might be unsafe if we don't test it properly.
