@@ -4,7 +4,6 @@ import 'package:coffeecard/widgets/analog_logo.dart';
 import 'package:coffeecard/widgets/components/entry/login/login_input_hint.dart';
 import 'package:coffeecard/widgets/components/entry/login/login_title.dart';
 import 'package:coffeecard/widgets/components/loading_overlay.dart';
-import 'package:coffeecard/widgets/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -29,17 +28,8 @@ abstract class LoginPage extends StatelessWidget {
     final overlay = LoadingOverlay.of(context);
 
     return BlocConsumer<LoginBloc, LoginState>(
-      listenWhen: (previous, current) {
-        return previous.loading || current.loading || current.loginSuccess;
-      },
+      listenWhen: (previous, current) => previous.loading || current.loading,
       listener: (context, state) {
-        if (state.loginSuccess) {
-          // FIXME: E/flutter ( 5318): [ERROR:flutter/lib/ui/ui_dart_state.cc(209)] Unhandled Exception: 'package:flutter/src/widgets/routes.dart': Failed assertion: line 1386 pos 12: 'scope != null': is not true.
-          Navigator.of(context).pushAndRemoveUntil(
-            HomePage.route,
-            (route) => false,
-          );
-        }
         state.loading ? overlay.show() : overlay.hide();
       },
       buildWhen: (previous, current) => previous.hasError || current.hasError,
