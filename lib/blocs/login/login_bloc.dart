@@ -54,8 +54,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       );
     });
     on<LoginEvent>((event, emit) {
-      print(state);
-      print(event.runtimeType);
+      // print(state);
+      // print(event.runtimeType);
     });
   }
 
