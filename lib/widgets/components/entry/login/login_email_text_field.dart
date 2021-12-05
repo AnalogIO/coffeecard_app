@@ -13,17 +13,17 @@ class LoginEmailTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void onSubmit() {
-      context.read<LoginBloc>().add(const LoginEmailSubmit());
+      context.read<LoginBloc>().add(const ValidateEmail());
     }
 
     void onChange(String email) {
-      context.read<LoginBloc>().add(LoginEmailChange(email));
+      context.read<LoginBloc>().add(UpdateEmail(email));
     }
 
-    InputDecoration inputDecoration(LoginState state) {
+    InputDecoration inputDecoration({required bool hasError}) {
       final border = OutlineInputBorder(
         borderRadius: BorderRadius.circular(32),
-        borderSide: state.hasError
+        borderSide: hasError
             ? const BorderSide(color: AppColor.error, width: 2)
             : const BorderSide(color: Colors.transparent, width: 0),
       );
@@ -56,7 +56,7 @@ class LoginEmailTextField extends StatelessWidget {
         return TextField(
           autofocus: true,
           keyboardType: TextInputType.emailAddress,
-          decoration: inputDecoration(state),
+          decoration: inputDecoration(hasError: state.hasError),
           style: const TextStyle(color: AppColor.primary),
           cursorWidth: 1,
           onSubmitted: (_) => onSubmit(),

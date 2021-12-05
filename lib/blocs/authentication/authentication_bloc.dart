@@ -1,57 +1,43 @@
-import 'dart:async';
-
-import 'package:coffeecard/model/account/user.dart';
-import 'package:coffeecard/persistence/repositories/authentication_service.dart';
+import 'package:coffeecard/persistence/repositories/account_repository.dart'
+    show UserAuth; // FIXME Probably belongs somewhere else?
+import 'package:coffeecard/persistence/storage/secure_storage.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'authentication_event.dart';
 part 'authentication_state.dart';
 
-class AuthenticationBloc
-    extends Bloc<AuthenticationEvent, AuthenticationState> {
-  final AuthenticationService _authenticationService;
+enum AuthStatus { unknown, authenticated, unauthenticated }
 
-  // TODO Consider if should be late (makes it nullable). The field is not set in constructor since it accesses authenticationRepository
-  late StreamSubscription<AuthenticationStatus>
-      _authenticationStatusSubscription;
+class AuthBloc extends Bloc<AuthEvent, AuthState> {
+  final SecureStorage _storage;
 
-  AuthenticationBloc(this._authenticationService)
-      : super(const AuthenticationState.unknown()) {
-    // Adds the internally to itself and creates a proper response in mapEventToState
-    _authenticationStatusSubscription = _authenticationService.status
-        .listen((status) => add(AuthenticationStatusChanged(status)));
-  }
+  AuthBloc(this._storage) : super(const AuthState.unknown()) {
+    on<AppStarted>((event, emit) async {
+      await Future.delayed(const Duration(milliseconds: 500));
+      final userAuth = await _storage.getUserAuth();
+      if (userAuth != null) {
+        add(Authenticated(userAuth));
+      } else {
+        add(Unauthenticated());
+      }
+    });
 
-  @override
-  Stream<AuthenticationState> mapEventToState(
-      AuthenticationEvent event) async* {
-    if (event is AuthenticationStatusChanged) {
-      yield await _mapAuthenticationStatusChangedToState(event);
-    } else if (event is AuthenticationLogoutRequested) {
-      _authenticationService.logOut();
-    }
-  }
+    on<Authenticated>((event, emit) async {
+      await _storage.saveUserAuth(
+        event.userAuth.email,
+        event.userAuth.token,
+      );
+      emit(AuthState.authenticated(event.userAuth));
+    });
 
-  Future<AuthenticationState> _mapAuthenticationStatusChangedToState(
-      AuthenticationStatusChanged event) async {
-    switch (event.status) {
-      case AuthenticationStatus.unauthenticated:
-        return const AuthenticationState.unauthenticated();
-      case AuthenticationStatus.authenticated:
-        //TODO Yield an authenticating event for a loading/splash screen that the main method can change to
-        //TODO Hamdle error handling
-        return AuthenticationState.authenticated(
-            await _authenticationService.getUser());
-      default:
-        return const AuthenticationState.unknown();
-    }
-  }
+    on<Unauthenticated>((event, emit) async {
+      await _storage.clearUserAuth();
+      emit(const AuthState.unauthenticated());
+    });
 
-  @override
-  Future<void> close() {
-    _authenticationStatusSubscription.cancel();
-    _authenticationService.dispose();
-    return super.close();
+    on<AuthEvent>((event, emit) {
+      print('AuthBloc: ${event.runtimeType}');
+    });
   }
 }

@@ -14,7 +14,16 @@ class User {
   int rankSemester;
   int rankMonth;
 
-  User({required this.name, required this.email, required this.privacyActivated, this.programmeId, required this.level, required this.requiredExp, required this.rankAllTime, required this.rankMonth, required this.rankSemester});
+  User(
+      {required this.name,
+      required this.email,
+      required this.privacyActivated,
+      this.programmeId,
+      required this.level,
+      required this.requiredExp,
+      required this.rankAllTime,
+      required this.rankMonth,
+      required this.rankSemester});
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 

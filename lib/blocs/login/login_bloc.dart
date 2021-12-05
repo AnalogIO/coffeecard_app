@@ -1,4 +1,5 @@
-import 'package:coffeecard/persistence/repositories/authentication_service.dart';
+import 'package:coffeecard/blocs/authentication/authentication_bloc.dart';
+import 'package:coffeecard/persistence/repositories/account_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -6,66 +7,60 @@ part 'login_event.dart';
 part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  final AuthenticationService authService;
+  final AuthBloc authBloc;
+  final AccountRepository repository;
 
-  LoginBloc({required this.authService}) : super(const LoginState()) {
-    on<LoginEmailChange>((event, emit) {
-      emit(state.copyWith(email: event.email));
+  LoginBloc({
+    required this.authBloc,
+    required this.repository,
+  }) : super(const LoginState()) {
+    on<UpdateEmail>((event, emit) {
+      emit(state.copyWith(email: event.email, emailValidated: false));
     });
-    on<LoginEmailSubmit>((event, emit) {
+
+    on<ValidateEmail>((event, emit) {
       final email = state.email.trim();
       if (email.isEmpty) {
         emit(state.copyWith(error: 'Please enter an email'));
-      } else if (!isValidEmail(email)) {
+      } else if (!_isValidEmail(email)) {
         emit(state.copyWith(error: 'Please enter a valid email'));
       } else {
-        emit(state.copyWith(route: LoginRoute.passcode, passcode: ''));
+        emit(state.copyWith(emailValidated: true));
       }
     });
-    on<LoginPasscodeInput>((event, emit) async {
-      final newPasscode = state.passcode + event.input;
-      final loading = newPasscode.length == 4;
-      emit(
-        state.copyWith(
-          passcode: newPasscode,
-          loading: loading,
-        ),
-      );
-      if (loading) {
-        final loginStatus = await authService.logIn(state.email, newPasscode);
-        if (loginStatus is FailedLogin) {
-          emit(state.copyWith(passcode: '', error: loginStatus.errorMessage));
-        } else {
-          emit(state.copyWith(loginSuccess: true));
-        }
-      }
+
+    on<PasscodeInput>((event, emit) {
+      final String newPasscode = state.passcode + event.input;
+      final bool fullPasscode = newPasscode.length == 4;
+      emit(state.copyWith(passcode: newPasscode, loading: fullPasscode));
+      if (fullPasscode) add(const LoginRequested());
     });
-    on<LoginClearPasscode>((event, emit) {
-      emit(state.copyWith(passcode: ''));
-    });
+
+    on<ClearPasscode>((event, emit) => emit(state.copyWith(passcode: '')));
+
+    on<ClearError>((event, emit) => emit(state.copyWith()));
+
     on<LoginAsAnotherUser>((event, emit) {
-      // TODO: logout
-      emit(
-        state.copyWith(
-          email: '',
-          passcode: '',
-          route: LoginRoute.email,
-        ),
-      );
+      add(const UpdateEmail(''));
+      add(const ClearPasscode());
+      // Log out; Remove any saved data from a previous login.
+      authBloc.add(Unauthenticated());
     });
+
+    on<LoginRequested>((event, emit) async {
+      try {
+        final userAuth = await repository.login(state.email, state.passcode);
+        authBloc.add(Authenticated(userAuth));
+      } on UnauthorizedError catch (error) {
+        emit(state.copyWith(passcode: '', error: error.message));
+      }
+    });
+
     on<LoginEvent>((event, emit) {
-      // print(state);
-      // print(event.runtimeType);
+      print('LoginBloc: ${event.runtimeType}');
     });
   }
 
-  bool isValidEmail(String email) =>
+  bool _isValidEmail(String email) =>
       RegExp(r'^[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+').hasMatch(email);
 }
-
-// extension EmailValidator on String {
-//   // [^@ \\t\\r\\n] matches for anything other than @, space,
-//   // tab, newlines and repetitions of a non-whitespace character.
-//   bool isValidEmail() =>
-//       RegExp(r"^[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+").hasMatch(this);
-// }

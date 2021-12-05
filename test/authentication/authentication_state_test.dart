@@ -11,8 +11,8 @@ void main() {
     group('AuthenticationState.unknown', () {
       test('supports value comparisons', () {
         expect(
-          const AuthenticationState.unknown(),
-          const AuthenticationState.unknown(),
+          const AuthState.unknown(),
+          const AuthState.unknown(),
         );
       });
     });
@@ -21,8 +21,8 @@ void main() {
       test('supports value comparisons', () {
         final user = MockUser();
         expect(
-          AuthenticationState.authenticated(user),
-          AuthenticationState.authenticated(user),
+          AuthState.authenticated(user),
+          AuthState.authenticated(user),
         );
       });
     });
@@ -30,8 +30,8 @@ void main() {
     group('AuthenticationState.unauthenticated', () {
       test('supports value comparisons', () {
         expect(
-          const AuthenticationState.unauthenticated(),
-          const AuthenticationState.unauthenticated(),
+          const AuthState.unauthenticated(),
+          const AuthState.unauthenticated(),
         );
       });
     });
