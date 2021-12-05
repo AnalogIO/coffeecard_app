@@ -11,7 +11,7 @@ class LoginTitle extends StatelessWidget {
     return BlocBuilder<LoginBloc, LoginState>(
       builder: (context, state) {
         return Text(
-          state.route == LoginRoute.email ? 'Sign in' : state.email,
+          state.emailValidated ? state.email : 'Sign in',
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           textAlign: TextAlign.center,

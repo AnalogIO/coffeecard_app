@@ -119,7 +119,7 @@ class NumpadDigitButton extends NumpadButton {
   NumpadDigitButton(this.digit)
       : super(
           onPressed: (BuildContext context) {
-            context.read<LoginBloc>().add(LoginPasscodeInput(digit));
+            context.read<LoginBloc>().add(PasscodeInput(digit));
           },
           child: Text(
             digit,
@@ -146,10 +146,17 @@ class NumpadActionButton extends NumpadButton {
 }
 
 abstract class NumpadAction {
-  static void delete(BuildContext context) =>
-      context.read<LoginBloc>().add(const LoginClearPasscode());
-  static void biometric(BuildContext context) =>
-      context.read<LoginBloc>().add(const LoginChangeAuthentication());
-  static void forgot(BuildContext context) =>
-      context.read<LoginBloc>().add(const LoginForgotPasscode());
+  static void delete(BuildContext context) {
+    return context.read<LoginBloc>().add(const ClearPasscode());
+  }
+
+  static void biometric(BuildContext context) {
+    throw UnimplementedError();
+    // context.read<LoginBloc>().add(const LoginChangeAuthentication());
+  }
+
+  static void forgot(BuildContext context) {
+    throw UnimplementedError();
+    // return context.read<LoginBloc>().add(const LoginForgotPasscode());
+  }
 }

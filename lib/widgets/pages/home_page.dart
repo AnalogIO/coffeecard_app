@@ -1,11 +1,13 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/blocs/authentication/authentication_bloc.dart';
 import 'package:coffeecard/widgets/pages/receipts_page.dart';
 import 'package:coffeecard/widgets/pages/settings_page.dart';
 import 'package:coffeecard/widgets/pages/stats_page.dart';
 import 'package:coffeecard/widgets/pages/tickets_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomePage extends StatefulWidget {
   static Route get route => MaterialPageRoute(builder: (_) => HomePage());
@@ -47,9 +49,11 @@ class _HomePageState extends State<HomePage> {
   Page get _currentPage => _pages[_currentPageIndex];
 
   void _onBottomNavTapped(int index) {
-    setState(() {
-      _currentPageIndex = index;
-    });
+    setState(() => _currentPageIndex = index);
+  }
+
+  void _logout(BuildContext context) {
+    return BlocProvider.of<AuthBloc>(context).add(Unauthenticated());
   }
 
   @override
@@ -58,6 +62,10 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: AppColor.background,
       appBar: AppBar(
         title: Text(_currentPage.appBarTitle, style: AppTextStyle.pageTitle),
+        actions: [
+          IconButton(
+              onPressed: () => _logout(context), icon: Icon(Icons.logout))
+        ],
       ),
       body: _currentPage.body,
       bottomNavigationBar: BottomNavigationBar(

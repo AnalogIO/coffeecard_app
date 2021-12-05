@@ -32,136 +32,140 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 * */
 
-class MockAuthenticationRepository extends Mock implements AuthenticationService {}
+class MockAuthenticationRepository extends Mock
+    implements AuthenticationService {}
 
 class MockAccountRepository extends Mock implements AccountRepository {}
 
 void main() {
-  final user = User(email: "test@test.dk", name: "", password: "", programmeId: 1, privacyActivated: false);
+  final user = User(
+      email: "test@test.dk",
+      name: "",
+      password: "",
+      programmeId: 1,
+      privacyActivated: false);
   AuthenticationService authenticationRepository;
   AccountRepository accountRepository;
 
   setUp(() {
     authenticationRepository = MockAuthenticationRepository();
-    when(authenticationRepository.status).thenAnswer((_) => const Stream.empty());
+    when(authenticationRepository.status)
+        .thenAnswer((_) => const Stream.empty());
     accountRepository = MockAccountRepository();
   });
 
   group('AuthenticationBloc', () {
     test('initial state is AuthenticationState.unknown', () {
-      final authenticationBloc = AuthenticationBloc(authenticationRepository, accountRepository);
-      expect(authenticationBloc.state, const AuthenticationState.unknown());
+      final authenticationBloc =
+          AuthBloc(authenticationRepository, accountRepository);
+      expect(authenticationBloc.state, const AuthState.unknown());
       authenticationBloc.close();
     });
 
-    blocTest<AuthenticationBloc, AuthenticationState>(
+    blocTest<AuthBloc, AuthState>(
       'emits [unauthenticated] when status is unauthenticated',
       build: () {
         when(authenticationRepository.status).thenAnswer(
           (_) => Stream.value(AuthenticationStatus.unauthenticated),
         );
-        return AuthenticationBloc(authenticationRepository, accountRepository);
+        return AuthBloc(authenticationRepository, accountRepository);
       },
-      expect: const <AuthenticationState>[
-        AuthenticationState.unauthenticated(),
+      expect: const <AuthState>[
+        AuthState.unauthenticated(),
       ],
     );
 
-    blocTest<AuthenticationBloc, AuthenticationState>(
+    blocTest<AuthBloc, AuthState>(
       'emits [authenticated] when status is authenticated',
       build: () {
         when(authenticationRepository.status).thenAnswer(
-              (_) => Stream.value(AuthenticationStatus.authenticated),
+          (_) => Stream.value(AuthenticationStatus.authenticated),
         );
         when(accountRepository.getUser()).thenAnswer((_) async => user);
-        return AuthenticationBloc(authenticationRepository, accountRepository);
+        return AuthBloc(authenticationRepository, accountRepository);
       },
-      expect: <AuthenticationState>[AuthenticationState.authenticated(user)],
+      expect: <AuthState>[AuthState.authenticated(user)],
     );
   });
 
   group('AuthenticationStatusChanged', () {
-    blocTest<AuthenticationBloc, AuthenticationState>(
+    blocTest<AuthBloc, AuthState>(
       'emits [authenticated] when status is authenticated',
       build: () {
         when(authenticationRepository.status).thenAnswer(
-              (_) => Stream.value(AuthenticationStatus.authenticated),
+          (_) => Stream.value(AuthenticationStatus.authenticated),
         );
         when(accountRepository.getUser()).thenAnswer((_) async => user);
-        return AuthenticationBloc(authenticationRepository, accountRepository);
+        return AuthBloc(authenticationRepository, accountRepository);
       },
-      act: (bloc) =>
-          bloc.add(
-            const AuthenticationStatusChanged(AuthenticationStatus.authenticated),
-          ),
-      expect: <AuthenticationState>[AuthenticationState.authenticated(user)],
+      act: (bloc) => bloc.add(
+        const AuthenticationStatusChanged(AuthenticationStatus.authenticated),
+      ),
+      expect: <AuthState>[AuthState.authenticated(user)],
     );
 
-    blocTest<AuthenticationBloc, AuthenticationState>(
+    blocTest<AuthBloc, AuthState>(
       'emits [unauthenticated] when status is unauthenticated',
       build: () {
         when(authenticationRepository.status).thenAnswer(
-              (_) => Stream.value(AuthenticationStatus.unauthenticated),
+          (_) => Stream.value(AuthenticationStatus.unauthenticated),
         );
-        return AuthenticationBloc(authenticationRepository, accountRepository);
+        return AuthBloc(authenticationRepository, accountRepository);
       },
-      act: (bloc) =>
-          bloc.add(
-            const AuthenticationStatusChanged(AuthenticationStatus.unauthenticated),
-          ),
-      expect: const <AuthenticationState>[AuthenticationState.unauthenticated()],
+      act: (bloc) => bloc.add(
+        const AuthenticationStatusChanged(AuthenticationStatus.unauthenticated),
+      ),
+      expect: const <AuthState>[AuthState.unauthenticated()],
     );
 
-    blocTest<AuthenticationBloc, AuthenticationState>(
+    blocTest<AuthBloc, AuthState>(
       'emits [unauthenticated] when status is authenticated but getUser fails',
       build: () {
         when(accountRepository.getUser()).thenThrow(Exception('oops'));
-        return AuthenticationBloc(authenticationRepository, accountRepository);
+        return AuthBloc(authenticationRepository, accountRepository);
       },
-      act: (bloc) =>
-          bloc.add(
-            const AuthenticationStatusChanged(AuthenticationStatus.authenticated),
-          ),
-      expect: const <AuthenticationState>[AuthenticationState.unauthenticated()],
+      act: (bloc) => bloc.add(
+        const AuthenticationStatusChanged(AuthenticationStatus.authenticated),
+      ),
+      expect: const <AuthState>[AuthState.unauthenticated()],
     );
 
-    blocTest<AuthenticationBloc, AuthenticationState>(
+    blocTest<AuthBloc, AuthState>(
       'emits [unauthenticated] when status is authenticated '
-          'but getUser returns null',
+      'but getUser returns null',
       build: () {
         when(accountRepository.getUser()).thenAnswer((_) async => null);
-        return AuthenticationBloc(authenticationRepository, accountRepository);
+        return AuthBloc(authenticationRepository, accountRepository);
       },
-      act: (bloc) =>
-          bloc.add(
-            const AuthenticationStatusChanged(AuthenticationStatus.authenticated),
-          ),
-      expect: const <AuthenticationState>[AuthenticationState.unauthenticated()],
+      act: (bloc) => bloc.add(
+        const AuthenticationStatusChanged(AuthenticationStatus.authenticated),
+      ),
+      expect: const <AuthState>[AuthState.unauthenticated()],
     );
 
-    blocTest<AuthenticationBloc, AuthenticationState>(
+    blocTest<AuthBloc, AuthState>(
       'emits [unknown] when status is unknown',
       build: () {
         when(authenticationRepository.status).thenAnswer(
           (_) => Stream.value(AuthenticationStatus.unknown),
         );
-        return AuthenticationBloc(authenticationRepository, accountRepository);
+        return AuthBloc(authenticationRepository, accountRepository);
       },
       act: (bloc) => bloc.add(
         const AuthenticationStatusChanged(AuthenticationStatus.unknown),
       ),
-      expect: const <AuthenticationState>[
-        AuthenticationState.unknown(),
+      expect: const <AuthState>[
+        AuthState.unknown(),
       ],
     );
   });
 
   group('AuthenticationLogoutRequested', () {
-    blocTest<AuthenticationBloc, AuthenticationState>(
+    blocTest<AuthBloc, AuthState>(
       'calls logOut on authenticationRepository '
       'when AuthenticationLogoutRequested is added',
       build: () {
-        return AuthenticationBloc(authenticationRepository, accountRepository);
+        return AuthBloc(authenticationRepository, accountRepository);
       },
       act: (bloc) => bloc.add(AuthenticationLogoutRequested()),
       verify: (_) {

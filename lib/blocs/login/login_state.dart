@@ -4,45 +4,47 @@ enum LoginRoute { email, passcode, biometric }
 
 class LoginState extends Equatable {
   final String email;
+  final bool emailValidated;
   final String passcode;
-  final String? error;
   final bool loading;
-  final LoginRoute route;
-  final bool loginSuccess;
+  final String? error;
 
   const LoginState({
     this.email = '',
+    this.emailValidated = false,
     this.passcode = '',
-    this.error,
     this.loading = false,
-    this.route = LoginRoute.email,
-    this.loginSuccess = false,
+    this.error,
   });
 
   bool get hasError => error != null;
 
   LoginState copyWith({
     String? email,
+    bool? emailValidated,
     String? passcode,
+    bool? loading,
     String? error,
-    bool loading = false,
-    LoginRoute? route,
-    bool? loginSuccess,
   }) {
     return LoginState(
       email: email ?? this.email,
+      emailValidated: emailValidated ?? this.emailValidated,
       passcode: passcode ?? this.passcode,
+      loading: loading ?? false,
       error: error,
-      loading: loading,
-      route: route ?? this.route,
-      loginSuccess: loginSuccess ?? this.loginSuccess,
     );
   }
 
   @override
-  List<Object> get props => [route, loading, error ?? false, passcode, email];
+  List<Object> get props => [
+        error ?? false,
+        loading,
+        passcode,
+        emailValidated,
+        email,
+      ];
 
   @override
   String toString() =>
-      'route: $route, loading: $loading, error: ${error ?? false}, passcode: $passcode, email: $email';
+      'email: $email, passcode: $passcode, error: ${error ?? 'none'}';
 }
