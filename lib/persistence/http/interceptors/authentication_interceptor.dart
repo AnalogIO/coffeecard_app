@@ -8,11 +8,14 @@ class AuthenticationInterceptor extends InterceptorsWrapper {
 
   /// Try retrieve authentication token from storage and add authentication header if found
   @override
-  Future onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
+  Future onRequest(
+    RequestOptions options,
+    RequestInterceptorHandler handler,
+  ) async {
     final token = await _storage.readToken();
 
     if (token != null) {
-      options.headers["Authorization"] = "Bearer $token";
+      options.headers['Authorization'] = 'Bearer $token';
     }
 
     return super.onRequest(options, handler);

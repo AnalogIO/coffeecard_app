@@ -64,7 +64,9 @@ class _HomePageState extends State<HomePage> {
         title: Text(_currentPage.appBarTitle, style: AppTextStyle.pageTitle),
         actions: [
           IconButton(
-              onPressed: () => _logout(context), icon: Icon(Icons.logout))
+            onPressed: () => _logout(context),
+            icon: const Icon(Icons.logout),
+          )
         ],
       ),
       body: _currentPage.body,

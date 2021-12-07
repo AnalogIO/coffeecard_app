@@ -9,11 +9,10 @@ class AppConfig {
 
   AppConfig(this.environmentType, this.merchantId);
 
-  factory AppConfig.fromJson(Map<String, dynamic> json) => _$AppConfigFromJson(json);
+  factory AppConfig.fromJson(Map<String, dynamic> json) =>
+      _$AppConfigFromJson(json);
 
   Map<String, dynamic> toJson() => _$AppConfigToJson(this);
 }
 
-enum EnvironmentType {
-  production, test
-}
+enum EnvironmentType { production, test }
