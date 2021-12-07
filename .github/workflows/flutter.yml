@@ -1,9 +1,9 @@
 name: Flutter build and test
 
-on: [pull_request] 
+on: [pull_request, workflow_dispatch]
 
 jobs:
-  test:
+  build-and-test:
     name: Build and test codebase
     runs-on: ubuntu-latest
     
