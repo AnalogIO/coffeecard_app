@@ -1,9 +1,9 @@
 /// A user's email and token.
-class UserAuth {
+class AuthenticatedUser {
   final String email;
   final String token;
 
-  UserAuth({
+  AuthenticatedUser({
     required this.email,
     required this.token,
   });

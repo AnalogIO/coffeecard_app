@@ -4,7 +4,7 @@ import 'package:coffeecard/model/account/email.dart';
 import 'package:coffeecard/model/account/login.dart';
 import 'package:coffeecard/model/account/register_user.dart';
 import 'package:coffeecard/model/account/user.dart';
-import 'package:coffeecard/model/account/user_auth.dart';
+import 'package:coffeecard/model/account/authenticated_user.dart';
 import 'package:coffeecard/model/account/user_id.dart';
 import 'package:coffeecard/persistence/http/coffee_card_api_client.dart';
 import 'package:coffeecard/utils/exception_extractor.dart';
@@ -39,7 +39,7 @@ class AccountRepository {
   }
 
   /// Returns the user token or throws an error.
-  Future<UserAuth> login(String email, String passcode) async {
+  Future<AuthenticatedUser> login(String email, String passcode) async {
     final bytes = utf8.encode(passcode);
     final passcodeHash = sha256.convert(bytes);
     final base64Pass = base64Encode(passcodeHash.bytes);
@@ -51,7 +51,7 @@ class AccountRepository {
 
     try {
       final token = await _restClient.login(login);
-      return UserAuth(
+      return AuthenticatedUser(
         email: email,
         token: token.token,
       );

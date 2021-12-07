@@ -1,4 +1,4 @@
-import 'package:coffeecard/model/account/user_auth.dart';
+import 'package:coffeecard/model/account/authenticated_user.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:logger/logger.dart';
 
@@ -13,22 +13,22 @@ class SecureStorage {
 
   Future<bool> get hasToken async => await readToken() != null;
 
-  Future<void> saveUserAuth(String email, String token) async {
+  Future<void> saveAuthenticatedUser(String email, String token) async {
     await _storage.write(key: _emailKey, value: email);
     await _storage.write(key: _tokenKey, value: token);
     _logger.d('Email ($email) and token added to Secure Storage');
   }
 
-  Future<UserAuth?> getUserAuth() async {
+  Future<AuthenticatedUser?> getAuthenticatedUser() async {
     final email = await _storage.read(key: _emailKey);
     final token = await _storage.read(key: _tokenKey);
     return email != null && token != null
-        ? UserAuth(email: email, token: token)
+        ? AuthenticatedUser(email: email, token: token)
         : null;
   }
 
-  Future<void> clearUserAuth() async {
-    if (await getUserAuth() == null) return;
+  Future<void> clearAuthenticatedUser() async {
+    if (await getAuthenticatedUser() == null) return;
     await _storage.delete(key: _emailKey);
     await _storage.delete(key: _tokenKey);
     _logger.d('Email and token removed from Secure Storage');
