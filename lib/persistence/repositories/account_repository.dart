@@ -1,10 +1,10 @@
 import 'dart:convert';
 
+import 'package:coffeecard/model/account/authenticated_user.dart';
 import 'package:coffeecard/model/account/email.dart';
 import 'package:coffeecard/model/account/login.dart';
 import 'package:coffeecard/model/account/register_user.dart';
 import 'package:coffeecard/model/account/user.dart';
-import 'package:coffeecard/model/account/authenticated_user.dart';
 import 'package:coffeecard/model/account/user_id.dart';
 import 'package:coffeecard/persistence/http/coffee_card_api_client.dart';
 import 'package:coffeecard/utils/exception_extractor.dart';
