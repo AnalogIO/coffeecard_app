@@ -29,16 +29,16 @@ dependencies:
   logger: any
   dio: ^4.0.0
   json_annotation: ^4.1.0
-  json_serializable: ^5.0.2
+  json_serializable: ^6.1.1
 
   # storage
-  flutter_secure_storage: ^4.2.1
+  flutter_secure_storage: ^5.0.2
 
   # dependency injection
   get_it: ^7.2.0
 
   # State management
-  flutter_bloc: ^7.3.0
+  flutter_bloc: ^8.0.0
 
   # Utility
   meta: ^1.1.6
