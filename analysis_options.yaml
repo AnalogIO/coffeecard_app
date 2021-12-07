@@ -10,6 +10,7 @@ linter:
     argument_type_not_assignable: false # Consider if it should be included or not
     prefer_single_quotes: true
     avoid_relative_lib_imports: true
+    sort_pub_dependencies: false
 
 analyzer:
   strong-mode:

@@ -33,9 +33,5 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await _storage.clearAuthenticatedUser();
       emit(const AuthState.unauthenticated());
     });
-
-    on<AuthEvent>((event, emit) {
-      print('AuthBloc: ${event.runtimeType}');
-    });
   }
 }
