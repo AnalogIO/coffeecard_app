@@ -56,10 +56,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         emit(state.copyWith(passcode: '', error: error.message));
       }
     });
-
-    on<LoginEvent>((event, emit) {
-      print('LoginBloc: ${event.runtimeType}');
-    });
   }
 
   bool _isValidEmail(String email) =>
