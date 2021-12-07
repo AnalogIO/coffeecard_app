@@ -10,11 +10,11 @@ abstract class AuthEvent extends Equatable {
 class AppStarted extends AuthEvent {}
 
 class Authenticated extends AuthEvent {
-  final UserAuth userAuth;
-  const Authenticated(this.userAuth);
+  final AuthenticatedUser authenticatedUser;
+  const Authenticated(this.authenticatedUser);
 
   @override
-  List<Object> get props => [userAuth];
+  List<Object> get props => [authenticatedUser];
 }
 
 class Unauthenticated extends AuthEvent {}

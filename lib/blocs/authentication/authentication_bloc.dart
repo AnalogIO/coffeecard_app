@@ -1,4 +1,4 @@
-import 'package:coffeecard/model/account/user_auth.dart';
+import 'package:coffeecard/model/account/authenticated_user.dart';
 import 'package:coffeecard/persistence/storage/secure_storage.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,24 +13,24 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   AuthBloc(this._storage) : super(const AuthState.unknown()) {
     on<AppStarted>((event, emit) async {
-      final userAuth = await _storage.getUserAuth();
-      if (userAuth != null) {
-        emit(AuthState.authenticated(userAuth));
+      final authenticatedUser = await _storage.getAuthenticatedUser();
+      if (authenticatedUser != null) {
+        emit(AuthState.authenticated(authenticatedUser));
       } else {
         emit(const AuthState.unauthenticated());
       }
     });
 
     on<Authenticated>((event, emit) async {
-      await _storage.saveUserAuth(
-        event.userAuth.email,
-        event.userAuth.token,
+      await _storage.saveAuthenticatedUser(
+        event.authenticatedUser.email,
+        event.authenticatedUser.token,
       );
-      emit(AuthState.authenticated(event.userAuth));
+      emit(AuthState.authenticated(event.authenticatedUser));
     });
 
     on<Unauthenticated>((event, emit) async {
-      await _storage.clearUserAuth();
+      await _storage.clearAuthenticatedUser();
       emit(const AuthState.unauthenticated());
     });
 

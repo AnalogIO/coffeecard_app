@@ -49,8 +49,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
     on<LoginRequested>((event, emit) async {
       try {
-        final userAuth = await repository.login(state.email, state.passcode);
-        authBloc.add(Authenticated(userAuth));
+        final authenticatedUser =
+            await repository.login(state.email, state.passcode);
+        authBloc.add(Authenticated(authenticatedUser));
       } on UnauthorizedError catch (error) {
         emit(state.copyWith(passcode: '', error: error.message));
       }
