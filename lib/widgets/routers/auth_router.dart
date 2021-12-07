@@ -4,8 +4,6 @@ import 'package:coffeecard/widgets/routers/entry_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-// TODO Should prevent going back to the splash page.
-//      (wrapping pages with WillPopScope is one solution)
 class AuthRouter extends StatelessWidget {
   final GlobalKey<NavigatorState> navigatorKey;
   final Widget child;

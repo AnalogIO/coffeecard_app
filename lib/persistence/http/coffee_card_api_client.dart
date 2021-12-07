@@ -20,7 +20,6 @@ abstract class CoffeeCardApiClient {
   @GET('/api/v1/AppConfig')
   Future<AppConfig> getAppConfig();
 
-  // TODO fix the return type
   @POST('/api/v1/Account/register')
   Future<void> register(@Body() RegisterUser register);
 

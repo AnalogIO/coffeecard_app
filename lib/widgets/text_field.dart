@@ -38,12 +38,11 @@ class AppTextField extends StatefulWidget {
   final bool? autofocus;
 
   const AppTextField({
-    Key? key, // TODO key is set to nullable
     this.value = '',
     this.label = 'Label',
     this.disabled = false,
     this.autofocus,
-  }) : super(key: key);
+  });
 
   @override
   _AppTextFieldState createState() => _AppTextFieldState();
@@ -53,28 +52,23 @@ class _AppTextFieldState extends State<AppTextField> {
   @override
   Widget build(BuildContext context) {
     const UnderlineInputBorder defaultBorder = UnderlineInputBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
-      borderSide: BorderSide(color: AppColor.gray)
-    );
+        borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
+        borderSide: BorderSide(color: AppColor.gray));
     return TextField(
       enabled: !widget.disabled,
       decoration: InputDecoration(
         border: defaultBorder,
         enabledBorder: defaultBorder,
         focusedBorder: const UnderlineInputBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
-          borderSide: BorderSide(color: AppColor.secondary, width: 2)
-        ),
+            borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
+            borderSide: BorderSide(color: AppColor.secondary, width: 2)),
         labelText: widget.label,
         labelStyle: const TextStyle(color: AppColor.secondary),
         filled: true,
-        fillColor: AppColor.white/*.withOpacity(0.5)*/, // TODO Change depending on focus
-        contentPadding: const EdgeInsets.only(
-          top: 8,
-          bottom: 12,
-          left: 16,
-          right: 16
-        ),
+        fillColor: AppColor
+            .white /*.withOpacity(0.5)*/, // TODO Change depending on focus
+        contentPadding:
+            const EdgeInsets.only(top: 8, bottom: 12, left: 16, right: 16),
       ),
       cursorWidth: 1,
       style: const TextStyle(color: AppColor.primary),
