@@ -1,8 +1,6 @@
 name: Flutter build and test
 
-on: 
-  push:
-    branches: [ feature/** ]
+on:
   pull_request:
     branches: [ develop, production ]
   
