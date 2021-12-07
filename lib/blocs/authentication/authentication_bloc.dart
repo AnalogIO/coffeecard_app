@@ -1,5 +1,4 @@
-import 'package:coffeecard/persistence/repositories/account_repository.dart'
-    show UserAuth; // FIXME Probably belongs somewhere else?
+import 'package:coffeecard/model/account/user_auth.dart';
 import 'package:coffeecard/persistence/storage/secure_storage.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,7 +13,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   AuthBloc(this._storage) : super(const AuthState.unknown()) {
     on<AppStarted>((event, emit) async {
-      await Future.delayed(const Duration(milliseconds: 500));
       final userAuth = await _storage.getUserAuth();
       if (userAuth != null) {
         add(Authenticated(userAuth));

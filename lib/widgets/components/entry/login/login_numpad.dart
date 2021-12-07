@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // Haptic feedback
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-// TODO: disable when loading (e.g. sending request)
+// TODO: disable when LoginBloc is loading (e.g. sending request)
 class Numpad extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

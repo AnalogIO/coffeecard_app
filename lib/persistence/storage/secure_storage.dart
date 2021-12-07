@@ -1,5 +1,4 @@
-import 'package:coffeecard/persistence/repositories/account_repository.dart'
-    show UserAuth;
+import 'package:coffeecard/model/account/user_auth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:logger/logger.dart';
 

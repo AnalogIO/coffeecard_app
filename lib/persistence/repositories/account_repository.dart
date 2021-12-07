@@ -4,6 +4,7 @@ import 'package:coffeecard/model/account/email.dart';
 import 'package:coffeecard/model/account/login.dart';
 import 'package:coffeecard/model/account/register_user.dart';
 import 'package:coffeecard/model/account/user.dart';
+import 'package:coffeecard/model/account/user_auth.dart';
 import 'package:coffeecard/model/account/user_id.dart';
 import 'package:coffeecard/persistence/http/coffee_card_api_client.dart';
 import 'package:coffeecard/utils/exception_extractor.dart';
@@ -17,21 +18,6 @@ class UnauthorizedError implements Exception {
 
   @override
   String toString() => message;
-}
-
-/// A user's email and token.
-// TODO Probably belongs somewhere else.
-class UserAuth {
-  final String email;
-  final String token;
-
-  UserAuth({
-    required this.email,
-    required this.token,
-  });
-
-  @override
-  String toString() => '$email | $token';
 }
 
 class AccountRepository {
