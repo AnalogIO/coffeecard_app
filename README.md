@@ -24,7 +24,7 @@ We are invite everyone to report issues and create pull requests to the reposito
 
 We follow a [Git Flow](https://nvie.com/posts/a-successful-git-branching-model/) inspired setup. The branch structure is as following :
 
-- `master` **(Main  branch)** The master branch is the main branches. All new branches must check out from here into feature branches and merged back to master. 
+- `develop` **(Main  branch)** The master branch is the main branches. All new branches must check out from here into feature branches and merged back to master. 
 - `production` The production branch reflects the current deployment in production. The production branch is merged with the develop branch every time a new version is released to production.
 - `feature/{author}/{feature-name}` New features are developed on feature branches following the *feature / author name / feature name branch* structure.
 
@@ -39,9 +39,9 @@ A rebase merge to master can be done in command line like this:
 ```bash
 git fetch
 git checkout feature/author/feature-name # checkout the feature branch
-git rebase origin/master # rebase with remote develop branch
+git rebase origin/develop # rebase with remote develop branch
 # resolve any conflicts
-git checkout master
+git checkout develop
 git merge feature/author/feature-name
 git push
 ```
