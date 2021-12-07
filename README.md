@@ -39,7 +39,7 @@ A rebase merge to master can be done in command line like this:
 ```bash
 git fetch
 git checkout feature/author/feature-name # checkout the feature branch
-git rebase origin/deveop # rebase with remote develop branch
+git rebase origin/develop # rebase with remote develop branch
 # resolve any conflicts
 git checkout develop
 git merge feature/author/feature-name
