@@ -15,9 +15,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AppStarted>((event, emit) async {
       final userAuth = await _storage.getUserAuth();
       if (userAuth != null) {
-        add(Authenticated(userAuth));
+        emit(AuthState.authenticated(userAuth));
       } else {
-        add(Unauthenticated());
+        emit(const AuthState.unauthenticated());
       }
     });
 
