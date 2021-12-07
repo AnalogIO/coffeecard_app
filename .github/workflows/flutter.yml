@@ -1,6 +1,12 @@
 name: Flutter build and test
 
-on: [pull_request, workflow_dispatch]
+on: 
+  push:
+    branches: [ feature/** ]
+  pull_request:
+    branches: [ develop, production ]
+  
+  workflow_dispatch:
 
 jobs:
   build-and-test:
