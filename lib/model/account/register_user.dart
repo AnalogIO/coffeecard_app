@@ -10,7 +10,8 @@ class RegisterUser {
 
   RegisterUser(this.name, this.email, this.password);
 
-  factory RegisterUser.fromJson(Map<String, dynamic> json) => _$RegisterUserFromJson(json);
+  factory RegisterUser.fromJson(Map<String, dynamic> json) =>
+      _$RegisterUserFromJson(json);
 
   Map<String, dynamic> toJson() => _$RegisterUserToJson(this);
 

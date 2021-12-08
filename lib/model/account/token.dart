@@ -14,7 +14,10 @@ class Token {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) || other is Token && runtimeType == other.runtimeType && token == other.token;
+      identical(this, other) ||
+      other is Token &&
+          runtimeType == other.runtimeType &&
+          token == other.token;
 
   @override
   int get hashCode => token.hashCode;

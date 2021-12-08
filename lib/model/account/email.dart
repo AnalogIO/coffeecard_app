@@ -15,9 +15,9 @@ class Email {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is Email &&
-              runtimeType == other.runtimeType &&
-              email == other.email;
+      other is Email &&
+          runtimeType == other.runtimeType &&
+          email == other.email;
 
   @override
   int get hashCode => email.hashCode;
