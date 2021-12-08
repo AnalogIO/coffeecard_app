@@ -1,4 +1,4 @@
-import 'package:coffeecard/widgets/text_field.dart';
+// import 'package:coffeecard/widgets/text_field.dart';
 import 'package:flutter/material.dart';
 
 class ReceiptsPage extends StatelessWidget {
@@ -9,17 +9,18 @@ class ReceiptsPage extends StatelessWidget {
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: const <Widget>[
-            AppTextField(),
-            AppTextField(),
-            AppTextField(
-              disabled: true,
-              label: "I'm disabled!",
-              value: 'Cant touch this',
-            ),
-            AppTextField(
-              value: 'Default value?',
-            ),
+          children: <Widget>[
+            Container(),
+            // AppTextField(),
+            // AppTextField(),
+            // AppTextField(
+            //   disabled: true,
+            //   label: "I'm disabled!",
+            //   value: 'Cant touch this',
+            // ),
+            // AppTextField(
+            //   value: 'Default value?',
+            // ),
           ],
         ),
       ),
