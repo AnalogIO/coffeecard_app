@@ -1,0 +1,45 @@
+name: Build And Deploy Coffeecard App To Google Firebase Distribution
+
+on:
+  push:
+    branches: [ develop ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Setup Java
+        uses: actions/setup-java@v2.4.0
+        with:
+          distribution: 'adopt'
+          java-version: '11.x'
+      - name: Setup Flutter environment
+        uses: subosito/flutter-action@v1
+        with:
+          flutter-version: '2.5.3'
+          channel: 'stable'
+      - name: Download dependencies
+        run: flutter pub get
+      - name: Decode google-services.json
+        env:
+          SERVICES_JSON: ${{ secrets.FIREBASE_ANDROID_SERVICES_JSON }}
+        run: echo $SERVICES_JSON > android/app/google-services.json
+      - name: Generate code
+        run: scripts/.generate-code.sh code
+      - name: Check formatting
+        run: flutter format --set-exit-if-changed .
+      - name: Static Analysis
+        run: flutter  analyze
+      - name: Run tests
+        run: flutter test
+      - name: Build APK
+        run: flutter build apk
+      - name: Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1.3.2
+        with:
+          appId: ${{ secrets.FIREBASE_ANDROID_APP_ID }}
+          token: ${{ secrets.FIREBASE_TOKEN }}
+          groups: analogio-devs
+          file: build/app/outputs/flutter-apk/app-release.apk
