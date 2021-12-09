@@ -6,9 +6,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RegisterForm extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
+  final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passcodeController = TextEditingController();
   final _repeatPasscodeController = TextEditingController();
+
+  String? _nameValidator(String name) {
+    if (name.trim().isEmpty) {
+      return 'Enter a name';
+    }
+  }
 
   String? _emailValidator(String email) {
     if (email.isEmpty) {
@@ -46,6 +53,7 @@ class RegisterForm extends StatelessWidget {
     if (_formKey.currentState!.validate()) {
       BlocProvider.of<RegisterBloc>(context).add(
         AttemptRegister(
+          name: _nameController.text,
           email: _emailController.text,
           passcode: _passcodeController.text,
         ),
@@ -55,17 +63,28 @@ class RegisterForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RegisterBloc, String?>(
-      builder: (context, emailError) {
+    return BlocBuilder<RegisterBloc, RegisterState>(
+      builder: (context, state) {
         return AppForm(
           formKey: _formKey,
           children: [
             AppTextField(
+              label: 'Name',
+              hint:
+                  'Your name may appear on the leaderboards.\nYou can choose to appear anonymous at any time.',
+              autofocus: true,
+              controller: _nameController,
+              validator: _nameValidator,
+            ),
+            const SizedBox(height: 24),
+            AppTextField(
               label: 'Email',
               hint: 'You will need to verify your email address later.',
               autofocus: true,
-              error: emailError,
+              error: state.emailError,
               type: TextFieldType.email,
+              onChanged: () =>
+                  BlocProvider.of<RegisterBloc>(context).add(ClearEmailError()),
               controller: _emailController,
               validator: _emailValidator,
             ),
