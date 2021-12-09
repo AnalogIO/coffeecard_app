@@ -6,9 +6,9 @@ part 'register_user.g.dart';
 class RegisterUser {
   String name;
   String email;
-  String password;
+  String passcode;
 
-  RegisterUser(this.name, this.email, this.password);
+  RegisterUser(this.name, this.email, this.passcode);
 
   factory RegisterUser.fromJson(Map<String, dynamic> json) =>
       _$RegisterUserFromJson(json);
@@ -21,9 +21,9 @@ class RegisterUser {
       other is RegisterUser &&
           runtimeType == other.runtimeType &&
           email == other.email &&
-          password == other.password &&
+          passcode == other.passcode &&
           name == other.name;
 
   @override
-  int get hashCode => email.hashCode ^ password.hashCode ^ name.hashCode;
+  int get hashCode => email.hashCode ^ passcode.hashCode ^ name.hashCode;
 }

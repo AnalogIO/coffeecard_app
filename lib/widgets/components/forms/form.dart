@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 
 class AppForm extends StatelessWidget {
   final List<Widget> children;
-  AppForm({required this.children});
-
-  final _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> formKey;
+  const AppForm({required this.formKey, required this.children});
 
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: _formKey,
+      key: formKey,
       child: Column(
         children: children,
       ),
