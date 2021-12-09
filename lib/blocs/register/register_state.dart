@@ -1,28 +1,21 @@
-// part of 'register_bloc.dart';
+part of 'register_bloc.dart';
 
-// class RegisterState extends Equatable {
-//   final String? emailError;
+class RegisterState extends Equatable {
+  final String? emailError;
+  final bool loading;
 
-//   const RegisterState({
-//     this.emailError,
-//   });
+  const RegisterState({
+    this.emailError,
+    this.loading = false,
+  });
 
-//   RegisterState copyWith({String? emailError}) {
-//     return RegisterState(
-//       emailError: email ?? this.email,
-//       passcode: passcode ?? this.passcode,
-//     );
-//   }
+  RegisterState copyWith({String? emailError, bool? loading}) {
+    return RegisterState(
+      emailError: emailError,
+      loading: loading ?? false,
+    );
+  }
 
-//   RegisterState withError({String? emailError, String? passcodeError}) {
-//     return RegisterState(
-//       email: email,
-//       passcode: passcode,
-//       emailError: emailError,
-//       passcodeError: passcodeError,
-//     );
-//   }
-
-//   @override
-//   List<Object> get props => [];
-// }
+  @override
+  List<Object> get props => [loading, emailError ?? false];
+}

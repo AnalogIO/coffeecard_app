@@ -4,20 +4,25 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'register_event.dart';
-// part 'register_state.dart';
+part 'register_state.dart';
 
-class RegisterBloc extends Bloc<RegisterEvent, String?> {
+class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   final AccountRepository repository;
 
-  RegisterBloc({required this.repository}) : super(null) {
+  RegisterBloc({required this.repository}) : super(const RegisterState()) {
+    on<ClearEmailError>((event, emit) async {
+      emit(state.copyWith());
+    });
     on<AttemptRegister>((event, emit) async {
-      final register = RegisterUser('name', event.email, event.passcode);
+      emit(state.copyWith(loading: true));
+      final register = RegisterUser(event.name, event.email, event.passcode);
       try {
         await repository.register(register);
+        // Do something on successful registration
+        emit(state.copyWith(loading: false));
       } on UnauthorizedError catch (error) {
-        emit(error.message);
+        emit(state.copyWith(emailError: error.message));
       }
     });
-    // on<VerifyPasscode>((event, emit) {});
   }
 }
