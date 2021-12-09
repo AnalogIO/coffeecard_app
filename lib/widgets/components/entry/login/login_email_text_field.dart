@@ -56,7 +56,7 @@ class LoginEmailTextField extends StatelessWidget {
           decoration: inputDecoration(hasError: state.hasError),
           style: const TextStyle(color: AppColor.primary),
           cursorWidth: 1,
-          onSubmitted: (_) => onSubmit(),
+          onEditingComplete: onSubmit,
           onChanged: onChange,
         );
       },
