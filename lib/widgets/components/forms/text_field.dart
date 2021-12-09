@@ -14,7 +14,8 @@ class AppTextField extends StatefulWidget {
   final TextFieldType type;
   final bool autofocus;
   final bool lastField;
-  final void Function(String)? validator;
+  final TextEditingController? controller;
+  final String? Function(String)? validator;
 
   const AppTextField({
     required this.label,
@@ -24,22 +25,25 @@ class AppTextField extends StatefulWidget {
     this.type = TextFieldType.text,
     this.autofocus = false,
     this.lastField = false,
-  }) : validator = null;
+    this.validator,
+    this.controller,
+  });
 
+  // FIXME not true at the moment
   /// Text field that will call `validator` when any of the following are true:
   /// * Text field is submitted (with keyboard action)
   /// * Text field is unfocused
   /// * Text field is updated AND the field has an error.
-  const AppTextField.withValidator({
-    required this.label,
-    required this.validator,
-    this.initialValue,
-    this.hint,
-    this.error,
-    this.type = TextFieldType.text,
-    this.autofocus = false,
-    this.lastField = false,
-  });
+  // const AppTextField.withValidator({
+  //   required this.label,
+  //   required this.validator,
+  //   this.initialValue,
+  //   this.hint,
+  //   this.error,
+  //   this.type = TextFieldType.text,
+  //   this.autofocus = false,
+  //   this.lastField = false,
+  // });
 
   @override
   _AppTextFieldState createState() => _AppTextFieldState();
@@ -89,6 +93,7 @@ class _AppTextFieldState extends State<AppTextField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: widget.controller,
       initialValue: widget.initialValue,
       focusNode: _focusNode,
       autofocus: widget.autofocus,
@@ -103,8 +108,9 @@ class _AppTextFieldState extends State<AppTextField> {
       obscuringCharacter: '⬤',
       textInputAction:
           widget.lastField ? TextInputAction.done : TextInputAction.next,
+      validator: (value) => widget.validator?.call(value!),
       // TODO: also call validator on unfocus
-      onFieldSubmitted: (value) => widget.validator?.call(value),
+      // onFieldSubmitted: (value) => widget.validator?.call(value),
       decoration: InputDecoration(
         border: _defaultBorder,
         enabledBorder: _defaultBorder,
@@ -127,6 +133,7 @@ class _AppTextFieldState extends State<AppTextField> {
           fontWeight: FontWeight.w500,
         ),
         errorText: widget.error,
+        errorMaxLines: 2,
       ),
       cursorWidth: 1,
       style: TextStyle(
