@@ -3,19 +3,21 @@ name: Flutter build and test
 on:
   pull_request:
     branches: [ develop, production ]
+  push:
+    branches: [ develop, production ]
   
   workflow_dispatch:
 
 jobs:
   build-and-test:
-    name: Build and test codebase
+    name: Build and test Flutter app
     runs-on: ubuntu-latest
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2.4.0
       - name: Setup Flutter environment
-        uses: subosito/flutter-action@v1
+        uses: subosito/flutter-action@v1.5.3
         with:
           flutter-version: '2.5.3'
           channel: 'stable'
@@ -30,6 +32,7 @@ jobs:
       - name: Run tests
         run: flutter test --coverage
       - name: Upload test report to Codecov
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v2.1.0
         with:
+          flags: unittests
           file: coverage/lcov.info
