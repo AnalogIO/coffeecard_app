@@ -2,7 +2,7 @@ import 'package:coffeecard/blocs/login/login_bloc.dart';
 import 'package:coffeecard/widgets/components/entry/login/login_cta.dart';
 import 'package:coffeecard/widgets/components/entry/login/login_numpad.dart';
 import 'package:coffeecard/widgets/components/entry/login/login_passcode_dots.dart';
-import 'package:coffeecard/widgets/pages/entry/login_page.dart';
+import 'package:coffeecard/widgets/pages/entry/login/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

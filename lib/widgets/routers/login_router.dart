@@ -2,8 +2,8 @@ import 'package:coffeecard/blocs/authentication/authentication_bloc.dart';
 import 'package:coffeecard/blocs/login/login_bloc.dart';
 import 'package:coffeecard/persistence/repositories/account_repository.dart';
 import 'package:coffeecard/service_locator.dart';
-import 'package:coffeecard/widgets/pages/entry/login_email_page.dart';
-import 'package:coffeecard/widgets/pages/entry/login_passcode_page.dart';
+import 'package:coffeecard/widgets/pages/entry/login/login_email_page.dart';
+import 'package:coffeecard/widgets/pages/entry/login/login_passcode_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
