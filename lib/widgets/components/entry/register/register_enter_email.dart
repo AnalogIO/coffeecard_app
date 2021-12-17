@@ -2,6 +2,7 @@ import 'package:coffeecard/blocs/register/register_bloc.dart';
 import 'package:coffeecard/utils/debouncer.dart';
 import 'package:coffeecard/widgets/components/forms/form.dart';
 import 'package:coffeecard/widgets/components/forms/text_field.dart';
+import 'package:coffeecard/widgets/components/section_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -70,6 +71,7 @@ class _RegisterEnterEmailState extends State<RegisterEnterEmail> {
         return AppForm(
           formKey: _formKey,
           children: [
+            const SectionTitle.register('Enter your email'),
             AppTextField(
               label: 'Email',
               hint: 'You will need to verify your email address later.',
