@@ -13,6 +13,15 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     on<AddEmail>((event, emit) async {
       emit(state.copyWith(email: event.email));
     });
+    on<AddPasscode>((event, emit) async {
+      emit(state.copyWith(passcode: event.passcode));
+    });
+    on<RemoveEmail>((event, emit) async {
+      emit(const RegisterState());
+    });
+    on<RemovePasscode>((event, emit) async {
+      emit(RegisterState(email: state.email));
+    });
     // on<AttemptRegister>((event, emit) async {
     //   emit(state.copyWith(loading: true));
     //   final register = RegisterUser(event.name, event.email, event.passcode);
@@ -24,5 +33,8 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     //     emit(state.copyWith(emailError: error.message));
     //   }
     // });
+    on<RegisterEvent>((event, emit) {
+      print('RegisterBloc: ${event.runtimeType}');
+    });
   }
 }

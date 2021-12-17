@@ -15,6 +15,18 @@ class AddEmail extends RegisterEvent {
   List<Object> get props => [email];
 }
 
+class AddPasscode extends RegisterEvent {
+  final String passcode;
+  const AddPasscode(this.passcode);
+
+  @override
+  List<Object> get props => [passcode];
+}
+
+class RemoveEmail extends RegisterEvent {}
+
+class RemovePasscode extends RegisterEvent {}
+
 // class AttemptRegister extends RegisterEvent {
 //   final String name;
 //   final String email;
