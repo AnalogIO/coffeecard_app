@@ -16,7 +16,7 @@ class AppTextField extends StatefulWidget {
   final bool lastField;
   final void Function()? onChanged;
   final TextEditingController? controller;
-  final String? Function(String)? validator;
+  final void Function()? onEditingComplete;
 
   const AppTextField({
     required this.label,
@@ -27,7 +27,7 @@ class AppTextField extends StatefulWidget {
     this.autofocus = false,
     this.lastField = false,
     this.onChanged,
-    this.validator,
+    this.onEditingComplete,
     this.controller,
   });
 
@@ -95,9 +95,8 @@ class _AppTextFieldState extends State<AppTextField> {
       textInputAction:
           widget.lastField ? TextInputAction.done : TextInputAction.next,
       onChanged: (_) => widget.onChanged?.call(),
-      validator: (value) => widget.validator?.call(value!),
-      // TODO: also call validator on unfocus
-      // onFieldSubmitted: (value) => widget.validator?.call(value),
+      onEditingComplete: widget.onEditingComplete,
+      // TODO: also call validator on unfocus?
       decoration: InputDecoration(
         border: _defaultBorder,
         enabledBorder: _defaultBorder,

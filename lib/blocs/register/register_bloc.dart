@@ -10,19 +10,19 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   final AccountRepository repository;
 
   RegisterBloc({required this.repository}) : super(const RegisterState()) {
-    on<ClearEmailError>((event, emit) async {
-      emit(state.copyWith());
+    on<AddEmail>((event, emit) async {
+      emit(state.copyWith(email: event.email));
     });
-    on<AttemptRegister>((event, emit) async {
-      emit(state.copyWith(loading: true));
-      final register = RegisterUser(event.name, event.email, event.passcode);
-      try {
-        await repository.register(register);
-        // Do something on successful registration
-        emit(state.copyWith(loading: false));
-      } on UnauthorizedError catch (error) {
-        emit(state.copyWith(emailError: error.message));
-      }
-    });
+    // on<AttemptRegister>((event, emit) async {
+    //   emit(state.copyWith(loading: true));
+    //   final register = RegisterUser(event.name, event.email, event.passcode);
+    //   try {
+    //     await repository.register(register);
+    //     // Do something on successful registration
+    //     emit(state.copyWith(loading: false));
+    //   } on UnauthorizedError catch (error) {
+    //     emit(state.copyWith(emailError: error.message));
+    //   }
+    // });
   }
 }
