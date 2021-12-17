@@ -16,9 +16,13 @@ class _RegisterEnterEmailState extends State<RegisterEnterEmail> {
   final _controller = TextEditingController();
   final _debounce = Debouncer(delay: const Duration(milliseconds: 250));
 
+  bool _showError = false;
+  bool _loading = false;
+
   String? _error;
   String? get error => _error;
   set error(String? error) {
+    if (!_showError) return;
     setState(() => _error = error);
   }
 
@@ -29,21 +33,22 @@ class _RegisterEnterEmailState extends State<RegisterEnterEmail> {
 
   // FIXME should check if email is duplicate instead (belongs in another class)
   Future<bool> _isDuplicate(String email) async {
-    return Future.delayed(const Duration(milliseconds: 250), () => false);
+    return Future.delayed(const Duration(milliseconds: 250), () => true);
   }
 
   Future<void> _validateEmail(String email) async {
-    // TODO Add loading spinner here
+    setState(() => _loading = true);
     if (email.isEmpty) {
       error = 'Enter an email';
     } else if (_isValid(email)) {
       error = 'Enter a valid email';
     } else if (await _isDuplicate(email)) {
+      _showError = true;
       error = '$email is already in use';
     } else {
       error = null;
     }
-    // TODO Remove loading spinner here
+    setState(() => _loading = false);
   }
 
   void _onChanged() {
@@ -51,17 +56,17 @@ class _RegisterEnterEmailState extends State<RegisterEnterEmail> {
   }
 
   Future<void> _submit(BuildContext context) async {
+    _showError = true;
     await _validateEmail(_controller.text);
-    if (error == null) return;
-    if (!mounted) return;
+    if (error != null) return;
+    if (!mounted) return; // Two if statements used to satisfy the code checker.
     BlocProvider.of<RegisterBloc>(context).add(AddEmail(_controller.text));
-    // TODO Navigate to next page.
   }
 
   @override
   void dispose() {
-    super.dispose();
     _debounce.dispose();
+    super.dispose();
   }
 
   @override
@@ -78,6 +83,7 @@ class _RegisterEnterEmailState extends State<RegisterEnterEmail> {
               autofocus: true,
               error: error,
               type: TextFieldType.email,
+              loading: _loading,
               onChanged: _onChanged,
               onEditingComplete: () => _submit(context),
               controller: _controller,
