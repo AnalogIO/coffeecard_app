@@ -33,7 +33,7 @@ class _RegisterEnterEmailState extends State<RegisterEnterEmail> {
 
   // FIXME should check if email is duplicate instead (belongs in another class)
   Future<bool> _isDuplicate(String email) async {
-    return Future.delayed(const Duration(milliseconds: 250), () => true);
+    return Future.delayed(const Duration(milliseconds: 250), () => false);
   }
 
   Future<void> _validateEmail(String email) async {

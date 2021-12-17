@@ -5,14 +5,12 @@ class RegisterState extends Equatable {
   final String? passcode;
   final String? name;
 
-  final String? emailError;
   final bool loading;
 
   const RegisterState({
     this.email,
     this.passcode,
     this.name,
-    this.emailError,
     this.loading = false,
   });
 
@@ -20,18 +18,21 @@ class RegisterState extends Equatable {
     String? email,
     String? passcode,
     String? name,
-    String? emailError,
     bool? loading,
   }) {
     return RegisterState(
       email: email ?? this.email,
       passcode: passcode ?? this.passcode,
       name: name ?? this.name,
-      emailError: emailError,
       loading: loading ?? false,
     );
   }
 
   @override
-  List<Object> get props => [loading, emailError ?? false];
+  List<Object> get props => [
+        email ?? false,
+        passcode ?? false,
+        name ?? false,
+        loading,
+      ];
 }
