@@ -14,6 +14,7 @@ class AppTextField extends StatefulWidget {
   final TextFieldType type;
   final bool autofocus;
   final bool lastField;
+  final bool loading;
   final void Function()? onChanged;
   final TextEditingController? controller;
   final void Function()? onEditingComplete;
@@ -26,6 +27,7 @@ class AppTextField extends StatefulWidget {
     this.type = TextFieldType.text,
     this.autofocus = false,
     this.lastField = false,
+    this.loading = false,
     this.onChanged,
     this.onEditingComplete,
     this.controller,
@@ -97,6 +99,11 @@ class _AppTextFieldState extends State<AppTextField> {
       onChanged: (_) => widget.onChanged?.call(),
       onEditingComplete: widget.onEditingComplete,
       // TODO: also call validator on unfocus?
+      cursorWidth: 1,
+      style: TextStyle(
+        color: AppColor.primary,
+        letterSpacing: _isPasscode ? 3 : 0,
+      ),
       decoration: InputDecoration(
         border: _defaultBorder,
         enabledBorder: _defaultBorder,
@@ -120,11 +127,27 @@ class _AppTextFieldState extends State<AppTextField> {
         ),
         errorText: widget.error,
         errorMaxLines: 2,
+        // Dark magic.
+        suffixIcon: !widget.loading ? null : TextFieldSpinner(),
       ),
-      cursorWidth: 1,
-      style: TextStyle(
-        color: AppColor.primary,
-        letterSpacing: _isPasscode ? 3 : 0,
+    );
+  }
+}
+
+class TextFieldSpinner extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return const Padding(
+      padding: EdgeInsetsDirectional.only(end: 4),
+      child: Padding(
+        padding: EdgeInsets.all(12),
+        child: SizedBox(
+          width: 24,
+          height: 16,
+          child: Center(
+            child: CircularProgressIndicator(color: AppColor.secondary),
+          ),
+        ),
       ),
     );
   }
