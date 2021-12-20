@@ -30,8 +30,10 @@ class _RegisterEnterPasscodeState extends State<RegisterEnterPasscode> {
   void _validateFirstPasscode(String passcode) {
     if (passcode.isEmpty) {
       firstError = 'Enter a passcode';
+      secondError = null;
     } else if (passcode.length < 4) {
       firstError = 'Enter a four-digit passcode';
+      secondError = null;
     } else {
       firstError = null;
       _focusSecondField();
