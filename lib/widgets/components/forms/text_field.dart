@@ -1,7 +1,6 @@
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 
 enum TextFieldType { text, email, passcode }
 
@@ -15,6 +14,7 @@ class AppTextField extends StatefulWidget {
   final bool autofocus;
   final bool lastField;
   final bool loading;
+  final bool readOnly;
   final void Function()? onChanged;
   final TextEditingController? controller;
   final void Function()? onEditingComplete;
@@ -29,6 +29,7 @@ class AppTextField extends StatefulWidget {
     this.autofocus = false,
     this.lastField = false,
     this.loading = false,
+    this.readOnly = false,
     this.onChanged,
     this.onEditingComplete,
     this.controller,
@@ -101,6 +102,7 @@ class _AppTextFieldState extends State<AppTextField> {
             widget.lastField ? TextInputAction.done : TextInputAction.next,
         onChanged: (_) => widget.onChanged?.call(),
         onEditingComplete: widget.onEditingComplete,
+        readOnly: widget.readOnly,
         // TODO: also call validator on unfocus?
         cursorWidth: 1,
         style: TextStyle(

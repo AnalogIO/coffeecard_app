@@ -16,19 +16,22 @@ class _RegisterEnterEmailState extends State<RegisterEnterEmail> {
   final _controller = TextEditingController();
   final _debounce = Debouncer(delay: const Duration(milliseconds: 250));
 
-  bool _showError = false;
   bool _loading = false;
+  bool _showError = false;
+  bool _disabled = false;
+  bool _validated = false;
 
   String? _error;
   String? get error => _error;
   set error(String? error) {
-    if (!_showError) return;
     setState(() => _error = error);
   }
 
+  String? get errorMessage => _showError ? _error : null;
+
   // FIXME email validation is code duplication
   bool _isValid(String email) {
-    return !RegExp(r'^[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+').hasMatch(email);
+    return RegExp(r'^[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+').hasMatch(email);
   }
 
   // FIXME should check if email is duplicate instead (belongs in another class)
@@ -40,7 +43,7 @@ class _RegisterEnterEmailState extends State<RegisterEnterEmail> {
     setState(() => _loading = true);
     if (email.isEmpty) {
       error = 'Enter an email';
-    } else if (_isValid(email)) {
+    } else if (!_isValid(email)) {
       error = 'Enter a valid email';
     } else if (await _isDuplicate(email)) {
       _showError = true;
@@ -48,7 +51,10 @@ class _RegisterEnterEmailState extends State<RegisterEnterEmail> {
     } else {
       error = null;
     }
-    setState(() => _loading = false);
+    setState(() {
+      _validated = error == null;
+      _loading = false;
+    });
   }
 
   void _onChanged() {
@@ -56,11 +62,14 @@ class _RegisterEnterEmailState extends State<RegisterEnterEmail> {
   }
 
   Future<void> _submit(BuildContext context) async {
-    _showError = true;
+    setState(() => _disabled = true);
+    _debounce.cancel();
     await _validateEmail(_controller.text);
-    if (error != null) return;
-    if (!mounted) return; // Two if statements used to satisfy the code checker.
-    BlocProvider.of<RegisterBloc>(context).add(AddEmail(_controller.text));
+    setState(() => _showError = true);
+    if (_validated && mounted) {
+      BlocProvider.of<RegisterBloc>(context).add(AddEmail(_controller.text));
+    }
+    setState(() => _disabled = false);
   }
 
   @override
@@ -81,9 +90,10 @@ class _RegisterEnterEmailState extends State<RegisterEnterEmail> {
               label: 'Email',
               hint: 'You will need to verify your email address later.',
               autofocus: true,
-              error: error,
+              error: errorMessage,
               type: TextFieldType.email,
               loading: _loading,
+              readOnly: _disabled,
               onChanged: _onChanged,
               onEditingComplete: () => _submit(context),
               controller: _controller,

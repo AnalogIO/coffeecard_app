@@ -21,6 +21,10 @@ class Debouncer {
 
   Debouncer({required this.delay});
 
+  void cancel() {
+    _timer?.cancel();
+  }
+
   void call(void Function() action) {
     _timer?.cancel();
     _timer = Timer(delay, action);
