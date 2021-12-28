@@ -14,6 +14,7 @@ class AppTextField extends StatefulWidget {
   final bool autofocus;
   final bool lastField;
   final bool loading;
+  final bool showCheckMark;
   final bool readOnly;
   final void Function()? onChanged;
   final TextEditingController? controller;
@@ -29,6 +30,7 @@ class AppTextField extends StatefulWidget {
     this.autofocus = false,
     this.lastField = false,
     this.loading = false,
+    this.showCheckMark = false,
     this.readOnly = false,
     this.onChanged,
     this.onEditingComplete,
@@ -78,6 +80,18 @@ class _AppTextFieldState extends State<AppTextField> {
       borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
       borderSide: BorderSide(color: AppColor.gray),
     );
+  }
+
+  Widget? get _suffixIcon {
+    if (widget.loading) {
+      return _TextFieldSpinner();
+    }
+    if (widget.showCheckMark) {
+      return const Icon(
+        Icons.check_circle_outline,
+        color: AppColor.secondary,
+      );
+    }
   }
 
   @override
@@ -132,26 +146,25 @@ class _AppTextFieldState extends State<AppTextField> {
           ),
           errorText: widget.error,
           errorMaxLines: 2,
-          // Dark magic.
-          suffixIcon: !widget.loading ? null : TextFieldSpinner(),
+          suffixIcon: _suffixIcon,
         ),
       ),
     );
   }
 }
 
-class TextFieldSpinner extends StatelessWidget {
+class _TextFieldSpinner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Padding(
-      padding: EdgeInsetsDirectional.only(end: 4),
-      child: Padding(
-        padding: EdgeInsets.all(12),
-        child: SizedBox(
-          width: 24,
-          height: 16,
-          child: Center(
-            child: CircularProgressIndicator(color: AppColor.secondary),
+      padding: EdgeInsets.all(16),
+      child: SizedBox(
+        width: 12,
+        height: 12,
+        child: Center(
+          child: CircularProgressIndicator(
+            color: AppColor.secondary,
+            strokeWidth: 2.2,
           ),
         ),
       ),
