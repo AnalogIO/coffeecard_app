@@ -23,6 +23,14 @@ class AddPasscode extends RegisterEvent {
   List<Object> get props => [passcode];
 }
 
+class AddName extends RegisterEvent {
+  final String name;
+  const AddName(this.name);
+
+  @override
+  List<Object> get props => [name];
+}
+
 class RemoveEmail extends RegisterEvent {}
 
 class RemovePasscode extends RegisterEvent {}
