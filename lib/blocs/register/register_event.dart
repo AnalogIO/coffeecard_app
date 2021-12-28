@@ -35,17 +35,4 @@ class RemoveEmail extends RegisterEvent {}
 
 class RemovePasscode extends RegisterEvent {}
 
-// class AttemptRegister extends RegisterEvent {
-//   final String name;
-//   final String email;
-//   final String passcode;
-//   const AttemptRegister({
-//     required this.name,
-//     required this.email,
-//     required this.passcode,
-//   });
-//   @override
-//   List<Object> get props => [email, passcode];
-// }
-
-class ClearEmailError extends RegisterEvent {}
+class AttemptRegister extends RegisterEvent {}
