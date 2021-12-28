@@ -1,6 +1,7 @@
 import 'package:coffeecard/blocs/register/register_bloc.dart';
 import 'package:coffeecard/widgets/components/forms/form.dart';
 import 'package:coffeecard/widgets/components/forms/text_field.dart';
+import 'package:coffeecard/widgets/components/loading_overlay.dart';
 import 'package:coffeecard/widgets/components/section_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,7 +31,13 @@ class _RegisterEnterNameState extends State<RegisterEnterName> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RegisterBloc, RegisterState>(
+    final overlay = LoadingOverlay.of(context);
+
+    return BlocConsumer<RegisterBloc, RegisterState>(
+      listenWhen: (previous, current) => previous.loading || current.loading,
+      listener: (context, state) {
+        state.loading ? overlay.show() : overlay.hide();
+      },
       builder: (context, state) {
         return AppForm(
           formKey: _formKey,
