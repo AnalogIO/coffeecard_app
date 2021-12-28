@@ -18,8 +18,9 @@ class _RegisterEnterEmailState extends State<RegisterEnterEmail> {
 
   bool _loading = false;
   bool _showError = false;
-  bool _disabled = false;
-  bool _validated = false;
+  bool _readOnly = false;
+  String? _validatedEmail;
+  bool get _validated => _validatedEmail == _controller.text;
 
   String? _error;
   String? get error => _error;
@@ -40,36 +41,44 @@ class _RegisterEnterEmailState extends State<RegisterEnterEmail> {
   }
 
   Future<void> _validateEmail(String email) async {
-    setState(() => _loading = true);
     if (email.isEmpty) {
       error = 'Enter an email';
     } else if (!_isValid(email)) {
       error = 'Enter a valid email';
-    } else if (await _isDuplicate(email)) {
-      _showError = true;
-      error = '$email is already in use';
     } else {
-      error = null;
+      final isDuplicate = await _isDuplicate(email);
+      if (!mounted) return; // Needs to be checked after an async call.
+      if (isDuplicate) {
+        _showError = true;
+        error = '$email is already in use';
+      } else {
+        error = null;
+      }
     }
     setState(() {
-      _validated = error == null;
+      _validatedEmail = (error == null) ? email : null;
       _loading = false;
     });
   }
 
   void _onChanged() {
+    setState(() => _loading = true);
     _debounce(() => _validateEmail(_controller.text));
   }
 
   Future<void> _submit(BuildContext context) async {
-    setState(() => _disabled = true);
-    _debounce.cancel();
-    await _validateEmail(_controller.text);
-    setState(() => _showError = true);
+    if (_loading) {
+      _debounce.dispose();
+      setState(() => _readOnly = true);
+      await _validateEmail(_controller.text);
+    }
     if (_validated && mounted) {
       BlocProvider.of<RegisterBloc>(context).add(AddEmail(_controller.text));
     }
-    setState(() => _disabled = false);
+    setState(() {
+      _readOnly = false;
+      _showError = true;
+    });
   }
 
   @override
@@ -93,7 +102,8 @@ class _RegisterEnterEmailState extends State<RegisterEnterEmail> {
               error: errorMessage,
               type: TextFieldType.email,
               loading: _loading,
-              readOnly: _disabled,
+              showCheckMark: _validated,
+              readOnly: _readOnly,
               onChanged: _onChanged,
               onEditingComplete: () => _submit(context),
               controller: _controller,
