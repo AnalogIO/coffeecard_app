@@ -22,17 +22,24 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     on<RemovePasscode>((event, emit) async {
       emit(RegisterState(email: state.email));
     });
-    // on<AttemptRegister>((event, emit) async {
-    //   emit(state.copyWith(loading: true));
-    //   final register = RegisterUser(event.name, event.email, event.passcode);
-    //   try {
-    //     await repository.register(register);
-    //     // Do something on successful registration
-    //     emit(state.copyWith(loading: false));
-    //   } on UnauthorizedError catch (error) {
-    //     emit(state.copyWith(emailError: error.message));
-    //   }
-    // });
+    on<AddName>((event, emit) async {
+      emit(state.copyWith(name: event.name));
+      add(AttemptRegister());
+    });
+    on<AttemptRegister>((event, emit) async {
+      emit(state.copyWith(loading: true));
+      final register = RegisterUser(state.name!, state.email!, state.passcode!);
+      try {
+        await repository.register(register);
+        // Do something on successful registration
+        print('YAYY!');
+      } on UnauthorizedError catch (error) {
+        // Do something on failure
+        print('o no! 💀');
+      } finally {
+        emit(state.copyWith(loading: false));
+      }
+    });
     on<RegisterEvent>((event, emit) {
       print('RegisterBloc: ${event.runtimeType}');
     });
