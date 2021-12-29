@@ -1,17 +1,16 @@
 import 'package:coffeecard/blocs/register/register_bloc.dart';
-import 'package:coffeecard/widgets/components/forms/form.dart';
 import 'package:coffeecard/widgets/components/forms/text_field.dart';
-import 'package:coffeecard/widgets/components/section_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class RegisterEnterPasscode extends StatefulWidget {
+class RegisterPasscodeTextFields extends StatefulWidget {
   @override
-  State<RegisterEnterPasscode> createState() => _RegisterEnterPasscodeState();
+  State<RegisterPasscodeTextFields> createState() =>
+      _RegisterPasscodeTextFieldsState();
 }
 
-class _RegisterEnterPasscodeState extends State<RegisterEnterPasscode> {
-  final _formKey = GlobalKey<FormState>();
+class _RegisterPasscodeTextFieldsState
+    extends State<RegisterPasscodeTextFields> {
   final _firstPasscodeController = TextEditingController();
   final _secondPasscodeController = TextEditingController();
   final _secondPasscodeFocusNode = FocusNode();
@@ -30,6 +29,10 @@ class _RegisterEnterPasscodeState extends State<RegisterEnterPasscode> {
   String? get secondError => _secondError;
   set secondError(String? error) => setState(() => _secondError = error);
 
+  void _focusSecondField() {
+    _secondPasscodeFocusNode.requestFocus();
+  }
+
   void _validateFirstPasscode(String passcode) {
     if (passcode.isEmpty) {
       firstError = 'Enter a passcode';
@@ -42,7 +45,7 @@ class _RegisterEnterPasscodeState extends State<RegisterEnterPasscode> {
   }
 
   void _validateSecondPasscode(String passcode) {
-    // Do not show an error the the previous passcode field has an error.
+    // Do not show an error if the previous passcode field has an error.
     if (firstError != null) return;
     if (passcode.isEmpty) {
       secondError = 'Repeat the passcode';
@@ -51,10 +54,6 @@ class _RegisterEnterPasscodeState extends State<RegisterEnterPasscode> {
     } else {
       secondError = null;
     }
-  }
-
-  void _focusSecondField() {
-    _secondPasscodeFocusNode.requestFocus();
   }
 
   void _onFirstChanged() {
@@ -76,7 +75,6 @@ class _RegisterEnterPasscodeState extends State<RegisterEnterPasscode> {
     _validateSecondPasscode(secondPasscode);
 
     if (firstError != null || secondError != null) return;
-    if (!mounted) return; // Two if statements used to satisfy the code checker.
     BlocProvider.of<RegisterBloc>(context).add(AddPasscode(firstPasscode));
   }
 
@@ -84,10 +82,9 @@ class _RegisterEnterPasscodeState extends State<RegisterEnterPasscode> {
   Widget build(BuildContext context) {
     return BlocBuilder<RegisterBloc, RegisterState>(
       builder: (context, state) {
-        return AppForm(
-          formKey: _formKey,
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const SectionTitle.register('Enter a passcode'),
             AppTextField(
               label: 'Passcode',
               autofocus: true,
@@ -102,7 +99,6 @@ class _RegisterEnterPasscodeState extends State<RegisterEnterPasscode> {
               hint: 'Enter a four-digit passcode for your account.',
               error: secondError,
               type: TextFieldType.passcode,
-              // lastField: true,
               onChanged: () => _onSecondChanged(context),
               onEditingComplete: () => _submit(context),
               controller: _secondPasscodeController,
