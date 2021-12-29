@@ -1,18 +1,15 @@
 import 'package:coffeecard/blocs/register/register_bloc.dart';
-import 'package:coffeecard/widgets/components/forms/form.dart';
 import 'package:coffeecard/widgets/components/forms/text_field.dart';
 import 'package:coffeecard/widgets/components/loading_overlay.dart';
-import 'package:coffeecard/widgets/components/section_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class RegisterEnterName extends StatefulWidget {
+class RegisterNameTextField extends StatefulWidget {
   @override
-  State<RegisterEnterName> createState() => _RegisterEnterNameState();
+  State<RegisterNameTextField> createState() => _RegisterNameTextFieldState();
 }
 
-class _RegisterEnterNameState extends State<RegisterEnterName> {
-  final _formKey = GlobalKey<FormState>();
+class _RegisterNameTextFieldState extends State<RegisterNameTextField> {
   final _controller = TextEditingController();
 
   bool _showError = false;
@@ -39,21 +36,15 @@ class _RegisterEnterNameState extends State<RegisterEnterName> {
         state.loading ? overlay.show() : overlay.hide();
       },
       builder: (context, state) {
-        return AppForm(
-          formKey: _formKey,
-          children: [
-            const SectionTitle.register('Enter your name'),
-            AppTextField(
-              label: 'Name',
-              hint:
-                  'Your name may appear on the leaderboards. You can choose to appear anonymous at any time.',
-              autofocus: true,
-              error: _showError ? _error : null,
-              onChanged: () => _validateName(_controller.text),
-              onEditingComplete: () => _submit(context),
-              controller: _controller,
-            ),
-          ],
+        return AppTextField(
+          label: 'Name',
+          hint:
+              'Your name may appear on the leaderboards. You can choose to appear anonymous at any time.',
+          autofocus: true,
+          error: _showError ? _error : null,
+          onChanged: () => _validateName(_controller.text),
+          onEditingComplete: () => _submit(context),
+          controller: _controller,
         );
       },
     );

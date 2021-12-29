@@ -2,9 +2,8 @@ import 'dart:math';
 
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/blocs/login/login_bloc.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart'; // Haptic feedback
+import 'package:flutter/services.dart' show HapticFeedback;
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 // TODO: disable when LoginBloc is loading (e.g. sending request)

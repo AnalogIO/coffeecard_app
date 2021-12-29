@@ -2,9 +2,8 @@ import 'package:coffeecard/base/style/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-enum TextFieldType { text, email, passcode }
+enum TextFieldType { text, email, passcode, verificationCode }
 
-/// Should always be contained in an `AppForm`.
 class AppTextField extends StatefulWidget {
   final String label;
   final String? initialValue;
@@ -71,7 +70,10 @@ class _AppTextFieldState extends State<AppTextField> {
 
   TextInputType get _keyboardType {
     if (widget.type == TextFieldType.email) return TextInputType.emailAddress;
-    if (widget.type == TextFieldType.passcode) return TextInputType.number;
+    if (widget.type == TextFieldType.passcode ||
+        widget.type == TextFieldType.verificationCode) {
+      return TextInputType.number;
+    }
     return TextInputType.text;
   }
 
@@ -94,6 +96,16 @@ class _AppTextFieldState extends State<AppTextField> {
     }
   }
 
+  List<TextInputFormatter>? get _inputFormatters {
+    if (_isPasscode || widget.type == TextFieldType.verificationCode) {
+      final maxDigits = _isPasscode ? 4 : 6;
+      return <TextInputFormatter>[
+        FilteringTextInputFormatter.digitsOnly,
+        LengthLimitingTextInputFormatter(maxDigits)
+      ];
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -103,12 +115,7 @@ class _AppTextFieldState extends State<AppTextField> {
         initialValue: widget.initialValue,
         focusNode: _focusNode,
         autofocus: widget.autofocus,
-        inputFormatters: _isPasscode
-            ? <TextInputFormatter>[
-                FilteringTextInputFormatter.digitsOnly,
-                LengthLimitingTextInputFormatter(4)
-              ]
-            : null,
+        inputFormatters: _inputFormatters,
         keyboardType: _keyboardType,
         obscureText: _isPasscode,
         obscuringCharacter: '⬤',

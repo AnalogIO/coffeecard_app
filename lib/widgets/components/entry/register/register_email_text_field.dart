@@ -1,18 +1,15 @@
 import 'package:coffeecard/blocs/register/register_bloc.dart';
 import 'package:coffeecard/utils/debouncer.dart';
-import 'package:coffeecard/widgets/components/forms/form.dart';
 import 'package:coffeecard/widgets/components/forms/text_field.dart';
-import 'package:coffeecard/widgets/components/section_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class RegisterEnterEmail extends StatefulWidget {
+class RegisterEmailTextField extends StatefulWidget {
   @override
-  State<RegisterEnterEmail> createState() => _RegisterEnterEmailState();
+  State<RegisterEmailTextField> createState() => _RegisterEmailTextFieldState();
 }
 
-class _RegisterEnterEmailState extends State<RegisterEnterEmail> {
-  final _formKey = GlobalKey<FormState>();
+class _RegisterEmailTextFieldState extends State<RegisterEmailTextField> {
   final _controller = TextEditingController();
   final _debounce = Debouncer(delay: const Duration(milliseconds: 250));
 
@@ -91,24 +88,18 @@ class _RegisterEnterEmailState extends State<RegisterEnterEmail> {
   Widget build(BuildContext context) {
     return BlocBuilder<RegisterBloc, RegisterState>(
       builder: (context, state) {
-        return AppForm(
-          formKey: _formKey,
-          children: [
-            const SectionTitle.register('Enter your email'),
-            AppTextField(
-              label: 'Email',
-              hint: 'You will need to verify your email address later.',
-              autofocus: true,
-              error: errorMessage,
-              type: TextFieldType.email,
-              loading: _loading,
-              showCheckMark: _validated,
-              readOnly: _readOnly,
-              onChanged: _onChanged,
-              onEditingComplete: () => _submit(context),
-              controller: _controller,
-            ),
-          ],
+        return AppTextField(
+          label: 'Email',
+          hint: 'You will need to verify your email address later.',
+          autofocus: true,
+          error: errorMessage,
+          type: TextFieldType.email,
+          loading: _loading,
+          showCheckMark: _validated,
+          readOnly: _readOnly,
+          onChanged: _onChanged,
+          onEditingComplete: () => _submit(context),
+          controller: _controller,
         );
       },
     );
