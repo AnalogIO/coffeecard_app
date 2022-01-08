@@ -50,6 +50,10 @@ dependencies:
   # crypto
   crypto: any
 
+  # icon and name
+  flutter_launcher_icons: ^0.9.2
+  flutter_app_name: ^0.1.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -64,6 +68,16 @@ dev_dependencies:
 
   # linter
   lint: ^1.0.0
+
+flutter_app_name: #remember to update: flutter pub run flutter_app_name
+  name: "Cafe Analog"
+
+flutter_icons: #remember to update: flutter pub run flutter_launcher_icons:main
+  android: true
+  ios: true
+  image_path_ios: "assets/icon.png"
+  image_path_android: "assets/icon.png"
+  remove_alpha_ios: true
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
