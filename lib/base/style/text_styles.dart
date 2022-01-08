@@ -75,7 +75,6 @@ abstract class AppTextStyle {
   static final TextStyle recieptItemValue = TextStyle(
     color: AppColor.primary,
     fontSize: 14,
-    fontWeight: FontWeight.w500,
     fontFamily: AppFont.body,
   );
   static final TextStyle loginExplainer = TextStyle(
