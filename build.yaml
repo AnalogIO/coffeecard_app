@@ -1,8 +1,10 @@
 targets:
   $default:
     sources:
-      - lib/**
+      - lib/**.dart
+      - lib/$lib$
       - openapi/**
+      - test/**.dart
       - $package$
     builders:
       swagger_dart_code_generator:
@@ -14,3 +16,6 @@ targets:
           separate_models: true
           enums_case_sensitive: false
           include_if_null: false
+      mockito|mockBuilder:
+        generate_for:
+          - test/**.dart
