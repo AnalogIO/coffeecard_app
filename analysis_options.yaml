@@ -16,7 +16,7 @@ analyzer:
   strong-mode:
     implicit-casts: false
   exclude:
-    - lib/persistence/http/*.g.dart
+    - lib/generated/**
   errors:
     invalid_assignment: warning
     missing_return: error

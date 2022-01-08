@@ -2,9 +2,9 @@ coverage:
   status:
     project:
       default: false # disable the default status that measures entire project
-      models: # model package
+      models: # models package
         paths:
-          - lib/model/
+          - lib/models/
       persistence: # persistence package
         target: 75%
         paths:
@@ -15,6 +15,6 @@ coverage:
           - lib/widgets/pages/
       other: # remaining
         paths:
-          - "!lib/model/"
+          - "!lib/models/"
           - "!lib/persistence/"
           - "!lib/widgets/pages/"

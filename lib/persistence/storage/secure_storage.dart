@@ -1,4 +1,4 @@
-import 'package:coffeecard/model/account/authenticated_user.dart';
+import 'package:coffeecard/models/account/authenticated_user.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:logger/logger.dart';
 
