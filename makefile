@@ -3,3 +3,9 @@ generate:
 
 get:
 	flutter pub get
+
+analyze:
+	flutter analyze
+
+format:
+	flutter format .
