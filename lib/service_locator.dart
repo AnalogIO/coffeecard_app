@@ -1,7 +1,7 @@
 import 'package:chopper/chopper.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.swagger.dart';
-import 'package:coffeecard/persistence/http/coffee_card_api_constants.dart';
-import 'package:coffeecard/persistence/http/interceptors/authentication_interceptor.dart';
+import 'package:coffeecard/persistence/api/coffee_card_api_constants.dart';
+import 'package:coffeecard/persistence/api/interceptors/authentication_interceptor.dart';
 import 'package:coffeecard/persistence/repositories/account_repository.dart';
 import 'package:coffeecard/persistence/repositories/app_config_repository.dart';
 import 'package:coffeecard/persistence/storage/secure_storage.dart';
