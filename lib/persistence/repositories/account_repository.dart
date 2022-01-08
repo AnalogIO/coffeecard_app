@@ -4,7 +4,7 @@ import 'package:coffeecard/generated/api/coffeecard_api.swagger.swagger.dart';
 import 'package:coffeecard/models/account/authenticated_user.dart';
 import 'package:coffeecard/models/account/unauthorized_error.dart';
 import 'package:coffeecard/models/http/api_error.dart';
-import 'package:coffeecard/persistence/http/coffee_card_api_constants.dart';
+import 'package:coffeecard/persistence/api/coffee_card_api_constants.dart';
 import 'package:crypto/crypto.dart' show sha256;
 import 'package:logger/logger.dart';
 
