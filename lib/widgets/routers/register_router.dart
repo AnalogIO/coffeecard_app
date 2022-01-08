@@ -13,7 +13,7 @@ class RegisterRouter extends StatelessWidget {
   Widget _currentPage(RegisterState state) {
     if (state.email == null) return RegisterEmailPage();
     if (state.passcode == null) return RegisterPasscodePage();
-    if (state.name == null) return RegisterNamePage();
+    return RegisterNamePage();
     // return RegisterTermsPage();
     return Container();
   }

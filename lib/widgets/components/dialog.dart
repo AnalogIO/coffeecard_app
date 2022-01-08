@@ -7,16 +7,16 @@ Future<void> appDialog({
   required String title,
   required List<Widget> children,
   required List<Widget> actions,
-  bool backDismissible = true,
+  bool dismissible = true,
   Color barrierColor = AppColor.scrim,
 }) async {
   return showDialog(
     context: context,
-    barrierDismissible: false,
+    barrierDismissible: dismissible,
     barrierColor: barrierColor,
     builder: (BuildContext context) {
       return WillPopScope(
-        onWillPop: () async => !backDismissible,
+        onWillPop: () async => dismissible,
         child: AlertDialog(
           title: Text(title, style: AppTextStyle.ownedTicket),
           shape: const RoundedRectangleBorder(

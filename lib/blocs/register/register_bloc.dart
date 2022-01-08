@@ -32,13 +32,9 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       );
       try {
         await repository.register(register);
-        // TODO: Handle success
         emit(state.copyWith(name: event.name));
-      } on UnauthorizedError /*catch (error)*/ {
-        // TODO: Handle error
-        // print('Error on register: ${error.message}');
-      } finally {
-        emit(state.copyWith(loading: false));
+      } on UnauthorizedError catch (error) {
+        emit(state.copyWith(error: error.message));
       }
     });
     on<RegisterEvent>((event, emit) {

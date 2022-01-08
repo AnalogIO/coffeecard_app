@@ -14,6 +14,7 @@ class RegisterNameTextField extends StatefulWidget {
 
 class _RegisterNameTextFieldState extends State<RegisterNameTextField> {
   final _controller = TextEditingController();
+  String get name => _controller.text;
 
   bool _showError = false;
   String? _error;
@@ -24,15 +25,12 @@ class _RegisterNameTextFieldState extends State<RegisterNameTextField> {
 
   Future<void> _submit(BuildContext context) async {
     _showError = true;
-    await _validateName(_controller.text);
+    await _validateName(name);
     if (_error != null) return;
     if (!mounted) return;
-    // BlocProvider.of<RegisterBloc>(context).add(AddName(_controller.text));
     LoadingOverlay.of(context).show();
     // Delay to allow keyboard to disappear before showing dialog
     await Future.delayed(const Duration(milliseconds: 250));
-    // if (mounted) LoadingOverlay.of(context).hide();
-    // await Future.delayed(const Duration(milliseconds: 500));
     appDialog(
       context: context,
       title: 'Privacy policy',
@@ -58,7 +56,7 @@ class _RegisterNameTextFieldState extends State<RegisterNameTextField> {
           onPressed: () {
             Navigator.of(context).pop();
             LoadingOverlay.of(context).hide();
-            // BlocProvider.of<RegisterBloc>(context).add()
+            BlocProvider.of<RegisterBloc>(context).add(AddName(name));
           },
         ),
       ],
@@ -67,18 +65,33 @@ class _RegisterNameTextFieldState extends State<RegisterNameTextField> {
 
   @override
   Widget build(BuildContext context) {
-    final overlay = LoadingOverlay.of(context);
+    final loadingOverlay = LoadingOverlay.of(context);
 
     return BlocConsumer<RegisterBloc, RegisterState>(
-      listenWhen: (previous, current) => previous.loading || current.loading,
+      listenWhen: (previous, current) =>
+          (previous.loading || current.loading) ||
+          (previous.hasError || current.hasError),
       listener: (context, state) {
-        state.loading ? overlay.show() : overlay.hide();
+        state.loading ? loadingOverlay.show() : loadingOverlay.hide();
+        if (state.name != null) {
+          appDialog(
+            context: context,
+            title: 'title',
+            children: [],
+            actions: [],
+          );
+        } else if (state.hasError) {
+          appDialog(
+            context: context,
+            title: 'Error',
+            children: [Text(state.error!)],
+            actions: [],
+          );
+        }
       },
       builder: (context, state) {
         return AppTextField(
           label: 'Name',
-          hint:
-              'Your name may appear on the leaderboards. You can choose to appear anonymous at any time.',
           autofocus: true,
           error: _showError ? _error : null,
           onChanged: () => _validateName(_controller.text),

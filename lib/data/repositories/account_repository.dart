@@ -26,6 +26,11 @@ class AccountRepository {
     }
   }
 
+  Future<bool> emailExists(String email) async {
+    // TODO implement emailExists
+    return false;
+  }
+
   /// Returns the user token or throws an error.
   Future<AuthenticatedUser> login(String email, String passcode) async {
     final bytes = utf8.encode(passcode);
