@@ -2,12 +2,12 @@ part of 'settings_bloc.dart';
 
 abstract class SettingsState extends Equatable {
   const SettingsState();
+
+  @override
+  List<Object?> get props => [];
 }
 
-class UserLoading extends SettingsState {
-  @override
-  List<Object> get props => [];
-}
+class UserLoading extends SettingsState {}
 
 class UserLoaded extends SettingsState {
   final User user;

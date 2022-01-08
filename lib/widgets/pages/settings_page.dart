@@ -3,7 +3,9 @@ import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/settings/settings_bloc.dart';
 import 'package:coffeecard/data/repositories/v1/account_repository.dart';
 import 'package:coffeecard/service_locator.dart';
-import 'package:coffeecard/widgets/components/helpers/tappable.dart';
+import 'package:coffeecard/widgets/components/setting_list_item.dart';
+import 'package:coffeecard/widgets/components/settings_group.dart';
+import 'package:coffeecard/widgets/components/user_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
@@ -20,19 +22,36 @@ class SettingsPage extends StatelessWidget {
           } else if (state is UserLoaded) {
             return Column(
               children: [
-                UserCard(state),
+                Padding(
+                  padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
+                  child: UserCard(state),
+                ),
                 const Gap(16),
                 SettingsGroup(
                   title: 'Account',
                   listItems: [
                     SettingListItem(
                       name: 'Email',
-                      value: state.user.email,
+                      valueWidget: Text(
+                        state.user.email,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: AppColor.secondary,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
                       onTap: () {},
                     ),
                     SettingListItem(
                       name: 'Passcode',
-                      value: 'Change',
+                      valueWidget: const Text(
+                        'Change',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: AppColor.secondary,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
                       onTap: () {},
                     ),
                     SettingListItem(
@@ -41,7 +60,38 @@ class SettingsPage extends StatelessWidget {
                       onTap: () {},
                     ),
                   ],
-                )
+                ),
+                SettingsGroup(
+                  title: 'Features',
+                  listItems: [
+                    SettingListItem(
+                      name: 'Sign in with fingerprint',
+                      valueWidget: Switch(value: false, onChanged: (e) {}),
+                      onTap: () {},
+                    ),
+                  ],
+                ),
+                SettingsGroup(
+                  title: 'About Café Analog',
+                  listItems: [
+                    SettingListItem(
+                      name: 'Frequently Asked Questions',
+                      onTap: () {},
+                    ),
+                    SettingListItem(
+                      name: 'Opening hours',
+                      valueWidget: const Text(
+                        'Today: 8-18',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: AppColor.secondary,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      onTap: () {},
+                    ),
+                  ],
+                ),
               ],
             );
           } else {
@@ -49,86 +99,6 @@ class SettingsPage extends StatelessWidget {
             return const CircularProgressIndicator();
           }
         },
-      ),
-    );
-  }
-}
-
-class SettingsGroup extends StatelessWidget {
-  final String title;
-  final List<SettingListItem> listItems;
-
-  const SettingsGroup({required this.title, required this.listItems});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Gap(16),
-        Text(title, style: AppTextStyle.sectionTitle),
-        const Gap(8),
-        Column(children: listItems)
-      ],
-    );
-  }
-}
-
-class SettingListItem extends StatelessWidget {
-  final String name;
-  final String? value;
-  final bool destructive;
-  final void Function() onTap;
-
-  const SettingListItem({
-    required this.name,
-    required this.onTap,
-    this.value,
-    this.destructive = false,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Tappable(
-      color: AppColor.white,
-      border: const Border(bottom: BorderSide(color: AppColor.lightGray)),
-      onTap: onTap,
-      child: Padding(
-        padding: EdgeInsets.all(16),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(name),
-            if (value == null) Container() else Text(value!),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class UserCard extends StatelessWidget {
-  final UserLoaded state;
-
-  const UserCard(this.state);
-
-  @override
-  Widget build(BuildContext context) {
-    return Tappable(
-      onTap: () {},
-      child: Card(
-        child: Row(
-          children: [
-            const CircleAvatar(),
-            Column(
-              children: [
-                Text(state.user.name),
-                const Text('occupation'),
-              ],
-            ),
-            const Icon(Icons.edit),
-          ],
-        ),
       ),
     );
   }
