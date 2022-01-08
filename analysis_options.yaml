@@ -17,6 +17,7 @@ analyzer:
     implicit-casts: false
   exclude:
     - lib/generated/**
+    - test/**.mocks.dart
   errors:
     invalid_assignment: warning
     missing_return: error

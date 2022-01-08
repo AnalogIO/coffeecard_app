@@ -14,7 +14,10 @@ class AuthenticationInterceptor extends RequestInterceptor {
     final token = await _storage.readToken();
 
     if (token != null) {
-      request.headers['Authorization'] = 'Bearer $token';
+      final updatedHeaders = Map.of(request.headers);
+      updatedHeaders['Authorization'] = 'Bearer $token';
+
+      return request.copyWith(headers: updatedHeaders);
     }
 
     return request;
