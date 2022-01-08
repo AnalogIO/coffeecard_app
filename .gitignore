@@ -52,3 +52,5 @@ app.*.map.json
 
 # test coverage file
 /coverage/lcov.info
+ios/Podfile
+ios/Podfile.lock
