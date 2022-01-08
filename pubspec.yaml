@@ -24,6 +24,9 @@ dependencies:
   flutter:
     sdk: flutter
 
+  # ui
+  gap: ^2.0.0
+
   # retrofit http and rest client
   retrofit: any
   logger: any

@@ -5,15 +5,21 @@ class LoadingOverlay {
   BuildContext _context;
 
   void hide() {
-    Navigator.of(_context).maybePop();
+    Navigator.of(_context).pop();
   }
 
   void show() {
     showDialog(
       context: _context,
-      barrierDismissible: false,
+      barrierColor: AppColor.scrim,
       builder: (_) {
-        return _LoadingScreen();
+        return WillPopScope(
+          // Will prevent Android back button from closing overlay.
+          onWillPop: () async => false,
+          child: const Center(
+            child: CircularProgressIndicator(color: AppColor.white),
+          ),
+        );
       },
     );
   }
@@ -22,17 +28,5 @@ class LoadingOverlay {
 
   factory LoadingOverlay.of(BuildContext context) {
     return LoadingOverlay.__create(context);
-  }
-}
-
-class _LoadingScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(color: Color.fromRGBO(0, 0, 0, 0.8)),
-      child: const Center(
-        child: CircularProgressIndicator(color: AppColor.white),
-      ),
-    );
   }
 }

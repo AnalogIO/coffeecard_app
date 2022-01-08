@@ -6,6 +6,8 @@ abstract class AppColor {
   static const Color background = Color(0xffE5E2D7);
   static const Color ticket = Color(0xffD9CB9D);
 
+  static const Color scrim = Color(0xcc000000); // modal backdrop
+
   static const Color white = Color(0xffFAFAFA);
   static const Color gray = Color(0xff767676);
   static const Color lightGray = Color(0xffC2C2C2);
