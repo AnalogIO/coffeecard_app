@@ -4,8 +4,6 @@ import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/widgets/pages/entry/register/register_email_page.dart';
 import 'package:coffeecard/widgets/pages/entry/register/register_name_page.dart';
 import 'package:coffeecard/widgets/pages/entry/register/register_passcode_page.dart';
-import 'package:coffeecard/widgets/pages/entry/register/register_terms_page.dart';
-import 'package:coffeecard/widgets/pages/entry/register/register_verify_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

@@ -1,12 +1,8 @@
-import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
-import 'package:coffeecard/blocs/register/register_bloc.dart';
 import 'package:coffeecard/widgets/components/dialog.dart';
-import 'package:coffeecard/widgets/components/entry/register/register_verification_code_text_field.dart';
 import 'package:coffeecard/widgets/components/helpers/unordered_list_builder.dart';
 import 'package:coffeecard/widgets/pages/entry/register/register_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 
 const terms = [

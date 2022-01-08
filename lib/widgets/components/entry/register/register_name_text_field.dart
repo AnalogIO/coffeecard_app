@@ -25,7 +25,8 @@ class _RegisterNameTextFieldState extends State<RegisterNameTextField> {
   Future<void> _submit(BuildContext context) async {
     _showError = true;
     await _validateName(_controller.text);
-    if (_error != null || !mounted) return;
+    if (_error != null) return;
+    if (!mounted) return;
     // BlocProvider.of<RegisterBloc>(context).add(AddName(_controller.text));
     LoadingOverlay.of(context).show();
     // Delay to allow keyboard to disappear before showing dialog

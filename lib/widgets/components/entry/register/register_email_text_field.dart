@@ -69,7 +69,8 @@ class _RegisterEmailTextFieldState extends State<RegisterEmailTextField> {
       setState(() => _readOnly = true);
       await _validateEmail(_controller.text);
     }
-    if (_validated && mounted) {
+    if (!mounted) return;
+    if (_validated) {
       BlocProvider.of<RegisterBloc>(context).add(AddEmail(_controller.text));
     }
     setState(() {
