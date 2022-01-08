@@ -1,40 +1,29 @@
 import 'dart:convert';
 
-import 'package:coffeecard/model/account/authenticated_user.dart';
-import 'package:coffeecard/model/account/email.dart';
-import 'package:coffeecard/model/account/login.dart';
-import 'package:coffeecard/model/account/register_user.dart';
-import 'package:coffeecard/model/account/user.dart';
-import 'package:coffeecard/model/account/user_id.dart';
-import 'package:coffeecard/persistence/http/coffee_card_api_client.dart';
-import 'package:coffeecard/utils/exception_extractor.dart';
+import 'package:coffeecard/generated/api/coffeecard_api.swagger.swagger.dart';
+import 'package:coffeecard/models/account/authenticated_user.dart';
+import 'package:coffeecard/models/account/unauthorized_error.dart';
+import 'package:coffeecard/models/http/api_error.dart';
+import 'package:coffeecard/persistence/http/coffee_card_api_constants.dart';
 import 'package:crypto/crypto.dart' show sha256;
-import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 
-class UnauthorizedError implements Exception {
-  final String message;
-  UnauthorizedError(this.message);
-
-  @override
-  String toString() => message;
-}
-
 class AccountRepository {
-  final CoffeeCardApiClient _restClient;
+  final CoffeecardApi _api;
   final Logger _logger;
 
-  AccountRepository(this._restClient, this._logger);
+  AccountRepository(this._api, this._logger);
 
   // TODO Should probably have another return type in order to support
   //      the intended registration flow?
-  Future<void> register(RegisterUser register) async {
-    try {
-      await _restClient.register(register);
-    } on DioError catch (error) {
-      final resp = error.response;
-      _logger.e('API Error ${resp?.statusCode} ${resp?.statusMessage}');
-      throw UnauthorizedError(getDIOError(error));
+  Future<void> register(RegisterDto registerDto) async {
+    final response = await _api.apiVVersionAccountRegisterPost(
+      body: registerDto,
+      version: CoffeeCardApiConstants.apiVersion,
+    );
+    if (!response.isSuccessful) {
+      _logger.e('API Error ${response.statusCode} ${response.error}');
+      throw UnauthorizedError(response.error.toString());
     }
   }
 
@@ -43,65 +32,63 @@ class AccountRepository {
     final bytes = utf8.encode(passcode);
     final passcodeHash = sha256.convert(bytes);
     final base64Pass = base64Encode(passcodeHash.bytes);
-    final login = Login(
-      email,
-      base64Pass,
-      '2.1.0',
-    ); //TODO get the version number from somewhere
 
-    try {
-      final token = await _restClient.login(login);
-      return AuthenticatedUser(
+    final response = await _api.apiVVersionAccountLoginPost(
+      body: LoginDto(
         email: email,
-        token: token.token,
-      );
-    } on DioError catch (error) {
-      final resp = error.response;
-      _logger.e('API Error ${resp?.statusCode} ${resp?.statusMessage}');
-      throw UnauthorizedError(getDIOError(error));
+        password: base64Pass,
+        version: CoffeeCardApiConstants.minAppVersion,
+      ),
+      version: CoffeeCardApiConstants.apiVersion,
+    );
+
+    if (response.isSuccessful) {
+      return AuthenticatedUser(email: email, token: response.body!.token!);
+    } else {
+      _logger.e('API Error ${response.statusCode} ${response.error}');
+      throw UnauthorizedError(response.error.toString());
     }
   }
 
-  Future<User> getUser() async {
-    try {
-      final User user = await _restClient.getUser();
-      return user;
-    } on DioError catch (error) {
-      final resp = error.response;
-      _logger.e('API Error ${resp?.statusCode} ${resp?.statusMessage}');
-      rethrow;
+  /// Get user information
+  Future<UserDto> getUser() async {
+    final response = await _api.apiVVersionAccountGet(
+      version: CoffeeCardApiConstants.apiVersion,
+    );
+
+    if (response.isSuccessful) {
+      return response.body!;
+    } else {
+      _logger.e('API Error ${response.statusCode} ${response.error}');
+      throw ApiError(response.error.toString());
     }
   }
 
-  Future<User> updateUser(User user) async {
-    try {
-      final User updatedUser = await _restClient.updateUser(user);
-      return updatedUser;
-    } on DioError catch (error) {
-      final resp = error.response;
-      _logger.e('API Error ${resp?.statusCode} ${resp?.statusMessage}');
-      rethrow;
+  /// Update user information
+  Future<UserDto> updateUser(UpdateUserDto user) async {
+    final response = await _api.apiVVersionAccountPut(
+      version: CoffeeCardApiConstants.apiVersion,
+      body: user,
+    );
+
+    if (response.isSuccessful) {
+      return response.body!;
+    } else {
+      _logger.e('API Error ${response.statusCode} ${response.error}');
+      throw ApiError(response.error.toString());
     }
   }
 
-  Future<User> getUserById(UserId id) async {
-    try {
-      final User user = await _restClient.getUserById(id);
-      return user;
-    } on DioError catch (error) {
-      final resp = error.response;
-      _logger.e('API Error ${resp?.statusCode} ${resp?.statusMessage}');
-      rethrow;
-    }
-  }
+  /// Request user password reset
+  Future<void> forgotPassword(EmailDto email) async {
+    final response = await _api.apiVVersionAccountForgotpasswordPost(
+      body: email,
+      version: CoffeeCardApiConstants.apiVersion,
+    );
 
-  Future<void> forgottenPassword(Email email) async {
-    try {
-      await _restClient.forgottenPassword(email);
-    } on DioError catch (error) {
-      final resp = error.response;
-      _logger.e('API Error ${resp?.statusCode} ${resp?.statusMessage}');
-      rethrow;
+    if (!response.isSuccessful) {
+      _logger.e('API Error ${response.statusCode} ${response.error}');
+      throw ApiError(response.error.toString());
     }
   }
 }

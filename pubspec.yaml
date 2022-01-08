@@ -28,11 +28,8 @@ dependencies:
   gap: ^2.0.0
 
   # retrofit http and rest client
-  retrofit: any
   logger: any
-  dio: ^4.0.0
-  json_annotation: ^4.1.0
-  json_serializable: ^6.1.1
+  chopper: ^4.0.1
 
   # storage
   flutter_secure_storage: ^5.0.2
@@ -59,8 +56,10 @@ dev_dependencies:
     sdk: flutter
 
   # retrofit http and rest client
-  retrofit_generator: any
+  chopper_generator: ^4.0.2
   build_runner: any
+  json_serializable: ^5.0.0
+  swagger_dart_code_generator: any
 
   # unit testing
   # mockito: ^5.0.16

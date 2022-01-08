@@ -1,0 +1,16 @@
+targets:
+  $default:
+    sources:
+      - lib/**
+      - openapi/**
+      - $package$
+    builders:
+      swagger_dart_code_generator:
+        options:
+          input_folder: 'openapi/'
+          output_folder: 'lib/generated/api/'
+          use_inheritance: false
+          with_base_url: false
+          separate_models: true
+          enums_case_sensitive: false
+          include_if_null: false
