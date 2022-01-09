@@ -1,6 +1,6 @@
 import 'package:chopper/chopper.dart';
-import 'package:coffeecard/persistence/api/interceptors/authentication_interceptor.dart';
-import 'package:coffeecard/persistence/storage/secure_storage.dart';
+import 'package:coffeecard/data/api/interceptors/authentication_interceptor.dart';
+import 'package:coffeecard/data/storage/secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';

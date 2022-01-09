@@ -1,5 +1,5 @@
 import 'package:coffeecard/blocs/register/register_bloc.dart';
-import 'package:coffeecard/persistence/repositories/account_repository.dart';
+import 'package:coffeecard/data/repositories/account_repository.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/widgets/pages/entry/register/register_email_page.dart';
 import 'package:coffeecard/widgets/pages/entry/register/register_name_page.dart';

@@ -1,6 +1,6 @@
 import 'package:coffeecard/blocs/authentication/authentication_bloc.dart';
+import 'package:coffeecard/data/repositories/account_repository.dart';
 import 'package:coffeecard/models/account/unauthorized_error.dart';
-import 'package:coffeecard/persistence/repositories/account_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
