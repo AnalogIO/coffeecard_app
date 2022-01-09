@@ -2,19 +2,20 @@ coverage:
   status:
     project:
       default: false # disable the default status that measures entire project
-      models: # models package
+      blocs: # blocs dir
+        # target: 70% Not enforced at this time
         paths:
-          - lib/models/
-      persistence: # persistence package
-        target: 75%
+          - lib/blocs/
+      data: # data dir
+        target: 70%
         paths:
-          - lib/persistence/
-      pages: # pages package
-        target: 75%
+          - lib/data/
+      payment: # payment dir
+        target: 70%
         paths:
-          - lib/widgets/pages/
+          - lib/payment/
       other: # remaining
         paths:
-          - "!lib/models/"
-          - "!lib/persistence/"
-          - "!lib/widgets/pages/"
+          - "!lib/data/"
+          - "!lib/blocs/"
+          - "!lib/payment/"
