@@ -1,5 +1,5 @@
+import 'package:coffeecard/data/storage/secure_storage.dart';
 import 'package:coffeecard/models/account/authenticated_user.dart';
-import 'package:coffeecard/persistence/storage/secure_storage.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
