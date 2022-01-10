@@ -29,8 +29,9 @@ class ListEntry extends StatelessWidget {
   final Widget rightWidget;
   final bool isTapAble;
   final void Function() onTap;
+  final Object? entry;
 
-  const ListEntry({required this.leftWidget, required this.rightWidget, required this.isTapAble, required this.onTap});
+  const ListEntry({required this.leftWidget, required this.rightWidget, required this.isTapAble, required this.onTap, this.entry});
 
   @override
   Widget build(BuildContext context) {
