@@ -28,7 +28,7 @@ dependencies:
   gap: ^2.0.0
 
   # Chopper api and rest client
-  logger: any
+  logger: ^1.1.0
   chopper: 4.0.4
 
   # storage
@@ -43,6 +43,9 @@ dependencies:
   # Utility
   meta: ^1.1.6
   equatable: ^2.0.3
+
+  # Internationalization and date formatting
+  intl: ^0.17.0
 
   # crypto
   crypto: any

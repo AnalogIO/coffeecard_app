@@ -3,6 +3,7 @@ import 'package:coffeecard/data/api/coffee_card_api_constants.dart';
 import 'package:coffeecard/data/api/interceptors/authentication_interceptor.dart';
 import 'package:coffeecard/data/repositories/account_repository.dart';
 import 'package:coffeecard/data/repositories/app_config_repository.dart';
+import 'package:coffeecard/data/repositories/receipt_repository.dart';
 import 'package:coffeecard/data/storage/secure_storage.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.swagger.dart';
 import 'package:get_it/get_it.dart';
@@ -31,6 +32,10 @@ void configureServices() {
   // Repositories
   sl.registerFactory<AccountRepository>(
     () => AccountRepository(sl<CoffeecardApi>(), sl<Logger>()),
+  );
+
+  sl.registerFactory<ReceiptRepository>(
+    () => ReceiptRepository(sl<CoffeecardApi>(), sl<Logger>()),
   );
 
   sl.registerFactory<AppConfigRepository>(
