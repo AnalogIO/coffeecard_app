@@ -3,8 +3,7 @@
   "openapi": "3.0.0",
   "info": {
     "title": "Cafe Analog CoffeeCard API",
-    "description": "ASP.NET Core web API for the coffee bar Cafe Analog",
-    "termsOfService": "None",
+    "description": "ASP.NET Core WebAPI for Cafe Analog",
     "contact": {
       "name": "AnalogIO",
       "url": "https://github.com/analogio",
@@ -22,24 +21,13 @@
     }
   ],
   "paths": {
-    "/api/v{version}/Account/register": {
+    "/api/v1/Account/register": {
       "post": {
         "tags": [
           "Account"
         ],
         "summary": "Register a new account. A account is required to verify its email before logging in",
         "operationId": "Account_Register",
-        "parameters": [
-          {
-            "name": "version",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 2
-          }
-        ],
         "requestBody": {
           "x-name": "registerDto",
           "description": "Register data object",
@@ -55,14 +43,11 @@
         },
         "responses": {
           "201": {
-            "description": "Successful account creation"
-          },
-          "400": {
-            "description": "Invalid Account creation object",
+            "description": "Successful account creation",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
+                  "$ref": "#/components/schemas/MessageResponseDto"
                 }
               }
             }
@@ -72,7 +57,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApiException"
+                  "$ref": "#/components/schemas/MessageResponseDto"
                 }
               }
             }
@@ -80,24 +65,13 @@
         }
       }
     },
-    "/api/v{version}/Account/login": {
+    "/api/v1/Account/login": {
       "post": {
         "tags": [
           "Account"
         ],
         "summary": "Returns a token that is used to identify the account",
         "operationId": "Account_Login",
-        "parameters": [
-          {
-            "name": "version",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 2
-          }
-        ],
         "requestBody": {
           "x-name": "loginDto",
           "description": "Login data object",
@@ -122,25 +96,8 @@
               }
             }
           },
-          "400": {
-            "description": "Invalid Login creation object",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
-          },
           "401": {
-            "description": "Invalid credentials",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
+            "description": "Invalid credentials"
           },
           "403": {
             "description": "Account email not verified",
@@ -165,24 +122,13 @@
         }
       }
     },
-    "/api/v{version}/Account": {
+    "/api/v1/Account": {
       "get": {
         "tags": [
           "Account"
         ],
         "summary": "Returns basic data about the account",
         "operationId": "Account_Get",
-        "parameters": [
-          {
-            "name": "version",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 1
-          }
-        ],
         "responses": {
           "200": {
             "description": "Successful request",
@@ -195,14 +141,7 @@
             }
           },
           "401": {
-            "description": "Invalid credentials",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
+            "description": "Invalid credentials"
           }
         }
       },
@@ -212,17 +151,6 @@
         ],
         "summary": "Updates the account and returns the updated values",
         "operationId": "Account_Update",
-        "parameters": [
-          {
-            "name": "version",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 2
-          }
-        ],
         "requestBody": {
           "x-name": "userDto",
           "description": "Update account information request",
@@ -248,88 +176,17 @@
             }
           },
           "401": {
-            "description": "Invalid credentials",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
+            "description": "Invalid credentials"
           }
         }
       }
     },
-    "/api/v{version}/Account/lookupuserid": {
-      "get": {
-        "tags": [
-          "Account"
-        ],
-        "summary": "Returns the requested account from account id",
-        "operationId": "Account_LookUpUserId",
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "query",
-            "description": "Account id",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 1
-          },
-          {
-            "name": "version",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 2
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserDto"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Invalid credentials",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v{version}/Account/forgotpassword": {
+    "/api/v1/Account/forgotpassword": {
       "post": {
         "tags": [
           "Account"
         ],
-        "summary": "Sends email to account if they forgot password",
         "operationId": "Account_ForgotPassword",
-        "parameters": [
-          {
-            "name": "version",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 2
-          }
-        ],
         "requestBody": {
           "x-name": "emailDTO",
           "description": "Account email",
@@ -347,10 +204,19 @@
           "200": {
             "description": "Successful request",
             "content": {
-              "application/octet-stream": {
+              "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "binary"
+                  "$ref": "#/components/schemas/MessageResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "E-mail not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
                 }
               }
             }
@@ -358,24 +224,13 @@
         }
       }
     },
-    "/api/v{version}/AppConfig": {
+    "/api/v1/AppConfig": {
       "get": {
         "tags": [
           "AppConfig"
         ],
         "summary": "Get app configuration",
         "operationId": "AppConfig_Get",
-        "parameters": [
-          {
-            "name": "version",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 1
-          }
-        ],
         "responses": {
           "200": {
             "description": "Successful request",
@@ -388,64 +243,36 @@
             }
           },
           "401": {
-            "description": "Invalid credentials",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
+            "description": "Invalid credentials"
           }
         }
       }
     },
-    "/api/v{version}/CoffeeCards": {
+    "/api/v1/CoffeeCards": {
       "get": {
         "tags": [
           "CoffeeCards"
         ],
         "summary": "Retrieve the coffee cards of the account",
         "operationId": "CoffeeCards_Get",
-        "parameters": [
-          {
-            "name": "version",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 1
-          }
-        ],
         "responses": {
           "200": {
             "description": "Successful request",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CoffeeCard"
-                  }
+                  "$ref": "#/components/schemas/CoffeeCardDto"
                 }
               }
             }
           },
           "401": {
-            "description": "Invalid credentials",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
+            "description": "Invalid credentials"
           }
         }
       }
     },
-    "/api/v{version}/Leaderboard": {
+    "/api/v1/Leaderboard": {
       "get": {
         "tags": [
           "Leaderboard"
@@ -473,15 +300,6 @@
               "default": 10
             },
             "x-position": 2
-          },
-          {
-            "name": "version",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 3
           }
         ],
         "responses": {
@@ -492,45 +310,28 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/LeaderboardUser"
+                    "$ref": "#/components/schemas/LeaderboardDto"
                   }
                 }
               }
             }
           },
           "401": {
-            "description": "Invalid credentials",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
+            "description": "Invalid credentials"
           }
         }
       }
     },
-    "/api/v{version}/MobilePay/initiate": {
+    "/api/v1/MobilePay/initiate": {
       "post": {
         "tags": [
           "MobilePay"
         ],
         "summary": "Initiates a purchase from the given productId and returns an orderId",
         "operationId": "MobilePay_InitiatePurchase",
-        "parameters": [
-          {
-            "name": "version",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 2
-          }
-        ],
         "requestBody": {
           "x-name": "initiatePurchaseDto",
+          "description": "Initiate purchase request",
           "content": {
             "application/json": {
               "schema": {
@@ -553,38 +354,21 @@
             }
           },
           "401": {
-            "description": "Invalid credentials",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
+            "description": "Invalid credentials"
           }
         }
       }
     },
-    "/api/v{version}/MobilePay/complete": {
+    "/api/v1/MobilePay/complete": {
       "post": {
         "tags": [
           "MobilePay"
         ],
         "summary": "Validates the purchase against MobilePay and delivers the tickets if succeeded",
         "operationId": "MobilePay_CompletePurchase",
-        "parameters": [
-          {
-            "name": "version",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 2
-          }
-        ],
         "requestBody": {
           "x-name": "dto",
+          "description": "Complete purchase request with MobilePay reference",
           "content": {
             "application/json": {
               "schema": {
@@ -597,44 +381,35 @@
         },
         "responses": {
           "200": {
-            "description": "",
+            "description": "Purchase successfully fulfilled",
             "content": {
-              "application/octet-stream": {
+              "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "binary"
+                  "$ref": "#/components/schemas/MessageResponseDto"
                 }
               }
             }
+          },
+          "401": {
+            "description": "Invalid credentials"
           }
         }
       }
     },
-    "/api/v{version}/Ping": {
+    "/api/v1/Ping": {
       "get": {
         "tags": [
           "Ping"
         ],
+        "summary": "Ping",
         "operationId": "Ping_Ping",
-        "parameters": [
-          {
-            "name": "version",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 1
-          }
-        ],
         "responses": {
           "200": {
-            "description": "",
+            "description": "Successful request",
             "content": {
-              "application/octet-stream": {
+              "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "binary"
+                  "type": "string"
                 }
               }
             }
@@ -642,32 +417,23 @@
         }
       }
     },
-    "/api/v{version}/Products": {
+    "/api/v1/Products": {
       "get": {
         "tags": [
           "Products"
         ],
-        "summary": "Returns a list of products",
+        "summary": "Returns a list of available products based on a account's user group",
         "operationId": "Products_GetProductsPublic",
-        "parameters": [
-          {
-            "name": "version",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 1
-          }
-        ],
         "responses": {
           "200": {
-            "description": "",
+            "description": "Successful request",
             "content": {
-              "application/octet-stream": {
+              "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "binary"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductDto"
+                  }
                 }
               }
             }
@@ -675,64 +441,50 @@
         }
       }
     },
-    "/api/v{version}/Products/app": {
+    "/api/v1/Products/app": {
       "get": {
         "tags": [
           "Products"
         ],
+        "summary": "Returns a list of available products based on a account's user group",
         "operationId": "Products_GetProductsForUser",
-        "parameters": [
-          {
-            "name": "version",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 1
-          }
-        ],
         "responses": {
           "200": {
-            "description": "",
+            "description": "Successful request",
             "content": {
-              "application/octet-stream": {
+              "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "binary"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductDto"
+                  }
                 }
               }
             }
+          },
+          "401": {
+            "description": "Invalid credentials"
           }
         }
       }
     },
-    "/api/v{version}/Programmes": {
+    "/api/v1/Programmes": {
       "get": {
         "tags": [
           "Programmes"
         ],
         "summary": "Returns a list of available programmes",
         "operationId": "Programmes_Get",
-        "parameters": [
-          {
-            "name": "version",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 1
-          }
-        ],
         "responses": {
           "200": {
-            "description": "",
+            "description": "Successful request",
             "content": {
-              "application/octet-stream": {
+              "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "binary"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProgrammeDto"
+                  }
                 }
               }
             }
@@ -740,40 +492,34 @@
         }
       }
     },
-    "/api/v{version}/Purchases": {
+    "/api/v1/Purchases": {
       "get": {
         "tags": [
           "Purchases"
         ],
         "summary": "Returns a list of purchases for the given user via the supplied token in the header",
         "operationId": "Purchases_Get",
-        "parameters": [
-          {
-            "name": "version",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 1
-          }
-        ],
         "responses": {
           "200": {
-            "description": "",
+            "description": "Successful request",
             "content": {
-              "application/octet-stream": {
+              "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "binary"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PurchaseDto"
+                  }
                 }
               }
             }
+          },
+          "401": {
+            "description": "Invalid credentials"
           }
         }
       }
     },
-    "/api/v{version}/Purchases/redeemvoucher": {
+    "/api/v1/Purchases/redeemvoucher": {
       "post": {
         "tags": [
           "Purchases"
@@ -785,29 +531,41 @@
             "name": "voucherCode",
             "in": "query",
             "schema": {
-              "type": "string",
-              "nullable": true
-            },
-            "x-position": 1
-          },
-          {
-            "name": "version",
-            "in": "path",
-            "required": true,
-            "schema": {
               "type": "string"
             },
-            "x-position": 2
+            "x-position": 1
           }
         ],
         "responses": {
           "200": {
-            "description": "",
+            "description": "Successful request",
             "content": {
-              "application/octet-stream": {
+              "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "binary"
+                  "$ref": "#/components/schemas/PurchaseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Voucher code already used",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid credentials"
+          },
+          "404": {
+            "description": "Voucher code not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
                 }
               }
             }
@@ -815,24 +573,13 @@
         }
       }
     },
-    "/api/v{version}/Purchases/issueproduct": {
+    "/api/v1/Purchases/issueproduct": {
       "post": {
         "tags": [
           "Purchases"
         ],
         "summary": "Issue purchase used by the ipad in the cafe",
         "operationId": "Purchases_IssueProduct",
-        "parameters": [
-          {
-            "name": "version",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 2
-          }
-        ],
         "requestBody": {
           "x-name": "issueProduct",
           "content": {
@@ -847,80 +594,69 @@
         },
         "responses": {
           "200": {
-            "description": "",
+            "description": "Successful request",
             "content": {
-              "application/octet-stream": {
+              "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "binary"
+                  "$ref": "#/components/schemas/PurchaseDto"
                 }
               }
             }
+          },
+          "401": {
+            "description": "Invalid credentials"
           }
         }
       }
     },
-    "/api/v{version}/Tickets": {
+    "/api/v1/Tickets": {
       "get": {
         "tags": [
           "Tickets"
         ],
-        "summary": "Returns a list of tickets. Use 'used' parameter to define what kind of tickets are returned",
+        "summary": "Returns a list of tickets",
         "operationId": "Tickets_Get",
         "parameters": [
           {
             "name": "used",
             "in": "query",
+            "description": "Include already used tickets",
             "schema": {
               "type": "boolean"
             },
             "x-position": 1
-          },
-          {
-            "name": "version",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 2
           }
         ],
         "responses": {
           "200": {
-            "description": "",
+            "description": "Successful request",
             "content": {
-              "application/octet-stream": {
+              "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "binary"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TicketDto"
+                  }
                 }
               }
             }
+          },
+          "401": {
+            "description": "Invalid credentials"
           }
         }
       }
     },
-    "/api/v{version}/Tickets/useMultiple": {
+    "/api/v1/Tickets/useMultiple": {
       "post": {
         "tags": [
           "Tickets"
         ],
-        "summary": "Uses the tickets supplied via ticketIds in the body",
+        "summary": "Uses the tickets supplied via product ids in the body",
         "operationId": "Tickets_UseMultipleTickets",
-        "parameters": [
-          {
-            "name": "version",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 2
-          }
-        ],
         "requestBody": {
           "x-name": "dto",
+          "description": "Use multiple tickets request",
           "content": {
             "application/json": {
               "schema": {
@@ -933,38 +669,44 @@
         },
         "responses": {
           "200": {
-            "description": "",
+            "description": "Successful request",
             "content": {
-              "application/octet-stream": {
+              "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "binary"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TicketDto"
+                  }
                 }
               }
             }
+          },
+          "400": {
+            "description": "Bad Request, not enough tickets. See explanation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid credentials"
           }
         }
       }
     },
-    "/api/v{version}/Tickets/use": {
+    "/api/v1/Tickets/use": {
       "post": {
         "tags": [
           "Tickets"
         ],
+        "summary": "Use ticket request",
         "operationId": "Tickets_Use",
-        "parameters": [
-          {
-            "name": "version",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 2
-          }
-        ],
         "requestBody": {
           "x-name": "dto",
+          "description": "Use ticket request",
           "content": {
             "application/json": {
               "schema": {
@@ -977,15 +719,27 @@
         },
         "responses": {
           "200": {
-            "description": "",
+            "description": "Successful request",
             "content": {
-              "application/octet-stream": {
+              "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "binary"
+                  "$ref": "#/components/schemas/TicketDto"
                 }
               }
             }
+          },
+          "400": {
+            "description": "Bad Request, not enough tickets. See explanation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid credentials"
           }
         }
       }
@@ -993,79 +747,18 @@
   },
   "components": {
     "schemas": {
-      "ProblemDetails": {
+      "MessageResponseDto": {
         "type": "object",
-        "additionalProperties": {
-          "nullable": true
+        "description": "Simple response class with a string message",
+        "example": {
+          "message": "Successful completion"
         },
-        "properties": {
-          "type": {
-            "type": "string",
-            "nullable": true
-          },
-          "title": {
-            "type": "string",
-            "nullable": true
-          },
-          "status": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "detail": {
-            "type": "string",
-            "nullable": true
-          },
-          "instance": {
-            "type": "string",
-            "nullable": true
-          },
-          "extensions": {
-            "type": "object",
-            "nullable": true,
-            "additionalProperties": {}
-          }
-        }
-      },
-      "ApiException": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Exception"
-          },
-          {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "StatusCode": {
-                "type": "integer",
-                "format": "int32"
-              }
-            }
-          }
-        ]
-      },
-      "Exception": {
-        "type": "object",
         "additionalProperties": false,
         "properties": {
-          "StackTrace": {
+          "message": {
             "type": "string",
-            "nullable": true
-          },
-          "Message": {
-            "type": "string"
-          },
-          "InnerException": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/Exception"
-              }
-            ]
-          },
-          "Source": {
-            "type": "string",
-            "nullable": true
+            "description": "Message with API response",
+            "example": "Successful completion"
           }
         }
       },
@@ -1110,6 +803,47 @@
         "additionalProperties": false,
         "properties": {
           "token": {
+            "type": "string"
+          }
+        }
+      },
+      "ApiException": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Exception"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "StatusCode": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          }
+        ]
+      },
+      "Exception": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "StackTrace": {
+            "type": "string",
+            "nullable": true
+          },
+          "Message": {
+            "type": "string"
+          },
+          "InnerException": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Exception"
+              }
+            ]
+          },
+          "Source": {
             "type": "string",
             "nullable": true
           }
@@ -1316,10 +1050,14 @@
         "type": "object",
         "description": "App Configuration",
         "example": {
-          "environmentType": "production",
+          "environmentType": "Production",
           "merchantId": "APP1234"
         },
         "additionalProperties": false,
+        "required": [
+          "environmentType",
+          "merchantId"
+        ],
         "properties": {
           "environmentType": {
             "description": "Environment type for indicating production or test system",
@@ -1333,7 +1071,7 @@
           "merchantId": {
             "type": "string",
             "description": "MobilePay MerchantId",
-            "nullable": true,
+            "minLength": 1,
             "example": "APP1234"
           }
         }
@@ -1350,7 +1088,7 @@
           "Test"
         ]
       },
-      "CoffeeCard": {
+      "CoffeeCardDto": {
         "type": "object",
         "description": "A CoffeeCard is a union datatype of a product and unused tickets associated with the product. ",
         "example": {
@@ -1361,6 +1099,13 @@
           "quantity": 10
         },
         "additionalProperties": false,
+        "required": [
+          "productId",
+          "name",
+          "ticketsLeft",
+          "price",
+          "quantity"
+        ],
         "properties": {
           "productId": {
             "type": "integer",
@@ -1371,7 +1116,7 @@
           "name": {
             "type": "string",
             "description": "Name of product",
-            "nullable": true,
+            "minLength": 1,
             "example": "Filter Coffee"
           },
           "ticketsLeft": {
@@ -1394,7 +1139,7 @@
           }
         }
       },
-      "LeaderboardUser": {
+      "LeaderboardDto": {
         "type": "object",
         "description": "A user on the leaderboard",
         "example": {
@@ -1406,7 +1151,6 @@
           "name": {
             "type": "string",
             "description": "Account name",
-            "nullable": true,
             "example": "John Doe"
           },
           "score": {
@@ -1419,16 +1163,29 @@
       },
       "InitiatePurchaseResponseDto": {
         "type": "object",
+        "description": "Initiation of a new purchase response",
+        "example": {
+          "orderId": "ae76a5ba-82e8-46d8-8431-6cbb3130b94a"
+        },
         "additionalProperties": false,
+        "required": [
+          "orderId"
+        ],
         "properties": {
           "orderId": {
             "type": "string",
-            "nullable": true
+            "description": "Order Id",
+            "minLength": 1,
+            "example": "ae76a5ba-82e8-46d8-8431-6cbb3130b94a"
           }
         }
       },
       "InitiatePurchaseDto": {
         "type": "object",
+        "description": "Initiate a new purchase request",
+        "example": {
+          "productId": 1
+        },
         "additionalProperties": false,
         "required": [
           "productId"
@@ -1436,12 +1193,19 @@
         "properties": {
           "productId": {
             "type": "integer",
-            "format": "int32"
+            "description": "Id of product for purchase request",
+            "format": "int32",
+            "example": 1
           }
         }
       },
       "CompletePurchaseDto": {
         "type": "object",
+        "description": "Represents a request to complete a purchase",
+        "example": {
+          "orderId": "ae76a5ba-82e8-46d8-8431-6cbb3130b94a",
+          "transactionId": "123241619"
+        },
         "additionalProperties": false,
         "required": [
           "orderId",
@@ -1450,39 +1214,269 @@
         "properties": {
           "orderId": {
             "type": "string",
-            "minLength": 1
+            "description": "Order Id for purchase",
+            "minLength": 1,
+            "example": "ae76a5ba-82e8-46d8-8431-6cbb3130b94a"
           },
           "transactionId": {
             "type": "string",
-            "minLength": 1
+            "description": "Transaction Id at external payment provider",
+            "minLength": 1,
+            "example": 123241619
+          }
+        }
+      },
+      "ProductDto": {
+        "type": "object",
+        "description": "Represents a purchasable product",
+        "example": {
+          "id": 1,
+          "price": 300,
+          "numberOfTickets": 10,
+          "name": "Coffee clip card",
+          "description": "Coffee clip card of 10 clips"
+        },
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "price",
+          "numberOfTickets",
+          "name",
+          "description"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Id of product",
+            "format": "int32",
+            "example": 1
+          },
+          "price": {
+            "type": "integer",
+            "description": "Product price",
+            "format": "int32",
+            "example": 300
+          },
+          "numberOfTickets": {
+            "type": "integer",
+            "description": "Number of tickets in product",
+            "format": "int32",
+            "example": 10
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of product",
+            "minLength": 1,
+            "example": "Coffee clip card"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of products",
+            "minLength": 1,
+            "example": "Coffee clip card of 10 clips"
+          }
+        }
+      },
+      "ProgrammeDto": {
+        "type": "object",
+        "description": "Represents a study programme",
+        "example": {
+          "id": 1,
+          "shortName": "SWU",
+          "fullName": "Software Development"
+        },
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "shortName",
+          "fullName"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Id of study programme",
+            "format": "int32",
+            "example": 1
+          },
+          "shortName": {
+            "type": "string",
+            "description": "Short name of study programme",
+            "minLength": 1,
+            "example": "SWU"
+          },
+          "fullName": {
+            "type": "string",
+            "description": "Full name of study programme",
+            "minLength": 1,
+            "example": "Software development"
+          }
+        }
+      },
+      "PurchaseDto": {
+        "type": "object",
+        "description": "Represents a purchase",
+        "example": "{\n    \"id\": 22,\n    \"productName\": \"Coffee\",\n    \"productId\": 1,\n    \"price\": 300,\n    \"numberOfTickets\": 10,\n    \"dateCreated\": \"2022-01-09T21:03:52.2283208Z\",\n    \"completed: true,\n    \"orderId\": \"f5cb3e0f-3b9b-4f50-8c4f-a7450f300a5c\",\n    \"transactionId\": \"1482981489\"\n}",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "productName",
+          "productId",
+          "price",
+          "numberOfTickets",
+          "dateCreated",
+          "completed",
+          "orderId",
+          "transactionId"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Id of purchase",
+            "format": "int32",
+            "example": 1371
+          },
+          "productName": {
+            "type": "string",
+            "description": "Name of purchased product",
+            "minLength": 1,
+            "example": "Coffee"
+          },
+          "productId": {
+            "type": "integer",
+            "description": "Id of purchased product",
+            "format": "int32",
+            "example": 1
+          },
+          "price": {
+            "type": "integer",
+            "description": "Total purchase price in Danish Kroner (kr)",
+            "format": "int32",
+            "example": 300
+          },
+          "numberOfTickets": {
+            "type": "integer",
+            "description": "Number of tickets issued in purchase",
+            "format": "int32",
+            "example": 10
+          },
+          "dateCreated": {
+            "type": "string",
+            "description": "Date time for purchase in Utc format",
+            "format": "date-time",
+            "minLength": 1,
+            "example": "2022-01-09T21:03:52.2283208Z"
+          },
+          "completed": {
+            "type": "boolean",
+            "description": "Is purchase completed (with MobilePay)",
+            "example": true
+          },
+          "orderId": {
+            "type": "string",
+            "description": "Order Id",
+            "minLength": 1,
+            "example": "f5cb3e0f-3b9b-4f50-8c4f-a7450f300a5c"
+          },
+          "transactionId": {
+            "type": "string",
+            "description": "Transaction id at external payment provider",
+            "minLength": 1,
+            "example": 1482981489
           }
         }
       },
       "IssueProductDto": {
         "type": "object",
+        "description": "Issue product request",
+        "example": {
+          "issuedBy": "dann",
+          "userId": "122",
+          "productId": 1
+        },
         "additionalProperties": false,
+        "required": [
+          "issuedBy",
+          "userId",
+          "productId"
+        ],
         "properties": {
           "issuedBy": {
             "type": "string",
-            "nullable": true
+            "description": "Name/Initials of person who issued purchase",
+            "minLength": 1
           },
           "userId": {
             "type": "integer",
-            "format": "int32"
+            "description": "User id who should receive the product",
+            "format": "int32",
+            "example": 122
           },
           "productId": {
             "type": "integer",
-            "format": "int32"
+            "description": "Id of Product to issue",
+            "format": "int32",
+            "example": 1
+          }
+        }
+      },
+      "TicketDto": {
+        "type": "object",
+        "description": "Representing a ticket for a product",
+        "example": "{\n    \"id\": 122,\n    \"dateCreated\": \"2022-01-09T21:03:52.2283208Z\",\n    \"dateUsed\": \"2022-01-09T21:03:52.2283208Z\",\n    \"productName: \"Coffee\"\n}",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "dateCreated",
+          "dateUsed",
+          "productName"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Ticket Id",
+            "format": "int32",
+            "example": 122
+          },
+          "dateCreated": {
+            "type": "string",
+            "description": "Issuing date time for ticket in Utc format",
+            "format": "date-time",
+            "minLength": 1,
+            "example": "2022-01-09T21:03:52.2283208Z"
+          },
+          "dateUsed": {
+            "type": "string",
+            "description": "Used date time for ticket in Utc format",
+            "format": "date-time",
+            "minLength": 1,
+            "example": "2022-01-09T21:03:52.2283208Z"
+          },
+          "productName": {
+            "type": "string",
+            "description": "Name of product a ticket is for",
+            "minLength": 1,
+            "example": "Coffee"
           }
         }
       },
       "UseMultipleTicketDto": {
         "type": "object",
+        "description": "Use multiple tickets request",
+        "example": {
+          "productIds": [
+            1,
+            2
+          ]
+        },
         "additionalProperties": false,
+        "required": [
+          "productIds"
+        ],
         "properties": {
           "productIds": {
             "type": "array",
-            "nullable": true,
+            "description": "List of products ids to use a ticket for",
+            "example": "1, 2",
             "items": {
               "type": "integer",
               "format": "int32"
@@ -1492,13 +1486,32 @@
       },
       "UseTicketDTO": {
         "type": "object",
+        "description": "Use ticket request",
+        "example": {
+          "productId": 1
+        },
         "additionalProperties": false,
+        "required": [
+          "productId"
+        ],
         "properties": {
           "productId": {
             "type": "integer",
-            "format": "int32"
+            "description": "Id of product to use a ticket for",
+            "format": "int32",
+            "example": 1
           }
         }
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "apiKey",
+        "description": "Insert a JWT Bearer token: Bearer {token}",
+        "name": "Authorization",
+        "in": "header",
+        "scheme": "Bearer",
+        "bearerFormat": "JWT"
       }
     }
   }

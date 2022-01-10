@@ -15,7 +15,7 @@ targets:
           with_base_url: false
           separate_models: true
           enums_case_sensitive: false
-          include_if_null: false
+          include_if_null: true
       mockito|mockBuilder:
         generate_for:
           - test/**.dart
