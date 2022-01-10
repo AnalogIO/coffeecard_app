@@ -75,9 +75,10 @@ flutter_app_name: #remember to update: flutter pub run flutter_app_name
 flutter_icons: #remember to update: flutter pub run flutter_launcher_icons:main
   android: true
   ios: true
-  image_path_ios: "assets/icon.png"
-  image_path_android: "assets/icon.png"
   remove_alpha_ios: true
+  image_path: "assets/icon/Icon.png"
+  adaptive_icon_background: "assets/icon/Background.png"
+  adaptive_icon_foreground: "assets/icon/Foreground.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
