@@ -25,7 +25,7 @@ class ReceiptsPage extends StatelessWidget {
                   padding: EdgeInsets.zero,
                   itemCount: state.receiptsForDisplay.length,
                   itemBuilder: (context, index) {
-                    return ReceiptEntry(
+                    return ReceiptListEntry(
                       receipt: state.receiptsForDisplay[index],
                     );
                   },
