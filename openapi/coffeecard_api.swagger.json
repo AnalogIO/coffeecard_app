@@ -17,7 +17,7 @@
   },
   "servers": [
     {
-      "url": "https://localhost:5001"
+      "url": "https://beta.analogio.dk/api/clippy"
     }
   ],
   "paths": {
@@ -143,7 +143,12 @@
           "401": {
             "description": "Invalid credentials"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       },
       "put": {
         "tags": [
@@ -178,7 +183,12 @@
           "401": {
             "description": "Invalid credentials"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     },
     "/api/v1/Account/forgotpassword": {
@@ -245,7 +255,12 @@
           "401": {
             "description": "Invalid credentials"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     },
     "/api/v1/CoffeeCards": {
@@ -269,7 +284,12 @@
           "401": {
             "description": "Invalid credentials"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     },
     "/api/v1/Leaderboard": {
@@ -356,7 +376,12 @@
           "401": {
             "description": "Invalid credentials"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     },
     "/api/v1/MobilePay/complete": {
@@ -393,7 +418,12 @@
           "401": {
             "description": "Invalid credentials"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     },
     "/api/v1/Ping": {
@@ -465,7 +495,12 @@
           "401": {
             "description": "Invalid credentials"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     },
     "/api/v1/Programmes": {
@@ -516,7 +551,12 @@
           "401": {
             "description": "Invalid credentials"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     },
     "/api/v1/Purchases/redeemvoucher": {
@@ -570,7 +610,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     },
     "/api/v1/Purchases/issueproduct": {
@@ -644,7 +689,12 @@
           "401": {
             "description": "Invalid credentials"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     },
     "/api/v1/Tickets/useMultiple": {
@@ -694,7 +744,12 @@
           "401": {
             "description": "Invalid credentials"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     },
     "/api/v1/Tickets/use": {
@@ -741,7 +796,12 @@
           "401": {
             "description": "Invalid credentials"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     }
   },
@@ -800,10 +860,16 @@
       },
       "TokenDto": {
         "type": "object",
+        "description": "Login response with Bearer JWT Token",
+        "example": {
+          "token": "[no example provided]"
+        },
         "additionalProperties": false,
         "properties": {
           "token": {
-            "type": "string"
+            "type": "string",
+            "description": "Bearer JWT token used for authentication",
+            "example": "[no example provided]"
           }
         }
       },
@@ -854,8 +920,8 @@
         "description": "Login data object",
         "example": {
           "email": "john@doe.com",
-          "password": "0ffe1abd1a08215353c233d6e009613e95eec4253832a761af28ff37ac5a150c",
-          "version": "2.0.0"
+          "password": "[no example provided]",
+          "version": "2.1.0"
         },
         "additionalProperties": false,
         "required": [
@@ -873,9 +939,9 @@
           },
           "password": {
             "type": "string",
-            "description": "Pin Code as first SHA256, then Base64 encoded string",
+            "description": "Pin Code as first UTF8 encoded, then SHA256 hashed, and then Base64 encoded string",
             "minLength": 1,
-            "example": "no example provided"
+            "example": "[no example provided]"
           },
           "version": {
             "type": "string",
@@ -1506,11 +1572,11 @@
     },
     "securitySchemes": {
       "Bearer": {
-        "type": "apiKey",
+        "type": "http",
         "description": "Insert a JWT Bearer token: Bearer {token}",
         "name": "Authorization",
         "in": "header",
-        "scheme": "Bearer",
+        "scheme": "bearer",
         "bearerFormat": "JWT"
       }
     }
