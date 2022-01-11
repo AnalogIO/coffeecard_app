@@ -17,9 +17,8 @@ class AccountRepository {
   // TODO Should probably have another return type in order to support
   //      the intended registration flow?
   Future<void> register(RegisterDto registerDto) async {
-    final response = await _api.apiVVersionAccountRegisterPost(
+    final response = await _api.apiV1AccountRegisterPost(
       body: registerDto,
-      version: CoffeeCardApiConstants.apiVersion,
     );
     if (!response.isSuccessful) {
       _logger.e('API Error ${response.statusCode} ${response.error}');
@@ -33,13 +32,12 @@ class AccountRepository {
     final passcodeHash = sha256.convert(bytes);
     final base64Pass = base64Encode(passcodeHash.bytes);
 
-    final response = await _api.apiVVersionAccountLoginPost(
+    final response = await _api.apiV1AccountLoginPost(
       body: LoginDto(
         email: email,
         password: base64Pass,
         version: CoffeeCardApiConstants.minAppVersion,
       ),
-      version: CoffeeCardApiConstants.apiVersion,
     );
 
     if (response.isSuccessful) {
@@ -52,9 +50,7 @@ class AccountRepository {
 
   /// Get user information
   Future<UserDto> getUser() async {
-    final response = await _api.apiVVersionAccountGet(
-      version: CoffeeCardApiConstants.apiVersion,
-    );
+    final response = await _api.apiV1AccountGet();
 
     if (response.isSuccessful) {
       return response.body!;
@@ -66,8 +62,7 @@ class AccountRepository {
 
   /// Update user information
   Future<UserDto> updateUser(UpdateUserDto user) async {
-    final response = await _api.apiVVersionAccountPut(
-      version: CoffeeCardApiConstants.apiVersion,
+    final response = await _api.apiV1AccountPut(
       body: user,
     );
 
@@ -81,9 +76,8 @@ class AccountRepository {
 
   /// Request user password reset
   Future<void> forgotPassword(EmailDto email) async {
-    final response = await _api.apiVVersionAccountForgotpasswordPost(
+    final response = await _api.apiV1AccountForgotpasswordPost(
       body: email,
-      version: CoffeeCardApiConstants.apiVersion,
     );
 
     if (!response.isSuccessful) {
