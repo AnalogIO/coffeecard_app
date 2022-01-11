@@ -39,8 +39,7 @@ class ReceiptListEntry extends StatelessWidget {
         style: AppTextStyle.recieptItemValue,
       ),
       onTap: () {
-        ReceiptOverlay.of(context)
-            .show(receipt);
+        ReceiptOverlay.of(context).show(receipt);
       },
       backgroundColor: receipt.transactionType == TransactionType.purchase
           ? AppColor.slightlyHighlighted

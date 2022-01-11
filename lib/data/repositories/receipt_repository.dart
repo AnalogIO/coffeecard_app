@@ -1,4 +1,3 @@
-import 'package:coffeecard/data/api/coffee_card_api_constants.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.swagger.dart';
 import 'package:coffeecard/models/receipts/receipt.dart';
 import 'package:logger/logger.dart';
@@ -12,10 +11,8 @@ class ReceiptRepository {
   /// Retrieves all of the users receipts
   /// This includes both their used tickets and purchased tickets
   Future<List<Receipt>> getUserReceipts() async {
-    final usedTicketRequest = _api.apiVVersionTicketsGet(
-        used: true, version: CoffeeCardApiConstants.apiVersion);
-    final purchasesRequest = _api.apiVVersionPurchasesGet(
-        version: CoffeeCardApiConstants.apiVersion);
+    final usedTicketRequest = _api.apiV1TicketsGet(used: true);
+    final purchasesRequest = _api.apiV1PurchasesGet();
 
     final usedTicketResponse = await usedTicketRequest;
     final purchaseResponse = await purchasesRequest;
