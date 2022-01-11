@@ -2,16 +2,17 @@ import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/models/receipts/receipt.dart';
 import 'package:coffeecard/widgets/components/list_entry.dart';
+import 'package:coffeecard/widgets/components/receipt/receipt_overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class ReceiptEntry extends StatelessWidget {
+class ReceiptListEntry extends StatelessWidget {
   final Receipt receipt;
 
   DateFormat get formatter => DateFormat(
       'dd/MM-yyyy'); //TODO consider if it can be stored centrally, so each entry does not end up with a copy of the formatter
 
-  const ReceiptEntry({
+  const ReceiptListEntry({
     required this.receipt,
   });
 
@@ -38,7 +39,8 @@ class ReceiptEntry extends StatelessWidget {
         style: AppTextStyle.recieptItemValue,
       ),
       onTap: () {
-        print(receipt);
+        ReceiptOverlay.of(context)
+            .show(receipt);
       },
       backgroundColor: receipt.transactionType == TransactionType.purchase
           ? AppColor.slightlyHighlighted
