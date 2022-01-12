@@ -3,8 +3,12 @@ abstract class Strings {
 
   // Titles for the app bar.
   static const ticketsPageTitle = 'Tickets';
+  static const receiptsPageTitle = 'Receipts';
   static const statsPageTitle = 'Statistics';
   static const settingsPageTitle = 'Settings';
+  static const buyOneDrinkPageTitle = 'Buy one drink';
+  static const buyOtherPageTitle = 'Buy other';
+  static const redeemVoucherPageTitle = 'Redeem voucher';
 
   // Titles for the navigation bar.
   static const ticketsNavTitle = ticketsPageTitle;
@@ -14,6 +18,7 @@ abstract class Strings {
 
   // Test strings.
   static const ticketsPageTestString = 'Test string for Tickets page ☕';
+  static const testDBString = 'Connected to test database';
 
   // Login email hint and errors
   static const loginPasscodeHint = 'Enter passcode';
@@ -64,9 +69,42 @@ abstract class Strings {
   static const buttonClose = 'Close';
   static const buttonAccept = 'Accept';
   static const buttonDecline = 'Decline';
+  static const buttonGotIt = 'Got it';
+
+  // Coffee card
+  static const emptyCoffeeCardTextTop =
+      'Tickets that you buy will show up here';
+  static const emptyCoffeeCardTextBottom =
+      'Use the section below to shop tickets.';
+
+  // Ticket card
+  static const paymentOptionApplePay = 'Apple Pay';
+  static const paymentOptionMobilePay = 'MobilePay';
+  static String paymentConfirmationTop(int amount, String title) {
+    return "You're buying $amount tickets of $title";
+  }
+
+  static String paymentConfirmationBottom(int price) {
+    return 'Pay $price,- with ...';
+  }
+
+  static String amountTickets(int amount) {
+    return '$amount tickets';
+  }
+
+  static String price(int price) {
+    return '$price,-';
+  }
+
+  // App text
+  static const analogClosedText = 'Cafe Analog is closed';
+  static const shopText = 'Shop';
+  static const buyTickets = 'Buy tickets';
+  static const buyOneDrink = 'Buy one drink';
+  static const buyOther = 'Buy syrup, jugs etc.';
+  static const redeemVoucher = 'Redeem voucher';
 
   // Receipts page
-  static const receiptsPageTitle = 'Receipts';
   static const singleReceiptPageTitle = 'Receipt';
 
   static const oneTicket = '1 ticket';

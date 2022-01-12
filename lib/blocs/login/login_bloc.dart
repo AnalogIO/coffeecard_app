@@ -1,5 +1,5 @@
 import 'package:coffeecard/blocs/authentication/authentication_bloc.dart';
-import 'package:coffeecard/data/repositories/account_repository.dart';
+import 'package:coffeecard/data/repositories/v1/account_repository.dart';
 import 'package:coffeecard/models/api/unauthorized_error.dart';
 import 'package:coffeecard/utils/email_utils.dart';
 import 'package:equatable/equatable.dart';
