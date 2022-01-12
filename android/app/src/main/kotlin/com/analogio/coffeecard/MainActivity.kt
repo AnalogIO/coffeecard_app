@@ -12,9 +12,12 @@ import android.content.IntentFilter
 import android.os.BatteryManager
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
+import android.os.Bundle
+import android.os.PersistableBundle
 
 import dk.mobilepay.sdk.Country
 import dk.mobilepay.sdk.MobilePay
+import dk.mobilepay.sdk.ResultCallback
 import dk.mobilepay.sdk.model.FailureResult
 import dk.mobilepay.sdk.model.Payment
 import dk.mobilepay.sdk.model.SuccessResult
@@ -23,15 +26,19 @@ import java.math.BigDecimal
 
 class MainActivity: FlutterActivity() {
     private val CHANNEL = "samples.flutter.dev"
-    val mp = MobilePay.getInstance().init("APPDK0000000000", Country.DENMARK);
+    val MOBILEPAY_PAYMENT_REQUEST_CODE = 1337
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        MobilePay.getInstance().init("APPDK0000000000", Country.DENMARK)
+
+    }
 
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL).setMethodCallHandler {
                 call, result ->
             if (call.method == "foo") {
-                val MOBILEPAY_PAYMENT_REQUEST_CODE = 1337
-
                 // Check if the MobilePay app is installed on the device.
                 val isMobilePayInstalled = MobilePay.getInstance().isMobilePayInstalled(
                     applicationContext
@@ -55,15 +62,31 @@ class MainActivity: FlutterActivity() {
                     )
                     startActivity(intent)
                 }
-
-                    //result.success("STUFF")
-
-                    //result.error("ERRORCODE", "MESSAGE", null)
-
             } else {
                 result.notImplemented()
             }
         }
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == MOBILEPAY_PAYMENT_REQUEST_CODE) {
+            // The request code matches our MobilePay Intent
+            MobilePay.getInstance().handleResult(resultCode, data, object: ResultCallback {
+                override fun onSuccess(result: SuccessResult?) {
+                    // The payment succeeded - you can deliver the product.
+                }
+
+                override fun onFailure(result: FailureResult?) {
+                    // The payment failed - show an appropriate error message to the user. Consult the MobilePay class documentation for possible error codes.
+                }
+
+                override fun onCancel(orderId: String?) {
+                    // The payment was cancelled.
+                }
+            })
+        }
+    }
+
 
 }
