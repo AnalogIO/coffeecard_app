@@ -12,19 +12,27 @@ class TicketsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: ListView(
         children: [
-          Text('My tickets', style: AppTextStyle.sectionTitle),
-          Column(
-            children: const [CoffeeCard(title: 'Espresso Based', amount: 2)],
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text('My tickets', style: AppTextStyle.sectionTitle),
           ),
-          Text('Shop', style: AppTextStyle.sectionTitle),
+          Column(
+            children: const [
+              CoffeeCard(title: 'Espresso Based', amount: 8),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(8, 12, 8, 8),
+            child: Text('Shop', style: AppTextStyle.sectionTitle),
+          ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               ShopCard(
                 title: 'Buy tickets',
-                icon: Icons.wallet_giftcard,
+                icon: Icons.style,
                 onPressed: () {
                   final service = PaymentService();
 
@@ -32,28 +40,30 @@ class TicketsPage extends StatelessWidget {
 
                   service.invokeMobilePay(payment);
 
-                  var status = service.verifyPurchaseOrRetry(payment.paymentId);
+                  //TODO
+                  service.verifyPurchaseOrRetry(payment.paymentId);
 
                   //Refresh
                 },
               ),
               ShopCard(
                 title: 'Buy one drink',
-                icon: Icons.edit,
+                icon: Icons.coffee,
                 onPressed: () {},
               ),
             ],
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               ShopCard(
                 title: 'Buy syrup, jugs etc.',
-                icon: Icons.edit,
+                icon: Icons.coffee,
                 onPressed: () {},
               ),
               ShopCard(
                 title: 'Redeem voucher',
-                icon: Icons.edit,
+                icon: Icons.wallet_giftcard,
                 onPressed: () {},
               ),
             ],

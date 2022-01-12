@@ -25,7 +25,7 @@ class MobilePayService implements PaymentService {
     Payment payment;
     try {
       // Receive mobilepayId and deeplink from API
-      payment = Payment(paymentId: "", deeplink: ""); //call API
+      payment = Payment(paymentId: '', deeplink: ''); //call API
 
       return Payment(paymentId: payment.paymentId, deeplink: payment.deeplink);
     } catch (e) {
@@ -38,14 +38,12 @@ class MobilePayService implements PaymentService {
   @override
   void invokeMobilePay(Payment po) {
     // Open Mobilepay app with paymentId and deeplink
-    
-
   }
 
   @override
   PaymentStatus verifyPurchaseOrRetry(String paymentId) {
     // Call API endpoint, receive PaymentStatus
-    PaymentStatus status = PaymentStatus.error; //TODO: call API
+    const PaymentStatus status = PaymentStatus.error; //TODO: call API
 
     if (status != PaymentStatus.waiting) {
       return status;
