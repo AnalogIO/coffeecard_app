@@ -3,14 +3,16 @@ import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/blocs/receipt/receipt_cubit.dart';
 import 'package:coffeecard/data/repositories/receipt_repository.dart';
+import 'package:coffeecard/data/repositories/v1/app_config_repository.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/widgets/components/helpers/lazy_indexed_stack.dart';
 import 'package:coffeecard/widgets/pages/settings_page.dart';
 import 'package:coffeecard/widgets/pages/stats_page.dart';
-import 'package:coffeecard/widgets/pages/tickets_page.dart';
+import 'package:coffeecard/widgets/pages/tickets_page/tickets_page.dart';
 import 'package:coffeecard/widgets/routers/receipts_flow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:coffeecard/generated/api/coffeecard_api.swagger.swagger.dart';
 
 class HomePage extends StatefulWidget {
   static Route get route => MaterialPageRoute(builder: (_) => HomePage());
@@ -21,9 +23,43 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _currentPageIndex = 0;
+  final AppConfigRepository _configRepository = sl.get<AppConfigRepository>();
+  late AppConfigDto? config;
+  bool isLoading = false;
+
+  //FIXME: fetch config when user is at login-screen instead
+  Future<void> fetch() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      config = await _configRepository.getAppConfig();
+    } catch (e) {
+      config = null;
+    }
+
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetch();
+  }
 
   @override
   Widget build(BuildContext context) {
+    //FIXME: handle loading
+    if (isLoading) return const Scaffold();
+
+    final bool isConnectedToTestDB = config?.environmentType != 'Production';
+    if (isConnectedToTestDB) {
+      addTestDBWidget(context);
+    }
+
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -36,7 +72,7 @@ class _HomePageState extends State<HomePage> {
         body: LazyIndexedStack(
           index: _currentPageIndex,
           children: [
-            TicketsPage(),
+            const TicketsPage(),
             ReceiptsFlow(),
             StatsPage(),
             SettingsPage(),
@@ -77,3 +113,25 @@ const _bottomNavBarItems = [
     label: Strings.settingsNavTitle,
   ),
 ];
+
+void addTestDBWidget(BuildContext context) {
+  //Delay is required to trigger after build
+  Future.delayed(Duration.zero, () {
+    final entry = OverlayEntry(
+      builder: (context) => IgnorePointer(
+        child: Align(
+          alignment: Alignment.bottomCenter,
+          child: SizedBox(
+            height: 100,
+            child: Text(
+              Strings.testDBString,
+              style: TextStyle(color: Colors.red[900], fontSize: 20),
+            ),
+          ),
+        ),
+      ),
+    );
+    final overlay = Overlay.of(context);
+    overlay?.insert(entry);
+  });
+}
