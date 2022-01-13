@@ -1,33 +1,37 @@
 import 'package:coffeecard/base/style/text_styles.dart';
-import 'package:coffeecard/models/receipts/receipt.dart';
 import 'package:coffeecard/widgets/analog_logo.dart';
 import 'package:coffeecard/widgets/components/generic_card.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+DateFormat get _formatter => DateFormat('EEEE d/M HH:mm');
+
+String _timeSincePurchase(DateTime time) {
+  final currentTime = DateTime.now();
+  final difference = currentTime.difference(time);
+
+  if (difference.inMinutes < 2) return 'Just now';
+  if (difference.inHours < 8) return '${difference.inHours} hours ago';
+  if (difference.inDays == 0) return 'Earlier today';
+  if (difference.inDays == 1) return 'Yesterday';
+  return '${difference.inDays} days ago';
+  // TODO potential to improve
+  // if (difference.inDays < 31) return '${difference.inDays} days ago';
+  // return 'Around ${difference.inDays ~/ 31} months ago';
+}
+
 class ReceiptCard extends StatelessWidget {
-  final Receipt receipt;
-  final Function() onTap;
-  final String? optionalText;
+  final String productName;
+  final DateTime time;
+  final bool isPurchase;
+  final bool isInOverlay;
 
   const ReceiptCard({
-    required this.receipt,
-    required this.onTap,
-    this.optionalText,
+    required this.productName,
+    required this.time,
+    required this.isPurchase,
+    required this.isInOverlay,
   });
-
-  DateFormat get formatter => DateFormat('EEEE dd/MM HH:mm');
-
-  String timeSincePurchase(Receipt receipt) {
-    final currentTime = DateTime.now();
-    final difference = currentTime.difference(receipt.timeUsed);
-    if (difference.inMinutes < 2) {
-      //If the ticket was used within the last two minutes,
-      // it is showed as having just been used
-      return 'Used just now';
-    }
-    return 'Used ${difference.inDays} days ago';
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,24 +41,21 @@ class ReceiptCard extends StatelessWidget {
       height: 200,
       borderRadius: 24,
       padding: 32,
-      onTap: onTap,
       children: [
         Text(
-          receipt.transactionType == TransactionType.purchase
-              ? 'Bought ${receipt.amountPurchased} Tickets'
-              : 'Used ${receipt.amountPurchased} Ticket',
+          isPurchase ? 'Purchased' : 'Used ticket',
           style: AppTextStyle.textField,
         ),
         Text(
-          receipt.productName,
+          productName,
           style: AppTextStyle.sectionTitle,
         ),
         Text(
-          timeSincePurchase(receipt),
+          _timeSincePurchase(time),
           style: AppTextStyle.textFieldBold,
         ),
         Text(
-          formatter.format(receipt.timeUsed),
+          _formatter.format(time),
           style: AppTextStyle.textField,
         ),
         const Spacer(),
@@ -64,7 +65,7 @@ class ReceiptCard extends StatelessWidget {
             Flexible(
               //Flexible to ensure the text will wrap if given a long string
               child: Text(
-                optionalText ?? '',
+                isInOverlay ? 'This can be found again under Reciepts.' : '',
                 style: AppTextStyle.explainer,
               ),
             ),

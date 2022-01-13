@@ -7,7 +7,7 @@ class CardGeneric extends StatelessWidget {
   final double? height;
   final double? width;
   final double? padding;
-  final Function()? onTap;
+  final void Function()? onTap;
 
   const CardGeneric({
     this.borderRadius,
