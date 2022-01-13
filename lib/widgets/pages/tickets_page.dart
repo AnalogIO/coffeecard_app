@@ -21,6 +21,7 @@ class TicketsPage extends StatelessWidget {
           Column(
             children: const [
               CoffeeCard(title: 'Espresso Based', amount: 8),
+              EmptyCoffeeCard()
             ],
           ),
           Padding(

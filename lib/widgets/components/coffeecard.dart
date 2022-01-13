@@ -67,3 +67,39 @@ class CoffeeCard extends StatelessWidget {
     );
   }
 }
+
+class EmptyCoffeeCard extends StatelessWidget {
+  const EmptyCoffeeCard({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 150,
+      child: Card(
+        color: AppColor.background,
+        shape: RoundedRectangleBorder(
+          side: const BorderSide(color: AppColor.secondary, width: 2),
+          borderRadius: BorderRadius.circular(25),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Tickets that you buy will show up here',
+                  style: AppTextStyle.textField,
+                ),
+                Text(
+                  'Use the section below to shop tickets.',
+                  style: AppTextStyle.textField,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
