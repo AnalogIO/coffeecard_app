@@ -10,7 +10,8 @@ class ReceiptListEntry extends StatelessWidget {
   final Receipt receipt;
 
   DateFormat get formatter => DateFormat(
-      'dd/MM-yyyy'); //TODO consider if it can be stored centrally, so each entry does not end up with a copy of the formatter
+        'dd/MM-yyyy',
+      ); //TODO consider if it can be stored centrally, so each entry does not end up with a copy of the formatter
 
   const ReceiptListEntry({
     required this.receipt,
@@ -28,8 +29,10 @@ class ReceiptListEntry extends StatelessWidget {
                 : 'Used ${receipt.productName}',
             style: AppTextStyle.recieptItemKey,
           ),
-          Text(formatter.format(receipt.timeUsed),
-              style: AppTextStyle.recieptItemDate)
+          Text(
+            formatter.format(receipt.timeUsed),
+            style: AppTextStyle.recieptItemDate,
+          )
         ],
       ),
       rightWidget: Text(

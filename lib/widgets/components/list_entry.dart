@@ -8,11 +8,12 @@ class ListEntry extends StatelessWidget {
   final void Function()? onTap;
   final Color? backgroundColor;
 
-  const ListEntry(
-      {required this.leftWidget,
-      required this.rightWidget,
-      this.onTap,
-      this.backgroundColor});
+  const ListEntry({
+    required this.leftWidget,
+    required this.rightWidget,
+    this.onTap,
+    this.backgroundColor,
+  });
 
   @override
   Widget build(BuildContext context) {

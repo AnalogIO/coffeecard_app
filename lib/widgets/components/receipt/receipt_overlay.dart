@@ -18,16 +18,17 @@ class ReceiptOverlay {
       barrierColor: AppColor.scrim,
       builder: (_) {
         return Center(
-            child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ReceiptCard(receipt: receipt, onTap: hide),
-            Text(
-              'Tap anywhere to dismiss',
-              style: AppTextStyle.explainerBright,
-            )
-          ],
-        ));
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ReceiptCard(receipt: receipt, onTap: hide),
+              Text(
+                'Tap anywhere to dismiss',
+                style: AppTextStyle.explainerBright,
+              )
+            ],
+          ),
+        );
       },
     );
   }

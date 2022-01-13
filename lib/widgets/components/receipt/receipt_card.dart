@@ -10,8 +10,11 @@ class ReceiptCard extends StatelessWidget {
   final Function() onTap;
   final String? optionalText;
 
-  const ReceiptCard(
-      {required this.receipt, required this.onTap, this.optionalText});
+  const ReceiptCard({
+    required this.receipt,
+    required this.onTap,
+    this.optionalText,
+  });
 
   DateFormat get formatter => DateFormat('EEEE dd/MM HH:mm');
 
@@ -59,11 +62,12 @@ class ReceiptCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Flexible(
-                //Flexible to ensure the text will wrap if given a long string
-                child: Text(
-              optionalText ?? '',
-              style: AppTextStyle.explainer,
-            )),
+              //Flexible to ensure the text will wrap if given a long string
+              child: Text(
+                optionalText ?? '',
+                style: AppTextStyle.explainer,
+              ),
+            ),
             AnalogRecieptLogo()
           ],
         )
