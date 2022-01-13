@@ -2,7 +2,6 @@ import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/widgets/components/ticketdisplay.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class CoffeeCard extends StatelessWidget {
   final String title;

@@ -1,7 +1,6 @@
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/widgets/components/helpers/tappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class ShopCard extends StatelessWidget {
   final String title;
