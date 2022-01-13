@@ -145,47 +145,47 @@ abstract class AppTextStyle {
   );
 
   // Mono text
-  static final TextStyle numpadDigit = TextStyle(
+  static const TextStyle numpadDigit = TextStyle(
     color: AppColor.primary,
     fontSize: 33,
     fontWeight: FontWeight.bold,
     fontFamily: AppFont.mono,
   );
-  static final TextStyle ticketsCount = TextStyle(
+  static const TextStyle ticketsCount = TextStyle(
     color: AppColor.primary,
     fontSize: 24,
     fontWeight: FontWeight.bold,
     fontFamily: AppFont.mono,
   );
-  static final TextStyle mixMatchTicketCount = TextStyle(
+  static const TextStyle mixMatchTicketCount = TextStyle(
     color: AppColor.primary,
     fontSize: 18,
     fontWeight: FontWeight.bold,
     fontFamily: AppFont.mono,
   );
-  static final TextStyle mixMatchTicketCountBright = TextStyle(
+  static const TextStyle mixMatchTicketCountBright = TextStyle(
     color: AppColor.white,
     fontSize: 18,
     fontWeight: FontWeight.bold,
     fontFamily: AppFont.mono,
   );
-  static final TextStyle numpadText = TextStyle(
+  static const TextStyle numpadText = TextStyle(
     color: AppColor.primary,
     fontSize: 16,
     fontWeight: FontWeight.bold,
     fontFamily: AppFont.mono,
   );
-  static final TextStyle leaderboardScore = TextStyle(
+  static const TextStyle leaderboardScore = TextStyle(
     color: AppColor.primary,
     fontSize: 14,
     fontFamily: AppFont.mono,
   );
-  static final TextStyle recieptItemDate = TextStyle(
+  static const TextStyle recieptItemDate = TextStyle(
     color: AppColor.secondary,
     fontSize: 12,
     fontFamily: AppFont.mono,
   );
-  static final TextStyle rankingNumber = TextStyle(
+  static const TextStyle rankingNumber = TextStyle(
     color: AppColor.primary,
     fontSize: 12,
     fontWeight: FontWeight.bold,

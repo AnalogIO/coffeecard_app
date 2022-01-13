@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:coffeecard/base/style/colors.dart';
+import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/blocs/login/login_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show HapticFeedback;
@@ -122,11 +123,7 @@ class NumpadDigitButton extends NumpadButton {
           },
           child: Text(
             digit,
-            style: const TextStyle(
-              fontSize: 32,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'monospace',
-            ),
+            style: AppTextStyle.numpadDigit,
           ),
         );
 }
