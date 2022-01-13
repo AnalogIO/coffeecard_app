@@ -21,7 +21,12 @@ class ReceiptOverlay {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ReceiptCard(receipt: receipt, onTap: hide),
+              ReceiptCard(
+                productName: receipt.productName,
+                time: receipt.timeUsed,
+                isPurchase: receipt.transactionType == TransactionType.purchase,
+                isInOverlay: true,
+              ),
               Text(
                 'Tap anywhere to dismiss',
                 style: AppTextStyle.explainerBright,

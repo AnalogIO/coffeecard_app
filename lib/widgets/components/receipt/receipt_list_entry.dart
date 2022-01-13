@@ -2,6 +2,7 @@ import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/widgets/components/helpers/shimmer_builder.dart';
 import 'package:coffeecard/widgets/components/list_entry.dart';
+import 'package:coffeecard/widgets/pages/receipts/view_receipt_page.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -79,8 +80,15 @@ class ReceiptListEntry extends StatelessWidget {
             ),
           ),
           onTap: () {
-            // if (isPlaceholder) return;
-            // ReceiptOverlay.of(context).show(receipt);
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => ViewReceiptPage(
+                  name: productName,
+                  time: time,
+                  isPurchase: isPurchase,
+                ),
+              ),
+            );
           },
           backgroundColor: _backgroundColor,
         );
