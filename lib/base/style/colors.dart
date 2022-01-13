@@ -1,21 +1,35 @@
 import 'package:flutter/material.dart';
 
 abstract class AppColor {
-  static const Color primary = Color(0xff362619);
-  static const Color secondary = Color(0xff785B38);
-  static const Color background = Color(0xffE5E2D7);
-  static const Color ticket = Color(0xffD9CB9D);
+  static const primary = Color(0xff362619);
+  static const secondary = Color(0xff785B38);
+  static const background = Color(0xffE5E2D7);
+  static const ticket = Color(0xffD9CB9D);
 
-  static const Color scrim = Color(0xcc000000); // modal backdrop
+  static const white = Color(0xffFAFAFA);
+  static const gray = Color(0xff767676);
+  static const lightGray = Color(0xffC2C2C2);
 
-  static const Color white = Color(0xffFAFAFA);
-  static const Color gray = Color(0xff767676);
-  static const Color lightGray = Color(0xffC2C2C2);
+  static const highlight = Color(0xffFF9500);
+  static const slightlyHighlighted = Color(0xffFEF4D2);
+  static const success = Color(0xff4CAF50);
+  static const error = Color(0xffFF4D00);
 
-  static const Color highlight = Color(0xffFF9500);
-  static const Color slightlyHighlighted = Color(0xffFEF4D2);
-  static const Color success = Color(0xff4CAF50);
-  static const Color error = Color(0xffFF4D00);
+  /// Modal backdrop
+  static const scrim = Color(0xcc000000);
+
+  // Shimmer colors
+  static const shimmerBackground = Color(0xFFE0E0E0);
+  static const shimmerHighlight = Color(0xFFBDBDBD);
+  static const shimmerGradient = LinearGradient(
+    colors: [
+      shimmerBackground,
+      shimmerBackground,
+      shimmerHighlight,
+      shimmerBackground,
+      shimmerBackground
+    ],
+  );
 
   /// Creates a swatch from a given Color.
   //  https://medium.com/@filipvk/creating-a-custom-color-swatch-in-flutter-554bcdcb27f3
