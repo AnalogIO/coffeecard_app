@@ -5,7 +5,7 @@ import 'package:coffeecard/blocs/authentication/authentication_bloc.dart';
 import 'package:coffeecard/blocs/receipt/receipt_cubit.dart';
 import 'package:coffeecard/data/repositories/receipt_repository.dart';
 import 'package:coffeecard/service_locator.dart';
-import 'package:coffeecard/widgets/pages/receipts_page.dart';
+import 'package:coffeecard/widgets/pages/receipts/receipts_page.dart';
 import 'package:coffeecard/widgets/pages/settings_page.dart';
 import 'package:coffeecard/widgets/pages/stats_page.dart';
 import 'package:coffeecard/widgets/pages/tickets_page.dart';
