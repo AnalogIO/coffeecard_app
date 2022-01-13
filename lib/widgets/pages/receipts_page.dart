@@ -1,5 +1,4 @@
 import 'package:coffeecard/blocs/receipt/receipt_bloc.dart';
-import 'package:coffeecard/models/receipts/receipt.dart';
 import 'package:coffeecard/data/repositories/receipt_repository.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/widgets/components/receipt/drop_down_menu.dart';
@@ -20,16 +19,17 @@ class ReceiptsPage extends StatelessWidget {
               children: [
                 DropDownMenu(),
                 Expanded(
-                    child: ListView.builder(
-                  shrinkWrap: true,
-                  padding: EdgeInsets.zero,
-                  itemCount: state.receiptsForDisplay.length,
-                  itemBuilder: (context, index) {
-                    return ReceiptListEntry(
-                      receipt: state.receiptsForDisplay[index],
-                    );
-                  },
-                ))
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    padding: EdgeInsets.zero,
+                    itemCount: state.receiptsForDisplay.length,
+                    itemBuilder: (context, index) {
+                      return ReceiptListEntry(
+                        receipt: state.receiptsForDisplay[index],
+                      );
+                    },
+                  ),
+                )
               ],
             );
           } else {

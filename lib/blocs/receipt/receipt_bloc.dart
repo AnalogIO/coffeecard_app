@@ -1,10 +1,11 @@
-import 'package:coffeecard/models/receipts/receipt.dart';
+// ignore_for_file: require_trailing_commas
+
 import 'package:coffeecard/data/repositories/receipt_repository.dart';
+import 'package:coffeecard/models/receipts/receipt.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'receipt_event.dart';
-
 part 'receipt_state.dart';
 
 class ReceiptBloc extends Bloc<ReceiptEvent, ReceiptState> {
@@ -63,22 +64,28 @@ class ReceiptBloc extends Bloc<ReceiptEvent, ReceiptState> {
 
       case DropDownOptions.swipes:
         _receipts = receipts
-            .where((element) =>
-                element.transactionType == TransactionType.ticketSwipe)
+            .where(
+              (element) =>
+                  element.transactionType == TransactionType.ticketSwipe,
+            )
             .toList();
         break;
 
       case DropDownOptions.purchases:
         _receipts = receipts
-            .where((element) =>
-                element.transactionType == TransactionType.purchase)
+            .where(
+              (element) => element.transactionType == TransactionType.purchase,
+            )
             .toList();
         break;
     }
 
-    emit(ReceiptLoaded(
+    emit(
+      ReceiptLoaded(
         receiptsCached: receipts,
         receiptsForDisplay: _receipts,
-        index: state.index));
+        index: state.index,
+      ),
+    );
   }
 }

@@ -16,8 +16,9 @@ class DropDownMenu extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                  padding: const EdgeInsets.all(16),
-                  child: Text('Show', style: AppTextStyle.buttonText)),
+                padding: const EdgeInsets.all(16),
+                child: Text('Show', style: AppTextStyle.buttonText),
+              ),
               Container(
                 height: 32,
                 width: 190,
@@ -68,14 +69,15 @@ class DropDownMenu extends StatelessWidget {
               ),
               const Spacer(),
               Tappable(
-                  padding: const EdgeInsets.only(right: 16),
-                  onTap: () {
-                    context.read<ReceiptBloc>().add(ReloadReceipts());
-                  },
-                  child: const Icon(
-                    Icons.refresh,
-                    color: AppColor.slightlyHighlighted,
-                  ))
+                padding: const EdgeInsets.only(right: 16),
+                onTap: () {
+                  context.read<ReceiptBloc>().add(ReloadReceipts());
+                },
+                child: const Icon(
+                  Icons.refresh,
+                  color: AppColor.slightlyHighlighted,
+                ),
+              )
             ],
           ),
         );
