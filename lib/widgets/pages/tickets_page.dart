@@ -38,7 +38,6 @@ class TicketsPage extends StatelessWidget {
                 title: 'Buy tickets',
                 icon: Icons.style,
                 onPressed: () {
-                  //TODO: proper navigation!
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -51,7 +50,6 @@ class TicketsPage extends StatelessWidget {
                 title: 'Buy one drink',
                 icon: Icons.coffee,
                 onPressed: () {
-                  //TODO: proper navigation!
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -69,7 +67,6 @@ class TicketsPage extends StatelessWidget {
                 title: 'Buy syrup, jugs etc.',
                 icon: Icons.coffee,
                 onPressed: () {
-                  //TODO: proper navigation!
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -82,7 +79,6 @@ class TicketsPage extends StatelessWidget {
                 title: 'Redeem voucher',
                 icon: Icons.wallet_giftcard,
                 onPressed: () {
-                  //TODO: proper navigation!
                   Navigator.push(
                     context,
                     MaterialPageRoute(
