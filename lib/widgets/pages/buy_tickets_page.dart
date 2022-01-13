@@ -1,6 +1,5 @@
 import 'package:coffeecard/widgets/components/ticket_card.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class BuyTicketsPage extends StatelessWidget {
   const BuyTicketsPage({Key? key}) : super(key: key);
