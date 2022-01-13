@@ -1,39 +1,51 @@
-part of 'receipt_bloc.dart';
+part of 'receipt_cubit.dart';
 
-enum DropDownOptions { swipesAndPurchases, swipes, purchases }
+enum FilterCategory { all, swipes, purchases }
+enum ReceiptStatus { initial, loading, success, failure }
 
-abstract class ReceiptState extends Equatable {
-  Map<DropDownOptions, String> get dropDownOptions => {
-        DropDownOptions.swipesAndPurchases: 'Swipes & Purchases',
-        DropDownOptions.swipes: 'Swipes',
-        DropDownOptions.purchases: 'Purchases'
-      };
-  final DropDownOptions index;
+extension DropdownName on FilterCategory {
+  String get name {
+    if (this == FilterCategory.all) return 'Swipes & purchases';
+    if (this == FilterCategory.swipes) return 'Swipes';
+    if (this == FilterCategory.purchases) return 'Purchases';
+    throw Exception('Unknown filter category: $this');
+  }
+}
 
-  const ReceiptState(this.index);
+extension ReceiptStatusIs on ReceiptStatus {
+  bool get isInitial => this == ReceiptStatus.initial;
+  bool get isLoading => this == ReceiptStatus.loading;
+  bool get isSuccess => this == ReceiptStatus.success;
+  bool get isFailure => this == ReceiptStatus.failure;
+}
+
+class ReceiptState extends Equatable {
+  final ReceiptStatus status;
+  final FilterCategory filterBy;
+  final List<Receipt> receipts;
+  final List<Receipt> filteredReceipts;
+  ReceiptState({
+    this.status = ReceiptStatus.initial,
+    this.filterBy = FilterCategory.all,
+    List<Receipt>? receipts,
+    List<Receipt>? filteredReceipts,
+  })  : receipts = receipts ?? [],
+        filteredReceipts = filteredReceipts ?? [];
 
   @override
-  List<Object> get props => [index];
-}
+  List<Object> get props => [status, filterBy, receipts, filteredReceipts];
 
-class ReceiptInitial extends ReceiptState {
-  const ReceiptInitial(DropDownOptions index) : super(index);
-}
-
-class ReceiptLoading extends ReceiptState {
-  const ReceiptLoading(DropDownOptions index) : super(index);
-}
-
-class ReceiptLoaded extends ReceiptState {
-  final List<Receipt> receiptsCached;
-  final List<Receipt> receiptsForDisplay;
-
-  const ReceiptLoaded({
-    required this.receiptsCached,
-    required this.receiptsForDisplay,
-    required DropDownOptions index,
-  }) : super(index);
-
-  @override
-  List<Object> get props => [receiptsCached, receiptsForDisplay, index];
+  ReceiptState copyWith({
+    ReceiptStatus? status,
+    FilterCategory? filterBy,
+    List<Receipt>? receipts,
+    List<Receipt>? filteredReceipts,
+  }) {
+    return ReceiptState(
+      status: status ?? this.status,
+      filterBy: filterBy ?? this.filterBy,
+      receipts: receipts ?? this.receipts,
+      filteredReceipts: filteredReceipts ?? this.filteredReceipts,
+    );
+  }
 }

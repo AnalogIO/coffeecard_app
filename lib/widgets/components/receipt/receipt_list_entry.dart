@@ -1,52 +1,90 @@
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
-import 'package:coffeecard/models/receipts/receipt.dart';
+import 'package:coffeecard/widgets/components/helpers/shimmer_builder.dart';
 import 'package:coffeecard/widgets/components/list_entry.dart';
-import 'package:coffeecard/widgets/components/receipt/receipt_overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+final _formatter = DateFormat('dd.MM.yyyy');
+
 class ReceiptListEntry extends StatelessWidget {
-  final Receipt receipt;
+  final bool isPlaceholder;
+  final String productName;
+  final bool isPurchase;
+  final DateTime time;
+  final int quantity;
+  final int price;
 
-  DateFormat get formatter => DateFormat(
-        'dd/MM-yyyy',
-      ); //TODO consider if it can be stored centrally, so each entry does not end up with a copy of the formatter
+  const ReceiptListEntry.swipe({
+    required this.productName,
+    required this.time,
+  })  : isPlaceholder = false,
+        isPurchase = false,
+        quantity = 1,
+        price = -1;
 
-  const ReceiptListEntry({
-    required this.receipt,
-  });
+  const ReceiptListEntry.purchase({
+    required this.productName,
+    required this.time,
+    required this.quantity,
+    required this.price,
+  })  : isPlaceholder = false,
+        isPurchase = true;
+
+  ReceiptListEntry.placeholder()
+      : isPlaceholder = true,
+        productName = 'Used Espresso based',
+        isPurchase = false,
+        time = DateTime.now(),
+        quantity = 1,
+        price = -1;
+
+  Color get _backgroundColor {
+    if (isPlaceholder) return Colors.transparent;
+    return isPurchase ? AppColor.slightlyHighlighted : AppColor.white;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return ListEntry(
-      leftWidget: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            receipt.transactionType == TransactionType.purchase
-                ? 'Bought ${receipt.amountPurchased} ${receipt.productName}'
-                : 'Used ${receipt.productName}',
-            style: AppTextStyle.recieptItemKey,
+    return ShimmerBuilder(
+      showShimmer: isPlaceholder,
+      builder: (context, colorIfShimmer) {
+        return ListEntry(
+          leftWidget: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                color: colorIfShimmer,
+                child: Text(
+                  isPurchase
+                      ? 'Bought $quantity $productName'
+                      : 'Used $productName',
+                  style: AppTextStyle.recieptItemKey,
+                ),
+              ),
+              Container(
+                color: colorIfShimmer,
+                child: Text(
+                  _formatter.format(time),
+                  style: AppTextStyle.recieptItemDate,
+                ),
+              )
+            ],
           ),
-          Text(
-            formatter.format(receipt.timeUsed),
-            style: AppTextStyle.recieptItemDate,
-          )
-        ],
-      ),
-      rightWidget: Text(
-        receipt.transactionType == TransactionType.purchase
-            ? '${receipt.price},-'
-            : '${receipt.price} ticket',
-        style: AppTextStyle.recieptItemValue,
-      ),
-      onTap: () {
-        ReceiptOverlay.of(context).show(receipt);
+          rightWidget: Container(
+            color: colorIfShimmer,
+            child: Text(
+              isPurchase ? '$price,-' : '1 ticket',
+              style: AppTextStyle.recieptItemValue,
+            ),
+          ),
+          onTap: () {
+            // if (isPlaceholder) return;
+            // ReceiptOverlay.of(context).show(receipt);
+          },
+          backgroundColor: _backgroundColor,
+        );
       },
-      backgroundColor: receipt.transactionType == TransactionType.purchase
-          ? AppColor.slightlyHighlighted
-          : AppColor.white,
     );
   }
 }
