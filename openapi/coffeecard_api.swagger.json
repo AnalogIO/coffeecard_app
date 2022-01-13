@@ -154,11 +154,11 @@
         "tags": [
           "Account"
         ],
-        "summary": "Updates the account and returns the updated values",
+        "summary": "Updates the account and returns the updated values.\nOnly properties which are present in the UpdateUserDto will be updated",
         "operationId": "Account_Update",
         "requestBody": {
           "x-name": "userDto",
-          "description": "Update account information request",
+          "description": "Update account information request. All properties are optional as the server only\n            updates the values of the properties which are present",
           "content": {
             "application/json": {
               "schema": {
@@ -828,7 +828,7 @@
         "example": {
           "name": "John Doe",
           "email": "john@doe.com",
-          "password": "0ffe1abd1a08215353c233d6e009613e95eec4253832a761af28ff37ac5a150c"
+          "password": "[no example provided]"
         },
         "additionalProperties": false,
         "required": [
@@ -852,9 +852,9 @@
           },
           "password": {
             "type": "string",
-            "description": "Pin Code as first SHA256, then Base64 encoded string",
+            "description": "Pin Code as first UTF8 encoded, then SHA256 hashed, and then Base64 encoded string",
             "minLength": 1,
-            "example": "no example provided"
+            "example": "[no example provided]"
           }
         }
       },
@@ -947,7 +947,7 @@
             "type": "string",
             "description": "App version of device logging in",
             "minLength": 1,
-            "example": "2.0.0"
+            "example": "2.1.0"
           }
         }
       },
@@ -1043,52 +1043,44 @@
       },
       "UpdateUserDto": {
         "type": "object",
-        "description": "Update User information request object",
+        "description": "Update User information request object. All properties are optional as the server only updates the values of the properties which are present",
         "example": {
           "name": "John Doe",
           "email": "john@doe.com",
           "privacyActivated": true,
           "programmeId": 1,
-          "password": "0ffe1abd1a08215353c233d6e009613e95eec4253832a761af28ff37ac5a150c"
+          "password": "[no example provided]"
         },
         "additionalProperties": false,
-        "required": [
-          "name",
-          "email",
-          "privacyActivated",
-          "programmeId",
-          "password"
-        ],
         "properties": {
           "name": {
             "type": "string",
             "description": "Full Name of user",
-            "minLength": 1,
             "example": "John Doe"
           },
           "email": {
             "type": "string",
             "description": "Email of user",
             "format": "email",
-            "minLength": 1,
             "example": "john@doe.com"
           },
           "privacyActivated": {
             "type": "boolean",
             "description": "Privacy Activated",
+            "nullable": true,
             "example": true
           },
           "programmeId": {
             "type": "integer",
             "description": "Study Programme Id of user",
             "format": "int32",
+            "nullable": true,
             "example": 1
           },
           "password": {
             "type": "string",
-            "description": "Pin Code as first SHA256, then Base64 encoded string",
-            "minLength": 1,
-            "example": "no example provided"
+            "description": "Pin Code as first UTF8 encoded, then SHA256 hashed, and then Base64 encoded string",
+            "example": "[no example provided]"
           }
         }
       },
