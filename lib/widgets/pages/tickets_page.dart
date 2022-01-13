@@ -1,7 +1,7 @@
 import 'package:coffeecard/base/style/text_styles.dart';
-import 'package:coffeecard/payment/payment_service.dart';
-import 'package:coffeecard/widgets/components/coffeecard.dart';
-import 'package:coffeecard/widgets/components/shopcard.dart';
+import 'package:coffeecard/widgets/components/coffee_card.dart';
+import 'package:coffeecard/widgets/components/shop_card.dart';
+import 'package:coffeecard/widgets/pages/buy_tickets_page.dart';
 import 'package:flutter/material.dart';
 
 //static const platform = MethodChannel('samples.flutter.dev');
@@ -35,16 +35,8 @@ class TicketsPage extends StatelessWidget {
                 title: 'Buy tickets',
                 icon: Icons.style,
                 onPressed: () {
-                  final service = PaymentService();
-
-                  final payment = service.initPurchase('');
-
-                  service.invokeMobilePay(payment);
-
-                  //TODO
-                  service.verifyPurchaseOrRetry(payment.paymentId);
-
-                  //Refresh
+                  //TODO: proper navigation!
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const BuyTicketsPage()),);
                 },
               ),
               ShopCard(
