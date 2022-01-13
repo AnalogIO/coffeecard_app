@@ -23,7 +23,7 @@ class ListEntry extends StatelessWidget {
         border: const Border(bottom: BorderSide(color: AppColor.lightGray)),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
