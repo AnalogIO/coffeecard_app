@@ -9,13 +9,14 @@ class CardGeneric extends StatelessWidget {
   final double? padding;
   final Function()? onTap;
 
-  const CardGeneric(
-      {this.borderRadius,
-      this.height,
-      this.width,
-      this.padding,
-      this.onTap,
-      required this.children});
+  const CardGeneric({
+    this.borderRadius,
+    this.height,
+    this.width,
+    this.padding,
+    this.onTap,
+    required this.children,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -28,13 +29,14 @@ class CardGeneric extends StatelessWidget {
         padding: EdgeInsets.all(padding ?? 0),
         onTap: onTap ?? () {},
         borderRadius: BorderRadius.circular(borderRadius ?? 0),
-        child: Container(
-            height: height,
-            width: width,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: children,
-            )),
+        child: SizedBox(
+          height: height,
+          width: width,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: children,
+          ),
+        ),
       ),
     );
   }

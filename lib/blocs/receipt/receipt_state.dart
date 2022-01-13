@@ -28,11 +28,11 @@ class ReceiptLoaded extends ReceiptState {
   final List<Receipt> receiptsCached;
   final List<Receipt> receiptsForDisplay;
 
-  const ReceiptLoaded(
-      {required this.receiptsCached,
-      required this.receiptsForDisplay,
-      required DropDownOptions index})
-      : super(index);
+  const ReceiptLoaded({
+    required this.receiptsCached,
+    required this.receiptsForDisplay,
+    required DropDownOptions index,
+  }) : super(index);
 
   @override
   List<Object> get props => [receiptsCached, receiptsForDisplay, index];

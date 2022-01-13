@@ -19,30 +19,38 @@ class ReceiptRepository {
 
     if (!usedTicketResponse.isSuccessful) {
       _logger.e(
-          'API Error ${usedTicketResponse.statusCode} ${usedTicketResponse.error}');
+        'API Error ${usedTicketResponse.statusCode} ${usedTicketResponse.error}',
+      );
     }
     if (!purchaseResponse.isSuccessful) {
       _logger.e(
-          'API Error ${purchaseResponse.statusCode} ${purchaseResponse.error}');
+        'API Error ${purchaseResponse.statusCode} ${purchaseResponse.error}',
+      );
     }
 
-    final ticketReceipts = usedTicketResponse.body?.map((ticket) => Receipt(
+    final ticketReceipts = usedTicketResponse.body?.map(
+      (ticket) => Receipt(
         //TODO consider if better defaults can be provided. Ideally the user never encounters this, since it would imply our database is incomplete
         productName: ticket.productName!,
         transactionType: TransactionType.ticketSwipe,
         price: 1,
         amountPurchased: 1,
         timeUsed: ticket.dateUsed!,
-        id: ticket.id!));
+        id: ticket.id!,
+      ),
+    );
 
-    final purchaseReceipts = purchaseResponse.body?.map((purchase) => Receipt(
+    final purchaseReceipts = purchaseResponse.body?.map(
+      (purchase) => Receipt(
         //TODO consider if better defaults can be provided. Ideally the user never encounters this, since it would imply our database is incomplete
         productName: purchase.productName!,
         transactionType: TransactionType.purchase,
         price: purchase.price!,
         amountPurchased: purchase.numberOfTickets!,
         timeUsed: purchase.dateCreated!,
-        id: purchase.id!));
+        id: purchase.id!,
+      ),
+    );
 
     final sortedReceipts = ticketReceipts!
         .followedBy(purchaseReceipts!)
