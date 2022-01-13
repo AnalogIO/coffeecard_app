@@ -1,7 +1,10 @@
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/widgets/components/coffee_card.dart';
 import 'package:coffeecard/widgets/components/shop_card.dart';
+import 'package:coffeecard/widgets/pages/buy_one_drink_page.dart';
+import 'package:coffeecard/widgets/pages/buy_other_page.dart';
 import 'package:coffeecard/widgets/pages/buy_tickets_page.dart';
+import 'package:coffeecard/widgets/pages/redeem_voucher_page.dart';
 import 'package:flutter/material.dart';
 
 //static const platform = MethodChannel('samples.flutter.dev');
@@ -36,13 +39,26 @@ class TicketsPage extends StatelessWidget {
                 icon: Icons.style,
                 onPressed: () {
                   //TODO: proper navigation!
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const BuyTicketsPage()),);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const BuyTicketsPage(),
+                    ),
+                  );
                 },
               ),
               ShopCard(
                 title: 'Buy one drink',
                 icon: Icons.coffee,
-                onPressed: () {},
+                onPressed: () {
+                  //TODO: proper navigation!
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const BuyOneDrinkPage(),
+                    ),
+                  );
+                },
               ),
             ],
           ),
@@ -52,12 +68,28 @@ class TicketsPage extends StatelessWidget {
               ShopCard(
                 title: 'Buy syrup, jugs etc.',
                 icon: Icons.coffee,
-                onPressed: () {},
+                onPressed: () {
+                  //TODO: proper navigation!
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const BuyOtherPage(),
+                    ),
+                  );
+                },
               ),
               ShopCard(
                 title: 'Redeem voucher',
                 icon: Icons.wallet_giftcard,
-                onPressed: () {},
+                onPressed: () {
+                  //TODO: proper navigation!
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const RedeemVoucherPage(),
+                    ),
+                  );
+                },
               ),
             ],
           ),
