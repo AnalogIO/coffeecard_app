@@ -28,6 +28,7 @@ class ReceiptRepository {
       );
     }
 
+    // TODO Handle null
     final ticketReceipts = usedTicketResponse.body?.map(
       (ticket) => Receipt(
         //TODO consider if better defaults can be provided. Ideally the user never encounters this, since it would imply our database is incomplete
