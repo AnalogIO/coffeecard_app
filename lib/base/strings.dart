@@ -19,4 +19,16 @@ abstract class Strings {
   // // Login email hint and errors
   // static const loginPasscodeHint = 'Enter passcode';
   // static const loginPasscodeEmpty = 'Enter a passcode';
+
+  // Receipts page
+  static const receiptFilterAll = 'Swipes & purchases';
+  static const receiptFilterSwipes = 'Swipes';
+  static const receiptFilterPurchases = 'Purchases';
+
+  // Time since utility
+  static const justNow = 'Just now';
+  static String hoursAgo(int hours) => '$hours hours ago';
+  static const earlierToday = 'Earlier today';
+  static const yesterday = 'Yesterday';
+  static String daysAgo(int days) => '$days days ago';
 }
