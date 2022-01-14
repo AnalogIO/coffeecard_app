@@ -1,3 +1,4 @@
+import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/data/repositories/receipt_repository.dart';
 import 'package:coffeecard/models/receipts/receipt.dart';
 import 'package:equatable/equatable.dart';
@@ -11,9 +12,6 @@ class ReceiptCubit extends Cubit<ReceiptState> {
   ReceiptCubit(this._repository) : super(ReceiptState());
 
   Future<void> fetchReceipts(/*String? latestReciept*/) async {
-    if (!state.status.isInitial) {
-      emit(state.copyWith(status: ReceiptStatus.loading));
-    }
     final receipts = await _repository.getUserReceipts();
     emit(
       state.copyWith(

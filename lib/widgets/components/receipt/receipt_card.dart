@@ -1,24 +1,11 @@
 import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/utils/time_since.dart';
 import 'package:coffeecard/widgets/analog_logo.dart';
 import 'package:coffeecard/widgets/components/generic_card.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 DateFormat get _formatter => DateFormat('EEEE d/M HH:mm');
-
-String _timeSincePurchase(DateTime time) {
-  final currentTime = DateTime.now();
-  final difference = currentTime.difference(time);
-
-  if (difference.inMinutes < 2) return 'Just now';
-  if (difference.inHours < 8) return '${difference.inHours} hours ago';
-  if (difference.inDays == 0) return 'Earlier today';
-  if (difference.inDays == 1) return 'Yesterday';
-  return '${difference.inDays} days ago';
-  // TODO potential to improve
-  // if (difference.inDays < 31) return '${difference.inDays} days ago';
-  // return 'Around ${difference.inDays ~/ 31} months ago';
-}
 
 class ReceiptCard extends StatelessWidget {
   final String productName;
@@ -51,7 +38,7 @@ class ReceiptCard extends StatelessWidget {
           style: AppTextStyle.sectionTitle,
         ),
         Text(
-          _timeSincePurchase(time),
+          timeSince(time),
           style: AppTextStyle.textFieldBold,
         ),
         Text(

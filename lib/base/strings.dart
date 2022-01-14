@@ -16,9 +16,9 @@ abstract class Strings {
   // Test strings.
   static const ticketsPageTestString = 'Test string for Tickets page ☕';
 
-  // // Login email hint and errors
-  // static const loginPasscodeHint = 'Enter passcode';
-  // static const loginPasscodeEmpty = 'Enter a passcode';
+  // Login email hint and errors
+  static const loginPasscodeHint = 'Enter passcode';
+  static const loginPasscodeEmpty = 'Enter a passcode';
 
   // Register
   static const registerAppBarTitle = 'Register';
@@ -65,4 +65,16 @@ abstract class Strings {
   static const buttonClose = 'Close';
   static const buttonAccept = 'Accept';
   static const buttonDecline = 'Decline';
+
+  // Receipts page
+  static const receiptFilterAll = 'Swipes & purchases';
+  static const receiptFilterSwipes = 'Swipes';
+  static const receiptFilterPurchases = 'Purchases';
+
+  // Time since utility
+  static const justNow = 'Just now';
+  static String hoursAgo(int hours) => '$hours hours ago';
+  static const earlierToday = 'Earlier today';
+  static const yesterday = 'Yesterday';
+  static String daysAgo(int days) => '$days days ago';
 }

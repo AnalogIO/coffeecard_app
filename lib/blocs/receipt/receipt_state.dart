@@ -1,20 +1,19 @@
 part of 'receipt_cubit.dart';
 
 enum FilterCategory { all, swipes, purchases }
-enum ReceiptStatus { initial, loading, success, failure }
+enum ReceiptStatus { initial, success, failure }
 
 extension DropdownName on FilterCategory {
   String get name {
-    if (this == FilterCategory.all) return 'Swipes & purchases';
-    if (this == FilterCategory.swipes) return 'Swipes';
-    if (this == FilterCategory.purchases) return 'Purchases';
+    if (this == FilterCategory.all) return Strings.receiptFilterAll;
+    if (this == FilterCategory.swipes) return Strings.receiptFilterSwipes;
+    if (this == FilterCategory.purchases) return Strings.receiptFilterPurchases;
     throw Exception('Unknown filter category: $this');
   }
 }
 
 extension ReceiptStatusIs on ReceiptStatus {
   bool get isInitial => this == ReceiptStatus.initial;
-  bool get isLoading => this == ReceiptStatus.loading;
   bool get isSuccess => this == ReceiptStatus.success;
   bool get isFailure => this == ReceiptStatus.failure;
 }
