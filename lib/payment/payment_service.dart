@@ -1,12 +1,18 @@
+import 'package:flutter/services.dart';
+
+enum PaymentType {
+  mobilePay,
+  applePay,
+}
+
 abstract class PaymentService {
-  factory PaymentService() {
-    /*
-      switch PAYMENT
-      case MOBILEPAY: return MobilePayService();
-      case GPAY: return ...
-      case ApplePay: return ...
-      */
-    return MobilePayService();
+  factory PaymentService(PaymentType type) {
+    switch (type) {
+      case PaymentType.mobilePay:
+        return MobilePayService();
+      case PaymentType.applePay:
+        throw UnimplementedError();
+    }
   }
 
   Payment initPurchase(String productId);
@@ -15,6 +21,10 @@ abstract class PaymentService {
 }
 
 class MobilePayService implements PaymentService {
+  static const platform = MethodChannel('samples.flutter.dev');
+
+  MobilePayService();
+
   @override
   Payment initPurchase(String productId) {
     // Call coffeecard API with productId
@@ -36,8 +46,12 @@ class MobilePayService implements PaymentService {
   }
 
   @override
-  void invokeMobilePay(Payment po) {
+  Future<void> invokeMobilePay(Payment po) async {
     // Open Mobilepay app with paymentId and deeplink
+    await platform.invokeMethod(
+      'foo',
+      {'price': 10.0, 'orderId': '86715c57-8840-4a6f-af5f-07ee89107ece'},
+    );
   }
 
   @override

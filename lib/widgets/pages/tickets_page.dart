@@ -1,15 +1,13 @@
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/widgets/components/coffee_card.dart';
+import 'package:coffeecard/widgets/components/rounded_button.dart';
 import 'package:coffeecard/widgets/components/shop_card.dart';
 import 'package:coffeecard/widgets/pages/buy_one_drink_page.dart';
 import 'package:coffeecard/widgets/pages/buy_other_page.dart';
 import 'package:coffeecard/widgets/pages/buy_tickets_page.dart';
 import 'package:coffeecard/widgets/pages/redeem_voucher_page.dart';
 import 'package:flutter/material.dart';
-
-//static const platform = MethodChannel('samples.flutter.dev');
-//await platform.invokeMethod('foo');
 
 class TicketsPage extends StatelessWidget {
   @override
@@ -50,21 +48,9 @@ class AnalogClosed extends StatelessWidget {
                 style: AppTextStyle.buttonText,
               ),
             ),
-            TextButton(
+            RoundedButton(
+              text: 'Got it',
               onPressed: () {},
-              child: Container(
-                decoration: const BoxDecoration(
-                  color: AppColor.primary,
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                  child: Text(
-                    'Got it',
-                    style: AppTextStyle.buttonText,
-                  ),
-                ),
-              ),
             )
           ],
         ),
