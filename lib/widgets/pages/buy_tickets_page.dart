@@ -88,7 +88,7 @@ class _BuyTicketsPageState extends State<BuyTicketsPage> {
         title: const Text('Buy tickets'),
       ),
       body: GridView.count(
-        childAspectRatio: 2 / 3,
+        childAspectRatio: 2 / 3.1,
         primary: false,
         padding: const EdgeInsets.all(20),
         crossAxisSpacing: 10,
