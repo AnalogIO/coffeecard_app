@@ -99,8 +99,14 @@ class ShopSection extends StatelessWidget {
             alignment: Alignment.centerLeft,
             child: Text('Shop', style: AppTextStyle.sectionTitle),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          GridView.count(
+            childAspectRatio: 3 / 2,
+            primary: false,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            crossAxisSpacing: 5,
+            mainAxisSpacing: 5,
+            crossAxisCount: 2,
             children: [
               ShopCard(
                 title: 'Buy tickets',
@@ -126,11 +132,6 @@ class ShopSection extends StatelessWidget {
                   );
                 },
               ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
               ShopCard(
                 title: 'Buy syrup, jugs etc.',
                 icon: Icons.coffee,
@@ -156,7 +157,7 @@ class ShopSection extends StatelessWidget {
                 },
               ),
             ],
-          ),
+          )
         ],
       ),
     );

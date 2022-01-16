@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:coffeecard/api_service.dart';
 import 'package:flutter/services.dart';
 
 enum PaymentType {
@@ -15,9 +18,12 @@ abstract class PaymentService {
     }
   }
 
-  Payment initPurchase(String productId);
-  void invokeMobilePay(Payment po);
-  PaymentStatus verifyPurchaseOrRetry(String paymentId);
+  Future<Payment> initPurchase(String productId);
+  void invokeMobilePay(Payment po, int price);
+  Future<PaymentStatus> verifyPurchaseOrRetry(
+    String paymentId,
+    String transactionId,
+  );
 }
 
 class MobilePayService implements PaymentService {
@@ -26,47 +32,72 @@ class MobilePayService implements PaymentService {
   MobilePayService();
 
   @override
-  Payment initPurchase(String productId) {
+  Future<Payment> initPurchase(String productId) async {
     // Call coffeecard API with productId
     //errors:
     //  networkerror: retry?
     //  else:         log and report error
 
-    Payment payment;
-    try {
-      // Receive mobilepayId and deeplink from API
-      payment = Payment(paymentId: '', deeplink: ''); //call API
+    // Receive mobilepayId and deeplink from API
+    final rsp = await APIService.postJSON(
+      'MobilePay/initiate',
+      {'productId': productId},
+    );
 
-      return Payment(paymentId: payment.paymentId, deeplink: payment.deeplink);
-    } catch (e) {
-      //TODO: handle errors
+    if (rsp.statusCode == 200) {
+      final dynamic mobilePayInitiateJson = json.decode(rsp.body);
+      final MobilePayInitiate mpi = MobilePayInitiate.fromJson(
+        mobilePayInitiateJson as Map<String, dynamic>,
+      );
+
+      return Payment(paymentId: mpi.orderId, deeplink: '');
     }
 
     throw UnimplementedError();
   }
 
   @override
-  Future<void> invokeMobilePay(Payment po) async {
+  void invokeMobilePay(Payment po, int price) {
     // Open Mobilepay app with paymentId and deeplink
-    await platform.invokeMethod(
+    platform.invokeMethod(
       'foo',
-      {'price': 10.0, 'orderId': '86715c57-8840-4a6f-af5f-07ee89107ece'},
+      {'price': price.toDouble(), 'orderId': po.paymentId},
     );
   }
 
   @override
-  PaymentStatus verifyPurchaseOrRetry(String paymentId) {
+  Future<PaymentStatus> verifyPurchaseOrRetry(
+    String paymentId,
+    String transactionId,
+  ) async {
     // Call API endpoint, receive PaymentStatus
-    const PaymentStatus status = PaymentStatus.error; //TODO: call API
+    final rsp = await APIService.postJSON(
+      'MobilePay/complete',
+      {'orderId': paymentId, 'transactionId': transactionId},
+    );
 
-    if (status != PaymentStatus.waiting) {
-      return status;
+    if (rsp.statusCode == 200) {
+      final dynamic messageJson = json.decode(rsp.body);
+      final String message =
+          (messageJson as Map<String, dynamic>)['message'] as String;
+
+      switch (message.toLowerCase()) {
+        case 'successful completion':
+          return PaymentStatus.completed;
+        //FIXME: expand
+
+        case 'waiting':
+          {
+            //retry X times?
+            //  not success after X retries: return PaymentStatus.awaitingCompletionAfterRetry
+          }
+      }
+
+      throw UnimplementedError();
+    } else {
+      //Oh no
+      return PaymentStatus.error;
     }
-
-    //retry X times?
-    //  not success after X retries: return PaymentStatus.awaitingCompletionAfterRetry
-
-    throw UnimplementedError();
   }
 }
 
@@ -84,4 +115,24 @@ enum PaymentStatus {
   awaitingPayment, //user has not approved the purchase
   rejectedPayment, //user has rejected payment
   awaitingCompletionAfterRetry
+}
+
+class MobilePayInitiate {
+  String orderId;
+
+  MobilePayInitiate({required this.orderId});
+
+  MobilePayInitiate.fromJson(Map<String, dynamic> json)
+      : orderId = json['orderId'] as String;
+}
+
+class MobilePayComplete {
+  String orderId;
+  String transactionId;
+
+  MobilePayComplete({required this.orderId, required this.transactionId});
+
+  MobilePayComplete.fromJson(Map<String, dynamic> json)
+      : orderId = json['orderId'] as String,
+        transactionId = json['transactionId'] as String;
 }

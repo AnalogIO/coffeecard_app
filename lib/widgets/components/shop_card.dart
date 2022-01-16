@@ -16,40 +16,36 @@ class ShopCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 120,
-      width: 180,
-      child: Card(
-        color: AppColor.secondary,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Tappable(
-          onTap: onPressed,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    title,
-                    style: const TextStyle(
-                      color: AppColor.white,
-                      fontSize: 20,
-                    ),
+    return Card(
+      color: AppColor.secondary,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Tappable(
+        onTap: onPressed,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  title,
+                  style: const TextStyle(
+                    color: AppColor.white,
+                    fontSize: 20,
                   ),
                 ),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: Icon(
-                    icon,
-                    color: AppColor.white,
-                  ),
-                )
-              ],
-            ),
+              ),
+              Align(
+                alignment: Alignment.centerRight,
+                child: Icon(
+                  icon,
+                  color: AppColor.white,
+                ),
+              )
+            ],
           ),
         ),
       ),

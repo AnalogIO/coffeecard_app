@@ -33,7 +33,7 @@ class Ticket {
 }
 
 Future<List<Ticket>> getAvailableTickets() async {
-  final response = await APIService().getJSON('Products');
+  final response = await APIService.getJSON('Products');
 
   if (response.statusCode == 200) {
     final List<dynamic> ticketsList =
@@ -88,7 +88,7 @@ class _BuyTicketsPageState extends State<BuyTicketsPage> {
         title: const Text('Buy tickets'),
       ),
       body: GridView.count(
-        childAspectRatio: 0.7,
+        childAspectRatio: 2 / 3,
         primary: false,
         padding: const EdgeInsets.all(20),
         crossAxisSpacing: 10,

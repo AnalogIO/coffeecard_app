@@ -54,13 +54,38 @@ class TicketCard extends StatelessWidget {
                         RoundedButton(text: 'Apple Pay', onPressed: () {}),
                         RoundedButton(
                           text: 'MobilePay',
-                          onPressed: () {
+                          onPressed: () async {
                             //FIXME: move to somewhere else?
                             final PaymentService service =
                                 PaymentService(PaymentType.mobilePay);
 
-                            //FIXME: is ID a GUID? we already have the price, why contact API?
-                            service.initPurchase('$id');
+                            final Payment po =
+                                await service.initPurchase('$id');
+
+                            service.invokeMobilePay(po, price);
+
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: const Text('Alert'),
+                                  content: const Text('Helo'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      child: const Text('OK'),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+
+                            final status = await service
+                                //FIXME: transactionId
+                                .verifyPurchaseOrRetry(po.paymentId, '');
+
                           },
                         ),
                       ],
