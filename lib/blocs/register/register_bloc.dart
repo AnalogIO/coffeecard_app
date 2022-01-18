@@ -1,4 +1,4 @@
-import 'package:coffeecard/data/repositories/account_repository.dart';
+import 'package:coffeecard/data/repositories/v1/account_repository.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.models.swagger.dart';
 import 'package:coffeecard/models/account/unauthorized_error.dart';
 import 'package:equatable/equatable.dart';
