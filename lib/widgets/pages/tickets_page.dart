@@ -9,14 +9,29 @@ import 'package:coffeecard/widgets/pages/buy_tickets_page.dart';
 import 'package:coffeecard/widgets/pages/redeem_voucher_page.dart';
 import 'package:flutter/material.dart';
 
-class TicketsPage extends StatelessWidget {
+class TicketsPage extends StatefulWidget {
+  const TicketsPage({Key? key}) : super(key: key);
+
+  @override
+  _TicketsPageState createState() => _TicketsPageState();
+}
+
+class _TicketsPageState extends State<TicketsPage> {
+  bool hasClosedAnalogClosedPopup = false;
+
   @override
   Widget build(BuildContext context) {
     return ListView(
-      children: const [
-        AnalogClosed(isClosed: true),
-        TicketSection(),
-        ShopSection(),
+      children: [
+        AnalogClosed(
+          isClosed: true,
+          hasClosedPopup: hasClosedAnalogClosedPopup,
+          onClosePopup: () => {
+            setState(() { hasClosedAnalogClosedPopup = true; })
+          },
+        ),
+        const TicketSection(),
+        const ShopSection(),
       ],
     );
   }
@@ -24,12 +39,16 @@ class TicketsPage extends StatelessWidget {
 
 class AnalogClosed extends StatelessWidget {
   final bool isClosed;
+  final bool hasClosedPopup;
+  final Function() onClosePopup;
 
-  const AnalogClosed({Key? key, required this.isClosed}) : super(key: key);
+  const AnalogClosed(
+      {Key? key, required this.isClosed, required this.hasClosedPopup, required this.onClosePopup})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    if (isClosed) {
+    if (!hasClosedPopup && isClosed) {
       return Container(
         color: AppColor.secondary,
         child: Column(
@@ -50,7 +69,7 @@ class AnalogClosed extends StatelessWidget {
             ),
             RoundedButton(
               text: 'Got it',
-              onPressed: () {},
+              onPressed: onClosePopup,
             )
           ],
         ),
