@@ -5,18 +5,20 @@ import 'package:flutter/material.dart';
 class RoundedButton extends StatelessWidget {
   final String text;
   final Function() onPressed;
+  final bool disabled;
 
-  const RoundedButton({Key? key, required this.text, required this.onPressed})
+  const RoundedButton(
+      {Key? key, this.disabled = false, required this.text, required this.onPressed})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: onPressed,
+      onPressed: disabled ? () => {} : onPressed,
       child: Container(
-        decoration: const BoxDecoration(
-          color: AppColor.primary,
-          borderRadius: BorderRadius.all(Radius.circular(20)),
+        decoration: BoxDecoration(
+          color: disabled ? AppColor.gray : AppColor.primary,
+          borderRadius: const BorderRadius.all(Radius.circular(20)),
         ),
         child: Padding(
           padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),

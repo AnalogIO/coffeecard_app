@@ -15,10 +15,8 @@ import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import java.math.BigDecimal
 
-
-
 class MainActivity: FlutterActivity() {
-    private val CHANNEL = "samples.flutter.dev"
+    private val CHANNEL = "analog.mobilepay"
     val MOBILEPAY_PAYMENT_REQUEST_CODE = 1337
 
 
@@ -32,7 +30,7 @@ class MainActivity: FlutterActivity() {
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL).setMethodCallHandler {
                 call, result ->
             when(call.method) {
-                "foo" -> {
+                "openMobilepay" -> {
                     // Check if the MobilePay app is installed on the device.
                     val isMobilePayInstalled = MobilePay.getInstance().isMobilePayInstalled(
                             applicationContext
@@ -63,21 +61,10 @@ class MainActivity: FlutterActivity() {
                     }
                 }
                 else -> {
-                    showPaymentResultDialog("title", call.method)
                     result.notImplemented()
                 }
             }
         }
-    }
-
-    private fun showPaymentResultDialog(title: String, content: String) {
-        // In this demo app we show a simple dialog with information of the transaction.
-        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
-        builder.setTitle(title)
-                .setMessage(content)
-                .setPositiveButton("Hello?", null)
-        val dialog: AlertDialog = builder.create()
-        dialog.show()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:coffeecard/api_service.dart';
+import 'package:coffeecard/widgets/popup_card.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -10,10 +12,10 @@ enum PaymentType {
 }
 
 abstract class PaymentService {
-  factory PaymentService(PaymentType type) {
+  factory PaymentService(PaymentType type, BuildContext context) {
     switch (type) {
       case PaymentType.mobilePay:
-        return MobilePayService();
+        return MobilePayService(context);
       case PaymentType.applePay:
         throw UnimplementedError();
     }
@@ -28,9 +30,42 @@ abstract class PaymentService {
 }
 
 class MobilePayService implements PaymentService {
-  static const platform = MethodChannel('samples.flutter.dev');
+  static const platform = MethodChannel('analog.mobilepay');
 
-  MobilePayService();
+  final BuildContext context;
+
+  MobilePayService(this.context) {
+    platform.setMethodCallHandler(_callbackHandler);
+  }
+
+  Future<void> _callbackHandler(MethodCall call) async {
+    switch (call.method) {
+      case 'onSuccess':
+        showDialog(
+          context: context,
+          builder: (context) {
+            return const PopupCard(title: 'Success', content: 'Looks good?');
+          },
+        );
+        break;
+      case 'onFailure':
+        showDialog(
+          context: context,
+          builder: (context) {
+            return const PopupCard(title: 'Failure', content: 'Looks good?');
+          },
+        );
+        break;
+      case 'onCancel':
+        showDialog(
+          context: context,
+          builder: (context) {
+            return const PopupCard(title: 'Cancel', content: 'Looks good?');
+          },
+        );
+        break;
+    }
+  }
 
   @override
   Future<Payment> initPurchase(String productId) async {
@@ -40,7 +75,7 @@ class MobilePayService implements PaymentService {
     //  else:         log and report error
 
     // Receive mobilepayId and deeplink from API
-    /*final rsp = await APIService.postJSON(
+    final rsp = await APIService.postJSON(
       'MobilePay/initiate',
       {'productId': productId},
     );
@@ -52,40 +87,21 @@ class MobilePayService implements PaymentService {
       );
 
       return Payment(paymentId: mpi.orderId, deeplink: '');
-    } */
+    }
 
     return Payment(
-        paymentId: 'ae76a5ba-82e8-46d8-8431-6cbb3130b94a', deeplink: '');
-    //throw UnimplementedError();
+      paymentId: 'ae76a5ba-82e8-46d8-8431-6cbb3130b94a',
+      deeplink: '',
+    );
   }
 
   @override
   void invokeMobilePay(Payment po, int price) {
     // Open Mobilepay app with paymentId and deeplink
-    platform.setMethodCallHandler(_callbackHandler);
     platform.invokeMethod(
-      'foo',
+      'openMobilepay',
       {'price': price.toDouble(), 'orderId': po.paymentId},
     );
-  }
-
-  Future<void> _callbackHandler(MethodCall call) async {
-    switch (call.method) {
-      case 'onSuccess':
-        print('success!');
-        break;
-
-      case 'onFailure':
-        print('failure!');
-        break;
-      case 'onCancel':
-        print('cancel!');
-        break;
-      default:
-        throw UnimplementedError();
-    }
-
-    print('\n\n\nMETHOD: ${call.method}\n\n\n\n');
   }
 
   @override
@@ -118,7 +134,6 @@ class MobilePayService implements PaymentService {
 
       throw UnimplementedError();
     } else {
-      //Oh no
       return PaymentStatus.error;
     }
   }
