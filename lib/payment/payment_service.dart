@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:coffeecard/api_service.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 enum PaymentType {
@@ -39,7 +40,7 @@ class MobilePayService implements PaymentService {
     //  else:         log and report error
 
     // Receive mobilepayId and deeplink from API
-    final rsp = await APIService.postJSON(
+    /*final rsp = await APIService.postJSON(
       'MobilePay/initiate',
       {'productId': productId},
     );
@@ -51,18 +52,40 @@ class MobilePayService implements PaymentService {
       );
 
       return Payment(paymentId: mpi.orderId, deeplink: '');
-    }
+    } */
 
-    throw UnimplementedError();
+    return Payment(
+        paymentId: 'ae76a5ba-82e8-46d8-8431-6cbb3130b94a', deeplink: '');
+    //throw UnimplementedError();
   }
 
   @override
   void invokeMobilePay(Payment po, int price) {
     // Open Mobilepay app with paymentId and deeplink
+    platform.setMethodCallHandler(_callbackHandler);
     platform.invokeMethod(
       'foo',
       {'price': price.toDouble(), 'orderId': po.paymentId},
     );
+  }
+
+  Future<void> _callbackHandler(MethodCall call) async {
+    switch (call.method) {
+      case 'onSuccess':
+        print('success!');
+        break;
+
+      case 'onFailure':
+        print('failure!');
+        break;
+      case 'onCancel':
+        print('cancel!');
+        break;
+      default:
+        throw UnimplementedError();
+    }
+
+    print('\n\n\nMETHOD: ${call.method}\n\n\n\n');
   }
 
   @override

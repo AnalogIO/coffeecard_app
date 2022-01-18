@@ -116,28 +116,9 @@ class TicketCard extends StatelessWidget {
                                 await service.initPurchase('$id');
 
                             service.invokeMobilePay(po, price);
-
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: const Text('Alert'),
-                                  content: const Text('Helo'),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      child: const Text('OK'),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-
-                            final status = await service
-                                //FIXME: transactionId
-                                .verifyPurchaseOrRetry(po.paymentId, '');
+                            //final status = await service
+                            //FIXME: transactionId
+                            //.verifyPurchaseOrRetry(po.paymentId, '');
                           },
                         ),
                       ],
