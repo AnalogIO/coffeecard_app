@@ -1,8 +1,8 @@
 import 'package:chopper/chopper.dart';
 import 'package:coffeecard/data/api/coffee_card_api_constants.dart';
 import 'package:coffeecard/data/api/interceptors/authentication_interceptor.dart';
-import 'package:coffeecard/data/repositories/account_repository.dart';
-import 'package:coffeecard/data/repositories/app_config_repository.dart';
+import 'package:coffeecard/data/repositories/v1/account_repository.dart';
+import 'package:coffeecard/data/repositories/v1/app_config_repository.dart';
 import 'package:coffeecard/data/repositories/v2/purchase_repository.dart';
 import 'package:coffeecard/data/storage/secure_storage.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.swagger.dart';
@@ -42,6 +42,6 @@ void configureServices() {
   );
 
   sl.registerFactory<PurchaseRepository>(
-    () => PurchaseRepository(sl<CoffeecardApiV2>(), sl<Logger>()),
+        () => PurchaseRepository(sl<CoffeecardApiV2>(), sl<Logger>()),
   );
 }
