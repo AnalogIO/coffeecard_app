@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:coffeecard/api_service.dart';
 import 'package:coffeecard/widgets/popup_card.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -12,11 +11,11 @@ enum InternalPaymentType {
 }
 
 abstract class PaymentService {
-  factory PaymentService(PaymentType type, BuildContext context) {
+  factory PaymentService(InternalPaymentType type, BuildContext context) {
     switch (type) {
-      case PaymentType.mobilePay:
+      case InternalPaymentType.mobilePay:
         return MobilePayService(context);
-      case PaymentType.applePay:
+      case InternalPaymentType.applePay:
         throw UnimplementedError();
     }
   }

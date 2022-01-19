@@ -8,7 +8,7 @@ class RoundedButton extends StatelessWidget {
   final bool disabled;
 
   const RoundedButton(
-      {Key? key, this.disabled = false, required this.text, required this.onPressed})
+      {Key? key, this.disabled = false, required this.text, required this.onPressed,})
       : super(key: key);
 
   @override

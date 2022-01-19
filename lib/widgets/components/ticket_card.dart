@@ -3,7 +3,6 @@ import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/payment/payment_service.dart';
 import 'package:coffeecard/widgets/components/helpers/tappable.dart';
 import 'package:coffeecard/widgets/components/rounded_button.dart';
-import 'package:coffeecard/widgets/popup_card.dart';
 import 'package:flutter/material.dart';
 
 class TicketCard extends StatelessWidget {
@@ -137,7 +136,7 @@ Future<void> payWithApplePay(BuildContext context, int id, int price) async {
 
 Future<void> payWithMobilePay(BuildContext context, int id, int price) async {
   //FIXME: move to somewhere else?
-  final PaymentService service = PaymentService(PaymentType.mobilePay, context);
+  final PaymentService service = PaymentService(InternalPaymentType.mobilePay, context);
 
   final Payment po = await service.initPurchase('$id');
 

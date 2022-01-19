@@ -43,7 +43,7 @@ class AnalogClosed extends StatelessWidget {
   final Function() onClosePopup;
 
   const AnalogClosed(
-      {Key? key, required this.isClosed, required this.hasClosedPopup, required this.onClosePopup})
+      {Key? key, required this.isClosed, required this.hasClosedPopup, required this.onClosePopup,})
       : super(key: key);
 
   @override

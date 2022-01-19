@@ -20,7 +20,7 @@ class _HomePageState extends State<HomePage> {
   int _currentPageIndex = 0;
 
   final List<Page> _pages = [
-    Page(
+    const Page(
       Strings.ticketsPageTitle,
       Strings.ticketsNavTitle,
       Icons.style,
