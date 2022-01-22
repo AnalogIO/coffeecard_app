@@ -10,20 +10,11 @@ class RegisterCubit extends Cubit<RegisterState> {
 
   RegisterCubit({required this.repository}) : super(const RegisterState());
 
-  void addEmail(String email) => emit(state.copyWith(email: email));
-  void addPasscode(String passcode) => emit(state.copyWith(passcode: passcode));
-  void addName(String name) => emit(state.copyWith(name: name));
+  void setEmail(String email) => emit(state.copyWith(email: email));
+  void setPasscode(String passcode) => emit(state.copyWith(passcode: passcode));
+  void setName(String name) => emit(state.copyWith(name: name));
 
-  void removeEmail() => emit(const RegisterState());
-  void removePasscode() => emit(RegisterState(email: state.email));
-  void removeName() => emit(
-        RegisterState(
-          email: state.email,
-          passcode: state.passcode,
-        ),
-      );
-
-  Future<void> acceptTerms() async {
+  Future<void> register() async {
     final registerDto = RegisterDto(
       name: state.name,
       email: state.email,

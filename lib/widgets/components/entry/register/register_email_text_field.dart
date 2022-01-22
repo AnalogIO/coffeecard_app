@@ -65,7 +65,7 @@ class _RegisterEmailTextFieldState extends State<RegisterEmailTextField> {
     }
     if (!mounted) return;
     if (_validated) {
-      context.read<RegisterCubit>().addEmail(_controller.text);
+      context.read<RegisterCubit>().setEmail(_controller.text);
       RegisterFlow.push(RegisterFlow.passcodeRoute);
     }
     setState(() {

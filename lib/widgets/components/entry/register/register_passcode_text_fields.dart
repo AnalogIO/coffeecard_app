@@ -78,7 +78,7 @@ class _RegisterPasscodeTextFieldsState
     _validateSecondPasscode(secondPasscode);
 
     if (firstError != null || secondError != null) return;
-    context.read<RegisterCubit>().addPasscode(firstPasscode);
+    context.read<RegisterCubit>().setPasscode(firstPasscode);
     RegisterFlow.push(RegisterFlow.nameRoute);
   }
 

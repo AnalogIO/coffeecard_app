@@ -65,9 +65,9 @@ class _RegisterNameTextFieldState extends State<RegisterNameTextField> {
   }
 
   Future<void> _register(RegisterCubit cubit) async {
-    cubit.addName(name);
+    cubit.setName(name);
     try {
-      await cubit.acceptTerms();
+      await cubit.register();
       await appDialog(
         context: context,
         dismissible: false,
