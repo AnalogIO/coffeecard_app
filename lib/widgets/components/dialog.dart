@@ -7,13 +7,14 @@ Future<void> appDialog({
   required String title,
   required List<Widget> children,
   required List<Widget> actions,
-  bool dismissible = true,
-  Color barrierColor = AppColor.scrim,
+  required bool dismissible,
+  bool transparentBarrier = false,
 }) async {
   return showDialog(
     context: context,
     barrierDismissible: dismissible,
-    barrierColor: barrierColor,
+    barrierColor: transparentBarrier ? Colors.transparent : AppColor.scrim,
+    useRootNavigator: true,
     builder: (BuildContext context) {
       return WillPopScope(
         onWillPop: () async => dismissible,
@@ -29,4 +30,8 @@ Future<void> appDialog({
       );
     },
   );
+}
+
+void closeAppDialog(BuildContext context) {
+  Navigator.of(context, rootNavigator: true).pop();
 }

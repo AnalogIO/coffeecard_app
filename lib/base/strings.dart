@@ -19,4 +19,50 @@ abstract class Strings {
   // // Login email hint and errors
   // static const loginPasscodeHint = 'Enter passcode';
   // static const loginPasscodeEmpty = 'Enter a passcode';
+
+  // Register
+  static const registerAppBarTitle = 'Register';
+
+  static const registerEmailTitle = 'Enter your email';
+  static const registerEmailLabel = 'Email';
+  static const registerEmailHint =
+      'You will need to verify your email address later.';
+  static const registerEmailEmpty = 'Enter an email';
+  static const registerEmailInvalid = 'Enter a valid email';
+  static const registerEmailInUseSuffix = 'is already in use';
+
+  static const registerPasscodeTitle = 'Enter a passcode';
+  static const registerPasscodeLabel = 'Passcode';
+  static const registerPasscodeRepeatLabel = 'Repeat passcode';
+  static const registerPasscodeHint =
+      'Enter a four-digit passcode for your account.';
+  static const registerPasscodeEmpty = 'Enter a passcode';
+  static const registerPasscodeTooShort = 'Enter a four-digit passcode';
+  static const registerPasscodeRepeatEmpty = 'Repeat the passcode';
+  static const registerPasscodeDoesNotMatch = 'Passcodes do not match';
+
+  static const registerNameTitle = 'Enter your name';
+  static const registerNameLabel = 'Name';
+  static const registerNameEmpty = 'Enter a name';
+
+  static const registerTermsHeading = 'Privacy policy';
+  static const registerTermsIntroduction =
+      'By creating a user, you accept our privacy policy:';
+  static const registerTerms = [
+    'Your email is stored only for identification of users in the app.',
+    'Your name may be shown on the leaderboard, both in the app and in Cafe Analog. If you are not comfortable with this, you can choose to appear anonymous in the app under Settings.',
+    'At any time, you can choose to recall this consent by sending an email to support@analogio.dk.',
+  ];
+  static const registerFailureHeading = 'Whoops...';
+  static const registerFailureBody =
+      'Something went wrong while creating your account:';
+  static const registerSuccessHeading = 'Success!';
+  static const registerSuccessBody =
+      "To log in, please verify your email address by clicking the link we've sent to ";
+
+  // Buttons
+  static const buttonOK = 'OK';
+  static const buttonClose = 'Close';
+  static const buttonAccept = 'Accept';
+  static const buttonDecline = 'Decline';
 }

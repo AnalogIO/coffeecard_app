@@ -1,6 +1,7 @@
 import 'package:coffeecard/blocs/authentication/authentication_bloc.dart';
 import 'package:coffeecard/data/repositories/account_repository.dart';
 import 'package:coffeecard/models/api/unauthorized_error.dart';
+import 'package:coffeecard/utils/email_utils.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -23,7 +24,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       final email = state.email.trim();
       if (email.isEmpty) {
         emit(state.copyWith(error: 'Please enter an email'));
-      } else if (!_isValidEmail(email)) {
+      } else if (!emailIsValid(email)) {
         emit(state.copyWith(error: 'Please enter a valid email'));
       } else {
         emit(state.copyWith(emailValidated: true));
@@ -58,7 +59,4 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       }
     });
   }
-
-  bool _isValidEmail(String email) =>
-      RegExp(r'^[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+').hasMatch(email);
 }

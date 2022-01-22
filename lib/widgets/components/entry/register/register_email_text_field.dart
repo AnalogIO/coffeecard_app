@@ -1,10 +1,14 @@
-import 'package:coffeecard/blocs/register/register_bloc.dart';
+import 'package:coffeecard/base/strings.dart';
+import 'package:coffeecard/blocs/register/register_cubit.dart';
 import 'package:coffeecard/utils/debouncer.dart';
+import 'package:coffeecard/utils/email_utils.dart';
 import 'package:coffeecard/widgets/components/forms/text_field.dart';
+import 'package:coffeecard/widgets/routers/register_flow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RegisterEmailTextField extends StatefulWidget {
+  const RegisterEmailTextField();
   @override
   State<RegisterEmailTextField> createState() => _RegisterEmailTextFieldState();
 }
@@ -27,27 +31,17 @@ class _RegisterEmailTextFieldState extends State<RegisterEmailTextField> {
 
   String? get errorMessage => _showError ? _error : null;
 
-  // FIXME email validation is code duplication
-  bool _isValid(String email) {
-    return RegExp(r'^[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+').hasMatch(email);
-  }
-
-  // FIXME should check if email is duplicate instead (belongs in another class)
-  Future<bool> _isDuplicate(String email) async {
-    return Future.delayed(const Duration(milliseconds: 250), () => false);
-  }
-
   Future<void> _validateEmail(String email) async {
     if (email.isEmpty) {
-      error = 'Enter an email';
-    } else if (!_isValid(email)) {
-      error = 'Enter a valid email';
+      error = Strings.registerEmailEmpty;
+    } else if (!emailIsValid(email)) {
+      error = Strings.registerEmailInvalid;
     } else {
-      final isDuplicate = await _isDuplicate(email);
+      final isDuplicate = await emailIsDuplicate(email);
       if (!mounted) return; // Needs to be checked after an async call.
       if (isDuplicate) {
         _showError = true;
-        error = '$email is already in use';
+        error = '$email ${Strings.registerEmailInUseSuffix}';
       } else {
         error = null;
       }
@@ -71,7 +65,8 @@ class _RegisterEmailTextFieldState extends State<RegisterEmailTextField> {
     }
     if (!mounted) return;
     if (_validated) {
-      BlocProvider.of<RegisterBloc>(context).add(AddEmail(_controller.text));
+      context.read<RegisterCubit>().addEmail(_controller.text);
+      RegisterFlow.push(RegisterFlow.passcodeRoute);
     }
     setState(() {
       _readOnly = false;
@@ -87,22 +82,20 @@ class _RegisterEmailTextFieldState extends State<RegisterEmailTextField> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RegisterBloc, RegisterState>(
-      builder: (context, state) {
-        return AppTextField(
-          label: 'Email',
-          hint: 'You will need to verify your email address later.',
-          autofocus: true,
-          error: errorMessage,
-          type: TextFieldType.email,
-          loading: _loading,
-          showCheckMark: _validated,
-          readOnly: _readOnly,
-          onChanged: _onChanged,
-          onEditingComplete: () => _submit(context),
-          controller: _controller,
-        );
-      },
+    return Center(
+      child: AppTextField(
+        label: Strings.registerEmailLabel,
+        hint: Strings.registerEmailHint,
+        autofocus: true,
+        error: errorMessage,
+        type: TextFieldType.email,
+        loading: _loading,
+        showCheckMark: _validated,
+        readOnly: _readOnly,
+        onChanged: _onChanged,
+        onEditingComplete: () => _submit(context),
+        controller: _controller,
+      ),
     );
   }
 }
