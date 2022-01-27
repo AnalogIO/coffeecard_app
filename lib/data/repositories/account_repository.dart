@@ -14,28 +14,37 @@ class AccountRepository {
 
   AccountRepository(this._api, this._logger);
 
+  String _encodePasscode(String passcode) {
+    final bytes = utf8.encode(passcode);
+    final passcodeHash = sha256.convert(bytes);
+    return base64Encode(passcodeHash.bytes);
+  }
+
   // TODO Should probably have another return type in order to support
   //      the intended registration flow?
   Future<void> register(RegisterDto registerDto) async {
-    final response = await _api.apiV1AccountRegisterPost(
-      body: registerDto,
-    );
+    final dto =
+        registerDto.copyWith(password: _encodePasscode(registerDto.password!));
+
+    final response = await _api.apiV1AccountRegisterPost(body: dto);
+
     if (!response.isSuccessful) {
       _logger.e('API Error ${response.statusCode} ${response.error}');
       throw UnauthorizedError(response.error.toString());
     }
   }
 
+  Future<bool> emailExists(String email) async {
+    // TODO implement emailExists
+    return false;
+  }
+
   /// Returns the user token or throws an error.
   Future<AuthenticatedUser> login(String email, String passcode) async {
-    final bytes = utf8.encode(passcode);
-    final passcodeHash = sha256.convert(bytes);
-    final base64Pass = base64Encode(passcodeHash.bytes);
-
     final response = await _api.apiV1AccountLoginPost(
       body: LoginDto(
         email: email,
-        password: base64Pass,
+        password: _encodePasscode(passcode),
         version: CoffeeCardApiConstants.minAppVersion,
       ),
     );

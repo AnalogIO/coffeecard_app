@@ -1,4 +1,5 @@
-import 'package:coffeecard/blocs/register/register_bloc.dart';
+import 'package:coffeecard/base/strings.dart';
+import 'package:coffeecard/blocs/register/register_cubit.dart';
 import 'package:coffeecard/widgets/components/dialog.dart';
 import 'package:coffeecard/widgets/components/forms/text_field.dart';
 import 'package:coffeecard/widgets/components/helpers/unordered_list_builder.dart';
@@ -8,90 +9,127 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 
 class RegisterNameTextField extends StatefulWidget {
+  const RegisterNameTextField();
   @override
   State<RegisterNameTextField> createState() => _RegisterNameTextFieldState();
 }
 
 class _RegisterNameTextFieldState extends State<RegisterNameTextField> {
   final _controller = TextEditingController();
+  String get name => _controller.text;
 
   bool _showError = false;
   String? _error;
 
   Future<void> _validateName(String name) async {
-    setState(() => _error = name.trim().isEmpty ? 'Enter a name' : null);
+    setState(() => _error = name.isEmpty ? Strings.registerNameEmpty : null);
   }
 
   Future<void> _submit(BuildContext context) async {
     _showError = true;
-    await _validateName(_controller.text);
-    if (_error != null) return;
-    if (!mounted) return;
-    // BlocProvider.of<RegisterBloc>(context).add(AddName(_controller.text));
+    await _validateName(name.trim());
+    if (!mounted || _error != null) return;
     LoadingOverlay.of(context).show();
     // Delay to allow keyboard to disappear before showing dialog
     await Future.delayed(const Duration(milliseconds: 250));
-    // if (mounted) LoadingOverlay.of(context).hide();
-    // await Future.delayed(const Duration(milliseconds: 500));
     appDialog(
       context: context,
-      title: 'Privacy policy',
-      barrierColor: Colors.transparent,
+      title: Strings.registerTermsHeading,
+      transparentBarrier: true,
+      dismissible: false,
       children: [
-        const Text('By creating a user, you accept our privacy policy:'),
+        const Text(Strings.registerTermsIntroduction),
         const Gap(16),
         UnorderedListBuilder(
-          texts: terms,
+          texts: Strings.registerTerms,
           builder: (s) => Text(s),
         ),
       ],
       actions: [
         TextButton(
-          child: const Text('Decline'),
+          child: const Text(Strings.buttonDecline),
           onPressed: () {
-            Navigator.of(context).pop();
+            closeAppDialog(context);
             LoadingOverlay.of(context).hide();
           },
         ),
         TextButton(
-          child: const Text('Accept'),
+          child: const Text(Strings.buttonAccept),
           onPressed: () {
-            Navigator.of(context).pop();
-            LoadingOverlay.of(context).hide();
-            // BlocProvider.of<RegisterBloc>(context).add()
+            closeAppDialog(context);
+            _register(context.read<RegisterCubit>());
           },
         ),
       ],
     );
   }
 
+  Future<void> _register(RegisterCubit cubit) async {
+    cubit.setName(name);
+    try {
+      await cubit.register();
+      await appDialog(
+        context: context,
+        dismissible: false,
+        transparentBarrier: true,
+        title: Strings.registerSuccessHeading,
+        children: [
+          Text.rich(
+            TextSpan(
+              children: [
+                const TextSpan(text: Strings.registerSuccessBody),
+                TextSpan(
+                  text: cubit.state.email,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                const TextSpan(text: '.'),
+              ],
+            ),
+          ),
+        ],
+        actions: [
+          TextButton(
+            onPressed: _closeDialog,
+            child: const Text(Strings.buttonOK),
+          )
+        ],
+      );
+      if (mounted) LoadingOverlay.of(context).hide();
+    } on Exception catch (e) {
+      // FIXME wrong error type
+      await appDialog(
+        context: context,
+        dismissible: false,
+        transparentBarrier: true,
+        title: Strings.registerFailureHeading,
+        children: [
+          const Text(Strings.registerFailureBody),
+          const Gap(12),
+          Text(e.toString()),
+        ],
+        actions: [
+          TextButton(
+            onPressed: _closeDialog,
+            child: const Text(Strings.buttonClose),
+          )
+        ],
+      );
+    } finally {
+      LoadingOverlay.of(context).hide();
+    }
+  }
+
+  void _closeDialog() => Navigator.of(context, rootNavigator: true).pop();
+
   @override
   Widget build(BuildContext context) {
-    final overlay = LoadingOverlay.of(context);
-
-    return BlocConsumer<RegisterBloc, RegisterState>(
-      listenWhen: (previous, current) => previous.loading || current.loading,
-      listener: (context, state) {
-        state.loading ? overlay.show() : overlay.hide();
-      },
-      builder: (context, state) {
-        return AppTextField(
-          label: 'Name',
-          hint:
-              'Your name may appear on the leaderboards. You can choose to appear anonymous at any time.',
-          autofocus: true,
-          error: _showError ? _error : null,
-          onChanged: () => _validateName(_controller.text),
-          onEditingComplete: () => _submit(context),
-          controller: _controller,
-        );
-      },
+    return AppTextField(
+      label: Strings.registerNameLabel,
+      autofocus: true,
+      error: _showError ? _error : null,
+      onChanged: () => _validateName(_controller.text),
+      onEditingComplete: () => _submit(context),
+      controller: _controller,
     );
   }
 }
-
-const terms = [
-  'Your email is stored only for identification of users in the app.',
-  'Your name may be shown on the leaderboard, both in the app and in Cafe Analog. If you are not comfortable with this, you can choose to be anonymous in the app under Settings.',
-  'At any time, you can choose to recall this consent by sending an email to support@analogio.dk.',
-];

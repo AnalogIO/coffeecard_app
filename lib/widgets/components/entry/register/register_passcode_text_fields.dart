@@ -1,9 +1,12 @@
-import 'package:coffeecard/blocs/register/register_bloc.dart';
+import 'package:coffeecard/base/strings.dart';
+import 'package:coffeecard/blocs/register/register_cubit.dart';
 import 'package:coffeecard/widgets/components/forms/text_field.dart';
+import 'package:coffeecard/widgets/routers/register_flow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RegisterPasscodeTextFields extends StatefulWidget {
+  const RegisterPasscodeTextFields();
   @override
   State<RegisterPasscodeTextFields> createState() =>
       _RegisterPasscodeTextFieldsState();
@@ -35,9 +38,9 @@ class _RegisterPasscodeTextFieldsState
 
   void _validateFirstPasscode(String passcode) {
     if (passcode.isEmpty) {
-      firstError = 'Enter a passcode';
+      firstError = Strings.registerPasscodeEmpty;
     } else if (passcode.length < 4) {
-      firstError = 'Enter a four-digit passcode';
+      firstError = Strings.registerPasscodeTooShort;
     } else {
       firstError = null;
       _focusSecondField();
@@ -48,9 +51,9 @@ class _RegisterPasscodeTextFieldsState
     // Do not show an error if the previous passcode field has an error.
     if (firstError != null) return;
     if (passcode.isEmpty) {
-      secondError = 'Repeat the passcode';
+      secondError = Strings.registerPasscodeRepeatEmpty;
     } else if (passcode != firstPasscode) {
-      secondError = 'Passcodes do not match';
+      secondError = Strings.registerPasscodeDoesNotMatch;
     } else {
       secondError = null;
     }
@@ -75,38 +78,35 @@ class _RegisterPasscodeTextFieldsState
     _validateSecondPasscode(secondPasscode);
 
     if (firstError != null || secondError != null) return;
-    BlocProvider.of<RegisterBloc>(context).add(AddPasscode(firstPasscode));
+    context.read<RegisterCubit>().setPasscode(firstPasscode);
+    RegisterFlow.push(RegisterFlow.nameRoute);
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RegisterBloc, RegisterState>(
-      builder: (context, state) {
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            AppTextField(
-              label: 'Passcode',
-              autofocus: true,
-              error: firstError,
-              type: TextFieldType.passcode,
-              onChanged: _onFirstChanged,
-              onEditingComplete: () => _validateFirstPasscode(firstPasscode),
-              controller: _firstPasscodeController,
-            ),
-            AppTextField(
-              label: 'Repeat passcode',
-              hint: 'Enter a four-digit passcode for your account.',
-              error: secondError,
-              type: TextFieldType.passcode,
-              onChanged: () => _onSecondChanged(context),
-              onEditingComplete: () => _submit(context),
-              controller: _secondPasscodeController,
-              focusNode: _secondPasscodeFocusNode,
-            ),
-          ],
-        );
-      },
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        AppTextField(
+          label: Strings.registerPasscodeLabel,
+          autofocus: true,
+          error: firstError,
+          type: TextFieldType.passcode,
+          onChanged: _onFirstChanged,
+          onEditingComplete: () => _validateFirstPasscode(firstPasscode),
+          controller: _firstPasscodeController,
+        ),
+        AppTextField(
+          label: Strings.registerPasscodeRepeatLabel,
+          hint: Strings.registerPasscodeHint,
+          error: secondError,
+          type: TextFieldType.passcode,
+          onChanged: () => _onSecondChanged(context),
+          onEditingComplete: () => _submit(context),
+          controller: _secondPasscodeController,
+          focusNode: _secondPasscodeFocusNode,
+        ),
+      ],
     );
   }
 }
