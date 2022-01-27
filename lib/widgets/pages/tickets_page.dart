@@ -1,4 +1,5 @@
 import 'package:coffeecard/widgets/components/analog_closed_popup.dart';
+import 'package:coffeecard/widgets/components/app_bar_title.dart';
 import 'package:coffeecard/widgets/components/shop_section.dart';
 import 'package:coffeecard/widgets/components/tickets_section.dart';
 import 'package:flutter/material.dart';
@@ -13,12 +14,17 @@ class TicketsPage extends StatefulWidget {
 class _TicketsPageState extends State<TicketsPage> {
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: const [
-        AnalogClosedPopup(),
-        TicketSection(),
-        ShopSection(),
-      ],
+    return Scaffold(
+      appBar: AppBar(
+        title: const AppBarTitle('Tickets'),
+      ),
+      body: ListView(
+        children: const [
+          AnalogClosedPopup(),
+          TicketSection(),
+          ShopSection(),
+        ],
+      ),
     );
   }
 }
