@@ -1,65 +1,51 @@
+import 'package:coffeecard/base/strings.dart';
+import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/utils/time_since.dart';
 import 'package:coffeecard/widgets/analog_logo.dart';
-import 'package:coffeecard/widgets/components/generic_card.dart';
+import 'package:coffeecard/widgets/components/card.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 
-DateFormat get _formatter => DateFormat('EEEE d/M HH:mm');
+DateFormat get _formatter => DateFormat('EEEE d/M/y HH:mm');
 
-class ReceiptCard extends StatelessWidget {
+class ReceiptCard extends CardBase with IgnorePointerCard {
   final String productName;
   final DateTime time;
   final bool isPurchase;
   final bool isInOverlay;
 
-  const ReceiptCard({
+  ReceiptCard({
     required this.productName,
     required this.time,
     required this.isPurchase,
     required this.isInOverlay,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return CardGeneric(
-      //TODO have someone look over the numbers and the text styles used
-      width: 200,
-      height: 200,
-      borderRadius: 24,
-      padding: 32,
-      children: [
-        Text(
-          isPurchase ? 'Purchased' : 'Used ticket',
-          style: AppTextStyle.textField,
-        ),
-        Text(
-          productName,
-          style: AppTextStyle.sectionTitle,
-        ),
-        Text(
-          timeSince(time),
-          style: AppTextStyle.textFieldBold,
-        ),
-        Text(
-          _formatter.format(time),
-          style: AppTextStyle.textField,
-        ),
-        const Spacer(),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Flexible(
-              //Flexible to ensure the text will wrap if given a long string
-              child: Text(
-                isInOverlay ? 'This can be found again under Reciepts.' : '',
-                style: AppTextStyle.explainer,
+  }) : super(
+          color: AppColor.white,
+          top: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                isPurchase
+                    ? Strings.receiptCardPurchased
+                    : Strings.receiptCardSwiped,
+                style: AppTextStyle.textField,
               ),
-            ),
-            AnalogRecieptLogo()
-          ],
-        )
-      ],
-    );
-  }
+              const Gap(16),
+              Text(productName, style: AppTextStyle.ownedTicket),
+              const Gap(12),
+              Text(timeSince(time), style: AppTextStyle.textFieldBold),
+              Text(_formatter.format(time), style: AppTextStyle.textField),
+            ],
+          ),
+          gap: 120,
+          bottom: CardBottomRow(
+            gap: 48,
+            left: isInOverlay
+                ? Text(Strings.receiptCardNote, style: AppTextStyle.explainer)
+                : const SizedBox.shrink(),
+            right: AnalogRecieptLogo(),
+          ),
+        );
 }

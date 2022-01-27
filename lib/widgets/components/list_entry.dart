@@ -33,14 +33,9 @@ class ListEntry extends StatelessWidget {
         ),
       ),
     );
-
-    if (onTap == null) {
-      return childWidget;
-    } else {
-      return Tappable(
-        onTap: onTap!,
-        child: childWidget,
-      );
-    }
+    return Tappable(
+      onTap: onTap,
+      child: childWidget,
+    );
   }
 }
