@@ -75,6 +75,16 @@ class AccountRepository {
     }
   }
 
+  Future<void> updatePasscode(String passcode) async {
+    final user = await getUser();
+
+    final updateUserDto = UpdateUserDto(
+      password: _encodePasscode(passcode),
+    );
+
+    await updateUser(updateUserDto);
+  }
+
   /// Update user information
   Future<Either<ApiError, UserDto>> updateUser(UpdateUserDto user) async {
     final response = await _api.apiV1AccountPut(

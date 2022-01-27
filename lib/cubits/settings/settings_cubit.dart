@@ -14,4 +14,8 @@ class SettingsCubit extends Cubit<SettingsState> {
     final user = User.fromDTO(await _accountRepository.getUser());
     emit(state.copyWith(user: user));
   }
+
+  Future<void> changePasscode(String newPasscode) async {
+    await _accountRepository.updatePasscode(newPasscode);
+  }
 }

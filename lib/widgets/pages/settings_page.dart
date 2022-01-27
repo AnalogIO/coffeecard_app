@@ -1,4 +1,5 @@
 import 'package:coffeecard/base/style/colors.dart';
+import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
 import 'package:coffeecard/cubits/settings/settings_cubit.dart';
 import 'package:coffeecard/data/repositories/v1/account_repository.dart';
 import 'package:coffeecard/service_locator.dart';
@@ -57,7 +58,15 @@ class SettingsPage extends StatelessWidget {
                             fontWeight: FontWeight.w500,
                           ),
                         ),
-                        onTap: () {},
+                        onTap: () {
+                          // context.read<SettingsCubit>().changePasscode('0000');
+                        },
+                      ),
+                      SettingListEntry(
+                        name: 'Log out',
+                        onTap: () {
+                          context.read<AuthenticationCubit>().unauthenticated();
+                        },
                       ),
                       SettingListEntry(
                         name: 'Remove account',
