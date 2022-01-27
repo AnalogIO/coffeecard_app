@@ -1,3 +1,5 @@
+import 'package:animations/animations.dart';
+import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/widgets/components/helpers/shimmer_builder.dart';
@@ -34,7 +36,7 @@ class ReceiptListEntry extends StatelessWidget {
 
   ReceiptListEntry.placeholder()
       : isPlaceholder = true,
-        productName = 'Used Espresso based',
+        productName = Strings.receiptPlaceholderName,
         isPurchase = false,
         time = DateTime.now(),
         quantity = 1,
@@ -47,50 +49,51 @@ class ReceiptListEntry extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ShimmerBuilder(
-      showShimmer: isPlaceholder,
-      builder: (context, colorIfShimmer) {
-        return ListEntry(
-          leftWidget: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
+    return OpenContainer(
+      tappable: !isPlaceholder,
+      openBuilder: (context, _) {
+        return ViewReceiptPage(
+          name: productName,
+          time: time,
+          isPurchase: isPurchase,
+        );
+      },
+      closedBuilder: (context, openContainer) {
+        return ShimmerBuilder(
+          showShimmer: isPlaceholder,
+          builder: (context, colorIfShimmer) {
+            return ListEntry(
+              leftWidget: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    color: colorIfShimmer,
+                    child: Text(
+                      isPurchase
+                          ? '${Strings.purchased} $quantity $productName'
+                          : '${Strings.swiped} $productName',
+                      style: AppTextStyle.recieptItemKey,
+                    ),
+                  ),
+                  Container(
+                    color: colorIfShimmer,
+                    child: Text(
+                      _formatter.format(time),
+                      style: AppTextStyle.recieptItemDate,
+                    ),
+                  )
+                ],
+              ),
+              rightWidget: Container(
                 color: colorIfShimmer,
                 child: Text(
-                  isPurchase
-                      ? 'Bought $quantity $productName'
-                      : 'Used $productName',
-                  style: AppTextStyle.recieptItemKey,
+                  isPurchase ? '$price,-' : Strings.oneTicket,
+                  style: AppTextStyle.recieptItemValue,
                 ),
               ),
-              Container(
-                color: colorIfShimmer,
-                child: Text(
-                  _formatter.format(time),
-                  style: AppTextStyle.recieptItemDate,
-                ),
-              )
-            ],
-          ),
-          rightWidget: Container(
-            color: colorIfShimmer,
-            child: Text(
-              isPurchase ? '$price,-' : '1 ticket',
-              style: AppTextStyle.recieptItemValue,
-            ),
-          ),
-          onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => ViewReceiptPage(
-                  name: productName,
-                  time: time,
-                  isPurchase: isPurchase,
-                ),
-              ),
+              backgroundColor: _backgroundColor,
             );
           },
-          backgroundColor: _backgroundColor,
         );
       },
     );

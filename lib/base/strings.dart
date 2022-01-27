@@ -3,7 +3,6 @@ abstract class Strings {
 
   // Titles for the app bar.
   static const ticketsPageTitle = 'Tickets';
-  static const receiptsPageTitle = 'Receipts';
   static const statsPageTitle = 'Statistics';
   static const settingsPageTitle = 'Settings';
 
@@ -21,14 +20,34 @@ abstract class Strings {
   // static const loginPasscodeEmpty = 'Enter a passcode';
 
   // Receipts page
+  static const receiptsPageTitle = 'Receipts';
+  static const singleReceiptPageTitle = 'Receipt';
+
+  static const oneTicket = '1 ticket';
+  static const purchased = 'Purchased';
+  static const swiped = 'Swiped';
+
   static const receiptFilterAll = 'Swipes & purchases';
   static const receiptFilterSwipes = 'Swipes';
   static const receiptFilterPurchases = 'Purchases';
 
+  static const receiptPlaceholderName = 'Swiped Espresso based';
+  static const receiptCardSwiped = 'Ticket swiped';
+  static const receiptCardPurchased = 'Purchased';
+  static const receiptCardNote = 'This can be found again under Reciepts.';
+
   // Time since utility
   static const justNow = 'Just now';
-  static String hoursAgo(int hours) => '$hours hours ago';
+  static const anHourAgo = 'An hour $ago';
+  static const hoursAgo = 'hours $ago';
   static const earlierToday = 'Earlier today';
   static const yesterday = 'Yesterday';
-  static String daysAgo(int days) => '$days days ago';
+  static const daysAgo = 'days $ago';
+  static const aMonth = 'a month';
+  static const months = 'months';
+  static const yearsAgo = 'years $ago';
+  static const ago = 'ago';
+  static const around = 'Around';
+  static const almost = 'Almost';
+  static const moreThan = 'More than';
 }
