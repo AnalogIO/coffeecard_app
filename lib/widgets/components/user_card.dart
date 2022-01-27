@@ -1,15 +1,14 @@
 import 'package:coffeecard/base/style/colors.dart';
-import 'package:coffeecard/blocs/settings/settings_bloc.dart';
-import 'package:coffeecard/model/account/user.dart';
-import 'package:coffeecard/widgets/components/setting_list_item.dart';
+import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/cubits/settings/settings_cubit.dart';
+import 'package:coffeecard/models/account/user.dart';
+import 'package:coffeecard/widgets/components/helpers/tappable.dart';
 import 'package:coffeecard/widgets/components/settings_group.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:coffeecard/widgets/components/settings_list_entry.dart';
 import 'package:flutter/material.dart';
 
-import 'helpers/tappable.dart';
-
 class UserCard extends StatelessWidget {
-  final UserLoaded state;
+  final SettingsState state;
 
   const UserCard(this.state);
 
@@ -28,7 +27,7 @@ class UserCard extends StatelessWidget {
               builder: (BuildContext context) {
                 return Scaffold(
                   appBar: AppBar(title: const Text('Your profile')),
-                  body: Center(child: EditProfile(state.user)),
+                  body: Center(child: EditProfile(state.user!)),
                 );
               },
             ),
@@ -39,40 +38,33 @@ class UserCard extends StatelessWidget {
           padding:
               const EdgeInsets.only(top: 10, bottom: 10, left: 12, right: 12),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const CircleAvatar(),
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            state.user.name,
-                            style: const TextStyle(
-                              fontSize: 14,
-                              color: AppColor.primary,
-                              fontWeight: FontWeight.w800,
-                            ),
-                          ),
-                          const Text(
-                            'occupation',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: AppColor.secondary,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
+                    Text(
+                      state.user!.name,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppTextStyle.recieptItemKey,
+                    ),
+                    const Text(
+                      'occupation',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: AppColor.secondary,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
-                    const Icon(Icons.edit)
                   ],
                 ),
               ),
+              const Expanded(child: SizedBox.shrink()),
+              const Icon(Icons.edit)
             ],
           ),
         ),
@@ -96,11 +88,23 @@ class EditProfile extends StatelessWidget {
             radius: 54,
           ),
         ),
-        Column(children: [Text(user.name), const Text('occupation')]),
+        Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Text(
+                user.name,
+                style: AppTextStyle.sectionTitle,
+                textAlign: TextAlign.center,
+              ),
+            ),
+            const Text('occupation'),
+          ],
+        ),
         SettingsGroup(
           title: 'Edit profile',
           listItems: [
-            SettingListItem(
+            SettingListEntry(
               name: 'Name',
               valueWidget: Text(
                 user.name,
@@ -112,7 +116,7 @@ class EditProfile extends StatelessWidget {
               ),
               onTap: () {},
             ),
-            SettingListItem(
+            SettingListEntry(
               name: 'Occupation',
               valueWidget: const Text(
                 'occ',
@@ -124,7 +128,7 @@ class EditProfile extends StatelessWidget {
               ),
               onTap: () {},
             ),
-            SettingListItem(
+            SettingListEntry(
               name: 'Change profile picture',
               onTap: () {},
             ),
