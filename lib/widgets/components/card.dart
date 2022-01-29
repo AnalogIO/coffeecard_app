@@ -12,35 +12,23 @@ abstract class CardBase extends StatelessWidget {
   /// If [onTap] is not null, the card will show a
   /// splash effect when tapped.
   const CardBase({
-    this.top,
+    required this.top,
     this.bottom = const SizedBox.shrink(),
-    this.title,
-    this.description,
     this.gap = 0,
     required this.color,
     this.borderColor,
     this.dense = false,
     this.disabled = false,
     this.onTap,
-  })  : assert(
-          (top == null) != (title == null),
-          'Exactly one of `top` or `title` must be null',
-        ),
-        assert(
-          (description == null) || (title != null),
-          '`description` can only be provided if `title` is provided',
-        );
+  });
 
   /// Widget to be placed at the top of the card.
-  final Widget? top;
+  final Widget top;
 
   /// Widget to be placed at the bottom of the card.
   ///
   /// If a row is needed, use a [CardBottomRow].
   final Widget bottom;
-
-  final Text? title;
-  final Text? description;
 
   /// Amount of space between the bottom widgets
   /// and the title/description or top widget.
@@ -61,26 +49,10 @@ abstract class CardBase extends StatelessWidget {
   /// If not null, the card will splash when tapped.
   final VoidCallback? onTap;
 
-  Widget get _topWidget {
-    return top != null
-        ? top!
-        : Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              title!,
-              if (description != null) description!,
-            ],
-          );
-  }
-
   Widget get _cardContent {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _topWidget,
-        Gap(gap),
-        bottom,
-      ],
+      children: [top, Gap(gap), bottom],
     );
   }
 
@@ -109,6 +81,29 @@ mixin IgnorePointerCard on CardBase {
   @override
   Widget build(BuildContext context) {
     return IgnorePointer(child: super.build(context));
+  }
+}
+
+/// Helper widget to include a title and an (optional)
+/// description at the top of a card.
+class CardTitle extends StatelessWidget {
+  final Text title;
+  final Text? description;
+  const CardTitle({
+    Key? key,
+    required this.title,
+    this.description,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        title,
+        if (description != null) description!,
+      ],
+    );
   }
 }
 
