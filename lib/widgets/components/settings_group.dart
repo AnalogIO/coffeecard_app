@@ -1,6 +1,6 @@
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/widgets/components/settings_list_entry.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 class SettingsGroup extends StatelessWidget {

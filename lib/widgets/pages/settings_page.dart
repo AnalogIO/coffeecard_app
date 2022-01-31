@@ -1,4 +1,4 @@
-import 'package:coffeecard/base/style/colors.dart';
+import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
 import 'package:coffeecard/cubits/settings/settings_cubit.dart';
 import 'package:coffeecard/data/repositories/v1/account_repository.dart';
@@ -40,23 +40,15 @@ class SettingsPage extends StatelessWidget {
                         name: 'Email',
                         valueWidget: Text(
                           state.user!.email,
-                          style: const TextStyle(
-                            fontSize: 14,
-                            color: AppColor.secondary,
-                            fontWeight: FontWeight.w500,
-                          ),
+                          style: AppTextStyle.settingValue,
                         ),
                         onTap: () {},
                       ),
                       SettingListEntry(
                         name: 'Passcode',
-                        valueWidget: const Text(
+                        valueWidget: Text(
                           'Change',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: AppColor.secondary,
-                            fontWeight: FontWeight.w500,
-                          ),
+                          style: AppTextStyle.settingValue,
                         ),
                         onTap: () {
                           // context.read<SettingsCubit>().changePasscode('0000');
@@ -94,13 +86,9 @@ class SettingsPage extends StatelessWidget {
                       ),
                       SettingListEntry(
                         name: 'Opening hours',
-                        valueWidget: const Text(
+                        valueWidget: Text(
                           'Today: 8-18',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: AppColor.secondary,
-                            fontWeight: FontWeight.w500,
-                          ),
+                          style: AppTextStyle.settingValue,
                         ),
                         onTap: () {},
                       ),

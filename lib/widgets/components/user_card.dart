@@ -6,6 +6,7 @@ import 'package:coffeecard/widgets/components/helpers/tappable.dart';
 import 'package:coffeecard/widgets/components/settings_group.dart';
 import 'package:coffeecard/widgets/components/settings_list_entry.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 
 class UserCard extends StatelessWidget {
   final SettingsState state;
@@ -15,7 +16,7 @@ class UserCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 3,
+      elevation: 2,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(24.0),
       ),
@@ -35,14 +36,13 @@ class UserCard extends StatelessWidget {
         },
         borderRadius: BorderRadius.circular(24.0),
         child: Padding(
-          padding:
-              const EdgeInsets.only(top: 10, bottom: 10, left: 12, right: 12),
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const CircleAvatar(),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
+              const Gap(8),
+              Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -52,19 +52,17 @@ class UserCard extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       style: AppTextStyle.recieptItemKey,
                     ),
-                    const Text(
-                      'occupation',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: AppColor.secondary,
-                        fontWeight: FontWeight.w500,
-                      ),
+                    const Gap(3),
+                    Text(
+                      'BSWU student',
+                      style: AppTextStyle.explainer,
                     ),
                   ],
                 ),
               ),
-              const Expanded(child: SizedBox.shrink()),
-              const Icon(Icons.edit)
+              const Gap(16),
+              const Icon(Icons.edit, color: AppColor.primary),
+              const Gap(12),
             ],
           ),
         ),
@@ -82,54 +80,33 @@ class EditProfile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Padding(
-          padding: EdgeInsets.only(top: 25, bottom: 25),
-          child: CircleAvatar(
-            radius: 54,
-          ),
+        const Gap(24),
+        const CircleAvatar(radius: 54),
+        const Gap(12),
+        Text(
+          user.name,
+          style: AppTextStyle.sectionTitle,
+          textAlign: TextAlign.center,
         ),
-        Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Text(
-                user.name,
-                style: AppTextStyle.sectionTitle,
-                textAlign: TextAlign.center,
-              ),
-            ),
-            const Text('occupation'),
-          ],
-        ),
+        const Gap(8),
+        Text('BSWU student', style: AppTextStyle.explainer),
+        const Gap(24),
         SettingsGroup(
           title: 'Edit profile',
           listItems: [
             SettingListEntry(
               name: 'Name',
-              valueWidget: Text(
-                user.name,
-                style: const TextStyle(
-                  fontSize: 14,
-                  color: AppColor.secondary,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
+              valueWidget: SettingDescription(text: user.name),
               onTap: () {},
             ),
             SettingListEntry(
               name: 'Occupation',
-              valueWidget: const Text(
-                'occ',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: AppColor.secondary,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
+              valueWidget: const SettingDescription(text: 'BSWU student'),
               onTap: () {},
             ),
             SettingListEntry(
               name: 'Change profile picture',
+              valueWidget: const SettingDescription(),
               onTap: () {},
             ),
           ],
