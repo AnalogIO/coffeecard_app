@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:coffeecard/errors/network_exception.dart';
 import 'package:coffeecard/widgets/components/single_coffee_card.dart';
-import 'package:flutter/foundation.dart';
+import 'package:equatable/equatable.dart';
 
 part 'buy_one_drink_state.dart';
 

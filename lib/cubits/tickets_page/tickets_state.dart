@@ -1,11 +1,14 @@
 part of 'tickets_cubit.dart';
 
-abstract class TicketsState {
+abstract class TicketsState extends Equatable {
   const TicketsState();
 }
 
 class TicketsLoading extends TicketsState {
   const TicketsLoading();
+
+  @override
+  List<Object?> get props => [];
 }
 
 class TicketsLoaded extends TicketsState {
@@ -14,14 +17,7 @@ class TicketsLoaded extends TicketsState {
   const TicketsLoaded(this.tickets);
 
   @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is TicketsLoaded && listEquals(other.tickets, tickets);
-  }
-
-  @override
-  int get hashCode => tickets.hashCode;
+  List<Object?> get props => tickets;
 }
 
 class TicketsError extends TicketsState {
@@ -29,12 +25,5 @@ class TicketsError extends TicketsState {
   const TicketsError(this.message);
 
   @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is TicketsError && other.message == message;
-  }
-
-  @override
-  int get hashCode => message.hashCode;
+  List<Object?> get props => [message];
 }

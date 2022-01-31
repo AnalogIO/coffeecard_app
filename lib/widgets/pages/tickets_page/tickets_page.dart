@@ -1,7 +1,7 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
-import 'package:coffeecard/cubits/analog_closed_popup/cubit/analog_closed_popup_cubit.dart';
+import 'package:coffeecard/cubits/analog_closed_popup/analog_closed_popup_cubit.dart';
 import 'package:coffeecard/cubits/tickets_page/tickets_cubit.dart';
 import 'package:coffeecard/errors/match_case_incomplete_exception.dart';
 import 'package:coffeecard/widgets/components/coffee_card.dart';

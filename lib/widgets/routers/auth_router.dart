@@ -14,7 +14,9 @@ class AuthRouter extends StatelessWidget {
     return BlocListener<AuthenticationCubit, AuthenticationState>(
       listener: (context, state) {
         navigatorKey.currentState!.pushAndRemoveUntil(
-          state.status == AuthStatus.authenticated ? HomePage.route : EntryRouter.route,
+          state.status == AuthStatus.authenticated
+              ? HomePage.route
+              : EntryRouter.route,
           (route) => false,
         );
       },

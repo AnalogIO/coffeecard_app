@@ -29,7 +29,8 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
       token,
     );
     emit(
-      AuthenticationState.authenticated(AuthenticatedUser(token: token, email: email)),
+      AuthenticationState.authenticated(
+          AuthenticatedUser(token: token, email: email),),
     );
   }
 

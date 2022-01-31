@@ -1,6 +1,6 @@
 import 'package:coffeecard/errors/network_exception.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.swagger.dart';
-import 'package:flutter/foundation.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'tickets_state.dart';

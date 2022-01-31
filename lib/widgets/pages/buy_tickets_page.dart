@@ -1,4 +1,4 @@
-import 'package:coffeecard/cubits/buy_tickets_page/cubit/buy_tickets_cubit.dart';
+import 'package:coffeecard/cubits/buy_tickets_page/buy_tickets_cubit.dart';
 import 'package:coffeecard/errors/match_case_incomplete_exception.dart';
 import 'package:coffeecard/widgets/components/ticket_card.dart';
 import 'package:flutter/material.dart';
