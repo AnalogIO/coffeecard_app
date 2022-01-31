@@ -1,4 +1,4 @@
-part of 'login_bloc.dart';
+part of 'login_cubit.dart';
 
 enum LoginRoute { email, passcode, biometric }
 
@@ -47,4 +47,8 @@ class LoginState extends Equatable {
   @override
   String toString() =>
       'email: $email, passcode: $passcode, error: ${error ?? 'none'}';
+}
+
+class LoginRequested extends LoginState {
+  const LoginRequested();
 }

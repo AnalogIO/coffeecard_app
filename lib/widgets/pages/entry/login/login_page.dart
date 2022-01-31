@@ -1,5 +1,5 @@
 import 'package:coffeecard/base/style/colors.dart';
-import 'package:coffeecard/blocs/login/login_bloc.dart';
+import 'package:coffeecard/cubits/login/login_cubit.dart';
 import 'package:coffeecard/widgets/analog_logo.dart';
 import 'package:coffeecard/widgets/components/entry/login/login_input_hint.dart';
 import 'package:coffeecard/widgets/components/entry/login/login_title.dart';
@@ -27,7 +27,7 @@ abstract class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final overlay = LoadingOverlay.of(context);
 
-    return BlocConsumer<LoginBloc, LoginState>(
+    return BlocConsumer<LoginCubit, LoginState>(
       listenWhen: (previous, current) => previous.loading || current.loading,
       listener: (context, state) {
         state.loading ? overlay.show() : overlay.hide();

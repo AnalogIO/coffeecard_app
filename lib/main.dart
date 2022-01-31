@@ -1,6 +1,6 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/theme.dart';
-import 'package:coffeecard/blocs/authentication/authentication_bloc.dart';
+import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
 import 'package:coffeecard/data/storage/secure_storage.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/widgets/pages/splash_page.dart';
@@ -19,7 +19,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => AuthBloc(sl.get<SecureStorage>())..add(AppStarted()),
+      create: (_) => AuthenticationCubit(sl.get<SecureStorage>()),
       child: AuthRouter(
         navigatorKey: _navigatorKey,
         child: MaterialApp(

@@ -1,5 +1,5 @@
 import 'package:coffeecard/base/style/colors.dart';
-import 'package:coffeecard/blocs/login/login_bloc.dart';
+import 'package:coffeecard/cubits/login/login_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -9,11 +9,11 @@ class LoginEmailTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void onSubmit() {
-      context.read<LoginBloc>().add(const ValidateEmail());
+      context.read<LoginCubit>().validateEmail();
     }
 
     void onChange(String email) {
-      context.read<LoginBloc>().add(UpdateEmail(email));
+      context.read<LoginCubit>().updateEmail(email);
     }
 
     InputDecoration inputDecoration({required bool hasError}) {
@@ -47,7 +47,7 @@ class LoginEmailTextField extends StatelessWidget {
       );
     }
 
-    return BlocBuilder<LoginBloc, LoginState>(
+    return BlocBuilder<LoginCubit, LoginState>(
       builder: (context, state) {
         return TextField(
           autofocus: true,

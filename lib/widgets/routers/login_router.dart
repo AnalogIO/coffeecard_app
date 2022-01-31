@@ -1,5 +1,5 @@
-import 'package:coffeecard/blocs/authentication/authentication_bloc.dart';
-import 'package:coffeecard/blocs/login/login_bloc.dart';
+import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
+import 'package:coffeecard/cubits/login/login_cubit.dart';
 import 'package:coffeecard/data/repositories/v1/account_repository.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/widgets/pages/entry/login/login_email_page.dart';
@@ -11,11 +11,11 @@ class LoginRouter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => LoginBloc(
-        authBloc: BlocProvider.of<AuthBloc>(context),
-        repository: sl.get<AccountRepository>(),
+      create: (_) => LoginCubit(
+        authenticationCubit: BlocProvider.of<AuthenticationCubit>(context),
+        accountRepository: sl.get<AccountRepository>(),
       ),
-      child: BlocBuilder<LoginBloc, LoginState>(
+      child: BlocBuilder<LoginCubit, LoginState>(
         buildWhen: (previous, current) {
           return previous.emailValidated != current.emailValidated;
         },
