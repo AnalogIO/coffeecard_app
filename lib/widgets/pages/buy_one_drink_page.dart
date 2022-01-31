@@ -1,5 +1,5 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/cubits/buy_one_drink_page/cubit/buy_one_drink_cubit.dart';
+import 'package:coffeecard/cubits/buy_one_drink_page/buy_one_drink_cubit.dart';
 import 'package:coffeecard/errors/match_case_incomplete_exception.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
