@@ -1,6 +1,6 @@
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
-import 'package:coffeecard/blocs/receipt/receipt_cubit.dart';
+import 'package:coffeecard/cubits/receipt/receipt_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

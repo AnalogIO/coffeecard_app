@@ -1,4 +1,4 @@
-import 'package:coffeecard/blocs/authentication/authentication_bloc.dart';
+import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
 import 'package:coffeecard/widgets/pages/home_page.dart';
 import 'package:coffeecard/widgets/routers/entry_router.dart';
 import 'package:flutter/material.dart';
@@ -11,12 +11,10 @@ class AuthRouter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthBloc, AuthState>(
+    return BlocListener<AuthenticationCubit, AuthenticationState>(
       listener: (context, state) {
         navigatorKey.currentState!.pushAndRemoveUntil(
-          state.status == AuthStatus.authenticated
-              ? HomePage.route
-              : EntryRouter.route,
+          state.status == AuthStatus.authenticated ? HomePage.route : EntryRouter.route,
           (route) => false,
         );
       },

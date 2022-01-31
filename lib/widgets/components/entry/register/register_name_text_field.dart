@@ -1,5 +1,5 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/blocs/register/register_cubit.dart';
+import 'package:coffeecard/cubits/register/register_cubit.dart';
 import 'package:coffeecard/widgets/components/dialog.dart';
 import 'package:coffeecard/widgets/components/forms/text_field.dart';
 import 'package:coffeecard/widgets/components/helpers/unordered_list_builder.dart';

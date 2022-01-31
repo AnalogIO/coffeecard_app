@@ -1,4 +1,4 @@
-import 'package:coffeecard/blocs/login/login_bloc.dart';
+import 'package:coffeecard/cubits/login/login_cubit.dart';
 import 'package:coffeecard/widgets/components/entry/login/login_cta.dart';
 import 'package:coffeecard/widgets/components/entry/login/login_numpad.dart';
 import 'package:coffeecard/widgets/components/entry/login/login_passcode_dots.dart';
@@ -17,7 +17,7 @@ class LoginPasscodePage extends LoginPage {
             LoginCTA(
               text: 'Sign in using another account',
               onPressed: (context) {
-                context.read<LoginBloc>().add(const LoginAsAnotherUser());
+                context.read<LoginCubit>().loginAsAnotherUser();
               },
             ),
           ],

@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
-import 'package:coffeecard/blocs/login/login_bloc.dart';
+import 'package:coffeecard/cubits/login/login_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show HapticFeedback;
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,7 +24,7 @@ class Numpad extends StatelessWidget {
       right: 32,
     );
 
-    return BlocBuilder<LoginBloc, LoginState>(
+    return BlocBuilder<LoginCubit, LoginState>(
       builder: (context, state) {
         return Container(
           color: AppColor.white,
@@ -119,7 +119,7 @@ class NumpadDigitButton extends NumpadButton {
   NumpadDigitButton(this.digit)
       : super(
           onPressed: (BuildContext context) {
-            context.read<LoginBloc>().add(PasscodeInput(digit));
+            context.read<LoginCubit>().addPasscodeInput(digit);
           },
           child: Text(
             digit,
@@ -143,7 +143,7 @@ class NumpadActionButton extends NumpadButton {
 
 abstract class NumpadAction {
   static void delete(BuildContext context) {
-    return context.read<LoginBloc>().add(const ClearPasscode());
+    return context.read<LoginCubit>().clearPasscode();
   }
 
   static void biometric(BuildContext context) {

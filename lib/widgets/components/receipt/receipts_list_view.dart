@@ -1,5 +1,5 @@
 import 'package:coffeecard/base/style/colors.dart';
-import 'package:coffeecard/blocs/receipt/receipt_cubit.dart';
+import 'package:coffeecard/cubits/receipt/receipt_cubit.dart';
 import 'package:coffeecard/models/receipts/receipt.dart';
 import 'package:coffeecard/widgets/components/receipt/receipt_list_entry.dart';
 import 'package:flutter/material.dart';

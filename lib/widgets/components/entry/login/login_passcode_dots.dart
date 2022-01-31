@@ -1,12 +1,12 @@
 import 'package:coffeecard/base/style/colors.dart';
-import 'package:coffeecard/blocs/login/login_bloc.dart';
+import 'package:coffeecard/cubits/login/login_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginPasscodeDots extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginBloc, LoginState>(
+    return BlocBuilder<LoginCubit, LoginState>(
       builder: (context, state) {
         return Row(
           mainAxisAlignment: MainAxisAlignment.center,
