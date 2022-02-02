@@ -1,7 +1,7 @@
 import 'package:coffeecard/cubits/login/login_cubit.dart';
 import 'package:coffeecard/widgets/components/entry/login/login_cta.dart';
 import 'package:coffeecard/widgets/components/entry/login/login_email_text_field.dart';
-import 'package:coffeecard/widgets/pages/entry/login/login_page.dart';
+import 'package:coffeecard/widgets/pages/login/login_page.dart';
 import 'package:coffeecard/widgets/routers/register_flow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
