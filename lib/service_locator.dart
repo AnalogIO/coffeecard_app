@@ -67,7 +67,7 @@ void configureServices() {
   );
 
   sl.registerFactory<AppConfigRepository>(
-    () => AppConfigRepository(sl<CoffeecardApi>(), sl<Logger>()),
+    () => AppConfigRepository(sl<CoffeecardApiV2>(), sl<Logger>()),
   );
 
   sl.registerFactory<TicketRepository>(

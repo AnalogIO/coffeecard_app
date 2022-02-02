@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/data/repositories/v1/app_config_repository.dart';
-import 'package:coffeecard/generated/api/coffeecard_api.swagger.swagger.dart';
+import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.swagger.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -21,14 +21,14 @@ class DatabaseConnectionCubit extends Cubit<DatabaseConnectionState> {
   }
 
   Future<void> getConfig() async {
-    //FIXME: uncomment once data is available
-    await Future.delayed(const Duration(seconds: 1));
-    //final AppConfigDto config = await _configRepository.getAppConfig();
+    final AppConfig config = await _configRepository.getAppConfig();
 
-    //final bool isConnectedToTestDB = config.environmentType != 'Production';
+    final DatabaseConnectionStatus isConnectedToTestDB =
+        config.environmentType == 'Production'
+            ? DatabaseConnectionStatus.production
+            : DatabaseConnectionStatus.test;
 
-    //emit(DatabaseConnectionLoaded(isTest: isConnectedToTestDB));
-    emit(const DatabaseConnectionState(status: DatabaseConnectionStatus.test));
+    emit(DatabaseConnectionState(status: isConnectedToTestDB));
   }
 
   Future<void> addTestDBWidget(BuildContext context) async {

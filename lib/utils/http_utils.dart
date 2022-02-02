@@ -4,7 +4,8 @@ import 'dart:convert';
 String formatErrorMessage(Object error) {
   //assumes http response in string format {'message' : 'some error'}
   final m = json.decode(
-        error as String,) as Map<String, dynamic>;
+    error as String,
+  ) as Map<String, dynamic>;
 
   return m['message']! as String;
 }

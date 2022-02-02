@@ -65,7 +65,8 @@ class LoginCubit extends Cubit<LoginState> {
         authenticatedUser.token,
       );
     } on UnauthorizedError catch (error) {
-      emit(state.copyWith(passcode: '', error: formatErrorMessage(error.message)));
+      emit(state.copyWith(
+          passcode: '', error: formatErrorMessage(error.message),),);
     }
   }
 }
