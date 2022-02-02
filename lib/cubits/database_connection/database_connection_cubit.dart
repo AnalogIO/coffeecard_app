@@ -24,6 +24,7 @@ class DatabaseConnectionCubit extends Cubit<DatabaseConnectionState> {
     final AppConfig config = await _configRepository.getAppConfig();
 
     final DatabaseConnectionStatus isConnectedToTestDB =
+        //FIXME: bug with swagger generation library, use string until fixed
         config.environmentType == 'Production'
             ? DatabaseConnectionStatus.production
             : DatabaseConnectionStatus.test;
