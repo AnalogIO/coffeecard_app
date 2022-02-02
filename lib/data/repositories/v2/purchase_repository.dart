@@ -44,8 +44,8 @@ class PurchaseRepository {
 
   /// Get a purchase by its purchase id
   Future<Either<ApiError, Purchase>> getPurchase(int purchaseId) async {
-    final response = await _api.apiV2PurchasesPurchaseIdGet(
-      purchaseId: purchaseId.toString(),
+    final response = await _api.apiV2PurchasesIdGet(
+      id: purchaseId.toString(),
     );
 
     if (response.isSuccessful) {

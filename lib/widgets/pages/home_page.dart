@@ -23,48 +23,9 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _currentPageIndex = 0;
-  final AppConfigRepository _configRepository = sl.get<AppConfigRepository>();
-  late AppConfigDto? config;
-  bool isLoading = false;
-
-  //FIXME: fetch config when user is at login-screen instead
-  Future<void> fetch() async {
-    setState(() {
-      isLoading = true;
-    });
-
-    try {
-      final either = await _configRepository.getAppConfig();
-      if (either.isRight) {
-        config = either.right;
-      } else {
-        config = null;
-      }
-    } catch (e) {
-      config = null;
-    }
-
-    setState(() {
-      isLoading = false;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    fetch();
-  }
 
   @override
   Widget build(BuildContext context) {
-    //FIXME: handle loading
-    if (isLoading) return const Scaffold();
-
-    final bool isConnectedToTestDB = config?.environmentType != 'Production';
-    if (isConnectedToTestDB) {
-      addTestDBWidget(context);
-    }
-
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -118,25 +79,3 @@ const _bottomNavBarItems = [
     label: Strings.settingsNavTitle,
   ),
 ];
-
-void addTestDBWidget(BuildContext context) {
-  //Delay is required to trigger after build
-  Future.delayed(Duration.zero, () {
-    final entry = OverlayEntry(
-      builder: (context) => IgnorePointer(
-        child: Align(
-          alignment: Alignment.bottomCenter,
-          child: SizedBox(
-            height: 100,
-            child: Text(
-              Strings.testDBString,
-              style: TextStyle(color: Colors.red[900], fontSize: 20),
-            ),
-          ),
-        ),
-      ),
-    );
-    final overlay = Overlay.of(context);
-    overlay?.insert(entry);
-  });
-}
