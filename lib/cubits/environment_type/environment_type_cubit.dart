@@ -1,19 +1,18 @@
 import 'package:bloc/bloc.dart';
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/data/repositories/v1/app_config_repository.dart';
-import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.swagger.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
-part 'database_connection_state.dart';
+part 'environment_type_state.dart';
 
-class DatabaseConnectionCubit extends Cubit<DatabaseConnectionState> {
+class EnvironmentTypeCubit extends Cubit<EnvironmentTypeState> {
   final AppConfigRepository _configRepository = sl.get<AppConfigRepository>();
 
-  DatabaseConnectionCubit()
+  EnvironmentTypeCubit()
       : super(
-          const DatabaseConnectionState(
+          const EnvironmentTypeState(
             status: DatabaseConnectionStatus.unknown,
           ),
         ) {
@@ -21,15 +20,14 @@ class DatabaseConnectionCubit extends Cubit<DatabaseConnectionState> {
   }
 
   Future<void> getConfig() async {
-    final AppConfig config = await _configRepository.getAppConfig();
+    final String environment = await _configRepository.getEnvironmentType();
 
     final DatabaseConnectionStatus isConnectedToTestDB =
-        //FIXME: bug with swagger generation library, use string until fixed
-        config.environmentType == 'Production'
+        environment == 'Production'
             ? DatabaseConnectionStatus.production
             : DatabaseConnectionStatus.test;
 
-    emit(DatabaseConnectionState(status: isConnectedToTestDB));
+    emit(EnvironmentTypeState(status: isConnectedToTestDB));
   }
 
   Future<void> addTestDBWidget(BuildContext context) async {
@@ -52,7 +50,7 @@ class DatabaseConnectionCubit extends Cubit<DatabaseConnectionState> {
       final overlay = Overlay.of(context);
       overlay?.insert(entry);
     });
-    DatabaseConnectionState.widgetAdded = true;
-    emit(DatabaseConnectionState(status: state.status));
+    EnvironmentTypeState.widgetAdded = true;
+    emit(EnvironmentTypeState(status: state.status));
   }
 }
