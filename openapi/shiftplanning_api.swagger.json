@@ -1,0 +1,2011 @@
+{
+    "x-generator": "NSwag v13.13.2.0 (NJsonSchema v10.5.2.0 (Newtonsoft.Json v12.0.0.0))",
+    "swagger": "2.0",
+    "info": {
+        "title": "Cafe Analog ShiftPlanning API",
+        "description": "ASP.NET Core web API for the coffee bar Cafe Analog",
+        "termsOfService": "None",
+        "contact": {
+            "name": "AnalogIO",
+            "url": "https://github.com/analogio",
+            "email": "admin@analogio.dk"
+        },
+        "license": {
+            "name": "Use under MIT",
+            "url": "https://github.com/AnalogIO/analog-core/blob/master/LICENSE"
+        },
+        "version": "v1"
+    },
+    "host": "shifty.analogio.dk",
+    "basePath": "/shiftplanning",
+    "schemes": [
+        "https"
+    ],
+    "paths": {
+        "/api/account/friendships": {
+            "post": {
+                "tags": [
+                    "Account"
+                ],
+                "operationId": "Account_CreateFriendship",
+                "consumes": [
+                    "application/json-patch+json",
+                    "application/json",
+                    "text/json",
+                    "application/*+json"
+                ],
+                "parameters": [
+                    {
+                        "name": "dto",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CreateFriendshipDTO"
+                        },
+                        "x-nullable": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "x-nullable": true,
+                        "description": "",
+                        "schema": {
+                            "type": "file"
+                        }
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "Account"
+                ],
+                "operationId": "Account_GetFriendships",
+                "responses": {
+                    "200": {
+                        "x-nullable": true,
+                        "description": "",
+                        "schema": {
+                            "type": "file"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/account/friendships/{friendshipId}": {
+            "delete": {
+                "tags": [
+                    "Account"
+                ],
+                "operationId": "Account_DeleteFriendship",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "friendshipId",
+                        "in": "path",
+                        "required": true,
+                        "format": "int32",
+                        "x-nullable": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "x-nullable": true,
+                        "description": "",
+                        "schema": {
+                            "type": "file"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/account": {
+            "put": {
+                "tags": [
+                    "Account"
+                ],
+                "operationId": "Account_Update",
+                "consumes": [
+                    "application/json-patch+json",
+                    "application/json",
+                    "text/json",
+                    "application/*+json"
+                ],
+                "parameters": [
+                    {
+                        "name": "dto",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/UpdateEmployeeDTO"
+                        },
+                        "x-nullable": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "x-nullable": true,
+                        "description": "",
+                        "schema": {
+                            "type": "file"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/account/login": {
+            "post": {
+                "tags": [
+                    "Account"
+                ],
+                "operationId": "Account_Login",
+                "consumes": [
+                    "application/json-patch+json",
+                    "application/json",
+                    "text/json",
+                    "application/*+json"
+                ],
+                "parameters": [
+                    {
+                        "name": "loginDto",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/EmployeeLoginDTO"
+                        },
+                        "x-nullable": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "x-nullable": true,
+                        "description": "",
+                        "schema": {
+                            "type": "file"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/employees/{shortKey}": {
+            "get": {
+                "tags": [
+                    "Employees"
+                ],
+                "operationId": "Employees_GetAll",
+                "produces": [
+                    "text/plain",
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "shortKey",
+                        "in": "path",
+                        "required": true,
+                        "x-nullable": true
+                    },
+                    {
+                        "type": "boolean",
+                        "name": "active",
+                        "in": "query",
+                        "default": true,
+                        "x-nullable": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "x-nullable": false,
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/EmployeeDTO"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/employees/{shortKey}/{id}": {
+            "get": {
+                "tags": [
+                    "Employees"
+                ],
+                "operationId": "Employees_Get",
+                "produces": [
+                    "text/plain",
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "shortKey",
+                        "in": "path",
+                        "required": true,
+                        "x-nullable": true
+                    },
+                    {
+                        "type": "integer",
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "format": "int32",
+                        "x-nullable": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "x-nullable": false,
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/EmployeeDTO"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/employees": {
+            "post": {
+                "tags": [
+                    "Employees"
+                ],
+                "operationId": "Employees_Create",
+                "consumes": [
+                    "application/json-patch+json",
+                    "application/json",
+                    "text/json",
+                    "application/*+json"
+                ],
+                "produces": [
+                    "text/plain",
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "employeeDto",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CreateEmployeeDTO"
+                        },
+                        "x-nullable": false
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "x-nullable": false,
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/EmployeeDTO"
+                        }
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "Employees"
+                ],
+                "operationId": "Employees_Get2",
+                "responses": {
+                    "200": {
+                        "x-nullable": true,
+                        "description": "",
+                        "schema": {
+                            "type": "file"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Employees"
+                ],
+                "operationId": "Employees_Put",
+                "consumes": [
+                    "application/json-patch+json",
+                    "application/json",
+                    "text/json",
+                    "application/*+json"
+                ],
+                "parameters": [
+                    {
+                        "name": "employeeDto",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/UpdateEmployeeDTO"
+                        },
+                        "x-nullable": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "x-nullable": true,
+                        "description": "",
+                        "schema": {
+                            "type": "file"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/employees/createmany": {
+            "post": {
+                "tags": [
+                    "Employees"
+                ],
+                "operationId": "Employees_CreateMany",
+                "consumes": [
+                    "application/json-patch+json",
+                    "application/json",
+                    "text/json",
+                    "application/*+json"
+                ],
+                "produces": [
+                    "text/plain",
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "employeeDtos",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/CreateEmployeeDTO"
+                            }
+                        },
+                        "x-nullable": false
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "x-nullable": false,
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/EmployeeDTO"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/employees/{id}/resetpassword": {
+            "post": {
+                "tags": [
+                    "Employees"
+                ],
+                "operationId": "Employees_ResetPassword",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "format": "int32",
+                        "x-nullable": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "x-nullable": true,
+                        "description": "",
+                        "schema": {
+                            "type": "file"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/employees/{id}": {
+            "get": {
+                "tags": [
+                    "Employees"
+                ],
+                "operationId": "Employees_Get3",
+                "produces": [
+                    "text/plain",
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "format": "int32",
+                        "x-nullable": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "x-nullable": false,
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/EmployeeDTO"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Employees"
+                ],
+                "operationId": "Employees_UpdateEmployee",
+                "consumes": [
+                    "application/json-patch+json",
+                    "application/json",
+                    "text/json",
+                    "application/*+json"
+                ],
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "format": "int32",
+                        "x-nullable": false
+                    },
+                    {
+                        "name": "employeeDto",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/UpdateEmployeeDTO"
+                        },
+                        "x-nullable": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "x-nullable": true,
+                        "description": "",
+                        "schema": {
+                            "type": "file"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Employees"
+                ],
+                "operationId": "Employees_Delete",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "format": "int32",
+                        "x-nullable": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "x-nullable": true,
+                        "description": "",
+                        "schema": {
+                            "type": "file"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/employees/podiosync": {
+            "get": {
+                "tags": [
+                    "Employees"
+                ],
+                "operationId": "Employees_PodioSync",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "shortKey",
+                        "in": "query",
+                        "default": "analog",
+                        "x-nullable": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "x-nullable": true,
+                        "description": "",
+                        "schema": {
+                            "type": "file"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/open/{shortKey}": {
+            "get": {
+                "tags": [
+                    "Open"
+                ],
+                "operationId": "Open_IsOpen",
+                "produces": [
+                    "text/plain",
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "shortKey",
+                        "in": "path",
+                        "required": true,
+                        "x-nullable": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "x-nullable": false,
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/IsOpenDTO"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/photos/{shortKey}/{id}": {
+            "get": {
+                "tags": [
+                    "Photos"
+                ],
+                "operationId": "Photos_Get",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "shortKey",
+                        "in": "path",
+                        "required": true,
+                        "x-nullable": true
+                    },
+                    {
+                        "type": "integer",
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "format": "int32",
+                        "x-nullable": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "x-nullable": true,
+                        "description": "",
+                        "schema": {
+                            "type": "file"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/photos/{photoId}/{organizationId}": {
+            "get": {
+                "tags": [
+                    "Photos"
+                ],
+                "operationId": "Photos_Get2",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "photoId",
+                        "in": "path",
+                        "required": true,
+                        "format": "int32",
+                        "x-nullable": false
+                    },
+                    {
+                        "type": "integer",
+                        "name": "organizationId",
+                        "in": "path",
+                        "required": true,
+                        "format": "int32",
+                        "x-nullable": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "x-nullable": true,
+                        "description": "",
+                        "schema": {
+                            "type": "file"
+                        }
+                    }
+                }
+            }
+        },
+        "/": {
+            "post": {
+                "tags": [
+                    "Photos"
+                ],
+                "operationId": "Photos_Post",
+                "consumes": [
+                    "application/json-patch+json",
+                    "application/json",
+                    "text/json",
+                    "application/*+json"
+                ],
+                "parameters": [
+                    {
+                        "name": "base64EncodedPhoto",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "x-nullable": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "x-nullable": true,
+                        "description": "",
+                        "schema": {
+                            "type": "file"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/schedules": {
+            "get": {
+                "tags": [
+                    "Schedule"
+                ],
+                "operationId": "Schedule_Get",
+                "responses": {
+                    "200": {
+                        "x-nullable": true,
+                        "description": "",
+                        "schema": {
+                            "type": "file"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Schedule"
+                ],
+                "operationId": "Schedule_Register",
+                "consumes": [
+                    "application/json-patch+json",
+                    "application/json",
+                    "text/json",
+                    "application/*+json"
+                ],
+                "parameters": [
+                    {
+                        "name": "scheduleDto",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CreateScheduleDTO"
+                        },
+                        "x-nullable": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "x-nullable": true,
+                        "description": "",
+                        "schema": {
+                            "type": "file"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/schedules/{id}": {
+            "get": {
+                "tags": [
+                    "Schedule"
+                ],
+                "operationId": "Schedule_Get2",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "format": "int32",
+                        "x-nullable": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "x-nullable": true,
+                        "description": "",
+                        "schema": {
+                            "type": "file"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Schedule"
+                ],
+                "operationId": "Schedule_Delete",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "format": "int32",
+                        "x-nullable": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "x-nullable": true,
+                        "description": "",
+                        "schema": {
+                            "type": "file"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Schedule"
+                ],
+                "operationId": "Schedule_UpdateSchedule",
+                "consumes": [
+                    "application/json-patch+json",
+                    "application/json",
+                    "text/json",
+                    "application/*+json"
+                ],
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "format": "int32",
+                        "x-nullable": false
+                    },
+                    {
+                        "name": "scheduleDto",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/UpdateScheduleDTO"
+                        },
+                        "x-nullable": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "x-nullable": true,
+                        "description": "",
+                        "schema": {
+                            "type": "file"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Schedule"
+                ],
+                "operationId": "Schedule_CreateScheduledShift",
+                "consumes": [
+                    "application/json-patch+json",
+                    "application/json",
+                    "text/json",
+                    "application/*+json"
+                ],
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "format": "int32",
+                        "x-nullable": false
+                    },
+                    {
+                        "name": "scheduledShiftDto",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CreateScheduledShiftDTO"
+                        },
+                        "x-nullable": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "x-nullable": true,
+                        "description": "",
+                        "schema": {
+                            "type": "file"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/schedules/{id}/preferences": {
+            "get": {
+                "tags": [
+                    "Schedule"
+                ],
+                "operationId": "Schedule_GetPreferences",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "format": "int32",
+                        "x-nullable": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "x-nullable": true,
+                        "description": "",
+                        "schema": {
+                            "type": "file"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Schedule"
+                ],
+                "operationId": "Schedule_SetPreferences",
+                "consumes": [
+                    "application/json-patch+json",
+                    "application/json",
+                    "text/json",
+                    "application/*+json"
+                ],
+                "produces": [
+                    "text/plain",
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "format": "int32",
+                        "x-nullable": false
+                    },
+                    {
+                        "name": "preferencesDtos",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/PreferenceDTO"
+                            }
+                        },
+                        "x-nullable": false
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "x-nullable": false,
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/PreferenceDTO"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/schedules/{scheduleId}/{scheduledShiftId}": {
+            "put": {
+                "tags": [
+                    "Schedule"
+                ],
+                "operationId": "Schedule_UpdateScheduledShift",
+                "consumes": [
+                    "application/json-patch+json",
+                    "application/json",
+                    "text/json",
+                    "application/*+json"
+                ],
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "scheduleId",
+                        "in": "path",
+                        "required": true,
+                        "format": "int32",
+                        "x-nullable": false
+                    },
+                    {
+                        "type": "integer",
+                        "name": "scheduledShiftId",
+                        "in": "path",
+                        "required": true,
+                        "format": "int32",
+                        "x-nullable": false
+                    },
+                    {
+                        "name": "scheduledShiftDto",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/UpdateScheduledShiftDTO"
+                        },
+                        "x-nullable": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "x-nullable": true,
+                        "description": "",
+                        "schema": {
+                            "type": "file"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Schedule"
+                ],
+                "operationId": "Schedule_DeleteScheduledShift",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "scheduleId",
+                        "in": "path",
+                        "required": true,
+                        "format": "int32",
+                        "x-nullable": false
+                    },
+                    {
+                        "type": "integer",
+                        "name": "scheduledShiftId",
+                        "in": "path",
+                        "required": true,
+                        "format": "int32",
+                        "x-nullable": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "x-nullable": true,
+                        "description": "",
+                        "schema": {
+                            "type": "file"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/schedules/{id}/createmultiple": {
+            "post": {
+                "tags": [
+                    "Schedule"
+                ],
+                "operationId": "Schedule_CreateMultipleScheduledShift",
+                "consumes": [
+                    "application/json-patch+json",
+                    "application/json",
+                    "text/json",
+                    "application/*+json"
+                ],
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "format": "int32",
+                        "x-nullable": false
+                    },
+                    {
+                        "name": "scheduledShiftsDto",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/CreateScheduledShiftDTO"
+                            }
+                        },
+                        "x-nullable": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "x-nullable": true,
+                        "description": "",
+                        "schema": {
+                            "type": "file"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/schedules/{id}/rollout": {
+            "post": {
+                "tags": [
+                    "Schedule"
+                ],
+                "operationId": "Schedule_RolloutSchedule",
+                "consumes": [
+                    "application/json-patch+json",
+                    "application/json",
+                    "text/json",
+                    "application/*+json"
+                ],
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "format": "int32",
+                        "x-nullable": false
+                    },
+                    {
+                        "name": "rolloutDto",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/RolloutScheduleDTO"
+                        },
+                        "x-nullable": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "x-nullable": true,
+                        "description": "",
+                        "schema": {
+                            "type": "file"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/shifts/{shortKey}": {
+            "get": {
+                "tags": [
+                    "Shifts"
+                ],
+                "operationId": "Shifts_GetAll",
+                "produces": [
+                    "text/plain",
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "shortKey",
+                        "in": "path",
+                        "required": true,
+                        "x-nullable": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "x-nullable": false,
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/OpeningHoursDTO"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/shifts/today/{shortKey}": {
+            "get": {
+                "tags": [
+                    "Shifts"
+                ],
+                "operationId": "Shifts_GetToday",
+                "produces": [
+                    "text/plain",
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "shortKey",
+                        "in": "path",
+                        "required": true,
+                        "x-nullable": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "x-nullable": false,
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/OpeningHoursDTO"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/openinghours/{shortKey}": {
+            "get": {
+                "tags": [
+                    "Shifts"
+                ],
+                "operationId": "Shifts_GetIntervals",
+                "produces": [
+                    "text/plain",
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "shortKey",
+                        "in": "path",
+                        "required": true,
+                        "x-nullable": true
+                    },
+                    {
+                        "type": "integer",
+                        "name": "interval",
+                        "in": "query",
+                        "format": "int32",
+                        "default": 30,
+                        "x-nullable": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "x-nullable": false,
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/IntervalOpeningHoursDTO"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/shifts": {
+            "get": {
+                "tags": [
+                    "Shifts"
+                ],
+                "operationId": "Shifts_Get",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "from",
+                        "in": "query",
+                        "x-nullable": true
+                    },
+                    {
+                        "type": "string",
+                        "name": "to",
+                        "in": "query",
+                        "x-nullable": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "x-nullable": true,
+                        "description": "",
+                        "schema": {
+                            "type": "file"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Shifts"
+                ],
+                "operationId": "Shifts_Create",
+                "consumes": [
+                    "application/json-patch+json",
+                    "application/json",
+                    "text/json",
+                    "application/*+json"
+                ],
+                "parameters": [
+                    {
+                        "name": "shiftDto",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CreateShiftDTO"
+                        },
+                        "x-nullable": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "x-nullable": true,
+                        "description": "",
+                        "schema": {
+                            "type": "file"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/shifts/{id}": {
+            "get": {
+                "tags": [
+                    "Shifts"
+                ],
+                "operationId": "Shifts_Get2",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "format": "int32",
+                        "x-nullable": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "x-nullable": true,
+                        "description": "",
+                        "schema": {
+                            "type": "file"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Shifts"
+                ],
+                "operationId": "Shifts_Delete",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "format": "int32",
+                        "x-nullable": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "x-nullable": true,
+                        "description": "",
+                        "schema": {
+                            "type": "file"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Shifts"
+                ],
+                "operationId": "Shifts_Update",
+                "consumes": [
+                    "application/json-patch+json",
+                    "application/json",
+                    "text/json",
+                    "application/*+json"
+                ],
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "format": "int32",
+                        "x-nullable": false
+                    },
+                    {
+                        "name": "shiftDto",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/UpdateShiftDTO"
+                        },
+                        "x-nullable": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "x-nullable": true,
+                        "description": "",
+                        "schema": {
+                            "type": "file"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Shifts"
+                ],
+                "operationId": "Shifts_Patch",
+                "consumes": [
+                    "application/json-patch+json",
+                    "application/json",
+                    "text/json",
+                    "application/*+json"
+                ],
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "format": "int32",
+                        "x-nullable": false
+                    },
+                    {
+                        "name": "shiftDto",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/PatchShiftDTO"
+                        },
+                        "x-nullable": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "x-nullable": true,
+                        "description": "",
+                        "schema": {
+                            "type": "file"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/shifts/today": {
+            "get": {
+                "tags": [
+                    "Shifts"
+                ],
+                "operationId": "Shifts_Today",
+                "responses": {
+                    "200": {
+                        "x-nullable": true,
+                        "description": "",
+                        "schema": {
+                            "type": "file"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/shifts/ongoing": {
+            "get": {
+                "tags": [
+                    "Shifts"
+                ],
+                "operationId": "Shifts_OnGoing",
+                "responses": {
+                    "200": {
+                        "x-nullable": true,
+                        "description": "",
+                        "schema": {
+                            "type": "file"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/shifts/{id}/checkin": {
+            "post": {
+                "tags": [
+                    "Shifts"
+                ],
+                "operationId": "Shifts_CheckIn",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "format": "int32",
+                        "x-nullable": false
+                    },
+                    {
+                        "type": "integer",
+                        "name": "employeeId",
+                        "in": "query",
+                        "format": "int32",
+                        "x-nullable": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "x-nullable": true,
+                        "description": "",
+                        "schema": {
+                            "type": "file"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/shifts/{id}/checkout": {
+            "post": {
+                "tags": [
+                    "Shifts"
+                ],
+                "operationId": "Shifts_CheckOut",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "format": "int32",
+                        "x-nullable": false
+                    },
+                    {
+                        "type": "integer",
+                        "name": "employeeId",
+                        "in": "query",
+                        "format": "int32",
+                        "x-nullable": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "x-nullable": true,
+                        "description": "",
+                        "schema": {
+                            "type": "file"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "CreateFriendshipDTO": {
+            "type": "object",
+            "required": [
+                "friendEmployeeId"
+            ],
+            "properties": {
+                "friendEmployeeId": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "UpdateEmployeeDTO": {
+            "type": "object",
+            "required": [
+                "email",
+                "firstName",
+                "lastName",
+                "active",
+                "wantShifts"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "firstName": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "lastName": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "employeeTitle": {
+                    "type": "string"
+                },
+                "active": {
+                    "type": "boolean"
+                },
+                "profilePhoto": {
+                    "type": "string"
+                },
+                "wantShifts": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "oldPassword": {
+                    "type": "string"
+                },
+                "newPassword": {
+                    "type": "string"
+                }
+            }
+        },
+        "EmployeeLoginDTO": {
+            "type": "object",
+            "required": [
+                "username",
+                "password"
+            ],
+            "properties": {
+                "username": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "password": {
+                    "type": "string",
+                    "minLength": 1
+                }
+            }
+        },
+        "EmployeeDTO": {
+            "type": "object",
+            "required": [
+                "id",
+                "active",
+                "wantShifts",
+                "podioId"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "firstName": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "active": {
+                    "type": "boolean"
+                },
+                "employeeTitle": {
+                    "type": "string"
+                },
+                "photoRef": {
+                    "type": "string"
+                },
+                "checkInCount": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "wantShifts": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "roles": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "podioId": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "CreateEmployeeDTO": {
+            "type": "object",
+            "required": [
+                "email",
+                "firstName",
+                "lastName",
+                "employeeTitle"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "firstName": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "lastName": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "employeeTitle": {
+                    "type": "string",
+                    "minLength": 1
+                }
+            }
+        },
+        "IsOpenDTO": {
+            "type": "object",
+            "required": [
+                "open"
+            ],
+            "properties": {
+                "open": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "CreateScheduleDTO": {
+            "type": "object",
+            "required": [
+                "name",
+                "numberOfWeeks"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "numberOfWeeks": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "PreferenceDTO": {
+            "type": "object",
+            "required": [
+                "scheduledShiftId",
+                "priority"
+            ],
+            "properties": {
+                "scheduledShiftId": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "priority": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "UpdateScheduleDTO": {
+            "type": "object",
+            "required": [
+                "name",
+                "numberOfWeeks"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "numberOfWeeks": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "CreateScheduledShiftDTO": {
+            "type": "object",
+            "required": [
+                "day",
+                "start",
+                "end",
+                "maxOnShift",
+                "minOnShift",
+                "employeeIds"
+            ],
+            "properties": {
+                "day": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "start": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "end": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "maxOnShift": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "minOnShift": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "employeeIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                }
+            }
+        },
+        "UpdateScheduledShiftDTO": {
+            "type": "object",
+            "required": [
+                "day",
+                "start",
+                "end",
+                "maxOnShift",
+                "minOnShift",
+                "employeeIds",
+                "lockedEmployeeIds"
+            ],
+            "properties": {
+                "day": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "start": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "end": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "maxOnShift": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "minOnShift": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "employeeIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                },
+                "lockedEmployeeIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                }
+            }
+        },
+        "RolloutScheduleDTO": {
+            "type": "object",
+            "required": [
+                "startFromScheduledWeek"
+            ],
+            "properties": {
+                "from": {
+                    "type": "string"
+                },
+                "to": {
+                    "type": "string"
+                },
+                "startFromScheduledWeek": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "OpeningHoursDTO": {
+            "type": "object",
+            "required": [
+                "id",
+                "start",
+                "end"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "start": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "end": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "employees": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/EmployeeDTO2"
+                    }
+                },
+                "checkedInEmployees": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/OpeningHourEmployeeDTO"
+                    }
+                }
+            }
+        },
+        "EmployeeDTO2": {
+            "type": "object",
+            "properties": {
+                "firstName": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "photoRef": {
+                    "type": "string"
+                }
+            }
+        },
+        "OpeningHourEmployeeDTO": {
+            "type": "object",
+            "required": [
+                "id"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "firstName": {
+                    "type": "string"
+                }
+            }
+        },
+        "IntervalOpeningHoursDTO": {
+            "type": "object",
+            "required": [
+                "startHour",
+                "endHour",
+                "intervalMinutes"
+            ],
+            "properties": {
+                "startHour": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "endHour": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "intervalMinutes": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "shifts": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/IntervalOpeningHourDTO"
+                        }
+                    }
+                },
+                "checkedInEmployees": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/OpeningHourEmployeeDTO"
+                    }
+                }
+            }
+        },
+        "IntervalOpeningHourDTO": {
+            "type": "object",
+            "required": [
+                "shiftStart",
+                "open"
+            ],
+            "properties": {
+                "shiftStart": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "open": {
+                    "type": "boolean"
+                },
+                "employees": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/OpeningHourEmployeeDTO"
+                    }
+                }
+            }
+        },
+        "UpdateShiftDTO": {
+            "type": "object",
+            "required": [
+                "start",
+                "end",
+                "employeeIds"
+            ],
+            "properties": {
+                "start": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "end": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "employeeIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                }
+            }
+        },
+        "PatchShiftDTO": {
+            "type": "object",
+            "properties": {
+                "start": {
+                    "type": "string"
+                },
+                "end": {
+                    "type": "string"
+                },
+                "employeeIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                }
+            }
+        },
+        "CreateShiftDTO": {
+            "type": "object",
+            "required": [
+                "employeeIds",
+                "start",
+                "end"
+            ],
+            "properties": {
+                "employeeIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                },
+                "start": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "end": {
+                    "type": "string",
+                    "minLength": 1
+                }
+            }
+        }
+    }
+}
