@@ -70,6 +70,7 @@ class CoffeeCard extends StatelessWidget {
       ),
       onTap: () => {
         showModalBottomSheet(
+          enableDrag: false,
           context: context,
           builder: (builder) {
             return UseCoffeeCardWidget(
@@ -103,7 +104,9 @@ class _UseCoffeeCardWidgetState extends State<UseCoffeeCardWidget> {
           children: [
             Text(widget.title),
             SlideButton(
+              width: MediaQuery.of(context).size.width * 0.9,
               onSwipeComplete: () {
+                //FIXME: implement logic
                 // ignore: avoid_print
                 print('swipe complete');
               },

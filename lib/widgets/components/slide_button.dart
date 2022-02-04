@@ -2,14 +2,30 @@ import 'package:flutter/material.dart';
 
 class SlideButton extends StatefulWidget {
   final Function() onSwipeComplete;
-  //FIXME: dont use constants for screen width, maybe get it from device?
-  static double totalWidth = 340;
-  static double buttonWidth = 40;
-  static double deltaWidth = totalWidth - buttonWidth - buttonWidth / 2;
+  final double width;
+  late final double buttonWidth;
+  late final double activationZone;
+  late final double startButtonPosition;
+  late final double endButtonPosition;
 
-  const SlideButton({
+  final List<Color> gradientOff = [
+    Colors.white,
+    Colors.white,
+  ];
+  final List<Color> gradientOn = [
+    Colors.white,
+    Colors.green,
+  ];
+
+  SlideButton({
+    required this.width,
     required this.onSwipeComplete,
-  });
+  }) {
+    buttonWidth = 40;
+    startButtonPosition = 0;
+    endButtonPosition = width - buttonWidth - buttonWidth / 2;
+    activationZone = endButtonPosition * 0.85;
+  }
 
   @override
   _SlideButtonState createState() => _SlideButtonState();
@@ -21,13 +37,14 @@ class _SlideButtonState extends State<SlideButton> {
     Colors.white,
   ];
   double buttonPosition = 0;
+
   @override
   Widget build(BuildContext context) {
     return Center(
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
-        width: SlideButton.totalWidth,
+        width: widget.width,
         height: 60,
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
@@ -47,7 +64,7 @@ class _SlideButtonState extends State<SlideButton> {
                 onPanUpdate: onPanUpdate,
                 onPanEnd: onPanEnd,
                 child: Container(
-                  width: SlideButton.buttonWidth,
+                  width: widget.buttonWidth,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(100),
                     color: Colors.white,
@@ -72,35 +89,29 @@ class _SlideButtonState extends State<SlideButton> {
   void onPanUpdate(DragUpdateDetails details) {
     setState(() {
       buttonPosition += details.delta.dx;
-      if (buttonPosition < 0) {
-        buttonPosition = 0;
-      } else if (buttonPosition > SlideButton.deltaWidth) {
-        buttonPosition = SlideButton.deltaWidth;
-        gradient = [
-          Colors.white,
-          Colors.green,
-        ];
+      if (buttonPosition < widget.startButtonPosition) {
+        buttonPosition = widget.startButtonPosition;
+      } else if (buttonPosition > widget.endButtonPosition) {
+        buttonPosition = widget.endButtonPosition;
+        gradient = widget.gradientOn;
+      }
+      if (buttonPosition >= widget.activationZone) {
+        gradient = widget.gradientOn;
       } else {
-        gradient = [
-          Colors.white,
-          Colors.white,
-        ];
+        gradient = widget.gradientOff;
       }
     });
   }
 
   void onPanEnd(DragEndDetails details) {
     setState(() {
-      gradient = [
-        Colors.white,
-        Colors.white,
-      ];
+      gradient = widget.gradientOff;
 
-      if (buttonPosition >= SlideButton.deltaWidth) {
+      if (buttonPosition >= widget.activationZone) {
         widget.onSwipeComplete();
       }
 
-      buttonPosition = 0;
+      buttonPosition = widget.startButtonPosition;
     });
   }
 }
