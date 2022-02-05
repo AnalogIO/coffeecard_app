@@ -109,13 +109,13 @@ class MobilePayService implements PaymentHandler {
     final PurchaseRepository _purchaseRepository = sl.get<PurchaseRepository>();
 
     // Call API endpoint, receive PaymentStatus
-    var either = await _purchaseRepository.getPurchase(purchaseId);
+    final either = await _purchaseRepository.getPurchase(purchaseId);
 
     if (either.success) {
       return either.right.purchaseStatus as PaymentStatus;
     }
 
     //FIXME
-    throw new Exception('not implemented');
+    throw Exception('not implemented');
   }
 }

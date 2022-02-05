@@ -22,9 +22,9 @@ class AnalogClosedPopupCubit extends Cubit<AnalogClosedPopupState> {
       } else {
         emit(const AnalogClosedPopupVisible());
       }
+    } else {
+      emit(AnalogClosedPopupError(either.left.errorMessage));
     }
-
-    emit(AnalogClosedPopupError(either.left.errorMessage));
   }
 
   void closePopup() {

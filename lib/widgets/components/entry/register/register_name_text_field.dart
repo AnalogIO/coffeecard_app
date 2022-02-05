@@ -29,7 +29,7 @@ class _RegisterNameTextFieldState extends State<RegisterNameTextField> {
     _showError = true;
     await _validateName(name.trim());
     if (!mounted || _error != null) return;
-    //FIXME: warning \/
+    //FIXME:
     // ignore: use_build_context_synchronously
     LoadingOverlay.of(context).show();
     // Delay to allow keyboard to disappear before showing dialog
