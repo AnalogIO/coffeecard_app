@@ -1,6 +1,5 @@
 import 'package:coffeecard/blocs/authentication/authentication_bloc.dart';
 import 'package:coffeecard/data/repositories/v1/account_repository.dart';
-import 'package:coffeecard/models/api/unauthorized_error.dart';
 import 'package:coffeecard/utils/email_utils.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -50,13 +49,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     });
 
     on<LoginRequested>((event, emit) async {
-      try {
-        final authenticatedUser =
+        final either =
             await repository.login(state.email, state.passcode);
-        authBloc.add(Authenticated(authenticatedUser));
-      } on UnauthorizedError catch (error) {
-        emit(state.copyWith(passcode: '', error: error.message));
-      }
+
+        if (either.success) {
+          authBloc.add(Authenticated(either.right));
+        } else {
+          emit(state.copyWith(passcode: '', error: either.left.message));
+        }
     });
   }
 }

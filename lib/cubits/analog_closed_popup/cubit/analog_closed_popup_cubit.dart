@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:coffeecard/data/repositories/shiftplanning/opening_hours_repository.dart';
-import 'package:coffeecard/errors/network_exception.dart';
 import 'package:coffeecard/service_locator.dart';
 
 part 'analog_closed_popup_state.dart';
@@ -12,19 +11,20 @@ class AnalogClosedPopupCubit extends Cubit<AnalogClosedPopupState> {
   AnalogClosedPopupCubit() : super(const AnalogClosedPopupLoading());
 
   Future<void> getOpeninghours() async {
-    try {
-      emit(const AnalogClosedPopupLoading());
+    emit(const AnalogClosedPopupLoading());
 
-      final isOpen = await _hoursRepository.isOpen();
+    final either = await _hoursRepository.isOpen();
 
+    if (either.success) {
+      final isOpen = either.right;
       if (isOpen) {
         emit(const AnalogClosedPopupHidden());
       } else {
         emit(const AnalogClosedPopupVisible());
       }
-    } on NetworkException catch (e) {
-      emit(AnalogClosedPopupError(e.message));
     }
+
+    emit(AnalogClosedPopupError(either.left.errorMessage));
   }
 
   void closePopup() {
