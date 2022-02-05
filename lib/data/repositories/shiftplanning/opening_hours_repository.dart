@@ -9,7 +9,7 @@ class OpeningHoursRepository {
 
   OpeningHoursRepository(this._api, this._logger);
 
-  Future<Either<ApiError,bool>> isOpen() async {
+  Future<Either<ApiError, bool>> isOpen() async {
     final response = await _api.apiOpenShortKeyGet(
       shortKey: 'analog',
     );

@@ -9,7 +9,7 @@ class AppConfigRepository {
 
   AppConfigRepository(this._api, this._logger);
 
-  Future<Either<ApiError,AppConfigDto>> getAppConfig() async {
+  Future<Either<ApiError, AppConfigDto>> getAppConfig() async {
     final response = await _api.apiV1AppConfigGet();
 
     if (response.isSuccessful) {

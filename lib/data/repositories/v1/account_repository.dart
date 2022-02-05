@@ -41,7 +41,8 @@ class AccountRepository {
   }
 
   /// Returns the user token or throws an error.
-  Future<Either<UnauthorizedError, AuthenticatedUser>> login(String email, String passcode) async {
+  Future<Either<UnauthorizedError, AuthenticatedUser>> login(
+      String email, String passcode,) async {
     final response = await _api.apiV1AccountLoginPost(
       body: LoginDto(
         email: email,
@@ -51,7 +52,8 @@ class AccountRepository {
     );
 
     if (response.isSuccessful) {
-      return Right(AuthenticatedUser(email: email, token: response.body!.token!));
+      return Right(
+          AuthenticatedUser(email: email, token: response.body!.token!),);
     } else {
       _logger.e('API Error ${response.statusCode} ${response.error}');
       return Left(UnauthorizedError(response.error.toString()));
@@ -71,7 +73,7 @@ class AccountRepository {
   }
 
   /// Update user information
-  Future<Either<ApiError,UserDto>> updateUser(UpdateUserDto user) async {
+  Future<Either<ApiError, UserDto>> updateUser(UpdateUserDto user) async {
     final response = await _api.apiV1AccountPut(
       body: user,
     );

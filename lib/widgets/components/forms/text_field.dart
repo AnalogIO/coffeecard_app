@@ -94,6 +94,7 @@ class _AppTextFieldState extends State<AppTextField> {
         color: AppColor.secondary,
       );
     }
+    return null;
   }
 
   List<TextInputFormatter>? get _inputFormatters {
@@ -104,6 +105,7 @@ class _AppTextFieldState extends State<AppTextField> {
         LengthLimitingTextInputFormatter(maxDigits)
       ];
     }
+    return null;
   }
 
   @override

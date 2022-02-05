@@ -34,7 +34,12 @@ class _HomePageState extends State<HomePage> {
     });
 
     try {
-      //config = await _configRepository.getAppConfig();
+      final either = await _configRepository.getAppConfig();
+      if (either.success) {
+        config = either.right;
+      } else {
+        config = null;
+      }
     } catch (e) {
       config = null;
     }
