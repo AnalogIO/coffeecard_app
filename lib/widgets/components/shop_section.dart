@@ -1,4 +1,12 @@
-part of 'tickets_page.dart';
+import 'package:coffeecard/base/strings.dart';
+import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/widgets/components/shop_card.dart';
+import 'package:coffeecard/widgets/pages/buy_one_drink_page.dart';
+import 'package:coffeecard/widgets/pages/buy_other_page.dart';
+import 'package:coffeecard/widgets/pages/buy_tickets_page.dart';
+import 'package:coffeecard/widgets/pages/redeem_voucher_page.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class ShopSection extends StatelessWidget {
   const ShopSection({Key? key}) : super(key: key);
@@ -73,57 +81,6 @@ class ShopSection extends StatelessWidget {
             ],
           )
         ],
-      ),
-    );
-  }
-}
-
-class ShopCard extends StatelessWidget {
-  final String title;
-  final IconData icon;
-  final Function() onPressed;
-
-  const ShopCard({
-    Key? key,
-    required this.title,
-    required this.icon,
-    required this.onPressed,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      color: AppColor.secondary,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Tappable(
-        onTap: onPressed,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  title,
-                  style: const TextStyle(
-                    color: AppColor.white,
-                    fontSize: 20,
-                  ),
-                ),
-              ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: Icon(
-                  icon,
-                  color: AppColor.white,
-                ),
-              )
-            ],
-          ),
-        ),
       ),
     );
   }

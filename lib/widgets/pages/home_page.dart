@@ -9,7 +9,7 @@ import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/widgets/components/helpers/lazy_indexed_stack.dart';
 import 'package:coffeecard/widgets/pages/settings_page.dart';
 import 'package:coffeecard/widgets/pages/stats_page.dart';
-import 'package:coffeecard/widgets/pages/tickets_page/tickets_page.dart';
+import 'package:coffeecard/widgets/pages/tickets_page.dart';
 import 'package:coffeecard/widgets/routers/receipts_flow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
