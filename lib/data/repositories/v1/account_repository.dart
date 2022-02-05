@@ -5,6 +5,7 @@ import 'package:coffeecard/generated/api/coffeecard_api.swagger.swagger.dart';
 import 'package:coffeecard/models/account/authenticated_user.dart';
 import 'package:coffeecard/models/api/api_error.dart';
 import 'package:coffeecard/models/api/unauthorized_error.dart';
+import 'package:coffeecard/utils/either.dart';
 import 'package:crypto/crypto.dart' show sha256;
 import 'package:logger/logger.dart';
 
@@ -40,7 +41,7 @@ class AccountRepository {
   }
 
   /// Returns the user token or throws an error.
-  Future<AuthenticatedUser> login(String email, String passcode) async {
+  Future<Either<UnauthorizedError, AuthenticatedUser>> login(String email, String passcode) async {
     final response = await _api.apiV1AccountLoginPost(
       body: LoginDto(
         email: email,
@@ -50,10 +51,10 @@ class AccountRepository {
     );
 
     if (response.isSuccessful) {
-      return AuthenticatedUser(email: email, token: response.body!.token!);
+      return Right(AuthenticatedUser(email: email, token: response.body!.token!));
     } else {
       _logger.e('API Error ${response.statusCode} ${response.error}');
-      throw UnauthorizedError(response.error.toString());
+      return Left(UnauthorizedError(response.error.toString()));
     }
   }
 
@@ -70,16 +71,16 @@ class AccountRepository {
   }
 
   /// Update user information
-  Future<UserDto> updateUser(UpdateUserDto user) async {
+  Future<Either<ApiError,UserDto>> updateUser(UpdateUserDto user) async {
     final response = await _api.apiV1AccountPut(
       body: user,
     );
 
     if (response.isSuccessful) {
-      return response.body!;
+      return Right(response.body!);
     } else {
       _logger.e('API Error ${response.statusCode} ${response.error}');
-      throw ApiError(response.error.toString());
+      return Left(ApiError(response.error.toString()));
     }
   }
 

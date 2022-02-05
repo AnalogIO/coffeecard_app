@@ -1,5 +1,6 @@
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.swagger.dart';
 import 'package:coffeecard/models/api/api_error.dart';
+import 'package:coffeecard/utils/either.dart';
 import 'package:logger/logger.dart';
 
 class AppConfigRepository {
@@ -8,14 +9,14 @@ class AppConfigRepository {
 
   AppConfigRepository(this._api, this._logger);
 
-  Future<AppConfigDto> getAppConfig() async {
+  Future<Either<ApiError,AppConfigDto>> getAppConfig() async {
     final response = await _api.apiV1AppConfigGet();
 
     if (response.isSuccessful) {
-      return response.body!;
+      return Right(response.body!);
     } else {
       _logger.e('API Error ${response.statusCode} ${response.error}');
-      throw ApiError(response.error.toString());
+      return Left(ApiError(response.error.toString()));
     }
   }
 }

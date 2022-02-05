@@ -1,5 +1,6 @@
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.swagger.dart';
 import 'package:coffeecard/models/api/api_error.dart';
+import 'package:coffeecard/utils/either.dart';
 import 'package:logger/logger.dart';
 
 class PurchaseRepository {
@@ -10,7 +11,7 @@ class PurchaseRepository {
 
   /// Initiate a new Purchase Request. The return is a purchase request
   /// with payment details on how to pay for the purchase
-  Future<InitiatePurchaseResponse> initiatePurchase(
+  Future<Either<ApiError, InitiatePurchaseResponse>> initiatePurchase(
     int productId,
     PaymentType paymentType,
   ) async {
@@ -22,36 +23,36 @@ class PurchaseRepository {
     );
 
     if (response.isSuccessful) {
-      return response.body!;
+      return Right(response.body!);
     } else {
       _logger.e('API Error ${response.statusCode} ${response.error}');
-      throw ApiError(response.error.toString());
+      return Left(ApiError(response.error.toString()));
     }
   }
 
   /// Get all user's purchases
-  Future<List<Purchase>> getAllPurchases() async {
+  Future<Either<ApiError, List<Purchase>>> getAllPurchases() async {
     final response = await _api.apiV2PurchasesGet();
 
     if (response.isSuccessful) {
-      return response.body!;
+      return Right(response.body!);
     } else {
       _logger.e('API Error ${response.statusCode} ${response.error}');
-      throw ApiError(response.error.toString());
+      return Left(ApiError(response.error.toString()));
     }
   }
 
   /// Get a purchase by its purchase id
-  Future<Purchase> getPurchase(int purchaseId) async {
+  Future<Either<ApiError, Purchase>> getPurchase(int purchaseId) async {
     final response = await _api.apiV2PurchasesPurchaseIdGet(
       purchaseId: purchaseId.toString(),
     );
 
     if (response.isSuccessful) {
-      return response.body!;
+      return Right(response.body!);
     } else {
       _logger.e('API Error ${response.statusCode} ${response.error}');
-      throw ApiError(response.error.toString());
+      return Left(ApiError(response.error.toString()));
     }
   }
 }

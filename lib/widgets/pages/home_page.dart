@@ -34,7 +34,7 @@ class _HomePageState extends State<HomePage> {
     });
 
     try {
-      config = await _configRepository.getAppConfig();
+      //config = await _configRepository.getAppConfig();
     } catch (e) {
       config = null;
     }
