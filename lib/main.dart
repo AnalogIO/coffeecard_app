@@ -19,7 +19,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => AuthenticationCubit(sl.get<SecureStorage>()),
+      create: (_) => AuthenticationCubit(sl.get<SecureStorage>())..appStarted(),
       child: AuthRouter(
         navigatorKey: _navigatorKey,
         child: MaterialApp(

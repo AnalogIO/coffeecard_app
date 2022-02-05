@@ -1,4 +1,11 @@
-part of 'tickets_page.dart';
+import 'package:coffeecard/base/strings.dart';
+import 'package:coffeecard/base/style/colors.dart';
+import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/cubits/analog_closed_popup/analog_closed_popup_cubit.dart';
+import 'package:coffeecard/errors/match_case_incomplete_exception.dart';
+import 'package:coffeecard/widgets/components/rounded_button.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AnalogClosedPopup extends StatelessWidget {
   const AnalogClosedPopup({Key? key}) : super(key: key);
@@ -12,7 +19,7 @@ class AnalogClosedPopup extends StatelessWidget {
           if (state is AnalogClosedPopupError) {
             return const Text('error');
           } else if (state is AnalogClosedPopupHidden) {
-            return Container();
+            return const SizedBox.shrink();
           } else if (state is AnalogClosedPopupLoading) {
             final analogClosedPopupCubit =
                 context.read<AnalogClosedPopupCubit>();

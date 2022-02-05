@@ -1,4 +1,9 @@
-part of 'tickets_page.dart';
+import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/cubits/tickets_page/tickets_cubit.dart';
+import 'package:coffeecard/errors/match_case_incomplete_exception.dart';
+import 'package:coffeecard/widgets/components/coffee_card.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TicketSection extends StatelessWidget {
   const TicketSection({Key? key}) : super(key: key);

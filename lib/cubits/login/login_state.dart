@@ -48,7 +48,3 @@ class LoginState extends Equatable {
   String toString() =>
       'email: $email, passcode: $passcode, error: ${error ?? 'none'}';
 }
-
-class LoginRequested extends LoginState {
-  const LoginRequested();
-}
