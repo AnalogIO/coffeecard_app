@@ -111,7 +111,7 @@ class MobilePayService implements PaymentHandler {
     // Call API endpoint, receive PaymentStatus
     final either = await _purchaseRepository.getPurchase(purchaseId);
 
-    if (either.success) {
+    if (either.isRight) {
       return either.right.purchaseStatus as PaymentStatus;
     }
 

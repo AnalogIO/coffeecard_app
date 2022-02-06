@@ -1,8 +1,8 @@
 abstract class Either<L, R> {
   const Either();
 
-  bool get success => this is Right<L, R>;
-  bool get failure => this is Left<L, R>;
+  bool get isRight => this is Right<L, R>;
+  bool get isLeft => this is Left<L, R>;
 
   L get left => (this as Left<L, R>)._l;
   R get right => (this as Right<L, R>)._r;

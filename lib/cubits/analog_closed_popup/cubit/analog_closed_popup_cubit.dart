@@ -15,7 +15,7 @@ class AnalogClosedPopupCubit extends Cubit<AnalogClosedPopupState> {
 
     final either = await _hoursRepository.isOpen();
 
-    if (either.success) {
+    if (either.isRight) {
       final isOpen = either.right;
       if (isOpen) {
         emit(const AnalogClosedPopupHidden());
