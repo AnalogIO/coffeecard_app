@@ -3,8 +3,6 @@ import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/receipt/receipt_cubit.dart';
 import 'package:coffeecard/data/repositories/receipt_repository.dart';
-import 'package:coffeecard/data/repositories/v1/app_config_repository.dart';
-import 'package:coffeecard/generated/api/coffeecard_api.swagger.swagger.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/widgets/components/helpers/lazy_indexed_stack.dart';
 import 'package:coffeecard/widgets/pages/settings_page.dart';

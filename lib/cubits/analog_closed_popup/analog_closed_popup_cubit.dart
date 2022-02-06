@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:coffeecard/data/repositories/shiftplanning/opening_hours_repository.dart';
 import 'package:coffeecard/service_locator.dart';
+import 'package:equatable/equatable.dart';
 
 part 'analog_closed_popup_state.dart';
 

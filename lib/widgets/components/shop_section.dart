@@ -6,7 +6,6 @@ import 'package:coffeecard/widgets/pages/buy_other_page.dart';
 import 'package:coffeecard/widgets/pages/buy_tickets_page.dart';
 import 'package:coffeecard/widgets/pages/redeem_voucher_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class ShopSection extends StatelessWidget {
   const ShopSection({Key? key}) : super(key: key);
