@@ -1,6 +1,5 @@
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
 import 'package:coffeecard/data/repositories/v1/account_repository.dart';
-import 'package:coffeecard/models/api/unauthorized_error.dart';
 import 'package:coffeecard/utils/email_utils.dart';
 import 'package:coffeecard/utils/http_utils.dart';
 import 'package:equatable/equatable.dart';
@@ -57,18 +56,20 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   Future<void> loginRequested() async {
-    try {
-      final authenticatedUser =
-          await accountRepository.login(state.email, state.passcode);
+    final either = await accountRepository.login(state.email, state.passcode);
+
+    if (either.isRight) {
+      final authenticatedUser = either.right;
+
       authenticationCubit.authenticated(
         authenticatedUser.email,
         authenticatedUser.token,
       );
-    } on UnauthorizedError catch (error) {
+    } else {
       emit(
         state.copyWith(
           passcode: '',
-          error: formatErrorMessage(error.message),
+          error: formatErrorMessage(either.left.message),
         ),
       );
     }

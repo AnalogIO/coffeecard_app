@@ -9,12 +9,11 @@ class AppConfigRepository {
 
   AppConfigRepository(this._api, this._logger);
   Future<Either<ApiError, String>> getEnvironmentType() async {
-    final response = await _api.apiV1AppConfigGet();
+    final response = await _api.apiV2AppconfigGet();
 
     if (response.isSuccessful) {
       //FIXME: bug with swagger generation library, use string until fixed
-      return response.body!.environmentType as String;
-      return Right(response.body!);
+      return Right(response.body!.environmentType as String);
     } else {
       _logger.e('API Error ${response.statusCode} ${response.error}');
       return Left(ApiError(response.error.toString()));

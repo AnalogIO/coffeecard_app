@@ -7,7 +7,6 @@ part 'environment_type_state.dart';
 
 class EnvironmentTypeCubit extends Cubit<EnvironmentTypeState> {
   final AppConfigRepository _configRepository = sl.get<AppConfigRepository>();
-
   EnvironmentTypeCubit()
       : super(
           const EnvironmentTypeState(
@@ -18,14 +17,20 @@ class EnvironmentTypeCubit extends Cubit<EnvironmentTypeState> {
   }
 
   Future<void> getConfig() async {
-    final String environment = await _configRepository.getEnvironmentType();
+    final either = await _configRepository.getEnvironmentType();
 
-    final DatabaseConnectionStatus isConnectedToTestDB =
-        environment == 'Production'
-            ? DatabaseConnectionStatus.production
-            : DatabaseConnectionStatus.test;
+    if (either.isRight) {
+      final DatabaseConnectionStatus isConnectedToTestDB =
+          either.right == 'Production'
+              ? DatabaseConnectionStatus.production
+              : DatabaseConnectionStatus.test;
 
-    emit(EnvironmentTypeState(status: isConnectedToTestDB));
+      emit(EnvironmentTypeState(status: isConnectedToTestDB));
+    } else {
+      // if we cant connect to config endpoint, ignore
+      emit(const EnvironmentTypeState(
+          status: DatabaseConnectionStatus.production,),);
+    }
   }
 
   Future<void> signalWidgetAdded() async {
