@@ -51,7 +51,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<LoginRequested>((event, emit) async {
       final either = await repository.login(state.email, state.passcode);
 
-      if (either.success) {
+      if (either.isRight) {
         authBloc.add(Authenticated(either.right));
       } else {
         emit(state.copyWith(passcode: '', error: either.left.message));

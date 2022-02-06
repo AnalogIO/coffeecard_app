@@ -35,7 +35,7 @@ class _HomePageState extends State<HomePage> {
 
     try {
       final either = await _configRepository.getAppConfig();
-      if (either.success) {
+      if (either.isRight) {
         config = either.right;
       } else {
         config = null;
