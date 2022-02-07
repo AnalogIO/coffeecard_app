@@ -5,8 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'authentication_state.dart';
 
-enum AuthStatus { unknown, authenticated, unauthenticated }
-
 //We might consider changing this back to a bloc if we want different events to
 //trigger a logout (for instance, when the user requests logs out themselves
 //vs the user's token expires and fails to renew).
