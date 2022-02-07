@@ -1,7 +1,6 @@
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/cubits/login/login_cubit.dart';
 import 'package:coffeecard/widgets/analog_logo.dart';
-import 'package:coffeecard/widgets/components/database_connection.dart';
 import 'package:coffeecard/widgets/components/entry/login/login_input_hint.dart';
 import 'package:coffeecard/widgets/components/entry/login/login_title.dart';
 import 'package:coffeecard/widgets/components/loading_overlay.dart';
@@ -54,7 +53,6 @@ abstract class LoginPage extends StatelessWidget {
                       Container(height: 16),
                       LoginInputHint(defaultHint: inputHint),
                       Container(height: 12),
-                      const DatabaseConnectionWidget(),
                       ...ctaChildren,
                     ],
                   ),
