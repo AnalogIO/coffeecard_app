@@ -1,11 +1,19 @@
 part of 'authentication_cubit.dart';
 
+enum AuthenticationStatus { unknown, authenticated, unauthenticated }
+
+extension AuthenticationStatusIs on AuthenticationStatus {
+  bool get isUnknown => this == AuthenticationStatus.unknown;
+  bool get isAuthenticated => this == AuthenticationStatus.authenticated;
+  bool get isUnauthenticated => this == AuthenticationStatus.unauthenticated;
+}
+
 class AuthenticationState extends Equatable {
-  final AuthStatus status;
+  final AuthenticationStatus status;
   final AuthenticatedUser? authenticatedUser;
 
   const AuthenticationState._({
-    this.status = AuthStatus.unknown,
+    this.status = AuthenticationStatus.unknown,
     this.authenticatedUser,
   });
 
@@ -13,12 +21,12 @@ class AuthenticationState extends Equatable {
 
   const AuthenticationState.authenticated(AuthenticatedUser authenticatedUser)
       : this._(
-          status: AuthStatus.authenticated,
+          status: AuthenticationStatus.authenticated,
           authenticatedUser: authenticatedUser,
         );
 
   const AuthenticationState.unauthenticated()
-      : this._(status: AuthStatus.unauthenticated);
+      : this._(status: AuthenticationStatus.unauthenticated);
 
   @override
   List<Object?> get props =>
