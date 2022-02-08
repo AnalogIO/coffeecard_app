@@ -2,6 +2,7 @@ import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/settings/settings_cubit.dart';
 import 'package:coffeecard/models/account/user.dart';
+import 'package:coffeecard/widgets/components/app_bar_title.dart';
 import 'package:coffeecard/widgets/components/helpers/tappable.dart';
 import 'package:coffeecard/widgets/components/settings_group.dart';
 import 'package:coffeecard/widgets/components/settings_list_entry.dart';
@@ -27,7 +28,7 @@ class UserCard extends StatelessWidget {
             MaterialPageRoute<void>(
               builder: (BuildContext context) {
                 return Scaffold(
-                  appBar: AppBar(title: const Text('Your profile')),
+                  appBar: AppBar(title: const AppBarTitle('Your profile')),
                   body: Center(child: EditProfile(state.user!)),
                 );
               },
