@@ -61,6 +61,9 @@ dependencies:
   # rest
   http: 0.13.4
 
+  # grid
+  flutter_layout_grid: 1.0.3
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
