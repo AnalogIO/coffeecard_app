@@ -76,7 +76,7 @@ class AccountRepository {
   }
 
   Future<void> updatePasscode(String passcode) async {
-    final user = await getUser();
+    // final user = await getUser();
 
     final updateUserDto = UpdateUserDto(
       password: _encodePasscode(passcode),
