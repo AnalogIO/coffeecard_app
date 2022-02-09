@@ -6,6 +6,7 @@ import 'package:coffeecard/data/repositories/v1/account_repository.dart';
 import 'package:coffeecard/data/repositories/v1/app_config_repository.dart';
 import 'package:coffeecard/data/repositories/v1/coffeecard_repository.dart';
 import 'package:coffeecard/data/repositories/v1/product_repository.dart';
+import 'package:coffeecard/data/repositories/v1/leaderboard_repository.dart';
 import 'package:coffeecard/data/repositories/v1/receipt_repository.dart';
 import 'package:coffeecard/data/repositories/v1/statistics_repository.dart';
 import 'package:coffeecard/data/repositories/v1/ticket_repository.dart';
@@ -83,8 +84,8 @@ void configureServices() {
     () => ProductRepository(sl<CoffeecardApi>(), sl<Logger>()),
   );
 
-  sl.registerFactory<StatisticsRepository>(
-    () => StatisticsRepository(sl<CoffeecardApi>(), sl<Logger>()),
+  sl.registerFactory<LeaderboardRepository>(
+    () => LeaderboardRepository(sl<CoffeecardApi>(), sl<Logger>()),
   );
 
   // v2
