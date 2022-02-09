@@ -1,26 +1,26 @@
-import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/receipt/receipt_cubit.dart';
+import 'package:coffeecard/widgets/components/dropdowns/dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class FilterDropdown extends StatelessWidget {
+class ReceiptDropdown extends Dropdown {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ReceiptCubit, ReceiptState>(
       builder: (context, state) {
-        return DropdownButton<FilterCategory>(
-          dropdownColor: AppColor.secondary,
-          underline: _underline,
+        return DropdownButton<ReceiptFilterCategory>(
+          dropdownColor: dropdownColor,
+          underline: underline,
           value: state.filterBy,
-          icon: const Icon(Icons.arrow_drop_down, color: AppColor.white),
-          style: AppTextStyle.buttonText,
+          icon: icon,
+          style: style,
           onChanged: (category) {
             context.read<ReceiptCubit>().filterReceipts(category!);
           },
-          items: FilterCategory.values
+          items: ReceiptFilterCategory.values
               .map(
-                (c) => DropdownMenuItem<FilterCategory>(
+                (c) => DropdownMenuItem<ReceiptFilterCategory>(
                   value: c,
                   child: Text(c.name, style: AppTextStyle.loginExplainer),
                 ),
@@ -31,15 +31,3 @@ class FilterDropdown extends StatelessWidget {
     );
   }
 }
-
-final _underline = Container(
-  height: 1.0,
-  decoration: const BoxDecoration(
-    border: Border(
-      bottom: BorderSide(
-        color: AppColor.slightlyHighlighted,
-        width: 0.0,
-      ),
-    ),
-  ),
-);
