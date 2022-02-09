@@ -4,7 +4,6 @@ abstract class Strings {
   // Titles for the app bar.
   static const ticketsPageTitle = 'Tickets';
   static const statsPageTitle = 'Statistics';
-  static const settingsPageTitle = 'Settings';
   static const buyOneDrinkPageTitle = 'Buy one drink';
   static const buyOtherPageTitle = 'Buy other';
   static const redeemVoucherPageTitle = 'Redeem voucher';
@@ -119,6 +118,30 @@ abstract class Strings {
   static const receiptCardSwiped = 'Ticket swiped';
   static const receiptCardPurchased = 'Purchased';
   static const receiptCardNote = 'This can be found again under Reciepts.';
+
+  // Settings
+  static const settingsPageTitle = 'Settings';
+  static const yourProfilePageTitle = 'Your profile';
+
+  static const settingsGroupAccount = 'Account';
+  static const settingsGroupFeatures = 'Features';
+  static const settingsGroupAbout = 'About Cafe Analog';
+  static const settingsGroupProfile = 'Edit profile';
+
+  static const passcode = 'Passcode';
+  static const change = 'Change';
+  static const logOut = 'Log out';
+  static const deleteAccount = 'Delete account';
+
+  static const signInWithFingerprint = 'Sign in with fingerprint';
+
+  static const faq = 'Frequently Asked Questions';
+  static const openingHours = 'Opening  hours';
+  static const today = 'Today';
+
+  static const name = 'Name';
+  static const occupation = 'Occupation';
+  static const changeProfilePicture = 'Change profile picture';
 
   // Time since utility
   static const justNow = 'Just now';
