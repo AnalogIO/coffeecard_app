@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:coffeecard/data/api/coffee_card_api_constants.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.swagger.dart';
 import 'package:coffeecard/models/account/authenticated_user.dart';
+import 'package:coffeecard/models/account/user.dart';
 import 'package:coffeecard/models/api/api_error.dart';
 import 'package:coffeecard/models/api/unauthorized_error.dart';
 import 'package:coffeecard/utils/either.dart';
@@ -23,21 +24,30 @@ class AccountRepository {
 
   // TODO Should probably have another return type in order to support
   //      the intended registration flow?
-  Future<void> register(RegisterDto registerDto) async {
-    final dto =
-        registerDto.copyWith(password: _encodePasscode(registerDto.password!));
+  Future<Either<UnauthorizedError, void>> register(
+    String name,
+    String email,
+    String passcode,
+  ) async {
+    final dto = RegisterDto(
+      name: name,
+      email: email,
+      password: _encodePasscode(passcode),
+    );
 
     final response = await _api.apiV1AccountRegisterPost(body: dto);
 
-    if (!response.isSuccessful) {
+    if (response.isSuccessful) {
+      return const Right(null);
+    } else {
       _logger.e('API Error ${response.statusCode} ${response.error}');
-      throw UnauthorizedError(response.error.toString());
+      return Left(UnauthorizedError(response.error.toString()));
     }
   }
 
-  Future<bool> emailExists(String email) async {
+  Future<Either<ApiError, bool>> emailExists(String email) async {
     // TODO implement emailExists
-    return false;
+    throw UnimplementedError();
   }
 
   /// Returns the user token or throws an error.
@@ -64,25 +74,36 @@ class AccountRepository {
   }
 
   /// Get user information
-  Future<UserDto> getUser() async {
+  Future<Either<ApiError, User>> getUser() async {
     final response = await _api.apiV1AccountGet();
 
     if (response.isSuccessful) {
-      return response.body!;
+      final user = User.fromDTO(response.body!);
+      return Right(user);
     } else {
       _logger.e('API Error ${response.statusCode} ${response.error}');
-      throw ApiError(response.error.toString());
+      return Left(ApiError(response.error.toString()));
+    }
+  }
+
+  Future<Either<ApiError, void>> updatePasscode(String passcode) async {
+    final updateUserDto = UpdateUserDto(password: _encodePasscode(passcode));
+    final either = await updateUser(updateUserDto);
+
+    if (either.isRight) {
+      return const Right(null);
+    } else {
+      return Left(either.left);
     }
   }
 
   /// Update user information
-  Future<Either<ApiError, UserDto>> updateUser(UpdateUserDto user) async {
-    final response = await _api.apiV1AccountPut(
-      body: user,
-    );
+  Future<Either<ApiError, User>> updateUser(UpdateUserDto user) async {
+    final response = await _api.apiV1AccountPut(body: user);
 
     if (response.isSuccessful) {
-      return Right(response.body!);
+      final user = User.fromDTO(response.body!);
+      return Right(user);
     } else {
       _logger.e('API Error ${response.statusCode} ${response.error}');
       return Left(ApiError(response.error.toString()));
@@ -90,14 +111,13 @@ class AccountRepository {
   }
 
   /// Request user password reset
-  Future<void> forgotPassword(EmailDto email) async {
-    final response = await _api.apiV1AccountForgotpasswordPost(
-      body: email,
-    );
-
-    if (!response.isSuccessful) {
+  Future<Either<ApiError, void>> forgotPassword(EmailDto email) async {
+    final response = await _api.apiV1AccountForgotpasswordPost(body: email);
+    if (response.isSuccessful) {
+      return const Right(null);
+    } else {
       _logger.e('API Error ${response.statusCode} ${response.error}');
-      throw ApiError(response.error.toString());
+      return Left(ApiError(response.error.toString()));
     }
   }
 }

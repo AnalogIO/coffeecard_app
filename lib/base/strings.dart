@@ -3,7 +3,6 @@ abstract class Strings {
 
   // Titles for the app bar.
   static const ticketsPageTitle = 'Tickets';
-  static const receiptsPageTitle = 'Receipts';
   static const statsPageTitle = 'Statistics';
   static const settingsPageTitle = 'Settings';
   static const buyOneDrinkPageTitle = 'Buy one drink';
@@ -105,6 +104,7 @@ abstract class Strings {
   static const redeemVoucher = 'Redeem voucher';
 
   // Receipts page
+  static const receiptsPageTitle = 'Receipts';
   static const singleReceiptPageTitle = 'Receipt';
 
   static const oneTicket = '1 ticket';

@@ -63,7 +63,6 @@ abstract class AppTextStyle {
   static final TextStyle settingValue = TextStyle(
     color: AppColor.secondary,
     fontSize: 14,
-    fontWeight: FontWeight.w500,
     fontFamily: AppFont.body,
   );
   static final TextStyle recieptItemKey = TextStyle(
