@@ -11,8 +11,13 @@ class SettingsCubit extends Cubit<SettingsState> {
   SettingsCubit(this._accountRepository) : super(const SettingsState());
 
   Future<void> loadUser() async {
-    final user = User.fromDTO(await _accountRepository.getUser());
-    emit(state.copyWith(user: user));
+    final either = await _accountRepository.getUser();
+    if (either.isRight) {
+      emit(state.copyWith(user: either.right));
+    } else {
+      // FIXME: handle error
+      throw Exception('(SettingsCubit) could not load user');
+    }
   }
 
   Future<void> changePasscode(String newPasscode) async {
