@@ -1,5 +1,8 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/data/repositories/v1/leaderboard_repository.dart';
+import 'package:coffeecard/generated/api/coffeecard_api.swagger.models.swagger.dart'
+    hide Exception;
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -8,7 +11,7 @@ part 'statistics_state.dart';
 class StatisticsCubit extends Cubit<StatisticsState> {
   final LeaderboardRepository _repository;
 
-  StatisticsCubit(this._repository) : super(const StatisticsState());
+  StatisticsCubit(this._repository) : super(StatisticsState());
 
   void filterStatistics(StatisticsFilterCategory filterBy) {
     if (filterBy == state.filterBy) return;
@@ -26,7 +29,11 @@ class StatisticsCubit extends Cubit<StatisticsState> {
 
     final either = await _repository.getLeaderboard(preset, 5);
     if (either.isRight) {
-      //FIXME: emit success
+      emit(
+        state.copyWith(
+          leaderboard: either.right,
+        ),
+      );
     } else {
       //FIXME: emit failure
     }

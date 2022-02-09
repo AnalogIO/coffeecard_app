@@ -22,19 +22,23 @@ extension DropdownName on StatisticsFilterCategory {
 
 class StatisticsState extends Equatable {
   final StatisticsFilterCategory filterBy;
+  final List<LeaderboardDto> leaderboard;
 
-  const StatisticsState({
+  StatisticsState({
     this.filterBy = StatisticsFilterCategory.semester,
-  });
+    List<LeaderboardDto>? leaderboard,
+  }) : leaderboard = leaderboard ?? [];
 
   @override
-  List<Object> get props => [filterBy];
+  List<Object> get props => [filterBy, leaderboard];
 
   StatisticsState copyWith({
     StatisticsFilterCategory? filterBy,
+    List<LeaderboardDto>? leaderboard,
   }) {
     return StatisticsState(
       filterBy: filterBy ?? this.filterBy,
+      leaderboard: leaderboard ?? this.leaderboard,
     );
   }
 }

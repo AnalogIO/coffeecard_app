@@ -43,7 +43,9 @@ class ReceiptCubit extends Cubit<ReceiptState> {
   }
 
   List<Receipt> _filter(
-      List<Receipt> receipts, ReceiptFilterCategory filterBy,) {
+    List<Receipt> receipts,
+    ReceiptFilterCategory filterBy,
+  ) {
     switch (filterBy) {
       case ReceiptFilterCategory.all:
         return receipts;

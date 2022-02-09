@@ -9,7 +9,8 @@ class LeaderboardRepository {
 
   LeaderboardRepository(this._api, this._logger);
 
-  Future<Either<ApiError, List<LeaderboardDto>>> getLeaderboard(int? preset, int? top) async {
+  Future<Either<ApiError, List<LeaderboardDto>>> getLeaderboard(
+      int? preset, int? top,) async {
     final response = await _api.apiV1LeaderboardGet(preset: preset, top: top);
 
     if (response.isSuccessful) {
@@ -17,6 +18,6 @@ class LeaderboardRepository {
     } else {
       _logger.e('API Error ${response.statusCode} ${response.error}');
       return Left(ApiError(response.error.toString()));
-    } 
+    }
   }
 }
