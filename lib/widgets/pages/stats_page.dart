@@ -30,9 +30,11 @@ class StatsPage extends StatelessWidget {
                 FourGrid(
                   //FIXME: fetch data
                   tl: StatisticsCard(Strings.statisticsTotalCupsDrunk, '53'),
-                  tr: StatisticsCard(Strings.statisticsTotalCupsDrunkITU, '106'),
+                  tr: StatisticsCard(
+                      Strings.statisticsTotalCupsDrunkITU, '106',),
                   bl: StatisticsCard(Strings.statisticsYourRankITU, '125th'),
-                  br: StatisticsCard(Strings.statisticsYourRankProgramme('BSWU'), '62nd'),
+                  br: StatisticsCard(
+                      Strings.statisticsYourRankProgramme('BSWU'), '62nd',),
                   spacing: 16,
                 ),
                 const Gap(4),
