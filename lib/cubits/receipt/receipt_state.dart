@@ -5,9 +5,15 @@ enum ReceiptStatus { initial, success, failure }
 
 extension DropdownName on ReceiptFilterCategory {
   String get name {
-    if (this == ReceiptFilterCategory.all) return Strings.receiptFilterAll;
-    if (this == ReceiptFilterCategory.swipes) return Strings.receiptFilterSwipes;
-    if (this == ReceiptFilterCategory.purchases) return Strings.receiptFilterPurchases;
+    if (this == ReceiptFilterCategory.all) {
+      return Strings.receiptFilterAll;
+    }
+    if (this == ReceiptFilterCategory.swipes) {
+      return Strings.receiptFilterSwipes;
+    }
+    if (this == ReceiptFilterCategory.purchases) {
+      return Strings.receiptFilterPurchases;
+    }
     throw Exception(Strings.unknownFilterCategory(this));
   }
 }

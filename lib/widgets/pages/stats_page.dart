@@ -23,20 +23,21 @@ class StatsPage extends StatelessWidget {
             child: Column(
               children: [
                 LeftAlignedText(
-                  'Quick stats',
+                  Strings.statisticsQuickstats,
                   style: AppTextStyle.sectionTitle,
                 ),
                 const Gap(4),
                 FourGrid(
-                  tl: StatisticsCard('Total cups drunk by you', '53'),
-                  tr: StatisticsCard('Cups drunk by ITU today', '106'),
-                  bl: StatisticsCard('Your rank this week (vs ITU)', '125th'),
-                  br: StatisticsCard('Your rank this week (vs BSWU)', '62nd'),
+                  //FIXME: fetch data
+                  tl: StatisticsCard(Strings.statisticsTotalCupsDrunk, '53'),
+                  tr: StatisticsCard(Strings.statisticsTotalCupsDrunkITU, '106'),
+                  bl: StatisticsCard(Strings.statisticsYourRankITU, '125th'),
+                  br: StatisticsCard(Strings.statisticsYourRankProgramme('BSWU'), '62nd'),
                   spacing: 16,
                 ),
                 const Gap(4),
                 LeftAlignedText(
-                  'Leaderboards',
+                  Strings.statisticsLeaderboards,
                   style: AppTextStyle.sectionTitle,
                 ),
               ],
@@ -44,7 +45,7 @@ class StatsPage extends StatelessWidget {
           ),
 
           FilterBar(
-            title: 'Filters',
+            title: Strings.filter,
             dropdown: StatisticsDropdown(),
           ),
 

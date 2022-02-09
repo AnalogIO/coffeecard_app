@@ -117,6 +117,15 @@ abstract class Strings {
     return '$price,-';
   }
 
+  // App text
+  static const analogClosedText = 'Cafe Analog is closed';
+  static const shopText = 'Shop';
+  static const buyTickets = 'Buy tickets';
+  static const buyOneDrink = 'Buy one drink';
+  static const buyOther = 'Buy syrup, jugs etc.';
+  static const redeemVoucher = 'Redeem voucher';
+  static const filter = 'Filters';
+
   // Receipts page
   static const receiptsPageTitle = 'Receipts';
   static const singleReceiptPageTitle = 'Receipt';
@@ -139,7 +148,16 @@ abstract class Strings {
   static const statisticsQuickstats = 'Quick stats';
   static const statisticsLeaderboards = 'Leaderboards';
 
-  static const statisticsFilterThisWeek = 'This week';
+  static const statisticsFilterSemester = 'Semester';
+  static const statisticsFilterMonth = 'Month';
+  static const statisticsFilterTotal = 'Total';
+
+  static const statisticsTotalCupsDrunk = 'Total cups drunk by you';
+  static const statisticsTotalCupsDrunkITU = 'Cups drunk by ITU today';
+  static const statisticsYourRankITU = 'Your rank this week (vs ITU)';
+  static String statisticsYourRankProgramme(String programme) {
+    return 'Your rank this week (vs $programme)}';
+  }
 
   // Settings
   static const settingsPageTitle = 'Settings';

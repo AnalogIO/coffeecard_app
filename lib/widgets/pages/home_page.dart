@@ -4,6 +4,7 @@ import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/receipt/receipt_cubit.dart';
 import 'package:coffeecard/cubits/statistics/statistics_cubit.dart';
 import 'package:coffeecard/data/repositories/receipt_repository.dart';
+import 'package:coffeecard/data/repositories/v1/leaderboard_repository.dart';
 import 'package:coffeecard/data/repositories/v1/statistics_repository.dart';
 import 'package:coffeecard/data/repositories/v1/receipt_repository.dart';
 import 'package:coffeecard/service_locator.dart';
@@ -34,7 +35,7 @@ class _HomePageState extends State<HomePage> {
               ReceiptCubit(sl.get<ReceiptRepository>())..fetchReceipts(),
         ),
         BlocProvider(
-          create: (_) => StatisticsCubit(sl.get<StatisticsRepository>())
+          create: (_) => StatisticsCubit(sl.get<LeaderboardRepository>())
             ..fetchLeaderboards(),
         ),
       ],
