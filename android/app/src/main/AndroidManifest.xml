@@ -7,7 +7,7 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:name="${applicationName}"
-        android:label="Cafe Analog"
+        android:label="Analog"
         android:icon="@mipmap/ic_launcher"
         android:fullBackupContent="@xml/backup_rules">
         <activity
