@@ -1,3 +1,4 @@
+import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/settings/settings_cubit.dart';
 import 'package:coffeecard/models/account/user.dart';
@@ -14,7 +15,7 @@ class YourProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const AppBarTitle('Your profile')),
+      appBar: AppBar(title: const AppBarTitle(Strings.yourProfilePageTitle)),
       body: BlocBuilder<SettingsCubit, SettingsState>(
         builder: (context, state) {
           return (state.isLoaded)
@@ -47,20 +48,20 @@ class _EditProfile extends StatelessWidget {
         Text('BSWU student', style: AppTextStyle.explainer),
         const Gap(24),
         SettingsGroup(
-          title: 'Edit profile',
+          title: Strings.settingsGroupProfile,
           listItems: [
             SettingListEntry(
-              name: 'Name',
+              name: Strings.name,
               valueWidget: SettingDescription(text: user.name),
               onTap: () {},
             ),
             SettingListEntry(
-              name: 'Occupation',
+              name: Strings.occupation,
               valueWidget: const SettingDescription(text: 'BSWU student'),
               onTap: () {},
             ),
             SettingListEntry(
-              name: 'Change profile picture',
+              name: Strings.changeProfilePicture,
               valueWidget: const SettingDescription(),
               onTap: () {},
             ),

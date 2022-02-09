@@ -1,3 +1,4 @@
+import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
 import 'package:coffeecard/cubits/settings/settings_cubit.dart';
@@ -16,7 +17,7 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const AppBarTitle('Settings'),
+        title: const AppBarTitle(Strings.settingsPageTitle),
       ),
       body: BlocBuilder<SettingsCubit, SettingsState>(
         builder: (context, state) {
@@ -31,10 +32,10 @@ class SettingsPage extends StatelessWidget {
                 ),
                 const Gap(16),
                 SettingsGroup(
-                  title: 'Account',
+                  title: Strings.settingsGroupAccount,
                   listItems: [
                     SettingListEntry(
-                      name: 'Email',
+                      name: Strings.settingsGroupAccount,
                       valueWidget: Text(
                         state.user!.email,
                         style: AppTextStyle.settingValue,
@@ -42,9 +43,9 @@ class SettingsPage extends StatelessWidget {
                       onTap: () {},
                     ),
                     SettingListEntry(
-                      name: 'Passcode',
+                      name: Strings.passcode,
                       valueWidget: Text(
-                        'Change',
+                        Strings.change,
                         style: AppTextStyle.settingValue,
                       ),
                       onTap: () {
@@ -52,39 +53,41 @@ class SettingsPage extends StatelessWidget {
                       },
                     ),
                     SettingListEntry(
-                      name: 'Log out',
+                      name: Strings.logOut,
                       onTap: () {
                         context.read<AuthenticationCubit>().unauthenticated();
                       },
                     ),
                     SettingListEntry(
-                      name: 'Remove account',
+                      name: Strings.deleteAccount,
                       destructive: true,
                       onTap: () {},
                     ),
                   ],
                 ),
                 SettingsGroup(
-                  title: 'Features',
+                  title: Strings.settingsGroupFeatures,
                   listItems: [
                     SettingListEntry(
-                      name: 'Sign in with fingerprint',
+                      name: Strings.signInWithFingerprint,
                       valueWidget: Switch(value: false, onChanged: (e) {}),
                       onTap: () {},
                     ),
                   ],
                 ),
                 SettingsGroup(
-                  title: 'About Café Analog',
+                  title: Strings.settingsGroupAbout,
                   listItems: [
                     SettingListEntry(
-                      name: 'Frequently Asked Questions',
+                      name: Strings.faq,
                       onTap: () {},
                     ),
                     SettingListEntry(
-                      name: 'Opening hours',
+                      name: Strings.openingHours,
                       valueWidget: Text(
-                        'Today: 8-18',
+                        // TODO: Could show tomorrow's opening hours
+                        // if we are closed today
+                        '${Strings.today}: 8-18',
                         style: AppTextStyle.settingValue,
                       ),
                       onTap: () {},
