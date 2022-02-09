@@ -79,7 +79,7 @@ dev_dependencies:
   lint: 1.8.2
 
 flutter_app_name: #remember to update: flutter pub run flutter_app_name
-  name: "Cafe Analog"
+  name: "Analog"
 
 flutter_icons: #remember to update: flutter pub run flutter_launcher_icons:main
   android: true
