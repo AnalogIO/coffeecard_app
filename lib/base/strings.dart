@@ -119,6 +119,12 @@ abstract class Strings {
   static const receiptCardPurchased = 'Purchased';
   static const receiptCardNote = 'This can be found again under Reciepts.';
 
+  // Statistics page
+  static const statisticsQuickstats = 'Quick stats';
+  static const statisticsLeaderboards = 'Leaderboards';
+
+  static const statisticsFilterThisWeek = 'This week';
+
   // Settings
   static const settingsPageTitle = 'Settings';
   static const yourProfilePageTitle = 'Your profile';

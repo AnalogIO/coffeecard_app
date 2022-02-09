@@ -1,13 +1,13 @@
 part of 'receipt_cubit.dart';
 
-enum FilterCategory { all, swipes, purchases }
+enum ReceiptFilterCategory { all, swipes, purchases }
 enum ReceiptStatus { initial, success, failure }
 
-extension DropdownName on FilterCategory {
+extension DropdownName on ReceiptFilterCategory {
   String get name {
-    if (this == FilterCategory.all) return Strings.receiptFilterAll;
-    if (this == FilterCategory.swipes) return Strings.receiptFilterSwipes;
-    if (this == FilterCategory.purchases) return Strings.receiptFilterPurchases;
+    if (this == ReceiptFilterCategory.all) return Strings.receiptFilterAll;
+    if (this == ReceiptFilterCategory.swipes) return Strings.receiptFilterSwipes;
+    if (this == ReceiptFilterCategory.purchases) return Strings.receiptFilterPurchases;
     throw Exception('Unknown filter category: $this');
   }
 }
@@ -20,12 +20,12 @@ extension ReceiptStatusIs on ReceiptStatus {
 
 class ReceiptState extends Equatable {
   final ReceiptStatus status;
-  final FilterCategory filterBy;
+  final ReceiptFilterCategory filterBy;
   final List<Receipt> receipts;
   final List<Receipt> filteredReceipts;
   ReceiptState({
     this.status = ReceiptStatus.initial,
-    this.filterBy = FilterCategory.all,
+    this.filterBy = ReceiptFilterCategory.all,
     List<Receipt>? receipts,
     List<Receipt>? filteredReceipts,
   })  : receipts = receipts ?? [],
@@ -36,7 +36,7 @@ class ReceiptState extends Equatable {
 
   ReceiptState copyWith({
     ReceiptStatus? status,
-    FilterCategory? filterBy,
+    ReceiptFilterCategory? filterBy,
     List<Receipt>? receipts,
     List<Receipt>? filteredReceipts,
   }) {

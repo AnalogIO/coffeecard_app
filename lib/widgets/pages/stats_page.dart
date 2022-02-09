@@ -1,6 +1,8 @@
+import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/widgets/components/app_bar_title.dart';
 import 'package:coffeecard/widgets/components/cards/stat_card.dart';
+import 'package:coffeecard/widgets/components/dropdowns/statistics_dropdown.dart';
 import 'package:coffeecard/widgets/components/grid.dart';
 import 'package:coffeecard/widgets/components/left_aligned_text.dart';
 import 'package:coffeecard/widgets/components/receipt/filter_bar.dart';
@@ -12,7 +14,7 @@ class StatsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const AppBarTitle('Statistics'),
+        title: const AppBarTitle(Strings.statsPageTitle),
       ),
       body: ListView(
         children: [
@@ -41,8 +43,10 @@ class StatsPage extends StatelessWidget {
             ),
           ),
 
-          //FIXME: generalize filterbar
-          FilterBar(),
+          FilterBar(
+            title: 'Filters',
+            dropdown: StatisticsDropdown(),
+          ),
 
           //FIXME: add leaderboard
         ],
