@@ -12,14 +12,24 @@ class ReceiptCubit extends Cubit<ReceiptState> {
   ReceiptCubit(this._repository) : super(ReceiptState());
 
   Future<void> fetchReceipts(/*String? latestReciept*/) async {
-    final receipts = await _repository.getUserReceipts();
-    emit(
-      state.copyWith(
-        status: ReceiptStatus.success,
-        receipts: receipts,
-        filteredReceipts: _filter(receipts, state.filterBy),
-      ),
-    );
+    final either = await _repository.getUserReceipts();
+
+    if (either.isRight) {
+      final receipts = either.right;
+      emit(
+        state.copyWith(
+          status: ReceiptStatus.success,
+          receipts: receipts,
+          filteredReceipts: _filter(receipts, state.filterBy),
+        ),
+      );
+    } else {
+      emit(
+        state.copyWith(
+          status: ReceiptStatus.failure,
+        ),
+      );
+    }
   }
 
   void filterReceipts(FilterCategory filterBy) {

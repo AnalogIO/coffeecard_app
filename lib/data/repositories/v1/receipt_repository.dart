@@ -1,5 +1,7 @@
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.swagger.dart';
+import 'package:coffeecard/models/api/api_error.dart';
 import 'package:coffeecard/models/receipts/receipt.dart';
+import 'package:coffeecard/utils/either.dart';
 import 'package:logger/logger.dart';
 
 class ReceiptRepository {
@@ -10,12 +12,9 @@ class ReceiptRepository {
 
   /// Retrieves all of the users receipts
   /// This includes both their used tickets and purchased tickets
-  Future<List<Receipt>> getUserReceipts() async {
-    final usedTicketRequest = _api.apiV1TicketsGet(used: true);
-    final purchasesRequest = _api.apiV1PurchasesGet();
-
-    final usedTicketResponse = await usedTicketRequest;
-    final purchaseResponse = await purchasesRequest;
+  Future<Either<ApiError, List<Receipt>>> getUserReceipts() async {
+    final usedTicketResponse = await _api.apiV1TicketsGet(used: true);
+    final purchaseResponse = await _api.apiV1PurchasesGet();
 
     Iterable<Receipt> ticketReceipts = [];
     Iterable<Receipt> purchaseReceipts = [];
@@ -23,7 +22,6 @@ class ReceiptRepository {
     if (usedTicketResponse.isSuccessful) {
       ticketReceipts = usedTicketResponse.body!.map(
         (ticket) => Receipt(
-          //TODO consider if better defaults can be provided. Ideally the user never encounters this, since it would imply our database is incomplete
           productName: ticket.productName!,
           transactionType: TransactionType.ticketSwipe,
           price: 1,
@@ -36,12 +34,12 @@ class ReceiptRepository {
       _logger.e(
         'API Error ${usedTicketResponse.statusCode} ${usedTicketResponse.error}',
       );
+      return Left(ApiError(usedTicketResponse.error.toString()));
     }
 
     if (purchaseResponse.isSuccessful) {
       purchaseReceipts = purchaseResponse.body!.map(
         (purchase) => Receipt(
-          //TODO consider if better defaults can be provided. Ideally the user never encounters this, since it would imply our database is incomplete
           productName: purchase.productName!,
           transactionType: TransactionType.purchase,
           price: purchase.price!,
@@ -54,11 +52,14 @@ class ReceiptRepository {
       _logger.e(
         'API Error ${purchaseResponse.statusCode} ${purchaseResponse.error}',
       );
+      return Left(ApiError(purchaseResponse.error.toString()));
     }
 
-    return ticketReceipts.followedBy(purchaseReceipts).toList()
-      ..sort(
-        (receipt, receipt1) => receipt.timeUsed.compareTo(receipt1.timeUsed),
-      );
+    return Right(
+      ticketReceipts.followedBy(purchaseReceipts).toList()
+        ..sort(
+          (receipt, receipt1) => receipt.timeUsed.compareTo(receipt1.timeUsed),
+        ),
+    );
   }
 }
