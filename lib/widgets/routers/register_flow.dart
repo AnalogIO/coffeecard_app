@@ -52,7 +52,7 @@ class RegisterFlow extends StatelessWidget {
       case nameRoute:
         return FastSlideTransition(child: const RegisterNamePage());
       default:
-        throw Exception('(RegisterFlow) Unknown route: ${settings.name}');
+        throw Exception(Strings.invalidRoute('RegisterFlow', settings.name));
     }
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/data/api/coffee_card_api_constants.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.swagger.dart';
 import 'package:coffeecard/models/account/authenticated_user.dart';
@@ -40,7 +41,7 @@ class AccountRepository {
     if (response.isSuccessful) {
       return const Right(null);
     } else {
-      _logger.e('API Error ${response.statusCode} ${response.error}');
+      _logger.e(Strings.formatApiError(response));
       return Left(UnauthorizedError(response.error.toString()));
     }
   }
@@ -68,7 +69,7 @@ class AccountRepository {
         AuthenticatedUser(email: email, token: response.body!.token!),
       );
     } else {
-      _logger.e('API Error ${response.statusCode} ${response.error}');
+      _logger.e(Strings.formatApiError(response));
       return Left(UnauthorizedError(response.error.toString()));
     }
   }
@@ -81,7 +82,7 @@ class AccountRepository {
       final user = User.fromDTO(response.body!);
       return Right(user);
     } else {
-      _logger.e('API Error ${response.statusCode} ${response.error}');
+      _logger.e(Strings.formatApiError(response));
       return Left(ApiError(response.error.toString()));
     }
   }
@@ -105,7 +106,7 @@ class AccountRepository {
       final user = User.fromDTO(response.body!);
       return Right(user);
     } else {
-      _logger.e('API Error ${response.statusCode} ${response.error}');
+      _logger.e(Strings.formatApiError(response));
       return Left(ApiError(response.error.toString()));
     }
   }
@@ -116,7 +117,7 @@ class AccountRepository {
     if (response.isSuccessful) {
       return const Right(null);
     } else {
-      _logger.e('API Error ${response.statusCode} ${response.error}');
+      _logger.e(Strings.formatApiError(response));
       return Left(ApiError(response.error.toString()));
     }
   }

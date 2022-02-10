@@ -1,3 +1,4 @@
+import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
 import 'package:coffeecard/data/repositories/v1/account_repository.dart';
 import 'package:coffeecard/utils/email_utils.dart';
@@ -23,9 +24,9 @@ class LoginCubit extends Cubit<LoginState> {
   void validateEmail() {
     final email = state.email.trim();
     if (email.isEmpty) {
-      emit(state.copyWith(error: 'Please enter an email'));
+      emit(state.copyWith(error: Strings.loginEnterEmailError));
     } else if (!emailIsValid(email)) {
-      emit(state.copyWith(error: 'Please enter a valid email'));
+      emit(state.copyWith(error: Strings.loginInvalidEmailError));
     } else {
       emit(state.copyWith(emailValidated: true));
     }

@@ -1,3 +1,4 @@
+import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.swagger.dart';
 import 'package:coffeecard/models/api/api_error.dart';
 import 'package:coffeecard/utils/either.dart';
@@ -15,7 +16,7 @@ class AppConfigRepository {
       //FIXME: bug with swagger generation library, use string until fixed
       return Right(response.body!.environmentType as String);
     } else {
-      _logger.e('API Error ${response.statusCode} ${response.error}');
+      _logger.e(Strings.formatApiError(response));
       return Left(ApiError(response.error.toString()));
     }
   }

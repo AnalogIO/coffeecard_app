@@ -55,7 +55,7 @@ class ReceiptCubit extends Cubit<ReceiptState> {
             .where((r) => r.transactionType == TransactionType.purchase)
             .toList();
       default:
-        throw Exception('Unknown filter category: $filterBy');
+        throw Exception(Strings.unknownFilterCategory(filterBy));
     }
   }
 }

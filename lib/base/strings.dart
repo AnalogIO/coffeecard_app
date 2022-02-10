@@ -1,3 +1,5 @@
+import 'package:chopper/chopper.dart';
+
 abstract class Strings {
   static const appTitle = 'Cafe Analog';
 
@@ -21,6 +23,25 @@ abstract class Strings {
   // Login email hint and errors
   static const loginPasscodeHint = 'Enter passcode';
   static const loginPasscodeEmpty = 'Enter a passcode';
+  static const loginHintEmail = 'Email...';
+  static const loginTooltipContinue = 'Continue';
+
+  static const loginEnterEmailError = 'Please enter an email';
+  static const loginInvalidEmailError = 'Please enter a valid email';
+
+  static const loginSignIn = 'Sign in';
+  static const loginCreateAccount = "Don't have an account? Make one";
+  static const loginSignInOtherAccount = 'Sign in using another account';
+
+  // Tickets
+  static const ticketsMyTickets = 'My tickets';
+  static const analogClosedTitle = 'Cafe Analog is closed';
+  static const analogClosedText = 'Oh no!'; //FIXME: write message
+  static const shopText = 'Shop';
+  static const buyTickets = 'Buy tickets';
+  static const buyOneDrink = 'Buy one drink';
+  static const buyOther = 'Buy syrup, jugs etc.';
+  static const redeemVoucher = 'Redeem voucher';
 
   // Register
   static const registerAppBarTitle = 'Register';
@@ -74,6 +95,8 @@ abstract class Strings {
       'Tickets that you buy will show up here';
   static const emptyCoffeeCardTextBottom =
       'Use the section below to shop tickets.';
+  static const cofeeCardTicketsLeft = 'Tickets left:';
+  static const useTicket = 'Use ticket';
 
   // Ticket card
   static const paymentOptionApplePay = 'Apple Pay';
@@ -94,14 +117,6 @@ abstract class Strings {
     return '$price,-';
   }
 
-  // App text
-  static const analogClosedText = 'Cafe Analog is closed';
-  static const shopText = 'Shop';
-  static const buyTickets = 'Buy tickets';
-  static const buyOneDrink = 'Buy one drink';
-  static const buyOther = 'Buy syrup, jugs etc.';
-  static const redeemVoucher = 'Redeem voucher';
-
   // Receipts page
   static const receiptsPageTitle = 'Receipts';
   static const singleReceiptPageTitle = 'Receipt';
@@ -118,6 +133,7 @@ abstract class Strings {
   static const receiptCardSwiped = 'Ticket swiped';
   static const receiptCardPurchased = 'Purchased';
   static const receiptCardNote = 'This can be found again under Reciepts.';
+  static const receiptTapAnywhereToDismiss = 'Tap anywhere to dismiss';
 
   // Settings
   static const settingsPageTitle = 'Settings';
@@ -157,4 +173,17 @@ abstract class Strings {
   static const around = 'Around';
   static const almost = 'Almost';
   static const moreThan = 'More than';
+
+  // Errors
+  static String unknownFilterCategory(Object category) {
+    return 'Unknown filter category: $category';
+  }
+
+  static String formatApiError(Response response) {
+    return 'API Error ${response.statusCode} ${response.error}';
+  }
+
+  static String invalidRoute(String c, String? route) {
+    return '($c) Unknown route: $route';
+  }
 }

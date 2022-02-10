@@ -1,3 +1,4 @@
+import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.swagger.dart';
 import 'package:coffeecard/models/api/api_error.dart';
 import 'package:coffeecard/models/receipts/receipt.dart';
@@ -35,7 +36,7 @@ class ReceiptRepository {
       );
     } else {
       _logger.e(
-        'API Error ${usedTicketResponse.statusCode} ${usedTicketResponse.error}',
+        Strings.formatApiError(usedTicketResponse),
       );
       return Left(ApiError(usedTicketResponse.error.toString()));
     }
@@ -53,7 +54,7 @@ class ReceiptRepository {
       );
     } else {
       _logger.e(
-        'API Error ${purchaseResponse.statusCode} ${purchaseResponse.error}',
+        Strings.formatApiError(purchaseResponse),
       );
       return Left(ApiError(purchaseResponse.error.toString()));
     }

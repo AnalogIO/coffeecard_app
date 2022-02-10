@@ -1,3 +1,4 @@
+import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/widgets/components/app_bar_title.dart';
 import 'package:coffeecard/widgets/components/receipt/filter_bar.dart';
 import 'package:coffeecard/widgets/components/receipt/receipts_list_view.dart';
@@ -8,7 +9,7 @@ class ReceiptsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const AppBarTitle('Receipts'),
+        title: const AppBarTitle(Strings.receiptsPageTitle),
       ),
       body: Column(
         children: [
