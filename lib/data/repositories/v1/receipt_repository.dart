@@ -13,8 +13,11 @@ class ReceiptRepository {
   /// Retrieves all of the users receipts
   /// This includes both their used tickets and purchased tickets
   Future<Either<ApiError, List<Receipt>>> getUserReceipts() async {
-    final usedTicketResponse = await _api.apiV1TicketsGet(used: true);
-    final purchaseResponse = await _api.apiV1PurchasesGet();
+    final usedTicketRequest = _api.apiV1TicketsGet(used: true);
+    final purchaseRequest = _api.apiV1PurchasesGet();
+
+    final usedTicketResponse = await usedTicketRequest;
+    final purchaseResponse = await purchaseRequest;
 
     Iterable<Receipt> ticketReceipts = [];
     Iterable<Receipt> purchaseReceipts = [];
