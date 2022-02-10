@@ -8,7 +8,6 @@ import 'package:coffeecard/data/repositories/v1/coffeecard_repository.dart';
 import 'package:coffeecard/data/repositories/v1/leaderboard_repository.dart';
 import 'package:coffeecard/data/repositories/v1/product_repository.dart';
 import 'package:coffeecard/data/repositories/v1/receipt_repository.dart';
-import 'package:coffeecard/data/repositories/v1/statistics_repository.dart';
 import 'package:coffeecard/data/repositories/v1/ticket_repository.dart';
 import 'package:coffeecard/data/repositories/v2/purchase_repository.dart';
 import 'package:coffeecard/data/storage/secure_storage.dart';

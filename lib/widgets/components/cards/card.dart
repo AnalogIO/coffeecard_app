@@ -20,6 +20,7 @@ abstract class CardBase extends StatelessWidget {
     this.dense = false,
     this.disabled = false,
     this.onTap,
+    this.borderRadius = 24,
   });
 
   /// Widget to be placed at the top of the card.
@@ -49,6 +50,9 @@ abstract class CardBase extends StatelessWidget {
   /// If not null, the card will splash when tapped.
   final VoidCallback? onTap;
 
+  // Radius of the card border, lower values are sharper.
+  final double borderRadius;
+
   Widget get _cardContent {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,7 +68,7 @@ abstract class CardBase extends StatelessWidget {
         elevation: 1,
         padding: EdgeInsets.all(dense ? 12 : 24),
         color: color,
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(borderRadius),
         borderColor: borderColor,
         onTap: onTap,
         child: _cardContent,
