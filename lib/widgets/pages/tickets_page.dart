@@ -1,3 +1,4 @@
+import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/widgets/components/analog_closed_popup.dart';
 import 'package:coffeecard/widgets/components/app_bar_title.dart';
 import 'package:coffeecard/widgets/components/shop_section.dart';
@@ -16,7 +17,7 @@ class _TicketsPageState extends State<TicketsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const AppBarTitle('Tickets'),
+        title: const AppBarTitle(Strings.ticketsPageTitle),
       ),
       body: ListView(
         children: const [

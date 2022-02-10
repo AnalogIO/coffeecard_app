@@ -48,7 +48,7 @@ class CoffeeCard extends StatelessWidget {
                       child: Row(
                         children: [
                           Text(
-                            'Tickets left:',
+                            Strings.cofeeCardTicketsLeft,
                             style: AppTextStyle.textField,
                           ),
                           Padding(

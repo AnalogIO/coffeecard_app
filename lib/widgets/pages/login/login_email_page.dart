@@ -1,3 +1,4 @@
+import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/cubits/login/login_cubit.dart';
 import 'package:coffeecard/widgets/components/entry/login/login_cta.dart';
 import 'package:coffeecard/widgets/components/entry/login/login_email_text_field.dart';
@@ -18,7 +19,7 @@ class LoginEmailPage extends LoginPage {
           resizeOnKeyboard: true,
           ctaChildren: [
             const LoginCTA(
-              text: "Don't have an account? Make one",
+              text: Strings.loginCreateAccount,
               onPressed: _changeRoute,
             ),
           ],

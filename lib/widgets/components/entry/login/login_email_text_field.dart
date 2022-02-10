@@ -1,3 +1,4 @@
+import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/cubits/login/login_cubit.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,7 @@ class LoginEmailTextField extends StatelessWidget {
       return InputDecoration(
         constraints: const BoxConstraints(maxWidth: 260),
         hintStyle: const TextStyle(color: AppColor.gray),
-        hintText: 'Email...',
+        hintText: Strings.loginHintEmail,
         border: const OutlineInputBorder(),
         enabledBorder: border,
         focusedBorder: border,
@@ -37,7 +38,7 @@ class LoginEmailTextField extends StatelessWidget {
           splashColor: Colors.transparent,
           icon: const Icon(Icons.arrow_forward, size: 20),
           onPressed: onSubmit,
-          tooltip: 'Continue',
+          tooltip: Strings.loginTooltipContinue,
         ),
         contentPadding: const EdgeInsets.only(
           top: 12,

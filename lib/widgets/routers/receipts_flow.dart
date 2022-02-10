@@ -1,3 +1,4 @@
+import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/widgets/pages/receipts/receipts_page.dart';
 import 'package:flutter/material.dart';
 
@@ -23,7 +24,7 @@ class ReceiptsFlow extends StatelessWidget {
       case '/':
         return MaterialPageRoute(builder: (_) => ReceiptsPage());
       default:
-        throw Exception('(ReceiptsFlow) Unknown route: ${settings.name}');
+        throw Exception(Strings.invalidRoute('ReceiptsFlow', settings.name));
     }
   }
 }

@@ -8,7 +8,7 @@ extension DropdownName on FilterCategory {
     if (this == FilterCategory.all) return Strings.receiptFilterAll;
     if (this == FilterCategory.swipes) return Strings.receiptFilterSwipes;
     if (this == FilterCategory.purchases) return Strings.receiptFilterPurchases;
-    throw Exception('Unknown filter category: $this');
+    throw Exception(Strings.unknownFilterCategory(this));
   }
 }
 

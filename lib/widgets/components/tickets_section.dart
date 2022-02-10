@@ -1,3 +1,4 @@
+import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/tickets_page/tickets_cubit.dart';
 import 'package:coffeecard/errors/match_case_incomplete_exception.dart';
@@ -18,7 +19,10 @@ class TicketSection extends StatelessWidget {
           children: [
             Align(
               alignment: Alignment.centerLeft,
-              child: Text('My tickets', style: AppTextStyle.sectionTitle),
+              child: Text(
+                Strings.ticketsMyTickets,
+                style: AppTextStyle.sectionTitle,
+              ),
             ),
             BlocConsumer<TicketsCubit, TicketsState>(
               listener: (context, state) {},

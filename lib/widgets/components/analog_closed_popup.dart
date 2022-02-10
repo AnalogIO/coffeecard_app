@@ -33,15 +33,14 @@ class AnalogClosedPopup extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(16),
                     child: Text(
-                      Strings.analogClosedText,
+                      Strings.analogClosedTitle,
                       style: AppTextStyle.buttonText,
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: Text(
-                      //FIXME: write message
-                      'Oh no!',
+                      Strings.analogClosedText,
                       style: AppTextStyle.buttonText,
                     ),
                   ),

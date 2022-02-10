@@ -1,3 +1,4 @@
+import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/cubits/login/login_cubit.dart';
 import 'package:coffeecard/widgets/components/entry/login/login_cta.dart';
 import 'package:coffeecard/widgets/components/entry/login/login_numpad.dart';
@@ -11,11 +12,11 @@ class LoginPasscodePage extends LoginPage {
       : super(
           key: key,
           inputWidget: LoginPasscodeDots(),
-          inputHint: 'Enter passcode',
+          inputHint: Strings.loginPasscodeHint,
           resizeOnKeyboard: false,
           ctaChildren: [
             LoginCTA(
-              text: 'Sign in using another account',
+              text: Strings.loginSignInOtherAccount,
               onPressed: (context) {
                 context.read<LoginCubit>().loginAsAnotherUser();
               },

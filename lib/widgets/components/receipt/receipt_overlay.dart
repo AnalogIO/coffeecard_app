@@ -1,3 +1,4 @@
+import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/models/receipts/receipt.dart';
@@ -28,7 +29,7 @@ class ReceiptOverlay {
                 isInOverlay: true,
               ),
               Text(
-                'Tap anywhere to dismiss',
+                Strings.receiptTapAnywhereToDismiss,
                 style: AppTextStyle.explainerBright,
               )
             ],

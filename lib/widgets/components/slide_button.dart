@@ -1,3 +1,4 @@
+import 'package:coffeecard/base/strings.dart';
 import 'package:flutter/material.dart';
 
 class SlideButton extends StatefulWidget {
@@ -55,7 +56,7 @@ class _SlideButtonState extends State<SlideButton> {
         ),
         child: Stack(
           children: <Widget>[
-            const Center(child: Text('Use ticket')),
+            const Center(child: Text(Strings.useTicket)),
             Positioned(
               top: 0,
               bottom: 0,
