@@ -1,16 +1,11 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/statistics/statistics_cubit.dart';
 import 'package:coffeecard/widgets/components/app_bar_title.dart';
 import 'package:coffeecard/widgets/components/cards/leaderboard_card.dart';
-import 'package:coffeecard/widgets/components/cards/stat_card.dart';
 import 'package:coffeecard/widgets/components/dropdowns/statistics_dropdown.dart';
-import 'package:coffeecard/widgets/components/grid.dart';
-import 'package:coffeecard/widgets/components/left_aligned_text.dart';
 import 'package:coffeecard/widgets/components/receipt/filter_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gap/gap.dart';
 
 class StatsPage extends StatelessWidget {
   @override
@@ -23,6 +18,7 @@ class StatsPage extends StatelessWidget {
         builder: (context, state) {
           return ListView(
             children: [
+              /*
               Padding(
                 padding: const EdgeInsets.all(8),
                 child: Column(
@@ -33,7 +29,7 @@ class StatsPage extends StatelessWidget {
                     ),
                     const Gap(4),
                     FourGrid(
-                      //FIXME: fetch data
+                      //FIXME: fetch data when available
                       tl: StatisticsCard(
                         Strings.statisticsTotalCupsDrunk,
                         '53',
@@ -59,7 +55,7 @@ class StatsPage extends StatelessWidget {
                     ),
                   ],
                 ),
-              ),
+              ), */
               FilterBar(
                 title: Strings.filter,
                 dropdown: StatisticsDropdown(),
@@ -71,9 +67,9 @@ class StatsPage extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final entry = state.leaderboard[index];
                   return LeaderboardCard(
-                    rank: index,
+                    rank: index + 1,
                     name: entry.name ?? '',
-                    programme: 'programme',
+                    programme: 'BSWU, 2nd semester',
                     cups: entry.score ?? 0,
                   );
                 },
