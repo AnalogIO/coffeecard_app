@@ -16,10 +16,6 @@ abstract class Strings {
   static const statsNavTitle = 'Stats';
   static const settingsNavTitle = settingsPageTitle;
 
-  // Test strings.
-  static const ticketsPageTestString = 'Test string for Tickets page ☕';
-  static const testDBString = 'Connected to test database';
-
   // Login email hint and errors
   static const loginPasscodeHint = 'Enter passcode';
   static const loginPasscodeEmpty = 'Enter a passcode';
@@ -36,7 +32,8 @@ abstract class Strings {
   // Tickets
   static const ticketsMyTickets = 'My tickets';
   static const analogClosedTitle = 'Cafe Analog is closed';
-  static const analogClosedText = 'Oh no!'; //FIXME: write message
+  static const analogClosedText =
+      'Analog is currently closed, come back later!';
   static const shopText = 'Shop';
   static const buyTickets = 'Buy tickets';
   static const buyOneDrink = 'Buy one drink';
@@ -117,15 +114,6 @@ abstract class Strings {
     return '$price,-';
   }
 
-  // App text
-  static const analogClosedText = 'Cafe Analog is closed';
-  static const shopText = 'Shop';
-  static const buyTickets = 'Buy tickets';
-  static const buyOneDrink = 'Buy one drink';
-  static const buyOther = 'Buy syrup, jugs etc.';
-  static const redeemVoucher = 'Redeem voucher';
-  static const filter = 'Filters';
-
   // Receipts page
   static const receiptsPageTitle = 'Receipts';
   static const singleReceiptPageTitle = 'Receipt';
@@ -198,6 +186,9 @@ abstract class Strings {
   static const around = 'Around';
   static const almost = 'Almost';
   static const moreThan = 'More than';
+
+  // Generic widget
+  static const filter = 'Filters';
 
   // Errors
   static String unknownFilterCategory(Object category) {
