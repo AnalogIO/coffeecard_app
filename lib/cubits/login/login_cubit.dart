@@ -64,6 +64,7 @@ class LoginCubit extends Cubit<LoginState> {
 
       authenticationCubit.authenticated(
         authenticatedUser.email,
+        state.passcode,
         authenticatedUser.token,
       );
     } else {

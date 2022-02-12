@@ -15,6 +15,7 @@ import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.swagger.dart'
     hide $JsonSerializableConverter;
 import 'package:coffeecard/generated/api/shiftplanning_api.swagger.swagger.dart'
     hide $JsonSerializableConverter;
+import 'package:coffeecard/utils/reactivation_authenticator.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 
@@ -37,6 +38,7 @@ void configureServices() {
       CoffeecardApi.create(),
       CoffeecardApiV2.create(),
     ],
+    authenticator: ReactivationAuthenticator(sl.get<SecureStorage>()),
   );
 
   final _shiftplanningChopper = ChopperClient(
@@ -44,6 +46,7 @@ void configureServices() {
     // TODO load the url from config files
     converter: $JsonSerializableConverter(),
     services: [ShiftplanningApi.create()],
+    authenticator: ReactivationAuthenticator(sl.get<SecureStorage>()),
   );
 
   sl.registerSingleton<CoffeecardApi>(
