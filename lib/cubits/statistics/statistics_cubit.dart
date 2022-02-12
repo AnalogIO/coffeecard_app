@@ -20,6 +20,8 @@ class StatisticsCubit extends Cubit<StatisticsState> {
         filterBy: filterBy,
       ),
     );
+
+    fetchLeaderboards();
   }
 
   Future<void> fetchLeaderboards() async {
@@ -27,7 +29,7 @@ class StatisticsCubit extends Cubit<StatisticsState> {
         ? 0
         : (state.filterBy == StatisticsFilterCategory.semester ? 1 : 2);
 
-    final either = await _repository.getLeaderboard(preset, 5);
+    final either = await _repository.getLeaderboard(preset);
     if (either.isRight) {
       emit(
         state.copyWith(
@@ -35,7 +37,11 @@ class StatisticsCubit extends Cubit<StatisticsState> {
         ),
       );
     } else {
-      //FIXME: emit failure
+      emit(
+        state.copyWith(
+          leaderboard: [],
+        ),
+      );
     }
   }
 }

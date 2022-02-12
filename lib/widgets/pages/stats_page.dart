@@ -16,9 +16,12 @@ class StatsPage extends StatelessWidget {
       ),
       body: BlocBuilder<StatisticsCubit, StatisticsState>(
         builder: (context, state) {
-          return ListView(
-            children: [
-              /*
+          return RefreshIndicator(
+            displacement: 24,
+            onRefresh: context.read<StatisticsCubit>().fetchLeaderboards,
+            child: ListView(
+              children: [
+                /*
               Padding(
                 padding: const EdgeInsets.all(8),
                 child: Column(
@@ -56,25 +59,27 @@ class StatsPage extends StatelessWidget {
                   ],
                 ),
               ), */
-              FilterBar(
-                title: Strings.filter,
-                dropdown: StatisticsDropdown(),
-              ),
-              ListView.builder(
-                physics: const ScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: state.leaderboard.length,
-                itemBuilder: (context, index) {
-                  final entry = state.leaderboard[index];
-                  return LeaderboardCard(
-                    rank: index + 1,
-                    name: entry.name ?? '',
-                    programme: 'BSWU, 2nd semester',
-                    cups: entry.score ?? 0,
-                  );
-                },
-              ),
-            ],
+                FilterBar(
+                  title: Strings.filter,
+                  dropdown: StatisticsDropdown(),
+                ),
+                ListView.builder(
+                  physics: const ScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: state.leaderboard.length,
+                  itemBuilder: (context, index) {
+                    final entry = state.leaderboard[index];
+                    return LeaderboardCard(
+                      rank: index + 1,
+                      name: entry.name ?? '',
+                      //FIXME: programme not available yet, implement once it is
+                      programme: '',
+                      cups: entry.score ?? 0,
+                    );
+                  },
+                ),
+              ],
+            ),
           );
         },
       ),

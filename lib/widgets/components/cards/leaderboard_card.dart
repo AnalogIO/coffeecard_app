@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 class LeaderboardCard extends CardBase {
-  //FIXME: implement in a smarter way once user data is available
   final int rank;
   final String name;
   final String programme;
@@ -33,6 +32,12 @@ class LeaderboardCard extends CardBase {
                     const Gap(10),
                     const CircleAvatar(),
                     const Gap(10),
+                    LeftAlignedText(
+                      name,
+                      style: AppTextStyle.textField,
+                    ),
+                    /*
+                    //FIXME: programme not available yet, uncomment once it is
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -46,6 +51,7 @@ class LeaderboardCard extends CardBase {
                         ),
                       ],
                     ),
+                    */
                   ],
                 ),
                 Text('$cups cups'),
