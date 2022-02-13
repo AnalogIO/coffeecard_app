@@ -25,6 +25,8 @@ class StatisticsCubit extends Cubit<StatisticsState> {
   }
 
   Future<void> fetchLeaderboards() async {
+    emit(state.copyWith(isLoading: true));
+
     final preset = state.filterBy == StatisticsFilterCategory.month
         ? 0
         : (state.filterBy == StatisticsFilterCategory.semester ? 1 : 2);
@@ -34,12 +36,14 @@ class StatisticsCubit extends Cubit<StatisticsState> {
       emit(
         state.copyWith(
           leaderboard: either.right,
+          isLoading: false,
         ),
       );
     } else {
       emit(
         state.copyWith(
           leaderboard: [],
+          isLoading: false,
         ),
       );
     }
