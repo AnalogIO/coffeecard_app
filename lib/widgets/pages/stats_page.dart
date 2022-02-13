@@ -18,88 +18,93 @@ class StatsPage extends StatelessWidget {
         title: const AppBarTitle(Strings.statsPageTitle),
       ),
       body: BlocBuilder<StatisticsCubit, StatisticsState>(
-        builder: (context, state) {
-          if (state.isLoading) {
-            return const CircularProgressIndicator();
-          } else {
-            return RefreshIndicator(
-              displacement: 24,
-              onRefresh: context.read<StatisticsCubit>().fetchLeaderboards,
-              child: ListView(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        LeftAlignedText(
-                          Strings.statisticsYourStats,
-                          style: AppTextStyle.sectionTitle,
-                        ),
-                        const Gap(10),
-                        LeftAlignedText(
-                          '${state.user?.name}',
-                          style: AppTextStyle.textField,
-                        ),
-                        LeftAlignedText(
-                          '${state.user?.email}',
-                          style: AppTextStyle.textField,
-                        ),
-                        LeftAlignedText(
-                          'ID: ${state.user?.id}',
-                          style: AppTextStyle.textField,
-                        ),
-                        const Gap(10),
-                        LeftAlignedText(
-                          Strings.statisticsLeaderboards,
-                          style: AppTextStyle.sectionTitle,
-                        ),
-                      ],
+          builder: (context, state) {
+        return RefreshIndicator(
+          displacement: 24,
+          onRefresh: context.read<StatisticsCubit>().fetchLeaderboards,
+          child: ListView(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    LeftAlignedText(
+                      Strings.statisticsYourStats,
+                      style: AppTextStyle.sectionTitle,
                     ),
-                  ),
-                  FilterBar(
-                    title: Strings.filter,
-                    dropdown: StatisticsDropdown(),
-                  ),
-                  ListView.builder(
-                    physics: const ScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: state.leaderboard.length,
-                    itemBuilder: (context, index) {
-                      final entry = state.leaderboard[index];
-                      return ListEntry(
-                        leftWidget: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Text(formatRank(index + 1)),
-                            const Gap(10),
-                            const CircleAvatar(),
-                            const Gap(10),
-                            //FIXME: programme not available yet, uncomment once it is
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                LeftAlignedText(
-                                  entry.name!,
-                                  style: AppTextStyle.textField,
-                                ),
-                                LeftAlignedText(
-                                  'programme',
-                                  style: AppTextStyle.label,
-                                ),
-                              ],
-                            ),
-                          ],
+                    const Gap(10),
+                    if (state.isUserStatsLoading)
+                      const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Center(
+                          child: CircularProgressIndicator(),
                         ),
-                        rightWidget: Text('${entry.score} cups'),
-                      );
-                    },
-                  ),
-                ],
+                      )
+                    else
+                      Column(
+                        children: [
+                          LeftAlignedText(
+                            '${state.user?.name}',
+                            style: AppTextStyle.textField,
+                          ),
+                          LeftAlignedText(
+                            '${state.user?.email}',
+                            style: AppTextStyle.textField,
+                          ),
+                          LeftAlignedText(
+                            'ID: ${state.user?.id}',
+                            style: AppTextStyle.textField,
+                          ),
+                        ],
+                      ),
+                    const Gap(10),
+                    LeftAlignedText(
+                      Strings.statisticsLeaderboards,
+                      style: AppTextStyle.sectionTitle,
+                    ),
+                  ],
+                ),
               ),
-            );
-          }
-        },
-      ),
+              FilterBar(
+                title: Strings.filter,
+                dropdown: StatisticsDropdown(),
+              ),
+              if (state.isLeaderboardLoading)
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                )
+              else
+                ListView.builder(
+                  physics: const ScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: state.leaderboard.length,
+                  itemBuilder: (context, index) {
+                    final entry = state.leaderboard[index];
+                    return ListEntry(
+                      leftWidget: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text(formatRank(index + 1)),
+                          const Gap(10),
+                          const CircleAvatar(),
+                          const Gap(10),
+                          LeftAlignedText(
+                            entry.name!,
+                            style: AppTextStyle.textField,
+                          ),
+                        ],
+                      ),
+                      rightWidget: Text('${entry.score ?? 0} cups'),
+                    );
+                  },
+                ),
+            ],
+          ),
+        );
+      }),
     );
   }
 }

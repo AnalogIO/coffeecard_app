@@ -24,28 +24,33 @@ class StatisticsState extends Equatable {
   final StatisticsFilterCategory filterBy;
   final List<LeaderboardDto> leaderboard;
   final User? user;
-  final bool isLoading;
+  final bool isLeaderboardLoading;
+  final bool isUserStatsLoading;
 
   StatisticsState({
     this.filterBy = StatisticsFilterCategory.semester,
     List<LeaderboardDto>? leaderboard,
-    this.isLoading = false,
+    this.isLeaderboardLoading = true,
+    this.isUserStatsLoading = true,
     this.user, //FIXME: get user from UserCubit when implemented
   }) : leaderboard = leaderboard ?? [];
 
   @override
-  List<Object?> get props => [filterBy, leaderboard, isLoading, user];
+  List<Object?> get props =>
+      [filterBy, leaderboard, isLeaderboardLoading, user];
 
   StatisticsState copyWith({
     StatisticsFilterCategory? filterBy,
     List<LeaderboardDto>? leaderboard,
-    bool? isLoading,
+    bool? isLeaderboardLoading,
+    bool? isUserStatsLoading,
     User? user,
   }) {
     return StatisticsState(
       filterBy: filterBy ?? this.filterBy,
       leaderboard: leaderboard ?? this.leaderboard,
-      isLoading: isLoading ?? this.isLoading,
+      isLeaderboardLoading: isLeaderboardLoading ?? this.isLeaderboardLoading,
+      isUserStatsLoading: isUserStatsLoading ?? this.isUserStatsLoading,
       user: user ?? this.user,
     );
   }

@@ -29,19 +29,19 @@ class StatisticsCubit extends Cubit<StatisticsState> {
   }
 
   Future<void> fetchCurrentUser() async {
-    emit(state.copyWith(isLoading: true));
+    emit(state.copyWith(isUserStatsLoading: true));
 
     final either = await accountRepository.getUser();
 
     if (either.isRight) {
-      emit(state.copyWith(isLoading: false, user: either.right));
+      emit(state.copyWith(isUserStatsLoading: false, user: either.right));
     } else {
-      emit(state.copyWith(isLoading: false));
+      emit(state.copyWith(isUserStatsLoading: false));
     }
   }
 
   Future<void> fetchLeaderboards() async {
-    emit(state.copyWith(isLoading: true));
+    emit(state.copyWith(isLeaderboardLoading: true));
 
     final preset = state.filterBy == StatisticsFilterCategory.month
         ? 0
@@ -52,14 +52,14 @@ class StatisticsCubit extends Cubit<StatisticsState> {
       emit(
         state.copyWith(
           leaderboard: either.right,
-          isLoading: false,
+          isLeaderboardLoading: false,
         ),
       );
     } else {
       emit(
         state.copyWith(
           leaderboard: [],
-          isLoading: false,
+          isLeaderboardLoading: false,
         ),
       );
     }
