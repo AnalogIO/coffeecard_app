@@ -36,7 +36,7 @@ class ShopSection extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const BuyTicketsPage(),
+                      builder: (context) => BuyTicketsPage(),
                     ),
                   );
                 },
@@ -48,7 +48,7 @@ class ShopSection extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const BuyOneDrinkPage(),
+                      builder: (context) => BuyOneDrinkPage(),
                     ),
                   );
                 },
