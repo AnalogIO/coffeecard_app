@@ -35,7 +35,7 @@ class SettingsPage extends StatelessWidget {
                   title: Strings.settingsGroupAccount,
                   listItems: [
                     SettingListEntry(
-                      name: Strings.settingsGroupAccount,
+                      name: Strings.email,
                       valueWidget: Text(
                         state.user!.email,
                         style: AppTextStyle.settingValue,
