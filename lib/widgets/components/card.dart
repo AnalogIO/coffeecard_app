@@ -12,6 +12,7 @@ abstract class CardBase extends StatelessWidget {
   /// If [onTap] is not null, the card will show a
   /// splash effect when tapped.
   const CardBase({
+    Key? key,
     required this.top,
     this.bottom = const SizedBox.shrink(),
     this.gap = 0,
@@ -20,7 +21,7 @@ abstract class CardBase extends StatelessWidget {
     this.dense = false,
     this.disabled = false,
     this.onTap,
-  });
+  }) : super(key: key);
 
   /// Widget to be placed at the top of the card.
   final Widget top;
@@ -51,24 +52,22 @@ abstract class CardBase extends StatelessWidget {
 
   Widget get _cardContent {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [top, Gap(gap), bottom],
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return UnconstrainedBox(
-      constrainedAxis: Axis.horizontal,
-      child: Tappable(
-        elevation: 1,
-        padding: EdgeInsets.all(dense ? 12 : 24),
-        color: color,
-        borderRadius: BorderRadius.circular(24),
-        borderColor: borderColor,
-        onTap: onTap,
-        child: _cardContent,
-      ),
+    return Tappable(
+      elevation: 1,
+      padding: EdgeInsets.all(dense ? 12 : 24),
+      color: color,
+      borderRadius: BorderRadius.circular(24),
+      borderColor: borderColor,
+      onTap: onTap,
+      child: _cardContent,
     );
   }
 }
