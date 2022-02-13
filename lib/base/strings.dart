@@ -144,6 +144,7 @@ abstract class Strings {
   static const settingsGroupAbout = 'About Cafe Analog';
   static const settingsGroupProfile = 'Edit profile';
 
+  static const email = 'Email';
   static const passcode = 'Passcode';
   static const change = 'Change';
   static const logOut = 'Log out';
@@ -152,7 +153,7 @@ abstract class Strings {
   static const signInWithFingerprint = 'Sign in with fingerprint';
 
   static const faq = 'Frequently Asked Questions';
-  static const openingHours = 'Opening  hours';
+  static const openingHours = 'Opening hours';
   static const today = 'Today';
 
   static const name = 'Name';
