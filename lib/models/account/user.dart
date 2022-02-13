@@ -7,6 +7,9 @@ class User extends Equatable {
   final String email;
   final bool privacyActivated;
   final int? programmeId;
+  final int? rankMonth;
+  final int? rankSemester;
+  final int? rankTotal;
 
   const User({
     required this.id,
@@ -14,6 +17,9 @@ class User extends Equatable {
     required this.email,
     required this.privacyActivated,
     this.programmeId,
+    this.rankMonth,
+    this.rankSemester,
+    this.rankTotal,
   });
 
   User.fromDTO(UserDto dto)
@@ -21,8 +27,10 @@ class User extends Equatable {
         name = dto.name!,
         email = dto.email!,
         privacyActivated = dto.privacyActivated!,
-        programmeId = dto.programmeId;
-
+        programmeId = dto.programmeId,
+        rankMonth = dto.rankMonth,
+        rankSemester = dto.rankSemester,
+        rankTotal = dto.rankAllTime;
   @override
   List<Object?> get props {
     return [

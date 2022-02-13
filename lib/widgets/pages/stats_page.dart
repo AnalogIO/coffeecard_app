@@ -3,6 +3,7 @@ import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/statistics/statistics_cubit.dart';
 import 'package:coffeecard/widgets/components/app_bar_title.dart';
 import 'package:coffeecard/widgets/components/dropdowns/statistics_dropdown.dart';
+import 'package:coffeecard/widgets/components/helpers/grid.dart';
 import 'package:coffeecard/widgets/components/left_aligned_text.dart';
 import 'package:coffeecard/widgets/components/list_entry.dart';
 import 'package:coffeecard/widgets/components/receipt/filter_bar.dart';
@@ -18,98 +19,102 @@ class StatsPage extends StatelessWidget {
         title: const AppBarTitle(Strings.statsPageTitle),
       ),
       body: BlocBuilder<StatisticsCubit, StatisticsState>(
-          builder: (context, state) {
-        return RefreshIndicator(
-          displacement: 24,
-          onRefresh: context.read<StatisticsCubit>().fetchLeaderboards,
-          child: ListView(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    LeftAlignedText(
-                      Strings.statisticsYourStats,
-                      style: AppTextStyle.sectionTitle,
-                    ),
-                    const Gap(10),
-                    if (state.isUserStatsLoading)
-                      const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Center(
-                          child: CircularProgressIndicator(),
+        builder: (context, state) {
+          return RefreshIndicator(
+            displacement: 24,
+            onRefresh: context.read<StatisticsCubit>().fetchLeaderboards,
+            child: ListView(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      LeftAlignedText(
+                        Strings.statisticsYourStats,
+                        style: AppTextStyle.sectionTitle,
+                      ),
+                      const Gap(10),
+                      if (state.isUserStatsLoading)
+                        const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        )
+                      else
+                        Grid(
+                          singleColumnOnSmallDevice: true,
+                          gap: GridGap.normal,
+                          gapSmall: GridGap.normal,
+                          children: [
+                            Text(
+                              'This month: ${_formatRank(state.user?.rankMonth ?? 0)}',
+                              style: AppTextStyle.textField,
+                            ),
+                            Text(
+                              'This semester: ${_formatRank(state.user?.rankSemester ?? 0)}',
+                              style: AppTextStyle.textField,
+                            ),
+                            Text(
+                              'Total: ${_formatRank(state.user?.rankTotal ?? 0)}',
+                              style: AppTextStyle.textField,
+                            ),
+                          ],
                         ),
-                      )
-                    else
-                      Column(
-                        children: [
-                          LeftAlignedText(
-                            '${state.user?.name}',
-                            style: AppTextStyle.textField,
-                          ),
-                          LeftAlignedText(
-                            '${state.user?.email}',
-                            style: AppTextStyle.textField,
-                          ),
-                          LeftAlignedText(
-                            'ID: ${state.user?.id}',
-                            style: AppTextStyle.textField,
-                          ),
-                        ],
+                      const Gap(10),
+                      LeftAlignedText(
+                        Strings.statisticsLeaderboards,
+                        style: AppTextStyle.sectionTitle,
                       ),
-                    const Gap(10),
-                    LeftAlignedText(
-                      Strings.statisticsLeaderboards,
-                      style: AppTextStyle.sectionTitle,
-                    ),
-                  ],
-                ),
-              ),
-              FilterBar(
-                title: Strings.filter,
-                dropdown: StatisticsDropdown(),
-              ),
-              if (state.isLeaderboardLoading)
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Center(
-                    child: CircularProgressIndicator(),
+                    ],
                   ),
-                )
-              else
-                ListView.builder(
-                  physics: const ScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: state.leaderboard.length,
-                  itemBuilder: (context, index) {
-                    final entry = state.leaderboard[index];
-                    return ListEntry(
-                      leftWidget: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Text(formatRank(index + 1)),
-                          const Gap(10),
-                          const CircleAvatar(),
-                          const Gap(10),
-                          LeftAlignedText(
-                            entry.name!,
-                            style: AppTextStyle.textField,
-                          ),
-                        ],
-                      ),
-                      rightWidget: Text('${entry.score ?? 0} cups'),
-                    );
-                  },
                 ),
-            ],
-          ),
-        );
-      }),
+                FilterBar(
+                  title: Strings.filter,
+                  dropdown: StatisticsDropdown(),
+                ),
+                if (state.isLeaderboardLoading)
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  )
+                else
+                  ListView.builder(
+                    physics: const ScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: state.leaderboard.length,
+                    itemBuilder: (context, index) {
+                      final entry = state.leaderboard[index];
+                      return ListEntry(
+                        leftWidget: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Text(_formatRank(index + 1)),
+                            const Gap(10),
+                            const CircleAvatar(),
+                            const Gap(10),
+                            LeftAlignedText(
+                              entry.name!,
+                              style: AppTextStyle.textField,
+                            ),
+                          ],
+                        ),
+                        rightWidget: Text('${entry.score ?? 0} cups'),
+                      );
+                    },
+                  ),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }
 
-String formatRank(int rank) {
+String _formatRank(int rank) {
   final rankStr = rank.toString();
   final lastDigit = rankStr[rankStr.length - 1];
 
