@@ -15,7 +15,10 @@ class SecureStorage {
   Future<bool> get hasToken async => await readToken() != null;
 
   Future<void> saveAuthenticatedUser(
-      String email, String passcode, String token) async {
+    String email,
+    String passcode,
+    String token,
+  ) async {
     await _storage.write(key: _emailKey, value: email);
     await _storage.write(key: _passcodeKey, value: passcode);
     await _storage.write(key: _tokenKey, value: token);
@@ -36,6 +39,11 @@ class SecureStorage {
     await _storage.delete(key: _passcodeKey);
     await _storage.delete(key: _tokenKey);
     _logger.d('Email, passcode and token removed from Secure Storage');
+  }
+
+  Future<void> updateToken(String token) async {
+    await _storage.write(key: _tokenKey, value: token);
+    _logger.d('Token updated in Secure Storage');
   }
 
   Future<String?> readEmail() async {

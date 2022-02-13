@@ -23,7 +23,10 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   }
 
   Future<void> authenticated(
-      String email, String passcode, String token) async {
+    String email,
+    String passcode,
+    String token,
+  ) async {
     await _storage.saveAuthenticatedUser(
       email,
       passcode,
