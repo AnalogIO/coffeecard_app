@@ -133,7 +133,7 @@ abstract class Strings {
   static const receiptTapAnywhereToDismiss = 'Tap anywhere to dismiss';
 
   // Statistics page
-  static const statisticsQuickstats = 'Quick stats';
+  static const statisticsYourStats = 'Your stats';
   static const statisticsLeaderboards = 'Leaderboards';
 
   static const statisticsFilterSemester = 'Semester';
