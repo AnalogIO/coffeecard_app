@@ -13,18 +13,14 @@ extension _GridGapSizes on GridGap {
 class Grid extends StatelessWidget {
   const Grid({
     Key? key,
-    required this.singleColumn,
-    required this.singleColumnSmall,
+    required this.singleColumnOnSmallDevice,
     required this.gap,
     required this.gapSmall,
     required this.children,
   }) : super(key: key);
 
-  /// Whether to show a single column instead of the default two.
-  final bool singleColumn;
-
   /// Whether to show a single column when the display is small.
-  final bool singleColumnSmall;
+  final bool singleColumnOnSmallDevice;
 
   /// Determines the spacing between grid items.
   final GridGap gap;
@@ -41,10 +37,7 @@ class Grid extends StatelessWidget {
   double _verticalGap(bool isSmall) =>
       isSmall ? gapSmall.vertical : gap.vertical;
 
-  int _columns(bool isSmall) {
-    final _singleColumn = isSmall ? singleColumnSmall : singleColumn;
-    return _singleColumn ? 1 : 2;
-  }
+  int _columns(bool isSmall) => isSmall && singleColumnOnSmallDevice ? 1 : 2;
 
   @override
   Widget build(BuildContext context) {
