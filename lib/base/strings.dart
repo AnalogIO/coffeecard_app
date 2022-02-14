@@ -114,7 +114,7 @@ abstract class Strings {
     return '$price,-';
   }
 
-  // Receipts page
+  // Receipts
   static const receiptsPageTitle = 'Receipts';
   static const singleReceiptPageTitle = 'Receipt';
 
@@ -131,6 +131,10 @@ abstract class Strings {
   static const receiptCardPurchased = 'Purchased';
   static const receiptCardNote = 'This can be found again under Reciepts.';
   static const receiptTapAnywhereToDismiss = 'Tap anywhere to dismiss';
+
+  static const receipts = 'receipts';
+  static String noReceiptsOfType(String noneOfType) =>
+      "You don't have any $noneOfType... yet.";
 
   // Statistics page
   static const statisticsYourStats = 'Your stats';

@@ -1,64 +1,68 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/receipt/receipt_cubit.dart';
 import 'package:coffeecard/models/receipts/receipt.dart';
 import 'package:coffeecard/widgets/components/receipt/receipt_list_entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gap/gap.dart';
 
 class ReceiptsListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: Container(
-        color: AppColor.white,
-        child: BlocBuilder<ReceiptCubit, ReceiptState>(
-          builder: (context, state) {
-            if (state.status.isInitial) {
-              return _ReceiptsPlaceholder();
-            }
-            return RefreshIndicator(
-              displacement: 24,
-              onRefresh: context.read<ReceiptCubit>().fetchReceipts,
-              child: state.filteredReceipts.isEmpty
-                  ? Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Container(
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                width: 2,
-                                color: AppColor.secondary,
-                              ),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Text(
-                                'Receipts for your purchases and swipes, will show up here',
-                                style: AppTextStyle.explainer,
-                                overflow: TextOverflow.visible,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  : ListView.builder(
-                      itemCount: state.filteredReceipts.length,
-                      itemBuilder: (_, index) {
-                        final r = state.filteredReceipts[index];
-                        return ReceiptListEntry(receipt: r);
-                      },
-                    ),
-            );
-          },
-        ),
+      child: BlocBuilder<ReceiptCubit, ReceiptState>(
+        builder: (context, state) {
+          if (state.status.isInitial) {
+            return _ReceiptsPlaceholder();
+          }
+          return RefreshIndicator(
+            displacement: 24,
+            onRefresh: context.read<ReceiptCubit>().fetchReceipts,
+            child: state.filteredReceipts.isEmpty
+                ? _ReceiptsEmptyIndicator(
+                    hasAnyReceipts: state.receipts.isNotEmpty,
+                    filterCategory: state.filterBy,
+                  )
+                : ListView.builder(
+                    itemCount: state.filteredReceipts.length,
+                    itemBuilder: (_, index) {
+                      final r = state.filteredReceipts[index];
+                      return ReceiptListEntry(receipt: r);
+                    },
+                  ),
+          );
+        },
       ),
+    );
+  }
+}
+
+class _ReceiptsEmptyIndicator extends StatelessWidget {
+  const _ReceiptsEmptyIndicator({
+    required this.hasAnyReceipts,
+    required this.filterCategory,
+  });
+
+  final bool hasAnyReceipts;
+  final FilterCategory filterCategory;
+
+  String get _message => !hasAnyReceipts
+      ? Strings.noReceiptsOfType(Strings.receipts)
+      : Strings.noReceiptsOfType(filterCategory.name.toLowerCase());
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      children: [
+        const Gap(48),
+        Text(
+          _message,
+          textAlign: TextAlign.center,
+          style: AppTextStyle.explainer,
+          overflow: TextOverflow.visible,
+        ),
+      ],
     );
   }
 }
