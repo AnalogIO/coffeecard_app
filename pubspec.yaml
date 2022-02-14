@@ -28,6 +28,7 @@ dependencies:
   gap: 2.0.0
   shimmer: 2.0.0
   animations: 2.0.2
+  dotted_border: 2.0.0+2
   flutter_layout_grid: 1.0.3
 
   # Chopper api and rest client

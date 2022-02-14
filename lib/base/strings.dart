@@ -89,7 +89,7 @@ abstract class Strings {
 
   // Coffee card
   static const emptyCoffeeCardTextTop =
-      'Tickets that you buy will show up here';
+      'Tickets that you buy will show up here.';
   static const emptyCoffeeCardTextBottom =
       'Use the section below to shop tickets.';
   static const cofeeCardTicketsLeft = 'Tickets left:';

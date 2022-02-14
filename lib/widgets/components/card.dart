@@ -44,11 +44,11 @@ abstract class CardBase extends StatelessWidget {
   /// Decreases the amount of padding of the card.
   final bool dense;
 
-  /// Greys out the card.
+  /// Sets the elevation of the card to zero, removing the drop shadow.
   final bool disabled;
 
   /// If not null, the card will splash when tapped.
-  final VoidCallback? onTap;
+  final void Function(BuildContext)? onTap;
 
   Widget get _cardContent {
     return Column(
@@ -58,15 +58,22 @@ abstract class CardBase extends StatelessWidget {
     );
   }
 
+  void Function()? _onTap(BuildContext context) {
+    if (onTap == null) return null;
+    return () {
+      onTap!(context);
+    };
+  }
+
   @override
   Widget build(BuildContext context) {
     return Tappable(
-      elevation: 1,
+      elevation: disabled ? 0 : 1,
       padding: EdgeInsets.all(dense ? 16 : 24),
       color: color,
       borderRadius: BorderRadius.circular(24),
       borderColor: borderColor,
-      onTap: onTap,
+      onTap: _onTap(context),
       child: _cardContent,
     );
   }
@@ -100,6 +107,7 @@ class CardTitle extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         title,
+        if (description != null) const Gap(8),
         if (description != null) description!,
       ],
     );
@@ -132,7 +140,7 @@ class CardBottomRow extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        Expanded(
+        Flexible(
           child: Padding(padding: EdgeInsets.only(right: gap), child: left),
         ),
         right,
