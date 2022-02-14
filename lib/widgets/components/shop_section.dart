@@ -1,6 +1,7 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/widgets/components/shop_card.dart';
+import 'package:coffeecard/widgets/components/shop_card_disabled.dart';
 import 'package:coffeecard/widgets/pages/buy_one_drink_page.dart';
 import 'package:coffeecard/widgets/pages/buy_other_page.dart';
 import 'package:coffeecard/widgets/pages/buy_tickets_page.dart';
@@ -41,17 +42,18 @@ class ShopSection extends StatelessWidget {
                   );
                 },
               ),
-              ShopCard(
+              const ShopCardDisabled(
+                // in future change this class back to ShopCard when feature is ready
                 title: Strings.buyOneDrink,
                 icon: Icons.coffee,
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const BuyOneDrinkPage(),
-                    ),
-                  );
-                },
+                // onPressed: () {
+                //   Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //       builder: (context) => const BuyOneDrinkPage(),
+                //     ),
+                //   );
+                // },
               ),
               ShopCard(
                 title: Strings.buyOther,
