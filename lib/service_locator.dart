@@ -29,6 +29,15 @@ void configureServices() {
   // Storage
   sl.registerSingleton(SecureStorage(sl<Logger>()));
 
+  // Authentication
+  sl.registerSingleton<AuthenticationCubit>(
+    AuthenticationCubit(sl.get<SecureStorage>()),
+  );
+
+  sl.registerSingleton<ReactivationAuthenticator>(
+    ReactivationAuthenticator(sl),
+  );
+
   // Rest Client, Chopper client
   final _coffeCardChopper = ChopperClient(
     baseUrl: CoffeeCardApiConstants.betav2Url,
@@ -39,9 +48,7 @@ void configureServices() {
       CoffeecardApi.create(),
       CoffeecardApiV2.create(),
     ],
-    authenticator: ReactivationAuthenticator(
-      sl.get<SecureStorage>(),
-    ),
+    authenticator: sl.get<ReactivationAuthenticator>(),
   );
 
   final _shiftplanningChopper = ChopperClient(
@@ -49,9 +56,7 @@ void configureServices() {
     // TODO load the url from config files
     converter: $JsonSerializableConverter(),
     services: [ShiftplanningApi.create()],
-    authenticator: ReactivationAuthenticator(
-      sl.get<SecureStorage>(),
-    ),
+    authenticator: sl.get<ReactivationAuthenticator>(),
   );
 
   sl.registerSingleton<CoffeecardApi>(
@@ -98,10 +103,5 @@ void configureServices() {
   // shiftplanning
   sl.registerFactory<OpeningHoursRepository>(
     () => OpeningHoursRepository(sl<ShiftplanningApi>(), sl<Logger>()),
-  );
-
-  // Cubits
-  sl.registerSingleton<AuthenticationCubit>(
-    AuthenticationCubit(sl.get<SecureStorage>()),
   );
 }
