@@ -192,6 +192,7 @@ abstract class Strings {
 
   // Time since utility
   static const justNow = 'Just now';
+  static const minutesAgo = 'minutes $ago';
   static const anHourAgo = 'An hour $ago';
   static const hoursAgo = 'hours $ago';
   static const earlierToday = 'Earlier today';
