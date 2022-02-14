@@ -1,7 +1,4 @@
-import 'dart:ffi';
-
 import 'package:coffeecard/base/style/colors.dart';
-import 'package:coffeecard/widgets/components/helpers/tappable.dart';
 import 'package:flutter/material.dart';
 
 class ShopCardDisabled extends StatelessWidget {
@@ -17,7 +14,7 @@ class ShopCardDisabled extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Color.fromARGB(255, 128, 124, 124),
+      color: const Color.fromARGB(255, 128, 124, 124),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
       ),
