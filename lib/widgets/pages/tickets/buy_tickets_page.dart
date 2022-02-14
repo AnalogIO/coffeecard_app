@@ -5,15 +5,18 @@ import 'package:coffeecard/errors/match_case_incomplete_exception.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/widgets/components/helpers/grid.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
-import 'package:coffeecard/widgets/components/ticket_card.dart';
+import 'package:coffeecard/widgets/components/tickets/buy_tickets_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BuyTicketsPage extends StatelessWidget {
+  const BuyTicketsPage();
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => BuyTicketsCubit(sl.get<ProductRepository>())..getTickets(),
+      create: (context) =>
+          BuyTicketsCubit(sl.get<ProductRepository>())..getTickets(),
       child: AppScaffold.withTitle(
         title: Strings.buyTickets,
         body: BlocBuilder<BuyTicketsCubit, BuyTicketsState>(
@@ -21,21 +24,24 @@ class BuyTicketsPage extends StatelessWidget {
             if (state is BuyTicketsLoading) {
               return const Text('loading');
             } else if (state is BuyTicketsFiltered) {
-              return Grid(
-                gap: GridGap.normal,
-                gapSmall: GridGap.tight,
-                singleColumnOnSmallDevice: true,
-                children: state.filteredProducts
-                    .map(
-                      (e) => TicketCard(
-                        id: e.id!,
-                        title: e.name!,
-                        text: e.description!,
-                        amount: e.numberOfTickets!,
-                        price: e.price!,
-                      ),
-                    )
-                    .toList(),
+              return SingleChildScrollView(
+                padding: const EdgeInsets.all(16.0),
+                child: Grid(
+                  gap: GridGap.normal,
+                  gapSmall: GridGap.tight,
+                  singleColumnOnSmallDevice: true,
+                  children: state.filteredProducts
+                      .map(
+                        (e) => BuyTicketsCard(
+                          productId: e.id!,
+                          title: e.name!,
+                          description: e.description!,
+                          amount: e.numberOfTickets!,
+                          price: e.price!,
+                        ),
+                      )
+                      .toList(),
+                ),
               );
             } else if (state is BuyTicketsLoaded) {
               final BuyTicketsCubit buyTicketsCubit =

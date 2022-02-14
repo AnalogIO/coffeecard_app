@@ -4,37 +4,44 @@ import 'package:flutter/material.dart';
 
 class RoundedButton extends StatelessWidget {
   final String text;
-  final Function() onPressed;
-  final bool disabled;
+  final void Function()? onPressed;
 
   const RoundedButton({
     Key? key,
-    this.disabled = false,
     required this.text,
     required this.onPressed,
   }) : super(key: key);
 
+  bool get disabled => onPressed == null;
+
+  Color _getBackgroundColor(Set<MaterialState> states) {
+    if (states.contains(MaterialState.disabled)) return AppColor.lightGray;
+    return AppColor.primary;
+  }
+
+  Color _getForegroundColor(Set<MaterialState> states) {
+    if (states.contains(MaterialState.disabled)) return AppColor.gray;
+    return AppColor.white;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return TextButton(
-      style: disabled
-          ? TextButton.styleFrom(
-              splashFactory: NoSplash.splashFactory,
-            )
-          : null,
-      onPressed: disabled ? () => {} : onPressed,
-      child: Container(
-        decoration: BoxDecoration(
-          color: disabled ? AppColor.gray : AppColor.primary,
-          borderRadius: const BorderRadius.all(Radius.circular(20)),
+    return ElevatedButton(
+      style: ButtonStyle(
+        foregroundColor: MaterialStateProperty.resolveWith(_getForegroundColor),
+        maximumSize: MaterialStateProperty.all(Size.infinite),
+        backgroundColor: MaterialStateProperty.resolveWith(_getBackgroundColor),
+        shape: MaterialStateProperty.all(const StadiumBorder()),
+        padding: MaterialStateProperty.all(
+          const EdgeInsets.symmetric(horizontal: 16),
         ),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-          child: Text(
-            text,
-            style: AppTextStyle.buttonText,
-          ),
-        ),
+      ),
+      onPressed: onPressed,
+      child: Text(
+        text,
+        style: disabled
+            ? AppTextStyle.buttonTextDisabled
+            : AppTextStyle.buttonText,
       ),
     );
   }
