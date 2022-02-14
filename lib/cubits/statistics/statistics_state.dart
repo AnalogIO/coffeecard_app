@@ -18,6 +18,22 @@ extension DropdownName on StatisticsFilterCategory {
 
     throw Exception('Unknown filter category: $this');
   }
+
+  int get preset {
+    if (this == StatisticsFilterCategory.semester) {
+      return 1;
+    }
+
+    if (this == StatisticsFilterCategory.month) {
+      return 0;
+    }
+
+    if (this == StatisticsFilterCategory.total) {
+      return 2;
+    }
+
+    throw Exception('Unknown filter category: $this');
+  }
 }
 
 class StatisticsState extends Equatable {

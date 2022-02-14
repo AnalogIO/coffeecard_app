@@ -43,11 +43,8 @@ class StatisticsCubit extends Cubit<StatisticsState> {
   Future<void> fetchLeaderboards() async {
     emit(state.copyWith(isLeaderboardLoading: true));
 
-    final preset = state.filterBy == StatisticsFilterCategory.month
-        ? 0
-        : (state.filterBy == StatisticsFilterCategory.semester ? 1 : 2);
-
-    final either = await leaderboardRepository.getLeaderboard(preset);
+    final either =
+        await leaderboardRepository.getLeaderboard(state.filterBy.preset);
     if (either.isRight) {
       emit(
         state.copyWith(
@@ -62,6 +59,19 @@ class StatisticsCubit extends Cubit<StatisticsState> {
           isLeaderboardLoading: false,
         ),
       );
+    }
+  }
+
+  int? getUserRank() {
+    switch (state.filterBy.preset) {
+      case 0:
+        return state.user?.rankMonth;
+      case 1:
+        return state.user?.rankSemester;
+      case 2:
+        return state.user?.rankTotal;
+      default:
+        return null;
     }
   }
 }

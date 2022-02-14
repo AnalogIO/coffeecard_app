@@ -140,12 +140,9 @@ abstract class Strings {
   static const statisticsFilterMonth = 'Month';
   static const statisticsFilterTotal = 'Total';
 
-  static const statisticsTotalCupsDrunk = 'Total cups drunk by you';
-  static const statisticsTotalCupsDrunkITU = 'Cups drunk by ITU today';
-  static const statisticsYourRankITU = 'Your rank this week (vs ITU)';
-  static String statisticsYourRankProgramme(String programme) {
-    return 'Your rank this week (vs $programme)}';
-  }
+  static const statisticsCardMonth = 'This month:';
+  static const statisticsCardSemester = 'This semester:';
+  static const statisticsCardTotal = 'Total:';
 
   // Settings
   static const settingsPageTitle = 'Settings';
