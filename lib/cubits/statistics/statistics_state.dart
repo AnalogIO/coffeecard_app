@@ -47,7 +47,7 @@ class StatisticsState extends Equatable {
 
   @override
   List<Object?> get props =>
-      [filterBy, leaderboard, isLeaderboardLoading, user];
+      [filterBy, leaderboard, isLeaderboardLoading, user, isUserStatsLoading];
 
   StatisticsState copyWith({
     StatisticsFilterCategory? filterBy,

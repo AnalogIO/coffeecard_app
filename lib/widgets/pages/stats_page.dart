@@ -5,7 +5,6 @@ import 'package:coffeecard/widgets/components/stats/leaderboard_section.dart';
 import 'package:coffeecard/widgets/components/stats/stats_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gap/gap.dart';
 
 class StatsPage extends StatelessWidget {
   @override
@@ -20,7 +19,6 @@ class StatsPage extends StatelessWidget {
         child: ListView(
           children: const [
             StatsSection(),
-            Gap(24),
             LeaderboardSection(),
           ],
         ),

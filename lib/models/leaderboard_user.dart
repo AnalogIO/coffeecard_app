@@ -3,19 +3,19 @@ import 'package:equatable/equatable.dart';
 
 class LeaderboardUser extends Equatable {
   final String name;
-  final int rank;
+  final int score;
 
   const LeaderboardUser({
     required this.name,
-    required this.rank,
+    required this.score,
   });
 
   LeaderboardUser.fromDTO(LeaderboardDto dto)
       : name = dto.name!,
-        rank = dto.score!;
+        score = dto.score!;
 
   @override
   List<Object?> get props {
-    return [name, rank];
+    return [name, score];
   }
 }

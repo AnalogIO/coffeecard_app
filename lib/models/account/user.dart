@@ -39,6 +39,9 @@ class User extends Equatable {
       email,
       privacyActivated,
       programmeId,
+      rankMonth,
+      rankSemester,
+      rankTotal,
     ];
   }
 }

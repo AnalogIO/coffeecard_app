@@ -22,7 +22,7 @@ class LeaderboardSection extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
               child: Text(
                 Strings.statisticsLeaderboards,
                 style: AppTextStyle.sectionTitle,
@@ -52,7 +52,7 @@ class LeaderboardSection extends StatelessWidget {
                           userRank != null && (index == userRank - 1);
                       return LeaderboardEntry(
                         entry.name,
-                        entry.rank,
+                        entry.score,
                         index + 1,
                         highlight: isUsersCard,
                       );
