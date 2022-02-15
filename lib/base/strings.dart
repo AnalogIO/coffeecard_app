@@ -136,13 +136,30 @@ abstract class Strings {
   static const statisticsYourStats = 'Your stats';
   static const statisticsLeaderboards = 'Leaderboards';
 
+  static const statisticsShowTopDrinkerFor = 'Show top drinkers for';
   static const statisticsFilterSemester = 'Semester';
   static const statisticsFilterMonth = 'Month';
   static const statisticsFilterTotal = 'Total';
 
-  static const statisticsCardMonth = 'This month:';
-  static const statisticsCardSemester = 'This semester:';
-  static const statisticsCardTotal = 'Total:';
+  static const statisticsCardMonth = 'Your rank this month';
+  static const statisticsCardSemester = 'Your rank this semester';
+  static const statisticsCardTotal = 'Your rank (all time)';
+
+  static String formatLeaderboardPostfix(int rank) {
+    final rankStr = rank.toString();
+    final lastDigit = rankStr[rankStr.length - 1];
+
+    switch (lastDigit) {
+      case '1':
+        return 'st';
+      case '2':
+        return 'nd';
+      case '3':
+        return 'rd';
+      default:
+        return 'th';
+    }
+  }
 
   // Settings
   static const settingsPageTitle = 'Settings';
@@ -183,9 +200,6 @@ abstract class Strings {
   static const around = 'Around';
   static const almost = 'Almost';
   static const moreThan = 'More than';
-
-  // Generic widget
-  static const filter = 'Filters';
 
   // Errors
   static String unknownFilterCategory(Object category) {

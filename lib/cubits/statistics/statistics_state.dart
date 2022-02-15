@@ -7,15 +7,12 @@ extension DropdownName on StatisticsFilterCategory {
     if (this == StatisticsFilterCategory.semester) {
       return Strings.statisticsFilterSemester;
     }
-
     if (this == StatisticsFilterCategory.month) {
       return Strings.statisticsFilterMonth;
     }
-
     if (this == StatisticsFilterCategory.total) {
       return Strings.statisticsFilterTotal;
     }
-
     throw Exception('Unknown filter category: $this');
   }
 
@@ -23,29 +20,26 @@ extension DropdownName on StatisticsFilterCategory {
     if (this == StatisticsFilterCategory.semester) {
       return 1;
     }
-
     if (this == StatisticsFilterCategory.month) {
       return 0;
     }
-
     if (this == StatisticsFilterCategory.total) {
       return 2;
     }
-
     throw Exception('Unknown filter category: $this');
   }
 }
 
 class StatisticsState extends Equatable {
   final StatisticsFilterCategory filterBy;
-  final List<LeaderboardDto> leaderboard;
+  final List<LeaderboardUser> leaderboard;
   final User? user;
   final bool isLeaderboardLoading;
   final bool isUserStatsLoading;
 
   StatisticsState({
     this.filterBy = StatisticsFilterCategory.semester,
-    List<LeaderboardDto>? leaderboard,
+    List<LeaderboardUser>? leaderboard,
     this.isLeaderboardLoading = true,
     this.isUserStatsLoading = true,
     this.user, //FIXME: get user from UserCubit when implemented
@@ -57,7 +51,7 @@ class StatisticsState extends Equatable {
 
   StatisticsState copyWith({
     StatisticsFilterCategory? filterBy,
-    List<LeaderboardDto>? leaderboard,
+    List<LeaderboardUser>? leaderboard,
     bool? isLeaderboardLoading,
     bool? isUserStatsLoading,
     User? user,
@@ -69,5 +63,18 @@ class StatisticsState extends Equatable {
       isUserStatsLoading: isUserStatsLoading ?? this.isUserStatsLoading,
       user: user ?? this.user,
     );
+  }
+
+  int? getUserRank() {
+    switch (filterBy.preset) {
+      case 0:
+        return user?.rankMonth;
+      case 1:
+        return user?.rankSemester;
+      case 2:
+        return user?.rankTotal;
+      default:
+        return null;
+    }
   }
 }
