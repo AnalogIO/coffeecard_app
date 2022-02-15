@@ -32,8 +32,7 @@ class _RegisterEmailTextFieldState extends State<RegisterEmailTextField> {
   String? get errorMessage => _showError ? _error : null;
 
   Future<void> _validateEmail(String email) async {
-    // ignore: prefer_final_locals
-    String _email = email.trim();
+    final _email = email.trim();
     if (_email.isEmpty) {
       error = Strings.registerEmailEmpty;
     } else if (!emailIsValid(_email)) {
