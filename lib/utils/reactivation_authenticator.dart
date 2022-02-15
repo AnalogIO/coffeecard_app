@@ -4,14 +4,15 @@ import 'package:chopper/chopper.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
 import 'package:coffeecard/data/repositories/v1/account_repository.dart';
 import 'package:coffeecard/data/storage/secure_storage.dart';
+import 'package:coffeecard/utils/mutex.dart';
 import 'package:get_it/get_it.dart';
 
 class ReactivationAuthenticator extends Authenticator {
   final GetIt serviceLocator;
-
-  static DateTime? tokenRefreshedAt;
   static const Duration debounce = Duration(seconds: 10);
-  static bool _refreshInProgress = false;
+
+  DateTime? tokenRefreshedAt;
+  Mutex mutex = Mutex();
 
   late SecureStorage secureStorage;
   late AuthenticationCubit authenticationCubit;
@@ -46,14 +47,16 @@ class ReactivationAuthenticator extends Authenticator {
     Request? originalRequest,
   ]) async {
     if (response.statusCode == 401) {
-      // someone is updating the token, read it from the store and retry
-      if (_refreshInProgress) {
-        // FIXME: possible to read an outdated token? if so, how to fix?
+      if (mutex.isLocked()) {
+        // someone is updating the token, wait until they are done and read it
+        await mutex.wait();
         final refreshedToken = await secureStorage.readToken();
-        if (refreshedToken == null) return null;
-
-        return request.copyWith(
-            headers: _updateHeadersWithToken(request.headers, refreshedToken));
+        return refreshedToken != null
+            ? request.copyWith(
+                headers:
+                    _updateHeadersWithToken(request.headers, refreshedToken),
+              )
+            : null;
       }
 
       // avoid refreshing the token multiple times if requests happen at the same time
@@ -70,35 +73,38 @@ class ReactivationAuthenticator extends Authenticator {
     Request request,
     Response response,
   ) async {
-    if (_refreshInProgress) return null;
     final email = await secureStorage.readEmail();
     final passcode = await secureStorage.readPasscode();
 
     if (email != null && passcode != null) {
       final accountRepository = serviceLocator.get<AccountRepository>();
 
-      _refreshInProgress = true;
+      mutex.lock();
+
       // this call may return 401 which triggers a recursive call, use a guard
-      final either = await accountRepository.login(
-        email,
-        passcode,
-      );
-
-      if (either.isRight) {
-        // refresh succeeded, update the token in secure storage
-        tokenRefreshedAt = DateTime.now();
-
-        final token = either.right.token;
-        final bearerToken = 'Bearer ${either.right.token}';
-        await secureStorage.updateToken(token);
-        _refreshInProgress = false;
-
-        return request.copyWith(
-          headers: _updateHeadersWithToken(request.headers, bearerToken),
+      try {
+        final either = await accountRepository.login(
+          email,
+          passcode,
         );
-      } else {
-        // refresh failed, sign the user out
-        _evict();
+
+        if (either.isRight) {
+          // refresh succeeded, update the token in secure storage
+          tokenRefreshedAt = DateTime.now();
+
+          final token = either.right.token;
+          final bearerToken = 'Bearer ${either.right.token}';
+          await secureStorage.updateToken(token);
+
+          return request.copyWith(
+            headers: _updateHeadersWithToken(request.headers, bearerToken),
+          );
+        } else {
+          // refresh failed, sign the user out
+          _evict();
+        }
+      } finally {
+        mutex.unlock();
       }
     }
     return null;

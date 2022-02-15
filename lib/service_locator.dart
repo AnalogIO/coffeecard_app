@@ -34,8 +34,8 @@ void configureServices() {
     AuthenticationCubit(sl.get<SecureStorage>()),
   );
 
-  sl.registerSingleton<ReactivationAuthenticator>(
-    ReactivationAuthenticator(sl),
+  sl.registerFactory<ReactivationAuthenticator>(
+    () => ReactivationAuthenticator(sl),
   );
 
   // Rest Client, Chopper client
