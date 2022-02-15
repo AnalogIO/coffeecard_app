@@ -21,7 +21,7 @@ class ReceiptsListView extends StatelessWidget {
             onRefresh: context.read<ReceiptCubit>().fetchReceipts,
             child: state.filteredReceipts.isEmpty
                 ? _ReceiptsEmptyIndicator(
-                    hasAnyReceipts: state.receipts.isNotEmpty,
+                    hasNoReceipts: state.receipts.isEmpty,
                     filterCategory: state.filterBy,
                   )
                 : ListView.builder(
@@ -40,14 +40,18 @@ class ReceiptsListView extends StatelessWidget {
 
 class _ReceiptsEmptyIndicator extends StatelessWidget {
   const _ReceiptsEmptyIndicator({
-    required this.hasAnyReceipts,
+    required this.hasNoReceipts,
     required this.filterCategory,
   });
 
-  final bool hasAnyReceipts;
+  /// The user has no receipts of any kind.
+  final bool hasNoReceipts;
+
   final FilterCategory filterCategory;
 
-  String get _message => !hasAnyReceipts
+  /// If the user has no receipts of any kind, always show a generic message.
+  /// Otherwise, show a message based on `filterCategory`.
+  String get _message => hasNoReceipts
       ? Strings.noReceiptsOfType(Strings.receipts)
       : Strings.noReceiptsOfType(filterCategory.name.toLowerCase());
 
