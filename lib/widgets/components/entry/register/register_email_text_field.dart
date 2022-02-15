@@ -32,16 +32,18 @@ class _RegisterEmailTextFieldState extends State<RegisterEmailTextField> {
   String? get errorMessage => _showError ? _error : null;
 
   Future<void> _validateEmail(String email) async {
-    if (email.isEmpty) {
+    // ignore: prefer_final_locals
+    String _email = email.trim();
+    if (_email.isEmpty) {
       error = Strings.registerEmailEmpty;
-    } else if (!emailIsValid(email)) {
+    } else if (!emailIsValid(_email)) {
       error = Strings.registerEmailInvalid;
     } else {
-      final isDuplicate = await emailIsDuplicate(email);
+      final isDuplicate = await emailIsDuplicate(_email);
       if (!mounted) return; // Needs to be checked after an async call.
       if (isDuplicate) {
         _showError = true;
-        error = '$email ${Strings.registerEmailInUseSuffix}';
+        error = '$_email ${Strings.registerEmailInUseSuffix}';
       } else {
         error = null;
       }
