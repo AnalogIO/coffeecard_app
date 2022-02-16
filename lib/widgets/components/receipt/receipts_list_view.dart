@@ -47,7 +47,7 @@ class _ReceiptsEmptyIndicator extends StatelessWidget {
   /// The user has no receipts of any kind.
   final bool hasNoReceipts;
 
-  final FilterCategory filterCategory;
+  final ReceiptFilterCategory filterCategory;
 
   /// If the user has no receipts of any kind, always show a generic message.
   /// Otherwise, show a message based on `filterCategory`.
@@ -56,8 +56,10 @@ class _ReceiptsEmptyIndicator extends StatelessWidget {
       : Strings.noReceiptsOfTypeTitle(filterCategory.name.toLowerCase());
 
   String get _buyOrSwipe {
-    if (hasNoReceipts) return 'buy or swipe';
-    return filterCategory == FilterCategory.swipes ? 'buy' : 'swipe';
+    if (hasNoReceipts) return Strings.buyOrSwipe;
+    return filterCategory == ReceiptFilterCategory.swipes
+        ? Strings.buy
+        : Strings.swipe;
   }
 
   @override
