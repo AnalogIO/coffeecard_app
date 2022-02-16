@@ -62,7 +62,7 @@ abstract class CardBase extends StatelessWidget {
   Widget build(BuildContext context) {
     return Tappable(
       elevation: 1,
-      padding: EdgeInsets.all(dense ? 12 : 24),
+      padding: EdgeInsets.all(dense ? 16 : 24),
       color: color,
       borderRadius: BorderRadius.circular(24),
       borderColor: borderColor,

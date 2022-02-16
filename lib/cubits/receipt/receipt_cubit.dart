@@ -32,7 +32,7 @@ class ReceiptCubit extends Cubit<ReceiptState> {
     }
   }
 
-  void filterReceipts(FilterCategory filterBy) {
+  void filterReceipts(ReceiptFilterCategory filterBy) {
     if (filterBy == state.filterBy) return;
     emit(
       state.copyWith(
@@ -42,15 +42,18 @@ class ReceiptCubit extends Cubit<ReceiptState> {
     );
   }
 
-  List<Receipt> _filter(List<Receipt> receipts, FilterCategory filterBy) {
+  List<Receipt> _filter(
+    List<Receipt> receipts,
+    ReceiptFilterCategory filterBy,
+  ) {
     switch (filterBy) {
-      case FilterCategory.all:
+      case ReceiptFilterCategory.all:
         return receipts;
-      case FilterCategory.swipes:
+      case ReceiptFilterCategory.swipes:
         return receipts
             .where((r) => r.transactionType == TransactionType.ticketSwipe)
             .toList();
-      case FilterCategory.purchases:
+      case ReceiptFilterCategory.purchases:
         return receipts
             .where((r) => r.transactionType == TransactionType.purchase)
             .toList();
