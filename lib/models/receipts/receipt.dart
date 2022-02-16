@@ -1,4 +1,4 @@
-enum TransactionType { purchase, ticketSwipe }
+enum TransactionType { purchase, ticketSwipe, placeholder }
 
 /// A receipt for either a used ticket, or a purchase
 class Receipt {

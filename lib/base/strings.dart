@@ -114,7 +114,7 @@ abstract class Strings {
     return '$price,-';
   }
 
-  // Receipts page
+  // Receipts
   static const receiptsPageTitle = 'Receipts';
   static const singleReceiptPageTitle = 'Receipt';
 
@@ -131,6 +131,16 @@ abstract class Strings {
   static const receiptCardPurchased = 'Purchased';
   static const receiptCardNote = 'This can be found again under Reciepts.';
   static const receiptTapAnywhereToDismiss = 'Tap anywhere to dismiss';
+
+  static const receipts = 'receipts';
+  static String noReceiptsOfTypeTitle(String noneOfType) =>
+      "You don't have any $noneOfType... yet.";
+
+  static const buy = 'buy';
+  static const swipe = 'swipe';
+  static const buyOrSwipe = '$buy or $swipe';
+  static String noReceiptsOfTypeMessage(String buyOrSwipe) =>
+      'When you $buyOrSwipe tickets, they will show up here.\nGo to the Tickets tab to $buyOrSwipe tickets.';
 
   // Statistics page
   static const statisticsYourStats = 'Your stats';
@@ -188,6 +198,7 @@ abstract class Strings {
 
   // Time since utility
   static const justNow = 'Just now';
+  static const minutesAgo = 'minutes $ago';
   static const anHourAgo = 'An hour $ago';
   static const hoursAgo = 'hours $ago';
   static const earlierToday = 'Earlier today';

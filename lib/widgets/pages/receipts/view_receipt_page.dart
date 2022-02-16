@@ -21,20 +21,16 @@ class ViewReceiptPage extends StatelessWidget {
       backgroundColor: AppColor.background,
       appBar: AppBar(
         title: const AppBarTitle(Strings.singleReceiptPageTitle),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.save_alt),
-            onPressed: () {},
-          )
-        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(48),
-        child: ReceiptCard(
-          productName: name,
-          time: time,
-          isPurchase: isPurchase,
-          isInOverlay: false,
+        child: IntrinsicHeight(
+          child: ReceiptCard(
+            productName: name,
+            time: time,
+            isPurchase: isPurchase,
+            isInOverlay: false,
+          ),
         ),
       ),
     );
