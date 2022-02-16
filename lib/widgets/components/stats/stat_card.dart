@@ -11,6 +11,7 @@ class StatisticsCard extends CardBase {
 
   StatisticsCard(this.title, this.rank)
       : super(
+          dense: true,
           gap: 24,
           color: AppColor.white,
           top: CardTitle(

@@ -1,3 +1,4 @@
+import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/receipt/receipt_cubit.dart';
 import 'package:coffeecard/widgets/components/dropdown.dart';
 import 'package:flutter/material.dart';
@@ -13,8 +14,17 @@ class ReceiptDropdown extends StatelessWidget {
           onChanged: (category) {
             context.read<ReceiptCubit>().filterReceipts(category!);
           },
-          items:
-              ReceiptFilterCategory.values.map((e) => {'name': e.name, 'e': e}),
+          items: ReceiptFilterCategory.values
+              .map(
+                (category) => DropdownMenuItem(
+                  value: category,
+                  child: Text(
+                    category.name,
+                    style: AppTextStyle.loginExplainer,
+                  ),
+                ),
+              )
+              .toList(),
         );
       },
     );

@@ -1,3 +1,4 @@
+import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/statistics/statistics_cubit.dart';
 import 'package:coffeecard/widgets/components/dropdown.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,16 @@ class StatisticsDropdown extends StatelessWidget {
           },
           value: state.filterBy,
           items: StatisticsFilterCategory.values
-              .map((e) => {'name': e.name, 'e': e}),
+              .map(
+                (category) => DropdownMenuItem(
+                  value: category,
+                  child: Text(
+                    category.name,
+                    style: AppTextStyle.loginExplainer,
+                  ),
+                ),
+              )
+              .toList(),
         );
       },
     );
