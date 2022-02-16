@@ -4,15 +4,15 @@ import 'package:flutter/material.dart';
 
 class RoundedButton extends StatelessWidget {
   final String text;
-  final void Function()? onPressed;
+  final void Function()? onTap;
 
   const RoundedButton({
     Key? key,
     required this.text,
-    required this.onPressed,
+    required this.onTap,
   }) : super(key: key);
 
-  bool get disabled => onPressed == null;
+  bool get disabled => onTap == null;
 
   Color _getBackgroundColor(Set<MaterialState> states) {
     if (states.contains(MaterialState.disabled)) return AppColor.lightGray;
@@ -36,7 +36,7 @@ class RoundedButton extends StatelessWidget {
           const EdgeInsets.symmetric(horizontal: 16),
         ),
       ),
-      onPressed: onPressed,
+      onPressed: onTap,
       child: Text(
         text,
         style: disabled
