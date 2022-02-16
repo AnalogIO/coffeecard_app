@@ -3,7 +3,7 @@ import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/analog_closed_popup/analog_closed_popup_cubit.dart';
 import 'package:coffeecard/errors/match_case_incomplete_exception.dart';
-import 'package:coffeecard/widgets/components/rounded_button.dart';
+import 'package:coffeecard/widgets/components/tickets/rounded_button.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -46,7 +46,7 @@ class AnalogClosedPopup extends StatelessWidget {
                   ),
                   RoundedButton(
                     text: Strings.buttonGotIt,
-                    onPressed: () {
+                    onTap: () {
                       final analogClosedPopupCubit =
                           context.read<AnalogClosedPopupCubit>();
                       analogClosedPopupCubit.closePopup();

@@ -1,8 +1,8 @@
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
-import 'package:coffeecard/payment/payment_handler.dart';
+import 'package:coffeecard/utils/responsive.dart';
 import 'package:coffeecard/widgets/components/card.dart';
-import 'package:coffeecard/widgets/components/rounded_button.dart';
+import 'package:coffeecard/widgets/components/tickets/buy_ticket_bottom_modal_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
@@ -23,7 +23,7 @@ class BuyTicketsCard extends CardBase {
   }) : super(
           key: key,
           color: AppColor.white,
-          gap: 64,
+          gap: 64, // FIXME: Should be 48 for small devices
           top: CardTitle(
             title: Text(title, style: AppTextStyle.ownedTicket),
             description: Text(description, style: AppTextStyle.explainer),
@@ -38,7 +38,7 @@ class BuyTicketsCard extends CardBase {
               backgroundColor: Colors.transparent,
               isDismissible: true,
               useRootNavigator: true,
-              builder: (_) => _BuyTicketBottomModalSheet(
+              builder: (_) => BuyTicketBottomModalSheet(
                 productId: productId,
                 title: title,
                 amount: amount,
@@ -50,120 +50,31 @@ class BuyTicketsCard extends CardBase {
 }
 
 class _TicketPrice extends StatelessWidget {
-  const _TicketPrice({
-    Key? key,
-    required this.amount,
-    required this.price,
-  }) : super(key: key);
+  const _TicketPrice({required this.amount, required this.price});
 
   final int amount;
   final int price;
 
-  String get amountDisplayName =>
-      amount != 1 ? '$amount tickets' : '$amount ticket';
+  String get _amountDisplayName {
+    final s = amount != 1 ? 's' : '';
+    return '$amount ticket$s';
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+    return Flex(
+      direction: deviceIsSmall(context) ? Axis.horizontal : Axis.vertical,
+      verticalDirection: deviceIsSmall(context)
+          ? VerticalDirection.down
+          : VerticalDirection.up,
+      crossAxisAlignment: deviceIsSmall(context)
+          ? CrossAxisAlignment.end
+          : CrossAxisAlignment.stretch,
       children: [
-        Text(amountDisplayName, style: AppTextStyle.explainerDark),
         Text('$price,-', style: AppTextStyle.sectionTitle),
+        if (deviceIsSmall(context)) const Gap(8),
+        Text(_amountDisplayName, style: AppTextStyle.explainerDark),
       ],
     );
   }
-}
-
-class _BuyTicketBottomModalSheet extends StatelessWidget {
-  const _BuyTicketBottomModalSheet({
-    required this.productId,
-    required this.title,
-    required this.amount,
-    required this.price,
-  });
-
-  final int productId;
-  final int amount;
-  final int price;
-  final String title;
-
-  @override
-  Widget build(BuildContext context) {
-    return IntrinsicHeight(
-      child: Column(
-        children: [
-          Text('Confirm purchase', style: AppTextStyle.explainerBright),
-          Text('Tap here to cancel', style: AppTextStyle.explainerBright),
-          const Gap(12),
-          Container(
-            color: AppColor.background,
-            child: SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Text(
-                      "You're buying $amount $title tickets",
-                      style: AppTextStyle.explainerDark,
-                    ),
-                    const Gap(4),
-                    Text(
-                      'Pay $price,- with…',
-                      style: AppTextStyle.price,
-                    ),
-                    const Gap(12),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              const RoundedButton(
-                                text: 'Google Pay',
-                                onPressed: null,
-                              ),
-                              Text(
-                                'This feature is coming soon',
-                                textAlign: TextAlign.center,
-                                style: AppTextStyle.explainerSmall,
-                              ),
-                            ],
-                          ),
-                        ),
-                        const Gap(8),
-                        Expanded(
-                          child: RoundedButton(
-                            text: 'MobilePay',
-                            onPressed: () =>
-                                payWithMobilePay(context, productId, price),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-Future<void> payWithApplePay(BuildContext context, int id, int price) async {
-  throw UnimplementedError();
-}
-
-Future<void> payWithMobilePay(BuildContext context, int id, int price) async {
-  //FIXME: remove cast once new MP implementation is done
-  final MobilePayService service =
-      PaymentHandler(InternalPaymentType.mobilePay, context)
-          as MobilePayService;
-
-  final Payment po = await service.initPurchase(id);
-
-  service.invokeMobilePay(po.paymentId, price);
 }
