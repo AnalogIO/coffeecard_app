@@ -4,28 +4,40 @@ import 'package:chopper/chopper.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
 import 'package:coffeecard/data/repositories/v1/account_repository.dart';
 import 'package:coffeecard/data/storage/secure_storage.dart';
-import 'package:coffeecard/service_locator.dart';
+import 'package:coffeecard/utils/mutex.dart';
+import 'package:get_it/get_it.dart';
 
 class ReactivationAuthenticator extends Authenticator {
-  final SecureStorage secureStorage;
+  final GetIt serviceLocator;
+  static const Duration debounce = Duration(seconds: 10);
+
   DateTime? tokenRefreshedAt;
-  final Duration debounce = const Duration(seconds: 10);
-  int _retryCount = 0;
-  final int _retryLimit = 1;
+  Mutex mutex = Mutex();
 
-  ReactivationAuthenticator(this.secureStorage);
+  late SecureStorage secureStorage;
+  late AuthenticationCubit authenticationCubit;
 
-  bool _canRefreshToken() {
-    if (tokenRefreshedAt == null) {
-      return true;
-    } else {
-      return tokenRefreshedAt!.difference(DateTime.now()) < debounce;
-    }
+  ReactivationAuthenticator(this.serviceLocator) {
+    secureStorage = serviceLocator.get<SecureStorage>();
+    authenticationCubit = serviceLocator.get<AuthenticationCubit>();
   }
 
-  Future<void> _evict() async {
-    final authenticationCubit = sl.get<AuthenticationCubit>();
-    await authenticationCubit.unauthenticated();
+  bool _canRefreshToken() =>
+      tokenRefreshedAt == null ||
+      tokenRefreshedAt!.difference(DateTime.now()) < debounce;
+
+  Future<void> _evict() async => authenticationCubit.unauthenticated();
+
+  Map<String, String> _updateHeadersWithToken(
+    Map<String, String> headers,
+    String token,
+  ) {
+    headers.update(
+      'Authorization',
+      (String _) => token,
+      ifAbsent: () => token,
+    );
+    return headers;
   }
 
   @override
@@ -35,10 +47,16 @@ class ReactivationAuthenticator extends Authenticator {
     Request? originalRequest,
   ]) async {
     if (response.statusCode == 401) {
-      // sign the user out
-      if (_retryCount > _retryLimit) {
-        _evict();
-        return null;
+      if (mutex.isLocked()) {
+        // someone is updating the token, wait until they are done and read it
+        await mutex.wait();
+        final refreshedToken = await secureStorage.readToken();
+        return refreshedToken != null
+            ? request.copyWith(
+                headers:
+                    _updateHeadersWithToken(request.headers, refreshedToken),
+              )
+            : null;
       }
 
       // avoid refreshing the token multiple times if requests happen at the same time
@@ -55,36 +73,38 @@ class ReactivationAuthenticator extends Authenticator {
     Request request,
     Response response,
   ) async {
-    _retryCount++;
-
-    final accountRepository = sl.get<AccountRepository>();
     final email = await secureStorage.readEmail();
     final passcode = await secureStorage.readPasscode();
 
     if (email != null && passcode != null) {
-      // this call may return 401 which triggers a recursive call
-      final either = await accountRepository.login(
-        email,
-        passcode,
-      );
+      final accountRepository = serviceLocator.get<AccountRepository>();
 
-      if (either.isRight) {
-        tokenRefreshedAt = DateTime.now();
-        _retryCount = 0;
+      mutex.lock();
 
-        final Map<String, String> updatedHeaders =
-            Map<String, String>.of(request.headers);
-
-        final token = either.right.token;
-        final bearerToken = 'Bearer ${either.right.token}';
-        await secureStorage.updateToken(token);
-
-        updatedHeaders.update(
-          'Authorization',
-          (String _) => bearerToken,
-          ifAbsent: () => bearerToken,
+      // this call may return 401 which triggers a recursive call, use a guard
+      try {
+        final either = await accountRepository.login(
+          email,
+          passcode,
         );
-        return request.copyWith(headers: updatedHeaders);
+
+        if (either.isRight) {
+          // refresh succeeded, update the token in secure storage
+          tokenRefreshedAt = DateTime.now();
+
+          final token = either.right.token;
+          final bearerToken = 'Bearer ${either.right.token}';
+          await secureStorage.updateToken(token);
+
+          return request.copyWith(
+            headers: _updateHeadersWithToken(request.headers, bearerToken),
+          );
+        } else {
+          // refresh failed, sign the user out
+          _evict();
+        }
+      } finally {
+        mutex.unlock();
       }
     }
     return null;
