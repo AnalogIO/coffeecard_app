@@ -1,4 +1,4 @@
-import 'package:coffeecard/cubits/tickets_page/tickets_cubit.dart';
+import 'package:coffeecard/cubits/tickets/tickets_cubit.dart';
 import 'package:coffeecard/errors/match_case_incomplete_exception.dart';
 import 'package:coffeecard/widgets/components/tickets/coffee_card.dart';
 import 'package:coffeecard/widgets/components/tickets/coffee_card_placeholder.dart';

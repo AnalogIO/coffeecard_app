@@ -1,5 +1,5 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/cubits/tickets_page/tickets_cubit.dart';
+import 'package:coffeecard/cubits/tickets/tickets_cubit.dart';
 import 'package:coffeecard/widgets/pages/tickets/buy_tickets_page.dart';
 import 'package:coffeecard/widgets/pages/tickets/redeem_voucher_page.dart';
 import 'package:coffeecard/widgets/pages/tickets/tickets_page.dart';
