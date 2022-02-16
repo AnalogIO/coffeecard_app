@@ -20,6 +20,7 @@ String timeSince(DateTime time) {
   final diff = currentTime.difference(time);
 
   if (diff.inMinutes < 2) return Strings.justNow;
+  if (diff.inHours < 1) return '${diff.inMinutes} ${Strings.minutesAgo}';
   if (diff.inHours == 1) return Strings.anHourAgo;
   if (diff.inHours < 8) return '${diff.inHours} ${Strings.hoursAgo}';
   if (diff.inDays == 0) return Strings.earlierToday;

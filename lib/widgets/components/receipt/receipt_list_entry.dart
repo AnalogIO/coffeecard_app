@@ -2,6 +2,7 @@ import 'package:animations/animations.dart';
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/models/receipts/receipt.dart';
 import 'package:coffeecard/widgets/components/helpers/shimmer_builder.dart';
 import 'package:coffeecard/widgets/components/list_entry.dart';
 import 'package:coffeecard/widgets/pages/receipts/view_receipt_page.dart';
@@ -11,56 +12,38 @@ import 'package:intl/intl.dart';
 final _formatter = DateFormat('dd.MM.yyyy');
 
 class ReceiptListEntry extends StatelessWidget {
-  final bool isPlaceholder;
-  final String productName;
-  final bool isPurchase;
-  final DateTime time;
-  final int quantity;
-  final int price;
+  final Receipt receipt;
 
-  const ReceiptListEntry.swipe({
-    required this.productName,
-    required this.time,
-  })  : isPlaceholder = false,
-        isPurchase = false,
-        quantity = 1,
-        price = -1;
-
-  const ReceiptListEntry.purchase({
-    required this.productName,
-    required this.time,
-    required this.quantity,
-    required this.price,
-  })  : isPlaceholder = false,
-        isPurchase = true;
-
-  ReceiptListEntry.placeholder()
-      : isPlaceholder = true,
-        productName = Strings.receiptPlaceholderName,
-        isPurchase = false,
-        time = DateTime.now(),
-        quantity = 1,
-        price = -1;
+  const ReceiptListEntry({
+    required this.receipt,
+  });
 
   Color get _backgroundColor {
-    if (isPlaceholder) return Colors.transparent;
-    return isPurchase ? AppColor.slightlyHighlighted : AppColor.white;
+    switch (receipt.transactionType) {
+      case TransactionType.purchase:
+        return AppColor.slightlyHighlighted;
+      case TransactionType.ticketSwipe:
+        return AppColor.white;
+      case TransactionType.placeholder:
+        return Colors.transparent;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return OpenContainer(
-      tappable: !isPlaceholder,
+      tappable: receipt.transactionType != TransactionType.placeholder,
       openBuilder: (context, _) {
         return ViewReceiptPage(
-          name: productName,
-          time: time,
-          isPurchase: isPurchase,
+          //TODO consider if this should also take a receipt object instead
+          name: receipt.productName,
+          time: receipt.timeUsed,
+          isPurchase: receipt.transactionType == TransactionType.purchase,
         );
       },
       closedBuilder: (context, openContainer) {
         return ShimmerBuilder(
-          showShimmer: isPlaceholder,
+          showShimmer: receipt.transactionType == TransactionType.placeholder,
           builder: (context, colorIfShimmer) {
             return ListEntry(
               leftWidget: Column(
@@ -69,16 +52,16 @@ class ReceiptListEntry extends StatelessWidget {
                   Container(
                     color: colorIfShimmer,
                     child: Text(
-                      isPurchase
-                          ? '${Strings.purchased} $quantity $productName'
-                          : '${Strings.swiped} $productName',
+                      receipt.transactionType == TransactionType.purchase
+                          ? '${Strings.purchased} ${receipt.amountPurchased} ${receipt.productName}'
+                          : '${Strings.swiped} ${receipt.productName}',
                       style: AppTextStyle.recieptItemKey,
                     ),
                   ),
                   Container(
                     color: colorIfShimmer,
                     child: Text(
-                      _formatter.format(time),
+                      _formatter.format(receipt.timeUsed),
                       style: AppTextStyle.recieptItemDate,
                     ),
                   )
@@ -87,7 +70,9 @@ class ReceiptListEntry extends StatelessWidget {
               rightWidget: Container(
                 color: colorIfShimmer,
                 child: Text(
-                  isPurchase ? '$price,-' : Strings.oneTicket,
+                  receipt.transactionType == TransactionType.purchase
+                      ? '${receipt.price},-'
+                      : Strings.oneTicket,
                   style: AppTextStyle.recieptItemValue,
                 ),
               ),

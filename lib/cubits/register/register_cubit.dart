@@ -9,7 +9,7 @@ class RegisterCubit extends Cubit<RegisterState> {
 
   RegisterCubit({required this.repository}) : super(const RegisterState());
 
-  void setEmail(String email) => emit(state.copyWith(email: email));
+  void setEmail(String email) => emit(state.copyWith(email: email.trim()));
   void setPasscode(String passcode) => emit(state.copyWith(passcode: passcode));
   void setName(String name) => emit(state.copyWith(name: name));
 

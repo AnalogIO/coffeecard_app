@@ -62,7 +62,7 @@ class ReceiptRepository {
     return Right(
       ticketReceipts.followedBy(purchaseReceipts).toList()
         ..sort(
-          (receipt, receipt1) => receipt.timeUsed.compareTo(receipt1.timeUsed),
+          (receipt, receipt1) => receipt1.timeUsed.compareTo(receipt.timeUsed),
         ),
     );
   }

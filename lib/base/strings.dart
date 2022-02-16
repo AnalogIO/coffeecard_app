@@ -16,10 +16,6 @@ abstract class Strings {
   static const statsNavTitle = 'Stats';
   static const settingsNavTitle = settingsPageTitle;
 
-  // Test strings.
-  static const ticketsPageTestString = 'Test string for Tickets page ☕';
-  static const testDBString = 'Connected to test database';
-
   // Login email hint and errors
   static const loginPasscodeHint = 'Enter passcode';
   static const loginPasscodeEmpty = 'Enter a passcode';
@@ -36,7 +32,8 @@ abstract class Strings {
   // Tickets
   static const ticketsMyTickets = 'My tickets';
   static const analogClosedTitle = 'Cafe Analog is closed';
-  static const analogClosedText = 'Oh no!'; //FIXME: write message
+  static const analogClosedText =
+      'Analog is currently closed, come back later!';
   static const shopText = 'Shop';
   static const buyTickets = 'Buy tickets';
   static const buyOneDrink = 'Buy one drink';
@@ -117,7 +114,7 @@ abstract class Strings {
     return '$price,-';
   }
 
-  // Receipts page
+  // Receipts
   static const receiptsPageTitle = 'Receipts';
   static const singleReceiptPageTitle = 'Receipt';
 
@@ -134,6 +131,45 @@ abstract class Strings {
   static const receiptCardPurchased = 'Purchased';
   static const receiptCardNote = 'This can be found again under Reciepts.';
   static const receiptTapAnywhereToDismiss = 'Tap anywhere to dismiss';
+
+  static const receipts = 'receipts';
+  static String noReceiptsOfTypeTitle(String noneOfType) =>
+      "You don't have any $noneOfType... yet.";
+
+  static const buy = 'buy';
+  static const swipe = 'swipe';
+  static const buyOrSwipe = '$buy or $swipe';
+  static String noReceiptsOfTypeMessage(String buyOrSwipe) =>
+      'When you $buyOrSwipe tickets, they will show up here.\nGo to the Tickets tab to $buyOrSwipe tickets.';
+
+  // Statistics page
+  static const statisticsYourStats = 'Your stats';
+  static const statisticsLeaderboards = 'Leaderboards';
+
+  static const statisticsShowTopDrinkerFor = 'Show top drinkers for';
+  static const statisticsFilterSemester = 'Semester';
+  static const statisticsFilterMonth = 'Month';
+  static const statisticsFilterTotal = 'Total';
+
+  static const statisticsCardMonth = 'Your rank this month';
+  static const statisticsCardSemester = 'Your rank this semester';
+  static const statisticsCardTotal = 'Your rank (all time)';
+
+  static String formatLeaderboardPostfix(int rank) {
+    final rankStr = rank.toString();
+    final lastDigit = rankStr[rankStr.length - 1];
+
+    switch (lastDigit) {
+      case '1':
+        return 'st';
+      case '2':
+        return 'nd';
+      case '3':
+        return 'rd';
+      default:
+        return 'th';
+    }
+  }
 
   // Settings
   static const settingsPageTitle = 'Settings';
@@ -162,6 +198,7 @@ abstract class Strings {
 
   // Time since utility
   static const justNow = 'Just now';
+  static const minutesAgo = 'minutes $ago';
   static const anHourAgo = 'An hour $ago';
   static const hoursAgo = 'hours $ago';
   static const earlierToday = 'Earlier today';
