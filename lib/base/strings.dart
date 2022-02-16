@@ -133,8 +133,14 @@ abstract class Strings {
   static const receiptTapAnywhereToDismiss = 'Tap anywhere to dismiss';
 
   static const receipts = 'receipts';
-  static String noReceiptsOfType(String noneOfType) =>
+  static String noReceiptsOfTypeTitle(String noneOfType) =>
       "You don't have any $noneOfType... yet.";
+
+  static const buy = 'buy';
+  static const swipe = 'swipe';
+  static const buyOrSwipe = '$buy or $swipe';
+  static String noReceiptsOfTypeMessage(String buyOrSwipe) =>
+      'When you $buyOrSwipe tickets, they will show up here.\nGo to the Tickets tab to $buyOrSwipe tickets.';
 
   // Statistics page
   static const statisticsYourStats = 'Your stats';

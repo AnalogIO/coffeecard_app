@@ -51,20 +51,38 @@ class _ReceiptsEmptyIndicator extends StatelessWidget {
 
   /// If the user has no receipts of any kind, always show a generic message.
   /// Otherwise, show a message based on `filterCategory`.
-  String get _message => hasNoReceipts
-      ? Strings.noReceiptsOfType(Strings.receipts)
-      : Strings.noReceiptsOfType(filterCategory.name.toLowerCase());
+  String get _title => hasNoReceipts
+      ? Strings.noReceiptsOfTypeTitle(Strings.receipts)
+      : Strings.noReceiptsOfTypeTitle(filterCategory.name.toLowerCase());
+
+  String get _buyOrSwipe {
+    if (hasNoReceipts) return 'buy or swipe';
+    return filterCategory == FilterCategory.swipes ? 'buy' : 'swipe';
+  }
 
   @override
   Widget build(BuildContext context) {
     return ListView(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       children: [
         const Gap(48),
-        Text(
-          _message,
-          textAlign: TextAlign.center,
-          style: AppTextStyle.explainer,
-          overflow: TextOverflow.visible,
+        FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(
+            _title,
+            textAlign: TextAlign.center,
+            style: AppTextStyle.sectionTitle,
+            overflow: TextOverflow.visible,
+          ),
+        ),
+        const Gap(8),
+        FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(
+            Strings.noReceiptsOfTypeMessage(_buyOrSwipe),
+            textAlign: TextAlign.center,
+            style: AppTextStyle.explainer,
+          ),
         ),
       ],
     );
