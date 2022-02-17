@@ -1,6 +1,6 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/colors.dart';
-import 'package:coffeecard/widgets/components/app_bar_title.dart';
+import 'package:coffeecard/widgets/components/appbar_with_notification.dart';
 import 'package:coffeecard/widgets/components/receipt/receipt_card.dart';
 import 'package:flutter/material.dart';
 
@@ -19,8 +19,8 @@ class ViewReceiptPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColor.background,
-      appBar: AppBar(
-        title: const AppBarTitle(Strings.singleReceiptPageTitle),
+      appBar: AppBarWithNotification(
+        title: Strings.singleReceiptPageTitle,
       ),
       body: Padding(
         padding: const EdgeInsets.all(48),
