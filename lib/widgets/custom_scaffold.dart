@@ -73,7 +73,7 @@ class _EnvironmentBanner extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: AppColor.primary,
-      padding: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.only(bottom: 2),
       child: Center(
         child: _EnvironmentButton(tappable: tappable),
       ),
@@ -122,7 +122,6 @@ class _EnvironmentButton extends StatelessWidget {
         padding: const EdgeInsets.only(left: 16, right: 12),
         shape: const StadiumBorder(),
         visualDensity: VisualDensity.comfortable,
-        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
