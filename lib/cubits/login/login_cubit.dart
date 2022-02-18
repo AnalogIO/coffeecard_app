@@ -17,9 +17,8 @@ class LoginCubit extends Cubit<LoginState> {
     required this.accountRepository,
   }) : super(const LoginState());
 
-  void updateEmail(String email) {
-    emit(state.copyWith(email: email, emailValidated: false));
-  }
+  void updateEmail(String email) =>
+      emit(state.copyWith(email: email.trim(), emailValidated: false));
 
   void validateEmail() {
     final email = state.email.trim();
