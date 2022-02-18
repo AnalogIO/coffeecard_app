@@ -6,14 +6,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 
-class AppScaffold extends StatelessWidget {
-  const AppScaffold({
-    Key? key,
-    required this.title,
-    required this.body,
-  }) : super(key: key);
+enum _AppScaffoldType { normal, login }
 
-  final String title;
+extension _AppScaffoldTypeIs on _AppScaffoldType {
+  bool get isNormal => this == _AppScaffoldType.normal;
+  bool get isLogin => !isNormal;
+}
+
+class AppScaffold extends StatelessWidget {
+  AppScaffold({
+    required String title,
+    required this.body,
+  })  : type = _AppScaffoldType.normal,
+        title = Text(title, style: AppTextStyle.pageTitle);
+
+  const AppScaffold.login({
+    required this.body,
+  })  : type = _AppScaffoldType.login,
+        title = null;
+
+  final _AppScaffoldType type;
+  final Widget? title;
   final Widget body;
 
   @override
@@ -24,19 +37,22 @@ class AppScaffold extends StatelessWidget {
       // The actual background of the body is defined
       // in the child of the Expanded widget below.
       backgroundColor: AppColor.primary,
+      // If type.isLogin, then the AppBar is an empty 24dp tall padding.
+      // Otherwise, display a normal AppBar with a title widget.
       appBar: AppBar(
-        title: Text(title, style: AppTextStyle.pageTitle),
+        title: title,
         elevation: 0,
+        toolbarHeight: type.isLogin ? 24 : null,
       ),
       body: BlocBuilder<EnvironmentCubit, Environment>(
         builder: (context, state) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              if (state.isTest) const _EnvironmentBanner(),
+              if (state.isTest) const _EnvironmentBanner(tappable: true),
               Expanded(
                 child: Container(
-                  color: AppColor.background,
+                  color: type.isNormal ? AppColor.background : null,
                   child: body,
                 ),
               ),
@@ -48,24 +64,25 @@ class AppScaffold extends StatelessWidget {
   }
 }
 
+// TODO: Extract to its own file as more widgets want to use this widget
 class _EnvironmentBanner extends StatelessWidget {
-  const _EnvironmentBanner();
+  const _EnvironmentBanner({required this.tappable});
+  final bool tappable;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       color: AppColor.primary,
       padding: const EdgeInsets.only(bottom: 8),
-      child: const Center(
-        child: _EnvironmentButton(),
+      child: Center(
+        child: _EnvironmentButton(tappable: tappable),
       ),
     );
   }
 }
 
 class _EnvironmentButton extends StatelessWidget {
-  const _EnvironmentButton({this.tappable = true});
-
+  const _EnvironmentButton({required this.tappable});
   final bool tappable;
 
   @override

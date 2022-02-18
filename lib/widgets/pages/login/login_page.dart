@@ -1,9 +1,9 @@
-import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/cubits/login/login_cubit.dart';
 import 'package:coffeecard/widgets/analog_logo.dart';
 import 'package:coffeecard/widgets/components/entry/login/login_input_hint.dart';
 import 'package:coffeecard/widgets/components/entry/login/login_title.dart';
 import 'package:coffeecard/widgets/components/loading_overlay.dart';
+import 'package:coffeecard/widgets/custom_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -34,9 +34,11 @@ abstract class LoginPage extends StatelessWidget {
       },
       buildWhen: (previous, current) => previous.hasError || current.hasError,
       builder: (context, state) {
-        return Scaffold(
-          resizeToAvoidBottomInset: resizeOnKeyboard,
-          backgroundColor: AppColor.primary,
+        return AppScaffold.login(
+          // FIXME: Implement this to AppScaffold or find alternative solution
+          // This line below was used to prevent screen jumping when switching
+          // From loginEmailPage to loginPasscode page.
+          // resizeToAvoidBottomInset: resizeOnKeyboard,
           body: Column(
             children: [
               Expanded(

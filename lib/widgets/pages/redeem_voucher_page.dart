@@ -7,9 +7,9 @@ class RedeemVoucherPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const AppScaffold(
+    return AppScaffold(
       title: Strings.redeemVoucherPageTitle,
-      body: Text('Uh oh, something was supposed to be here'),
+      body: const Text('Uh oh, something was supposed to be here'),
     );
   }
 }
