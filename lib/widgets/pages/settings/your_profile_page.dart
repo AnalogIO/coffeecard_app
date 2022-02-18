@@ -2,9 +2,9 @@ import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/settings/settings_cubit.dart';
 import 'package:coffeecard/models/account/user.dart';
-import 'package:coffeecard/widgets/components/appbar_with_notification.dart';
 import 'package:coffeecard/widgets/components/settings_group.dart';
 import 'package:coffeecard/widgets/components/settings_list_entry.dart';
+import 'package:coffeecard/widgets/custom_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
@@ -14,8 +14,8 @@ class YourProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBarWithNotification(title: Strings.yourProfilePageTitle),
+    return AppScaffold(
+      title: Strings.yourProfilePageTitle,
       body: BlocBuilder<SettingsCubit, SettingsState>(
         builder: (context, state) {
           return (state.isLoaded)

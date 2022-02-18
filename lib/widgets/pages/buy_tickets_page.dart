@@ -1,8 +1,8 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/cubits/buy_tickets_page/buy_tickets_cubit.dart';
 import 'package:coffeecard/errors/match_case_incomplete_exception.dart';
-import 'package:coffeecard/widgets/components/appbar_with_notification.dart';
 import 'package:coffeecard/widgets/components/ticket_card.dart';
+import 'package:coffeecard/widgets/custom_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -18,10 +18,8 @@ class _BuyTicketsPageState extends State<BuyTicketsPage> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => BuyTicketsCubit(),
-      child: Scaffold(
-        appBar: AppBarWithNotification(
-          title: Strings.buyTickets,
-        ),
+      child: AppScaffold(
+        title: Strings.buyTickets,
         body: BlocBuilder<BuyTicketsCubit, BuyTicketsState>(
           builder: (context, state) {
             if (state is BuyTicketsLoading) {

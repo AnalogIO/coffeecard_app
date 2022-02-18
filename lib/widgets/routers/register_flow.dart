@@ -3,7 +3,7 @@ import 'package:coffeecard/cubits/register/register_cubit.dart';
 import 'package:coffeecard/data/repositories/v1/account_repository.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/utils/fast_slide_transition.dart';
-import 'package:coffeecard/widgets/components/appbar_with_notification.dart';
+import 'package:coffeecard/widgets/custom_scaffold.dart';
 import 'package:coffeecard/widgets/pages/register/register_email_page.dart';
 import 'package:coffeecard/widgets/pages/register/register_name_page.dart';
 import 'package:coffeecard/widgets/pages/register/register_passcode_page.dart';
@@ -27,10 +27,8 @@ class RegisterFlow extends StatelessWidget {
       onWillPop: () async => !await _didPopRoute(),
       child: BlocProvider(
         create: (_) => RegisterCubit(repository: sl.get<AccountRepository>()),
-        child: Scaffold(
-          appBar: AppBarWithNotification(
-            title: Strings.registerAppBarTitle,
-          ),
+        child: AppScaffold(
+          title: Strings.registerAppBarTitle,
           body: Navigator(
             key: navigatorKey,
             onGenerateRoute: _onGenerateRoute,

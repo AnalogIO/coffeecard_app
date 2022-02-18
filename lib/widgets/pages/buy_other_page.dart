@@ -1,5 +1,5 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/widgets/components/appbar_with_notification.dart';
+import 'package:coffeecard/widgets/custom_scaffold.dart';
 import 'package:flutter/material.dart';
 
 class BuyOtherPage extends StatelessWidget {
@@ -7,9 +7,9 @@ class BuyOtherPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBarWithNotification(title: Strings.buyOtherPageTitle),
-      body: const Text('Uh oh, something was supposed to be here'),
+    return const AppScaffold(
+      title: Strings.buyOtherPageTitle,
+      body: Text('Uh oh, something was supposed to be here'),
     );
   }
 }
