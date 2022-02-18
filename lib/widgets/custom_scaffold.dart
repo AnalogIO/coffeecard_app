@@ -1,3 +1,4 @@
+import 'package:coffeecard/base/strings_environment.dart';
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/environment/environment_cubit.dart';
@@ -91,26 +92,26 @@ class _EnvironmentButton extends StatelessWidget {
       onPressed: tappable
           ? () => appDialog(
                 context: context,
-                title: 'Connected to test environment',
+                title: TestEnvironmentStrings.title,
                 children: [
                   Text(
-                    'The functionality of this app is for testing purposes only.',
+                    TestEnvironmentStrings.description[0],
                     style: AppTextStyle.settingKey,
                   ),
                   const Gap(8),
                   Text(
-                    'User account information is not shared with the production environment. This means you will need a separate account for this environment.',
+                    TestEnvironmentStrings.description[1],
                     style: AppTextStyle.settingKey,
                   ),
                   const Gap(8),
                   Text(
-                    'Tickets you buy or swipe are *NOT VALID* for use at Cafe Analog.',
+                    TestEnvironmentStrings.description[2],
                     style: AppTextStyle.settingKey,
                   ),
                 ],
                 actions: [
                   TextButton(
-                    child: const Text('Understood'),
+                    child: const Text(TestEnvironmentStrings.understood),
                     onPressed: () => closeAppDialog(context),
                   ),
                 ],
@@ -127,7 +128,7 @@ class _EnvironmentButton extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            'Connected to test environment',
+            TestEnvironmentStrings.title,
             style: AppTextStyle.environmentNotifier,
           ),
           if (tappable) const Gap(8),
