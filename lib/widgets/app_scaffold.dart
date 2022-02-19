@@ -7,43 +7,33 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 
-enum _AppScaffoldType { normal, login }
-
-extension _AppScaffoldTypeIs on _AppScaffoldType {
-  bool get isNormal => this == _AppScaffoldType.normal;
-  bool get isLogin => !isNormal;
-}
-
 class AppScaffold extends StatelessWidget {
-  AppScaffold({
-    required String title,
-    required this.body,
-  })  : type = _AppScaffoldType.normal,
-        title = Text(title, style: AppTextStyle.pageTitle);
-
-  const AppScaffold.login({
-    required this.body,
-  })  : type = _AppScaffoldType.login,
-        title = null;
-
-  final _AppScaffoldType type;
   final Widget? title;
   final Widget body;
+  final bool resizeToAvoidBottomInset;
+
+  AppScaffold({
+    String? title,
+    this.resizeToAvoidBottomInset = true,
+    required this.body,
+  }) : title =
+            title != null ? Text(title, style: AppTextStyle.pageTitle) : null;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: resizeToAvoidBottomInset,
       // The background color is set to avoid a thin line
       // between the AppBar and the _EnvironmentBanner.
       // The actual background of the body is defined
       // in the child of the Expanded widget below.
       backgroundColor: AppColor.primary,
-      // If type.isLogin, then the AppBar is an empty 24dp tall padding.
+      // If a title is not provided, then the AppBar is an empty 24dp tall padding.
       // Otherwise, display a normal AppBar with a title widget.
       appBar: AppBar(
         title: title,
         elevation: 0,
-        toolbarHeight: type.isLogin ? 24 : null,
+        toolbarHeight: (title == null) ? 24 : null,
       ),
       body: BlocBuilder<EnvironmentCubit, Environment>(
         builder: (context, state) {
@@ -53,7 +43,7 @@ class AppScaffold extends StatelessWidget {
               if (state.isTest) const _EnvironmentBanner(tappable: true),
               Expanded(
                 child: Container(
-                  color: type.isNormal ? AppColor.background : null,
+                  color: (title != null) ? AppColor.background : null,
                   child: body,
                 ),
               ),

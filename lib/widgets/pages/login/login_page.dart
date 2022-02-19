@@ -34,11 +34,8 @@ abstract class LoginPage extends StatelessWidget {
       },
       buildWhen: (previous, current) => previous.hasError || current.hasError,
       builder: (context, state) {
-        return AppScaffold.login(
-          // FIXME: Implement this to AppScaffold or find alternative solution
-          // This line below was used to prevent screen jumping when switching
-          // From loginEmailPage to loginPasscode page.
-          // resizeToAvoidBottomInset: resizeOnKeyboard,
+        return AppScaffold(
+          resizeToAvoidBottomInset: resizeOnKeyboard,
           body: Column(
             children: [
               Expanded(
