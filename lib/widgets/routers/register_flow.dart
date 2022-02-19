@@ -3,7 +3,7 @@ import 'package:coffeecard/cubits/register/register_cubit.dart';
 import 'package:coffeecard/data/repositories/v1/account_repository.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/utils/fast_slide_transition.dart';
-import 'package:coffeecard/widgets/custom_scaffold.dart';
+import 'package:coffeecard/widgets/app_scaffold.dart';
 import 'package:coffeecard/widgets/pages/register/register_email_page.dart';
 import 'package:coffeecard/widgets/pages/register/register_name_page.dart';
 import 'package:coffeecard/widgets/pages/register/register_passcode_page.dart';
