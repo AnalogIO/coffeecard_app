@@ -13,11 +13,15 @@ class AppScaffold extends StatelessWidget {
   final bool resizeToAvoidBottomInset;
 
   AppScaffold({
-    String? title,
+    required String title,
     this.resizeToAvoidBottomInset = true,
     required this.body,
-  }) : title =
-            title != null ? Text(title, style: AppTextStyle.pageTitle) : null;
+  }) : title = Text(title, style: AppTextStyle.pageTitle);
+
+  const AppScaffold.noTitle({
+    this.resizeToAvoidBottomInset = true,
+    required this.body,
+  }) : title = null;
 
   @override
   Widget build(BuildContext context) {
