@@ -22,7 +22,7 @@ class AppScaffold extends StatelessWidget {
     required this.body,
   })  : title = Text(title, style: AppTextStyle.pageTitle),
         backgroundColor = AppColor.background,
-        toolbarHeight = null;
+        toolbarHeight = null; // Use default app bar height
 
   /// A Scaffold with an empty, 24 dp tall app bar.
   /// The body's background color is, by default, the same as the app bar.
