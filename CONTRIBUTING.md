@@ -36,5 +36,5 @@ git commit -m "Resolved merge conflict by xxx"
 git push
 ```
 
-Now go to github and create a pull reguest from the feature branch to the develop branch.
-If the pull reguest closes an issue, make sure to tag this issue in the description for the pull reguest.
+Now go to github and create a pull request from the feature branch to the develop branch.
+If the pull request closes an issue, make sure to tag this issue in the description for the pull reguest.
