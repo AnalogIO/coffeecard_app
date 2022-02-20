@@ -1,6 +1,6 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/cubits/statistics/statistics_cubit.dart';
-import 'package:coffeecard/widgets/app_scaffold.dart';
+import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:coffeecard/widgets/components/stats/leaderboard_section.dart';
 import 'package:coffeecard/widgets/components/stats/stats_section.dart';
 import 'package:flutter/material.dart';

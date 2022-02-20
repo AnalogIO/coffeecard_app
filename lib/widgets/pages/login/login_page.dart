@@ -1,6 +1,6 @@
 import 'package:coffeecard/cubits/login/login_cubit.dart';
 import 'package:coffeecard/widgets/analog_logo.dart';
-import 'package:coffeecard/widgets/app_scaffold.dart';
+import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:coffeecard/widgets/components/entry/login/login_input_hint.dart';
 import 'package:coffeecard/widgets/components/entry/login/login_title.dart';
 import 'package:coffeecard/widgets/components/loading_overlay.dart';
