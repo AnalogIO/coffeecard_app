@@ -12,6 +12,7 @@ class AppScaffold extends StatelessWidget {
   final Widget body;
   final Color backgroundColor;
   final bool resizeToAvoidBottomInset;
+  final double? toolbarHeight;
 
   /// A Scaffold with a normal app bar.
   /// The body's background color is always `AppColor.background`.
@@ -20,7 +21,8 @@ class AppScaffold extends StatelessWidget {
     this.resizeToAvoidBottomInset = true,
     required this.body,
   })  : title = Text(title, style: AppTextStyle.pageTitle),
-        backgroundColor = AppColor.background;
+        backgroundColor = AppColor.background,
+        toolbarHeight = null;
 
   /// A Scaffold with an empty, 24 dp tall app bar.
   /// The body's background color is, by default, the same as the app bar.
@@ -28,7 +30,8 @@ class AppScaffold extends StatelessWidget {
     this.backgroundColor = AppColor.primary,
     this.resizeToAvoidBottomInset = true,
     required this.body,
-  }) : title = null;
+  })  : title = null,
+        toolbarHeight = 24;
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +47,7 @@ class AppScaffold extends StatelessWidget {
       appBar: AppBar(
         title: title,
         elevation: 0,
-        toolbarHeight: (title == null) ? 24 : null,
+        toolbarHeight: toolbarHeight,
       ),
       body: BlocBuilder<EnvironmentCubit, Environment>(
         builder: (context, state) {
