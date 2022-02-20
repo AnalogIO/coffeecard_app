@@ -175,6 +175,14 @@ abstract class Strings {
     }
   }
 
+  // Redeem Voucher
+  static const voucherHint = 'Enter a voucher code to redeem it.';
+  static const voucherCode = 'Voucher code';
+  static const voucherEmpty = 'Enter a voucher code';
+  static const voucherUsed = 'That voucher is already used';
+  static const youRedeemed = 'You redeemed';
+  static const voucherRedeemed = 'Voucher redeemed 🎉';
+
   // Settings
   static const settingsPageTitle = 'Settings';
   static const yourProfilePageTitle = 'Your profile';
@@ -230,5 +238,9 @@ abstract class Strings {
 
   static String invalidRoute(String c, String? route) {
     return '($c) Unknown route: $route';
+  }
+
+  static String invalidVoucher(String voucher) {
+    return 'The voucher "$voucher" is invalid';
   }
 }
