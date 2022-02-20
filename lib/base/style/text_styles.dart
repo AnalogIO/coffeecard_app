@@ -131,7 +131,25 @@ abstract class AppTextStyle {
   static final TextStyle explainerDark = TextStyle(
     color: AppColor.primary,
     fontSize: 12,
+    fontWeight: FontWeight.w500,
     fontFamily: AppFont.body,
+  );
+
+  static final TextStyle overLine = TextStyle(
+    color: AppColor.primary,
+    fontSize: 12,
+    fontFamily: AppFont.body,
+  );
+
+  static final TextStyle newLabel = TextStyle(
+    fontSize: 12,
+    letterSpacing: 1,
+    color: AppColor.ticket,
+    fontWeight: FontWeight.w500,
+    fontFamily: AppFont.body,
+  );
+  static final TextStyle comingSoonLabel = newLabel.copyWith(
+    color: AppColor.gray,
   );
   static final TextStyle label = TextStyle(
     color: AppColor.secondary,
