@@ -42,8 +42,6 @@ class AppScaffold extends StatelessWidget {
       // The actual background of the body is defined
       // in the child of the Expanded widget below.
       backgroundColor: AppColor.primary,
-      // If a title is not provided, then the AppBar is an empty 24dp tall padding.
-      // Otherwise, display a normal AppBar with a title widget.
       appBar: AppBar(
         title: title,
         elevation: 0,
