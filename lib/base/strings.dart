@@ -196,6 +196,9 @@ abstract class Strings {
   static const occupation = 'Occupation';
   static const changeProfilePicture = 'Change profile picture';
 
+  static const madeBy = 'Made with ❤ by Analog IO\nIT University of Copenhagen';
+  static const userID = 'User ID';
+
   // Time since utility
   static const justNow = 'Just now';
   static const minutesAgo = 'minutes $ago';

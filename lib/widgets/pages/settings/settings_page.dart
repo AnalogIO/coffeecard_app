@@ -96,13 +96,13 @@ class SettingsPage extends StatelessWidget {
                 ),
                 const Gap(24),
                 Text(
-                  'Made with ❤ by Analog IO\nIT University of Copenhagen',
+                  Strings.madeBy,
                   style: AppTextStyle.explainer,
                   textAlign: TextAlign.center,
                 ),
                 const Gap(8),
                 Text(
-                  'User ID: $userId',
+                  '${Strings.userID}: $userId',
                   style: AppTextStyle.explainer,
                   textAlign: TextAlign.center,
                 ),
