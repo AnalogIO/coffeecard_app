@@ -1,6 +1,6 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:coffeecard/widgets/components/analog_closed_popup.dart';
+import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:coffeecard/widgets/components/shop_section.dart';
 import 'package:coffeecard/widgets/components/tickets_section.dart';
 import 'package:flutter/material.dart';

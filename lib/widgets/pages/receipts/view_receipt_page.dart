@@ -1,6 +1,6 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:coffeecard/widgets/components/receipt/receipt_card.dart';
+import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:flutter/material.dart';
 
 class ViewReceiptPage extends StatelessWidget {
