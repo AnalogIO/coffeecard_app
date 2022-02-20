@@ -13,6 +13,8 @@ import 'package:gap/gap.dart';
 class SettingsPage extends StatelessWidget {
   const SettingsPage();
 
+  String get userId => '1234';
+
   @override
   Widget build(BuildContext context) {
     return AppScaffold.withTitle(
@@ -22,7 +24,7 @@ class SettingsPage extends StatelessWidget {
           if (state.isLoading) {
             return const CircularProgressIndicator();
           } else {
-            return Column(
+            return ListView(
               children: [
                 Padding(
                   padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
@@ -92,6 +94,19 @@ class SettingsPage extends StatelessWidget {
                     ),
                   ],
                 ),
+                const Gap(24),
+                Text(
+                  Strings.madeBy,
+                  style: AppTextStyle.explainer,
+                  textAlign: TextAlign.center,
+                ),
+                const Gap(8),
+                Text(
+                  '${Strings.userID}: $userId',
+                  style: AppTextStyle.explainer,
+                  textAlign: TextAlign.center,
+                ),
+                const Gap(24),
               ],
             );
           }

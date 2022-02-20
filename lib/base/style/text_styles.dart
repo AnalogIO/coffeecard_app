@@ -131,6 +131,12 @@ abstract class AppTextStyle {
   static final TextStyle explainerDark = TextStyle(
     color: AppColor.primary,
     fontSize: 12,
+    fontWeight: FontWeight.w500,
+    fontFamily: AppFont.body,
+  );
+  static final TextStyle overLine = TextStyle(
+    color: AppColor.primary,
+    fontSize: 12,
     fontFamily: AppFont.body,
   );
   static final TextStyle label = TextStyle(
