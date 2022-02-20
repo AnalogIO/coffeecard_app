@@ -14,7 +14,7 @@ class YourProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppScaffold(
+    return AppScaffold.withTitle(
       title: Strings.yourProfilePageTitle,
       body: BlocBuilder<SettingsCubit, SettingsState>(
         builder: (context, state) {

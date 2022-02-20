@@ -27,7 +27,7 @@ class RegisterFlow extends StatelessWidget {
       onWillPop: () async => !await _didPopRoute(),
       child: BlocProvider(
         create: (_) => RegisterCubit(repository: sl.get<AccountRepository>()),
-        child: AppScaffold(
+        child: AppScaffold.withTitle(
           title: Strings.registerAppBarTitle,
           body: Navigator(
             key: navigatorKey,

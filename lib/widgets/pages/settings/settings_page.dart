@@ -15,7 +15,7 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppScaffold(
+    return AppScaffold.withTitle(
       title: Strings.settingsPageTitle,
       body: BlocBuilder<SettingsCubit, SettingsState>(
         builder: (context, state) {

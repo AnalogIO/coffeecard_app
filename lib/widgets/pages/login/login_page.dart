@@ -34,7 +34,7 @@ abstract class LoginPage extends StatelessWidget {
       },
       buildWhen: (previous, current) => previous.hasError || current.hasError,
       builder: (context, state) {
-        return AppScaffold.noTitle(
+        return AppScaffold.withoutTitle(
           resizeToAvoidBottomInset: resizeOnKeyboard,
           body: Column(
             children: [

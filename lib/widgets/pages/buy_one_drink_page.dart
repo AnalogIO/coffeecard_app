@@ -17,7 +17,7 @@ class _BuyOneDrinkPageState extends State<BuyOneDrinkPage> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => BuyOneDrinkCubit(),
-      child: AppScaffold(
+      child: AppScaffold.withTitle(
         title: Strings.buyOneDrinkPageTitle,
         body: BlocBuilder<BuyOneDrinkCubit, BuyOneDrinkState>(
           builder: (context, state) {

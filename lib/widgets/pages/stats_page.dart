@@ -9,7 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class StatsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return AppScaffold(
+    return AppScaffold.withTitle(
       title: Strings.statsPageTitle,
       body: RefreshIndicator(
         displacement: 24,

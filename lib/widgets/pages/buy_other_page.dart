@@ -7,7 +7,7 @@ class BuyOtherPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppScaffold(
+    return AppScaffold.withTitle(
       title: Strings.buyOtherPageTitle,
       body: const Text('Uh oh, something was supposed to be here'),
     );

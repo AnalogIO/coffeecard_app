@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 class ReceiptsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return AppScaffold(
+    return AppScaffold.withTitle(
       title: Strings.receiptsPageTitle,
       body: Column(
         children: [

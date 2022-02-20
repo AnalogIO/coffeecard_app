@@ -18,7 +18,7 @@ class _BuyTicketsPageState extends State<BuyTicketsPage> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => BuyTicketsCubit(),
-      child: AppScaffold(
+      child: AppScaffold.withTitle(
         title: Strings.buyTickets,
         body: BlocBuilder<BuyTicketsCubit, BuyTicketsState>(
           builder: (context, state) {

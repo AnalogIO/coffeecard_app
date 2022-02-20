@@ -16,7 +16,7 @@ class ViewReceiptPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppScaffold(
+    return AppScaffold.withTitle(
       title: Strings.singleReceiptPageTitle,
       body: Padding(
         padding: const EdgeInsets.all(48),

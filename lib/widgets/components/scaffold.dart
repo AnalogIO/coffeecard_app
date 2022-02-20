@@ -10,15 +10,22 @@ import 'package:gap/gap.dart';
 class AppScaffold extends StatelessWidget {
   final Widget? title;
   final Widget body;
+  final Color backgroundColor;
   final bool resizeToAvoidBottomInset;
 
-  AppScaffold({
+  /// A Scaffold with a normal app bar.
+  /// The body's background color is always `AppColor.background`.
+  AppScaffold.withTitle({
     required String title,
     this.resizeToAvoidBottomInset = true,
     required this.body,
-  }) : title = Text(title, style: AppTextStyle.pageTitle);
+  })  : title = Text(title, style: AppTextStyle.pageTitle),
+        backgroundColor = AppColor.background;
 
-  const AppScaffold.noTitle({
+  /// A Scaffold with an empty, 24 dp tall app bar.
+  /// The body's background color is, by default, the same as the app bar.
+  const AppScaffold.withoutTitle({
+    this.backgroundColor = AppColor.primary,
     this.resizeToAvoidBottomInset = true,
     required this.body,
   }) : title = null;
@@ -47,7 +54,7 @@ class AppScaffold extends StatelessWidget {
               if (state.isTest) const _EnvironmentBanner(tappable: true),
               Expanded(
                 child: Container(
-                  color: (title != null) ? AppColor.background : null,
+                  color: backgroundColor,
                   child: body,
                 ),
               ),
