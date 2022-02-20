@@ -1,9 +1,9 @@
-import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/cubits/login/login_cubit.dart';
 import 'package:coffeecard/widgets/analog_logo.dart';
 import 'package:coffeecard/widgets/components/entry/login/login_input_hint.dart';
 import 'package:coffeecard/widgets/components/entry/login/login_title.dart';
 import 'package:coffeecard/widgets/components/loading_overlay.dart';
+import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -34,9 +34,8 @@ abstract class LoginPage extends StatelessWidget {
       },
       buildWhen: (previous, current) => previous.hasError || current.hasError,
       builder: (context, state) {
-        return Scaffold(
+        return AppScaffold.withoutTitle(
           resizeToAvoidBottomInset: resizeOnKeyboard,
-          backgroundColor: AppColor.primary,
           body: Column(
             children: [
               Expanded(

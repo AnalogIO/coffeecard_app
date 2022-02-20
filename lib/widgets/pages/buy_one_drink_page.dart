@@ -1,6 +1,7 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/cubits/buy_one_drink_page/buy_one_drink_cubit.dart';
 import 'package:coffeecard/errors/match_case_incomplete_exception.dart';
+import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,8 +17,8 @@ class _BuyOneDrinkPageState extends State<BuyOneDrinkPage> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => BuyOneDrinkCubit(),
-      child: Scaffold(
-        appBar: AppBar(title: const Text(Strings.buyOneDrinkPageTitle)),
+      child: AppScaffold.withTitle(
+        title: Strings.buyOneDrinkPageTitle,
         body: BlocBuilder<BuyOneDrinkCubit, BuyOneDrinkState>(
           builder: (context, state) {
             if (state is BuyOneDrinkLoading) {

@@ -1,4 +1,5 @@
 import 'package:coffeecard/base/strings.dart';
+import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:flutter/material.dart';
 
 class RedeemVoucherPage extends StatelessWidget {
@@ -6,8 +7,8 @@ class RedeemVoucherPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text(Strings.redeemVoucherPageTitle)),
+    return AppScaffold.withTitle(
+      title: Strings.redeemVoucherPageTitle,
       body: const Text('Uh oh, something was supposed to be here'),
     );
   }

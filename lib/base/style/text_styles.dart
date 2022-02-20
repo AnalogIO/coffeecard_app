@@ -28,6 +28,12 @@ abstract class AppTextStyle {
     fontWeight: FontWeight.bold,
     fontFamily: AppFont.heading,
   );
+  static final TextStyle environmentNotifier = TextStyle(
+    color: AppColor.primary,
+    fontSize: 12,
+    fontWeight: FontWeight.bold,
+    fontFamily: AppFont.heading,
+  );
 
   // Body text
   static const TextStyle medium = TextStyle(

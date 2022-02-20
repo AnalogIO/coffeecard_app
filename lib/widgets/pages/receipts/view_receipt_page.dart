@@ -1,7 +1,6 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/base/style/colors.dart';
-import 'package:coffeecard/widgets/components/app_bar_title.dart';
 import 'package:coffeecard/widgets/components/receipt/receipt_card.dart';
+import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:flutter/material.dart';
 
 class ViewReceiptPage extends StatelessWidget {
@@ -17,11 +16,8 @@ class ViewReceiptPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColor.background,
-      appBar: AppBar(
-        title: const AppBarTitle(Strings.singleReceiptPageTitle),
-      ),
+    return AppScaffold.withTitle(
+      title: Strings.singleReceiptPageTitle,
       body: Padding(
         padding: const EdgeInsets.all(48),
         child: IntrinsicHeight(
