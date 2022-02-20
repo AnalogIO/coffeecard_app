@@ -1,7 +1,7 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
-import 'package:coffeecard/cubits/settings/settings_cubit.dart';
+import 'package:coffeecard/cubits/user/user_cubit.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:coffeecard/widgets/components/settings_group.dart';
 import 'package:coffeecard/widgets/components/settings_list_entry.dart';
@@ -13,22 +13,23 @@ import 'package:gap/gap.dart';
 class SettingsPage extends StatelessWidget {
   const SettingsPage();
 
-  String get userId => '1234';
-
   @override
   Widget build(BuildContext context) {
+    final userCubit = context.read<UserCubit>();
+
     return AppScaffold.withTitle(
       title: Strings.settingsPageTitle,
-      body: BlocBuilder<SettingsCubit, SettingsState>(
+      body: BlocBuilder<UserCubit, UserState>(
+        buildWhen: (previous, current) => previous.isLoaded != current.isLoaded,
         builder: (context, state) {
           if (state.isLoading) {
             return const CircularProgressIndicator();
           } else {
             return ListView(
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
-                  child: UserCard(state),
+                const Padding(
+                  padding: EdgeInsets.only(left: 16, right: 16, top: 16),
+                  child: UserCard(),
                 ),
                 const Gap(16),
                 SettingsGroup(
@@ -102,7 +103,7 @@ class SettingsPage extends StatelessWidget {
                 ),
                 const Gap(8),
                 Text(
-                  '${Strings.userID}: $userId',
+                  '${Strings.userID}: ${userCubit.state.user?.id}',
                   style: AppTextStyle.explainer,
                   textAlign: TextAlign.center,
                 ),

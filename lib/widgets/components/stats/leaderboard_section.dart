@@ -1,6 +1,7 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/statistics/statistics_cubit.dart';
+import 'package:coffeecard/cubits/user/user_cubit.dart';
 import 'package:coffeecard/widgets/components/receipt/filter_bar.dart';
 import 'package:coffeecard/widgets/components/stats/leaderboard_entry.dart';
 import 'package:coffeecard/widgets/components/stats/statistics_dropdown.dart';
@@ -14,7 +15,8 @@ class LeaderboardSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<StatisticsCubit, StatisticsState>(
       builder: (context, state) {
-        final int? userRank = state.getUserRank();
+        final userCubit = context.read<UserCubit>();
+        final int? userRank = userCubit.getUserRankByPreset(state.filterBy);
         final bool userInLeaderboard =
             userRank != null && userRank <= state.leaderboard.length;
 
@@ -61,7 +63,7 @@ class LeaderboardSection extends StatelessWidget {
                   if (userRank != null && !userInLeaderboard)
                     // the current user is not on the leaderboard, display them last
                     LeaderboardEntry(
-                      state.user?.name ?? '',
+                      userCubit.state.user?.name ?? '',
                       0, //FIXME: how can we access an individual's score by id?
                       userRank,
                       highlight: true,

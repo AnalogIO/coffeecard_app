@@ -1,6 +1,6 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
-import 'package:coffeecard/cubits/settings/settings_cubit.dart';
+import 'package:coffeecard/cubits/user/user_cubit.dart';
 import 'package:coffeecard/models/account/user.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:coffeecard/widgets/components/settings_group.dart';
@@ -16,7 +16,7 @@ class YourProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppScaffold.withTitle(
       title: Strings.yourProfilePageTitle,
-      body: BlocBuilder<SettingsCubit, SettingsState>(
+      body: BlocBuilder<UserCubit, UserState>(
         builder: (context, state) {
           return (state.isLoaded)
               ? _EditProfile(state.user!)
@@ -34,6 +34,8 @@ class _EditProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final programmeId = context.read<UserCubit>().state.user?.programmeId;
+
     return Column(
       children: [
         const Gap(24),
@@ -45,7 +47,8 @@ class _EditProfile extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
         const Gap(8),
-        Text('BSWU student', style: AppTextStyle.explainer),
+        //FIXME: lookup on programme id
+        Text('$programmeId', style: AppTextStyle.explainer),
         const Gap(24),
         SettingsGroup(
           title: Strings.settingsGroupProfile,
@@ -57,7 +60,8 @@ class _EditProfile extends StatelessWidget {
             ),
             SettingListEntry(
               name: Strings.occupation,
-              valueWidget: const SettingDescription(text: 'BSWU student'),
+              //FIXME: lookup on programme id
+              valueWidget: SettingDescription(text: '$programmeId'),
               onTap: () {},
             ),
             SettingListEntry(

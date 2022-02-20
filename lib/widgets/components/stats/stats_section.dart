@@ -1,6 +1,7 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/statistics/statistics_cubit.dart';
+import 'package:coffeecard/cubits/user/user_cubit.dart';
 import 'package:coffeecard/widgets/components/helpers/grid.dart';
 import 'package:coffeecard/widgets/components/stats/stat_card.dart';
 import 'package:flutter/material.dart';
@@ -12,26 +13,23 @@ class StatsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<StatisticsCubit, StatisticsState>(
-      builder: (context, state) {
-        return Padding(
-          padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(
-                Strings.statisticsYourStats,
-                style: AppTextStyle.sectionTitle,
-              ),
-              const Gap(8),
-              if (state.isUserStatsLoading)
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                )
-              else
+    final userCubit = context.read<UserCubit>();
+
+    return BlocBuilder<UserCubit, UserState>(
+      buildWhen: (previous, current) => previous.isLoaded != current.isLoaded,
+      builder: (context, state) =>
+          BlocBuilder<StatisticsCubit, StatisticsState>(
+        builder: (context, state) {
+          return Padding(
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  Strings.statisticsYourStats,
+                  style: AppTextStyle.sectionTitle,
+                ),
+                const Gap(8),
                 Grid(
                   singleColumnOnSmallDevice: false,
                   gap: GridGap.tightVertical,
@@ -39,22 +37,23 @@ class StatsSection extends StatelessWidget {
                   children: [
                     StatisticsCard(
                       Strings.statisticsCardMonth,
-                      state.user?.rankMonth ?? 0,
+                      userCubit.state.user?.rankMonth ?? -1,
                     ),
                     StatisticsCard(
                       Strings.statisticsCardSemester,
-                      state.user?.rankSemester ?? 0,
+                      userCubit.state.user?.rankSemester ?? -1,
                     ),
                     StatisticsCard(
                       Strings.statisticsCardTotal,
-                      state.user?.rankTotal ?? 0,
+                      userCubit.state.user?.rankTotal ?? -1,
                     ),
                   ],
                 ),
-            ],
-          ),
-        );
-      },
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }

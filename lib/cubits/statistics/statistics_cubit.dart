@@ -1,5 +1,4 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/data/repositories/v1/account_repository.dart';
 import 'package:coffeecard/data/repositories/v1/leaderboard_repository.dart';
 import 'package:coffeecard/models/account/user.dart';
 import 'package:coffeecard/models/leaderboard_user.dart';
@@ -10,10 +9,8 @@ part 'statistics_state.dart';
 
 class StatisticsCubit extends Cubit<StatisticsState> {
   final LeaderboardRepository leaderboardRepository;
-  final AccountRepository accountRepository;
 
-  StatisticsCubit(this.leaderboardRepository, this.accountRepository)
-      : super(StatisticsState());
+  StatisticsCubit(this.leaderboardRepository) : super(StatisticsState());
 
   void filterStatistics(StatisticsFilterCategory filterBy) {
     if (filterBy == state.filterBy) return;
@@ -24,18 +21,6 @@ class StatisticsCubit extends Cubit<StatisticsState> {
     );
 
     fetchLeaderboards();
-  }
-
-  Future<void> fetchCurrentUser() async {
-    emit(state.copyWith(isUserStatsLoading: true));
-
-    final either = await accountRepository.getUser();
-
-    if (either.isRight) {
-      emit(state.copyWith(isUserStatsLoading: false, user: either.right));
-    } else {
-      emit(state.copyWith(isUserStatsLoading: false));
-    }
   }
 
   Future<void> fetchLeaderboards() async {

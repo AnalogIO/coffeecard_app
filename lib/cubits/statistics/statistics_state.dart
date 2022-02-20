@@ -33,21 +33,16 @@ extension DropdownName on StatisticsFilterCategory {
 class StatisticsState extends Equatable {
   final StatisticsFilterCategory filterBy;
   final List<LeaderboardUser> leaderboard;
-  final User? user;
   final bool isLeaderboardLoading;
-  final bool isUserStatsLoading;
 
   StatisticsState({
     this.filterBy = StatisticsFilterCategory.semester,
     List<LeaderboardUser>? leaderboard,
     this.isLeaderboardLoading = true,
-    this.isUserStatsLoading = true,
-    this.user, //FIXME: get user from UserCubit when implemented
   }) : leaderboard = leaderboard ?? [];
 
   @override
-  List<Object?> get props =>
-      [filterBy, leaderboard, isLeaderboardLoading, user, isUserStatsLoading];
+  List<Object?> get props => [filterBy, leaderboard, isLeaderboardLoading];
 
   StatisticsState copyWith({
     StatisticsFilterCategory? filterBy,
@@ -60,21 +55,6 @@ class StatisticsState extends Equatable {
       filterBy: filterBy ?? this.filterBy,
       leaderboard: leaderboard ?? this.leaderboard,
       isLeaderboardLoading: isLeaderboardLoading ?? this.isLeaderboardLoading,
-      isUserStatsLoading: isUserStatsLoading ?? this.isUserStatsLoading,
-      user: user ?? this.user,
     );
-  }
-
-  int? getUserRank() {
-    switch (filterBy.preset) {
-      case 0:
-        return user?.rankMonth;
-      case 1:
-        return user?.rankSemester;
-      case 2:
-        return user?.rankTotal;
-      default:
-        return null;
-    }
   }
 }

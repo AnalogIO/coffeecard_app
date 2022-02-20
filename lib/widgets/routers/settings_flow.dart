@@ -1,5 +1,5 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/cubits/settings/settings_cubit.dart';
+import 'package:coffeecard/cubits/user/user_cubit.dart';
 import 'package:coffeecard/data/repositories/v1/account_repository.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/widgets/pages/settings/settings_page.dart';
@@ -25,7 +25,7 @@ class SettingsFlow extends StatelessWidget {
       child: BlocProvider(
         create: (_) {
           final repo = sl.get<AccountRepository>();
-          return SettingsCubit(repo)..loadUser();
+          return UserCubit(repo)..fetchUserDetails();
         },
         child: Navigator(
           key: navigatorKey,

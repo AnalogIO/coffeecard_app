@@ -1,18 +1,19 @@
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
-import 'package:coffeecard/cubits/settings/settings_cubit.dart';
+import 'package:coffeecard/cubits/user/user_cubit.dart';
 import 'package:coffeecard/widgets/components/helpers/tappable.dart';
 import 'package:coffeecard/widgets/routers/settings_flow.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 
 class UserCard extends StatelessWidget {
-  final SettingsState state;
-
-  const UserCard(this.state);
+  const UserCard();
 
   @override
   Widget build(BuildContext context) {
+    final userCubit = context.read<UserCubit>();
+
     return Card(
       elevation: 2,
       shape: RoundedRectangleBorder(
@@ -33,7 +34,7 @@ class UserCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      state.user!.name,
+                      userCubit.state.user!.name,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: AppTextStyle.recieptItemKey,
