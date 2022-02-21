@@ -3,8 +3,7 @@ import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/payment/payment_handler.dart';
 import 'package:coffeecard/widgets/components/helpers/tappable.dart';
-import 'package:coffeecard/widgets/components/loading_overlay.dart';
-import 'package:coffeecard/widgets/components/purchase_overlay.dart';
+import 'package:coffeecard/widgets/components/purchase/purchase_overlay.dart';
 import 'package:coffeecard/widgets/components/rounded_button.dart';
 import 'package:flutter/material.dart';
 
@@ -112,13 +111,14 @@ class TicketCard extends StatelessWidget {
                           disabled: true,
                           text: Strings.paymentOptionApplePay,
                           onPressed: () async {
-                            await payWithApplePay(context, id, price);
+                            //TODO add function call;
                           },
                         ),
                         RoundedButton(
                           text: Strings.paymentOptionMobilePay,
                           onPressed: () async {
-                            PurchaseOverlay.of(context).show();
+                            PurchaseOverlay.of(context)
+                                .show(InternalPaymentType.mobilePay, id);
                           },
                         ),
                       ],
