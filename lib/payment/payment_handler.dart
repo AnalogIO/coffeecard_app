@@ -1,9 +1,11 @@
 import 'package:coffeecard/data/repositories/v2/purchase_repository.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.swagger.dart';
 import 'package:coffeecard/service_locator.dart';
+import 'package:coffeecard/utils/either.dart';
 import 'package:coffeecard/widgets/popup_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 part 'mobilepay_service.dart';
 
@@ -16,7 +18,7 @@ abstract class PaymentHandler {
   factory PaymentHandler(InternalPaymentType type, BuildContext context) {
     switch (type) {
       case InternalPaymentType.mobilePay:
-        return MobilePayService(context);
+        return MobilePayService(context, sl.get<PurchaseRepository>());
       case InternalPaymentType.applePay:
         throw UnimplementedError();
     }
@@ -25,9 +27,9 @@ abstract class PaymentHandler {
   /*
   Proposed new API:
 
-  //Calls API, parse deeplink MobilePay, checks Payment status and returns successful or error. 
+  //Calls API, parse deeplink MobilePay, checks Payment status and returns successful or error.
   //I got the idea that we could do it more functional with Either instead of throwing exceptions.
-  Either<SuccessfulType, ErrorType> purchase(int productId) 
+  Either<SuccessfulType, ErrorType> purchase(int productId)
 
   //Gives user a current status of purchase, used to re-init purchase or other control flow
   Either<SuccessfulType, ErrorType> verifyPurchase(some relevant identifier)

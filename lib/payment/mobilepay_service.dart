@@ -4,8 +4,9 @@ class MobilePayService implements PaymentHandler {
   static const platform = MethodChannel('analog.mobilepay');
 
   final BuildContext context;
+  final PurchaseRepository _repository;
 
-  MobilePayService(this.context);
+  MobilePayService(this.context, this._repository);
 
   //FIXME: handle BuildContext in a smarter way?
   Future<void> _callbackHandler(MethodCall call) async {
@@ -58,58 +59,34 @@ class MobilePayService implements PaymentHandler {
   @override
   Future<Payment> initPurchase(int productId) async {
     // ignore: unused_local_variable
-    final PurchaseRepository _purchaseRepository = sl.get<PurchaseRepository>();
-    // Call coffeecard API with productId
-    //errors:
-    //  networkerror: retry?
-    //  else:         log and report error
+    final response = await _repository.initiatePurchase(productId, PaymentType.mobilepay);
 
-    // Receive mobilepayId and deeplink from API
-    //FIXME: call api
-    final InitiatePurchaseResponse response = InitiatePurchaseResponse(
-      id: 122,
-      dateCreated: DateTime.now(),
-      productId: 1,
-      totalAmount: 100,
-      purchaseStatus: 'PendingPayment',
-      paymentDetails: {
-        'paymentType': 'MobilePay',
-        'orderId': 'f5cb3e0f-3b9b-4f50-8c4f-a7450f300a5c',
-        'mobilePayAppRedirectUri':
-            'mobilepay://merchant_payments?payment_id=186d2b31-ff25-4414-9fd1-bfe9807fa8b7',
-        'paymentId': '186d2b31-ff25-4414-9fd1-bfe9807fa8b7'
-      },
-    );
-    //await _purchaseRepositoryinitiatePurchase(productId, PaymentType.mobilepay);
-
-    final Map<String, String> paymentDetails =
-        response.paymentDetails as Map<String, String>;
-
-    return Payment(
-      paymentId: paymentDetails['paymentId']!,
-      deeplink: paymentDetails['mobilePayAppRedirectUri']!,
-    );
+    if (response is Right) {
+      return Payment(
+        //TODO handle the types better
+        paymentId: response.right.paymentDetails['paymentId']!,
+        deeplink: response.right.paymentDetails['mobilePayAppRedirectUri']!,
+      );
+    }
+    return Payment(paymentId: "paymentId", deeplink: "deeplink"); //TODO do proper error handling
   }
 
   //FIXME: should use mobilepay deeplink
-  void invokeMobilePay(String paymentId, int price) {
-    platform.setMethodCallHandler(_callbackHandler);
-
-    // Open Mobilepay app with paymentId and deeplink
-    platform.invokeMethod(
-      'openMobilepay',
-      {'price': price.toDouble(), 'orderId': paymentId},
-    );
+  Future invokeMobilePay(String mobilePayDeeplink) async {
+    if (await canLaunch(mobilePayDeeplink)) {
+      await launch(mobilePayDeeplink, forceSafariVC: false);
+    } else {
+      // MobilePay not installed
+      throw 'Could not launch $mobilePayDeeplink';
+    }
   }
 
   @override
   Future<PaymentStatus> verifyPurchaseOrRetry(
     int purchaseId,
   ) async {
-    final PurchaseRepository _purchaseRepository = sl.get<PurchaseRepository>();
-
     // Call API endpoint, receive PaymentStatus
-    final either = await _purchaseRepository.getPurchase(purchaseId);
+    final either = await _repository.getPurchase(purchaseId);
 
     if (either.isRight) {
       return either.right.purchaseStatus as PaymentStatus;

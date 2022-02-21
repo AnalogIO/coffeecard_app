@@ -51,6 +51,9 @@ dependencies:
   # Internationalization and date formatting
   intl: 0.17.0
 
+  # Url Launcher
+  url_launcher: 6.0.20
+
   # crypto
   crypto: 3.0.1
 
