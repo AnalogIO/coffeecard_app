@@ -1,13 +1,6 @@
 import 'package:coffeecard/data/repositories/v2/purchase_repository.dart';
-import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.swagger.dart';
+import 'package:coffeecard/payment/mobilepay_service.dart';
 import 'package:coffeecard/service_locator.dart';
-import 'package:coffeecard/utils/either.dart';
-import 'package:coffeecard/widgets/popup_card.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:url_launcher/url_launcher.dart';
-
-part 'mobilepay_service.dart';
 
 enum InternalPaymentType {
   mobilePay,
@@ -15,10 +8,10 @@ enum InternalPaymentType {
 }
 
 abstract class PaymentHandler {
-  factory PaymentHandler(InternalPaymentType type, BuildContext context) {
+  factory PaymentHandler(InternalPaymentType type) {
     switch (type) {
       case InternalPaymentType.mobilePay:
-        return MobilePayService(context, sl.get<PurchaseRepository>());
+        return MobilePayService(sl.get<PurchaseRepository>());
       case InternalPaymentType.applePay:
         throw UnimplementedError();
     }
@@ -36,18 +29,27 @@ abstract class PaymentHandler {
   */
 
   Future<Payment> initPurchase(int productId);
-  Future<PaymentStatus> verifyPurchaseOrRetry(int purchaseId);
 
+  Future<PaymentStatus> verifyPurchaseOrRetry(int purchaseId);
+//TODO consider if these need re-adding, else remove
+/*
   void onSuccess(BuildContext context);
   void onFailure(BuildContext context);
-  void onCancel(BuildContext context);
+  void onCancel(BuildContext context);*/
 }
 
 class Payment {
+  final int id;
   final String paymentId;
+  final PaymentStatus status;
   final String deeplink;
 
-  Payment({required this.paymentId, required this.deeplink});
+  Payment({
+    required this.id,
+    required this.paymentId,
+    required this.status,
+    required this.deeplink,
+  });
 }
 
 enum PaymentStatus {

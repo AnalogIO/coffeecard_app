@@ -1,24 +1,45 @@
 import 'package:bloc/bloc.dart';
+import 'package:coffeecard/payment/mobilepay_service.dart';
 import 'package:coffeecard/payment/payment_handler.dart';
 import 'package:equatable/equatable.dart';
 
 part 'purchase_state.dart';
 
 class PurchaseCubit extends Cubit<PurchaseState> {
-  final MobilePayService _mobilePayService;
-  PurchaseCubit(this._mobilePayService) : super(PurchaseInitial());
+  final PaymentHandler _paymentHandler;
+  final int productId;
+  PurchaseCubit(this._paymentHandler, this.productId)
+      : super(const PurchaseInitial());
 
-  Future<void> payWithApplePay(int id, int price) async {
+  Future<void> payWithApplePay() async {
+    //TODO implement me
     throw UnimplementedError();
   }
 
-  Future<void> payWithMobilePay(int id, int price) async {
-    //FIXME: remove cast once new MP implementation is done
-    final MobilePayService service =
-    PaymentHandler(InternalPaymentType.mobilePay, context)
-    as MobilePayService;
+  Future<void> payWithMobilePay() async {
+    if (state is PurchaseInitial) {
+      emit(const PurchaseStarted());
+      //FIXME: Consider if cast can be removed/ abstracted away
+      final MobilePayService service = _paymentHandler as MobilePayService;
 
-    final Payment payment = await service.initPurchase(id);
-    await service.invokeMobilePay(payment.deeplink);
+      final Payment payment = await service.initPurchase(productId);
+      emit(PurchaseProcessing(payment));
+      await service.invokeMobilePay(payment.deeplink);
+    }
+  }
+
+  Future<void> verifyPurchase() async {
+    if (state is PurchaseProcessing) {
+      final previousState = state as PurchaseProcessing;
+      emit(PurchaseVerifying(previousState.payment));
+      final status =
+          await _paymentHandler.verifyPurchaseOrRetry(previousState.payment.id);
+      if (status == PaymentStatus.completed) {
+        emit(PurchaseCompleted(previousState.payment));
+      } else {
+        //TODO do something
+        throw 'Not implemented';
+      }
+    }
   }
 }
