@@ -30,7 +30,7 @@ git checkout feature/author/feature-name # checkout the feature branch
 git rebase origin/develop # rebase with remote develop branch
 # resolve any conflicts
 # add or stage your changes
-git add .
+
 # Then commit and push to the feature branch
 git commit -m "New Purchase button for coffee clip cards"
 git push
