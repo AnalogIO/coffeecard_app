@@ -14,7 +14,7 @@ We are building the Flutter app with these SDK versions
 | SDK       | Version   |
 | --------- | --------- |
 | Dart      | 2.16.1    |
-| Flutter   | 2.10.1    |
+| Flutter   | 2.10.2    |
 
 ## Relevant READMEs
 
