@@ -32,7 +32,7 @@ git rebase origin/develop # rebase with remote develop branch
 # add or stage your changes
 git add .
 # Then commit and push to the feature branch
-git commit -m "Resolved merge conflict by xxx"
+git commit -m "New Purchase button for coffee clip cards"
 git push
 ```
 
