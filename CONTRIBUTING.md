@@ -22,7 +22,7 @@ We use a **rebase** strategy when merging to `develop`. When a feature has been 
 development, the feature branch must be rebased with `develop` before creating the pull request in order to avoid
 merge commits.
 
-A rebase merge from `develop` to the feature branch can be done in command line like this:
+A rebase from `develop` to the feature branch can be done in command line like this:
 
 ```bash
 git fetch
