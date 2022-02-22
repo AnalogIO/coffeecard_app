@@ -2,59 +2,69 @@ part of 'statistics_cubit.dart';
 
 enum StatisticsFilterCategory { semester, month, total }
 
-extension DropdownName on StatisticsFilterCategory {
-  String get name {
-    if (this == StatisticsFilterCategory.semester) {
-      return Strings.statisticsFilterSemester;
-    }
-    if (this == StatisticsFilterCategory.month) {
-      return Strings.statisticsFilterMonth;
-    }
-    if (this == StatisticsFilterCategory.total) {
-      return Strings.statisticsFilterTotal;
-    }
-    throw Exception('Unknown filter category: $this');
-  }
-
-  int get preset {
-    if (this == StatisticsFilterCategory.semester) {
-      return 1;
-    }
-    if (this == StatisticsFilterCategory.month) {
-      return 0;
-    }
-    if (this == StatisticsFilterCategory.total) {
-      return 2;
-    }
-    throw Exception('Unknown filter category: $this');
-  }
-}
-
-class StatisticsState extends Equatable {
+abstract class StatisticsState extends Equatable {
   final StatisticsFilterCategory filterBy;
-  final List<LeaderboardUser> leaderboard;
-  final bool isLeaderboardLoading;
 
-  StatisticsState({
-    this.filterBy = StatisticsFilterCategory.semester,
-    List<LeaderboardUser>? leaderboard,
-    this.isLeaderboardLoading = true,
-  }) : leaderboard = leaderboard ?? [];
+  const StatisticsState({StatisticsFilterCategory? filterBy})
+      : filterBy = filterBy ?? StatisticsFilterCategory.month;
 
   @override
-  List<Object?> get props => [filterBy, leaderboard, isLeaderboardLoading];
+  List<Object?> get props => [filterBy];
+}
 
-  StatisticsState copyWith({
-    StatisticsFilterCategory? filterBy,
-    List<LeaderboardUser>? leaderboard,
-    bool? isLeaderboardLoading,
-    bool? isUserStatsLoading,
-    User? user,
-  }) {
-    return StatisticsState(
-      filterBy: filterBy ?? this.filterBy,
-      leaderboard: leaderboard ?? this.leaderboard,
-      isLeaderboardLoading: isLeaderboardLoading ?? this.isLeaderboardLoading,
-    );
-  }
+class StatisticsLoading extends StatisticsState {
+  const StatisticsLoading({StatisticsFilterCategory? filterBy})
+      : super(filterBy: filterBy);
+}
+
+class StatisticsError extends StatisticsState {
+  final String error;
+
+  const StatisticsError(this.error);
+}
+
+abstract class StatisticsSuccess extends StatisticsState {
+  final int preset;
+  final String name;
+  final List<LeaderboardUser> leaderboard;
+
+  const StatisticsSuccess({
+    required this.preset,
+    required this.name,
+    required this.leaderboard,
+    required StatisticsFilterCategory filterBy,
+  }) : super(filterBy: filterBy);
+
+  @override
+  List<Object?> get props => [preset, name, leaderboard];
+}
+
+class StatisticsMonth extends StatisticsSuccess {
+  StatisticsMonth({List<LeaderboardUser>? leaderboard})
+      : super(
+          filterBy: StatisticsFilterCategory.month,
+          preset: 0,
+          leaderboard: leaderboard ?? [],
+          name: Strings.statisticsFilterMonth,
+        );
+}
+
+class StatisticsSemester extends StatisticsSuccess {
+  StatisticsSemester({List<LeaderboardUser>? leaderboard})
+      : super(
+          filterBy: StatisticsFilterCategory.semester,
+          preset: 1,
+          leaderboard: leaderboard ?? [],
+          name: Strings.statisticsFilterSemester,
+        );
+}
+
+class StatisticsTotal extends StatisticsSuccess {
+  StatisticsTotal({List<LeaderboardUser>? leaderboard})
+      : super(
+          filterBy: StatisticsFilterCategory.total,
+          preset: 2,
+          leaderboard: leaderboard ?? [],
+          name: Strings.statisticsFilterTotal,
+        );
 }

@@ -56,8 +56,8 @@ class AnalogClosedPopup extends StatelessWidget {
               ),
             );
           }
-          //FIXME: provide meaningfull error, maybe pass widget name?
-          throw MatchCaseIncompleteException('match cases incomplete');
+
+          throw MatchCaseIncompleteException(this);
         },
       ),
     );

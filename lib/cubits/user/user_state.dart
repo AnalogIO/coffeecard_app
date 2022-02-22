@@ -1,23 +1,20 @@
 part of 'user_cubit.dart';
 
-class UserState extends Equatable {
-  final User? user;
-  bool get isLoaded => user != null;
-  bool get isLoading => user == null;
-
-  const UserState({
-    this.user,
-  });
-
+abstract class UserState extends Equatable {
   @override
-  List<Object?> get props => [user];
+  List<Object?> get props => [];
+}
 
-  UserState copyWith({
-    bool? isFetchingUser,
-    User? user,
-  }) {
-    return UserState(
-      user: user ?? this.user,
-    );
-  }
+class UserError extends UserState {
+  final String error;
+
+  UserError(this.error);
+}
+
+class UserLoading extends UserState {}
+
+class UserLoaded extends UserState {
+  final User user;
+
+  UserLoaded(this.user);
 }

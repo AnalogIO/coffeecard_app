@@ -1,7 +1,7 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
-import 'package:coffeecard/cubits/statistics/statistics_cubit.dart';
 import 'package:coffeecard/cubits/user/user_cubit.dart';
+import 'package:coffeecard/errors/match_case_incomplete_exception.dart';
 import 'package:coffeecard/widgets/components/helpers/grid.dart';
 import 'package:coffeecard/widgets/components/stats/stat_card.dart';
 import 'package:flutter/material.dart';
@@ -13,13 +13,12 @@ class StatsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final userCubit = context.read<UserCubit>();
-
     return BlocBuilder<UserCubit, UserState>(
-      buildWhen: (previous, current) => previous.isLoaded != current.isLoaded,
-      builder: (context, state) =>
-          BlocBuilder<StatisticsCubit, StatisticsState>(
-        builder: (context, state) {
+      buildWhen: (previous, current) => previous != current,
+      builder: (context, state) {
+        if (state is UserLoading) {
+          return const SizedBox.shrink();
+        } else if (state is UserLoaded) {
           return Padding(
             padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
             child: Column(
@@ -37,23 +36,28 @@ class StatsSection extends StatelessWidget {
                   children: [
                     StatisticsCard(
                       Strings.statisticsCardMonth,
-                      userCubit.state.user?.rankMonth ?? -1,
+                      state.user.rankMonth,
                     ),
                     StatisticsCard(
                       Strings.statisticsCardSemester,
-                      userCubit.state.user?.rankSemester ?? -1,
+                      state.user.rankSemester,
                     ),
                     StatisticsCard(
                       Strings.statisticsCardTotal,
-                      userCubit.state.user?.rankTotal ?? -1,
+                      state.user.rankTotal,
                     ),
                   ],
                 ),
               ],
             ),
           );
-        },
-      ),
+        } else if (state is UserError) {
+          //FIXME: display error
+          return const SizedBox.shrink();
+        }
+
+        throw MatchCaseIncompleteException(this);
+      },
     );
   }
 }
