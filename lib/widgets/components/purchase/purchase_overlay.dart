@@ -33,16 +33,17 @@ class PurchaseOverlay {
                   hide();
                   final navigator = Navigator.of(context);
                   //TODO consider using popUntil instead of this
-                  while (navigator.canPop()) {
+                  while (navigator.canPop()) { //Gets the user back to the homescreen of the app
                     navigator.pop();
                   }
+                  final payment = state.payment;
                   ReceiptOverlay.of(context).show(
                     Receipt(
-                      timeUsed: DateTime.now(),
-                      amountPurchased: 10,
+                      timeUsed: payment.purchaseTime,
+                      amountPurchased: 0, //Not used on the purchase display
                       transactionType: TransactionType.purchase,
-                      productName: 'Test',
-                      price: 80,
+                      productName: payment.productName,
+                      price: payment.price,
                       id: productId,
                     ),
                   );

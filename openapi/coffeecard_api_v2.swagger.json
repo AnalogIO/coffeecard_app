@@ -17,7 +17,7 @@
   },
   "servers": [
     {
-      "url": "https://beta-v2.analogio.dk/coffeecard"
+      "url": "https://api-test.analogio.dk/coffeecard"
     }
   ],
   "paths": {
@@ -49,6 +49,18 @@
         ],
         "summary": "Webhook to be invoked by MobilePay backend",
         "operationId": "MobilePay_Webhook",
+        "parameters": [
+          {
+            "name": "x-mobilepay-signature",
+            "x-originalName": "signature",
+            "in": "header",
+            "description": "Webhook signature",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 2
+          }
+        ],
         "requestBody": {
           "x-name": "request",
           "description": "Webhook request",
@@ -84,7 +96,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Purchase"
+                    "$ref": "#/components/schemas/SinglePurchaseResponse"
                   }
                 }
               }
@@ -108,10 +120,11 @@
         "operationId": "Purchases_InitiatePurchase",
         "requestBody": {
           "x-name": "initiateRequest",
+          "description": "Initiate request",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/InitatePurchaseRequest"
+                "$ref": "#/components/schemas/InitiatePurchaseRequest"
               }
             }
           },
@@ -119,8 +132,8 @@
           "x-position": 1
         },
         "responses": {
-          "201": {
-            "description": "Purchased initiated",
+          "200": {
+            "description": "Purchase with payment details",
             "content": {
               "application/json": {
                 "schema": {
@@ -150,12 +163,12 @@
         "parameters": [
           {
             "name": "id",
-            "x-originalName": "purchaseId",
             "in": "path",
             "required": true,
             "description": "Purchase Id",
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "format": "int32"
             },
             "x-position": 1
           }
@@ -166,7 +179,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Purchase"
+                  "$ref": "#/components/schemas/SinglePurchaseResponse"
                 }
               }
             }
@@ -250,7 +263,7 @@
           },
           "eventType": {
             "type": "string",
-            "description": "Type of event\n\n    \n        payment.reserved\n        Published when payment has been approved by MobilePay user and is ready to be captured\n    \n    \n        payment.cancelled_by_user\n        Published when payment has been cancelled by user insinde Mobilepay app\n    \n    \n        payment.expired\n        Published when either initiated payment didn't have any user interactions for 5-10 minutes or payment was reserved, but 7 days have passed and the reservation has expired.\n    ",
+            "description": "Type of event\n\n    \n        payment.reserved\n        Published when payment has been approved by MobilePay user and is ready to be captured\n    \n    \n        payment.cancelled_by_user\n        Published when payment has been cancelled by user inside MobilePay app\n    \n    \n        payment.expired\n        Published when either initiated payment didn't have any user interactions for 5-10 minutes or payment was reserved, but 7 days have passed and the reservation has expired.\n    ",
             "example": "payment.expired"
           },
           "eventDate": {
@@ -289,7 +302,7 @@
           }
         }
       },
-      "Purchase": {
+      "SinglePurchaseResponse": {
         "type": "object",
         "description": "Represents a purchase",
         "example": {
@@ -297,7 +310,13 @@
           "dateCreated": "2022-01-09T21:03:52.2283208Z",
           "productId": 1,
           "totalAmount": 300,
-          "purchaseStatus": "Completed"
+          "purchaseStatus": "Completed",
+          "paymentDetails": {
+            "paymentType": "MobilePay",
+            "orderId": "f5cb3e0f-3b9b-4f50-8c4f-a7450f300a5c",
+            "mobilePayAppRedirectUri": "mobilepay://merchant_payments?payment_id=186d2b31-ff25-4414-9fd1-bfe9807fa8b7",
+            "paymentId": "186d2b31-ff25-4414-9fd1-bfe9807fa8b7"
+          }
         },
         "additionalProperties": false,
         "required": [
@@ -305,7 +324,8 @@
           "dateCreated",
           "productId",
           "totalAmount",
-          "purchaseStatus"
+          "purchaseStatus",
+          "paymentDetails"
         ],
         "properties": {
           "id": {
@@ -341,6 +361,14 @@
                 "$ref": "#/components/schemas/PurchaseStatus"
               }
             ]
+          },
+          "paymentDetails": {
+            "description": "Details about the payment. The details object is specific to the Payment Type",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/PaymentDetails"
+              }
+            ]
           }
         }
       },
@@ -358,6 +386,95 @@
           "Cancelled",
           "PendingPayment",
           "Refunded"
+        ]
+      },
+      "PaymentDetails": {
+        "type": "object",
+        "discriminator": {
+          "propertyName": "discriminator",
+          "mapping": {
+            "MobilePayPaymentDetails": "#/components/schemas/MobilePayPaymentDetails"
+          }
+        },
+        "x-abstract": true,
+        "additionalProperties": false,
+        "required": [
+          "paymentType",
+          "orderId",
+          "discriminator"
+        ],
+        "properties": {
+          "paymentType": {
+            "description": "Payment type",
+            "example": "MobilePay",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/PaymentType"
+              }
+            ]
+          },
+          "orderId": {
+            "type": "string",
+            "description": "Order id of purchase",
+            "minLength": 1,
+            "example": "f5cb3e0f-3b9b-4f50-8c4f-a7450f300a5c"
+          },
+          "discriminator": {
+            "type": "string"
+          }
+        }
+      },
+      "PaymentType": {
+        "type": "string",
+        "description": "PaymentType represents the type of Payment which is used to fulfill a purchase",
+        "x-enumNames": [
+          "MobilePay"
+        ],
+        "enum": [
+          "MobilePay"
+        ]
+      },
+      "MobilePayPaymentDetails": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/PaymentDetails"
+          },
+          {
+            "type": "object",
+            "description": "MobilePay Payment details",
+            "example": {
+              "paymentType": "MobilePay",
+              "orderId": "f5cb3e0f-3b9b-4f50-8c4f-a7450f300a5c",
+              "mobilePayAppRedirectUri": "mobilepay://merchant_payments?payment_id=186d2b31-ff25-4414-9fd1-bfe9807fa8b7",
+              "paymentId": "186d2b31-ff25-4414-9fd1-bfe9807fa8b7"
+            },
+            "additionalProperties": false,
+            "required": [
+              "mobilePayAppRedirectUri",
+              "paymentId",
+              "state"
+            ],
+            "properties": {
+              "mobilePayAppRedirectUri": {
+                "type": "string",
+                "description": "App deeplink for a MobilePay payment",
+                "minLength": 1,
+                "example": "mobilepay://merchant_payments?payment_id=186d2b31-ff25-4414-9fd1-bfe9807fa8b7"
+              },
+              "paymentId": {
+                "type": "string",
+                "description": "MobilePay Id for a payment",
+                "minLength": 1,
+                "example": "186d2b31-ff25-4414-9fd1-bfe9807fa8b7"
+              },
+              "state": {
+                "type": "string",
+                "description": "MobilePay state",
+                "minLength": 1,
+                "example": "Initiated"
+              }
+            }
+          }
         ]
       },
       "MessageResponseDto": {
@@ -445,89 +562,7 @@
           }
         }
       },
-      "PaymentDetails": {
-        "type": "object",
-        "discriminator": {
-          "propertyName": "discriminator",
-          "mapping": {
-            "MobilePayPaymentDetails": "#/components/schemas/MobilePayPaymentDetails"
-          }
-        },
-        "x-abstract": true,
-        "additionalProperties": false,
-        "required": [
-          "paymentType",
-          "orderId",
-          "discriminator"
-        ],
-        "properties": {
-          "paymentType": {
-            "description": "Payment type",
-            "example": "MobilePay",
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/PaymentType"
-              }
-            ]
-          },
-          "orderId": {
-            "type": "string",
-            "description": "Order id of purchase",
-            "minLength": 1,
-            "example": "f5cb3e0f-3b9b-4f50-8c4f-a7450f300a5c"
-          },
-          "discriminator": {
-            "type": "string"
-          }
-        }
-      },
-      "PaymentType": {
-        "type": "string",
-        "description": "PaymentType represents the type of Payment which is used to fulfill a purchase",
-        "x-enumNames": [
-          "MobilePay"
-        ],
-        "enum": [
-          "MobilePay"
-        ]
-      },
-      "MobilePayPaymentDetails": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/PaymentDetails"
-          },
-          {
-            "type": "object",
-            "description": "MobilePay Payment details",
-            "example": {
-              "paymentType": "MobilePay",
-              "orderId": "f5cb3e0f-3b9b-4f50-8c4f-a7450f300a5c",
-              "mobilePayAppRedirectUri": "mobilepay://merchant_payments?payment_id=186d2b31-ff25-4414-9fd1-bfe9807fa8b7",
-              "paymentId": "186d2b31-ff25-4414-9fd1-bfe9807fa8b7"
-            },
-            "additionalProperties": false,
-            "required": [
-              "mobilePayAppRedirectUri",
-              "paymentId"
-            ],
-            "properties": {
-              "mobilePayAppRedirectUri": {
-                "type": "string",
-                "description": "App deeplink for a MobilePay payment",
-                "minLength": 1,
-                "example": "mobilepay://merchant_payments?payment_id=186d2b31-ff25-4414-9fd1-bfe9807fa8b7"
-              },
-              "paymentId": {
-                "type": "string",
-                "description": "MobilePay Id for a payment",
-                "minLength": 1,
-                "example": "186d2b31-ff25-4414-9fd1-bfe9807fa8b7"
-              }
-            }
-          }
-        ]
-      },
-      "InitatePurchaseRequest": {
+      "InitiatePurchaseRequest": {
         "type": "object",
         "description": "Initiate a new purchase request",
         "additionalProperties": false,

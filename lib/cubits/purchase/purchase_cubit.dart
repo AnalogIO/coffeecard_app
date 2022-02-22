@@ -8,6 +8,7 @@ part 'purchase_state.dart';
 class PurchaseCubit extends Cubit<PurchaseState> {
   final PaymentHandler _paymentHandler;
   final int productId;
+
   PurchaseCubit(this._paymentHandler, this.productId)
       : super(const PurchaseInitial());
 
@@ -23,8 +24,13 @@ class PurchaseCubit extends Cubit<PurchaseState> {
       final MobilePayService service = _paymentHandler as MobilePayService;
 
       final Payment payment = await service.initPurchase(productId);
-      emit(PurchaseProcessing(payment));
-      await service.invokeMobilePay(payment.deeplink);
+      if (payment.status != PaymentStatus.error) {
+        emit(PurchaseProcessing(payment));
+        await service.invokeMobilePay(payment.deeplink);
+      } else {
+        emit(PurchaseError(payment));
+        //TODO Consider if more error handling is needed
+      }
     }
   }
 
@@ -37,8 +43,8 @@ class PurchaseCubit extends Cubit<PurchaseState> {
       if (status == PaymentStatus.completed) {
         emit(PurchaseCompleted(previousState.payment));
       } else {
-        //TODO do something
-        throw 'Not implemented';
+        emit(PurchaseError(previousState.payment));
+        //TODO Consider if more error handling is needed
       }
     }
   }

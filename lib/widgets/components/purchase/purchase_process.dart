@@ -57,6 +57,8 @@ class _PurchaseProcessState extends State<PurchaseProcess>
                 title = 'Completing purchase';
               } else if (state is PurchaseCompleted) {
                 title = 'Success';
+              } else if (state is PurchaseError) {
+                title = 'Error';
               } else {
                 title = 'This should not have happened';
               }
@@ -70,7 +72,7 @@ class _PurchaseProcessState extends State<PurchaseProcess>
                       Padding(
                         padding: EdgeInsets.all(16.0),
                         child:
-                            CircularProgressIndicator(color: AppColor.primary),
+                        CircularProgressIndicator(color: AppColor.primary),
                       ),
                     ],
                   ),
