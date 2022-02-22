@@ -15,25 +15,19 @@ class MobilePayService implements PaymentHandler {
         await _repository.initiatePurchase(productId, PaymentType.mobilepay);
 
     if (response is Right) {
-      PaymentStatus status;
-      switch (purchaseStatusFromJson(response.right.purchaseStatus)) {
-        case PurchaseStatus.pendingpayment:
-          status = PaymentStatus.awaitingPayment;
-          break;
-        default:
-          status = PaymentStatus
-              .error; //Any other status codes than pending payment should not occur here
-          break;
-      }
+      final purchaseResponse = response.right;
+      final paymentDetails = MobilePayPaymentDetails.fromJsonFactory(
+          purchaseResponse.paymentDetails as Map<String, dynamic>,);
+
       return Payment(
-        //TODO handle the types better
-        id: response.right.id!,
-        // ignore: avoid_dynamic_calls
-        paymentId: response.right.paymentDetails['paymentId']! as String,
-        status: status,
-        deeplink:
-            // ignore: avoid_dynamic_calls
-            response.right.paymentDetails['mobilePayAppRedirectUri']! as String,
+        id: purchaseResponse.id!,
+        paymentId: paymentDetails.paymentId!,
+        status: PaymentStatus.awaitingPayment,
+        deeplink: paymentDetails.mobilePayAppRedirectUri!,
+        purchaseTime: purchaseResponse.dateCreated!,
+        price: purchaseResponse.totalAmount!,
+        productName: 'Placeholder',
+        //TODO consider whether this value should be passed by the original widget that is pressed to start the purchase flow, or get it from the backend
       );
     }
     return Payment(
@@ -41,10 +35,12 @@ class MobilePayService implements PaymentHandler {
       paymentId: 'paymentId',
       status: PaymentStatus.error,
       deeplink: 'deeplink',
+      purchaseTime: DateTime.now(),
+      productName: '',
+      price: 0,
     ); //TODO do proper error handling
   }
 
-  //FIXME: should use mobilepay deeplink
   Future invokeMobilePay(String mobilePayDeeplink) async {
     if (await canLaunch(mobilePayDeeplink)) {
       await launch(mobilePayDeeplink, forceSafariVC: false);
@@ -63,8 +59,11 @@ class MobilePayService implements PaymentHandler {
     final either = await _repository.getPurchase(purchaseId);
 
     if (either.isRight) {
-      final status = purchaseStatusFromJson(either.right.purchaseStatus);
-      if (status == PurchaseStatus.completed) {
+      final paymentDetails = MobilePayPaymentDetails.fromJsonFactory(
+        either.right.paymentDetails as Map<String, dynamic>,);
+
+      final status = _mapPaymentStateToStatus(paymentDetails.state!);
+      if (status == PaymentStatus.completed) {
         return PaymentStatus.completed;
       }
       //TODO Cover more cases for PaymentStatus
@@ -73,5 +72,24 @@ class MobilePayService implements PaymentHandler {
 
     //FIXME
     throw Exception('not implemented');
+  }
+
+  PaymentStatus _mapPaymentStateToStatus(String state){
+    PaymentStatus status;
+    switch (state) {
+      case 'Initiated':
+        status = PaymentStatus.awaitingPayment;
+        break;
+      case 'Reserved':
+        status = PaymentStatus.waiting;
+        break;
+      case 'Captured':
+        status = PaymentStatus.completed;
+        break;
+      default: //cancelledByMerchant, cancelledBySystem, cancelledByUser
+        status = PaymentStatus.rejectedPayment;
+        break;
+    }
+    return status;
   }
 }

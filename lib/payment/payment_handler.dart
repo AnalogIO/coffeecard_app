@@ -43,9 +43,15 @@ class Payment {
   final String paymentId;
   final PaymentStatus status;
   final String deeplink;
+  final int price;
+  final DateTime purchaseTime;
+  final String productName;
 
   Payment({
     required this.id,
+    required this.price,
+    required this.purchaseTime,
+    required this.productName,
     required this.paymentId,
     required this.status,
     required this.deeplink,
