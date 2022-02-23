@@ -17,6 +17,11 @@ class RoundedButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
+      style: disabled
+          ? TextButton.styleFrom(
+              splashFactory: NoSplash.splashFactory,
+            )
+          : null,
       onPressed: disabled ? () => {} : onPressed,
       child: Container(
         decoration: BoxDecoration(

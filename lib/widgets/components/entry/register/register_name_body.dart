@@ -1,6 +1,7 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/cubits/register/register_cubit.dart';
 import 'package:coffeecard/widgets/components/dialog.dart';
+import 'package:coffeecard/widgets/components/entry/register/register_continue_button.dart';
 import 'package:coffeecard/widgets/components/forms/text_field.dart';
 import 'package:coffeecard/widgets/components/helpers/unordered_list_builder.dart';
 import 'package:coffeecard/widgets/components/loading_overlay.dart';
@@ -8,18 +9,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 
-class RegisterNameTextField extends StatefulWidget {
-  const RegisterNameTextField();
+class RegisterNameBody extends StatefulWidget {
+  const RegisterNameBody();
   @override
-  State<RegisterNameTextField> createState() => _RegisterNameTextFieldState();
+  State<RegisterNameBody> createState() => _RegisterNameBodyState();
 }
 
-class _RegisterNameTextFieldState extends State<RegisterNameTextField> {
+class _RegisterNameBodyState extends State<RegisterNameBody> {
   final _controller = TextEditingController();
   String get name => _controller.text;
 
   bool _showError = false;
   String? _error;
+
+  bool _buttonEnabled() => name.isNotEmpty && _error == null;
 
   Future<void> _validateName(String name) async {
     setState(() => _error = name.isEmpty ? Strings.registerNameEmpty : null);
@@ -125,13 +128,21 @@ class _RegisterNameTextFieldState extends State<RegisterNameTextField> {
 
   @override
   Widget build(BuildContext context) {
-    return AppTextField(
-      label: Strings.registerNameLabel,
-      autofocus: true,
-      error: _showError ? _error : null,
-      onChanged: () => _validateName(_controller.text),
-      onEditingComplete: () => _submit(context),
-      controller: _controller,
+    return Column(
+      children: [
+        AppTextField(
+          label: Strings.registerNameLabel,
+          autofocus: true,
+          error: _showError ? _error : null,
+          onChanged: () => _validateName(_controller.text),
+          onEditingComplete: () => _submit(context),
+          controller: _controller,
+        ),
+        RegisterContinueButton(
+          onPressed: () => _submit(context),
+          enabled: _buttonEnabled(),
+        )
+      ],
     );
   }
 }

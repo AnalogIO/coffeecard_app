@@ -1,19 +1,18 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/cubits/register/register_cubit.dart';
+import 'package:coffeecard/widgets/components/entry/register/register_continue_button.dart';
 import 'package:coffeecard/widgets/components/forms/text_field.dart';
 import 'package:coffeecard/widgets/routers/register_flow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class RegisterPasscodeTextFields extends StatefulWidget {
-  const RegisterPasscodeTextFields();
+class RegisterPasscodeBody extends StatefulWidget {
+  const RegisterPasscodeBody();
   @override
-  State<RegisterPasscodeTextFields> createState() =>
-      _RegisterPasscodeTextFieldsState();
+  State<RegisterPasscodeBody> createState() => _RegisterPasscodeBodyState();
 }
 
-class _RegisterPasscodeTextFieldsState
-    extends State<RegisterPasscodeTextFields> {
+class _RegisterPasscodeBodyState extends State<RegisterPasscodeBody> {
   final _firstPasscodeController = TextEditingController();
   final _secondPasscodeController = TextEditingController();
   final _secondPasscodeFocusNode = FocusNode();
@@ -31,6 +30,11 @@ class _RegisterPasscodeTextFieldsState
   String? _secondError;
   String? get secondError => _secondError;
   set secondError(String? error) => setState(() => _secondError = error);
+
+  bool _buttonEnabled() =>
+      firstPasscode.isNotEmpty &&
+      secondPasscode.isNotEmpty &&
+      !(firstError != null || secondError != null);
 
   void _focusSecondField() {
     _secondPasscodeFocusNode.requestFocus();
@@ -106,6 +110,10 @@ class _RegisterPasscodeTextFieldsState
           controller: _secondPasscodeController,
           focusNode: _secondPasscodeFocusNode,
         ),
+        RegisterContinueButton(
+          onPressed: () => _submit(context),
+          enabled: _buttonEnabled(),
+        )
       ],
     );
   }
