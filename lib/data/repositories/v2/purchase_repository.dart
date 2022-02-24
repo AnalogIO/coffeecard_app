@@ -32,7 +32,8 @@ class PurchaseRepository {
   }
 
   /// Get all user's purchases
-  Future<Either<ApiError, List<SinglePurchaseResponse>>> getAllPurchases() async {
+  Future<Either<ApiError, List<SinglePurchaseResponse>>>
+      getAllPurchases() async {
     final response = await _api.apiV2PurchasesGet();
 
     if (response.isSuccessful) {
