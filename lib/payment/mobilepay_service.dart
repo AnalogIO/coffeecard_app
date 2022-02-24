@@ -1,5 +1,6 @@
 import 'package:coffeecard/data/repositories/v2/purchase_repository.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.swagger.dart';
+import 'package:coffeecard/models/api/api_error.dart';
 import 'package:coffeecard/payment/payment_handler.dart';
 import 'package:coffeecard/utils/either.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -10,7 +11,7 @@ class MobilePayService implements PaymentHandler {
   MobilePayService(this._repository);
 
   @override
-  Future<Payment> initPurchase(int productId) async {
+  Future<Either<ApiError, Payment>> initPurchase(int productId) async {
     final response =
         await _repository.initiatePurchase(productId, PaymentType.mobilepay);
 
@@ -20,26 +21,20 @@ class MobilePayService implements PaymentHandler {
         purchaseResponse.paymentDetails as Map<String, dynamic>,
       );
 
-      return Payment(
-        id: purchaseResponse.id!,
-        paymentId: paymentDetails.paymentId!,
-        status: PaymentStatus.awaitingPayment,
-        deeplink: paymentDetails.mobilePayAppRedirectUri!,
-        purchaseTime: purchaseResponse.dateCreated!,
-        price: purchaseResponse.totalAmount!,
-        productName: 'Placeholder',
-        //TODO consider whether this value should be passed by the original widget that is pressed to start the purchase flow, or get it from the backend
+      return Right(
+        Payment(
+          id: purchaseResponse.id!,
+          paymentId: paymentDetails.paymentId!,
+          status: PaymentStatus.awaitingPayment,
+          deeplink: paymentDetails.mobilePayAppRedirectUri!,
+          purchaseTime: purchaseResponse.dateCreated!,
+          price: purchaseResponse.totalAmount!,
+          productName: 'Placeholder',
+          //TODO consider whether the product name should be passed by the original widget that is pressed to start the purchase flow, or get it from the backend
+        ),
       );
     }
-    return Payment(
-      id: 0,
-      paymentId: 'paymentId',
-      status: PaymentStatus.error,
-      deeplink: 'deeplink',
-      purchaseTime: DateTime.now(),
-      productName: '',
-      price: 0,
-    ); //TODO do proper error handling
+    return Left(response.left);
   }
 
   Future invokeMobilePay(String mobilePayDeeplink) async {
@@ -53,7 +48,7 @@ class MobilePayService implements PaymentHandler {
   }
 
   @override
-  Future<PaymentStatus> verifyPurchase(
+  Future<Either<ApiError, PaymentStatus>> verifyPurchase(
     int purchaseId,
   ) async {
     // Call API endpoint, receive PaymentStatus
@@ -66,14 +61,13 @@ class MobilePayService implements PaymentHandler {
 
       final status = _mapPaymentStateToStatus(paymentDetails.state!);
       if (status == PaymentStatus.completed) {
-        return PaymentStatus.completed;
+        return const Right(PaymentStatus.completed);
       }
       //TODO Cover more cases for PaymentStatus
-      return PaymentStatus.error;
+      return const Right(PaymentStatus.error);
     }
 
-    //FIXME
-    throw Exception('not implemented');
+    return Left(either.left);
   }
 
   PaymentStatus _mapPaymentStateToStatus(String state) {

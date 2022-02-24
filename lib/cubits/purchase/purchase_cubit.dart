@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:coffeecard/payment/mobilepay_service.dart';
 import 'package:coffeecard/payment/payment_handler.dart';
+import 'package:coffeecard/utils/either.dart';
 import 'package:equatable/equatable.dart';
 
 part 'purchase_state.dart';
@@ -23,13 +24,19 @@ class PurchaseCubit extends Cubit<PurchaseState> {
       //FIXME: Consider if cast can be removed/ abstracted away
       final MobilePayService service = _paymentHandler as MobilePayService;
 
-      final Payment payment = await service.initPurchase(productId);
-      if (payment.status != PaymentStatus.error) {
-        emit(PurchaseProcessing(payment));
-        await service.invokeMobilePay(payment.deeplink);
-      } else {
-        emit(PurchaseError(payment));
-        //TODO Consider if more error handling is needed
+      final purchaseResponse = await service.initPurchase(productId);
+      if (purchaseResponse is Right) {
+        final Payment payment = purchaseResponse.right;
+        if (payment.status != PaymentStatus.error) {
+          emit(PurchaseProcessing(payment));
+          await service.invokeMobilePay(payment.deeplink);
+        } else {
+          emit(PurchaseError(payment));
+          //TODO Consider if more error handling is needed
+        }
+      } else if (purchaseResponse is Left) {
+        throw 'Unhandled case';
+        //TODO Add error handling
       }
     }
   }
@@ -38,13 +45,20 @@ class PurchaseCubit extends Cubit<PurchaseState> {
     if (state is PurchaseProcessing) {
       final previousState = state as PurchaseProcessing;
       emit(PurchaseVerifying(previousState.payment));
-      final status =
+      final verificationResponse =
           await _paymentHandler.verifyPurchase(previousState.payment.id);
-      if (status == PaymentStatus.completed) {
-        emit(PurchaseCompleted(previousState.payment));
-      } else {
+
+      if (verificationResponse is Right) {
+        final status = verificationResponse.right;
+
+        if (status == PaymentStatus.completed) {
+          emit(PurchaseCompleted(previousState.payment));
+        } else {
+          emit(PurchaseError(previousState.payment));
+          //TODO Consider if more error handling is needed
+        }
+      } else if (verificationResponse is Left) {
         emit(PurchaseError(previousState.payment));
-        //TODO Consider if more error handling is needed
       }
     }
   }
