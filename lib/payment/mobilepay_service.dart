@@ -17,7 +17,8 @@ class MobilePayService implements PaymentHandler {
     if (response is Right) {
       final purchaseResponse = response.right;
       final paymentDetails = MobilePayPaymentDetails.fromJsonFactory(
-          purchaseResponse.paymentDetails as Map<String, dynamic>,);
+        purchaseResponse.paymentDetails as Map<String, dynamic>,
+      );
 
       return Payment(
         id: purchaseResponse.id!,
@@ -52,7 +53,7 @@ class MobilePayService implements PaymentHandler {
   }
 
   @override
-  Future<PaymentStatus> verifyPurchaseOrRetry(
+  Future<PaymentStatus> verifyPurchase(
     int purchaseId,
   ) async {
     // Call API endpoint, receive PaymentStatus
@@ -60,7 +61,8 @@ class MobilePayService implements PaymentHandler {
 
     if (either.isRight) {
       final paymentDetails = MobilePayPaymentDetails.fromJsonFactory(
-        either.right.paymentDetails as Map<String, dynamic>,);
+        either.right.paymentDetails as Map<String, dynamic>,
+      );
 
       final status = _mapPaymentStateToStatus(paymentDetails.state!);
       if (status == PaymentStatus.completed) {
@@ -74,7 +76,7 @@ class MobilePayService implements PaymentHandler {
     throw Exception('not implemented');
   }
 
-  PaymentStatus _mapPaymentStateToStatus(String state){
+  PaymentStatus _mapPaymentStateToStatus(String state) {
     PaymentStatus status;
     switch (state) {
       case 'Initiated':

@@ -17,25 +17,9 @@ abstract class PaymentHandler {
     }
   }
 
-  /*
-  Proposed new API:
-
-  //Calls API, parse deeplink MobilePay, checks Payment status and returns successful or error.
-  //I got the idea that we could do it more functional with Either instead of throwing exceptions.
-  Either<SuccessfulType, ErrorType> purchase(int productId)
-
-  //Gives user a current status of purchase, used to re-init purchase or other control flow
-  Either<SuccessfulType, ErrorType> verifyPurchase(some relevant identifier)
-  */
-
   Future<Payment> initPurchase(int productId);
 
-  Future<PaymentStatus> verifyPurchaseOrRetry(int purchaseId);
-//TODO consider if these need re-adding, else remove
-/*
-  void onSuccess(BuildContext context);
-  void onFailure(BuildContext context);
-  void onCancel(BuildContext context);*/
+  Future<PaymentStatus> verifyPurchase(int purchaseId);
 }
 
 class Payment {

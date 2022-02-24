@@ -47,6 +47,7 @@ dependencies:
   # Utility
   meta: 1.7.0
   equatable: 2.0.3
+  collection: 1.15.0
 
   # Internationalization and date formatting
   intl: 0.17.0

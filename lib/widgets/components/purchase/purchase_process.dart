@@ -72,7 +72,7 @@ class _PurchaseProcessState extends State<PurchaseProcess>
                       Padding(
                         padding: EdgeInsets.all(16.0),
                         child:
-                        CircularProgressIndicator(color: AppColor.primary),
+                            CircularProgressIndicator(color: AppColor.primary),
                       ),
                     ],
                   ),
