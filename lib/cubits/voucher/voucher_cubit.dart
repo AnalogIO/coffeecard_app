@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:coffeecard/data/repositories/v1/voucher_repository.dart';
-import 'package:coffeecard/models/voucher/voucher.dart';
+import 'package:coffeecard/models/voucher/redeemed_voucher.dart';
 import 'package:equatable/equatable.dart';
 
 part 'voucher_state.dart';

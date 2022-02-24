@@ -16,15 +16,38 @@ class RedeemVoucherTextField extends StatefulWidget {
 
 class _RedeemVoucherTextFieldState extends State<RedeemVoucherTextField> {
   final _controller = TextEditingController();
-  bool _loading = false;
 
   String? _error;
   String? get error => _error;
   set error(String? error) => setState(() => _error = error);
 
-  void submit(BuildContext context) {
+  void _submit(BuildContext context) {
     final text = _controller.text.trim();
     if (text.isNotEmpty) context.read<VoucherCubit>().redeemVoucher(text);
+  }
+
+  Future<void> _listener(BuildContext context, VoucherState state) async {
+    error = state is VoucherError ? state.error : null;
+    if (state is VoucherSuccess) {
+      await appDialog(
+        context: context,
+        title: Strings.voucherRedeemed,
+        actions: [
+          TextButton(
+            child: const Text(Strings.buttonOK),
+            onPressed: () => closeAppDialog(context),
+          ),
+        ],
+        children: [
+          Text(
+            '${Strings.youRedeemed} ${state.redeemedVoucher.numberOfTickets} ${state.redeemedVoucher.productName}!',
+            style: AppTextStyle.settingKey,
+          )
+        ],
+        dismissible: true,
+      );
+      if (mounted) Navigator.of(context).pop();
+    }
   }
 
   @override
@@ -33,44 +56,19 @@ class _RedeemVoucherTextFieldState extends State<RedeemVoucherTextField> {
       create: (_) => VoucherCubit(sl.get<VoucherRepository>()),
       child: BlocConsumer<VoucherCubit, VoucherState>(
         listener: (context, state) async {
-          if (_loading && state is! VoucherLoading) {
-            setState(() => _loading = false);
-          } else if (!_loading && state is VoucherLoading) {
-            setState(() => _loading = true);
-          }
-          error = (state is VoucherError) ? state.error : null;
-          if (state is VoucherSuccess) {
-            await appDialog(
-              context: context,
-              title: Strings.voucherRedeemed,
-              actions: [
-                TextButton(
-                  child: const Text(Strings.buttonOK),
-                  onPressed: () => closeAppDialog(context),
-                ),
-              ],
-              children: [
-                Text(
-                  '${Strings.youRedeemed} ${state.redeemedVoucher.numberOfTickets} ${state.redeemedVoucher.productName}!',
-                  style: AppTextStyle.settingKey,
-                )
-              ],
-              dismissible: true,
-            );
-            if (mounted) Navigator.of(context).pop();
-          }
+          await _listener(context, state);
         },
         builder: (context, state) {
           return AppTextField(
             label: Strings.voucherCode,
             hint: Strings.voucherHint,
             autofocus: true,
-            onEditingComplete: () => submit(context),
+            onEditingComplete: () => _submit(context),
             onChanged: () => error = null,
             controller: _controller,
             error: _error,
-            loading: _loading,
-            readOnly: _loading,
+            loading: state is VoucherLoading,
+            readOnly: state is VoucherLoading,
           );
         },
       ),

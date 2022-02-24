@@ -72,7 +72,7 @@ class ShopSection extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => RedeemVoucherPage(),
+                      builder: (context) => const RedeemVoucherPage(),
                     ),
                   );
                 },

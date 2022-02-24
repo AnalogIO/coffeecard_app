@@ -1,7 +1,7 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.swagger.dart';
 import 'package:coffeecard/models/api/api_error.dart';
-import 'package:coffeecard/models/voucher/voucher.dart';
+import 'package:coffeecard/models/voucher/redeemed_voucher.dart';
 import 'package:coffeecard/utils/either.dart';
 import 'package:logger/logger.dart';
 
