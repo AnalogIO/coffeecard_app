@@ -1,7 +1,9 @@
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/cubits/purchase/purchase_cubit.dart';
+import 'package:coffeecard/cubits/tickets_page/tickets_cubit.dart';
 import 'package:coffeecard/models/receipts/receipt.dart';
 import 'package:coffeecard/payment/payment_handler.dart';
+import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/widgets/components/purchase/purchase_process.dart';
 import 'package:coffeecard/widgets/components/receipt/receipt_overlay.dart';
 import 'package:flutter/material.dart';
@@ -28,25 +30,31 @@ class PurchaseOverlay {
             create: (context) =>
                 PurchaseCubit(PaymentHandler(paymentType), productId),
             child: BlocListener<PurchaseCubit, PurchaseState>(
-              listener: (context, state) {
+              listener: (context, state) async {
                 if (state is PurchaseCompleted) {
-                  hide();
+                  hide(); //Remove the mobilePay overlay
                   final navigator = Navigator.of(context);
                   //TODO consider using popUntil instead of this
-                  while (navigator.canPop()) { //Gets the user back to the homescreen of the app
+                  while (navigator.canPop()) {
+                    //Gets the user back to the home-screen of the app
                     navigator.pop();
                   }
+                  //TODO Consider if these calls should be moved elsewhere, e.g. inside the purchase cubit
+                  final ticketCubit = sl.get<TicketsCubit>();
+                  final updateTicketsRequest = ticketCubit.getTickets();
                   final payment = state.payment;
                   ReceiptOverlay.of(context).show(
                     Receipt(
                       timeUsed: payment.purchaseTime,
-                      amountPurchased: 0, //Not used on the purchase display
+                      amountPurchased: 0,
+                      //Not used on the purchase display
                       transactionType: TransactionType.purchase,
                       productName: payment.productName,
                       price: payment.price,
                       id: productId,
                     ),
                   );
+                  await updateTicketsRequest;
                 }
               },
               child: PurchaseProcess(),

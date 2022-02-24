@@ -1,5 +1,6 @@
 import 'package:chopper/chopper.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
+import 'package:coffeecard/cubits/tickets_page/tickets_cubit.dart';
 import 'package:coffeecard/data/api/coffee_card_api_constants.dart';
 import 'package:coffeecard/data/api/interceptors/authentication_interceptor.dart';
 import 'package:coffeecard/data/repositories/shiftplanning/opening_hours_repository.dart';
@@ -108,5 +109,10 @@ void configureServices() {
   // shiftplanning
   sl.registerFactory<OpeningHoursRepository>(
     () => OpeningHoursRepository(sl<ShiftplanningApi>(), sl<Logger>()),
+  );
+
+  // Tickets, other pages need to be able to send requests to refresh it
+  sl.registerSingleton<TicketsCubit>(
+    TicketsCubit(sl.get<TicketRepository>()),
   );
 }

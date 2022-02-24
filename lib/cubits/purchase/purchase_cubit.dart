@@ -39,7 +39,7 @@ class PurchaseCubit extends Cubit<PurchaseState> {
       final previousState = state as PurchaseProcessing;
       emit(PurchaseVerifying(previousState.payment));
       final status =
-          await _paymentHandler.verifyPurchaseOrRetry(previousState.payment.id);
+          await _paymentHandler.verifyPurchase(previousState.payment.id);
       if (status == PaymentStatus.completed) {
         emit(PurchaseCompleted(previousState.payment));
       } else {
