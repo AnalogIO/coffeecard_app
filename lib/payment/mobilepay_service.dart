@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:coffeecard/data/repositories/v2/purchase_repository.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.swagger.dart';
 import 'package:coffeecard/models/api/api_error.dart';
@@ -41,9 +43,20 @@ class MobilePayService implements PaymentHandler {
     if (await canLaunch(mobilePayDeeplink)) {
       await launch(mobilePayDeeplink, forceSafariVC: false);
     } else {
-      //TODO better handling, likely send user to appstore
-      // MobilePay not installed
-      throw 'Could not launch $mobilePayDeeplink';
+      // MobilePay not installed, send user to appstore
+      final String url;
+
+      if (Platform.isAndroid) {
+        //FIXME: should these URL's be stored somewhere?
+        url =
+            'https://play.google.com/store/apps/details?id=dk.danskebank.mobilepay';
+      } else if (Platform.isIOS) {
+        url = 'https://apps.apple.com/us/app/mobilepay/id768172577';
+      } else {
+        throw 'Could not launch $mobilePayDeeplink';
+      }
+
+      await launch(url);
     }
   }
 
