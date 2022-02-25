@@ -45,11 +45,20 @@ class PurchaseCompleted extends PurchaseState {
   List<Object> get props => [payment];
 }
 
-class PurchaseError extends PurchaseState {
+class PurchasePaymentRejected extends PurchaseState {
   final Payment payment;
 
-  const PurchaseError(this.payment);
+  const PurchasePaymentRejected(this.payment);
 
   @override
   List<Object> get props => [payment];
+}
+
+class PurchaseError extends PurchaseState {
+  final String message;
+
+  const PurchaseError(this.message);
+
+  @override
+  List<Object> get props => [message];
 }

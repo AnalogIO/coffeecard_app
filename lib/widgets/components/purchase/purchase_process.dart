@@ -1,5 +1,6 @@
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/cubits/purchase/purchase_cubit.dart';
+import 'package:coffeecard/errors/match_case_incomplete_exception.dart';
 import 'package:coffeecard/widgets/components/purchase/purchase_process_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -50,37 +51,45 @@ class _PurchaseProcessState extends State<PurchaseProcess>
                 //Not related to previous check, hence a separate if statement
                 title = 'Talking with payment provider';
                 cubit.payWithMobilePay();
+                return makeCard('Talking with payment provider');
               } else if (state is PurchaseProcessing ||
                   state is PurchaseStarted) {
-                title = 'Talking with payment provider';
+                return makeCard('Talking with payment provider');
               } else if (state is PurchaseVerifying) {
-                title = 'Completing purchase';
+                return makeCard('Completing purchase');
               } else if (state is PurchaseCompleted) {
-                title = 'Success';
-              } else if (state is PurchaseError) {
-                title = 'Error';
-              } else {
-                title = 'This should not have happened';
-              }
-              return PurchaseProcessCard(
-                //TODO add more styling
-                title: title,
-                bottomWidget: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Padding(
-                        padding: EdgeInsets.all(16.0),
-                        child:
-                            CircularProgressIndicator(color: AppColor.primary),
-                      ),
-                    ],
+                return makeCard('Success');
+              } else if (state is PurchasePaymentRejected) {
+                //FIXME: make tappable (tap to dismiss)
+                return makeCard(
+                  'Payment rejected or canceled',
+                  bottomWidget: const Text(
+                    'The payment was rejected or cancelled. No tickets have been added to your account',
                   ),
-                ),
-              );
+                );
+              } else if (state is PurchaseError) {
+                return makeCard('PurchaseApiError');
+              } else {
+                //FIXME: message
+                throw MatchCaseIncompleteException('oops');
+              }
             },
           ),
         ],
+      ),
+    );
+  }
+
+  PurchaseProcessCard makeCard(String title, {Widget? bottomWidget}) {
+    return PurchaseProcessCard(
+      //TODO add more styling
+      title: title,
+      bottomWidget: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16.0),
+        child: bottomWidget ??
+            const Center(
+              child: CircularProgressIndicator(color: AppColor.primary),
+            ),
       ),
     );
   }

@@ -39,7 +39,7 @@ class MobilePayService implements PaymentHandler {
     return Left(response.left);
   }
 
-  Future invokeMobilePay(String mobilePayDeeplink) async {
+  Future<void> invokeMobilePay(String mobilePayDeeplink) async {
     if (await canLaunch(mobilePayDeeplink)) {
       await launch(mobilePayDeeplink, forceSafariVC: false);
     } else {
