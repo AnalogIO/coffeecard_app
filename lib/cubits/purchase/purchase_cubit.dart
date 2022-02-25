@@ -33,6 +33,7 @@ class PurchaseCubit extends Cubit<PurchaseState> {
         } else {
           emit(PurchaseError(payment));
           //TODO Consider if more error handling is needed
+          //TODO Handle case where user went to app store
         }
       } else if (purchaseResponse is Left) {
         throw 'Unhandled case';
