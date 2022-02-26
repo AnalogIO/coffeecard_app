@@ -48,10 +48,9 @@ class MobilePayService implements PaymentHandler {
 
       if (Platform.isAndroid) {
         //FIXME: should these URL's be stored somewhere?
-        url =
-            'https://play.google.com/store/apps/details?id=dk.danskebank.mobilepay';
+        url = 'market://details?id=dk.danskebank.mobilepay';
       } else if (Platform.isIOS) {
-        url = 'https://apps.apple.com/us/app/mobilepay/id768172577';
+        url = 'itms-apps://itunes.apple.com/app/id624499138';
       } else {
         throw 'Could not launch $mobilePayDeeplink';
       }
