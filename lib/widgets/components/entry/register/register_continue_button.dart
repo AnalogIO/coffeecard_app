@@ -1,7 +1,7 @@
 import 'package:coffeecard/widgets/components/rounded_button.dart';
 import 'package:flutter/material.dart';
 
-class RegisterContinueButton extends StatefulWidget {
+class RegisterContinueButton extends StatelessWidget {
   final Function() onPressed;
   final bool enabled;
 
@@ -12,16 +12,11 @@ class RegisterContinueButton extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _RegisterContinueButtonState createState() => _RegisterContinueButtonState();
-}
-
-class _RegisterContinueButtonState extends State<RegisterContinueButton> {
-  @override
   Widget build(BuildContext context) {
     return RoundedButton(
       text: 'Continue',
-      onPressed: widget.onPressed,
-      disabled: !widget.enabled,
+      onPressed: onPressed,
+      disabled: !enabled,
     );
   }
 }
