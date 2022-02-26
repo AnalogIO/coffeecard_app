@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:coffeecard/payment/mobilepay_service.dart';
 import 'package:coffeecard/payment/payment_handler.dart';
-import 'package:coffeecard/utils/either.dart';
 import 'package:equatable/equatable.dart';
 
 part 'purchase_state.dart';
