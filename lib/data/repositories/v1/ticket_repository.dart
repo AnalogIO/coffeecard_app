@@ -1,7 +1,7 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.swagger.dart';
 import 'package:coffeecard/models/api/api_error.dart';
-import 'package:coffeecard/models/ticket/product_count.dart';
+import 'package:coffeecard/models/ticket/ticket_count.dart';
 import 'package:coffeecard/utils/either.dart';
 import 'package:collection/collection.dart';
 import 'package:logger/logger.dart';

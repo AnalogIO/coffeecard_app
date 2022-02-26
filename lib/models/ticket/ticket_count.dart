@@ -3,7 +3,11 @@ class TicketCount {
   final int count;
   final String productName;
 
-  TicketCount({required this.count, required this.productName, required this.productId});
+  TicketCount({
+    required this.count,
+    required this.productName,
+    required this.productId,
+  });
 
   @override
   String toString() {
