@@ -41,7 +41,6 @@ class _PurchaseProcessState extends State<PurchaseProcess>
         children: [
           BlocBuilder<PurchaseCubit, PurchaseState>(
             builder: (context, state) {
-              final String title;
               final cubit = context.read<PurchaseCubit>();
               if (_notification == AppLifecycleState.resumed) {
                 cubit.verifyPurchase();
@@ -49,7 +48,6 @@ class _PurchaseProcessState extends State<PurchaseProcess>
               if (state is PurchaseInitial) {
                 //TODO move all relevant strings to the strings.dart file
                 //Not related to previous check, hence a separate if statement
-                title = 'Talking with payment provider';
                 cubit.payWithMobilePay();
                 return makeCard('Talking with payment provider');
               } else if (state is PurchaseProcessing ||
@@ -68,7 +66,10 @@ class _PurchaseProcessState extends State<PurchaseProcess>
                   ),
                 );
               } else if (state is PurchaseError) {
-                return makeCard('PurchaseApiError');
+                return makeCard(
+                  "Uh oh, we couldn't complete that purchase",
+                  bottomWidget: Text(state.message),
+                );
               } else {
                 //FIXME: message
                 throw MatchCaseIncompleteException('oops');
