@@ -13,8 +13,7 @@ class StatsPage extends StatelessWidget {
       title: Strings.statsPageTitle,
       body: RefreshIndicator(
         displacement: 24,
-        onRefresh:
-            context.read<StatisticsCubit>().fetchLeaderboardsForCurrentState,
+        onRefresh: context.read<StatisticsCubit>().fetchLeaderboards,
         child: ListView(
           children: const [
             StatsSection(),

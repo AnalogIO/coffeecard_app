@@ -13,4 +13,5 @@ final ThemeData analogTheme = ThemeData(
   canvasColor: AppColor.background,
   textSelectionTheme:
       const TextSelectionThemeData(cursorColor: AppColor.secondary),
+  disabledColor: AppColor.lightGray,
 );
