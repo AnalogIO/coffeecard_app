@@ -23,44 +23,41 @@ class PurchaseOverlay {
       barrierDismissible: false,
       useRootNavigator: true,
       builder: (_) {
-        return Padding(
-          padding: const EdgeInsets.all(48),
-          child: WillPopScope(
-            // Will prevent Android back button from closing overlay.
-            onWillPop: () async => true,
-            child: BlocProvider(
-              create: (context) =>
-                  PurchaseCubit(PaymentHandler(paymentType), productId),
-              child: BlocListener<PurchaseCubit, PurchaseState>(
-                listener: (context, state) async {
-                  if (state is PurchaseCompleted) {
-                    hide(); //Remove the mobilePay overlay
-                    final navigator = Navigator.of(context);
-                    //TODO consider using popUntil instead of this
-                    while (navigator.canPop()) {
-                      //Gets the user back to the home-screen of the app
-                      navigator.pop();
-                    }
-                    //TODO Consider if these calls should be moved elsewhere, e.g. inside the purchase cubit
-                    final ticketCubit = sl.get<TicketsCubit>();
-                    final updateTicketsRequest = ticketCubit.getTickets();
-                    final payment = state.payment;
-                    ReceiptOverlay.of(context).show(
-                      Receipt(
-                        timeUsed: payment.purchaseTime,
-                        amountPurchased: 0,
-                        //Not used on the purchase display
-                        transactionType: TransactionType.purchase,
-                        productName: payment.productName,
-                        price: payment.price,
-                        id: productId,
-                      ),
-                    );
-                    await updateTicketsRequest;
+        return WillPopScope(
+          // Will prevent Android back button from closing overlay.
+          onWillPop: () async => false,
+          child: BlocProvider(
+            create: (context) =>
+                PurchaseCubit(PaymentHandler(paymentType), productId),
+            child: BlocListener<PurchaseCubit, PurchaseState>(
+              listener: (context, state) async {
+                if (state is PurchaseCompleted) {
+                  hide(); //Remove the mobilePay overlay
+                  final navigator = Navigator.of(context);
+                  //TODO consider using popUntil instead of this
+                  while (navigator.canPop()) {
+                    //Gets the user back to the home-screen of the app
+                    navigator.pop();
                   }
-                },
-                child: PurchaseProcess(),
-              ),
+                  //TODO Consider if these calls should be moved elsewhere, e.g. inside the purchase cubit
+                  final ticketCubit = sl.get<TicketsCubit>();
+                  final updateTicketsRequest = ticketCubit.getTickets();
+                  final payment = state.payment;
+                  ReceiptOverlay.of(context).show(
+                    Receipt(
+                      timeUsed: payment.purchaseTime,
+                      amountPurchased: 0,
+                      //Not used on the purchase display
+                      transactionType: TransactionType.purchase,
+                      productName: payment.productName,
+                      price: payment.price,
+                      id: productId,
+                    ),
+                  );
+                  await updateTicketsRequest;
+                }
+              },
+              child: PurchaseProcess(),
             ),
           ),
         );
