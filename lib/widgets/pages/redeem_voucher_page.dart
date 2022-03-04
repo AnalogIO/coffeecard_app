@@ -1,6 +1,6 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
-import 'package:coffeecard/widgets/components/voucher/redeem_voucher_text_field.dart';
+import 'package:coffeecard/widgets/components/voucher/redeem_voucher_body.dart';
 import 'package:flutter/material.dart';
 
 class RedeemVoucherPage extends StatelessWidget {
@@ -12,7 +12,7 @@ class RedeemVoucherPage extends StatelessWidget {
       title: Strings.redeemVoucherPageTitle,
       body: const Padding(
         padding: EdgeInsets.all(16),
-        child: RedeemVoucherTextField(),
+        child: RedeemVoucherBody(),
       ),
     );
   }

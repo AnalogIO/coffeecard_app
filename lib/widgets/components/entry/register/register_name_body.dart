@@ -1,7 +1,7 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/cubits/register/register_cubit.dart';
 import 'package:coffeecard/widgets/components/dialog.dart';
-import 'package:coffeecard/widgets/components/entry/register/register_continue_button.dart';
+import 'package:coffeecard/widgets/components/continue_button.dart';
 import 'package:coffeecard/widgets/components/forms/text_field.dart';
 import 'package:coffeecard/widgets/components/helpers/unordered_list_builder.dart';
 import 'package:coffeecard/widgets/components/loading_overlay.dart';
@@ -138,7 +138,7 @@ class _RegisterNameBodyState extends State<RegisterNameBody> {
           onEditingComplete: () => _submit(context),
           controller: _controller,
         ),
-        RegisterContinueButton(
+        ContinueButton(
           onPressed: () => _submit(context),
           enabled: _buttonEnabled(),
         )

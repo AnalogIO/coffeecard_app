@@ -3,18 +3,19 @@ import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/voucher/voucher_cubit.dart';
 import 'package:coffeecard/data/repositories/v1/voucher_repository.dart';
 import 'package:coffeecard/service_locator.dart';
+import 'package:coffeecard/widgets/components/continue_button.dart';
 import 'package:coffeecard/widgets/components/dialog.dart';
 import 'package:coffeecard/widgets/components/forms/text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class RedeemVoucherTextField extends StatefulWidget {
-  const RedeemVoucherTextField();
+class RedeemVoucherBody extends StatefulWidget {
+  const RedeemVoucherBody();
   @override
-  State<RedeemVoucherTextField> createState() => _RedeemVoucherTextFieldState();
+  State<RedeemVoucherBody> createState() => _RedeemVoucherBodyState();
 }
 
-class _RedeemVoucherTextFieldState extends State<RedeemVoucherTextField> {
+class _RedeemVoucherBodyState extends State<RedeemVoucherBody> {
   final _controller = TextEditingController();
 
   String? _error;
@@ -59,16 +60,21 @@ class _RedeemVoucherTextFieldState extends State<RedeemVoucherTextField> {
           await _listener(context, state);
         },
         builder: (context, state) {
-          return AppTextField(
-            label: Strings.voucherCode,
-            hint: Strings.voucherHint,
-            autofocus: true,
-            onEditingComplete: () => _submit(context),
-            onChanged: () => error = null,
-            controller: _controller,
-            error: _error,
-            loading: state is VoucherLoading,
-            readOnly: state is VoucherLoading,
+          return Column(
+            children: [
+              AppTextField(
+                label: Strings.voucherCode,
+                hint: Strings.voucherHint,
+                autofocus: true,
+                onEditingComplete: () => _submit(context),
+                onChanged: () => error = null,
+                controller: _controller,
+                error: _error,
+                loading: state is VoucherLoading,
+                readOnly: state is VoucherLoading,
+              ),
+              ContinueButton(onPressed: () => _submit(context), enabled: true)
+            ],
           );
         },
       ),

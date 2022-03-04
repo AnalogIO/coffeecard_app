@@ -1,6 +1,6 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/cubits/register/register_cubit.dart';
-import 'package:coffeecard/widgets/components/entry/register/register_continue_button.dart';
+import 'package:coffeecard/widgets/components/continue_button.dart';
 import 'package:coffeecard/widgets/components/forms/text_field.dart';
 import 'package:coffeecard/widgets/routers/register_flow.dart';
 import 'package:flutter/material.dart';
@@ -110,7 +110,7 @@ class _RegisterPasscodeBodyState extends State<RegisterPasscodeBody> {
           controller: _secondPasscodeController,
           focusNode: _secondPasscodeFocusNode,
         ),
-        RegisterContinueButton(
+        ContinueButton(
           onPressed: () => _submit(context),
           enabled: _buttonEnabled(),
         )
