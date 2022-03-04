@@ -29,8 +29,10 @@ class PurchaseOverlay {
           // Will prevent Android back button from closing overlay.
           onWillPop: () async => false,
           child: BlocProvider(
-            create: (context) =>
-                PurchaseCubit(PaymentHandler(paymentType), product),
+            create: (context) => PurchaseCubit(
+              paymentHandler: PaymentHandler(paymentType),
+              product: product,
+            ),
             child: BlocListener<PurchaseCubit, PurchaseState>(
               listener: (context, state) async {
                 if (state is PurchaseCompleted) {

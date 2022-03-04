@@ -7,10 +7,10 @@ import 'package:equatable/equatable.dart';
 part 'purchase_state.dart';
 
 class PurchaseCubit extends Cubit<PurchaseState> {
-  final PaymentHandler _paymentHandler;
+  final PaymentHandler paymentHandler;
   final Product product;
 
-  PurchaseCubit(this._paymentHandler, this.product)
+  PurchaseCubit({required this.paymentHandler, required this.product})
       : super(const PurchaseInitial());
 
   Future<void> payWithApplePay() async {
@@ -22,7 +22,7 @@ class PurchaseCubit extends Cubit<PurchaseState> {
     if (state is PurchaseInitial) {
       emit(const PurchaseStarted());
       //FIXME: Consider if cast can be removed/ abstracted away
-      final MobilePayService service = _paymentHandler as MobilePayService;
+      final MobilePayService service = paymentHandler as MobilePayService;
 
       final either = await service.initPurchase(product.id);
       if (either.isRight) {
@@ -40,25 +40,31 @@ class PurchaseCubit extends Cubit<PurchaseState> {
     }
   }
 
+  /// Verifies the status of the current purchase
+  /// Only checks the status of the purchase if the state is PurchaseProcessing
   Future<void> verifyPurchase() async {
-    if (state is PurchaseProcessing || state is PurchaseVerifying) {
-      final previousState = state as PurchaseProcessing;
-      emit(PurchaseVerifying(previousState.payment));
-      final either =
-          await _paymentHandler.verifyPurchase(previousState.payment.id);
+    if (state is PurchaseProcessing) {
+      final payment = (state as PurchaseProcessing).payment;
+      emit(PurchaseVerifying(payment));
+      final either = await paymentHandler.verifyPurchase(payment.id);
 
       if (either.isRight) {
         final status = either.right;
 
         if (status == PaymentStatus.completed) {
-          emit(PurchaseCompleted(previousState.payment));
+          emit(PurchaseCompleted(payment));
         } else if (status == PaymentStatus.reserved) {
           //NOTE, recursive call, potentially infinite.
           //If payment has been reserved, i.e. approved by user
           //we will keep checking the backend to verify payment has been captured
+          emit(
+            PurchaseProcessing(
+              payment,
+            ),
+          ); //Change to processing to allow the verifyPurchase process again
           verifyPurchase();
         } else {
-          emit(PurchasePaymentRejected(previousState.payment));
+          emit(PurchasePaymentRejected(payment));
           //TODO Consider if more error handling is needed
         }
       } else {
