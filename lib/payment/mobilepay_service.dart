@@ -89,7 +89,7 @@ class MobilePayService implements PaymentHandler {
         status = PaymentStatus.awaitingPayment;
         break;
       case 'Reserved':
-        status = PaymentStatus.waiting;
+        status = PaymentStatus.reserved;
         break;
       case 'Captured':
         status = PaymentStatus.completed;

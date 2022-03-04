@@ -1,5 +1,6 @@
 import 'package:chopper/chopper.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
+import 'package:coffeecard/cubits/receipt/receipt_cubit.dart';
 import 'package:coffeecard/cubits/tickets_page/tickets_cubit.dart';
 import 'package:coffeecard/data/api/coffee_card_api_constants.dart';
 import 'package:coffeecard/data/api/interceptors/authentication_interceptor.dart';
@@ -119,5 +120,9 @@ void configureServices() {
   // Tickets, other pages need to be able to send requests to refresh it
   sl.registerSingleton<TicketsCubit>(
     TicketsCubit(sl.get<TicketRepository>()),
+  );
+  // Receipts, other pages need to be able to send requests to refresh it
+  sl.registerSingleton<ReceiptCubit>(
+    ReceiptCubit(sl.get<ReceiptRepository>()),
   );
 }

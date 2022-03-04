@@ -1,6 +1,7 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/models/ticket/product.dart';
 import 'package:coffeecard/payment/payment_handler.dart';
 import 'package:coffeecard/widgets/components/helpers/tappable.dart';
 import 'package:coffeecard/widgets/components/purchase/purchase_overlay.dart';
@@ -117,8 +118,15 @@ class TicketCard extends StatelessWidget {
                         RoundedButton(
                           text: Strings.paymentOptionMobilePay,
                           onPressed: () async {
-                            PurchaseOverlay.of(context)
-                                .show(InternalPaymentType.mobilePay, id);
+                            PurchaseOverlay.of(context).show(
+                              InternalPaymentType.mobilePay,
+                              Product(
+                                price: price,
+                                amount: amount,
+                                productName: title,
+                                id: id,
+                              ),
+                            );
                           },
                         ),
                       ],

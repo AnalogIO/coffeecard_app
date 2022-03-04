@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:coffeecard/models/ticket/product.dart';
 import 'package:coffeecard/payment/mobilepay_service.dart';
 import 'package:coffeecard/payment/payment_handler.dart';
 import 'package:equatable/equatable.dart';
@@ -7,9 +8,9 @@ part 'purchase_state.dart';
 
 class PurchaseCubit extends Cubit<PurchaseState> {
   final PaymentHandler _paymentHandler;
-  final int productId;
+  final Product product;
 
-  PurchaseCubit(this._paymentHandler, this.productId)
+  PurchaseCubit(this._paymentHandler, this.product)
       : super(const PurchaseInitial());
 
   Future<void> payWithApplePay() async {
@@ -23,7 +24,7 @@ class PurchaseCubit extends Cubit<PurchaseState> {
       //FIXME: Consider if cast can be removed/ abstracted away
       final MobilePayService service = _paymentHandler as MobilePayService;
 
-      final either = await service.initPurchase(productId);
+      final either = await service.initPurchase(product.id);
       if (either.isRight) {
         final Payment payment = either.right;
 
@@ -40,7 +41,7 @@ class PurchaseCubit extends Cubit<PurchaseState> {
   }
 
   Future<void> verifyPurchase() async {
-    if (state is PurchaseProcessing) {
+    if (state is PurchaseProcessing || state is PurchaseVerifying) {
       final previousState = state as PurchaseProcessing;
       emit(PurchaseVerifying(previousState.payment));
       final either =
@@ -51,6 +52,11 @@ class PurchaseCubit extends Cubit<PurchaseState> {
 
         if (status == PaymentStatus.completed) {
           emit(PurchaseCompleted(previousState.payment));
+        } else if (status == PaymentStatus.reserved) {
+          //NOTE, recursive call, potentially infinite.
+          //If payment has been reserved, i.e. approved by user
+          //we will keep checking the backend to verify payment has been captured
+          verifyPurchase();
         } else {
           emit(PurchasePaymentRejected(previousState.payment));
           //TODO Consider if more error handling is needed
