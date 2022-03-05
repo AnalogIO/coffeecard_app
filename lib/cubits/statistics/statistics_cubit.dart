@@ -16,7 +16,6 @@ class StatisticsCubit extends Cubit<StatisticsState> {
   }) async {
     assert(state is! StatisticsLoading); // Shouldn't be true
     emit(StatisticsLoading(filterBy: category));
-    await Future.delayed(const Duration(seconds: 1));
 
     final either = await _repo.getLeaderboard(category);
 

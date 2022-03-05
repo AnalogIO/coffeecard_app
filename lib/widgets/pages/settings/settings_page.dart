@@ -62,6 +62,17 @@ class SettingsPage extends StatelessWidget {
                       },
                     ),
                     SettingListEntry(
+                      name: Strings.showOnLeaderboard,
+                      valueWidget: Switch(
+                        value: !state.user.privacyActivated,
+                        onChanged: (v) async {
+                          await context
+                              .read<UserCubit>()
+                              .setUserPrivacy(privacyActived: !v);
+                        },
+                      ),
+                    ),
+                    SettingListEntry(
                       name: Strings.deleteAccount,
                       destructive: true,
                       onTap: () {},
@@ -74,7 +85,6 @@ class SettingsPage extends StatelessWidget {
                     SettingListEntry(
                       name: Strings.signInWithFingerprint,
                       valueWidget: Switch(value: false, onChanged: (e) {}),
-                      onTap: () {},
                     ),
                   ],
                 ),
@@ -93,7 +103,6 @@ class SettingsPage extends StatelessWidget {
                         '${Strings.today}: 8-18',
                         style: AppTextStyle.settingValue,
                       ),
-                      onTap: () {},
                     ),
                   ],
                 ),

@@ -197,6 +197,7 @@ abstract class Strings {
   static const change = 'Change';
   static const logOut = 'Log out';
   static const deleteAccount = 'Delete account';
+  static const showOnLeaderboard = 'Show me on the leaderboard';
 
   static const signInWithFingerprint = 'Sign in with fingerprint';
 
