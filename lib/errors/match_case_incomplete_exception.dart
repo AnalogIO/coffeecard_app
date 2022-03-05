@@ -1,5 +1,6 @@
 class MatchCaseIncompleteException implements Exception {
-  String message;
+  //FIXME: object that caused the problem, how to handle?
+  Object object;
 
-  MatchCaseIncompleteException(this.message);
+  MatchCaseIncompleteException(this.object);
 }

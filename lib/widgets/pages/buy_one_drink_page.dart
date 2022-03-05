@@ -40,8 +40,8 @@ class _BuyOneDrinkPageState extends State<BuyOneDrinkPage> {
               //FIXME: display error properly
               return const Text('error');
             }
-            //FIXME: provide meaningfull error, maybe pass widget name?
-            throw MatchCaseIncompleteException('match cases incomplete');
+
+            throw MatchCaseIncompleteException(this);
           },
         ),
       ),

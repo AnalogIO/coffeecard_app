@@ -45,10 +45,11 @@ class TicketSection extends StatelessWidget {
                             .toList(),
                   );
                 } else if (state is TicketsError) {
+                  //FIXME: display error
                   return const Text('error');
                 }
-                //FIXME: provide meaningfull error, maybe pass widget name?
-                throw MatchCaseIncompleteException('match cases incomplete');
+
+                throw MatchCaseIncompleteException(this);
               },
             ),
           ],
