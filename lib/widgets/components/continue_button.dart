@@ -1,11 +1,11 @@
 import 'package:coffeecard/widgets/components/rounded_button.dart';
 import 'package:flutter/material.dart';
 
-class RegisterContinueButton extends StatelessWidget {
+class ContinueButton extends StatelessWidget {
   final Function() onPressed;
   final bool enabled;
 
-  const RegisterContinueButton({
+  const ContinueButton({
     required this.onPressed,
     required this.enabled,
     Key? key,

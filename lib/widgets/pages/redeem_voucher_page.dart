@@ -1,5 +1,6 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
+import 'package:coffeecard/widgets/components/voucher/redeem_voucher_body.dart';
 import 'package:flutter/material.dart';
 
 class RedeemVoucherPage extends StatelessWidget {
@@ -9,7 +10,10 @@ class RedeemVoucherPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppScaffold.withTitle(
       title: Strings.redeemVoucherPageTitle,
-      body: const Text('Uh oh, something was supposed to be here'),
+      body: const Padding(
+        padding: EdgeInsets.all(16),
+        child: RedeemVoucherBody(),
+      ),
     );
   }
 }
