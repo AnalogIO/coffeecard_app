@@ -61,10 +61,15 @@ class _EditProfile extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               const Gap(8),
+<<<<<<< HEAD
               Text(
                 '${state.user.programme.fullName} (${state.user.programme.shortName})',
                 style: AppTextStyle.explainer,
               ),
+=======
+              //FIXME: lookup on programme id
+              Text('${state.user.programmeId}', style: AppTextStyle.explainer),
+>>>>>>> Move user information to cubit (#157)
               const Gap(24),
               SettingsGroup(
                 title: Strings.settingsGroupProfile,
@@ -76,9 +81,15 @@ class _EditProfile extends StatelessWidget {
                   ),
                   SettingListEntry(
                     name: Strings.occupation,
+<<<<<<< HEAD
                     valueWidget: SettingDescription(
                       text: state.user.programme.shortName,
                     ),
+=======
+                    //FIXME: lookup on programme id
+                    valueWidget:
+                        SettingDescription(text: '${state.user.programmeId}'),
+>>>>>>> Move user information to cubit (#157)
                     onTap: () {},
                   ),
                   SettingListEntry(

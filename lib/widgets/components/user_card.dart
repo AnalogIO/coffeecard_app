@@ -46,7 +46,12 @@ class UserCard extends StatelessWidget {
                           ),
                           const Gap(3),
                           Text(
+<<<<<<< HEAD
                             state.user.programme.fullName,
+=======
+                            //FIXME: lookup ID
+                            '${state.user.programmeId}',
+>>>>>>> Move user information to cubit (#157)
                             style: AppTextStyle.explainer,
                           ),
                         ],

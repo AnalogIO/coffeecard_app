@@ -31,6 +31,7 @@ class _HomePageState extends State<HomePage> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
+<<<<<<< HEAD
           create: (_) => UserCubit(
             sl.get<AccountRepository>(),
             sl.get<ProgrammeRepository>(),
@@ -38,6 +39,14 @@ class _HomePageState extends State<HomePage> {
         ),
         BlocProvider.value(
           value: sl.get<ReceiptCubit>()..fetchReceipts(),
+=======
+          create: (_) =>
+              UserCubit(sl.get<AccountRepository>())..fetchUserDetails(),
+        ),
+        BlocProvider(
+          create: (_) =>
+              ReceiptCubit(sl.get<ReceiptRepository>())..fetchReceipts(),
+>>>>>>> Move user information to cubit (#157)
         ),
         BlocProvider(
           create: (_) => StatisticsCubit(

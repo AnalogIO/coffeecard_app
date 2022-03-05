@@ -1,6 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:coffeecard/data/repositories/v1/account_repository.dart';
+<<<<<<< HEAD
 import 'package:coffeecard/data/repositories/v1/programme_repository.dart';
+=======
+>>>>>>> Move user information to cubit (#157)
 import 'package:coffeecard/models/account/user.dart';
 import 'package:equatable/equatable.dart';
 
@@ -8,10 +11,15 @@ part 'user_state.dart';
 
 class UserCubit extends Cubit<UserState> {
   final AccountRepository accountRepository;
+<<<<<<< HEAD
   final ProgrammeRepository programmeRepository;
 
   UserCubit(this.accountRepository, this.programmeRepository)
       : super(UserLoading());
+=======
+
+  UserCubit(this.accountRepository) : super(UserLoading());
+>>>>>>> Move user information to cubit (#157)
 
   Future<void> fetchUserDetails() async {
     emit(UserLoading());
@@ -19,6 +27,7 @@ class UserCubit extends Cubit<UserState> {
     final either = await accountRepository.getUser();
 
     if (either.isRight) {
+<<<<<<< HEAD
       var user = either.right;
 
       final programmes = await programmeRepository.getProgramme();
@@ -33,6 +42,9 @@ class UserCubit extends Cubit<UserState> {
       }
 
       emit(UserLoaded(user));
+=======
+      emit(UserLoaded(either.right));
+>>>>>>> Move user information to cubit (#157)
     } else {
       emit(UserError(either.left.errorMessage));
     }
