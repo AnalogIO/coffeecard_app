@@ -2,14 +2,15 @@ import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/widgets/components/card.dart';
+import 'package:coffeecard/widgets/components/helpers/shimmer_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class StatisticsCard extends CardBase {
   final String title;
-  final int rank;
+  final int? rank;
 
-  StatisticsCard(this.title, this.rank)
+  StatisticsCard({required this.title, this.rank})
       : super(
           dense: true,
           gap: 24,
@@ -21,17 +22,25 @@ class StatisticsCard extends CardBase {
             ),
           ),
           bottom: CardBottomRow(
-            right: Text.rich(
-              TextSpan(
-                text: '$rank',
-                style: AppTextStyle.ticketsCount,
-                children: [
-                  TextSpan(
-                    text: Strings.formatLeaderboardPostfix(rank),
-                    style: AppTextStyle.leaderboardScore,
+            right: ShimmerBuilder(
+              showShimmer: rank == null,
+              builder: (context, colorIfShimmer) {
+                return Container(
+                  color: colorIfShimmer,
+                  child: Text.rich(
+                    TextSpan(
+                      text: '${rank ?? 0}',
+                      style: AppTextStyle.ticketsCount,
+                      children: [
+                        TextSpan(
+                          text: Strings.formatLeaderboardPostfix(rank ?? 0),
+                          style: AppTextStyle.leaderboardScore,
+                        ),
+                      ],
+                    ),
                   ),
-                ],
-              ),
+                );
+              },
             ),
           ),
         );

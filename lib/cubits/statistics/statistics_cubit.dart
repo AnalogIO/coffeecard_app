@@ -1,7 +1,4 @@
-import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/data/repositories/v1/account_repository.dart';
 import 'package:coffeecard/data/repositories/v1/leaderboard_repository.dart';
-import 'package:coffeecard/models/account/user.dart';
 import 'package:coffeecard/models/leaderboard_user.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,54 +6,25 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 part 'statistics_state.dart';
 
 class StatisticsCubit extends Cubit<StatisticsState> {
-  final LeaderboardRepository leaderboardRepository;
-  final AccountRepository accountRepository;
+  StatisticsCubit(this._repo) : super(StatisticsInitial());
 
-  StatisticsCubit(this.leaderboardRepository, this.accountRepository)
-      : super(StatisticsState());
+  final LeaderboardRepository _repo;
+  static const defaultFilterCategory = StatisticsFilterCategory.month;
 
-  void filterStatistics(StatisticsFilterCategory filterBy) {
-    if (filterBy == state.filterBy) return;
-    emit(
-      state.copyWith(
-        filterBy: filterBy,
-      ),
-    );
+  Future<void> fetchLeaderboards({
+    StatisticsFilterCategory category = defaultFilterCategory,
+  }) async {
+    assert(state is! StatisticsLoading); // Shouldn't be true
+    emit(StatisticsLoading(filterBy: category));
+    await Future.delayed(const Duration(seconds: 1));
 
-    fetchLeaderboards();
-  }
-
-  Future<void> fetchCurrentUser() async {
-    emit(state.copyWith(isUserStatsLoading: true));
-
-    final either = await accountRepository.getUser();
+    final either = await _repo.getLeaderboard(category);
 
     if (either.isRight) {
-      emit(state.copyWith(isUserStatsLoading: false, user: either.right));
+      emit(StatisticsLoaded(filterBy: category, leaderboard: either.right));
     } else {
-      emit(state.copyWith(isUserStatsLoading: false));
-    }
-  }
-
-  Future<void> fetchLeaderboards() async {
-    emit(state.copyWith(isLeaderboardLoading: true));
-
-    final either =
-        await leaderboardRepository.getLeaderboard(state.filterBy.preset);
-    if (either.isRight) {
-      emit(
-        state.copyWith(
-          leaderboard: either.right,
-          isLeaderboardLoading: false,
-        ),
-      );
-    } else {
-      emit(
-        state.copyWith(
-          leaderboard: [],
-          isLeaderboardLoading: false,
-        ),
-      );
+      // TODO: handle failure
+      emit(StatisticsFailure(errorMessage: either.left.errorMessage));
     }
   }
 }

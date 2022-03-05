@@ -19,6 +19,9 @@ class LeaderboardEntry extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
+  String get _scoreText =>
+      '$score ${score != 1 ? Strings.statCups : Strings.statCup}';
+
   @override
   Widget build(BuildContext context) {
     return ListEntry(
@@ -26,7 +29,10 @@ class LeaderboardEntry extends StatelessWidget {
       leftWidget: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Text('$rank${Strings.formatLeaderboardPostfix(rank)}'),
+          Text(
+            '$rank',
+            style: AppTextStyle.rankingNumber,
+          ),
           const Gap(10),
           const CircleAvatar(),
           const Gap(10),
@@ -36,7 +42,7 @@ class LeaderboardEntry extends StatelessWidget {
           ),
         ],
       ),
-      rightWidget: Text('$score cups'),
+      rightWidget: Text(_scoreText),
     );
   }
 }

@@ -143,18 +143,22 @@ abstract class Strings {
       'When you $buyOrSwipe tickets, they will show up here.\nGo to the Tickets tab to $buyOrSwipe tickets.';
 
   // Statistics page
-  static const statisticsYourStats = 'Your stats';
-  static const statisticsLeaderboards = 'Leaderboards';
+  static const statsYourStats = 'Your stats';
+  static const statsLeaderboards = 'Leaderboards';
 
-  static const statisticsShowTopDrinkerFor = 'Show top drinkers for';
-  static const statisticsFilterSemester = 'Semester';
-  static const statisticsFilterMonth = 'Month';
-  static const statisticsFilterTotal = 'Total';
+  static const statsShowTopDrinkerFor = 'Show top drinkers';
+  static const statsFilterSemester = 'Semester';
+  static const statsFilterMonth = 'Month';
+  static const statsFilterTotal = 'Total';
 
-  static const statisticsCardMonth = 'Your rank this month';
-  static const statisticsCardSemester = 'Your rank this semester';
-  static const statisticsCardTotal = 'Your rank (all time)';
+  static const statCardMonth = 'Your rank this month';
+  static const statCardSemester = 'Your rank this semester';
+  static const statCardTotal = 'Your rank (all time)';
 
+  static const statCup = 'cup';
+  static const statCups = 'cups';
+
+  // FIXME: no logic in this file
   static String formatLeaderboardPostfix(int rank) {
     final rankStr = rank.toString();
     final lastDigit = rankStr[rankStr.length - 1];

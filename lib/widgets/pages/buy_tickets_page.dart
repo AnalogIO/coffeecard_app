@@ -50,8 +50,8 @@ class _BuyTicketsPageState extends State<BuyTicketsPage> {
             } else if (state is BuyTicketsError) {
               return const Text('error');
             }
-            //FIXME: provide meaningfull error, maybe pass widget name?
-            throw MatchCaseIncompleteException('match cases incomplete');
+
+            throw MatchCaseIncompleteException(this);
           },
         ),
       ),
