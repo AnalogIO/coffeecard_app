@@ -1,7 +1,7 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/cubits/register/register_cubit.dart';
-import 'package:coffeecard/widgets/components/dialog.dart';
 import 'package:coffeecard/widgets/components/continue_button.dart';
+import 'package:coffeecard/widgets/components/dialog.dart';
 import 'package:coffeecard/widgets/components/forms/text_field.dart';
 import 'package:coffeecard/widgets/components/helpers/unordered_list_builder.dart';
 import 'package:coffeecard/widgets/components/loading_overlay.dart';
@@ -31,9 +31,8 @@ class _RegisterNameBodyState extends State<RegisterNameBody> {
   Future<void> _submit(BuildContext context) async {
     _showError = true;
     await _validateName(name.trim());
-    if (!mounted || _error != null) return;
-    //FIXME:
-    // ignore: use_build_context_synchronously
+    if (!mounted) return;
+    if (_error != null) return;
     LoadingOverlay.of(context).show();
     // Delay to allow keyboard to disappear before showing dialog
     await Future.delayed(const Duration(milliseconds: 250));
