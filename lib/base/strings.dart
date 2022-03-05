@@ -195,6 +195,14 @@ abstract class Strings {
   }
 >>>>>>> Move user information to cubit (#157)
 
+  // Redeem Voucher
+  static const voucherHint = 'Enter a voucher code to redeem it.';
+  static const voucherCode = 'Voucher code';
+  static const voucherEmpty = 'Enter a voucher code';
+  static const voucherUsed = 'That voucher is already used';
+  static const youRedeemed = 'You redeemed';
+  static const voucherRedeemed = 'Voucher redeemed 🎉';
+
   // Settings
   static const settingsPageTitle = 'Settings';
   static const yourProfilePageTitle = 'Your profile';
