@@ -28,7 +28,7 @@ dependencies:
   gap: 2.0.0
   shimmer: 2.0.0
   animations: 2.0.2
-  flutter_layout_grid: 1.0.3
+  flutter_layout_grid: 1.0.6
 
   # Chopper api and rest client
   logger: 1.1.0
@@ -42,7 +42,7 @@ dependencies:
 
   # State management
   flutter_bloc: 8.0.1
-  bloc: 8.0.2
+  bloc: 8.0.3
 
   # Utility
   meta: 1.7.0
@@ -69,7 +69,7 @@ dev_dependencies:
 
   # unit testing
   mockito: 5.1.0
-  bloc_test: 9.0.2
+  bloc_test: 9.0.3
 
   # Chopper api and rest client
   chopper_generator: 4.0.3
