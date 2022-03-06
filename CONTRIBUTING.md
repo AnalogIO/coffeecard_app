@@ -19,19 +19,22 @@ branch structure is as following :
 **A pull request must be created and approved before merging with `develop`!**
 
 We use a **rebase** strategy when merging to `develop`. When a feature has been finished in
-development, the feature branch must be rebased with `develop` before merging in order to avoid
+development, the feature branch must be rebased with `develop` before creating the pull request in order to avoid
 merge commits.
 
-A rebase merge to `develop` can be done in command line like this:
+A rebase from `develop` to the feature branch can be done in command line like this:
 
 ```bash
 git fetch
 git checkout feature/author/feature-name # checkout the feature branch
 git rebase origin/develop # rebase with remote develop branch
 # resolve any conflicts
-git checkout develop
-git merge feature/author/feature-name
+# add or stage your changes
+
+# Then commit and push to the feature branch
+git commit -m "New Purchase button for coffee clip cards"
 git push
 ```
 
-Alternatively one can use the rebase function on the pull request.
+Now go to github and create a pull request from the feature branch to the develop branch.
+If the pull request closes an issue, make sure to tag this issue in the description for the pull request.
