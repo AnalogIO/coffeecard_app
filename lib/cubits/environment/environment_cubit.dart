@@ -3,8 +3,8 @@ import 'package:coffeecard/data/repositories/v1/app_config_repository.dart';
 
 part 'environment_state.dart';
 
-class EnvironmentCubit extends Cubit<Environment> {
-  EnvironmentCubit(this._configRepository) : super(Environment.unknown);
+class EnvironmentCubit extends Cubit<EnvironmentState> {
+  EnvironmentCubit(this._configRepository) : super(EnvironmentInitial());
 
   final AppConfigRepository _configRepository;
 
@@ -12,14 +12,11 @@ class EnvironmentCubit extends Cubit<Environment> {
     final either = await _configRepository.getEnvironmentType();
 
     if (either.isRight) {
-      final env = either.right == 'Production'
-          ? Environment.production
-          : Environment.test;
-      emit(env);
+      final isTest = either.right != 'Production';
+      emit(EnvironmentLoaded(isTestEnvironment: isTest));
     } else {
-      // if we cant connect to config endpoint, ignore
-      // FIXME: Don't do this! Should retry/display error to user.
-      emit(Environment.production);
+      // FIXME: Handle error
+      emit(EnvironmentError());
     }
   }
 }

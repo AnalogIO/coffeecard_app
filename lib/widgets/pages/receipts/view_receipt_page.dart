@@ -20,7 +20,7 @@ class ViewReceiptPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppScaffold.withTitle(
       title: Strings.singleReceiptPageTitle,
-      body: BlocBuilder<EnvironmentCubit, Environment>(
+      body: BlocBuilder<EnvironmentCubit, EnvironmentState>(
         builder: (context, state) {
           return Padding(
             padding: const EdgeInsets.all(48),
@@ -30,7 +30,8 @@ class ViewReceiptPage extends StatelessWidget {
                 time: time,
                 isPurchase: isPurchase,
                 isInOverlay: false,
-                env: state,
+                isTestEnvironment:
+                    state is EnvironmentLoaded && state.isTestEnvironment,
               ),
             ),
           );

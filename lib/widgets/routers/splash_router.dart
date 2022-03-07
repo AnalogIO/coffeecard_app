@@ -17,22 +17,25 @@ class SplashRouter extends StatefulWidget {
 
 class _SplashRouterState extends State<SplashRouter> {
   var _authStatus = AuthenticationStatus.unknown;
-  var _environment = Environment.unknown;
+  bool? _isTestEnvironment;
 
   void _authListener(BuildContext _, AuthenticationState state) {
     _authStatus = state.status;
     _maybeNavigate();
   }
 
-  void _envListener(BuildContext _, Environment env) {
-    _environment = env;
+  void _envListener(BuildContext _, EnvironmentState state) {
+    if (state is EnvironmentError) {
+      // FIXME: Handle error
+    }
+    _isTestEnvironment = state is EnvironmentLoaded && state.isTestEnvironment;
     _maybeNavigate();
   }
 
   /// Navigates out of the splash screen if both
   /// _authStatus and _environment are loaded.
   void _maybeNavigate() {
-    if (_authStatus.isUnknown || _environment.isUnknown) return;
+    if (_authStatus.isUnknown || _isTestEnvironment == null) return;
     // FIXME: The transition needs animation
     widget.navigatorKey.currentState!.pushAndRemoveUntil(
       _authStatus.isAuthenticated ? HomePage.route : EntryRouter.route,
@@ -44,7 +47,7 @@ class _SplashRouterState extends State<SplashRouter> {
   Widget build(BuildContext context) {
     return MultiBlocListener(
       listeners: [
-        BlocListener<EnvironmentCubit, Environment>(
+        BlocListener<EnvironmentCubit, EnvironmentState>(
           listener: _envListener,
         ),
         BlocListener<AuthenticationCubit, AuthenticationState>(

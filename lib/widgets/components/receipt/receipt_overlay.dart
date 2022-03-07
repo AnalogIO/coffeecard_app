@@ -1,7 +1,6 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
-import 'package:coffeecard/cubits/environment/environment_cubit.dart';
 import 'package:coffeecard/models/receipts/receipt.dart';
 import 'package:coffeecard/widgets/components/receipt/receipt_card.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +13,11 @@ class ReceiptOverlay {
     Navigator.of(_context).pop();
   }
 
-  void show(Receipt receipt, {String? optionalText}) {
+  void show({
+    required Receipt receipt,
+    required bool isTestEnvironment,
+    String? optionalText,
+  }) {
     showDialog(
       context: _context,
       barrierColor: AppColor.scrim,
@@ -28,7 +31,7 @@ class ReceiptOverlay {
                 time: receipt.timeUsed,
                 isPurchase: receipt.transactionType == TransactionType.purchase,
                 isInOverlay: true,
-                env: Environment.unknown,
+                isTestEnvironment: isTestEnvironment,
               ),
               Text(
                 Strings.receiptTapAnywhereToDismiss,
