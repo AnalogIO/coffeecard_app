@@ -1,7 +1,6 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
-import 'package:coffeecard/cubits/environment/environment_cubit.dart';
 import 'package:coffeecard/utils/time_since.dart';
 import 'package:coffeecard/widgets/analog_logo.dart';
 import 'package:coffeecard/widgets/components/card.dart';
