@@ -14,7 +14,11 @@ class ReceiptOverlay {
     Navigator.of(_context).pop();
   }
 
-  void show(Receipt receipt, {String? optionalText}) {
+  void show({
+    required Receipt receipt,
+    required bool isTest,
+    String? optionalText,
+  }) {
     showDialog(
       context: _context,
       barrierColor: AppColor.scrim,
@@ -28,7 +32,7 @@ class ReceiptOverlay {
                 time: receipt.timeUsed,
                 isPurchase: receipt.transactionType == TransactionType.purchase,
                 isInOverlay: true,
-                env: Environment.unknown,
+                isTestEnvironment: isTest,
               ),
               Text(
                 Strings.receiptTapAnywhereToDismiss,
