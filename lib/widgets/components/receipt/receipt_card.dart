@@ -15,14 +15,16 @@ class ReceiptCard extends CardBase with IgnorePointerCard {
   final DateTime time;
   final bool isPurchase;
   final bool isInOverlay;
+  final bool isTestEnvironment;
 
   ReceiptCard({
     required this.productName,
     required this.time,
     required this.isPurchase,
     required this.isInOverlay,
+    required this.isTestEnvironment,
   }) : super(
-          color: AppColor.white,
+          color: isTestEnvironment ? AppColor.testEnvironment : AppColor.white,
           top: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
