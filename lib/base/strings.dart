@@ -199,8 +199,6 @@ abstract class Strings {
   static const deleteAccount = 'Delete account';
   static const appearAnonymous = 'Appear anonymous in leaderboard';
   static const appearAnonymousSmall = 'Appear anonymous';
-  // FIXME decide between these or:
-  // static const appearAnonymous = 'Hide my info in leaderboard';
 
   static const signInWithFingerprint = 'Sign in with fingerprint';
 
