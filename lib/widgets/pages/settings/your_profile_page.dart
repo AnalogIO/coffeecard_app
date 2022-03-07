@@ -3,6 +3,7 @@ import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/user/user_cubit.dart';
 import 'package:coffeecard/models/account/user.dart';
 import 'package:coffeecard/utils/responsive.dart';
+import 'package:coffeecard/widgets/components/loading.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:coffeecard/widgets/components/settings_group.dart';
 import 'package:coffeecard/widgets/components/settings_list_entry.dart';
@@ -41,35 +42,9 @@ class YourProfilePage extends StatelessWidget {
   }
 }
 
-class Loading extends StatelessWidget {
-  const Loading({Key? key, required this.loading, required this.child})
-      : super(key: key);
-
-  final bool loading;
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return IgnorePointer(
-      ignoring: loading,
-      child: Stack(
-        children: [
-          if (loading) const LinearProgressIndicator(),
-          AnimatedOpacity(
-            opacity: loading ? 0.4 : 1.0,
-            duration: const Duration(milliseconds: 150),
-            child: child,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 class _EditProfile extends StatelessWidget {
+  const _EditProfile({required this.user});
   final User user;
-
-  const _EditProfile({Key? key, required this.user}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -113,10 +88,10 @@ class _EditProfile extends StatelessWidget {
                   : Strings.appearAnonymous,
               valueWidget: Switch(
                 value: user.privacyActivated,
-                onChanged: (v) async {
+                onChanged: (privacyActived) async {
                   await context
                       .read<UserCubit>()
-                      .setUserPrivacy(privacyActived: v);
+                      .setUserPrivacy(privacyActived: privacyActived);
                 },
               ),
             ),
