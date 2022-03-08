@@ -64,7 +64,7 @@ class _EditProfile extends StatelessWidget {
         const Gap(24),
         SettingsGroup(
           title: Strings.settingsGroupProfile,
-          description: 'These settings affect your appearance in Leaderboards.',
+          description: Strings.yourProfileDescription,
           listItems: [
             SettingListEntry(
               name: Strings.name,
