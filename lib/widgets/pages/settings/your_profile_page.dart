@@ -61,7 +61,10 @@ class _EditProfile extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               const Gap(8),
-              Text(state.user.programme, style: AppTextStyle.explainer),
+              Text(
+                '${state.user.programme.fullName} (${state.user.programme.shortName})',
+                style: AppTextStyle.explainer,
+              ),
               const Gap(24),
               SettingsGroup(
                 title: Strings.settingsGroupProfile,
@@ -73,8 +76,9 @@ class _EditProfile extends StatelessWidget {
                   ),
                   SettingListEntry(
                     name: Strings.occupation,
-                    valueWidget:
-                        SettingDescription(text: state.user.programme),
+                    valueWidget: SettingDescription(
+                      text: state.user.programme.shortName,
+                    ),
                     onTap: () {},
                   ),
                   SettingListEntry(
