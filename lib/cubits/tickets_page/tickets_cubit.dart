@@ -1,4 +1,5 @@
 import 'package:coffeecard/data/repositories/v1/ticket_repository.dart';
+import 'package:coffeecard/models/receipts/receipt.dart';
 import 'package:coffeecard/models/ticket/ticket_count.dart';
 import 'package:coffeecard/utils/either.dart';
 import 'package:equatable/equatable.dart';
@@ -13,6 +14,24 @@ class TicketsCubit extends Cubit<TicketsState> {
 
   Future<void> getTickets() async {
     emit(const TicketsLoading());
+    _refreshTickets();
+  }
+
+  Future<void> useTicket(int productId) async {
+    if (state is TicketsLoaded) {
+      final previousState = state as TicketsLoaded;
+      emit(TicketUsing(previousState.tickets));
+      final response = await _ticketRepository.useTicket(productId);
+      if (response is Right) {
+        emit(TicketUsed(response.right, previousState.tickets));
+        await _refreshTickets(); //Refresh tickets, so the user sees the right count
+      } else {
+        emit(TicketsError(response.left.errorMessage));
+      }
+    }
+  }
+
+  Future<void> _refreshTickets() async {
     final response = await _ticketRepository.getUserTickets();
     if (response is Right) {
       emit(TicketsLoaded(response.right));

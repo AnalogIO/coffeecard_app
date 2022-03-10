@@ -20,6 +20,19 @@ class TicketsLoaded extends TicketsState {
   List<Object?> get props => tickets;
 }
 
+class TicketUsing extends TicketsLoaded {
+  const TicketUsing(List<TicketCount> tickets) : super(tickets);
+}
+
+class TicketUsed extends TicketsLoaded {
+  final Receipt receipt;
+
+  const TicketUsed(this.receipt, List<TicketCount> tickets) : super(tickets);
+
+  @override
+  List<Object?> get props => [receipt];
+}
+
 class TicketsError extends TicketsState {
   final String message;
   const TicketsError(this.message);
