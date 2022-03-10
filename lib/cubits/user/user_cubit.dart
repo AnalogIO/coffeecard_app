@@ -10,7 +10,8 @@ class UserCubit extends Cubit<UserState> {
   final AccountRepository accountRepository;
   final ProgrammeRepository programmeRepository;
 
-  UserCubit(this.accountRepository, this.programmeRepository) : super(UserLoading());
+  UserCubit(this.accountRepository, this.programmeRepository)
+      : super(UserLoading());
 
   Future<void> fetchUserDetails() async {
     emit(UserLoading());
@@ -18,7 +19,17 @@ class UserCubit extends Cubit<UserState> {
     final either = await accountRepository.getUser();
 
     if (either.isRight) {
-      emit(UserLoaded(either.right));
+      var user = either.right;
+
+      final programmes = await programmeRepository.getProgramme();
+
+      if (programmes.isRight) {
+        user = user.copyWith(
+          programme: programmes.right.firstWhere((element) => element.id == user.programmeId).shortName,
+        );
+      }
+
+      emit(UserLoaded(user));
     } else {
       emit(UserError(either.left.errorMessage));
     }
