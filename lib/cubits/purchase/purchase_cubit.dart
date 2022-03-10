@@ -1,4 +1,6 @@
 import 'package:bloc/bloc.dart';
+import 'package:coffeecard/models/purchase/payment.dart';
+import 'package:coffeecard/models/purchase/payment_status.dart';
 import 'package:coffeecard/models/ticket/product.dart';
 import 'package:coffeecard/payment/mobilepay_service.dart';
 import 'package:coffeecard/payment/payment_handler.dart';

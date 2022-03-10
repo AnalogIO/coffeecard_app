@@ -48,24 +48,32 @@ class _PurchaseProcessState extends State<PurchaseProcess>
               if (state is PurchaseInitial) {
                 //Not related to previous check, hence a separate if statement
                 cubit.payWithMobilePay();
-                return makeDialog(Strings.purchaseTalking);
+                return makeLoadingDialog(
+                  title: Strings.purchaseTalking,
+                );
               } else if (state is PurchaseProcessing ||
                   state is PurchaseStarted) {
-                return makeDialog(Strings.purchaseTalking);
+                return makeLoadingDialog(
+                  title: Strings.purchaseTalking,
+                );
               } else if (state is PurchaseVerifying) {
-                return makeDialog(Strings.purchaseCompleting);
+                return makeLoadingDialog(
+                  title: Strings.purchaseCompleting,
+                );
               } else if (state is PurchaseCompleted) {
-                return makeDialog(Strings.purchaseSuccess);
+                return makeLoadingDialog(
+                  title: Strings.purchaseSuccess,
+                );
               } else if (state is PurchasePaymentRejected) {
-                return makeDialog(
-                  Strings.purchaseRejectedOrCanceled,
+                return makeErrorDialog(
+                  title: Strings.purchaseRejectedOrCanceled,
                   content: const Text(
                     Strings.purchaseRejectedOrCanceledMessage,
                   ),
                 );
               } else if (state is PurchaseError) {
-                return makeDialog(
-                  Strings.purchaseError,
+                return makeErrorDialog(
+                  title: Strings.purchaseError,
                   content: Text(state.message),
                 );
               } else {
@@ -81,36 +89,47 @@ class _PurchaseProcessState extends State<PurchaseProcess>
     );
   }
 
-  StatelessWidget makeDialog(String title, {Widget? content}) {
-    return content != null
-        ? AlertDialog(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-            title: Text(title),
-            content: content,
-            actions: <Widget>[
-              TextButton(
-                child: const Text(Strings.purchaseErrorOk),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          )
-        : SimpleDialog(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-            title: Text(title),
-            children: [
-              Column(
-                children: const [
-                  Padding(
-                    padding: EdgeInsets.all(16),
-                    child: CircularProgressIndicator(color: AppColor.primary),
-                  ),
-                ],
-              )
-            ],
-          );
+  StatelessWidget _getTitleWidget(String title) => Text(title);
+
+  RoundedRectangleBorder _getShape() => RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      );
+
+  StatelessWidget makeLoadingDialog({
+    required String title,
+  }) {
+    return SimpleDialog(
+      shape: _getShape(),
+      title: _getTitleWidget(title),
+      children: [
+        Column(
+          children: const [
+            Padding(
+              padding: EdgeInsets.all(16),
+              child: CircularProgressIndicator(color: AppColor.primary),
+            ),
+          ],
+        )
+      ],
+    );
+  }
+
+  StatelessWidget makeErrorDialog({
+    required String title,
+    required Widget content,
+  }) {
+    return AlertDialog(
+      shape: _getShape(),
+      title: _getTitleWidget(title),
+      content: content,
+      actions: <Widget>[
+        TextButton(
+          child: const Text(Strings.purchaseErrorOk),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
+    );
   }
 }

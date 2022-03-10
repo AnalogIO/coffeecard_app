@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:coffeecard/data/repositories/v2/purchase_repository.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.swagger.dart';
 import 'package:coffeecard/models/api/api_error.dart';
+import 'package:coffeecard/models/purchase/payment.dart';
+import 'package:coffeecard/models/purchase/payment_status.dart';
 import 'package:coffeecard/payment/payment_handler.dart';
 import 'package:coffeecard/utils/either.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -31,8 +33,6 @@ class MobilePayService implements PaymentHandler {
           deeplink: paymentDetails.mobilePayAppRedirectUri!,
           purchaseTime: purchaseResponse.dateCreated!,
           price: purchaseResponse.totalAmount!,
-          productName: 'Placeholder',
-          //TODO consider whether the product name should be passed by the original widget that is pressed to start the purchase flow, or get it from the backend
         ),
       );
     }
