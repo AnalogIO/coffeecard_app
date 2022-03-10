@@ -43,20 +43,20 @@ class StatisticsCard extends CardBase {
             ),
           ),
         );
-} 
+}
 
 String formatLeaderboardPostfix(int rank) {
-    final rankStr = rank.toString();
-    final lastDigit = rankStr[rankStr.length - 1];
+  final rankStr = rank.toString();
+  final lastDigit = rankStr[rankStr.length - 1];
 
-    switch (lastDigit) {
-      case '1':
-        return 'st';
-      case '2':
-        return 'nd';
-      case '3':
-        return 'rd';
-      default:
-        return 'th';
-    }
+  switch (lastDigit) {
+    case '1':
+      return 'st';
+    case '2':
+      return 'nd';
+    case '3':
+      return 'rd';
+    default:
+      return 'th';
   }
+}

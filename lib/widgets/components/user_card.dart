@@ -46,7 +46,7 @@ class UserCard extends StatelessWidget {
                           ),
                           const Gap(3),
                           Text(
-                            state.user.programme,
+                            state.user.programme.fullName,
                             style: AppTextStyle.explainer,
                           ),
                         ],

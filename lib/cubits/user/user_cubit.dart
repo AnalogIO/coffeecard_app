@@ -24,8 +24,11 @@ class UserCubit extends Cubit<UserState> {
       final programmes = await programmeRepository.getProgramme();
 
       if (programmes.isRight) {
+        final p = programmes.right
+            .firstWhere((element) => element.id == user.programmeId);
+
         user = user.copyWith(
-          programme: programmes.right.firstWhere((element) => element.id == user.programmeId).shortName,
+          programme: ProgrammeInfo(p.shortName!, p.fullName!),
         );
       }
 
