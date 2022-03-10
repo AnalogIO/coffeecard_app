@@ -168,23 +168,6 @@ abstract class Strings {
   static const statCup = 'cup';
   static const statCups = 'cups';
 
-  // FIXME: no logic in this file
-  static String formatLeaderboardPostfix(int rank) {
-    final rankStr = rank.toString();
-    final lastDigit = rankStr[rankStr.length - 1];
-
-    switch (lastDigit) {
-      case '1':
-        return 'st';
-      case '2':
-        return 'nd';
-      case '3':
-        return 'rd';
-      default:
-        return 'th';
-    }
-  }
-
   // Redeem Voucher
   static const voucherHint = 'Enter a voucher code to redeem it.';
   static const voucherCode = 'Voucher code';
