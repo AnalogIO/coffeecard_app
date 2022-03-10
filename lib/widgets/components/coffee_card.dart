@@ -1,6 +1,8 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/cubits/tickets_page/tickets_cubit.dart';
+import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/widgets/components/helpers/tappable.dart';
 import 'package:coffeecard/widgets/components/slide_button.dart';
 import 'package:flutter/material.dart';
@@ -8,9 +10,14 @@ import 'package:flutter/material.dart';
 class CoffeeCard extends StatelessWidget {
   final String title;
   final int amount;
+  final int productId;
 
-  const CoffeeCard({Key? key, required this.title, required this.amount})
-      : super(key: key);
+  const CoffeeCard({
+    Key? key,
+    required this.title,
+    required this.amount,
+    required this.productId,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -75,6 +82,7 @@ class CoffeeCard extends StatelessWidget {
           builder: (builder) {
             return UseCoffeeCardWidget(
               title: title,
+              productId: productId,
             );
           },
         )
@@ -85,8 +93,13 @@ class CoffeeCard extends StatelessWidget {
 
 class UseCoffeeCardWidget extends StatefulWidget {
   final String title;
+  final int productId;
 
-  const UseCoffeeCardWidget({Key? key, required this.title}) : super(key: key);
+  const UseCoffeeCardWidget({
+    Key? key,
+    required this.title,
+    required this.productId,
+  }) : super(key: key);
 
   @override
   _UseCoffeeCardWidgetState createState() => _UseCoffeeCardWidgetState();
@@ -105,10 +118,8 @@ class _UseCoffeeCardWidgetState extends State<UseCoffeeCardWidget> {
             Text(widget.title),
             SlideButton(
               width: MediaQuery.of(context).size.width * 0.9,
-              onSwipeComplete: () {
-                //FIXME: implement logic
-                // ignore: avoid_print
-                print('swipe complete');
+              onSwipeComplete: () async {
+                await sl.get<TicketsCubit>().useTicket(widget.productId);
               },
             )
           ],
