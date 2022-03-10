@@ -12,7 +12,7 @@ class TicketsLoading extends TicketsState {
 }
 
 class TicketsLoaded extends TicketsState {
-  final List<TicketDto> tickets;
+  final List<TicketCount> tickets;
 
   const TicketsLoaded(this.tickets);
 

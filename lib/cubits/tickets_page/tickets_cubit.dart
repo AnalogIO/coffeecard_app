@@ -1,25 +1,23 @@
-import 'package:coffeecard/errors/network_exception.dart';
-import 'package:coffeecard/generated/api/coffeecard_api.swagger.swagger.dart';
+import 'package:coffeecard/data/repositories/v1/ticket_repository.dart';
+import 'package:coffeecard/models/ticket/ticket_count.dart';
+import 'package:coffeecard/utils/either.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'tickets_state.dart';
 
 class TicketsCubit extends Cubit<TicketsState> {
-  //final TicketRepository _ticketController = sl.get<TicketRepository>();
+  final TicketRepository _ticketRepository;
 
-  TicketsCubit() : super(const TicketsLoading());
+  TicketsCubit(this._ticketRepository) : super(const TicketsLoading());
 
   Future<void> getTickets() async {
-    try {
-      emit(const TicketsLoading());
-      await Future.delayed(const Duration(seconds: 1));
-      //FIXME: uncomment once data is available
-      //final List<TicketDto> tickets = await _ticketController.getUserTickets();
-      final tickets = [TicketDto()];
-      emit(TicketsLoaded(tickets));
-    } on NetworkException catch (e) {
-      emit(TicketsError(e.message));
+    emit(const TicketsLoading());
+    final response = await _ticketRepository.getUserTickets();
+    if (response is Right) {
+      emit(TicketsLoaded(response.right));
+    } else {
+      emit(TicketsError(response.left.errorMessage));
     }
   }
 }
