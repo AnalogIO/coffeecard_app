@@ -46,8 +46,7 @@ class UserCard extends StatelessWidget {
                           ),
                           const Gap(3),
                           Text(
-                            //FIXME: lookup ID
-                            '${state.user.programmeId}',
+                            state.user.programme,
                             style: AppTextStyle.explainer,
                           ),
                         ],

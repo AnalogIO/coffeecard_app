@@ -9,7 +9,7 @@ class ProgrammeRepository {
   final Logger _logger;
 
   ProgrammeRepository(this._api, this._logger);
-  Future<Either<ApiError, List<ProgrammeDto>>> getEnvironmentType() async {
+  Future<Either<ApiError, List<ProgrammeDto>>> getProgramme() async {
     final response = await _api.apiV1ProgrammesGet();
 
     if (response.isSuccessful) {

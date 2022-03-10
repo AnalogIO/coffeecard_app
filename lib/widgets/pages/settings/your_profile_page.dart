@@ -61,8 +61,7 @@ class _EditProfile extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               const Gap(8),
-              //FIXME: lookup on programme id
-              Text('${state.user.programmeId}', style: AppTextStyle.explainer),
+              Text(state.user.programme, style: AppTextStyle.explainer),
               const Gap(24),
               SettingsGroup(
                 title: Strings.settingsGroupProfile,
@@ -74,9 +73,8 @@ class _EditProfile extends StatelessWidget {
                   ),
                   SettingListEntry(
                     name: Strings.occupation,
-                    //FIXME: lookup on programme id
                     valueWidget:
-                        SettingDescription(text: '${state.user.programmeId}'),
+                        SettingDescription(text: state.user.programme),
                     onTap: () {},
                   ),
                   SettingListEntry(
