@@ -2,7 +2,7 @@ import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/theme.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
 import 'package:coffeecard/cubits/environment/environment_cubit.dart';
-import 'package:coffeecard/data/repositories/v1/app_config_repository.dart';
+import 'package:coffeecard/data/repositories/v2/app_config_repository.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/widgets/pages/splash_page.dart';
 import 'package:coffeecard/widgets/routers/splash_router.dart';

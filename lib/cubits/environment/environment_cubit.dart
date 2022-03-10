@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:coffeecard/data/repositories/v1/app_config_repository.dart';
+import 'package:coffeecard/data/repositories/v2/app_config_repository.dart';
 
 part 'environment_state.dart';
 
