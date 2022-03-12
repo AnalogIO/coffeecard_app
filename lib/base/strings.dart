@@ -86,6 +86,8 @@ abstract class Strings {
   static const buttonAccept = 'Accept';
   static const buttonDecline = 'Decline';
   static const buttonGotIt = 'Got it';
+  static const buttonCancel = 'Cancel';
+  static const buttonUnderstand = 'I understand';
 
   // Coffee card
   static const emptyCoffeeCardTextTop =
@@ -191,6 +193,12 @@ abstract class Strings {
   static const logOut = 'Log out';
   static const deleteAccount = 'Delete account';
 
+  static const deleteAccountText =
+      'Performing this action will delete your account and any tickets you own. This cannot be undone, are you sure you want to proceed?';
+  static String deleteAccountEmailConfirmation(String email) {
+    return 'We have sent a verification link to $email. Please confirm your request to delete your account using the provided link';
+  }
+  
   static const faq = 'Frequently Asked Questions';
   static const openingHours = 'Opening hours';
   static const today = 'Today';

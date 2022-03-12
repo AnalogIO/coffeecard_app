@@ -17,10 +17,42 @@
   },
   "servers": [
     {
-      "url": "https://api-test.analogio.dk/coffeecard"
+      "url": "https://localhost:5001"
     }
   ],
   "paths": {
+    "/api/v2/account": {
+      "delete": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "Delete an account",
+        "operationId": "Account_Delete",
+        "responses": {
+          "204": {
+            "description": "Successful account deletion"
+          },
+          "401": {
+            "description": "Invalid credentials"
+          },
+          "429": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
     "/api/v2/appconfig": {
       "get": {
         "tags": [
@@ -264,6 +296,48 @@
   },
   "components": {
     "schemas": {
+      "ApiException": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Exception"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "StatusCode": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          }
+        ]
+      },
+      "Exception": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "StackTrace": {
+            "type": "string",
+            "nullable": true
+          },
+          "Message": {
+            "type": "string"
+          },
+          "InnerException": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Exception"
+              }
+            ]
+          },
+          "Source": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
       "AppConfig": {
         "type": "object",
         "description": "App Configuration",

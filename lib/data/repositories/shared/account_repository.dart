@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/data/api/coffee_card_api_constants.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.swagger.dart';
+import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.swagger.dart';
 import 'package:coffeecard/models/account/authenticated_user.dart';
 import 'package:coffeecard/models/account/user.dart';
 import 'package:coffeecard/models/api/api_error.dart';
@@ -12,10 +13,11 @@ import 'package:crypto/crypto.dart' show sha256;
 import 'package:logger/logger.dart';
 
 class AccountRepository {
-  final CoffeecardApi _api;
+  final CoffeecardApi _apiV1;
+  final CoffeecardApiV2 _apiV2;
   final Logger _logger;
 
-  AccountRepository(this._api, this._logger);
+  AccountRepository(this._apiV1, this._apiV2, this._logger);
 
   String _encodePasscode(String passcode) {
     final bytes = utf8.encode(passcode);
@@ -36,7 +38,7 @@ class AccountRepository {
       password: _encodePasscode(passcode),
     );
 
-    final response = await _api.apiV1AccountRegisterPost(body: dto);
+    final response = await _apiV1.apiV1AccountRegisterPost(body: dto);
 
     if (response.isSuccessful) {
       return const Right(null);
@@ -56,7 +58,7 @@ class AccountRepository {
     String email,
     String passcode,
   ) async {
-    final response = await _api.apiV1AccountLoginPost(
+    final response = await _apiV1.apiV1AccountLoginPost(
       body: LoginDto(
         email: email,
         password: _encodePasscode(passcode),
@@ -76,7 +78,7 @@ class AccountRepository {
 
   /// Get user information
   Future<Either<ApiError, User>> getUser() async {
-    final response = await _api.apiV1AccountGet();
+    final response = await _apiV1.apiV1AccountGet();
 
     if (response.isSuccessful) {
       final user = User.fromDTO(response.body!);
@@ -107,7 +109,7 @@ class AccountRepository {
 
   /// Update user information
   Future<Either<ApiError, User>> _updateUser(UpdateUserDto user) async {
-    final response = await _api.apiV1AccountPut(body: user);
+    final response = await _apiV1.apiV1AccountPut(body: user);
 
     if (response.isSuccessful) {
       final user = User.fromDTO(response.body!);
@@ -120,7 +122,17 @@ class AccountRepository {
 
   /// Request user password reset
   Future<Either<ApiError, void>> forgotPassword(EmailDto email) async {
-    final response = await _api.apiV1AccountForgotpasswordPost(body: email);
+    final response = await _apiV1.apiV1AccountForgotpasswordPost(body: email);
+    if (response.isSuccessful) {
+      return const Right(null);
+    } else {
+      _logger.e(Strings.formatApiError(response));
+      return Left(ApiError(response.error.toString()));
+    }
+  }
+
+  Future<Either<ApiError, void>> requestAccountDeletion() async {
+    final response = await _apiV2.apiV2AccountDelete();
     if (response.isSuccessful) {
       return const Right(null);
     } else {
