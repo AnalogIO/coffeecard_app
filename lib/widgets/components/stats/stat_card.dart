@@ -46,17 +46,18 @@ class StatisticsCard extends CardBase {
 }
 
 String formatLeaderboardPostfix(int rank) {
-  final rankStr = rank.toString();
-  final lastDigit = rankStr[rankStr.length - 1];
+  const def = 'th';
 
-  switch (lastDigit) {
-    case '1':
+  if (rank > 10 && rank < 20) return def;
+
+  switch (rank % 10) {
+    case 1:
       return 'st';
-    case '2':
+    case 2:
       return 'nd';
-    case '3':
+    case 3:
       return 'rd';
     default:
-      return 'th';
+      return def;
   }
 }
