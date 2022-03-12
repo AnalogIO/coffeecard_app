@@ -37,8 +37,14 @@ class ReceiptCard extends CardBase with IgnorePointerCard {
               const Gap(16),
               Text(productName, style: AppTextStyle.ownedTicket),
               const Gap(12),
-              Text(timeSince(time), style: AppTextStyle.textFieldBold),
-              Text(_formatter.format(time), style: AppTextStyle.textField),
+              Text(
+                timeSince(time.toLocal()),
+                style: AppTextStyle.textFieldBold,
+              ),
+              Text(
+                _formatter.format(time.toLocal()),
+                style: AppTextStyle.textField,
+              ),
             ],
           ),
           gap: 120,
