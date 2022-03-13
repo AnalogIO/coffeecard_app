@@ -75,8 +75,21 @@
           "x-position": 1
         },
         "responses": {
-          "200": {
+          "204": {
             "description": "Webhook processed"
+          },
+          "400": {
+            "description": "Signature is not valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": ""
           }
         }
       }
@@ -204,6 +217,49 @@
           }
         ]
       }
+    },
+    "/api/v2/tickets": {
+      "get": {
+        "tags": [
+          "Tickets"
+        ],
+        "summary": "Returns a list of tickets",
+        "operationId": "Tickets_Get",
+        "parameters": [
+          {
+            "name": "includeUsed",
+            "in": "query",
+            "description": "Include already used tickets",
+            "schema": {
+              "type": "boolean"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TicketResponse"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid credentials"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
     }
   },
   "components": {
@@ -235,11 +291,13 @@
         "description": "",
         "x-enumNames": [
           "Production",
-          "Test"
+          "Test",
+          "LocalDevelopment"
         ],
         "enum": [
           "Production",
-          "Test"
+          "Test",
+          "LocalDevelopment"
         ]
       },
       "MobilePayWebhook": {
@@ -585,6 +643,53 @@
                 "$ref": "#/components/schemas/PaymentType"
               }
             ]
+          }
+        }
+      },
+      "TicketResponse": {
+        "type": "object",
+        "description": "Representing a ticket for a product",
+        "example": "{\n    \"id\": 122,\n    \"dateCreated\": \"2022-01-09T21:03:52.2283208Z\",\n    \"dateUsed\": \"2022-01-09T21:03:52.2283208Z\",\n    \"productId\": 1,\n    \"productName: \"Coffee\"\n}",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "dateCreated",
+          "dateUsed",
+          "productId",
+          "productName"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Ticket Id",
+            "format": "int32",
+            "example": 122
+          },
+          "dateCreated": {
+            "type": "string",
+            "description": "Issuing date time for ticket in Utc format",
+            "format": "date-time",
+            "minLength": 1,
+            "example": "2022-01-09T21:03:52.2283208Z"
+          },
+          "dateUsed": {
+            "type": "string",
+            "description": "Used date time for ticket in Utc format",
+            "format": "date-time",
+            "minLength": 1,
+            "example": "2022-01-09T21:03:52.2283208Z"
+          },
+          "productId": {
+            "type": "integer",
+            "description": "The Id of product a ticket is for",
+            "format": "int32",
+            "example": 1
+          },
+          "productName": {
+            "type": "string",
+            "description": "Name of product a ticket is for",
+            "minLength": 1,
+            "example": "Coffee"
           }
         }
       }

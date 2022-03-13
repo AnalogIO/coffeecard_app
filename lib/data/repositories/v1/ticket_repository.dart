@@ -1,5 +1,6 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.swagger.dart';
+import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.swagger.dart';
 import 'package:coffeecard/models/api/api_error.dart';
 import 'package:coffeecard/models/receipts/receipt.dart';
 import 'package:coffeecard/models/ticket/ticket_count.dart';
@@ -9,12 +10,13 @@ import 'package:logger/logger.dart';
 
 class TicketRepository {
   final CoffeecardApi _api;
+  final CoffeecardApiV2 _apiV2;
   final Logger _logger;
 
-  TicketRepository(this._api, this._logger);
+  TicketRepository(this._api, this._apiV2, this._logger);
 
   Future<Either<ApiError, List<TicketCount>>> getUserTickets() async {
-    final response = await _api.apiV1TicketsGet(used: false);
+    final response = await _apiV2.apiV2TicketsGet(includeUsed: false);
 
     if (response.isSuccessful) {
       final ticketCount = response.body!
@@ -25,7 +27,7 @@ class TicketRepository {
             (e) => TicketCount(
               productName: e.key!,
               count: e.value.length,
-              productId: 1, //TODO add actual id, once the backend returns this
+              productId: e.value.first.productId!,
             ),
           )
           .toList();
