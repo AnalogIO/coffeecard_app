@@ -38,9 +38,10 @@ class TicketSection extends StatelessWidget {
                 } else if (state is TicketUsed) {
                   Navigator.pop(context); //Removes the loading overlay
                   ReceiptOverlay.of(context).show(
-                      receipt: state.receipt,
-                      isTestEnvironment: environment is EnvironmentLoaded &&
-                          environment.isTestEnvironment);
+                    receipt: state.receipt,
+                    isTestEnvironment: environment is EnvironmentLoaded &&
+                        environment.isTestEnvironment,
+                  );
                 }
               },
               builder: (context, state) {
