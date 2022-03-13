@@ -89,7 +89,7 @@ class AccountRepository {
 
   Future<Either<ApiError, void>> updatePasscode(String passcode) async {
     final updateUserDto = UpdateUserDto(password: _encodePasscode(passcode));
-    final either = await updateUser(updateUserDto);
+    final either = await _updateUser(updateUserDto);
 
     if (either.isRight) {
       return const Right(null);
@@ -98,8 +98,15 @@ class AccountRepository {
     }
   }
 
+  Future<Either<ApiError, User>> updatePrivacy({required bool private}) async {
+    final updateUserDto = UpdateUserDto(privacyActivated: private);
+    final either = await _updateUser(updateUserDto);
+
+    return either.isRight ? Right(either.right) : Left(either.left);
+  }
+
   /// Update user information
-  Future<Either<ApiError, User>> updateUser(UpdateUserDto user) async {
+  Future<Either<ApiError, User>> _updateUser(UpdateUserDto user) async {
     final response = await _api.apiV1AccountPut(body: user);
 
     if (response.isSuccessful) {

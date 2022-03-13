@@ -1,4 +1,5 @@
 import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/widgets/components/section_title.dart';
 import 'package:coffeecard/widgets/components/settings_list_entry.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -6,8 +7,27 @@ import 'package:gap/gap.dart';
 class SettingsGroup extends StatelessWidget {
   final String title;
   final List<SettingListEntry> listItems;
+  final String? description;
 
-  const SettingsGroup({required this.title, required this.listItems});
+  const SettingsGroup({
+    required this.title,
+    required this.listItems,
+    this.description,
+  });
+
+  List<Widget> get _groupDescription {
+    final description = this.description; // Needed for promotion
+    if (description == null) return [];
+    return [
+      Padding(
+        padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
+        child: Text(
+          description,
+          style: AppTextStyle.explainer,
+        ),
+      ),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,11 +36,11 @@ class SettingsGroup extends StatelessWidget {
       children: [
         const Gap(16),
         Padding(
-          padding: const EdgeInsets.only(left: 16),
-          child: Text(title, style: AppTextStyle.sectionTitle),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: SectionTitle(title),
         ),
-        const Gap(8),
-        Column(children: listItems)
+        ...listItems,
+        ..._groupDescription,
       ],
     );
   }

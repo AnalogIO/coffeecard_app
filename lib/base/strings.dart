@@ -227,6 +227,10 @@ abstract class Strings {
   static const name = 'Name';
   static const occupation = 'Occupation';
   static const changeProfilePicture = 'Change profile picture';
+  static const appearAnonymous = 'Appear anonymous on leaderboard';
+  static const appearAnonymousSmall = 'Appear anonymous';
+  static const yourProfileDescription =
+      'These settings affect your appearance on the leaderboards.';
 
   static const madeBy = 'Made with ❤ by Analog IO\nIT University of Copenhagen';
   static const userID = 'User ID';

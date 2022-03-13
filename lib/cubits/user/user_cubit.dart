@@ -49,4 +49,17 @@ class UserCubit extends Cubit<UserState> {
       emit(UserError(either.left.errorMessage));
     }
   }
+
+  Future<void> setUserPrivacy({required bool privacyActived}) async {
+    emit(UserUpdating());
+
+    final either =
+        await accountRepository.updatePrivacy(private: privacyActived);
+
+    if (either.isRight) {
+      emit(UserLoaded(either.right));
+    } else {
+      emit(UserError(either.left.errorMessage));
+    }
+  }
 }
