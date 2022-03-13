@@ -52,7 +52,6 @@ class UserCubit extends Cubit<UserState> {
   }
 
   void requestAccountDeletion() {
-    //FIXME: uncomment when backend works
-    //_accountRepository.requestAccountDeletion();
+    _accountRepository.requestAccountDeletion();
   }
 }
