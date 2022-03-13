@@ -48,7 +48,7 @@ jobs:
         uses: actions/upload-artifact@v3.0.0
         with:
           name: ios
-          path: build/ios/iphoneos
+          path: build/ios/iphoneos/Payload.ipa
   build_apk:
     name: Build Android App
     runs-on: ubuntu-latest
