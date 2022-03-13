@@ -35,7 +35,7 @@ jobs:
       - name: Generate code
         run: scripts/.generate-code.sh code
       - name: Build iOS
-        run: flutter build ios --release --no-codesign
+        run: flutter build ipa --release --no-codesign
       - name: Upload iOS build
         uses: actions/upload-artifact@v3.0.0
         with:
