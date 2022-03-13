@@ -5,6 +5,8 @@ on:
     workflows: ["Flutter build and test"]
     type: [complete]
     branches: [develop]
+  
+  workflow_dispatch:
 
 jobs:
   build_ios:
