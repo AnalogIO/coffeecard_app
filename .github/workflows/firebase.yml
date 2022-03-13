@@ -96,7 +96,7 @@ jobs:
           appId: ${{ secrets.FIREBASE_IOS_APP_ID }}
           token: ${{ secrets.FIREBASE_TOKEN }}
           groups: analogio-devs
-          file: Runner.app
+          file: Payload.ipa
   upload_apk:
     name: Upload Android build to Firebase App Distribution
     runs-on: ubuntu-latest
