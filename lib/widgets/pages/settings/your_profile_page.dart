@@ -1,7 +1,6 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/user/user_cubit.dart';
-import 'package:coffeecard/errors/match_case_incomplete_exception.dart';
 import 'package:coffeecard/models/account/user.dart';
 import 'package:coffeecard/utils/responsive.dart';
 import 'package:coffeecard/widgets/components/loading.dart';
