@@ -13,8 +13,8 @@ class ReceiptOverlay {
     Navigator.of(_context).pop();
   }
 
-  void show(
-    Receipt receipt, {
+  void show({
+    required Receipt receipt,
     required bool isTestEnvironment,
     String? optionalText,
   }) {
@@ -22,7 +22,6 @@ class ReceiptOverlay {
       context: _context,
       barrierColor: AppColor.scrim,
       builder: (_) {
-<<<<<<< HEAD
         return Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -39,27 +38,6 @@ class ReceiptOverlay {
                 style: AppTextStyle.explainerBright,
               )
             ],
-=======
-        return Padding(
-          padding: const EdgeInsets.all(48),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ReceiptCard(
-                  productName: receipt.productName,
-                  time: receipt.timeUsed,
-                  isPurchase:
-                      receipt.transactionType == TransactionType.purchase,
-                  isInOverlay: true,
-                ),
-                Text(
-                  Strings.receiptTapAnywhereToDismiss,
-                  style: AppTextStyle.explainerBright,
-                )
-              ],
-            ),
->>>>>>> MobilePay spike (#171)
           ),
         );
       },

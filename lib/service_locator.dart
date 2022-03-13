@@ -13,10 +13,7 @@ import 'package:coffeecard/data/repositories/v1/programme_repository.dart';
 import 'package:coffeecard/data/repositories/v1/receipt_repository.dart';
 import 'package:coffeecard/data/repositories/v1/ticket_repository.dart';
 import 'package:coffeecard/data/repositories/v1/voucher_repository.dart';
-<<<<<<< HEAD
 import 'package:coffeecard/data/repositories/v2/app_config_repository.dart';
-=======
->>>>>>> Add redeem voucher view (#168)
 import 'package:coffeecard/data/repositories/v2/purchase_repository.dart';
 import 'package:coffeecard/data/storage/secure_storage.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.swagger.dart';

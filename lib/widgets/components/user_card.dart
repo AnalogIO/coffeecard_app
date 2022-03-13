@@ -15,49 +15,6 @@ class UserCard extends StatelessWidget {
     return BlocBuilder<UserCubit, UserState>(
       buildWhen: (_, current) => current is UserLoaded,
       builder: (context, state) {
-<<<<<<< HEAD
-        if (state is UserLoading) {
-          return const CircularProgressIndicator();
-        } else if (state is UserLoaded) {
-          return Card(
-            elevation: 2,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(24.0),
-            ),
-            child: Tappable(
-              onTap: () => SettingsFlow.push(SettingsFlow.yourProfileRoute),
-              borderRadius: BorderRadius.circular(24.0),
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const CircleAvatar(),
-                    const Gap(8),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            state.user.name,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: AppTextStyle.recieptItemKey,
-                          ),
-                          const Gap(3),
-                          Text(
-<<<<<<< HEAD
-                            state.user.programme.fullName,
-=======
-                            //FIXME: lookup ID
-                            '${state.user.programmeId}',
->>>>>>> Move user information to cubit (#157)
-                            style: AppTextStyle.explainer,
-                          ),
-                        ],
-                      ),
-=======
         if (state is! UserLoaded) return const SizedBox.shrink();
         return Card(
           elevation: 2,
@@ -86,12 +43,10 @@ class UserCard extends StatelessWidget {
                         ),
                         const Gap(3),
                         Text(
-                          //FIXME: lookup ID
-                          '${state.user.programmeId}',
+                          state.user.programme.fullName,
                           style: AppTextStyle.explainer,
                         ),
                       ],
->>>>>>> Add option to appear anonymous (#175)
                     ),
                   ),
                   const Gap(16),

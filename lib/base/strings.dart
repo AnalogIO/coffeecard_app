@@ -168,15 +168,6 @@ abstract class Strings {
   static const statCup = 'cup';
   static const statCups = 'cups';
 
-<<<<<<< HEAD
-  // Redeem Voucher
-  static const voucherHint = 'Enter a voucher code to redeem it.';
-  static const voucherCode = 'Voucher code';
-  static const voucherEmpty = 'Enter a voucher code';
-  static const voucherUsed = 'That voucher is already used';
-  static const youRedeemed = 'You redeemed';
-  static const voucherRedeemed = 'Voucher redeemed 🎉';
-=======
   // FIXME: no logic in this file
   static String formatLeaderboardPostfix(int rank) {
     final rankStr = rank.toString();
@@ -193,7 +184,6 @@ abstract class Strings {
         return 'th';
     }
   }
->>>>>>> Move user information to cubit (#157)
 
   // Redeem Voucher
   static const voucherHint = 'Enter a voucher code to redeem it.';

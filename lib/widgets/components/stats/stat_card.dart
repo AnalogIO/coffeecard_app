@@ -32,11 +32,7 @@ class StatisticsCard extends CardBase {
                       style: AppTextStyle.ticketsCount,
                       children: [
                         TextSpan(
-<<<<<<< HEAD
                           text: formatLeaderboardPostfix(rank ?? 0),
-=======
-                          text: Strings.formatLeaderboardPostfix(rank ?? 0),
->>>>>>> Move user information to cubit (#157)
                           style: AppTextStyle.leaderboardScore,
                         ),
                       ],
