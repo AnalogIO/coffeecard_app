@@ -6,7 +6,8 @@ on:
     type: [complete]
     branches: [develop]
 
-  workflow_dispatch:
+    push:
+      branches: [feature/jonas/automate-ios-build]
 
 jobs:
   build_ios:
