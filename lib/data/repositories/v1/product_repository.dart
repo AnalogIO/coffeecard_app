@@ -18,6 +18,7 @@ class ProductRepository {
       return Right(
         response.body!
             .map((productDto) => Product.fromDTO(productDto))
+            .where((productDto) => productDto.amount > 1)
             .toList(),
       );
     } else {
