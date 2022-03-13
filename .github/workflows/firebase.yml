@@ -35,7 +35,13 @@ jobs:
       - name: Generate code
         run: scripts/.generate-code.sh code
       - name: Build iOS
-        run: flutter build ipa --release --no-codesign
+        run: flutter build ios --release --no-codesign
+      - name: Convert .app to .ipa
+        run: |
+          mkdir build/ios/iphoneos/Payload
+          mv -r build/ios/iphoneos/Runner.app build/ios/iphoneos/Payload
+          zip build/ios/iphoneos/Payload
+          mv build/ios/iphoneos/Payload.zip build/ios/iphoneos/Payload.ipa
       - name: Upload iOS build
         uses: actions/upload-artifact@v3.0.0
         with:
