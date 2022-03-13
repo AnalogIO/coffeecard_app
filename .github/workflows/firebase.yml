@@ -40,7 +40,8 @@ jobs:
         run: |
           mkdir build/ios/iphoneos/Payload
           mv build/ios/iphoneos/Runner.app build/ios/iphoneos/Payload
-          zip build/ios/iphoneos/Payload
+          ls build/ios/iphoneos/Payload
+          zip -r build/ios/iphoneos/Payload/Payload.zip build/ios/iphoneos/Payload
           mv build/ios/iphoneos/Payload.zip build/ios/iphoneos/Payload.ipa
       - name: Upload iOS build
         uses: actions/upload-artifact@v3.0.0
