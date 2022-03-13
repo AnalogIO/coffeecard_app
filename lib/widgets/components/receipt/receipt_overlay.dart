@@ -13,8 +13,8 @@ class ReceiptOverlay {
     Navigator.of(_context).pop();
   }
 
-  void show({
-    required Receipt receipt,
+  void show(
+    Receipt receipt, {
     required bool isTestEnvironment,
     String? optionalText,
   }) {

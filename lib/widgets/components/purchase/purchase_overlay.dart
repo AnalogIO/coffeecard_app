@@ -11,6 +11,8 @@ import 'package:coffeecard/widgets/components/receipt/receipt_overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../cubits/environment/environment_cubit.dart';
+
 class PurchaseOverlay {
   final BuildContext _context;
 
@@ -60,6 +62,7 @@ class PurchaseOverlay {
                       price: payment.price,
                       id: product.id,
                     ),
+                    isTestEnvironment: true,
                   );
                   await updateTicketsRequest;
                   await updateReceiptsRequest;
