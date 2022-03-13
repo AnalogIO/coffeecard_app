@@ -18,21 +18,25 @@ class ReceiptOverlay {
       context: _context,
       barrierColor: AppColor.scrim,
       builder: (_) {
-        return Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ReceiptCard(
-                productName: receipt.productName,
-                time: receipt.timeUsed,
-                isPurchase: receipt.transactionType == TransactionType.purchase,
-                isInOverlay: true,
-              ),
-              Text(
-                Strings.receiptTapAnywhereToDismiss,
-                style: AppTextStyle.explainerBright,
-              )
-            ],
+        return Padding(
+          padding: const EdgeInsets.all(48),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ReceiptCard(
+                  productName: receipt.productName,
+                  time: receipt.timeUsed,
+                  isPurchase:
+                      receipt.transactionType == TransactionType.purchase,
+                  isInOverlay: true,
+                ),
+                Text(
+                  Strings.receiptTapAnywhereToDismiss,
+                  style: AppTextStyle.explainerBright,
+                )
+              ],
+            ),
           ),
         );
       },

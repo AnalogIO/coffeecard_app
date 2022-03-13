@@ -1,4 +1,3 @@
-import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/widgets/components/card.dart';
@@ -33,7 +32,7 @@ class StatisticsCard extends CardBase {
                       style: AppTextStyle.ticketsCount,
                       children: [
                         TextSpan(
-                          text: Strings.formatLeaderboardPostfix(rank ?? 0),
+                          text: formatLeaderboardPostfix(rank ?? 0),
                           style: AppTextStyle.leaderboardScore,
                         ),
                       ],
@@ -44,4 +43,21 @@ class StatisticsCard extends CardBase {
             ),
           ),
         );
+}
+
+String formatLeaderboardPostfix(int rank) {
+  const def = 'th';
+
+  if (rank > 10 && rank < 20) return def;
+
+  switch (rank % 10) {
+    case 1:
+      return 'st';
+    case 2:
+      return 'nd';
+    case 3:
+      return 'rd';
+    default:
+      return def;
+  }
 }

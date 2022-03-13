@@ -3,6 +3,7 @@ import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/user/user_cubit.dart';
 import 'package:coffeecard/errors/match_case_incomplete_exception.dart';
 import 'package:coffeecard/models/account/user.dart';
+import 'package:coffeecard/widgets/components/loading.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:coffeecard/widgets/components/settings_group.dart';
 import 'package:coffeecard/widgets/components/settings_list_entry.dart';
@@ -18,17 +19,23 @@ class YourProfilePage extends StatelessWidget {
     return AppScaffold.withTitle(
       title: Strings.yourProfilePageTitle,
       body: BlocBuilder<UserCubit, UserState>(
-        builder: (context, state) {
-          if (state is UserLoading) {
-            return const SizedBox.shrink();
-          } else if (state is UserLoaded) {
-            return _EditProfile(state.user);
-          } else if (state is UserError) {
-            //FIXME: display error
-            return const SizedBox.shrink();
-          }
+        buildWhen: (_, current) => current is UserLoaded,
+        builder: (_, userLoadedState) {
+          if (userLoadedState is! UserLoaded) return const SizedBox.shrink();
 
-          throw MatchCaseIncompleteException(this);
+          return BlocBuilder<UserCubit, UserState>(
+            buildWhen: (previous, current) =>
+                previous is UserUpdating || current is UserUpdating,
+            builder: (context, state) {
+              return Loading(
+                loading: state is UserUpdating,
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.only(bottom: 36),
+                  child: _EditProfile(user: userLoadedState.user),
+                ),
+              );
+            },
+          );
         },
       ),
     );
@@ -36,9 +43,8 @@ class YourProfilePage extends StatelessWidget {
 }
 
 class _EditProfile extends StatelessWidget {
+  const _EditProfile({required this.user});
   final User user;
-
-  const _EditProfile(this.user);
 
   @override
   Widget build(BuildContext context) {
@@ -61,8 +67,10 @@ class _EditProfile extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               const Gap(8),
-              //FIXME: lookup on programme id
-              Text('${state.user.programmeId}', style: AppTextStyle.explainer),
+              Text(
+                '${state.user.programme.fullName} (${state.user.programme.shortName})',
+                style: AppTextStyle.explainer,
+              ),
               const Gap(24),
               SettingsGroup(
                 title: Strings.settingsGroupProfile,
@@ -74,9 +82,9 @@ class _EditProfile extends StatelessWidget {
                   ),
                   SettingListEntry(
                     name: Strings.occupation,
-                    //FIXME: lookup on programme id
-                    valueWidget:
-                        SettingDescription(text: '${state.user.programmeId}'),
+                    valueWidget: SettingDescription(
+                      text: state.user.programme.shortName,
+                    ),
                     onTap: () {},
                   ),
                   SettingListEntry(

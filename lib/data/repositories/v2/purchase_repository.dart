@@ -17,9 +17,9 @@ class PurchaseRepository {
     PaymentType paymentType,
   ) async {
     final response = await _api.apiV2PurchasesPost(
-      body: InitatePurchaseRequest(
+      body: InitiatePurchaseRequest(
         productId: productId,
-        paymentType: paymentType,
+        paymentType: paymentTypeToJson(paymentType),
       ),
     );
 
@@ -32,7 +32,8 @@ class PurchaseRepository {
   }
 
   /// Get all user's purchases
-  Future<Either<ApiError, List<Purchase>>> getAllPurchases() async {
+  Future<Either<ApiError, List<SinglePurchaseResponse>>>
+      getAllPurchases() async {
     final response = await _api.apiV2PurchasesGet();
 
     if (response.isSuccessful) {
@@ -44,9 +45,11 @@ class PurchaseRepository {
   }
 
   /// Get a purchase by its purchase id
-  Future<Either<ApiError, Purchase>> getPurchase(int purchaseId) async {
+  Future<Either<ApiError, SinglePurchaseResponse>> getPurchase(
+    int purchaseId,
+  ) async {
     final response = await _api.apiV2PurchasesIdGet(
-      id: purchaseId.toString(),
+      id: purchaseId,
     );
 
     if (response.isSuccessful) {

@@ -1,121 +1,103 @@
-part of 'payment_handler.dart';
+import 'dart:io';
+
+import 'package:coffeecard/data/repositories/v2/purchase_repository.dart';
+import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.swagger.dart';
+import 'package:coffeecard/models/api/api_error.dart';
+import 'package:coffeecard/models/purchase/payment.dart';
+import 'package:coffeecard/models/purchase/payment_status.dart';
+import 'package:coffeecard/payment/payment_handler.dart';
+import 'package:coffeecard/utils/either.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MobilePayService implements PaymentHandler {
-  static const platform = MethodChannel('analog.mobilepay');
+  final PurchaseRepository _repository;
 
-  final BuildContext context;
+  MobilePayService(this._repository);
 
-  MobilePayService(this.context);
+  @override
+  Future<Either<ApiError, Payment>> initPurchase(int productId) async {
+    final response =
+        await _repository.initiatePurchase(productId, PaymentType.mobilepay);
 
-  //FIXME: handle BuildContext in a smarter way?
-  Future<void> _callbackHandler(MethodCall call) async {
-    switch (call.method) {
-      case 'onSuccess':
-        onSuccess(context);
-        break;
-      case 'onFailure':
-        onFailure(context);
-        break;
-      case 'onCancel':
-        onCancel(context);
-        break;
+    if (response is Right) {
+      final purchaseResponse = response.right;
+      final paymentDetails = MobilePayPaymentDetails.fromJsonFactory(
+        purchaseResponse.paymentDetails as Map<String, dynamic>,
+      );
+
+      return Right(
+        Payment(
+          id: purchaseResponse.id!,
+          paymentId: paymentDetails.paymentId!,
+          status: PaymentStatus.awaitingPayment,
+          deeplink: paymentDetails.mobilePayAppRedirectUri!,
+          purchaseTime: purchaseResponse.dateCreated!,
+          price: purchaseResponse.totalAmount!,
+        ),
+      );
+    }
+    return Left(response.left);
+  }
+
+  Future<void> invokeMobilePay(String mobilePayDeeplink) async {
+    if (await canLaunch(mobilePayDeeplink)) {
+      await launch(mobilePayDeeplink, forceSafariVC: false);
+    } else {
+      // MobilePay not installed, send user to appstore
+      final String url;
+
+      if (Platform.isAndroid) {
+        //FIXME: should these URL's be stored somewhere?
+        url = 'market://details?id=dk.danskebank.mobilepay';
+      } else if (Platform.isIOS) {
+        url = 'itms-apps://itunes.apple.com/app/id624499138';
+      } else {
+        throw 'Could not launch $mobilePayDeeplink';
+      }
+
+      await launch(url);
     }
   }
 
   @override
-  void onSuccess(BuildContext context) {
-    //FIXME: use real logic
-    showDialog(
-      context: context,
-      builder: (context) {
-        return const PopupCard(title: 'Success', content: 'Looks good?');
-      },
-    );
-  }
-
-  @override
-  void onFailure(BuildContext context) {
-    //FIXME: use real logic
-    showDialog(
-      context: context,
-      builder: (context) {
-        return const PopupCard(title: 'Failure', content: 'Looks good?');
-      },
-    );
-  }
-
-  @override
-  void onCancel(BuildContext context) {
-    //FIXME: use real logic
-    showDialog(
-      context: context,
-      builder: (context) {
-        return const PopupCard(title: 'Cancel', content: 'Looks good?');
-      },
-    );
-  }
-
-  @override
-  Future<Payment> initPurchase(int productId) async {
-    // ignore: unused_local_variable
-    final PurchaseRepository _purchaseRepository = sl.get<PurchaseRepository>();
-    // Call coffeecard API with productId
-    //errors:
-    //  networkerror: retry?
-    //  else:         log and report error
-
-    // Receive mobilepayId and deeplink from API
-    //FIXME: call api
-    final InitiatePurchaseResponse response = InitiatePurchaseResponse(
-      id: 122,
-      dateCreated: DateTime.now(),
-      productId: 1,
-      totalAmount: 100,
-      purchaseStatus: 'PendingPayment',
-      paymentDetails: {
-        'paymentType': 'MobilePay',
-        'orderId': 'f5cb3e0f-3b9b-4f50-8c4f-a7450f300a5c',
-        'mobilePayAppRedirectUri':
-            'mobilepay://merchant_payments?payment_id=186d2b31-ff25-4414-9fd1-bfe9807fa8b7',
-        'paymentId': '186d2b31-ff25-4414-9fd1-bfe9807fa8b7'
-      },
-    );
-    //await _purchaseRepositoryinitiatePurchase(productId, PaymentType.mobilepay);
-
-    final Map<String, String> paymentDetails =
-        response.paymentDetails as Map<String, String>;
-
-    return Payment(
-      paymentId: paymentDetails['paymentId']!,
-      deeplink: paymentDetails['mobilePayAppRedirectUri']!,
-    );
-  }
-
-  //FIXME: should use mobilepay deeplink
-  void invokeMobilePay(String paymentId, int price) {
-    platform.setMethodCallHandler(_callbackHandler);
-
-    // Open Mobilepay app with paymentId and deeplink
-    platform.invokeMethod(
-      'openMobilepay',
-      {'price': price.toDouble(), 'orderId': paymentId},
-    );
-  }
-
-  @override
-  Future<PaymentStatus> verifyPurchaseOrRetry(
+  Future<Either<ApiError, PaymentStatus>> verifyPurchase(
     int purchaseId,
   ) async {
-    final PurchaseRepository _purchaseRepository = sl.get<PurchaseRepository>();
-
     // Call API endpoint, receive PaymentStatus
-    final either = await _purchaseRepository.getPurchase(purchaseId);
+    final either = await _repository.getPurchase(purchaseId);
 
     if (either.isRight) {
-      return either.right.purchaseStatus as PaymentStatus;
+      final paymentDetails = MobilePayPaymentDetails.fromJsonFactory(
+        either.right.paymentDetails as Map<String, dynamic>,
+      );
+
+      final status = _mapPaymentStateToStatus(paymentDetails.state!);
+      if (status == PaymentStatus.completed) {
+        return const Right(PaymentStatus.completed);
+      }
+      //TODO Cover more cases for PaymentStatus
+      return const Right(PaymentStatus.error);
     }
 
-    //FIXME
-    throw Exception('not implemented');
+    return Left(either.left);
+  }
+
+  PaymentStatus _mapPaymentStateToStatus(String state) {
+    PaymentStatus status;
+    switch (state) {
+      case 'Initiated':
+        status = PaymentStatus.awaitingPayment;
+        break;
+      case 'Reserved':
+        status = PaymentStatus.reserved;
+        break;
+      case 'Captured':
+        status = PaymentStatus.completed;
+        break;
+      default: //cancelledByMerchant, cancelledBySystem, cancelledByUser
+        status = PaymentStatus.rejectedPayment;
+        break;
+    }
+    return status;
   }
 }

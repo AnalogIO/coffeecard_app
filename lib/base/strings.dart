@@ -114,6 +114,16 @@ abstract class Strings {
     return '$price,-';
   }
 
+  // Purchase process
+  static const purchaseErrorOk = 'Ok';
+  static const purchaseTalking = 'Talking with payment provider';
+  static const purchaseCompleting = 'Completing purchase';
+  static const purchaseSuccess = 'Success';
+  static const purchaseRejectedOrCanceled = 'Payment rejected or canceled';
+  static const purchaseRejectedOrCanceledMessage =
+      'The payment was rejected or cancelled. No tickets have been added to your account';
+  static const purchaseError = "Uh oh, we couldn't complete that purchase";
+
   // Receipts
   static const receiptsPageTitle = 'Receipts';
   static const singleReceiptPageTitle = 'Receipt';
@@ -158,23 +168,6 @@ abstract class Strings {
   static const statCup = 'cup';
   static const statCups = 'cups';
 
-  // FIXME: no logic in this file
-  static String formatLeaderboardPostfix(int rank) {
-    final rankStr = rank.toString();
-    final lastDigit = rankStr[rankStr.length - 1];
-
-    switch (lastDigit) {
-      case '1':
-        return 'st';
-      case '2':
-        return 'nd';
-      case '3':
-        return 'rd';
-      default:
-        return 'th';
-    }
-  }
-
   // Redeem Voucher
   static const voucherHint = 'Enter a voucher code to redeem it.';
   static const voucherCode = 'Voucher code';
@@ -207,6 +200,10 @@ abstract class Strings {
   static const name = 'Name';
   static const occupation = 'Occupation';
   static const changeProfilePicture = 'Change profile picture';
+  static const appearAnonymous = 'Appear anonymous on leaderboard';
+  static const appearAnonymousSmall = 'Appear anonymous';
+  static const yourProfileDescription =
+      'These settings affect your appearance on the leaderboards.';
 
   static const madeBy = 'Made with ❤ by Analog IO\nIT University of Copenhagen';
   static const userID = 'User ID';

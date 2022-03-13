@@ -7,6 +7,7 @@ class User extends Equatable {
   final String email;
   final bool privacyActivated;
   final int programmeId;
+  final ProgrammeInfo programme;
   final int rankMonth;
   final int rankSemester;
   final int rankTotal;
@@ -17,6 +18,7 @@ class User extends Equatable {
     required this.email,
     required this.privacyActivated,
     required this.programmeId,
+    this.programme = const ProgrammeInfo('None', 'None'),
     required this.rankMonth,
     required this.rankSemester,
     required this.rankTotal,
@@ -28,9 +30,35 @@ class User extends Equatable {
         email = dto.email!,
         privacyActivated = dto.privacyActivated!,
         programmeId = dto.programmeId!,
+        programme = const ProgrammeInfo('None', 'None'),
         rankMonth = dto.rankMonth!,
         rankSemester = dto.rankSemester!,
         rankTotal = dto.rankAllTime!;
+
+  User copyWith({
+    int? id,
+    String? name,
+    String? email,
+    bool? privacyActivated,
+    int? programmeId,
+    ProgrammeInfo? programme,
+    int? rankMonth,
+    int? rankSemester,
+    int? rankTotal,
+  }) {
+    return User(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      email: email ?? this.email,
+      privacyActivated: privacyActivated ?? this.privacyActivated,
+      programmeId: programmeId ?? this.programmeId,
+      programme: programme ?? this.programme,
+      rankMonth: rankMonth ?? this.rankMonth,
+      rankSemester: rankSemester ?? this.rankSemester,
+      rankTotal: rankTotal ?? this.rankTotal,
+    );
+  }
+
   @override
   List<Object?> get props {
     return [
@@ -44,4 +72,11 @@ class User extends Equatable {
       rankTotal,
     ];
   }
+}
+
+class ProgrammeInfo {
+  final String shortName;
+  final String fullName;
+
+  const ProgrammeInfo(this.shortName, this.fullName);
 }

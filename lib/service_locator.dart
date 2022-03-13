@@ -1,16 +1,19 @@
 import 'package:chopper/chopper.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
+import 'package:coffeecard/cubits/receipt/receipt_cubit.dart';
+import 'package:coffeecard/cubits/tickets_page/tickets_cubit.dart';
 import 'package:coffeecard/data/api/coffee_card_api_constants.dart';
 import 'package:coffeecard/data/api/interceptors/authentication_interceptor.dart';
 import 'package:coffeecard/data/repositories/shiftplanning/opening_hours_repository.dart';
 import 'package:coffeecard/data/repositories/v1/account_repository.dart';
-import 'package:coffeecard/data/repositories/v1/app_config_repository.dart';
 import 'package:coffeecard/data/repositories/v1/coffeecard_repository.dart';
 import 'package:coffeecard/data/repositories/v1/leaderboard_repository.dart';
 import 'package:coffeecard/data/repositories/v1/product_repository.dart';
+import 'package:coffeecard/data/repositories/v1/programme_repository.dart';
 import 'package:coffeecard/data/repositories/v1/receipt_repository.dart';
 import 'package:coffeecard/data/repositories/v1/ticket_repository.dart';
 import 'package:coffeecard/data/repositories/v1/voucher_repository.dart';
+import 'package:coffeecard/data/repositories/v2/app_config_repository.dart';
 import 'package:coffeecard/data/repositories/v2/purchase_repository.dart';
 import 'package:coffeecard/data/storage/secure_storage.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.swagger.dart';
@@ -81,8 +84,8 @@ void configureServices() {
     () => ReceiptRepository(sl<CoffeecardApi>(), sl<Logger>()),
   );
 
-  sl.registerFactory<AppConfigRepository>(
-    () => AppConfigRepository(sl<CoffeecardApiV2>(), sl<Logger>()),
+  sl.registerFactory<ProgrammeRepository>(
+    () => ProgrammeRepository(sl<CoffeecardApi>(), sl<Logger>()),
   );
 
   sl.registerFactory<TicketRepository>(
@@ -110,8 +113,21 @@ void configureServices() {
     () => PurchaseRepository(sl<CoffeecardApiV2>(), sl<Logger>()),
   );
 
+  sl.registerFactory<AppConfigRepository>(
+    () => AppConfigRepository(sl<CoffeecardApiV2>(), sl<Logger>()),
+  );
+
   // shiftplanning
   sl.registerFactory<OpeningHoursRepository>(
     () => OpeningHoursRepository(sl<ShiftplanningApi>(), sl<Logger>()),
+  );
+
+  // Tickets, other pages need to be able to send requests to refresh it
+  sl.registerSingleton<TicketsCubit>(
+    TicketsCubit(sl.get<TicketRepository>()),
+  );
+  // Receipts, other pages need to be able to send requests to refresh it
+  sl.registerSingleton<ReceiptCubit>(
+    ReceiptCubit(sl.get<ReceiptRepository>()),
   );
 }
