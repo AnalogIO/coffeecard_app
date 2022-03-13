@@ -43,7 +43,7 @@ jobs:
           ls build/ios/iphoneos/Payload
           zip -r Payload.zip build/ios/iphoneos/Payload
           ls
-          mv build/ios/iphoneos/Payload.zip build/ios/iphoneos/Payload.ipa
+          mv Payload.zip build/ios/iphoneos/Payload.ipa
       - name: Upload iOS build
         uses: actions/upload-artifact@v3.0.0
         with:
