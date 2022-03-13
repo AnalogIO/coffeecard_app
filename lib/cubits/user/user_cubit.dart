@@ -2,6 +2,8 @@ import 'package:bloc/bloc.dart';
 import 'package:coffeecard/data/repositories/shared/account_repository.dart';
 import 'package:coffeecard/data/repositories/v1/programme_repository.dart';
 import 'package:coffeecard/models/account/user.dart';
+import 'package:coffeecard/models/api/api_error.dart';
+import 'package:coffeecard/utils/either.dart';
 import 'package:equatable/equatable.dart';
 
 part 'user_state.dart';
@@ -19,23 +21,33 @@ class UserCubit extends Cubit<UserState> {
     final either = await _accountRepository.getUser();
 
     if (either.isRight) {
-      var user = either.right;
+      final either2 = await _enrichWithProgramme(either.right);
 
-      final programmes = await _programmeRepository.getProgramme();
-
-      if (programmes.isRight) {
-        final p = programmes.right
-            .firstWhere((element) => element.id == user.programmeId);
-
-        user = user.copyWith(
-          programme: ProgrammeInfo(p.shortName!, p.fullName!),
-        );
+      if (either2.isRight) {
+        emit(UserLoaded(either2.right));
+      } else {
+        emit(UserError(either2.left.errorMessage));
       }
-
-      emit(UserLoaded(user));
     } else {
       emit(UserError(either.left.errorMessage));
     }
+  }
+
+  Future<Either<ApiError, User>> _enrichWithProgramme(User user) async {
+    final programmes = await _programmeRepository.getProgramme();
+
+    if (programmes.isRight) {
+      final p = programmes.right
+          .firstWhere((element) => element.id == user.programmeId);
+
+      return Right(
+        user.copyWith(
+          programme: ProgrammeInfo(p.shortName!, p.fullName!),
+        ),
+      );
+    }
+
+    return Left(programmes.left);
   }
 
   Future<void> setUserPrivacy({required bool privacyActived}) async {
@@ -45,7 +57,13 @@ class UserCubit extends Cubit<UserState> {
         await _accountRepository.updatePrivacy(private: privacyActived);
 
     if (either.isRight) {
-      emit(UserLoaded(either.right));
+      final user2 = await _enrichWithProgramme(either.right);
+
+      if (user2.isRight) {
+        emit(UserLoaded(user2.right));
+      } else {
+        emit(UserError(user2.left.errorMessage));
+      }
     } else {
       emit(UserError(either.left.errorMessage));
     }
@@ -54,11 +72,16 @@ class UserCubit extends Cubit<UserState> {
   Future<void> setUserName(String name) async {
     emit(UserUpdating());
 
-    final either =
-        await accountRepository.updateUserName(name);
+    final either = await _accountRepository.updateUserName(name);
 
     if (either.isRight) {
-      emit(UserLoaded(either.right));
+      final user2 = await _enrichWithProgramme(either.right);
+
+      if (user2.isRight) {
+        emit(UserLoaded(user2.right));
+      } else {
+        emit(UserError(user2.left.errorMessage));
+      }
     } else {
       emit(UserError(either.left.errorMessage));
     }

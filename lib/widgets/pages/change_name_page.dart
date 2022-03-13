@@ -1,4 +1,3 @@
-import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/cubits/user/user_cubit.dart';
 import 'package:coffeecard/widgets/components/continue_button.dart';
 import 'package:coffeecard/widgets/components/forms/text_field.dart';

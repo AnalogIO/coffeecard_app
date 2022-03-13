@@ -76,7 +76,7 @@ class _EditProfile extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (BuildContext context) => ChangeNamePage(
-                      initialValue: state.user.name,
+                      initialValue: user.name,
                     ),
                   ),
                 );
