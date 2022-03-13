@@ -28,7 +28,7 @@ jobs:
           channel: "stable"
       - name: Download dependencies
         run: flutter pub get
-      - name: Decode google-services.json
+      - name: Decode GoogleService-Info.plist
         env:
           SERVICES_JSON: ${{ secrets.FIREBASE_IOS_SERVICES_JSON }}
         run: echo $SERVICES_JSON > ios/Runner/GoogleService-Info.plist
@@ -36,7 +36,7 @@ jobs:
         run: scripts/.generate-code.sh code
       - name: Build iOS
         run: flutter build ios --release --no-codesign
-      - name: Upload iOS artefact
+      - name: Upload iOS build
         uses: actions/upload-artifact@v3.0.0
         with:
           name: ios
@@ -95,7 +95,7 @@ jobs:
     needs: [build_apk]
 
     steps:
-      - name: Download Artifact
+      - name: Download artifact
         uses: actions/download-artifact@v3.0.0
         with:
           name: android
@@ -105,4 +105,4 @@ jobs:
           appId: ${{ secrets.FIREBASE_ANDROID_APP_ID }}
           token: ${{ secrets.FIREBASE_TOKEN }}
           groups: analogio-devs
-          file: app-release.aap
+          file: app-release.apk
