@@ -194,11 +194,12 @@ abstract class Strings {
   static const deleteAccount = 'Delete account';
 
   static const deleteAccountText =
-      'Performing this action will delete your account and any tickets you own. This cannot be undone, are you sure you want to proceed?';
-  static String deleteAccountEmailConfirmation(String email) {
-    return 'We have sent a verification link to $email. Please confirm your request to delete your account using the provided link';
-  }
-  
+      'Performing this action will delete your account and any tickets you own.\n\nThis cannot be undone.\n\nAre you sure you want to proceed?';
+  static String deleteAccountEmailConfirmation(String email) =>
+      'We have sent a verification link to $email.\n\nPlease confirm your request to delete your account using the provided link.';
+
+  static const signInWithFingerprint = 'Sign in with fingerprint';
+
   static const faq = 'Frequently Asked Questions';
   static const openingHours = 'Opening hours';
   static const today = 'Today';

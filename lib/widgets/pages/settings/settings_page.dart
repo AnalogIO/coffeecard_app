@@ -112,7 +112,7 @@ void _showDeleteAccountDialog(BuildContext context, String email) {
   appDialog(
     context: context,
     title: Strings.deleteAccount,
-    children: [const Text(Strings.deleteAccountText)],
+    children: const [Text(Strings.deleteAccountText)],
     actions: <Widget>[
       TextButton(
         child: const Text(
