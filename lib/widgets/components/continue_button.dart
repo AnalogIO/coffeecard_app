@@ -1,4 +1,4 @@
-import 'package:coffeecard/widgets/components/rounded_button.dart';
+import 'package:coffeecard/widgets/components/tickets/rounded_button.dart';
 import 'package:flutter/material.dart';
 
 class ContinueButton extends StatelessWidget {
@@ -15,8 +15,7 @@ class ContinueButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return RoundedButton(
       text: 'Continue',
-      onPressed: onPressed,
-      disabled: !enabled,
+      onTap: onPressed,
     );
   }
 }

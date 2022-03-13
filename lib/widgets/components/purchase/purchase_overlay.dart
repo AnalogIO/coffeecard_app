@@ -2,13 +2,14 @@ import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/cubits/environment/environment_cubit.dart';
 import 'package:coffeecard/cubits/purchase/purchase_cubit.dart';
 import 'package:coffeecard/cubits/receipt/receipt_cubit.dart';
-import 'package:coffeecard/cubits/tickets_page/tickets_cubit.dart';
+import 'package:coffeecard/cubits/tickets/tickets_cubit.dart';
 import 'package:coffeecard/models/receipts/receipt.dart';
 import 'package:coffeecard/models/ticket/product.dart';
 import 'package:coffeecard/payment/payment_handler.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/widgets/components/purchase/purchase_process.dart';
 import 'package:coffeecard/widgets/components/receipt/receipt_overlay.dart';
+import 'package:coffeecard/widgets/routers/tickets_flow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -44,6 +45,7 @@ class PurchaseOverlay {
                     //Gets the user back to the home-screen of the app
                     navigator.pop();
                   }
+                  TicketsFlow.pop();
                   //TODO Consider if these calls should be moved elsewhere, e.g. inside the purchase cubit
                   final ticketCubit = sl.get<TicketsCubit>();
                   final updateTicketsRequest = ticketCubit.getTickets();

@@ -10,8 +10,12 @@ class CoffeeCard extends CardBase {
   final int amountOwned;
   final int productId;
 
-  CoffeeCard({Key? key, required this.title, required this.amountOwned, required this.productId})
-      : super(
+  CoffeeCard({
+    Key? key,
+    required this.title,
+    required this.amountOwned,
+    required this.productId,
+  }) : super(
           key: key,
           color: AppColor.ticket,
           top: CardTitle(
@@ -24,6 +28,7 @@ class CoffeeCard extends CardBase {
           gap: 36,
           onTap: (context) {
             showModalBottomSheet(
+              useRootNavigator: true,
               enableDrag: false,
               context: context,
               builder: (builder) {
@@ -60,7 +65,9 @@ class _TicketDots extends StatelessWidget {
                 width: 14,
                 height: 14,
                 decoration: BoxDecoration(
-                  color: (amountOwned > index) ? AppColor.secondary : Colors.transparent,
+                  color: (amountOwned > index)
+                      ? AppColor.secondary
+                      : Colors.transparent,
                   borderRadius: BorderRadius.circular(14),
                   border: Border.all(color: AppColor.primary, width: 2),
                 ),
@@ -69,7 +76,8 @@ class _TicketDots extends StatelessWidget {
           ),
         ),
         const Gap(8),
-        if (amountOwned > 10) Text('+${amountOwned - 10}', style: AppTextStyle.ticketsOverflow)
+        if (amountOwned > 10)
+          Text('+${amountOwned - 10}', style: AppTextStyle.ticketsOverflow)
       ],
     );
   }

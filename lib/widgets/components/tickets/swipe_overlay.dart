@@ -1,4 +1,4 @@
-import 'package:coffeecard/cubits/tickets_page/tickets_cubit.dart';
+import 'package:coffeecard/cubits/tickets/tickets_cubit.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/widgets/components/tickets/slide_button.dart';
 import 'package:flutter/cupertino.dart';

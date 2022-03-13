@@ -23,7 +23,8 @@ class BuyTicketsLoaded extends BuyTicketsState {
 class BuyTicketsFiltered extends BuyTicketsLoaded {
   final List<ProductDto> filteredProducts;
 
-  const BuyTicketsFiltered(List<ProductDto> products, this.filteredProducts) : super(products);
+  const BuyTicketsFiltered(List<ProductDto> products, this.filteredProducts)
+      : super(products);
 
   @override
   List<Object?> get props => [products, filteredProducts];

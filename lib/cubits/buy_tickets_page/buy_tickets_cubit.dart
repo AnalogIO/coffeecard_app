@@ -31,9 +31,11 @@ class BuyTicketsCubit extends Cubit<BuyTicketsState> {
       final products = (state as BuyTicketsLoaded).products;
       List<ProductDto> filteredProducts;
       if (filterCategory == FilterCategory.clipCards) {
-        filteredProducts = products.where((p) => p.numberOfTickets != 1).toList();
+        filteredProducts =
+            products.where((p) => p.numberOfTickets != 1).toList();
       } else if (filterCategory == FilterCategory.singleTickets) {
-        filteredProducts = products.where((p) => p.numberOfTickets == 1).toList();
+        filteredProducts =
+            products.where((p) => p.numberOfTickets == 1).toList();
       } else {
         filteredProducts = [];
       }

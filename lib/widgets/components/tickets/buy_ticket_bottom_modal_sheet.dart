@@ -73,7 +73,12 @@ class _ModalContent extends StatelessWidget {
                 style: AppTextStyle.price,
               ),
               const Gap(12),
-              _ButtonModalSheetButtonBar(productId: productId, price: price, amount: amount, productName: title,),
+              _ButtonModalSheetButtonBar(
+                productId: productId,
+                price: price,
+                amount: amount,
+                productName: title,
+              ),
             ],
           ),
         ),
@@ -166,7 +171,9 @@ class _ButtomModalSheetButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: (disabled && disabledText != null) ? _withDisabledText(_button, disabledText!) : _button,
+      child: (disabled && disabledText != null)
+          ? _withDisabledText(_button, disabledText!)
+          : _button,
     );
   }
 }
@@ -178,7 +185,8 @@ class _ButtomModalSheetHelper extends StatefulWidget {
   State<StatefulWidget> createState() => _ButtomModalSheetHelperState();
 }
 
-class _ButtomModalSheetHelperState extends State<_ButtomModalSheetHelper> with SingleTickerProviderStateMixin {
+class _ButtomModalSheetHelperState extends State<_ButtomModalSheetHelper>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
 

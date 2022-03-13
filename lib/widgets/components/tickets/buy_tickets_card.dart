@@ -1,9 +1,7 @@
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
-import 'package:coffeecard/models/ticket/product.dart';
 import 'package:coffeecard/utils/responsive.dart';
 import 'package:coffeecard/widgets/components/card.dart';
-import 'package:coffeecard/widgets/components/purchase/purchase_overlay.dart';
 import 'package:coffeecard/widgets/components/tickets/buy_ticket_bottom_modal_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
