@@ -11,7 +11,7 @@ import 'package:coffeecard/widgets/components/receipt/receipt_overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../cubits/environment/environment_cubit.dart';
+import 'package:coffeecard/cubits/environment/environment_cubit.dart';
 
 class PurchaseOverlay {
   final BuildContext _context;
@@ -50,6 +50,7 @@ class PurchaseOverlay {
                   final updateTicketsRequest = ticketCubit.getTickets();
                   final receiptCubit = sl.get<ReceiptCubit>();
                   final updateReceiptsRequest = receiptCubit.fetchReceipts();
+                  final env = context.read<EnvironmentCubit>().state;
 
                   final payment = state.payment;
                   ReceiptOverlay.of(context).show(
@@ -62,7 +63,8 @@ class PurchaseOverlay {
                       price: payment.price,
                       id: product.id,
                     ),
-                    isTestEnvironment: true,
+                    isTestEnvironment:
+                        env is EnvironmentLoaded && env.isTestEnvironment,
                   );
                   await updateTicketsRequest;
                   await updateReceiptsRequest;
