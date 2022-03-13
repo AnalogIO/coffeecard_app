@@ -7,11 +7,11 @@ class SettingListEntry extends StatelessWidget {
   final String name;
   final Widget? valueWidget;
   final bool destructive;
-  final void Function() onTap;
+  final void Function()? onTap;
 
   const SettingListEntry({
     required this.name,
-    required this.onTap,
+    this.onTap,
     this.valueWidget,
     this.destructive = false,
   });
