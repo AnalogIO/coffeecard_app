@@ -1,7 +1,9 @@
 import 'package:coffeecard/base/strings.dart';
+import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
 import 'package:coffeecard/cubits/user/user_cubit.dart';
+import 'package:coffeecard/widgets/components/dialog.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:coffeecard/widgets/components/settings_group.dart';
 import 'package:coffeecard/widgets/components/settings_list_entry.dart';
@@ -61,7 +63,9 @@ class SettingsPage extends StatelessWidget {
                   SettingListEntry(
                     name: Strings.deleteAccount,
                     destructive: true,
-                    onTap: () {},
+                    onTap: () {
+                      _showDeleteAccountDialog(context, state.user.email);
+                    },
                   ),
                 ],
               ),
@@ -102,4 +106,42 @@ class SettingsPage extends StatelessWidget {
       ),
     );
   }
+}
+
+void _showDeleteAccountDialog(BuildContext context, String email) {
+  appDialog(
+    context: context,
+    title: Strings.deleteAccount,
+    children: const [Text(Strings.deleteAccountText)],
+    actions: <Widget>[
+      TextButton(
+        child: const Text(
+          Strings.buttonUnderstand,
+          style: TextStyle(color: AppColor.error),
+        ),
+        onPressed: () {
+          context.read<UserCubit>().requestAccountDeletion();
+
+          closeAppDialog(context);
+          appDialog(
+            context: context,
+            title: Strings.deleteAccount,
+            children: [Text(Strings.deleteAccountEmailConfirmation(email))],
+            actions: [
+              TextButton(
+                child: const Text(Strings.buttonOK),
+                onPressed: () => closeAppDialog(context),
+              ),
+            ],
+            dismissible: false,
+          );
+        },
+      ),
+      TextButton(
+        onPressed: () => closeAppDialog(context),
+        child: const Text(Strings.buttonCancel),
+      ),
+    ],
+    dismissible: true,
+  );
 }

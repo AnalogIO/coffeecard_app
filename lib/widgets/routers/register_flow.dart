@@ -1,6 +1,6 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/cubits/register/register_cubit.dart';
-import 'package:coffeecard/data/repositories/v1/account_repository.dart';
+import 'package:coffeecard/data/repositories/shared/account_repository.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/utils/fast_slide_transition.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';

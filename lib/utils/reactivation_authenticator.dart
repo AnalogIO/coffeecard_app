@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:chopper/chopper.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
-import 'package:coffeecard/data/repositories/v1/account_repository.dart';
+import 'package:coffeecard/data/repositories/shared/account_repository.dart';
 import 'package:coffeecard/data/storage/secure_storage.dart';
 import 'package:coffeecard/utils/mutex.dart';
 import 'package:get_it/get_it.dart';

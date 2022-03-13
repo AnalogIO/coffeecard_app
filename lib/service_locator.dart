@@ -4,8 +4,8 @@ import 'package:coffeecard/cubits/receipt/receipt_cubit.dart';
 import 'package:coffeecard/cubits/tickets_page/tickets_cubit.dart';
 import 'package:coffeecard/data/api/coffee_card_api_constants.dart';
 import 'package:coffeecard/data/api/interceptors/authentication_interceptor.dart';
+import 'package:coffeecard/data/repositories/shared/account_repository.dart';
 import 'package:coffeecard/data/repositories/shiftplanning/opening_hours_repository.dart';
-import 'package:coffeecard/data/repositories/v1/account_repository.dart';
 import 'package:coffeecard/data/repositories/v1/coffeecard_repository.dart';
 import 'package:coffeecard/data/repositories/v1/leaderboard_repository.dart';
 import 'package:coffeecard/data/repositories/v1/product_repository.dart';
@@ -76,10 +76,6 @@ void configureServices() {
 
   // Repositories
   // v1
-  sl.registerFactory<AccountRepository>(
-    () => AccountRepository(sl<CoffeecardApi>(), sl<Logger>()),
-  );
-
   sl.registerFactory<ReceiptRepository>(
     () => ReceiptRepository(sl<CoffeecardApi>(), sl<Logger>()),
   );
@@ -119,6 +115,16 @@ void configureServices() {
 
   sl.registerFactory<AppConfigRepository>(
     () => AppConfigRepository(sl<CoffeecardApiV2>(), sl<Logger>()),
+  );
+
+  // shared
+
+  sl.registerFactory<AccountRepository>(
+    () => AccountRepository(
+      sl<CoffeecardApi>(),
+      sl<CoffeecardApiV2>(),
+      sl<Logger>(),
+    ),
   );
 
   // shiftplanning

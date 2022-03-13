@@ -1,6 +1,6 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
-import 'package:coffeecard/data/repositories/v1/account_repository.dart';
+import 'package:coffeecard/data/repositories/shared/account_repository.dart';
 import 'package:coffeecard/utils/email_utils.dart';
 import 'package:coffeecard/utils/http_utils.dart';
 import 'package:equatable/equatable.dart';
