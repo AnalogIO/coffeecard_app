@@ -191,15 +191,12 @@ abstract class Strings {
   static const logOut = 'Log out';
   static const deleteAccount = 'Delete account';
 
-  static const signInWithFingerprint = 'Sign in with fingerprint';
-
   static const faq = 'Frequently Asked Questions';
   static const openingHours = 'Opening hours';
   static const today = 'Today';
 
   static const name = 'Name';
   static const occupation = 'Occupation';
-  static const changeProfilePicture = 'Change profile picture';
   static const appearAnonymous = 'Appear anonymous on leaderboard';
   static const appearAnonymousSmall = 'Appear anonymous';
   static const yourProfileDescription =

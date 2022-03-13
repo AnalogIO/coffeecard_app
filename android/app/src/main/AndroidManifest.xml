@@ -43,4 +43,8 @@
             android:name="flutterEmbedding"
             android:value="2" />
     </application>
+    <queries>
+        <package android:name="dk.danskebank.mobilepay" />
+        <package android:name="dk.danskebank.mobilepay.vendor.sprint" />
+    </queries>
 </manifest>
