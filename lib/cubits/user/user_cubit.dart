@@ -51,6 +51,19 @@ class UserCubit extends Cubit<UserState> {
     }
   }
 
+  Future<void> setUserName(String name) async {
+    emit(UserUpdating());
+
+    final either =
+        await accountRepository.updateUserName(name);
+
+    if (either.isRight) {
+      emit(UserLoaded(either.right));
+    } else {
+      emit(UserError(either.left.errorMessage));
+    }
+  }
+
   void requestAccountDeletion() {
     _accountRepository.requestAccountDeletion();
   }
