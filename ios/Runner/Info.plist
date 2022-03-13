@@ -41,5 +41,21 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>FlutterDeepLinkingEnabled</key>
+    <true/>
+    <key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+        <key>CFBundleTypeRole</key>
+        <string>Editor</string>
+        <key>CFBundleURLName</key>
+        <string>mobilepay_purchase</string>
+        <key>CFBundleURLSchemes</key>
+        <array>
+        <string>analogcoffeecard</string>
+        </array>
+        </dict>
+    </array>
+
 </dict>
 </plist>

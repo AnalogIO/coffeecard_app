@@ -1,8 +1,10 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/models/ticket/product.dart';
 import 'package:coffeecard/payment/payment_handler.dart';
 import 'package:coffeecard/widgets/components/helpers/tappable.dart';
+import 'package:coffeecard/widgets/components/purchase/purchase_overlay.dart';
 import 'package:coffeecard/widgets/components/rounded_button.dart';
 import 'package:flutter/material.dart';
 
@@ -110,13 +112,21 @@ class TicketCard extends StatelessWidget {
                           disabled: true,
                           text: Strings.paymentOptionApplePay,
                           onPressed: () async {
-                            await payWithApplePay(context, id, price);
+                            //TODO add function call;
                           },
                         ),
                         RoundedButton(
                           text: Strings.paymentOptionMobilePay,
                           onPressed: () async {
-                            await payWithMobilePay(context, id, price);
+                            PurchaseOverlay.of(context).show(
+                              InternalPaymentType.mobilePay,
+                              Product(
+                                price: price,
+                                amount: amount,
+                                productName: title,
+                                id: id,
+                              ),
+                            );
                           },
                         ),
                       ],
@@ -130,19 +140,4 @@ class TicketCard extends StatelessWidget {
       },
     );
   }
-}
-
-Future<void> payWithApplePay(BuildContext context, int id, int price) async {
-  throw UnimplementedError();
-}
-
-Future<void> payWithMobilePay(BuildContext context, int id, int price) async {
-  //FIXME: remove cast once new MP implementation is done
-  final MobilePayService service =
-      PaymentHandler(InternalPaymentType.mobilePay, context)
-          as MobilePayService;
-
-  final Payment po = await service.initPurchase(id);
-
-  service.invokeMobilePay(po.paymentId, price);
 }

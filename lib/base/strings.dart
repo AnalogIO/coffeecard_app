@@ -114,6 +114,16 @@ abstract class Strings {
     return '$price,-';
   }
 
+  // Purchase process
+  static const purchaseErrorOk = 'Ok';
+  static const purchaseTalking = 'Talking with payment provider';
+  static const purchaseCompleting = 'Completing purchase';
+  static const purchaseSuccess = 'Success';
+  static const purchaseRejectedOrCanceled = 'Payment rejected or canceled';
+  static const purchaseRejectedOrCanceledMessage =
+      'The payment was rejected or cancelled. No tickets have been added to your account';
+  static const purchaseError = "Uh oh, we couldn't complete that purchase";
+
   // Receipts
   static const receiptsPageTitle = 'Receipts';
   static const singleReceiptPageTitle = 'Receipt';
