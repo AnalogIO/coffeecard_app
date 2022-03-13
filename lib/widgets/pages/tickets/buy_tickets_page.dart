@@ -31,15 +31,7 @@ class BuyTicketsPage extends StatelessWidget {
                   gapSmall: GridGap.tight,
                   singleColumnOnSmallDevice: true,
                   children: state.filteredProducts
-                      .map(
-                        (e) => BuyTicketsCard(
-                          productId: e.id!,
-                          title: e.name!,
-                          description: e.description!,
-                          amount: e.numberOfTickets!,
-                          price: e.price!,
-                        ),
-                      )
+                      .map((product) => BuyTicketsCard(product: product))
                       .toList(),
                 ),
               );

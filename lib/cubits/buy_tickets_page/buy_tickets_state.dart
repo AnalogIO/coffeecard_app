@@ -12,7 +12,7 @@ class BuyTicketsLoading extends BuyTicketsState {
 }
 
 class BuyTicketsLoaded extends BuyTicketsState {
-  final List<ProductDto> products;
+  final List<Product> products;
 
   const BuyTicketsLoaded(this.products);
 
@@ -21,9 +21,9 @@ class BuyTicketsLoaded extends BuyTicketsState {
 }
 
 class BuyTicketsFiltered extends BuyTicketsLoaded {
-  final List<ProductDto> filteredProducts;
+  final List<Product> filteredProducts;
 
-  const BuyTicketsFiltered(List<ProductDto> products, this.filteredProducts)
+  const BuyTicketsFiltered(List<Product> products, this.filteredProducts)
       : super(products);
 
   @override

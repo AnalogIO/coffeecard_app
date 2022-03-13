@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:coffeecard/data/repositories/v1/product_repository.dart';
-import 'package:coffeecard/generated/api/coffeecard_api.swagger.swagger.dart';
+// import 'package:coffeecard/generated/api/coffeecard_api.swagger.swagger.dart';
+import 'package:coffeecard/models/ticket/product.dart';
 import 'package:coffeecard/utils/either.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,7 +22,7 @@ class BuyTicketsCubit extends Cubit<BuyTicketsState> {
     if (response is Left) {
       emit(BuyTicketsError(response.left.errorMessage));
     } else {
-      final List<ProductDto> tickets = response.right;
+      final List<Product> tickets = response.right;
       emit(BuyTicketsLoaded(tickets));
     }
   }
@@ -29,13 +30,11 @@ class BuyTicketsCubit extends Cubit<BuyTicketsState> {
   Future<void> getFilteredProducts(FilterCategory filterCategory) async {
     if (state is BuyTicketsLoaded) {
       final products = (state as BuyTicketsLoaded).products;
-      List<ProductDto> filteredProducts;
+      List<Product> filteredProducts;
       if (filterCategory == FilterCategory.clipCards) {
-        filteredProducts =
-            products.where((p) => p.numberOfTickets != 1).toList();
+        filteredProducts = products.where((p) => p.amount != 1).toList();
       } else if (filterCategory == FilterCategory.singleTickets) {
-        filteredProducts =
-            products.where((p) => p.numberOfTickets == 1).toList();
+        filteredProducts = products.where((p) => p.amount == 1).toList();
       } else {
         filteredProducts = [];
       }

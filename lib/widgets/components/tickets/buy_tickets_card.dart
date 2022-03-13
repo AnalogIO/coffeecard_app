@@ -1,5 +1,6 @@
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/models/ticket/product.dart';
 import 'package:coffeecard/utils/responsive.dart';
 import 'package:coffeecard/widgets/components/card.dart';
 import 'package:coffeecard/widgets/components/tickets/buy_ticket_bottom_modal_sheet.dart';
@@ -7,29 +8,20 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 class BuyTicketsCard extends CardBase {
-  final String title;
-  final String description;
-  final int amount;
-  final int price;
-  final int productId;
+  final Product product;
 
-  BuyTicketsCard({
-    Key? key,
-    required this.productId,
-    required this.title,
-    required this.description,
-    required this.amount,
-    required this.price,
-  }) : super(
+  BuyTicketsCard({Key? key, required this.product})
+      : super(
           key: key,
           color: AppColor.white,
           gap: 64, // FIXME: Should be 48 for small devices
           top: CardTitle(
-            title: Text(title, style: AppTextStyle.ownedTicket),
-            description: Text(description, style: AppTextStyle.explainer),
+            title: Text(product.productName, style: AppTextStyle.ownedTicket),
+            description:
+                Text(product.description ?? '', style: AppTextStyle.explainer),
           ),
           bottom: CardBottomRow(
-            left: _TicketPrice(amount: amount, price: price),
+            left: _TicketPrice(amount: product.amount, price: product.price),
           ),
           onTap: (context) {
             showModalBottomSheet(
@@ -38,12 +30,7 @@ class BuyTicketsCard extends CardBase {
               backgroundColor: Colors.transparent,
               isDismissible: true,
               useRootNavigator: true,
-              builder: (_) => BuyTicketBottomModalSheet(
-                productId: productId,
-                title: title,
-                amount: amount,
-                price: price,
-              ),
+              builder: (_) => BuyTicketBottomModalSheet(product: product),
             );
           },
         );

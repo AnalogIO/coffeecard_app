@@ -8,17 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 class BuyTicketBottomModalSheet extends StatelessWidget {
-  const BuyTicketBottomModalSheet({
-    required this.amount,
-    required this.title,
-    required this.price,
-    required this.productId,
-  });
+  const BuyTicketBottomModalSheet({required this.product});
 
-  final int amount;
-  final String title;
-  final int price;
-  final int productId;
+  final Product product;
 
   @override
   Widget build(BuildContext context) {
@@ -27,12 +19,7 @@ class BuyTicketBottomModalSheet extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const _ButtomModalSheetHelper(),
-          _ModalContent(
-            amount: amount,
-            title: title,
-            price: price,
-            productId: productId,
-          ),
+          _ModalContent(product: product),
         ],
       ),
     );
@@ -40,18 +27,9 @@ class BuyTicketBottomModalSheet extends StatelessWidget {
 }
 
 class _ModalContent extends StatelessWidget {
-  const _ModalContent({
-    Key? key,
-    required this.amount,
-    required this.title,
-    required this.price,
-    required this.productId,
-  }) : super(key: key);
+  const _ModalContent({required this.product});
 
-  final int amount;
-  final String title;
-  final int price;
-  final int productId;
+  final Product product;
 
   @override
   Widget build(BuildContext context) {
@@ -64,21 +42,16 @@ class _ModalContent extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                "You're buying $amount $title tickets",
+                "You're buying ${product.amount} ${product.productName} tickets", // FIXME strings
                 style: AppTextStyle.explainerDark,
               ),
               const Gap(4),
               Text(
-                'Pay $price,- with…',
+                'Pay ${product.price},- with…',
                 style: AppTextStyle.price,
               ),
               const Gap(12),
-              _ButtonModalSheetButtonBar(
-                productId: productId,
-                price: price,
-                amount: amount,
-                productName: title,
-              ),
+              _ButtonModalSheetButtonBar(product: product),
             ],
           ),
         ),
@@ -88,18 +61,9 @@ class _ModalContent extends StatelessWidget {
 }
 
 class _ButtonModalSheetButtonBar extends StatelessWidget {
-  const _ButtonModalSheetButtonBar({
-    Key? key,
-    required this.productId,
-    required this.price,
-    required this.amount,
-    required this.productName,
-  }) : super(key: key);
+  const _ButtonModalSheetButtonBar({required this.product});
 
-  final int productId;
-  final int price;
-  final int amount;
-  final String productName;
+  final Product product;
 
   @override
   Widget build(BuildContext context) {
@@ -108,26 +72,19 @@ class _ButtonModalSheetButtonBar extends StatelessWidget {
       children: [
         _ButtomModalSheetButton(
           text: 'Google Pay',
-          productId: productId,
-          price: price,
+          productId: product.id,
+          price: product.price,
           disabled: true,
           disabledText: 'This feature is coming soon',
         ),
         const Gap(8),
         _ButtomModalSheetButton(
           text: 'MobilePay',
-          productId: productId,
-          price: price,
+          productId: product.id,
+          price: product.price,
           onTap: () async {
-            PurchaseOverlay.of(context).show(
-              InternalPaymentType.mobilePay,
-              Product(
-                price: price,
-                amount: amount,
-                productName: productName,
-                id: productId,
-              ),
-            );
+            PurchaseOverlay.of(context)
+                .show(InternalPaymentType.mobilePay, product);
           },
         ),
       ],

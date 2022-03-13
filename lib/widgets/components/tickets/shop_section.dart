@@ -19,7 +19,6 @@ class ShopSection extends StatelessWidget {
             ShopCard(
               title: Strings.buyTickets,
               icon: Icons.style,
-              type: ShopCardType.newFeature,
               onTapped: (_) => TicketsFlow.push(TicketsFlow.buyTicketsRoute),
             ),
             ShopCard(
