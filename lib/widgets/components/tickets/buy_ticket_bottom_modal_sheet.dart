@@ -1,3 +1,4 @@
+import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/models/ticket/product.dart';
@@ -15,6 +16,7 @@ class BuyTicketBottomModalSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IntrinsicHeight(
+      // TODO: Possibily very expensive widget, look into alternatives?
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -42,12 +44,12 @@ class _ModalContent extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                "You're buying ${product.amount} ${product.productName} tickets", // FIXME strings
+                Strings.paymentConfirmationTop(product.amount, product.name),
                 style: AppTextStyle.explainerDark,
               ),
               const Gap(4),
               Text(
-                'Pay ${product.price},- with…',
+                Strings.paymentConfirmationBottom(product.price),
                 style: AppTextStyle.price,
               ),
               const Gap(12),
@@ -71,21 +73,19 @@ class _ButtonModalSheetButtonBar extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _ButtomModalSheetButton(
-          text: 'Google Pay',
+          text: Strings.paymentOptionOther,
           productId: product.id,
           price: product.price,
           disabled: true,
-          disabledText: 'This feature is coming soon',
+          disabledText: Strings.paymentOptionOtherComingSoon,
         ),
         const Gap(8),
         _ButtomModalSheetButton(
-          text: 'MobilePay',
+          text: Strings.paymentOptionMobilePay,
           productId: product.id,
           price: product.price,
-          onTap: () async {
-            PurchaseOverlay.of(context)
-                .show(InternalPaymentType.mobilePay, product);
-          },
+          onTap: () async => PurchaseOverlay.of(context)
+              .show(InternalPaymentType.mobilePay, product),
         ),
       ],
     );
@@ -179,8 +179,8 @@ class _ButtomModalSheetHelperState extends State<_ButtomModalSheetHelper>
         behavior: HitTestBehavior.opaque,
         child: Column(
           children: [
-            Text('Confirm purchase', style: AppTextStyle.explainerBright),
-            Text('Tap here to cancel', style: AppTextStyle.explainerBright),
+            Text(Strings.confirmPurchase, style: AppTextStyle.explainerBright),
+            Text(Strings.tapHereToCancel, style: AppTextStyle.explainerBright),
             const Gap(12),
           ],
         ),

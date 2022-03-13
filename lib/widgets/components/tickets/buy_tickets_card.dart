@@ -16,7 +16,7 @@ class BuyTicketsCard extends CardBase {
           color: AppColor.white,
           gap: 64, // FIXME: Should be 48 for small devices
           top: CardTitle(
-            title: Text(product.productName, style: AppTextStyle.ownedTicket),
+            title: Text(product.name, style: AppTextStyle.ownedTicket),
             description:
                 Text(product.description ?? '', style: AppTextStyle.explainer),
           ),

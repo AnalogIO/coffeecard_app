@@ -59,7 +59,7 @@ class PurchaseOverlay {
                       timeUsed: payment.purchaseTime,
                       amountPurchased: product.amount,
                       transactionType: TransactionType.purchase,
-                      productName: product.productName,
+                      productName: product.name,
                       //TODO, change the productName to use the name from the payment instead, once the backend returns this
                       price: payment.price,
                       id: product.id,

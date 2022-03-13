@@ -100,14 +100,19 @@ abstract class Strings {
   static const useTicket = 'Use ticket';
 
   // Ticket card
-  static const paymentOptionApplePay = 'Apple Pay';
   static const paymentOptionMobilePay = 'MobilePay';
+  static const paymentOptionOther = 'Other...';
+  static const paymentOptionOtherComingSoon = 'This feature is coming soon';
+
+  static const confirmPurchase = 'Confirm purchase';
+  static const tapHereToCancel = 'Tap here to cancel';
+
   static String paymentConfirmationTop(int amount, String title) {
-    return "You're buying $amount tickets of $title";
+    return "You're buying $amount $title tickets";
   }
 
   static String paymentConfirmationBottom(int price) {
-    return 'Pay $price,- with ...';
+    return 'Pay $price,- with...';
   }
 
   static String amountTickets(int amount) {
