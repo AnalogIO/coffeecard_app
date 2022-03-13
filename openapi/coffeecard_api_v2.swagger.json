@@ -17,7 +17,7 @@
   },
   "servers": [
     {
-      "url": "https://localhost:5001"
+      "url": "https://api-test.analogio.dk/coffeecard"
     }
   ],
   "paths": {
@@ -26,11 +26,11 @@
         "tags": [
           "Account"
         ],
-        "summary": "Delete an account",
+        "summary": "Request the deletion of the user coupled to the provided token",
         "operationId": "Account_Delete",
         "responses": {
           "204": {
-            "description": "Successful account deletion"
+            "description": "Successful initiation of account deletion process"
           },
           "401": {
             "description": "Invalid credentials"
