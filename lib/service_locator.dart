@@ -89,7 +89,11 @@ void configureServices() {
   );
 
   sl.registerFactory<TicketRepository>(
-    () => TicketRepository(sl<CoffeecardApi>(), sl<CoffeecardApiV2>(), sl<Logger>()),
+    () => TicketRepository(
+      sl<CoffeecardApi>(),
+      sl<CoffeecardApiV2>(),
+      sl<Logger>(),
+    ),
   );
 
   sl.registerFactory<CoffeeCardRepository>(
