@@ -1,4 +1,5 @@
 import 'package:coffeecard/base/style/colors.dart';
+import 'package:coffeecard/cubits/environment/environment_cubit.dart';
 import 'package:coffeecard/cubits/purchase/purchase_cubit.dart';
 import 'package:coffeecard/cubits/receipt/receipt_cubit.dart';
 import 'package:coffeecard/cubits/tickets_page/tickets_cubit.dart';
@@ -48,10 +49,11 @@ class PurchaseOverlay {
                   final updateTicketsRequest = ticketCubit.getTickets();
                   final receiptCubit = sl.get<ReceiptCubit>();
                   final updateReceiptsRequest = receiptCubit.fetchReceipts();
+                  final env = context.read<EnvironmentCubit>().state;
 
                   final payment = state.payment;
                   ReceiptOverlay.of(context).show(
-                    Receipt(
+                    receipt: Receipt(
                       timeUsed: payment.purchaseTime,
                       amountPurchased: product.amount,
                       transactionType: TransactionType.purchase,
@@ -60,6 +62,8 @@ class PurchaseOverlay {
                       price: payment.price,
                       id: product.id,
                     ),
+                    isTestEnvironment:
+                        env is EnvironmentLoaded && env.isTestEnvironment,
                   );
                   await updateTicketsRequest;
                   await updateReceiptsRequest;

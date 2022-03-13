@@ -1,5 +1,6 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/cubits/environment/environment_cubit.dart';
 import 'package:coffeecard/cubits/tickets_page/tickets_cubit.dart';
 import 'package:coffeecard/errors/match_case_incomplete_exception.dart';
 import 'package:coffeecard/service_locator.dart';
@@ -29,13 +30,17 @@ class TicketSection extends StatelessWidget {
             ),
             BlocConsumer<TicketsCubit, TicketsState>(
               listener: (context, state) {
+                final environment = context.read<EnvironmentCubit>().state;
                 if (state is TicketUsing) {
                   Navigator.pop(context); //Removes the swipe overlay
                   LoadingOverlay.of(context)
                       .show(); //TODO consider using a nicer loading indicator
                 } else if (state is TicketUsed) {
                   Navigator.pop(context); //Removes the loading overlay
-                  ReceiptOverlay.of(context).show(state.receipt);
+                  ReceiptOverlay.of(context).show(
+                      receipt: state.receipt,
+                      isTestEnvironment: environment is EnvironmentLoaded &&
+                          environment.isTestEnvironment);
                 }
               },
               builder: (context, state) {

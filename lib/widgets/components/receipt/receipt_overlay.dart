@@ -32,7 +32,7 @@ class ReceiptOverlay {
                 time: receipt.timeUsed,
                 isPurchase: receipt.transactionType == TransactionType.purchase,
                 isInOverlay: true,
-                env: Environment.unknown,
+                isTestEnvironment: isTestEnvironment,
               ),
               Text(
                 Strings.receiptTapAnywhereToDismiss,
