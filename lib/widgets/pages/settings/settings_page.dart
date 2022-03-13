@@ -109,10 +109,6 @@ class SettingsPage extends StatelessWidget {
 }
 
 void _showDeleteAccountDialog(BuildContext context, String email) {
-  final _shape = RoundedRectangleBorder(
-    borderRadius: BorderRadius.circular(16),
-  );
-
   appDialog(
     context: context,
     title: Strings.deleteAccount,
