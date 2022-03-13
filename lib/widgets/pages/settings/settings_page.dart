@@ -65,15 +65,15 @@ class SettingsPage extends StatelessWidget {
                   ),
                 ],
               ),
-              SettingsGroup(
-                title: Strings.settingsGroupFeatures,
-                listItems: [
-                  SettingListEntry(
-                    name: Strings.signInWithFingerprint,
-                    valueWidget: Switch(value: false, onChanged: (e) {}),
-                  ),
-                ],
-              ),
+              // SettingsGroup(
+              //   title: Strings.settingsGroupFeatures,
+              //   listItems: [
+              //     SettingListEntry(
+              //       name: Strings.signInWithFingerprint,
+              //       valueWidget: Switch(value: false, onChanged: (e) {}),
+              //     ),
+              //   ],
+              // ),
               SettingsGroup(
                 title: Strings.settingsGroupAbout,
                 listItems: [
