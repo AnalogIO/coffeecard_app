@@ -41,7 +41,7 @@ class RegisterFlow extends StatelessWidget {
   Route _onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case emailRoute:
-        return FastSlideTransition(child: const RegisterEmailPage());
+        return FastSlideTransition(child: RegisterEmailPage());
       case passcodeRoute:
         return FastSlideTransition(child: const RegisterPasscodePage());
       case nameRoute:

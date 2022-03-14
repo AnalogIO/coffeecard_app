@@ -1,11 +1,19 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/widgets/components/entry/register/register_email_body.dart';
+import 'package:coffeecard/cubits/register/register_cubit.dart';
+import 'package:coffeecard/widgets/components/entry/register/email_body.dart';
 import 'package:coffeecard/widgets/pages/register/register_page.dart';
+import 'package:coffeecard/widgets/routers/register_flow.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RegisterEmailPage extends RegisterPage {
-  const RegisterEmailPage()
+  RegisterEmailPage()
       : super(
           sectionTitle: Strings.registerEmailTitle,
-          body: const RegisterEmailBody(),
+          body: EmailBody(
+            onSubmit: (context, email) {
+              context.read<RegisterCubit>().setEmail(email);
+              RegisterFlow.push(RegisterFlow.passcodeRoute);
+            },
+          ),
         );
 }

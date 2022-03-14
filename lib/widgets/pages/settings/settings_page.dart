@@ -4,11 +4,11 @@ import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
 import 'package:coffeecard/cubits/user/user_cubit.dart';
 import 'package:coffeecard/widgets/components/dialog.dart';
+import 'package:coffeecard/widgets/components/entry/register/email_body.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:coffeecard/widgets/components/settings_group.dart';
 import 'package:coffeecard/widgets/components/settings_list_entry.dart';
 import 'package:coffeecard/widgets/components/user_card.dart';
-import 'package:coffeecard/widgets/pages/settings/change_email_page.dart';
 import 'package:coffeecard/widgets/pages/settings/change_password_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -48,8 +48,20 @@ class SettingsPage extends StatelessWidget {
                       Navigator.push<void>(
                         context,
                         MaterialPageRoute(
-                          builder: (BuildContext context) => ChangeEmailPage(
-                            initialValue: state.user.email,
+                          builder: (BuildContext context) =>
+                              AppScaffold.withTitle(
+                            title: 'Change email',
+                            body: EmailBody(
+                              initialValue: state.user.email,
+                              onSubmit: (context, email) {
+                                context.read<UserCubit>().setUserEmail(email);
+                                Navigator.pop(context);
+                                //FIXME: should we sign the user out after they changed their email? i think their token may become invalid
+                                context
+                                    .read<AuthenticationCubit>()
+                                    .unauthenticated();
+                              },
+                            ),
                           ),
                         ),
                       );

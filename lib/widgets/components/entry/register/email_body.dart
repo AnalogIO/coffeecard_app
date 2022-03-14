@@ -1,25 +1,21 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/cubits/user/user_cubit.dart';
 import 'package:coffeecard/utils/debouncer.dart';
 import 'package:coffeecard/utils/email_utils.dart';
 import 'package:coffeecard/widgets/components/continue_button.dart';
 import 'package:coffeecard/widgets/components/forms/text_field.dart';
-import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ChangeEmailPage extends StatefulWidget {
-  final String initialValue;
+class EmailBody extends StatefulWidget {
+  final Function(BuildContext context, String email) onSubmit;
+  final String? initialValue;
 
-  const ChangeEmailPage({required this.initialValue, Key? key})
-      : super(key: key);
-
+  const EmailBody({required this.onSubmit, this.initialValue});
   @override
-  State<ChangeEmailPage> createState() => _ChangeEmailPageState();
+  State<EmailBody> createState() => _EmailBodyState();
 }
 
-class _ChangeEmailPageState extends State<ChangeEmailPage> {
-  late TextEditingController _controller;
+class _EmailBodyState extends State<EmailBody> {
+  final _controller = TextEditingController();
   final _debounce = Debouncer(delay: const Duration(milliseconds: 250));
 
   bool _loading = false;
@@ -42,6 +38,8 @@ class _ChangeEmailPageState extends State<ChangeEmailPage> {
       error = Strings.registerEmailEmpty;
     } else if (!emailIsValid(_email)) {
       error = Strings.registerEmailInvalid;
+    } else if (widget.initialValue != null && _email == widget.initialValue) {
+      error = 'New email cannot be the same as the old one';
     } else {
       final isDuplicate = await emailIsDuplicate(_email);
       if (!mounted) return; // Needs to be checked after an async call.
@@ -63,11 +61,31 @@ class _ChangeEmailPageState extends State<ChangeEmailPage> {
     _debounce(() => _validateEmail(_controller.text));
   }
 
+  Future<void> _submit(BuildContext context) async {
+    if (_loading) {
+      _debounce.dispose();
+      setState(() => _readOnly = true);
+      await _validateEmail(_controller.text);
+    }
+    if (!mounted) return;
+    if (_validated) {
+      widget.onSubmit(context, _controller.text);
+    }
+    setState(() {
+      _readOnly = false;
+      _showError = true;
+    });
+  }
+
   @override
   void initState() {
     final initialValue = widget.initialValue;
-    _controller = TextEditingController(text: initialValue);
-    _validateEmail(initialValue);
+
+    if (initialValue != null) {
+      _controller.text = initialValue;
+      _validateEmail(initialValue);
+    }
+
     super.initState();
   }
 
@@ -77,50 +95,30 @@ class _ChangeEmailPageState extends State<ChangeEmailPage> {
     super.dispose();
   }
 
-  Future<void> _submit(BuildContext context) async {
-    if (_loading) {
-      _debounce.dispose();
-      setState(() => _readOnly = true);
-      await _validateEmail(_controller.text);
-    }
-    if (!mounted) return;
-    if (_validated) {
-      final text = _controller.text.trim();
-      if (text.isNotEmpty) context.read<UserCubit>().setUserEmail(text);
-      Navigator.pop(context);
-    }
-    setState(() {
-      _readOnly = false;
-      _showError = true;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    return AppScaffold.withTitle(
-      title: 'Edit email',
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            AppTextField(
-              label: 'Enter your new email',
-              autofocus: true,
-              error: errorMessage,
-              type: TextFieldType.email,
-              loading: _loading,
-              showCheckMark: _validated,
-              readOnly: _readOnly,
-              onChanged: _onChanged,
-              onEditingComplete: () => _submit(context),
-              controller: _controller,
-            ),
-            ContinueButton(
-              onPressed: () => _submit(context),
-              enabled: _validated,
-            )
-          ],
-        ),
+    return Center(
+      child: Column(
+        children: [
+          AppTextField(
+            label: Strings.registerEmailLabel,
+            hint:
+                widget.initialValue == null ? Strings.registerEmailHint : null,
+            autofocus: true,
+            error: errorMessage,
+            type: TextFieldType.email,
+            loading: _loading,
+            showCheckMark: _validated,
+            readOnly: _readOnly,
+            onChanged: _onChanged,
+            onEditingComplete: () => _submit(context),
+            controller: _controller,
+          ),
+          ContinueButton(
+            onPressed: () => _submit(context),
+            enabled: _validated,
+          )
+        ],
       ),
     );
   }
