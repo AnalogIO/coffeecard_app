@@ -5,11 +5,11 @@ import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
 import 'package:coffeecard/cubits/user/user_cubit.dart';
 import 'package:coffeecard/widgets/components/dialog.dart';
 import 'package:coffeecard/widgets/components/entry/register/email_body.dart';
+import 'package:coffeecard/widgets/components/entry/register/passcode_body.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:coffeecard/widgets/components/settings_group.dart';
 import 'package:coffeecard/widgets/components/settings_list_entry.dart';
 import 'package:coffeecard/widgets/components/user_card.dart';
-import 'package:coffeecard/widgets/pages/settings/change_password_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
@@ -78,7 +78,17 @@ class SettingsPage extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (BuildContext context) =>
-                              const ChangePasscodePage(),
+                              AppScaffold.withTitle(
+                            title: 'Change passcode',
+                            body: PasscodeBody(
+                              onSubmit: (context, passcode) {
+                                context
+                                    .read<UserCubit>()
+                                    .setUserPasscode(passcode);
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ),
                         ),
                       );
                     },

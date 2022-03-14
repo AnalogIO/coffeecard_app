@@ -43,7 +43,7 @@ class RegisterFlow extends StatelessWidget {
       case emailRoute:
         return FastSlideTransition(child: RegisterEmailPage());
       case passcodeRoute:
-        return FastSlideTransition(child: const RegisterPasscodePage());
+        return FastSlideTransition(child: RegisterPasscodePage());
       case nameRoute:
         return FastSlideTransition(child: RegisterNamePage());
       default:
