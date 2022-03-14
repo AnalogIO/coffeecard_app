@@ -89,14 +89,16 @@ class AccountRepository {
     }
   }
 
-  Future<Either<ApiError, void>> updatePasscode(String passcode) async {
+  Future<Either<ApiError, User>> updateUserPasscode(String passcode) async {
     final updateUserDto = UpdateUserDto(password: _encodePasscode(passcode));
     final either = await _updateUser(updateUserDto);
 
-    return either.isRight ? const Right(null) : Left(either.left);
+    return either.isRight ? Right(either.right) : Left(either.left);
   }
 
-  Future<Either<ApiError, User>> updatePrivacy({required bool private}) async {
+  Future<Either<ApiError, User>> updateUserPrivacy({
+    required bool private,
+  }) async {
     final updateUserDto = UpdateUserDto(privacyActivated: private);
     final either = await _updateUser(updateUserDto);
 
@@ -105,6 +107,13 @@ class AccountRepository {
 
   Future<Either<ApiError, User>> updateUserName(String name) async {
     final updateUserDto = UpdateUserDto(name: name);
+    final either = await _updateUser(updateUserDto);
+
+    return either.isRight ? Right(either.right) : Left(either.left);
+  }
+
+  Future<Either<ApiError, User>> updateUserEmail(String email) async {
+    final updateUserDto = UpdateUserDto(email: email);
     final either = await _updateUser(updateUserDto);
 
     return either.isRight ? Right(either.right) : Left(either.left);
@@ -123,9 +132,10 @@ class AccountRepository {
     }
   }
 
-  /// Request user password reset
-  Future<Either<ApiError, void>> forgotPassword(EmailDto email) async {
-    final response = await _apiV1.apiV1AccountForgotpasswordPost(body: email);
+  Future<Either<ApiError, void>> requestPasswordReset(String email) async {
+    final response = await _apiV1.apiV1AccountForgotpasswordPost(
+      body: EmailDto(email: email),
+    );
     if (response.isSuccessful) {
       return const Right(null);
     } else {

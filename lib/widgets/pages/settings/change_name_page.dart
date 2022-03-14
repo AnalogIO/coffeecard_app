@@ -1,3 +1,4 @@
+import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/cubits/user/user_cubit.dart';
 import 'package:coffeecard/widgets/components/continue_button.dart';
 import 'package:coffeecard/widgets/components/forms/text_field.dart';
@@ -17,6 +18,16 @@ class ChangeNamePage extends StatefulWidget {
 
 class _ChangeNamePageState extends State<ChangeNamePage> {
   late TextEditingController _controller;
+  String get name => _controller.text;
+
+  final bool _showError = false;
+  String? _error;
+
+  bool _buttonEnabled() => name.isNotEmpty && _error == null;
+
+  Future<void> _validateName(String name) async {
+    setState(() => _error = name.isEmpty ? Strings.registerNameEmpty : null);
+  }
 
   @override
   void initState() {
@@ -39,12 +50,17 @@ class _ChangeNamePageState extends State<ChangeNamePage> {
         child: Column(
           children: [
             AppTextField(
+              label: 'Enter your name',
               autofocus: true,
+              error: _showError ? _error : null,
+              onChanged: () => _validateName(_controller.text),
               onEditingComplete: () => _submit(context),
               controller: _controller,
-              label: 'Enter your name',
             ),
-            ContinueButton(onPressed: () => _submit(context), enabled: true)
+            ContinueButton(
+              onPressed: () => _submit(context),
+              enabled: _buttonEnabled(),
+            )
           ],
         ),
       ),

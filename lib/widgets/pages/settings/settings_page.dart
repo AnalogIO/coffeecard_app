@@ -8,6 +8,8 @@ import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:coffeecard/widgets/components/settings_group.dart';
 import 'package:coffeecard/widgets/components/settings_list_entry.dart';
 import 'package:coffeecard/widgets/components/user_card.dart';
+import 'package:coffeecard/widgets/pages/settings/change_email_page.dart';
+import 'package:coffeecard/widgets/pages/settings/change_password_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
@@ -42,7 +44,16 @@ class SettingsPage extends StatelessWidget {
                       state.user.email,
                       style: AppTextStyle.settingValue,
                     ),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push<void>(
+                        context,
+                        MaterialPageRoute(
+                          builder: (BuildContext context) => ChangeEmailPage(
+                            initialValue: state.user.email,
+                          ),
+                        ),
+                      );
+                    },
                   ),
                   SettingListEntry(
                     name: Strings.passcode,
@@ -51,7 +62,13 @@ class SettingsPage extends StatelessWidget {
                       style: AppTextStyle.settingValue,
                     ),
                     onTap: () {
-                      // context.read<SettingsCubit>().changePasscode('0000');
+                      Navigator.push<void>(
+                        context,
+                        MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              const ChangePasscodePage(),
+                        ),
+                      );
                     },
                   ),
                   SettingListEntry(

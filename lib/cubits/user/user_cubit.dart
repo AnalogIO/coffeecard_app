@@ -33,6 +33,7 @@ class UserCubit extends Cubit<UserState> {
     }
   }
 
+  //FIXME: how can we avoid fetching every time?
   Future<Either<ApiError, User>> _enrichWithProgramme(User user) async {
     final programmes = await _programmeRepository.getProgramme();
 
@@ -54,7 +55,7 @@ class UserCubit extends Cubit<UserState> {
     emit(UserUpdating());
 
     final either =
-        await _accountRepository.updatePrivacy(private: privacyActived);
+        await _accountRepository.updateUserPrivacy(private: privacyActived);
 
     if (either.isRight) {
       final user2 = await _enrichWithProgramme(either.right);
@@ -73,6 +74,42 @@ class UserCubit extends Cubit<UserState> {
     emit(UserUpdating());
 
     final either = await _accountRepository.updateUserName(name);
+
+    if (either.isRight) {
+      final user2 = await _enrichWithProgramme(either.right);
+
+      if (user2.isRight) {
+        emit(UserLoaded(user2.right));
+      } else {
+        emit(UserError(user2.left.errorMessage));
+      }
+    } else {
+      emit(UserError(either.left.errorMessage));
+    }
+  }
+
+  Future<void> setUserEmail(String email) async {
+    emit(UserUpdating());
+
+    final either = await _accountRepository.updateUserEmail(email);
+
+    if (either.isRight) {
+      final user2 = await _enrichWithProgramme(either.right);
+
+      if (user2.isRight) {
+        emit(UserLoaded(user2.right));
+      } else {
+        emit(UserError(user2.left.errorMessage));
+      }
+    } else {
+      emit(UserError(either.left.errorMessage));
+    }
+  }
+
+  Future<void> setUserPasscode(String passcode) async {
+    emit(UserUpdating());
+
+    final either = await _accountRepository.updateUserPasscode(passcode);
 
     if (either.isRight) {
       final user2 = await _enrichWithProgramme(either.right);
