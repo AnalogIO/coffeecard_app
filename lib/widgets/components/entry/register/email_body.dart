@@ -39,7 +39,7 @@ class _EmailBodyState extends State<EmailBody> {
     } else if (!emailIsValid(_email)) {
       error = Strings.registerEmailInvalid;
     } else if (widget.initialValue != null && _email == widget.initialValue) {
-      error = 'New email cannot be the same as the old one';
+      error = Strings.changeEmailCannotBeSame;
     } else {
       final isDuplicate = await emailIsDuplicate(_email);
       if (!mounted) return; // Needs to be checked after an async call.

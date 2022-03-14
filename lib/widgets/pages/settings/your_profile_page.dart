@@ -76,7 +76,7 @@ class _EditProfile extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (BuildContext context) => AppScaffold.withTitle(
-                      title: 'Change name',
+                      title: Strings.changeName,
                       body: NameBody(
                         initialValue: user.name,
                         onSubmit: (context, name) {

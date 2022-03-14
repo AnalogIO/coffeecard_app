@@ -50,7 +50,7 @@ class SettingsPage extends StatelessWidget {
                         MaterialPageRoute(
                           builder: (BuildContext context) =>
                               AppScaffold.withTitle(
-                            title: 'Change email',
+                            title: Strings.changeEmail,
                             body: EmailBody(
                               initialValue: state.user.email,
                               onSubmit: (context, email) {
@@ -79,7 +79,7 @@ class SettingsPage extends StatelessWidget {
                         MaterialPageRoute(
                           builder: (BuildContext context) =>
                               AppScaffold.withTitle(
-                            title: 'Change passcode',
+                            title: Strings.changePasscode,
                             body: PasscodeBody(
                               onSubmit: (context, passcode) {
                                 context

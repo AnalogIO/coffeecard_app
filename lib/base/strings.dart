@@ -193,6 +193,12 @@ abstract class Strings {
   static const logOut = 'Log out';
   static const deleteAccount = 'Delete account';
 
+  static const changeEmail = 'Change email';
+  static const changeName = 'Change name';
+  static const changePasscode = 'Change passcode';
+  static const changeEmailCannotBeSame =
+      'New email cannot be the same as the old one';
+
   static const deleteAccountText =
       'Performing this action will delete your account and any tickets you own.\n\nThis cannot be undone.\n\nAre you sure you want to proceed?';
   static String deleteAccountEmailConfirmation(String email) =>
