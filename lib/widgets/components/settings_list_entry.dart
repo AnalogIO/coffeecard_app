@@ -7,10 +7,12 @@ class SettingListEntry extends StatelessWidget {
   final String name;
   final Widget? valueWidget;
   final bool destructive;
+  final bool disabled;
   final void Function()? onTap;
 
   const SettingListEntry({
     required this.name,
+    this.disabled = false,
     this.onTap,
     this.valueWidget,
     this.destructive = false,
@@ -21,7 +23,8 @@ class SettingListEntry extends StatelessWidget {
     return SizedBox(
       height: 50,
       child: ListEntry(
-        onTap: onTap,
+        backgroundColor: disabled ? AppColor.gray : null,
+        onTap: disabled ? null : onTap,
         leftWidget: !destructive
             ? Text(name)
             : Text(name, style: const TextStyle(color: AppColor.error)),

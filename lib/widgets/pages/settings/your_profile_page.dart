@@ -69,6 +69,7 @@ class _EditProfile extends StatelessWidget {
           title: Strings.settingsGroupProfile,
           listItems: [
             SettingListEntry(
+              disabled: true,
               name: Strings.name,
               valueWidget: SettingDescription(text: user.name),
               onTap: () {
@@ -90,6 +91,7 @@ class _EditProfile extends StatelessWidget {
               },
             ),
             SettingListEntry(
+              disabled: true,
               name: Strings.occupation,
               valueWidget: SettingDescription(
                 text: user.programme.shortName,
