@@ -3,11 +3,11 @@ import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/user/user_cubit.dart';
 import 'package:coffeecard/models/account/user.dart';
 import 'package:coffeecard/utils/responsive.dart';
+import 'package:coffeecard/widgets/components/entry/register/name_body.dart';
 import 'package:coffeecard/widgets/components/loading.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:coffeecard/widgets/components/settings_group.dart';
 import 'package:coffeecard/widgets/components/settings_list_entry.dart';
-import 'package:coffeecard/widgets/pages/settings/change_name_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
@@ -75,8 +75,15 @@ class _EditProfile extends StatelessWidget {
                 Navigator.push<void>(
                   context,
                   MaterialPageRoute(
-                    builder: (BuildContext context) => ChangeNamePage(
-                      initialValue: user.name,
+                    builder: (BuildContext context) => AppScaffold.withTitle(
+                      title: 'Change name',
+                      body: NameBody(
+                        initialValue: user.name,
+                        onSubmit: (context, name) {
+                          context.read<UserCubit>().setUserName(name);
+                          Navigator.pop(context);
+                        },
+                      ),
                     ),
                   ),
                 );

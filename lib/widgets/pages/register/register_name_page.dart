@@ -3,9 +3,11 @@ import 'package:coffeecard/widgets/components/entry/register/name_body.dart';
 import 'package:coffeecard/widgets/pages/register/register_page.dart';
 
 class RegisterNamePage extends RegisterPage {
-  const RegisterNamePage()
+  RegisterNamePage()
       : super(
           sectionTitle: Strings.registerNameTitle,
-          body: const RegisterNameBody(),
+          body: NameBody(
+            onSubmit: (context, email) {},
+          ),
         );
 }
