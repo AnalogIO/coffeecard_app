@@ -18,7 +18,7 @@ class BuyTicketsCard extends CardBase {
           top: CardTitle(
             title: Text(product.name, style: AppTextStyle.ownedTicket),
             description:
-                Text(product.description ?? '', style: AppTextStyle.explainer),
+                Text(product.description, style: AppTextStyle.explainer),
           ),
           bottom: CardBottomRow(
             left: _TicketPrice(amount: product.amount, price: product.price),

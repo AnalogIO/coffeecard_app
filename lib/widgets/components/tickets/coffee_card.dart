@@ -28,9 +28,11 @@ class CoffeeCard extends CardBase {
           gap: 36,
           onTap: (context) {
             showModalBottomSheet(
+              context: context,
+              barrierColor: AppColor.scrim,
+              isDismissible: true,
               useRootNavigator: true,
               enableDrag: false,
-              context: context,
               builder: (builder) {
                 return SwipeOverlay(
                   title: title,

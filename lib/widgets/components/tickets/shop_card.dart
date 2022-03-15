@@ -1,3 +1,4 @@
+import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/widgets/components/card.dart';
@@ -53,10 +54,10 @@ class _OptionalLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (type.isNew) {
-      return Text('NEW', style: AppTextStyle.newLabel);
+      return Text(Strings.newLabel, style: AppTextStyle.newLabel);
     }
     if (type.isComingSoon) {
-      return Text('COMING SOON', style: AppTextStyle.comingSoonLabel);
+      return Text(Strings.comingSoonLabel, style: AppTextStyle.comingSoonLabel);
     }
     return const SizedBox.shrink();
   }

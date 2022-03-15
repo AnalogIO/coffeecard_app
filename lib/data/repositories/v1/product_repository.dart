@@ -11,6 +11,7 @@ class ProductRepository {
 
   ProductRepository(this._api, this._logger);
 
+  /// Get purchaseable ticket products.
   Future<Either<ApiError, List<Product>>> getProducts() async {
     final response = await _api.apiV1ProductsGet();
 

@@ -5,14 +5,14 @@ class Product {
   final int amount;
   final int price;
   final String name;
-  final String? description;
+  final String description;
 
   Product({
     required this.price,
     required this.amount,
     required this.name,
     required this.id,
-    this.description,
+    required this.description,
   });
 
   Product.fromDTO(ProductDto dto)

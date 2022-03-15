@@ -1,7 +1,6 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:coffeecard/widgets/components/section_title.dart';
-import 'package:coffeecard/widgets/components/tickets/analog_closed_popup.dart';
 import 'package:coffeecard/widgets/components/tickets/shop_section.dart';
 import 'package:coffeecard/widgets/components/tickets/tickets_section.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +21,6 @@ class _TicketsPageState extends State<TicketsPage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const AnalogClosedPopup(),
           Expanded(
             child: ListView(
               shrinkWrap: true,

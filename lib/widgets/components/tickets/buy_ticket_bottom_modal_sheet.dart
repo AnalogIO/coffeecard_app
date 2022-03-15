@@ -4,6 +4,7 @@ import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/models/ticket/product.dart';
 import 'package:coffeecard/payment/payment_handler.dart';
 import 'package:coffeecard/widgets/components/purchase/purchase_overlay.dart';
+import 'package:coffeecard/widgets/components/tickets/bottom_modal_sheet_helper.dart';
 import 'package:coffeecard/widgets/components/tickets/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -20,10 +21,28 @@ class BuyTicketBottomModalSheet extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const _ButtomModalSheetHelper(),
+          _BottomModalSheetHelper(),
           _ModalContent(product: product),
         ],
       ),
+    );
+  }
+}
+
+class _BottomModalSheetHelper extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BottomModalSheetHelper(
+      children: [
+        Text(
+          Strings.confirmPurchase,
+          style: AppTextStyle.explainerBright,
+        ),
+        Text(
+          Strings.tapHereToCancel,
+          style: AppTextStyle.explainerBright,
+        ),
+      ],
     );
   }
 }
@@ -131,60 +150,6 @@ class _ButtomModalSheetButton extends StatelessWidget {
       child: (disabled && disabledText != null)
           ? _withDisabledText(_button, disabledText!)
           : _button,
-    );
-  }
-}
-
-class _ButtomModalSheetHelper extends StatefulWidget {
-  const _ButtomModalSheetHelper();
-
-  @override
-  State<StatefulWidget> createState() => _ButtomModalSheetHelperState();
-}
-
-class _ButtomModalSheetHelperState extends State<_ButtomModalSheetHelper>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _animation;
-
-  @override
-  void initState() {
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 650),
-    );
-    _animation = Tween(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: const Interval(0.5, 1.0, curve: Curves.easeOut),
-      ),
-    );
-
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    _controller.forward();
-    return FadeTransition(
-      opacity: _animation,
-      child: GestureDetector(
-        onTap: () => Navigator.of(context, rootNavigator: true).pop(),
-        behavior: HitTestBehavior.opaque,
-        child: Column(
-          children: [
-            Text(Strings.confirmPurchase, style: AppTextStyle.explainerBright),
-            Text(Strings.tapHereToCancel, style: AppTextStyle.explainerBright),
-            const Gap(12),
-          ],
-        ),
-      ),
     );
   }
 }

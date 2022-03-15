@@ -37,6 +37,7 @@ class BuyTicketsPage extends StatelessWidget {
                 ),
               );
             } else if (state is BuyTicketsError) {
+              // FIXME handle error
               return const Text('error');
             }
 

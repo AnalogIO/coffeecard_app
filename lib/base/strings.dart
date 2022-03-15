@@ -41,6 +41,8 @@ abstract class Strings {
   static const buyOneDrink = 'Buy one drink';
   static const buyOther = 'Buy syrup, jugs etc.';
   static const redeemVoucher = 'Redeem voucher';
+  static const newLabel = 'NEW';
+  static const comingSoonLabel = 'COMING SOON';
 
   // Register
   static const registerAppBarTitle = 'Register';
