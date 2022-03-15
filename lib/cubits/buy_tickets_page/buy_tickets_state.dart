@@ -12,17 +12,16 @@ class BuyTicketsLoading extends BuyTicketsState {
 }
 
 class BuyTicketsLoaded extends BuyTicketsState {
-  final List<Product> products;
-
   const BuyTicketsLoaded(this.products);
+  final List<Product> products;
 
   @override
   List<Object?> get props => products;
 }
 
 class BuyTicketsError extends BuyTicketsState {
-  final String error;
   const BuyTicketsError(this.error);
+  final String error;
 
   @override
   List<Object?> get props => [error];
