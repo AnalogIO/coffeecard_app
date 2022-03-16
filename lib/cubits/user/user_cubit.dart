@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:coffeecard/data/repositories/shared/account_repository.dart';
 import 'package:coffeecard/data/repositories/v1/programme_repository.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.swagger.dart';
+import 'package:coffeecard/models/account/update_user.dart';
 import 'package:coffeecard/models/account/user.dart';
 import 'package:equatable/equatable.dart';
 
@@ -17,6 +18,22 @@ class UserCubit extends Cubit<UserState> {
     emit(UserLoading());
 
     final either = await _accountRepository.getUser();
+
+    if (either.isRight) {
+      _enrichUserWithProgrammes(either.right);
+    } else {
+      emit(UserError(either.left.errorMessage));
+    }
+  }
+
+  Future<void> _updateUser(UpdateUser user) async {
+    if (state is! UserLoaded) {
+      return;
+    }
+    final loadedState = state as UserLoaded;
+    emit(UserUpdating(user: loadedState.user, programmes: loadedState.programmes));
+
+    final either = await _accountRepository.updateUser(user);
 
     if (either.isRight) {
       _enrichUserWithProgrammes(either.right);
@@ -55,67 +72,19 @@ class UserCubit extends Cubit<UserState> {
   }
 
   Future<void> setUserPrivacy({required bool privacyActivated}) async {
-    if (state is! UserLoaded) {
-      return;
-    }
-    final loadedState = state as UserLoaded;
-    emit(UserUpdating(user: loadedState.user, programmes: loadedState.programmes));
-
-    final either = await _accountRepository.updateUserPrivacy(private: privacyActivated);
-
-    if (either.isRight) {
-      _enrichUserWithProgrammes(either.right);
-    } else {
-      emit(UserError(either.left.errorMessage));
-    }
+    _updateUser(UpdateUser(privacyActivated: privacyActivated));
   }
 
   Future<void> setUserName(String name) async {
-    if (state is! UserLoaded) {
-      return;
-    }
-    final loadedState = state as UserLoaded;
-    emit(UserUpdating(user: loadedState.user, programmes: loadedState.programmes));
-
-    final either = await _accountRepository.updateUserName(name);
-
-    if (either.isRight) {
-      _enrichUserWithProgrammes(either.right);
-    } else {
-      emit(UserError(either.left.errorMessage));
-    }
+    _updateUser(UpdateUser(name: name));
   }
 
   Future<void> setUserEmail(String email) async {
-    if (state is! UserLoaded) {
-      return;
-    }
-    final loadedState = state as UserLoaded;
-    emit(UserUpdating(user: loadedState.user, programmes: loadedState.programmes));
-
-    final either = await _accountRepository.updateUserEmail(email);
-
-    if (either.isRight) {
-      _enrichUserWithProgrammes(either.right);
-    } else {
-      emit(UserError(either.left.errorMessage));
-    }
+    _updateUser(UpdateUser(email: email));
   }
 
   Future<void> setUserPasscode(String passcode) async {
-    if (state is! UserLoaded) {
-      return;
-    }
-    final loadedState = state as UserLoaded;
-    emit(UserUpdating(user: loadedState.user, programmes: loadedState.programmes));
-
-    final either = await _accountRepository.updateUserPasscode(passcode);
-
-    if (either.isRight) {
-      _enrichUserWithProgrammes(either.right);
-    } else {
-      emit(UserError(either.left.errorMessage));
-    }
+    _updateUser(UpdateUser(password: passcode));
   }
 
   void requestAccountDeletion() {
