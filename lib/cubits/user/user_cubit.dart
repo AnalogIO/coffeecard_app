@@ -11,8 +11,7 @@ class UserCubit extends Cubit<UserState> {
   final AccountRepository _accountRepository;
   final ProgrammeRepository _programmeRepository;
 
-  UserCubit(this._accountRepository, this._programmeRepository)
-      : super(UserLoading());
+  UserCubit(this._accountRepository, this._programmeRepository) : super(UserLoading());
 
   Future<void> fetchUserDetails() async {
     emit(UserLoading());
@@ -20,79 +19,100 @@ class UserCubit extends Cubit<UserState> {
     final either = await _accountRepository.getUser();
 
     if (either.isRight) {
-      emit(UserLoaded(user: either.right));
+      _enrichUserWithProgrammes(either.right);
     } else {
       emit(UserError(either.left.errorMessage));
     }
   }
 
-  Future<void> fetchProgrammes(User user) async {
-    emit(UserLoading());
+  Future<void> _enrichUserWithProgrammes(User user) async {
+    final List<ProgrammeDto> programmes;
+    if (state is UserUpdating) {
+      programmes = (state as UserUpdating).programmes;
+    } else if (state is UserLoaded) {
+      programmes = (state as UserLoaded).programmes;
+    } else {
+      // Fetches the programme info, if we have not cached it beforehand
+      final either = await _programmeRepository.getProgramme();
+      if (either.isRight) {
+        programmes = either.right;
+      } else {
+        emit(UserError(either.left.errorMessage));
+        return;
+      }
+    }
 
-    final either = await _programmeRepository.getProgramme();
+    final programme = programmes.firstWhere((element) => element.id == user.programmeId);
 
-    if (either.isRight) {
-      final programmes = either.right;
-      final programme =
-          programmes.firstWhere((element) => element.id == user.programmeId);
-
-      emit(
-        UserLoaded(
-          user: user.copyWith(
-            programme: ProgrammeInfo(programme.shortName!, programme.fullName!),
-          ),
-          programmes: either.right,
+    emit(
+      UserLoaded(
+        user: user.copyWith(
+          programme: ProgrammeInfo(programme.shortName!, programme.fullName!),
         ),
-      );
-    } else {
-      emit(UserError(either.left.errorMessage));
-    }
+        programmes: programmes,
+      ),
+    );
   }
 
-  Future<void> setUserPrivacy({required bool privacyActived}) async {
-    emit(UserUpdating());
+  Future<void> setUserPrivacy({required bool privacyActivated}) async {
+    if (state is! UserLoaded) {
+      return;
+    }
+    final loadedState = state as UserLoaded;
+    emit(UserUpdating(user: loadedState.user, programmes: loadedState.programmes));
 
-    final either =
-        await _accountRepository.updateUserPrivacy(private: privacyActived);
+    final either = await _accountRepository.updateUserPrivacy(private: privacyActivated);
 
     if (either.isRight) {
-      emit(UserLoaded(user: either.right));
+      _enrichUserWithProgrammes(either.right);
     } else {
       emit(UserError(either.left.errorMessage));
     }
   }
 
   Future<void> setUserName(String name) async {
-    emit(UserUpdating());
+    if (state is! UserLoaded) {
+      return;
+    }
+    final loadedState = state as UserLoaded;
+    emit(UserUpdating(user: loadedState.user, programmes: loadedState.programmes));
 
     final either = await _accountRepository.updateUserName(name);
 
     if (either.isRight) {
-      emit(UserLoaded(user: either.right));
+      _enrichUserWithProgrammes(either.right);
     } else {
       emit(UserError(either.left.errorMessage));
     }
   }
 
   Future<void> setUserEmail(String email) async {
-    emit(UserUpdating());
+    if (state is! UserLoaded) {
+      return;
+    }
+    final loadedState = state as UserLoaded;
+    emit(UserUpdating(user: loadedState.user, programmes: loadedState.programmes));
 
     final either = await _accountRepository.updateUserEmail(email);
 
     if (either.isRight) {
-      emit(UserLoaded(user: either.right));
+      _enrichUserWithProgrammes(either.right);
     } else {
       emit(UserError(either.left.errorMessage));
     }
   }
 
   Future<void> setUserPasscode(String passcode) async {
-    emit(UserUpdating());
+    if (state is! UserLoaded) {
+      return;
+    }
+    final loadedState = state as UserLoaded;
+    emit(UserUpdating(user: loadedState.user, programmes: loadedState.programmes));
 
     final either = await _accountRepository.updateUserPasscode(passcode);
 
     if (either.isRight) {
-      emit(UserLoaded(user: either.right));
+      _enrichUserWithProgrammes(either.right);
     } else {
       emit(UserError(either.left.errorMessage));
     }
