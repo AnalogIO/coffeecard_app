@@ -12,7 +12,8 @@ class UserCubit extends Cubit<UserState> {
   final AccountRepository _accountRepository;
   final ProgrammeRepository _programmeRepository;
 
-  UserCubit(this._accountRepository, this._programmeRepository) : super(UserLoading());
+  UserCubit(this._accountRepository, this._programmeRepository)
+      : super(UserLoading());
 
   Future<void> fetchUserDetails() async {
     emit(UserLoading());
@@ -31,7 +32,12 @@ class UserCubit extends Cubit<UserState> {
       return;
     }
     final loadedState = state as UserLoaded;
-    emit(UserUpdating(user: loadedState.user, programmes: loadedState.programmes));
+    emit(
+      UserUpdating(
+        user: loadedState.user,
+        programmes: loadedState.programmes,
+      ),
+    );
 
     final either = await _accountRepository.updateUser(user);
 
@@ -59,7 +65,8 @@ class UserCubit extends Cubit<UserState> {
       }
     }
 
-    final programme = programmes.firstWhere((element) => element.id == user.programmeId);
+    final programme =
+        programmes.firstWhere((element) => element.id == user.programmeId);
 
     emit(
       UserLoaded(
