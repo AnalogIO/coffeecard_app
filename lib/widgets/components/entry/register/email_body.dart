@@ -1,20 +1,20 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/cubits/register/register_cubit.dart';
 import 'package:coffeecard/utils/debouncer.dart';
 import 'package:coffeecard/utils/email_utils.dart';
 import 'package:coffeecard/widgets/components/continue_button.dart';
 import 'package:coffeecard/widgets/components/forms/text_field.dart';
-import 'package:coffeecard/widgets/routers/register_flow.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-class RegisterEmailBody extends StatefulWidget {
-  const RegisterEmailBody();
+class EmailBody extends StatefulWidget {
+  final Function(BuildContext context, String email) onSubmit;
+  final String? initialValue;
+
+  const EmailBody({required this.onSubmit, this.initialValue});
   @override
-  State<RegisterEmailBody> createState() => _RegisterEmailBodyState();
+  State<EmailBody> createState() => _EmailBodyState();
 }
 
-class _RegisterEmailBodyState extends State<RegisterEmailBody> {
+class _EmailBodyState extends State<EmailBody> {
   final _controller = TextEditingController();
   final _debounce = Debouncer(delay: const Duration(milliseconds: 250));
 
@@ -38,6 +38,8 @@ class _RegisterEmailBodyState extends State<RegisterEmailBody> {
       error = Strings.registerEmailEmpty;
     } else if (!emailIsValid(_email)) {
       error = Strings.registerEmailInvalid;
+    } else if (widget.initialValue != null && _email == widget.initialValue) {
+      error = Strings.changeEmailCannotBeSame;
     } else {
       final isDuplicate = await emailIsDuplicate(_email);
       if (!mounted) return; // Needs to be checked after an async call.
@@ -67,13 +69,24 @@ class _RegisterEmailBodyState extends State<RegisterEmailBody> {
     }
     if (!mounted) return;
     if (_validated) {
-      context.read<RegisterCubit>().setEmail(_controller.text);
-      RegisterFlow.push(RegisterFlow.passcodeRoute);
+      widget.onSubmit(context, _controller.text);
     }
     setState(() {
       _readOnly = false;
       _showError = true;
     });
+  }
+
+  @override
+  void initState() {
+    final initialValue = widget.initialValue;
+
+    if (initialValue != null) {
+      _controller.text = initialValue;
+      _validateEmail(initialValue);
+    }
+
+    super.initState();
   }
 
   @override
@@ -89,7 +102,8 @@ class _RegisterEmailBodyState extends State<RegisterEmailBody> {
         children: [
           AppTextField(
             label: Strings.registerEmailLabel,
-            hint: Strings.registerEmailHint,
+            hint:
+                widget.initialValue == null ? Strings.registerEmailHint : null,
             autofocus: true,
             error: errorMessage,
             type: TextFieldType.email,

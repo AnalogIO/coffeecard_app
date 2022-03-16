@@ -1,18 +1,17 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/cubits/register/register_cubit.dart';
 import 'package:coffeecard/widgets/components/continue_button.dart';
 import 'package:coffeecard/widgets/components/forms/text_field.dart';
-import 'package:coffeecard/widgets/routers/register_flow.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-class RegisterPasscodeBody extends StatefulWidget {
-  const RegisterPasscodeBody();
+class PasscodeBody extends StatefulWidget {
+  final Function(BuildContext context, String passcode) onSubmit;
+
+  const PasscodeBody({required this.onSubmit});
   @override
-  State<RegisterPasscodeBody> createState() => _RegisterPasscodeBodyState();
+  State<PasscodeBody> createState() => _PasscodeBodyState();
 }
 
-class _RegisterPasscodeBodyState extends State<RegisterPasscodeBody> {
+class _PasscodeBodyState extends State<PasscodeBody> {
   final _firstPasscodeController = TextEditingController();
   final _secondPasscodeController = TextEditingController();
   final _secondPasscodeFocusNode = FocusNode();
@@ -82,8 +81,7 @@ class _RegisterPasscodeBodyState extends State<RegisterPasscodeBody> {
     _validateSecondPasscode(secondPasscode);
 
     if (firstError != null || secondError != null) return;
-    context.read<RegisterCubit>().setPasscode(firstPasscode);
-    RegisterFlow.push(RegisterFlow.nameRoute);
+    widget.onSubmit(context, firstPasscode);
   }
 
   @override

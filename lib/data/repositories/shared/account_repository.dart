@@ -5,6 +5,7 @@ import 'package:coffeecard/data/api/coffee_card_api_constants.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.swagger.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.swagger.dart';
 import 'package:coffeecard/models/account/authenticated_user.dart';
+import 'package:coffeecard/models/account/update_user.dart';
 import 'package:coffeecard/models/account/user.dart';
 import 'package:coffeecard/models/api/api_error.dart';
 import 'package:coffeecard/models/api/unauthorized_error.dart';
@@ -76,7 +77,6 @@ class AccountRepository {
     }
   }
 
-  /// Get user information
   Future<Either<ApiError, User>> getUser() async {
     final response = await _apiV1.apiV1AccountGet();
 
@@ -89,27 +89,16 @@ class AccountRepository {
     }
   }
 
-  Future<Either<ApiError, void>> updatePasscode(String passcode) async {
-    final updateUserDto = UpdateUserDto(password: _encodePasscode(passcode));
-    final either = await _updateUser(updateUserDto);
-
-    if (either.isRight) {
-      return const Right(null);
-    } else {
-      return Left(either.left);
-    }
-  }
-
-  Future<Either<ApiError, User>> updatePrivacy({required bool private}) async {
-    final updateUserDto = UpdateUserDto(privacyActivated: private);
-    final either = await _updateUser(updateUserDto);
-
-    return either.isRight ? Right(either.right) : Left(either.left);
-  }
-
   /// Update user information
-  Future<Either<ApiError, User>> _updateUser(UpdateUserDto user) async {
-    final response = await _apiV1.apiV1AccountPut(body: user);
+  Future<Either<ApiError, User>> updateUser(UpdateUser user) async {
+    final userDTO = UpdateUserDto(
+      name: user.name,
+      programmeId: user.programmeId,
+      email: user.email,
+      privacyActivated: user.privacyActivated,
+      password: user.password != null ? _encodePasscode(user.password!) : null,
+    );
+    final response = await _apiV1.apiV1AccountPut(body: userDTO);
 
     if (response.isSuccessful) {
       final user = User.fromDTO(response.body!);
@@ -120,9 +109,10 @@ class AccountRepository {
     }
   }
 
-  /// Request user password reset
-  Future<Either<ApiError, void>> forgotPassword(EmailDto email) async {
-    final response = await _apiV1.apiV1AccountForgotpasswordPost(body: email);
+  Future<Either<ApiError, void>> requestPasswordReset(String email) async {
+    final response = await _apiV1.apiV1AccountForgotpasswordPost(
+      body: EmailDto(email: email),
+    );
     if (response.isSuccessful) {
       return const Right(null);
     } else {

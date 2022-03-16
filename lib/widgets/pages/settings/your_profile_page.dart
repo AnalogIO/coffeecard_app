@@ -3,6 +3,7 @@ import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/user/user_cubit.dart';
 import 'package:coffeecard/models/account/user.dart';
 import 'package:coffeecard/utils/responsive.dart';
+import 'package:coffeecard/widgets/components/entry/register/name_body.dart';
 import 'package:coffeecard/widgets/components/loading.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:coffeecard/widgets/components/settings_group.dart';
@@ -70,7 +71,23 @@ class _EditProfile extends StatelessWidget {
             SettingListEntry(
               name: Strings.name,
               valueWidget: SettingDescription(text: user.name),
-              onTap: () {},
+              onTap: () {
+                Navigator.push<void>(
+                  context,
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => AppScaffold.withTitle(
+                      title: Strings.changeName,
+                      body: NameBody(
+                        initialValue: user.name,
+                        onSubmit: (context, name) {
+                          context.read<UserCubit>().setUserName(name);
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ),
+                  ),
+                );
+              },
             ),
             SettingListEntry(
               name: Strings.occupation,
@@ -88,7 +105,7 @@ class _EditProfile extends StatelessWidget {
                 onChanged: (privacyActivated) async {
                   await context
                       .read<UserCubit>()
-                      .setUserPrivacy(privacyActived: privacyActivated);
+                      .setUserPrivacy(privacyActivated: privacyActivated);
                 },
               ),
             ),

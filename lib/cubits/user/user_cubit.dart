@@ -1,6 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:coffeecard/data/repositories/shared/account_repository.dart';
 import 'package:coffeecard/data/repositories/v1/programme_repository.dart';
+import 'package:coffeecard/generated/api/coffeecard_api.swagger.swagger.dart';
+import 'package:coffeecard/models/account/update_user.dart';
 import 'package:coffeecard/models/account/user.dart';
 import 'package:equatable/equatable.dart';
 
@@ -19,36 +21,77 @@ class UserCubit extends Cubit<UserState> {
     final either = await _accountRepository.getUser();
 
     if (either.isRight) {
-      var user = either.right;
-
-      final programmes = await _programmeRepository.getProgramme();
-
-      if (programmes.isRight) {
-        final p = programmes.right
-            .firstWhere((element) => element.id == user.programmeId);
-
-        user = user.copyWith(
-          programme: ProgrammeInfo(p.shortName!, p.fullName!),
-        );
-      }
-
-      emit(UserLoaded(user));
+      _enrichUserWithProgrammes(either.right);
     } else {
       emit(UserError(either.left.errorMessage));
     }
   }
 
-  Future<void> setUserPrivacy({required bool privacyActived}) async {
-    emit(UserUpdating());
+  Future<void> _updateUser(UpdateUser user) async {
+    if (state is! UserLoaded) {
+      return;
+    }
+    final loadedState = state as UserLoaded;
+    emit(
+      UserUpdating(
+        user: loadedState.user,
+        programmes: loadedState.programmes,
+      ),
+    );
 
-    final either =
-        await _accountRepository.updatePrivacy(private: privacyActived);
+    final either = await _accountRepository.updateUser(user);
 
     if (either.isRight) {
-      emit(UserLoaded(either.right));
+      _enrichUserWithProgrammes(either.right);
     } else {
       emit(UserError(either.left.errorMessage));
     }
+  }
+
+  Future<void> _enrichUserWithProgrammes(User user) async {
+    final List<ProgrammeDto> programmes;
+    if (state is UserUpdating) {
+      programmes = (state as UserUpdating).programmes;
+    } else if (state is UserLoaded) {
+      programmes = (state as UserLoaded).programmes;
+    } else {
+      // Fetches the programme info, if we have not cached it beforehand
+      final either = await _programmeRepository.getProgramme();
+      if (either.isRight) {
+        programmes = either.right;
+      } else {
+        emit(UserError(either.left.errorMessage));
+        return;
+      }
+    }
+
+    final programme =
+        programmes.firstWhere((element) => element.id == user.programmeId);
+
+    emit(
+      UserLoaded(
+        user: user.copyWith(
+          programme: ProgrammeInfo(programme.shortName!, programme.fullName!),
+        ),
+        programmes: programmes,
+      ),
+    );
+  }
+
+  Future<void> setUserPrivacy({required bool privacyActivated}) async {
+    _updateUser(UpdateUser(privacyActivated: privacyActivated));
+  }
+
+  Future<void> setUserName(String name) async {
+    _updateUser(UpdateUser(name: name));
+  }
+
+  Future<void> setUserEmail(String email) async {
+    _updateUser(UpdateUser(email: email));
+  }
+
+  Future<void> setUserPasscode(String passcode) async {
+    _updateUser(UpdateUser(password: passcode));
   }
 
   void requestAccountDeletion() {

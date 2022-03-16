@@ -9,13 +9,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 
-class RegisterNameBody extends StatefulWidget {
-  const RegisterNameBody();
+class NameBody extends StatefulWidget {
+  final Function(BuildContext context, String name)? onSubmit;
+  final String? initialValue;
+
+  const NameBody({this.onSubmit, this.initialValue});
   @override
-  State<RegisterNameBody> createState() => _RegisterNameBodyState();
+  State<NameBody> createState() => _NameBodyState();
 }
 
-class _RegisterNameBodyState extends State<RegisterNameBody> {
+class _NameBodyState extends State<NameBody> {
   final _controller = TextEditingController();
   String get name => _controller.text;
 
@@ -24,11 +27,28 @@ class _RegisterNameBodyState extends State<RegisterNameBody> {
 
   bool _buttonEnabled() => name.isNotEmpty && _error == null;
 
+  @override
+  void initState() {
+    final initialValue = widget.initialValue;
+
+    if (initialValue != null) {
+      _controller.text = initialValue;
+    }
+    super.initState();
+  }
+
   Future<void> _validateName(String name) async {
     setState(() => _error = name.isEmpty ? Strings.registerNameEmpty : null);
   }
 
   Future<void> _submit(BuildContext context) async {
+    if (widget.onSubmit != null) {
+      final text = _controller.text;
+      _validateName(text);
+      widget.onSubmit!(context, text);
+      return;
+    }
+
     _showError = true;
     await _validateName(name.trim());
     if (!mounted) return;

@@ -4,6 +4,8 @@ import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
 import 'package:coffeecard/cubits/user/user_cubit.dart';
 import 'package:coffeecard/widgets/components/dialog.dart';
+import 'package:coffeecard/widgets/components/entry/register/email_body.dart';
+import 'package:coffeecard/widgets/components/entry/register/passcode_body.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:coffeecard/widgets/components/settings_group.dart';
 import 'package:coffeecard/widgets/components/settings_list_entry.dart';
@@ -42,7 +44,28 @@ class SettingsPage extends StatelessWidget {
                       state.user.email,
                       style: AppTextStyle.settingValue,
                     ),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push<void>(
+                        context,
+                        MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              AppScaffold.withTitle(
+                            title: Strings.changeEmail,
+                            body: EmailBody(
+                              initialValue: state.user.email,
+                              onSubmit: (context, email) {
+                                context.read<UserCubit>().setUserEmail(email);
+                                Navigator.pop(context);
+                                // token becomes invalid, sign the user out
+                                context
+                                    .read<AuthenticationCubit>()
+                                    .unauthenticated();
+                              },
+                            ),
+                          ),
+                        ),
+                      );
+                    },
                   ),
                   SettingListEntry(
                     name: Strings.passcode,
@@ -51,7 +74,23 @@ class SettingsPage extends StatelessWidget {
                       style: AppTextStyle.settingValue,
                     ),
                     onTap: () {
-                      // context.read<SettingsCubit>().changePasscode('0000');
+                      Navigator.push<void>(
+                        context,
+                        MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              AppScaffold.withTitle(
+                            title: Strings.changePasscode,
+                            body: PasscodeBody(
+                              onSubmit: (context, passcode) {
+                                context
+                                    .read<UserCubit>()
+                                    .setUserPasscode(passcode);
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ),
+                        ),
+                      );
                     },
                   ),
                   SettingListEntry(
