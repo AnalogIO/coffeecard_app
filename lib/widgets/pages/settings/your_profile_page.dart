@@ -105,7 +105,7 @@ class _EditProfile extends StatelessWidget {
                 onChanged: (privacyActivated) async {
                   await context
                       .read<UserCubit>()
-                      .setUserPrivacy(privacyActived: privacyActivated);
+                      .setUserPrivacy(privacyActivated: privacyActivated);
                 },
               ),
             ),

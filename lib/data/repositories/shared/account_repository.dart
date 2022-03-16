@@ -5,6 +5,7 @@ import 'package:coffeecard/data/api/coffee_card_api_constants.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.swagger.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.swagger.dart';
 import 'package:coffeecard/models/account/authenticated_user.dart';
+import 'package:coffeecard/models/account/update_user.dart';
 import 'package:coffeecard/models/account/user.dart';
 import 'package:coffeecard/models/api/api_error.dart';
 import 'package:coffeecard/models/api/unauthorized_error.dart';
@@ -88,31 +89,16 @@ class AccountRepository {
     }
   }
 
-  Future<Either<ApiError, User>> updateUserPasscode(String passcode) async {
-    final updateUserDto = UpdateUserDto(password: _encodePasscode(passcode));
-    return _updateUser(updateUserDto);
-  }
-
-  Future<Either<ApiError, User>> updateUserPrivacy({
-    required bool private,
-  }) async {
-    final updateUserDto = UpdateUserDto(privacyActivated: private);
-    return _updateUser(updateUserDto);
-  }
-
-  Future<Either<ApiError, User>> updateUserName(String name) async {
-    final updateUserDto = UpdateUserDto(name: name);
-    return _updateUser(updateUserDto);
-  }
-
-  Future<Either<ApiError, User>> updateUserEmail(String email) async {
-    final updateUserDto = UpdateUserDto(email: email);
-    return _updateUser(updateUserDto);
-  }
-
   /// Update user information
-  Future<Either<ApiError, User>> _updateUser(UpdateUserDto user) async {
-    final response = await _apiV1.apiV1AccountPut(body: user);
+  Future<Either<ApiError, User>> updateUser(UpdateUser user) async {
+    final userDTO = UpdateUserDto(
+      name: user.name,
+      programmeId: user.programmeId,
+      email: user.email,
+      privacyActivated: user.privacyActivated,
+      password: user.password != null ? _encodePasscode(user.password!) : null,
+    );
+    final response = await _apiV1.apiV1AccountPut(body: userDTO);
 
     if (response.isSuccessful) {
       final user = User.fromDTO(response.body!);
