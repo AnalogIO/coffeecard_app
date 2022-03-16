@@ -7,29 +7,50 @@ class SettingListEntry extends StatelessWidget {
   final String name;
   final Widget? valueWidget;
   final bool destructive;
-  final bool disabled;
   final void Function()? onTap;
 
   const SettingListEntry({
     required this.name,
-    this.disabled = false,
     this.onTap,
     this.valueWidget,
     this.destructive = false,
   });
+
+  bool get _disabled => onTap == null;
+
+  Widget _opacity({required Widget child}) {
+    return IgnorePointer(
+      ignoring: _disabled,
+      child: Opacity(
+        opacity: _disabled ? 0.4 : 1,
+        child: child,
+      ),
+    );
+  }
+
+  Widget get _leftWidget {
+    return _opacity(
+      child: destructive
+          ? Text(name, style: const TextStyle(color: AppColor.error))
+          : Text(name),
+    );
+  }
+
+  Widget get _rightWidget {
+    final valueWidget = this.valueWidget;
+    return valueWidget != null
+        ? IgnorePointer(child: _opacity(child: valueWidget))
+        : const SizedBox.shrink();
+  }
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 50,
       child: ListEntry(
-        backgroundColor: disabled ? AppColor.gray : null,
-        onTap: disabled ? null : onTap,
-        leftWidget: !destructive
-            ? Text(name)
-            : Text(name, style: const TextStyle(color: AppColor.error)),
-        rightWidget:
-            valueWidget == null ? const SizedBox.shrink() : valueWidget!,
+        onTap: _disabled ? null : onTap,
+        leftWidget: _leftWidget,
+        rightWidget: _rightWidget,
       ),
     );
   }

@@ -37,24 +37,18 @@ class SettingsPage extends StatelessWidget {
                 title: Strings.settingsGroupAccount,
                 listItems: [
                   SettingListEntry(
-                    disabled: true,
                     name: Strings.email,
                     valueWidget: Text(
                       state.user.email,
                       style: AppTextStyle.settingValue,
                     ),
-                    onTap: () {},
                   ),
                   SettingListEntry(
-                    disabled: true,
                     name: Strings.passcode,
                     valueWidget: Text(
                       Strings.change,
                       style: AppTextStyle.settingValue,
                     ),
-                    onTap: () {
-                      // context.read<SettingsCubit>().changePasscode('0000');
-                    },
                   ),
                   SettingListEntry(
                     name: Strings.logOut,
@@ -71,13 +65,11 @@ class SettingsPage extends StatelessWidget {
                   ),
                 ],
               ),
-              SettingsGroup(
+              const SettingsGroup(
                 title: Strings.settingsGroupAbout,
                 listItems: [
                   SettingListEntry(
-                    disabled: true,
                     name: Strings.faq,
-                    onTap: () {},
                   ),
                 ],
               ),
