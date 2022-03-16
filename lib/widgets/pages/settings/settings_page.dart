@@ -56,7 +56,7 @@ class SettingsPage extends StatelessWidget {
                               onSubmit: (context, email) {
                                 context.read<UserCubit>().setUserEmail(email);
                                 Navigator.pop(context);
-                                //FIXME: should we sign the user out after they changed their email? i think their token may become invalid
+                                // token becomes invalid, sign the user out
                                 context
                                     .read<AuthenticationCubit>()
                                     .unauthenticated();

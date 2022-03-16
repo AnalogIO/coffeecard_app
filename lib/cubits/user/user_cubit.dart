@@ -1,9 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:coffeecard/data/repositories/shared/account_repository.dart';
 import 'package:coffeecard/data/repositories/v1/programme_repository.dart';
+import 'package:coffeecard/generated/api/coffeecard_api.swagger.swagger.dart';
 import 'package:coffeecard/models/account/user.dart';
-import 'package:coffeecard/models/api/api_error.dart';
-import 'package:coffeecard/utils/either.dart';
 import 'package:equatable/equatable.dart';
 
 part 'user_state.dart';
@@ -21,34 +20,33 @@ class UserCubit extends Cubit<UserState> {
     final either = await _accountRepository.getUser();
 
     if (either.isRight) {
-      final either2 = await _enrichWithProgramme(either.right);
-
-      if (either2.isRight) {
-        emit(UserLoaded(either2.right));
-      } else {
-        emit(UserError(either2.left.errorMessage));
-      }
+      emit(UserLoaded(user: either.right));
     } else {
       emit(UserError(either.left.errorMessage));
     }
   }
 
-  //FIXME: how can we avoid fetching every time?
-  Future<Either<ApiError, User>> _enrichWithProgramme(User user) async {
-    final programmes = await _programmeRepository.getProgramme();
+  Future<void> fetchProgrammes(User user) async {
+    emit(UserLoading());
 
-    if (programmes.isRight) {
-      final p = programmes.right
-          .firstWhere((element) => element.id == user.programmeId);
+    final either = await _programmeRepository.getProgramme();
 
-      return Right(
-        user.copyWith(
-          programme: ProgrammeInfo(p.shortName!, p.fullName!),
+    if (either.isRight) {
+      final programmes = either.right;
+      final programme =
+          programmes.firstWhere((element) => element.id == user.programmeId);
+
+      emit(
+        UserLoaded(
+          user: user.copyWith(
+            programme: ProgrammeInfo(programme.shortName!, programme.fullName!),
+          ),
+          programmes: either.right,
         ),
       );
+    } else {
+      emit(UserError(either.left.errorMessage));
     }
-
-    return Left(programmes.left);
   }
 
   Future<void> setUserPrivacy({required bool privacyActived}) async {
@@ -58,13 +56,7 @@ class UserCubit extends Cubit<UserState> {
         await _accountRepository.updateUserPrivacy(private: privacyActived);
 
     if (either.isRight) {
-      final user2 = await _enrichWithProgramme(either.right);
-
-      if (user2.isRight) {
-        emit(UserLoaded(user2.right));
-      } else {
-        emit(UserError(user2.left.errorMessage));
-      }
+      emit(UserLoaded(user: either.right));
     } else {
       emit(UserError(either.left.errorMessage));
     }
@@ -76,13 +68,7 @@ class UserCubit extends Cubit<UserState> {
     final either = await _accountRepository.updateUserName(name);
 
     if (either.isRight) {
-      final user2 = await _enrichWithProgramme(either.right);
-
-      if (user2.isRight) {
-        emit(UserLoaded(user2.right));
-      } else {
-        emit(UserError(user2.left.errorMessage));
-      }
+      emit(UserLoaded(user: either.right));
     } else {
       emit(UserError(either.left.errorMessage));
     }
@@ -94,13 +80,7 @@ class UserCubit extends Cubit<UserState> {
     final either = await _accountRepository.updateUserEmail(email);
 
     if (either.isRight) {
-      final user2 = await _enrichWithProgramme(either.right);
-
-      if (user2.isRight) {
-        emit(UserLoaded(user2.right));
-      } else {
-        emit(UserError(user2.left.errorMessage));
-      }
+      emit(UserLoaded(user: either.right));
     } else {
       emit(UserError(either.left.errorMessage));
     }
@@ -112,13 +92,7 @@ class UserCubit extends Cubit<UserState> {
     final either = await _accountRepository.updateUserPasscode(passcode);
 
     if (either.isRight) {
-      final user2 = await _enrichWithProgramme(either.right);
-
-      if (user2.isRight) {
-        emit(UserLoaded(user2.right));
-      } else {
-        emit(UserError(user2.left.errorMessage));
-      }
+      emit(UserLoaded(user: either.right));
     } else {
       emit(UserError(either.left.errorMessage));
     }

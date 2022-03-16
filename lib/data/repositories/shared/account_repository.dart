@@ -76,7 +76,6 @@ class AccountRepository {
     }
   }
 
-  /// Get user information
   Future<Either<ApiError, User>> getUser() async {
     final response = await _apiV1.apiV1AccountGet();
 
@@ -91,32 +90,24 @@ class AccountRepository {
 
   Future<Either<ApiError, User>> updateUserPasscode(String passcode) async {
     final updateUserDto = UpdateUserDto(password: _encodePasscode(passcode));
-    final either = await _updateUser(updateUserDto);
-
-    return either.isRight ? Right(either.right) : Left(either.left);
+    return _updateUser(updateUserDto);
   }
 
   Future<Either<ApiError, User>> updateUserPrivacy({
     required bool private,
   }) async {
     final updateUserDto = UpdateUserDto(privacyActivated: private);
-    final either = await _updateUser(updateUserDto);
-
-    return either.isRight ? Right(either.right) : Left(either.left);
+    return _updateUser(updateUserDto);
   }
 
   Future<Either<ApiError, User>> updateUserName(String name) async {
     final updateUserDto = UpdateUserDto(name: name);
-    final either = await _updateUser(updateUserDto);
-
-    return either.isRight ? Right(either.right) : Left(either.left);
+    return _updateUser(updateUserDto);
   }
 
   Future<Either<ApiError, User>> updateUserEmail(String email) async {
     final updateUserDto = UpdateUserDto(email: email);
-    final either = await _updateUser(updateUserDto);
-
-    return either.isRight ? Right(either.right) : Left(either.left);
+    return _updateUser(updateUserDto);
   }
 
   /// Update user information

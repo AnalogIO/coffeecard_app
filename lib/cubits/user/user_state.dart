@@ -17,6 +17,18 @@ class UserUpdating extends UserState {}
 
 class UserLoaded extends UserState {
   final User user;
+  final List<ProgrammeDto> programmes;
 
-  UserLoaded(this.user);
+  UserLoaded({required this.user, List<ProgrammeDto>? programmes})
+      : programmes = programmes ?? [];
+
+  UserLoaded copyWith({
+    User? user,
+    List<ProgrammeDto>? programmes,
+  }) {
+    return UserLoaded(
+      user: user ?? this.user,
+      programmes: programmes ?? this.programmes,
+    );
+  }
 }
