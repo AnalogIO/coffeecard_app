@@ -39,7 +39,6 @@ class SettingsPage extends StatelessWidget {
                 title: Strings.settingsGroupAccount,
                 listItems: [
                   SettingListEntry(
-                    disabled: true,
                     name: Strings.email,
                     valueWidget: Text(
                       state.user.email,
@@ -69,7 +68,6 @@ class SettingsPage extends StatelessWidget {
                     },
                   ),
                   SettingListEntry(
-                    disabled: true,
                     name: Strings.passcode,
                     valueWidget: Text(
                       Strings.change,
@@ -110,13 +108,11 @@ class SettingsPage extends StatelessWidget {
                   ),
                 ],
               ),
-              SettingsGroup(
+              const SettingsGroup(
                 title: Strings.settingsGroupAbout,
                 listItems: [
                   SettingListEntry(
-                    disabled: true,
                     name: Strings.faq,
-                    onTap: () {},
                   ),
                 ],
               ),

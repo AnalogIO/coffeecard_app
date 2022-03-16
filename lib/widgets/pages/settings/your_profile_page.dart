@@ -69,7 +69,6 @@ class _EditProfile extends StatelessWidget {
           title: Strings.settingsGroupProfile,
           listItems: [
             SettingListEntry(
-              disabled: true,
               name: Strings.name,
               valueWidget: SettingDescription(text: user.name),
               onTap: () {
@@ -91,24 +90,21 @@ class _EditProfile extends StatelessWidget {
               },
             ),
             SettingListEntry(
-              disabled: true,
               name: Strings.occupation,
               valueWidget: SettingDescription(
                 text: user.programme.shortName,
               ),
-              onTap: () {},
             ),
             SettingListEntry(
               name: deviceIsSmall(context)
                   ? Strings.appearAnonymousSmall
                   : Strings.appearAnonymous,
+              onTap: () => context
+                  .read<UserCubit>()
+                  .setUserPrivacy(privacyActivated: !user.privacyActivated),
               valueWidget: Switch(
                 value: user.privacyActivated,
-                onChanged: (privacyActivated) async {
-                  await context
-                      .read<UserCubit>()
-                      .setUserPrivacy(privacyActivated: privacyActivated);
-                },
+                onChanged: (_) {},
               ),
             ),
           ],
