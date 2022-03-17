@@ -7,11 +7,6 @@ import 'package:coffeecard/widgets/routers/register_flow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-void _changeRoute(BuildContext context) {
-  BlocProvider.of<LoginCubit>(context).clearError();
-  Navigator.of(context).push(RegisterFlow.route);
-}
-
 class LoginEmailPage extends LoginPage {
   LoginEmailPage()
       : super(
@@ -24,4 +19,9 @@ class LoginEmailPage extends LoginPage {
             ),
           ],
         );
+}
+
+void _changeRoute(BuildContext context) {
+  BlocProvider.of<LoginCubit>(context).clearError();
+  Navigator.of(context).push(RegisterFlow.route);
 }

@@ -29,6 +29,8 @@ abstract class Strings {
   static const loginCreateAccount = "Don't have an account? Make one";
   static const loginSignInOtherAccount = 'Sign in using another account';
 
+  static const loginForgotYourPasscode = 'Forgot your passcode?';
+
   // Tickets
   static const ticketsMyTickets = 'My tickets';
   static const analogClosedTitle = 'Cafe Analog is closed';
@@ -198,6 +200,16 @@ abstract class Strings {
   static const changePasscode = 'Change passcode';
   static const changeEmailCannotBeSame =
       'New email cannot be the same as the old one';
+
+  static const forgotPasscode = 'Forgot passcode';
+  static const forgotPasscodeLinkSent = 'Passcode reset link sent';
+  static String forgotPasscodeSentRequestTo(String email) =>
+      'We have sent a request to reset your passcode to $email, please check your email';
+  static const forgotPasscodeTitleError = 'Looks like an error occoured';
+  static const forgotPasscodeBodyError =
+      'We were unable to complete your request, please try again later';
+  static const forgotPasscodeHint =
+      "We'll send you a link to reset your passcode";
 
   static const deleteAccountText =
       'Performing this action will delete your account and any tickets you own.\n\nThis cannot be undone.\n\nAre you sure you want to proceed?';

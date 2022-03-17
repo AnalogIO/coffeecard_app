@@ -15,6 +15,10 @@ class LoginCTA extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: () => onPressed(context),
+      style: const ButtonStyle(
+        visualDensity: VisualDensity.compact,
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      ),
       child: Text(
         text,
         style: const TextStyle(
