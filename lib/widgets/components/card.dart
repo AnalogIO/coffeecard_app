@@ -19,7 +19,6 @@ abstract class CardBase extends StatelessWidget {
     required this.color,
     this.borderColor,
     this.dense = false,
-    this.disabled = false,
     this.onTap,
   }) : super(key: key);
 
@@ -44,9 +43,6 @@ abstract class CardBase extends StatelessWidget {
   /// Decreases the amount of padding of the card.
   final bool dense;
 
-  /// Sets the elevation of the card to zero, removing the drop shadow.
-  final bool disabled;
-
   /// If not null, the card will splash when tapped.
   final void Function(BuildContext)? onTap;
 
@@ -68,7 +64,7 @@ abstract class CardBase extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Tappable(
-      elevation: disabled ? 0 : 1,
+      elevation: onTap == null ? 0 : 1,
       padding: EdgeInsets.all(dense ? 16 : 24),
       color: color,
       borderRadius: BorderRadius.circular(24),

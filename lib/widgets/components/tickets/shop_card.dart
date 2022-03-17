@@ -22,8 +22,7 @@ class ShopCard extends CardBase {
           key: key,
           color: type.isComingSoon ? AppColor.lightGray : AppColor.secondary,
           gap: 12,
-          onTap: onTapped,
-          disabled: type.isComingSoon,
+          onTap: type.isComingSoon ? null : onTapped,
           top: Text(
             title,
             style: type.isComingSoon
