@@ -9,22 +9,38 @@ class ProductRepository {
   final CoffeecardApi _api;
   final Logger _logger;
 
+  /// All products retrieved from the API.
+  Iterable<Product>? _productsCache;
+
   ProductRepository(this._api, this._logger);
 
-  /// Get purchaseable ticket products.
-  Future<Either<ApiError, List<Product>>> getProducts() async {
+  Future<Either<ApiError, List<Product>>> _getProducts({
+    required bool Function(Product) filter,
+  }) async {
+    final productsCache = _productsCache;
+    if (productsCache != null) {
+      return Right(productsCache.where(filter).toList());
+    }
+
     final response = await _api.apiV1ProductsGet();
 
     if (response.isSuccessful) {
-      return Right(
-        response.body!
-            .map((productDto) => Product.fromDTO(productDto))
-            .where((productDto) => productDto.amount > 1)
-            .toList(),
-      );
-    } else {
-      _logger.e(Strings.formatApiError(response));
-      return Left(ApiError(response.error.toString()));
+      final products = response.body!.map((dto) => Product.fromDTO(dto));
+      _productsCache = products;
+      return Right(products.where(filter).toList());
     }
+
+    _logger.e(Strings.formatApiError(response));
+    return Left(ApiError(response.error.toString()));
+  }
+
+  /// Get purchaseable ticket (coffee card) products.
+  Future<Either<ApiError, List<Product>>> getTicketProducts() async {
+    return _getProducts(filter: (product) => product.amount > 1);
+  }
+
+  /// Get purchaseable single drink products.
+  Future<Either<ApiError, List<Product>>> getSingleDrinkProducts() async {
+    return _getProducts(filter: (product) => product.amount == 1);
   }
 }

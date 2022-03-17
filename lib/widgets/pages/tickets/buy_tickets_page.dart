@@ -17,7 +17,7 @@ class BuyTicketsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
-          BuyTicketsCubit(sl.get<ProductRepository>())..getTickets(),
+          BuyTicketsCubit(sl.get<ProductRepository>())..getTicketProducts(),
       child: AppScaffold.withTitle(
         title: Strings.buyTickets,
         body: BlocBuilder<BuyTicketsCubit, BuyTicketsState>(

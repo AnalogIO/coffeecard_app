@@ -6,16 +6,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'buy_tickets_state.dart';
 
-enum FilterCategory { clipCards, singleTickets }
-
 class BuyTicketsCubit extends Cubit<BuyTicketsState> {
   final ProductRepository _repository;
 
   BuyTicketsCubit(this._repository) : super(const BuyTicketsLoading());
 
-  Future<void> getTickets() async {
+  Future<void> getTicketProducts() async {
     emit(const BuyTicketsLoading());
-    final response = await _repository.getProducts();
+    final response = await _repository.getTicketProducts();
 
     if (response.isRight) {
       emit(BuyTicketsLoaded(response.right));
