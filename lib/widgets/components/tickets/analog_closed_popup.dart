@@ -7,8 +7,9 @@ import 'package:coffeecard/widgets/components/tickets/rounded_button.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-// TODO: Code needs to be looked
-//       before being used again
+// TODO: Design of this widget should be looked at
+//       before reintoducing it to the widget tree.
+//       It is too large, disruptive and can potentially mess with muscle memory
 class AnalogClosedPopup extends StatelessWidget {
   const AnalogClosedPopup({Key? key}) : super(key: key);
 
