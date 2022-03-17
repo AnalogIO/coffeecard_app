@@ -21,28 +21,21 @@ class BuyTicketBottomModalSheet extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          _BottomModalSheetHelper(),
+          BottomModalSheetHelper(
+            children: [
+              Text(
+                Strings.confirmPurchase,
+                style: AppTextStyle.explainerBright,
+              ),
+              Text(
+                Strings.tapHereToCancel,
+                style: AppTextStyle.explainerBright,
+              ),
+            ],
+          ),
           _ModalContent(product: product),
         ],
       ),
-    );
-  }
-}
-
-class _BottomModalSheetHelper extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return BottomModalSheetHelper(
-      children: [
-        Text(
-          Strings.confirmPurchase,
-          style: AppTextStyle.explainerBright,
-        ),
-        Text(
-          Strings.tapHereToCancel,
-          style: AppTextStyle.explainerBright,
-        ),
-      ],
     );
   }
 }
