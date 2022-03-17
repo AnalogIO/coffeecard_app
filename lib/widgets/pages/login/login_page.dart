@@ -54,6 +54,7 @@ abstract class LoginPage extends StatelessWidget {
                       LoginInputHint(defaultHint: inputHint),
                       const Gap(12),
                       ...ctaChildren,
+                      const Gap(12),
                     ],
                   ),
                 ),
