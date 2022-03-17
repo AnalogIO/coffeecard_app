@@ -1,5 +1,5 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/cubits/buy_tickets_page/buy_tickets_cubit.dart';
+import 'package:coffeecard/cubits/products/products_cubit.dart';
 import 'package:coffeecard/data/repositories/v1/product_repository.dart';
 import 'package:coffeecard/errors/match_case_incomplete_exception.dart';
 import 'package:coffeecard/service_locator.dart';
@@ -17,14 +17,14 @@ class BuyTicketsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
-          BuyTicketsCubit(sl.get<ProductRepository>())..getTicketProducts(),
+          ProductsCubit(sl.get<ProductRepository>())..getTicketProducts(),
       child: AppScaffold.withTitle(
         title: Strings.buyTickets,
-        body: BlocBuilder<BuyTicketsCubit, BuyTicketsState>(
+        body: BlocBuilder<ProductsCubit, ProductsState>(
           builder: (context, state) {
-            if (state is BuyTicketsLoading) {
+            if (state is ProductsLoading) {
               return const Loading(loading: true);
-            } else if (state is BuyTicketsLoaded) {
+            } else if (state is ProductsLoaded) {
               return SingleChildScrollView(
                 padding: const EdgeInsets.all(16.0),
                 child: Grid(
@@ -36,7 +36,7 @@ class BuyTicketsPage extends StatelessWidget {
                       .toList(),
                 ),
               );
-            } else if (state is BuyTicketsError) {
+            } else if (state is ProductsError) {
               // FIXME handle error
               return const Text('error');
             }
