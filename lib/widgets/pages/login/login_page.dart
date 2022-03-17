@@ -40,7 +40,7 @@ abstract class LoginPage extends StatelessWidget {
           resizeToAvoidBottomInset: resizeOnKeyboard,
           body: Column(
             children: [
-              Flexible(
+              Expanded(
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
