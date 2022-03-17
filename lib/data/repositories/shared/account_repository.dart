@@ -109,7 +109,7 @@ class AccountRepository {
     }
   }
 
-  Future<Either<ApiError, void>> requestPasswordReset(String email) async {
+  Future<Either<ApiError, void>> requestPasscodeReset(String email) async {
     final response = await _apiV1.apiV1AccountForgotpasswordPost(
       body: EmailDto(email: email),
     );

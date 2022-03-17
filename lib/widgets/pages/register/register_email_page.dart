@@ -10,6 +10,7 @@ class RegisterEmailPage extends RegisterPage {
       : super(
           sectionTitle: Strings.registerEmailTitle,
           body: EmailBody(
+            displayHint: true,
             onSubmit: (context, email) {
               context.read<RegisterCubit>().setEmail(email);
               RegisterFlow.push(RegisterFlow.passcodeRoute);
