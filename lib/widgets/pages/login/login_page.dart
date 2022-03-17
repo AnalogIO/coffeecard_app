@@ -1,4 +1,5 @@
 import 'package:coffeecard/cubits/login/login_cubit.dart';
+import 'package:coffeecard/utils/responsive.dart';
 import 'package:coffeecard/widgets/analog_logo.dart';
 import 'package:coffeecard/widgets/components/entry/login/login_input_hint.dart';
 import 'package:coffeecard/widgets/components/entry/login/login_title.dart';
@@ -6,6 +7,7 @@ import 'package:coffeecard/widgets/components/loading_overlay.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gap/gap.dart';
 
 abstract class LoginPage extends StatelessWidget {
   final Widget inputWidget;
@@ -38,20 +40,19 @@ abstract class LoginPage extends StatelessWidget {
           resizeToAvoidBottomInset: resizeOnKeyboard,
           body: Column(
             children: [
-              Expanded(
-                child: SafeArea(
-                  minimum: const EdgeInsets.all(16),
+              Flexible(
+                child: SingleChildScrollView(
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      Gap(deviceIsSmall(context) ? 16 : 64),
                       const AnalogLogo(),
-                      Container(height: 16),
+                      const Gap(16),
                       const LoginTitle(),
-                      Container(height: 16),
+                      const Gap(16),
                       inputWidget,
-                      Container(height: 16),
+                      const Gap(16),
                       LoginInputHint(defaultHint: inputHint),
-                      Container(height: 12),
+                      const Gap(12),
                       ...ctaChildren,
                     ],
                   ),

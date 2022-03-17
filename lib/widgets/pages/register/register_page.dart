@@ -12,15 +12,12 @@ abstract class RegisterPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return ListView(
       padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SectionTitle.register(sectionTitle),
-          body,
-        ],
-      ),
+      children: [
+        SectionTitle.register(sectionTitle),
+        body,
+      ],
     );
   }
 }
