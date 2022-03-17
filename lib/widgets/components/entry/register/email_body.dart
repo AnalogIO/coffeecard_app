@@ -8,12 +8,12 @@ import 'package:flutter/material.dart';
 class EmailBody extends StatefulWidget {
   final Function(BuildContext context, String email) onSubmit;
   final String? initialValue;
-  final bool displayHint;
+  final String? hint;
 
   const EmailBody({
     required this.onSubmit,
     this.initialValue,
-    this.displayHint = false,
+    this.hint,
   });
   @override
   State<EmailBody> createState() => _EmailBodyState();
@@ -107,7 +107,7 @@ class _EmailBodyState extends State<EmailBody> {
         children: [
           AppTextField(
             label: Strings.registerEmailLabel,
-            hint: widget.displayHint ? Strings.registerEmailHint : null,
+            hint: widget.hint,
             autofocus: true,
             error: errorMessage,
             type: TextFieldType.email,
