@@ -10,12 +10,19 @@ class ProductsCubit extends Cubit<ProductsState> {
 
   ProductsCubit(this._repository) : super(const ProductsLoading());
 
-  Future<void> getTicketProducts() async {
+  Future<void> getProducts() async {
     emit(const ProductsLoading());
-    final response = await _repository.getTicketProducts();
+    final response = await _repository.getProducts();
 
     if (response.isRight) {
-      emit(ProductsLoaded(response.right));
+      final ticketProducts = response.right.where((p) => p.amount > 1);
+      final singleDrinkProducts = response.right.where((p) => p.amount == 1);
+      emit(
+        ProductsLoaded(
+          ticketProducts.toList(),
+          singleDrinkProducts.toList(),
+        ),
+      );
     } else {
       emit(ProductsError(response.left.errorMessage));
     }

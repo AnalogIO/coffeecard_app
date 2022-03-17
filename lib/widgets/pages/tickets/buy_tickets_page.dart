@@ -17,7 +17,7 @@ class BuyTicketsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
-          ProductsCubit(sl.get<ProductRepository>())..getTicketProducts(),
+          ProductsCubit(sl.get<ProductRepository>())..getProducts(),
       child: AppScaffold.withTitle(
         title: Strings.buyTickets,
         body: BlocBuilder<ProductsCubit, ProductsState>(
@@ -31,7 +31,7 @@ class BuyTicketsPage extends StatelessWidget {
                   gap: GridGap.normal,
                   gapSmall: GridGap.tight,
                   singleColumnOnSmallDevice: true,
-                  children: state.products
+                  children: state.ticketProducts
                       .map((product) => BuyTicketsCard(product: product))
                       .toList(),
                 ),
