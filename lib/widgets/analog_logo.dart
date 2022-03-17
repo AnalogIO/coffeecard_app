@@ -1,13 +1,15 @@
+import 'package:coffeecard/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 class AnalogLogo extends StatelessWidget {
-  final double height;
-  const AnalogLogo() : height = 78;
-  const AnalogLogo.small() : height = 52;
+  const AnalogLogo();
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(height: height, child: Image.asset('assets/logo.png'));
+    return SizedBox(
+      height: deviceIsSmall(context) ? 52 : 78,
+      child: Image.asset('assets/logo.png'),
+    );
   }
 }
 
