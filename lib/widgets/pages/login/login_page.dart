@@ -40,7 +40,7 @@ abstract class LoginPage extends StatelessWidget {
           resizeToAvoidBottomInset: resizeOnKeyboard,
           body: Column(
             children: [
-              Flexible(
+              Expanded(
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
@@ -54,6 +54,7 @@ abstract class LoginPage extends StatelessWidget {
                       LoginInputHint(defaultHint: inputHint),
                       const Gap(12),
                       ...ctaChildren,
+                      const Gap(12),
                     ],
                   ),
                 ),
