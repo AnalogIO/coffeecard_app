@@ -100,39 +100,4 @@ class _EditProfile extends StatelessWidget {
       ],
     );
   }
-
-//   Future<void> _pushChangeProgrammePage(BuildContext context) {
-//     return pushPageScaffold(
-//       context: context,
-//       title: Strings.changeProgramme,
-//       body: BlocBuilder<UserCubit, UserState>(
-//         builder: (context, state) {
-//           if (state is UserLoaded) {
-//             return ListView.builder(
-//               itemCount: state.programmes.length,
-//               itemBuilder: (context, index) {
-//                 state.programmes
-//                     .sort((a, b) => a.fullName!.compareTo(b.fullName!));
-//                 final programme = state.programmes[index];
-//                 return ListEntry(
-//                   leftWidget: SizedBox(
-//                     //TODO Is there a better way to determine the width of the left widget
-//                     width: MediaQuery.of(context).size.width * (3 / 5),
-//                     child: Text(programme.fullName!),
-//                   ),
-//                   rightWidget: Text(programme.shortName!),
-//                   onTap: () {
-//                     context.read<UserCubit>().setUserProgramme(programme.id!);
-//                     Navigator.pop(context);
-//                   },
-//                 );
-//               },
-//             );
-//           }
-//           //TODO handle programmes not being loaded?
-//           return const Text('Error');
-//         },
-//       ),
-//     );
-//   }
 }
