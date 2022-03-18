@@ -65,7 +65,7 @@ class _ModalContent extends StatelessWidget {
                 style: AppTextStyle.price,
               ),
               const Gap(12),
-              _ButtonModalSheetButtonBar(product: product),
+              _BottomModalSheetButtonBar(product: product),
             ],
           ),
         ),
@@ -74,8 +74,8 @@ class _ModalContent extends StatelessWidget {
   }
 }
 
-class _ButtonModalSheetButtonBar extends StatelessWidget {
-  const _ButtonModalSheetButtonBar({required this.product});
+class _BottomModalSheetButtonBar extends StatelessWidget {
+  const _BottomModalSheetButtonBar({required this.product});
 
   final Product product;
 

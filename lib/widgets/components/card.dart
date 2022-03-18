@@ -54,13 +54,6 @@ abstract class CardBase extends StatelessWidget {
     );
   }
 
-  void Function()? _onTap(BuildContext context) {
-    if (onTap == null) return null;
-    return () {
-      onTap!(context);
-    };
-  }
-
   @override
   Widget build(BuildContext context) {
     return Tappable(
@@ -69,7 +62,7 @@ abstract class CardBase extends StatelessWidget {
       color: color,
       borderRadius: BorderRadius.circular(24),
       borderColor: borderColor,
-      onTap: _onTap(context),
+      onTap: onTap != null ? () => onTap!(context) : null,
       child: _cardContent,
     );
   }
