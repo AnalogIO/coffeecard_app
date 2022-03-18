@@ -2,8 +2,10 @@ import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/models/receipts/receipt.dart';
+import 'package:coffeecard/utils/responsive.dart';
 import 'package:coffeecard/widgets/components/receipt/receipt_card.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 
 class ReceiptOverlay {
   //TODO see if a more generic version can be made that supports both the loading overlay and this one
@@ -21,23 +23,28 @@ class ReceiptOverlay {
     showDialog(
       context: _context,
       barrierColor: AppColor.scrim,
-      builder: (_) {
-        return Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ReceiptCard(
-                productName: receipt.productName,
-                time: receipt.timeUsed,
-                isPurchase: receipt.transactionType == TransactionType.purchase,
-                isInOverlay: true,
-                isTestEnvironment: isTestEnvironment,
-              ),
-              Text(
-                Strings.receiptTapAnywhereToDismiss,
-                style: AppTextStyle.explainerBright,
-              )
-            ],
+      builder: (context) {
+        return Padding(
+          padding: EdgeInsets.all(deviceIsSmall(context) ? 24 : 48),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ReceiptCard(
+                  productName: receipt.productName,
+                  time: receipt.timeUsed,
+                  isPurchase:
+                      receipt.transactionType == TransactionType.purchase,
+                  isInOverlay: true,
+                  isTestEnvironment: isTestEnvironment,
+                ),
+                const Gap(12),
+                Text(
+                  Strings.receiptTapAnywhereToDismiss,
+                  style: AppTextStyle.explainerBright,
+                )
+              ],
+            ),
           ),
         );
       },

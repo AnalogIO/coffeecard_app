@@ -1,5 +1,6 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/cubits/environment/environment_cubit.dart';
+import 'package:coffeecard/utils/responsive.dart';
 import 'package:coffeecard/widgets/components/receipt/receipt_card.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,7 @@ class ViewReceiptPage extends StatelessWidget {
       body: BlocBuilder<EnvironmentCubit, EnvironmentState>(
         builder: (context, state) {
           return Padding(
-            padding: const EdgeInsets.all(48),
+            padding: EdgeInsets.all(deviceIsSmall(context) ? 24 : 48),
             child: IntrinsicHeight(
               child: ReceiptCard(
                 productName: name,

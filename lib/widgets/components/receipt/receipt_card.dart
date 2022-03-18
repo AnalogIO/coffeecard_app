@@ -49,7 +49,7 @@ class ReceiptCard extends CardBase with IgnorePointerCard {
           ),
           gap: 120,
           bottom: CardBottomRow(
-            gap: 48,
+            gap: 48, // FIXME: Gap should be smaller on small devices
             left: isInOverlay
                 ? Text(Strings.receiptCardNote, style: AppTextStyle.explainer)
                 : const SizedBox.shrink(),
