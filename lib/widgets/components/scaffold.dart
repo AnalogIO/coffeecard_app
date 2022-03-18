@@ -47,12 +47,13 @@ class AppScaffold extends StatelessWidget {
         elevation: 0,
         toolbarHeight: appBarHeight,
       ),
-      body: BlocBuilder<EnvironmentCubit, Environment>(
+      body: BlocBuilder<EnvironmentCubit, EnvironmentState>(
         builder: (context, state) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              if (state.isTest) const _EnvironmentBanner(tappable: true),
+              if (state is EnvironmentLoaded && state.isTestEnvironment)
+                const _EnvironmentBanner(tappable: true),
               Expanded(
                 child: Container(
                   color: backgroundColor,
