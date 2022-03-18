@@ -1,3 +1,4 @@
+import 'package:coffeecard/cubits/environment/environment_cubit.dart';
 import 'package:coffeecard/cubits/tickets/tickets_cubit.dart';
 import 'package:coffeecard/errors/match_case_incomplete_exception.dart';
 import 'package:coffeecard/service_locator.dart';
@@ -19,14 +20,19 @@ class TicketSection extends StatelessWidget {
         children: [
           BlocConsumer<TicketsCubit, TicketsState>(
             listener: (context, state) {
+              final environment = context.read<EnvironmentCubit>().state;
               if (state is TicketUsing) {
-                Navigator.of(context, rootNavigator: true)
-                    .pop(); //Removes the swipe overlay
-                LoadingOverlay.of(context)
-                    .show(); //TODO consider using a nicer loading indicator
+                // Remove the swipe overlay
+                Navigator.of(context, rootNavigator: true).pop();
+                // TODO consider using a nicer loading indicator
+                LoadingOverlay.of(context).show();
               } else if (state is TicketUsed) {
-                LoadingOverlay.of(context).hide(); //Removes the loading overlay
-                ReceiptOverlay.of(context).show(state.receipt);
+                LoadingOverlay.of(context).hide();
+                ReceiptOverlay.of(context).show(
+                  receipt: state.receipt,
+                  isTestEnvironment: environment is EnvironmentLoaded &&
+                      environment.isTestEnvironment,
+                );
               }
             },
             builder: (context, state) {
@@ -35,7 +41,7 @@ class TicketSection extends StatelessWidget {
                 ticketsCubit.getTickets();
                 return const Text('loading');
               } else if (state is TicketsLoaded) {
-                //States extending this are also caught on this
+                // States extending this are also caught on this
                 if (state.tickets.isEmpty) {
                   return const CoffeeCardPlaceholder();
                 }
