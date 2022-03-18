@@ -94,6 +94,10 @@ class UserCubit extends Cubit<UserState> {
     _updateUser(UpdateUser(password: passcode));
   }
 
+  Future<void> setUserProgramme(int programmeId) async {
+    _updateUser(UpdateUser(programmeId: programmeId));
+  }
+
   void requestAccountDeletion() {
     _accountRepository.requestAccountDeletion();
   }
