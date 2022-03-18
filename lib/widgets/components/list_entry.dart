@@ -16,8 +16,9 @@ class ListEntry extends StatelessWidget {
     this.backgroundColor,
   });
 
-  Widget get _leftWidget => Row(children: [leftWidget, const Gap(48)]);
-  Widget get _rightWidget => Flexible(child: rightWidget);
+  Widget get _leftWidget =>
+      Row(children: [Flexible(child: leftWidget), const Gap(24)]);
+  Widget get _rightWidget => rightWidget;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,7 @@ class ListEntry extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [_leftWidget, _rightWidget],
+          children: [Flexible(child: _leftWidget), _rightWidget],
         ),
       ),
     );
