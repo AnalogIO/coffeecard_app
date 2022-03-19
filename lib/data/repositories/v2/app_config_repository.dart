@@ -16,7 +16,7 @@ class AppConfigRepository {
 
     if (response.isSuccessful) {
       final environmentType = environmentTypeFromJson(
-        response.body!.environmentType as Map<String, dynamic>,
+        response.body!.environmentType as String,
       );
 
       final Environment environment;
