@@ -1,6 +1,7 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.swagger.dart';
 import 'package:coffeecard/models/api/api_error.dart';
+import 'package:coffeecard/models/environment.dart';
 import 'package:coffeecard/utils/either.dart';
 import 'package:logger/logger.dart';
 
@@ -9,12 +10,32 @@ class AppConfigRepository {
   final Logger _logger;
 
   AppConfigRepository(this._api, this._logger);
-  Future<Either<ApiError, String>> getEnvironmentType() async {
+
+  Future<Either<ApiError, Environment>> getEnvironmentType() async {
     final response = await _api.apiV2AppconfigGet();
 
     if (response.isSuccessful) {
-      //FIXME: bug with swagger generation library, use string until fixed
-      return Right(response.body!.environmentType as String);
+      final environmentType = environmentTypeFromJson(
+        response.body!.environmentType as Map<String, dynamic>,
+      );
+
+      final Environment environment;
+      switch (environmentType) {
+        case EnvironmentType.swaggerGeneratedUnknown:
+          environment = Environment.unknown;
+          break;
+        case EnvironmentType.production:
+          environment = Environment.production;
+          break;
+        case EnvironmentType.test:
+          environment = Environment.test;
+          break;
+        case EnvironmentType.localdevelopment:
+          environment = Environment.test;
+          break;
+      }
+
+      return Right(environment);
     } else {
       _logger.e(Strings.formatApiError(response));
       return Left(ApiError(response.error.toString()));
