@@ -5,44 +5,48 @@ import 'package:coffeecard/widgets/components/helpers/shimmer_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-class StatisticsCard extends CardBase {
+class StatisticsCard extends StatelessWidget {
   final String title;
   final int? rank;
 
-  StatisticsCard({required this.title, this.rank})
-      : super(
-          dense: true,
-          gap: 24,
-          color: AppColor.white,
-          top: CardTitle(
-            title: Text(
-              title,
-              style: AppTextStyle.settingKey,
-            ),
-          ),
-          bottom: CardBottomRow(
-            right: ShimmerBuilder(
-              showShimmer: rank == null,
-              builder: (context, colorIfShimmer) {
-                return Container(
-                  color: colorIfShimmer,
-                  child: Text.rich(
+  const StatisticsCard({required this.title, this.rank});
+
+  @override
+  Widget build(BuildContext context) {
+    return CardBase(
+      dense: true,
+      gap: 24,
+      color: AppColor.white,
+      top: CardTitle(
+        title: Text(
+          title,
+          style: AppTextStyle.settingKey,
+        ),
+      ),
+      bottom: CardBottomRow(
+        right: ShimmerBuilder(
+          showShimmer: rank == null,
+          builder: (context, colorIfShimmer) {
+            return Container(
+              color: colorIfShimmer,
+              child: Text.rich(
+                TextSpan(
+                  text: '${rank ?? 0}',
+                  style: AppTextStyle.ticketsCount,
+                  children: [
                     TextSpan(
-                      text: '${rank ?? 0}',
-                      style: AppTextStyle.ticketsCount,
-                      children: [
-                        TextSpan(
-                          text: formatLeaderboardPostfix(rank ?? 0),
-                          style: AppTextStyle.leaderboardScore,
-                        ),
-                      ],
+                      text: formatLeaderboardPostfix(rank ?? 0),
+                      style: AppTextStyle.leaderboardScore,
                     ),
-                  ),
-                );
-              },
-            ),
-          ),
-        );
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
 }
 
 String formatLeaderboardPostfix(int rank) {

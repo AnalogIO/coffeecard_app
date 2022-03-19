@@ -5,43 +5,46 @@ import 'package:coffeecard/widgets/components/tickets/swipe_overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-class CoffeeCard extends CardBase {
+class CoffeeCard extends StatelessWidget {
   final String title;
   final int amountOwned;
   final int productId;
 
-  CoffeeCard({
-    Key? key,
+  const CoffeeCard({
     required this.title,
     required this.amountOwned,
     required this.productId,
-  }) : super(
-          key: key,
-          color: AppColor.ticket,
-          top: CardTitle(
-            title: Text(title, style: AppTextStyle.ownedTicket),
-          ),
-          bottom: CardBottomRow(
-            left: _TicketDots(amountOwned: amountOwned),
-            right: _TicketAmountText(amountOwned: amountOwned),
-          ),
-          gap: 36,
-          onTap: (context) {
-            showModalBottomSheet(
-              context: context,
-              barrierColor: AppColor.scrim,
-              isDismissible: true,
-              useRootNavigator: true,
-              enableDrag: false,
-              builder: (builder) {
-                return SwipeOverlay(
-                  title: title,
-                  productId: productId,
-                );
-              },
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return CardBase(
+      color: AppColor.ticket,
+      top: CardTitle(
+        title: Text(title, style: AppTextStyle.ownedTicket),
+      ),
+      bottom: CardBottomRow(
+        left: _TicketDots(amountOwned: amountOwned),
+        right: _TicketAmountText(amountOwned: amountOwned),
+      ),
+      gap: 36,
+      onTap: (context) {
+        showModalBottomSheet(
+          context: context,
+          barrierColor: AppColor.scrim,
+          isDismissible: true,
+          useRootNavigator: true,
+          enableDrag: false,
+          builder: (builder) {
+            return SwipeOverlay(
+              title: title,
+              productId: productId,
             );
           },
         );
+      },
+    );
+  }
 }
 
 class _TicketDots extends StatelessWidget {

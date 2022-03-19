@@ -2,7 +2,7 @@ import 'package:coffeecard/widgets/components/helpers/tappable.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-abstract class CardBase extends StatelessWidget {
+class CardBase extends StatelessWidget {
   /// Base widget for a card that matches the
   /// specification of the Analog app redesign.
   ///
@@ -65,17 +65,6 @@ abstract class CardBase extends StatelessWidget {
       onTap: onTap != null ? () => onTap!(context) : null,
       child: _cardContent,
     );
-  }
-}
-
-/// Wraps the card in a IgnorePointer class, deferring pointer events
-/// to the widget underneath the card.
-///
-/// Used for [ReceiptCard].
-mixin IgnorePointerCard on CardBase {
-  @override
-  Widget build(BuildContext context) {
-    return IgnorePointer(child: super.build(context));
   }
 }
 

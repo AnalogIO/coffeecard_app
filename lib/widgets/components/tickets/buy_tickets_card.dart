@@ -7,33 +7,35 @@ import 'package:coffeecard/widgets/components/tickets/buy_ticket_bottom_modal_sh
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-class BuyTicketsCard extends CardBase {
+class BuyTicketsCard extends StatelessWidget {
   final Product product;
 
-  BuyTicketsCard({Key? key, required this.product})
-      : super(
-          key: key,
-          color: AppColor.white,
-          gap: 64, // FIXME: Should be 48 for small devices
-          top: CardTitle(
-            title: Text(product.name, style: AppTextStyle.ownedTicket),
-            description:
-                Text(product.description, style: AppTextStyle.explainer),
-          ),
-          bottom: CardBottomRow(
-            left: _TicketPrice(amount: product.amount, price: product.price),
-          ),
-          onTap: (context) {
-            showModalBottomSheet(
-              context: context,
-              barrierColor: AppColor.scrim,
-              backgroundColor: Colors.transparent,
-              isDismissible: true,
-              useRootNavigator: true,
-              builder: (_) => BuyTicketBottomModalSheet(product: product),
-            );
-          },
+  const BuyTicketsCard({required this.product});
+
+  @override
+  Widget build(BuildContext context) {
+    return CardBase(
+      color: AppColor.white,
+      gap: 64, // FIXME: Should be 48 for small devices
+      top: CardTitle(
+        title: Text(product.name, style: AppTextStyle.ownedTicket),
+        description: Text(product.description, style: AppTextStyle.explainer),
+      ),
+      bottom: CardBottomRow(
+        left: _TicketPrice(amount: product.amount, price: product.price),
+      ),
+      onTap: (context) {
+        showModalBottomSheet(
+          context: context,
+          barrierColor: AppColor.scrim,
+          backgroundColor: Colors.transparent,
+          isDismissible: true,
+          useRootNavigator: true,
+          builder: (_) => BuyTicketBottomModalSheet(product: product),
         );
+      },
+    );
+  }
 }
 
 class _TicketPrice extends StatelessWidget {

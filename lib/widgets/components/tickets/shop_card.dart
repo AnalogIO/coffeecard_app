@@ -11,38 +11,41 @@ extension _ShopCardTypeIs on ShopCardType {
   bool get isComingSoon => this == ShopCardType.comingSoon;
 }
 
-class ShopCard extends CardBase {
-  ShopCard({
-    Key? key,
+class ShopCard extends StatelessWidget {
+  const ShopCard({
     required this.title,
     required this.icon,
     this.type = ShopCardType.normal,
     this.onTapped,
-  }) : super(
-          key: key,
-          color: type.isComingSoon ? AppColor.lightGray : AppColor.secondary,
-          gap: 12,
-          onTap: type.isComingSoon ? null : onTapped,
-          top: Text(
-            title,
-            style: type.isComingSoon
-                ? AppTextStyle.comingSoonShopCardTitle
-                : AppTextStyle.loginTitle,
-          ),
-          bottom: CardBottomRow(
-            gap: 8,
-            left: _OptionalLabel(type: type),
-            right: Icon(
-              icon,
-              color: type.isComingSoon ? AppColor.gray : AppColor.white,
-            ),
-          ),
-        );
+  });
 
   final String title;
   final IconData icon;
   final ShopCardType type;
   final void Function(BuildContext)? onTapped;
+
+  @override
+  Widget build(BuildContext context) {
+    return CardBase(
+      color: type.isComingSoon ? AppColor.lightGray : AppColor.secondary,
+      gap: 12,
+      onTap: type.isComingSoon ? null : onTapped,
+      top: Text(
+        title,
+        style: type.isComingSoon
+            ? AppTextStyle.comingSoonShopCardTitle
+            : AppTextStyle.loginTitle,
+      ),
+      bottom: CardBottomRow(
+        gap: 8,
+        left: _OptionalLabel(type: type),
+        right: Icon(
+          icon,
+          color: type.isComingSoon ? AppColor.gray : AppColor.white,
+        ),
+      ),
+    );
+  }
 }
 
 class _OptionalLabel extends StatelessWidget {
