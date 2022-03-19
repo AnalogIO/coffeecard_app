@@ -22,6 +22,9 @@ abstract class AppTextStyle {
     fontWeight: FontWeight.bold,
     fontFamily: AppFont.heading,
   );
+  static final TextStyle comingSoonShopCardTitle = loginTitle.copyWith(
+    color: AppColor.gray,
+  );
   static final TextStyle sectionTitle = TextStyle(
     color: AppColor.primary,
     fontSize: 18,
@@ -54,6 +57,12 @@ abstract class AppTextStyle {
     color: AppColor.primary,
     fontSize: 16,
     fontWeight: FontWeight.bold,
+    fontFamily: AppFont.body,
+  );
+  static final TextStyle ticketsOverflow = TextStyle(
+    color: AppColor.primary,
+    fontSize: 14,
+    fontWeight: FontWeight.w500,
     fontFamily: AppFont.body,
   );
   static final TextStyle settingKey = TextStyle(
@@ -139,6 +148,16 @@ abstract class AppTextStyle {
     fontSize: 12,
     fontFamily: AppFont.body,
   );
+  static final TextStyle newLabel = TextStyle(
+    fontSize: 12,
+    letterSpacing: 1,
+    color: AppColor.ticket,
+    fontWeight: FontWeight.w500,
+    fontFamily: AppFont.body,
+  );
+  static final TextStyle comingSoonLabel = newLabel.copyWith(
+    color: AppColor.gray,
+  );
   static final TextStyle label = TextStyle(
     color: AppColor.secondary,
     fontSize: 11,
@@ -151,7 +170,7 @@ abstract class AppTextStyle {
   );
   static final TextStyle explainerSmall = TextStyle(
     color: AppColor.primary,
-    fontSize: 9,
+    fontSize: 11,
     fontFamily: AppFont.body,
   );
 

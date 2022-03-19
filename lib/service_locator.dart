@@ -1,7 +1,7 @@
 import 'package:chopper/chopper.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
 import 'package:coffeecard/cubits/receipt/receipt_cubit.dart';
-import 'package:coffeecard/cubits/tickets_page/tickets_cubit.dart';
+import 'package:coffeecard/cubits/tickets/tickets_cubit.dart';
 import 'package:coffeecard/data/api/coffee_card_api_constants.dart';
 import 'package:coffeecard/data/api/interceptors/authentication_interceptor.dart';
 import 'package:coffeecard/data/repositories/shared/account_repository.dart';

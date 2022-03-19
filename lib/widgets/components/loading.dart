@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Loading extends StatelessWidget {
-  const Loading({required this.loading, required this.child});
+  const Loading({required this.loading, this.child = const SizedBox.shrink()});
 
   final bool loading;
   final Widget child;

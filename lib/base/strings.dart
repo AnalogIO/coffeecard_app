@@ -41,6 +41,8 @@ abstract class Strings {
   static const buyOneDrink = 'Buy one drink';
   static const buyOther = 'Buy syrup, jugs etc.';
   static const redeemVoucher = 'Redeem voucher';
+  static const newLabel = 'NEW';
+  static const comingSoonLabel = 'COMING SOON';
 
   // Register
   static const registerAppBarTitle = 'Register';
@@ -93,21 +95,26 @@ abstract class Strings {
 
   // Coffee card
   static const emptyCoffeeCardTextTop =
-      'Tickets that you buy will show up here';
+      'Tickets that you buy will show up here.';
   static const emptyCoffeeCardTextBottom =
       'Use the section below to shop tickets.';
   static const cofeeCardTicketsLeft = 'Tickets left:';
   static const useTicket = 'Use ticket';
 
   // Ticket card
-  static const paymentOptionApplePay = 'Apple Pay';
   static const paymentOptionMobilePay = 'MobilePay';
+  static const paymentOptionOther = 'Other...';
+  static const paymentOptionOtherComingSoon = 'This feature is coming soon';
+
+  static const confirmPurchase = 'Confirm purchase';
+  static const tapHereToCancel = 'Tap here to cancel';
+
   static String paymentConfirmationTop(int amount, String title) {
-    return "You're buying $amount tickets of $title";
+    return "You're buying $amount $title tickets";
   }
 
   static String paymentConfirmationBottom(int price) {
-    return 'Pay $price,- with ...';
+    return 'Pay $price,- with...';
   }
 
   static String amountTickets(int amount) {
