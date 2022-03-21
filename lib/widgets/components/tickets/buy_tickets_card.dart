@@ -16,7 +16,7 @@ class BuyTicketsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return CardBase(
       color: AppColor.white,
-      gap: 64, // FIXME: Should be 48 for small devices
+      gap: deviceIsSmall(context) ? 48 : 64,
       top: CardTitle(
         title: Text(product.name, style: AppTextStyle.ownedTicket),
         description: Text(product.description, style: AppTextStyle.explainer),

@@ -1,6 +1,7 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/utils/responsive.dart';
 import 'package:coffeecard/utils/time_since.dart';
 import 'package:coffeecard/widgets/analog_logo.dart';
 import 'package:coffeecard/widgets/components/card.dart';
@@ -54,7 +55,7 @@ class ReceiptCard extends StatelessWidget {
         ),
         gap: 120,
         bottom: CardBottomRow(
-          gap: 48, // FIXME: Gap should be smaller on small devices
+          gap: deviceIsSmall(context) ? 24 : 48,
           left: isInOverlay
               ? Text(Strings.receiptCardNote, style: AppTextStyle.explainer)
               : const SizedBox.shrink(),
