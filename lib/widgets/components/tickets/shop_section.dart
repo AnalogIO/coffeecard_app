@@ -21,12 +21,12 @@ class ShopSection extends StatelessWidget {
               icon: Icons.style,
               onTapped: (_) => TicketsFlow.push(TicketsFlow.buyTicketsRoute),
             ),
-            ShopCard(
+            const ShopCard(
               title: Strings.buyOneDrink,
               icon: Icons.coffee,
               type: ShopCardType.comingSoon,
             ),
-            ShopCard(
+            const ShopCard(
               title: Strings.buyOther,
               icon: Icons.coffee_maker,
               type: ShopCardType.comingSoon,
