@@ -5,6 +5,7 @@ import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/tickets/tickets_cubit.dart';
 import 'package:coffeecard/service_locator.dart';
+import 'package:coffeecard/utils/responsive.dart';
 import 'package:coffeecard/widgets/components/card.dart';
 import 'package:coffeecard/widgets/components/tickets/bottom_modal_sheet_helper.dart';
 import 'package:coffeecard/widgets/components/tickets/slide_to_act.dart';
@@ -116,8 +117,11 @@ class _ModalContentState extends State<_ModalContent>
                       elevation: 0,
                       text: Strings.useTicket,
                       textStyle: AppTextStyle.buttonText,
-                      sliderButtonIcon:
-                          const Icon(Icons.navigate_next, size: 65),
+                      height: deviceIsSmall(context) ? 56 : 72,
+                      sliderButtonIcon: Icon(
+                        Icons.navigate_next,
+                        size: deviceIsSmall(context) ? 48 : 65,
+                      ),
                       sliderButtonIconPadding: 0,
                       innerColor: AppColor.white,
                       outerColor: AppColor.primary,
