@@ -129,7 +129,7 @@ class SlideActionState extends State<SlideAction>
           clipBehavior: Clip.none,
           children: <Widget>[
             Opacity(
-              opacity: 1 - 1 * _progress,
+              opacity: _progress > 1 / 3 ? 0 : 1 - 3 * _progress,
               child: widget.child ??
                   Text(
                     widget.text,
