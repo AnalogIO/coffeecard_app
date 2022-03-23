@@ -98,6 +98,8 @@ class _ModalContentState extends State<_ModalContent>
             ),
             Hero(
               tag: _heroTag,
+              // SingleChildScrollView to avoid the temporary overflow
+              // error during the hero animation.
               child: SingleChildScrollView(
                 child: CardBase(
                   color: AppColor.ticket,
