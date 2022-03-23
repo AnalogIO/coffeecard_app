@@ -24,7 +24,8 @@ class TicketsCubit extends Cubit<TicketsState> {
       final response = await _ticketRepository.useTicket(productId);
       if (response is Right) {
         emit(TicketUsed(response.right, previousState.tickets));
-        await _refreshTickets(); //Refresh tickets, so the user sees the right count
+        // Refresh tickets, so the user sees the right count
+        _refreshTickets();
       } else {
         emit(TicketsError(response.left.errorMessage));
       }

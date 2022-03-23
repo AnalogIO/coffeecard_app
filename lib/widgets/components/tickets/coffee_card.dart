@@ -1,7 +1,7 @@
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/widgets/components/card.dart';
-import 'package:coffeecard/widgets/components/tickets/swipe_overlay.dart';
+import 'package:coffeecard/widgets/components/tickets/swipe_ticket_confirm.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
@@ -29,18 +29,11 @@ class CoffeeCard extends StatelessWidget {
       ),
       gap: 36,
       onTap: (context) {
-        showModalBottomSheet(
+        showSwipeTicketConfirm(
           context: context,
-          barrierColor: AppColor.scrim,
-          isDismissible: true,
-          useRootNavigator: true,
-          enableDrag: false,
-          builder: (builder) {
-            return SwipeOverlay(
-              title: title,
-              productId: productId,
-            );
-          },
+          productName: title,
+          amountOwned: amountOwned,
+          productId: productId,
         );
       },
     );
