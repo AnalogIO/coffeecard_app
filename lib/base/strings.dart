@@ -101,39 +101,14 @@ abstract class Strings {
   static const cofeeCardTicketsLeft = 'Tickets left:';
   static const useTicket = 'Use ticket';
 
-  // Ticket card
-  static const paymentOptionMobilePay = 'MobilePay';
-  static const paymentOptionOther = 'Other...';
-  static const paymentOptionOtherComingSoon = 'This feature is coming soon';
-
-  static const confirmPurchase = 'Confirm purchase';
-  static const tapHereToCancel = 'Tap here to cancel';
-
-  static String paymentConfirmationTop(int amount, String title) {
-    return "You're buying $amount $title tickets";
-  }
-
-  static String paymentConfirmationBottom(int price) {
-    return 'Pay $price,- with...';
-  }
-
-  static String amountTickets(int amount) {
-    return '$amount tickets';
-  }
-
-  static String price(int price) {
-    return '$price,-';
-  }
-
   // Purchase process
-  static const purchaseErrorOk = 'Ok';
-  static const purchaseTalking = 'Talking with payment provider';
-  static const purchaseCompleting = 'Completing purchase';
-  static const purchaseSuccess = 'Success';
+  static const purchaseInProgress = 'Working on it...';
   static const purchaseRejectedOrCanceled = 'Payment rejected or canceled';
   static const purchaseRejectedOrCanceledMessage =
       'The payment was rejected or cancelled. No tickets have been added to your account';
-  static const purchaseError = "Uh oh, we couldn't complete that purchase";
+  static const purchaseErrorTitle = 'Whoops...';
+  static const purchaseErrorMessage =
+      'An error occurred while attempting to purchase.';
 
   // Receipts
   static const receiptsPageTitle = 'Receipts';

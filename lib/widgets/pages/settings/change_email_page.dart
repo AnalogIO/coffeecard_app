@@ -13,6 +13,12 @@ class ChangeEmailPage extends StatefulWidget {
   const ChangeEmailPage({required this.currentEmail});
   final String currentEmail;
 
+  static Route routeWith({required String currentEmail}) {
+    return MaterialPageRoute(
+      builder: (_) => ChangeEmailPage(currentEmail: currentEmail),
+    );
+  }
+
   @override
   State<ChangeEmailPage> createState() => _ChangeEmailPageState();
 }

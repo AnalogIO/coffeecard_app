@@ -9,13 +9,15 @@ import 'package:coffeecard/widgets/components/settings_group.dart';
 import 'package:coffeecard/widgets/components/settings_list_entry.dart';
 import 'package:coffeecard/widgets/pages/settings/change_name_page.dart';
 import 'package:coffeecard/widgets/pages/settings/change_occupation_page.dart';
-import 'package:coffeecard/widgets/routers/settings_flow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 
 class YourProfilePage extends StatelessWidget {
   const YourProfilePage();
+
+  static Route get route =>
+      MaterialPageRoute(builder: (_) => const YourProfilePage());
 
   @override
   Widget build(BuildContext context) {
@@ -74,14 +76,24 @@ class _EditProfile extends StatelessWidget {
             SettingListEntry(
               name: Strings.name,
               valueWidget: SettingDescription(text: user.name),
-              onTap: () => SettingsFlow.push(ChangeNamePage(name: user.name)),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  ChangeNamePage.routeWith(name: user.name),
+                );
+              },
             ),
             SettingListEntry(
               name: Strings.occupation,
               valueWidget: SettingDescription(
                 text: user.programme.shortName,
               ),
-              onTap: () => SettingsFlow.push(const ChangeOccupationPage()),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  ChangeOccupationPage.route,
+                );
+              },
             ),
             SettingListEntry(
               name: deviceIsSmall(context)

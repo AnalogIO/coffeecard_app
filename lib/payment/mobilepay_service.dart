@@ -5,16 +5,14 @@ import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.swagger.dart'
 import 'package:coffeecard/models/api/api_error.dart';
 import 'package:coffeecard/models/purchase/payment.dart';
 import 'package:coffeecard/models/purchase/payment_status.dart';
-import 'package:coffeecard/payment/payment_handler.dart';
 import 'package:coffeecard/utils/either.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class MobilePayService implements PaymentHandler {
+class MobilePayService {
   final PurchaseRepository _repository;
 
-  MobilePayService(this._repository);
+  const MobilePayService(this._repository);
 
-  @override
   Future<Either<ApiError, Payment>> initPurchase(int productId) async {
     final response =
         await _repository.initiatePurchase(productId, PaymentType.mobilepay);
@@ -59,7 +57,6 @@ class MobilePayService implements PaymentHandler {
     }
   }
 
-  @override
   Future<Either<ApiError, PaymentStatus>> verifyPurchase(
     int purchaseId,
   ) async {
@@ -83,21 +80,15 @@ class MobilePayService implements PaymentHandler {
   }
 
   PaymentStatus _mapPaymentStateToStatus(String state) {
-    PaymentStatus status;
     switch (state) {
       case 'Initiated':
-        status = PaymentStatus.awaitingPayment;
-        break;
+        return PaymentStatus.awaitingPayment;
       case 'Reserved':
-        status = PaymentStatus.reserved;
-        break;
+        return PaymentStatus.reserved;
       case 'Captured':
-        status = PaymentStatus.completed;
-        break;
-      default: //cancelledByMerchant, cancelledBySystem, cancelledByUser
-        status = PaymentStatus.rejectedPayment;
-        break;
+        return PaymentStatus.completed;
+      default: // cancelledByMerchant, cancelledBySystem, cancelledByUser
+        return PaymentStatus.rejectedPayment;
     }
-    return status;
   }
 }

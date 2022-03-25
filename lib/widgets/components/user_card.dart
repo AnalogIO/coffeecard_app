@@ -3,7 +3,6 @@ import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/user/user_cubit.dart';
 import 'package:coffeecard/widgets/components/helpers/tappable.dart';
 import 'package:coffeecard/widgets/pages/settings/your_profile_page.dart';
-import 'package:coffeecard/widgets/routers/settings_flow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
@@ -23,7 +22,7 @@ class UserCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(24.0),
           ),
           child: Tappable(
-            onTap: () => SettingsFlow.push(const YourProfilePage()),
+            onTap: () => Navigator.push(context, YourProfilePage.route),
             borderRadius: BorderRadius.circular(24.0),
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),

@@ -1,7 +1,8 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/widgets/components/helpers/grid.dart';
 import 'package:coffeecard/widgets/components/tickets/shop_card.dart';
-import 'package:coffeecard/widgets/routers/tickets_flow.dart';
+import 'package:coffeecard/widgets/pages/tickets/buy_tickets_page.dart';
+import 'package:coffeecard/widgets/pages/tickets/redeem_voucher_page.dart';
 import 'package:flutter/material.dart';
 
 class ShopSection extends StatelessWidget {
@@ -19,7 +20,7 @@ class ShopSection extends StatelessWidget {
             ShopCard(
               title: Strings.buyTickets,
               icon: Icons.style,
-              onTapped: (_) => TicketsFlow.push(TicketsFlow.buyTicketsRoute),
+              onTapped: (_) => Navigator.push(context, BuyTicketsPage.route),
             ),
             const ShopCard(
               title: Strings.buyOneDrink,
@@ -34,7 +35,7 @@ class ShopSection extends StatelessWidget {
             ShopCard(
               title: Strings.redeemVoucher,
               icon: Icons.wallet_giftcard,
-              onTapped: (_) => TicketsFlow.push(TicketsFlow.redeemVoucherRoute),
+              onTapped: (_) => Navigator.push(context, RedeemVoucherPage.route),
             ),
           ],
         ),

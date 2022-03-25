@@ -9,6 +9,9 @@ class ChangeNamePage extends StatelessWidget {
   const ChangeNamePage({required this.name});
   final String name;
 
+  static Route routeWith({required String name}) =>
+      MaterialPageRoute(builder: (_) => ChangeNamePage(name: name));
+
   @override
   Widget build(BuildContext context) {
     return AppScaffold.withTitle(

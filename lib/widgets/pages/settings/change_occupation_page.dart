@@ -8,6 +8,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class ChangeOccupationPage extends StatelessWidget {
   const ChangeOccupationPage();
 
+  static Route get route =>
+      MaterialPageRoute(builder: (_) => const ChangeOccupationPage());
+
   @override
   Widget build(BuildContext context) {
     return AppScaffold.withTitle(

@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 class TicketsPage extends StatefulWidget {
-  const TicketsPage({Key? key}) : super(key: key);
+  static Route get route => MaterialPageRoute(builder: (_) => TicketsPage());
 
   @override
   _TicketsPageState createState() => _TicketsPageState();

@@ -10,13 +10,12 @@ import 'package:coffeecard/widgets/components/settings_list_entry.dart';
 import 'package:coffeecard/widgets/components/user_card.dart';
 import 'package:coffeecard/widgets/pages/settings/change_email_page.dart';
 import 'package:coffeecard/widgets/pages/settings/change_passcode_page.dart';
-import 'package:coffeecard/widgets/routers/settings_flow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 
 class SettingsPage extends StatelessWidget {
-  const SettingsPage();
+  static Route get route => MaterialPageRoute(builder: (_) => SettingsPage());
 
   @override
   Widget build(BuildContext context) {
@@ -46,8 +45,10 @@ class SettingsPage extends StatelessWidget {
                       style: AppTextStyle.settingValue,
                     ),
                     onTap: () {
-                      SettingsFlow.push(
-                        ChangeEmailPage(currentEmail: state.user.email),
+                      final email = state.user.email;
+                      Navigator.push(
+                        context,
+                        ChangeEmailPage.routeWith(currentEmail: email),
                       );
                     },
                   ),
@@ -57,7 +58,9 @@ class SettingsPage extends StatelessWidget {
                       Strings.change,
                       style: AppTextStyle.settingValue,
                     ),
-                    onTap: () => SettingsFlow.push(const ChangePasscodePage()),
+                    onTap: () {
+                      Navigator.push(context, ChangePasscodePage.route);
+                    },
                   ),
                   SettingListEntry(
                     name: Strings.logOut,

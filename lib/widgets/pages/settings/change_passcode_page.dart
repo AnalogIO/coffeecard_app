@@ -8,6 +8,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class ChangePasscodePage extends StatelessWidget {
   const ChangePasscodePage();
 
+  static Route get route =>
+      MaterialPageRoute(builder: (_) => const ChangePasscodePage());
+
   @override
   Widget build(BuildContext context) {
     return AppScaffold.withTitle(

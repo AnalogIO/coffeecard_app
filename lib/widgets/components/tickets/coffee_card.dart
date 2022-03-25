@@ -1,8 +1,10 @@
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/cubits/tickets/tickets_cubit.dart';
 import 'package:coffeecard/widgets/components/card.dart';
 import 'package:coffeecard/widgets/components/tickets/swipe_overlay.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 
 class CoffeeCard extends StatelessWidget {
@@ -39,6 +41,7 @@ class CoffeeCard extends StatelessWidget {
             return SwipeOverlay(
               title: title,
               productId: productId,
+              ticketsCubit: context.read<TicketsCubit>(),
             );
           },
         );
