@@ -93,7 +93,7 @@ abstract class Strings {
   static const buttonCancel = 'Cancel';
   static const buttonUnderstand = 'I understand';
 
-  // Coffee card
+  // Coffee/ticket card
   static const emptyCoffeeCardTextTop =
       'Tickets that you buy will show up here.';
   static const emptyCoffeeCardTextBottom =
@@ -101,11 +101,13 @@ abstract class Strings {
   static const cofeeCardTicketsLeft = 'Tickets left:';
   static const useTicket = 'Use ticket';
 
-  // Ticket card
+  // "Buy ticket" card
   static const paymentOptionMobilePay = 'MobilePay';
   static const paymentOptionOther = 'Other...';
   static const paymentOptionOtherComingSoon = 'This feature is coming soon';
 
+  // Modal explainer
+  static const confirmSwipe = 'Confirm use of ticket';
   static const confirmPurchase = 'Confirm purchase';
   static const tapHereToCancel = 'Tap here to cancel';
 

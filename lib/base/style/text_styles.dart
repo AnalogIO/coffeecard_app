@@ -124,6 +124,7 @@ abstract class AppTextStyle {
     fontSize: 12,
     fontWeight: FontWeight.w500,
     fontFamily: AppFont.body,
+    decoration: TextDecoration.none,
   );
   static final TextStyle explainerBold = TextStyle(
     color: AppColor.secondary,

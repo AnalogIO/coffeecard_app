@@ -6,11 +6,11 @@ import 'package:coffeecard/widgets/components/loading_overlay.dart';
 import 'package:coffeecard/widgets/components/receipt/receipt_overlay.dart';
 import 'package:coffeecard/widgets/components/tickets/coffee_card.dart';
 import 'package:coffeecard/widgets/components/tickets/coffee_card_placeholder.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TicketSection extends StatelessWidget {
-  const TicketSection({Key? key}) : super(key: key);
+  const TicketSection();
 
   @override
   Widget build(BuildContext context) {
@@ -20,18 +20,18 @@ class TicketSection extends StatelessWidget {
         children: [
           BlocConsumer<TicketsCubit, TicketsState>(
             listener: (context, state) {
-              final environment = context.read<EnvironmentCubit>().state;
               if (state is TicketUsing) {
                 // Remove the swipe overlay
                 Navigator.of(context, rootNavigator: true).pop();
                 // TODO consider using a nicer loading indicator
                 LoadingOverlay.of(context).show();
               } else if (state is TicketUsed) {
+                final envState = context.read<EnvironmentCubit>().state;
                 LoadingOverlay.of(context).hide();
                 ReceiptOverlay.of(context).show(
                   receipt: state.receipt,
-                  isTestEnvironment: environment is EnvironmentLoaded &&
-                      environment.isTestEnvironment,
+                  isTestEnvironment: envState is EnvironmentLoaded &&
+                      envState.isTestEnvironment,
                 );
               }
             },
@@ -50,10 +50,13 @@ class TicketSection extends StatelessWidget {
                       .map(
                         (p) => Padding(
                           padding: const EdgeInsets.only(bottom: 12.0),
-                          child: CoffeeCard(
-                            title: p.productName,
-                            amountOwned: p.count,
-                            productId: p.productId,
+                          child: Hero(
+                            tag: p.productId,
+                            child: CoffeeCard(
+                              title: p.productName,
+                              amountOwned: p.count,
+                              productId: p.productId,
+                            ),
                           ),
                         ),
                       )
