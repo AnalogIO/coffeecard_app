@@ -57,9 +57,7 @@ class MobilePayService {
     }
   }
 
-  Future<Either<ApiError, PaymentStatus>> verifyPurchase(
-    int purchaseId,
-  ) async {
+  Future<Either<ApiError, PaymentStatus>> verifyPurchase(int purchaseId) async {
     // Call API endpoint, receive PaymentStatus
     final either = await _repository.getPurchase(purchaseId);
 
