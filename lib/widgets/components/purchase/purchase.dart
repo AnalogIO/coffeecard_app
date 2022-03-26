@@ -100,12 +100,11 @@ class _PaymentHandlerState extends State<PaymentHandler>
   }
 
   Future<void> _startPayment() async {
-    final service = MobilePayService(sl.get<PurchaseRepository>());
-    final either = await service.initPurchase(widget.product.id);
+    final either = await _service.initPurchase(widget.product.id);
     if (either.isRight) {
       _payment = either.right;
       _shouldVerify = true;
-      service.invokeMobilePay(_payment.deeplink);
+      _service.invokeMobilePay(_payment.deeplink);
     } else {
       _exit(Left(either.left));
     }
