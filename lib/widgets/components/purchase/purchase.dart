@@ -113,11 +113,8 @@ class _PaymentHandlerState extends State<PaymentHandler>
 
   Future<void> _verifyPayment() async {
     if (!_shouldVerify) return;
-
-    final payment = _payment;
     _shouldVerify = false;
-
-    final either = await _service.verifyPurchase(payment.id);
+    final either = await _service.verifyPurchase(_payment.id);
 
     if (either.isLeft) {
       _exit(Left(either.left));
@@ -125,7 +122,7 @@ class _PaymentHandlerState extends State<PaymentHandler>
       final paymentStatus = either.right;
 
       if (paymentStatus == PaymentStatus.completed) {
-        _exit(Right(payment));
+        _exit(Right(_payment));
       } else if (paymentStatus != PaymentStatus.reserved) {
         // Pop with no payment value (because it was cancelled/rejected)
         _exit(const Right(null));
