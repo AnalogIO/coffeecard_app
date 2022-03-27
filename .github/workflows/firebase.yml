@@ -63,7 +63,7 @@ jobs:
       - name: Generate code
         run: scripts/.generate-code.sh code
       - name: Build iOS
-        run: flutter build ipa -release -export-options-plist=ios/Runner/ExportOptions.plist
+        run: flutter build ipa --release --export-options-plist=ios/Runner/ExportOptions.plist
       - name: Upload iOS build
         uses: actions/upload-artifact@v3.0.0
         with:
