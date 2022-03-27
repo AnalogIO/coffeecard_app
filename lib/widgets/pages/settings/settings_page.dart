@@ -18,6 +18,9 @@ import 'package:gap/gap.dart';
 class SettingsPage extends StatelessWidget {
   const SettingsPage();
 
+  static Route get route =>
+      MaterialPageRoute(builder: (_) => const SettingsPage());
+
   @override
   Widget build(BuildContext context) {
     return AppScaffold.withTitle(

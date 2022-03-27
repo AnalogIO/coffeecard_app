@@ -17,6 +17,9 @@ import 'package:gap/gap.dart';
 class YourProfilePage extends StatelessWidget {
   const YourProfilePage();
 
+  static Route get route =>
+      MaterialPageRoute(builder: (_) => const YourProfilePage());
+
   @override
   Widget build(BuildContext context) {
     return AppScaffold.withTitle(
@@ -27,7 +30,8 @@ class YourProfilePage extends StatelessWidget {
           if (userLoadedState is! UserLoaded) return const SizedBox.shrink();
 
           return BlocBuilder<UserCubit, UserState>(
-            buildWhen: (previous, current) => previous is UserUpdating || current is UserUpdating,
+            buildWhen: (previous, current) =>
+                previous is UserUpdating || current is UserUpdating,
             builder: (context, state) {
               return Loading(
                 loading: state is UserUpdating,
@@ -83,8 +87,12 @@ class _EditProfile extends StatelessWidget {
               onTap: () => _pushChangeProgrammePage(context),
             ),
             SettingListEntry(
-              name: deviceIsSmall(context) ? Strings.appearAnonymousSmall : Strings.appearAnonymous,
-              onTap: () => context.read<UserCubit>().setUserPrivacy(privacyActivated: !user.privacyActivated),
+              name: deviceIsSmall(context)
+                  ? Strings.appearAnonymousSmall
+                  : Strings.appearAnonymous,
+              onTap: () => context
+                  .read<UserCubit>()
+                  .setUserPrivacy(privacyActivated: !user.privacyActivated),
               valueWidget: Switch(
                 value: user.privacyActivated,
                 onChanged: (_) {},
@@ -120,7 +128,8 @@ class _EditProfile extends StatelessWidget {
             return ListView.builder(
               itemCount: state.programmes.length,
               itemBuilder: (context, index) {
-                state.programmes.sort((a, b) => a.fullName!.compareTo(b.fullName!));
+                state.programmes
+                    .sort((a, b) => a.fullName!.compareTo(b.fullName!));
                 final programme = state.programmes[index];
                 return ListEntry(
                   leftWidget: SizedBox(

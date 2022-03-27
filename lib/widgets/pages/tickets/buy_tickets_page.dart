@@ -13,6 +13,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class BuyTicketsPage extends StatelessWidget {
   const BuyTicketsPage();
 
+  static Route get route =>
+      MaterialPageRoute(builder: (_) => const BuyTicketsPage());
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(

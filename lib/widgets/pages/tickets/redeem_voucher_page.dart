@@ -4,7 +4,10 @@ import 'package:coffeecard/widgets/components/voucher/redeem_voucher_body.dart';
 import 'package:flutter/material.dart';
 
 class RedeemVoucherPage extends StatelessWidget {
-  const RedeemVoucherPage({Key? key}) : super(key: key);
+  const RedeemVoucherPage();
+
+  static Route get route =>
+      MaterialPageRoute(builder: (_) => const RedeemVoucherPage());
 
   @override
   Widget build(BuildContext context) {
