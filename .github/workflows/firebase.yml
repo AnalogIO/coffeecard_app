@@ -14,6 +14,34 @@ jobs:
     name: Build iOS App
     runs-on: macos-latest
     steps:
+      - name: Install the Apple certificate and provisioning profile
+        env:
+          APPLE_IOS_SIGNING_CERT: ${{ secrets.APPLE_IOS_SIGNING_CERT }}
+          APPLE_IOS_SIGNING_CERT_PW: ${{ secrets.APPLE_IOS_SIGNING_CERT_PW }}
+          APPLE_IOS_PROVISIONING_PROFILE: ${{ secrets.APPLE_IOS_PROVISIONING_PROFILE }}
+          MAC_KEYCHAIN_PASSWORD: ${{ secrets.APPLE_KEYCHAIN_PW }}
+        run: |
+          # create variables
+          CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
+          PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
+          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+
+          # import certificate and provisioning profile from secrets
+          echo -n "$APPLE_IOS_SIGNING_CERT" | base64 --decode --output $CERTIFICATE_PATH
+          echo -n "$APPLE_IOS_PROVISIONING_PROFILE" | base64 --decode --output $PP_PATH
+
+          # create temporary keychain
+          security create-keychain -p "$MAC_KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
+          security unlock-keychain -p "$MAC_KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+
+          # import certificate to keychain
+          security import $CERTIFICATE_PATH -P "$APPLE_IOS_SIGNING_CERT_PW" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
+          security list-keychain -d user -s $KEYCHAIN_PATH
+
+          # apply provisioning profile
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Setup Java
@@ -35,16 +63,7 @@ jobs:
       - name: Generate code
         run: scripts/.generate-code.sh code
       - name: Build iOS
-        run: flutter build ios --release --no-codesign
-      - name: Convert .app to .ipa
-        run: |
-          mkdir build/ios/iphoneos/Payload
-          mv build/ios/iphoneos/Runner.app build/ios/iphoneos/Payload
-          cd build/ios/iphoneos
-          ls
-          zip -r Payload.zip Payload
-          ls
-          mv Payload.zip Payload.ipa
+        run: flutter build ipa -release -export-options-plist=ios/Runner/ExportOptions.plist
       - name: Upload iOS build
         uses: actions/upload-artifact@v3.0.0
         with:
