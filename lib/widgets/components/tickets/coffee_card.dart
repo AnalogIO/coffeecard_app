@@ -3,7 +3,6 @@ import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/widgets/components/card.dart';
 import 'package:coffeecard/widgets/components/tickets/swipe_ticket_confirm.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 
 class CoffeeCard extends StatelessWidget {
   final String title;
@@ -73,9 +72,6 @@ class _TicketDots extends StatelessWidget {
             }),
           ),
         ),
-        const Gap(8),
-        if (amountOwned > 10)
-          Text('+${amountOwned - 10}', style: AppTextStyle.ticketsOverflow)
       ],
     );
   }
