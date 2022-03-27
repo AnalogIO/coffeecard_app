@@ -2,7 +2,7 @@ import 'package:coffeecard/base/style/colors.dart';
 import 'package:flutter/material.dart';
 
 final ThemeData analogTheme = ThemeData(
-  appBarTheme: const AppBarTheme(centerTitle: false),
+  appBarTheme: const AppBarTheme(centerTitle: false, elevation: 0),
   primarySwatch: AppColor.createMaterialColor(AppColor.primary),
   primaryColor: AppColor.primary,
   brightness: Brightness.light,
