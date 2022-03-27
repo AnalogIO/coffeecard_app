@@ -9,10 +9,11 @@ import 'package:coffeecard/data/repositories/v1/leaderboard_repository.dart';
 import 'package:coffeecard/data/repositories/v1/programme_repository.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/widgets/components/helpers/lazy_indexed_stack.dart';
+import 'package:coffeecard/widgets/pages/receipts/receipts_page.dart';
+import 'package:coffeecard/widgets/pages/settings/settings_page.dart';
 import 'package:coffeecard/widgets/pages/stats_page.dart';
-import 'package:coffeecard/widgets/routers/receipts_flow.dart';
-import 'package:coffeecard/widgets/routers/settings_flow.dart';
-import 'package:coffeecard/widgets/routers/tickets_flow.dart';
+import 'package:coffeecard/widgets/pages/tickets/tickets_page.dart';
+import 'package:coffeecard/widgets/routers/app_flow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -50,10 +51,10 @@ class _HomePageState extends State<HomePage> {
         body: LazyIndexedStack(
           index: _currentPageIndex,
           children: [
-            const TicketsFlow(),
-            ReceiptsFlow(),
-            StatsPage(),
-            SettingsFlow(),
+            AppFlow(initialRoute: TicketsPage.route),
+            AppFlow(initialRoute: ReceiptsPage.route),
+            AppFlow(initialRoute: StatsPage.route),
+            AppFlow(initialRoute: SettingsPage.route),
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(

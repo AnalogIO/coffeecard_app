@@ -6,6 +6,11 @@ import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:flutter/material.dart';
 
 class ReceiptsPage extends StatelessWidget {
+  const ReceiptsPage();
+
+  static Route get route =>
+      MaterialPageRoute(builder: (_) => const ReceiptsPage());
+
   @override
   Widget build(BuildContext context) {
     return AppScaffold.withTitle(

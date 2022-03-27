@@ -16,8 +16,15 @@ class ListEntry extends StatelessWidget {
     this.backgroundColor,
   });
 
-  Widget get _leftWidget => Row(children: [leftWidget, const Gap(48)]);
-  Widget get _rightWidget => Flexible(child: rightWidget);
+  Widget get _leftWidget {
+    return Flexible(
+      child: Row(
+        children: [Flexible(child: leftWidget), const Gap(24)],
+      ),
+    );
+  }
+
+  Widget get _rightWidget => rightWidget;
 
   @override
   Widget build(BuildContext context) {
