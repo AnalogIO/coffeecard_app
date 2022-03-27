@@ -68,13 +68,11 @@ class SettingDescription extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         if (text != null)
-          Flexible(
-            child: Text(
-              text!,
-              style: AppTextStyle.settingValue,
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.end,
-            ),
+          Text(
+            text!,
+            style: AppTextStyle.settingValue,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.end,
           ),
         if (showArrow)
           const Icon(Icons.chevron_right, color: AppColor.secondary),
