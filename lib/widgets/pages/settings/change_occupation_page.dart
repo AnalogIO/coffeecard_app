@@ -44,7 +44,6 @@ class ChangeOccupationPage extends StatelessWidget {
                         context
                             .read<UserCubit>()
                             .setUserProgramme(programme.id!);
-                        Navigator.pop(context);
                       },
                     );
                   },
