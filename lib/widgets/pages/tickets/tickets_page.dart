@@ -6,14 +6,12 @@ import 'package:coffeecard/widgets/components/tickets/tickets_section.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-class TicketsPage extends StatefulWidget {
-  const TicketsPage({Key? key}) : super(key: key);
+class TicketsPage extends StatelessWidget {
+  const TicketsPage();
 
-  @override
-  _TicketsPageState createState() => _TicketsPageState();
-}
+  static Route get route =>
+      MaterialPageRoute(builder: (_) => const TicketsPage());
 
-class _TicketsPageState extends State<TicketsPage> {
   @override
   Widget build(BuildContext context) {
     return AppScaffold.withTitle(

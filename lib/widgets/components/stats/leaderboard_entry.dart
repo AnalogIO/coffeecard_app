@@ -27,7 +27,6 @@ class LeaderboardEntry extends StatelessWidget {
     return ListEntry(
       backgroundColor: highlight ? AppColor.slightlyHighlighted : null,
       leftWidget: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Text(
             '$rank',

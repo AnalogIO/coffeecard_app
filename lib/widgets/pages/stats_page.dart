@@ -8,6 +8,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class StatsPage extends StatelessWidget {
+  const StatsPage();
+
+  static Route get route =>
+      MaterialPageRoute(builder: (_) => const StatsPage());
+
   @override
   Widget build(BuildContext context) {
     Future<void> _refresh() async {

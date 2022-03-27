@@ -9,7 +9,6 @@ import 'package:coffeecard/payment/payment_handler.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/widgets/components/purchase/purchase_process.dart';
 import 'package:coffeecard/widgets/components/receipt/receipt_overlay.dart';
-import 'package:coffeecard/widgets/routers/tickets_flow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -39,13 +38,8 @@ class PurchaseOverlay {
               listener: (context, state) async {
                 if (state is PurchaseCompleted) {
                   hide(); //Removes this overlay
-                  final navigator = Navigator.of(context);
-                  //TODO consider using popUntil instead of this
-                  while (navigator.canPop()) {
-                    //Gets the user back to the home-screen of the app
-                    navigator.pop();
-                  }
-                  TicketsFlow.pop();
+                  // FIXME: Correct navigation
+                  Navigator.pop(context);
                   //TODO Consider if these calls should be moved elsewhere, e.g. inside the purchase cubit
                   final ticketCubit = sl.get<TicketsCubit>();
                   final updateTicketsRequest = ticketCubit.getTickets();

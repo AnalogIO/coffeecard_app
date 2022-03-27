@@ -206,6 +206,7 @@ abstract class Strings {
 
   static const changeEmail = 'Change email';
   static const changeName = 'Change name';
+  static const changeOccupation = 'Change occupation';
   static const changePasscode = 'Change passcode';
   static const changeEmailCannotBeSame =
       'New email cannot be the same as the old one';

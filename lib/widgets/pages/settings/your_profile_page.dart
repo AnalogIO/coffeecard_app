@@ -3,17 +3,21 @@ import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/user/user_cubit.dart';
 import 'package:coffeecard/models/account/user.dart';
 import 'package:coffeecard/utils/responsive.dart';
-import 'package:coffeecard/widgets/components/entry/register/name_body.dart';
 import 'package:coffeecard/widgets/components/loading.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:coffeecard/widgets/components/settings_group.dart';
 import 'package:coffeecard/widgets/components/settings_list_entry.dart';
+import 'package:coffeecard/widgets/pages/settings/change_name_page.dart';
+import 'package:coffeecard/widgets/pages/settings/change_occupation_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 
 class YourProfilePage extends StatelessWidget {
   const YourProfilePage();
+
+  static Route get route =>
+      MaterialPageRoute(builder: (_) => const YourProfilePage());
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +49,7 @@ class YourProfilePage extends StatelessWidget {
 
 class _EditProfile extends StatelessWidget {
   const _EditProfile({required this.user});
+
   final User user;
 
   @override
@@ -71,29 +76,17 @@ class _EditProfile extends StatelessWidget {
             SettingListEntry(
               name: Strings.name,
               valueWidget: SettingDescription(text: user.name),
-              onTap: () {
-                Navigator.push<void>(
-                  context,
-                  MaterialPageRoute(
-                    builder: (BuildContext context) => AppScaffold.withTitle(
-                      title: Strings.changeName,
-                      body: NameBody(
-                        initialValue: user.name,
-                        onSubmit: (context, name) {
-                          context.read<UserCubit>().setUserName(name);
-                          Navigator.pop(context);
-                        },
-                      ),
-                    ),
-                  ),
-                );
-              },
+              onTap: () => Navigator.push(
+                context,
+                ChangeNamePage.routeWith(name: user.name),
+              ),
             ),
             SettingListEntry(
               name: Strings.occupation,
               valueWidget: SettingDescription(
                 text: user.programme.shortName,
               ),
+              onTap: () => Navigator.push(context, ChangeOccupationPage.route),
             ),
             SettingListEntry(
               name: deviceIsSmall(context)
