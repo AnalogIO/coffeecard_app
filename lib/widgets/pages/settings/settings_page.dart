@@ -3,14 +3,13 @@ import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
 import 'package:coffeecard/cubits/user/user_cubit.dart';
-import 'package:coffeecard/utils/page_pusher.dart';
 import 'package:coffeecard/widgets/components/dialog.dart';
-import 'package:coffeecard/widgets/components/entry/register/email_body.dart';
-import 'package:coffeecard/widgets/components/entry/register/passcode_body.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:coffeecard/widgets/components/settings_group.dart';
 import 'package:coffeecard/widgets/components/settings_list_entry.dart';
 import 'package:coffeecard/widgets/components/user_card.dart';
+import 'package:coffeecard/widgets/pages/settings/change_email_page.dart';
+import 'package:coffeecard/widgets/pages/settings/change_passcode_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
@@ -48,8 +47,10 @@ class SettingsPage extends StatelessWidget {
                       state.user.email,
                       style: AppTextStyle.settingValue,
                     ),
-                    onTap: () =>
-                        _pushUpdateEmailPage(context, state.user.email),
+                    onTap: () => Navigator.push(
+                      context,
+                      ChangeEmailPage.routeWith(currentEmail: state.user.email),
+                    ),
                   ),
                   SettingListEntry(
                     name: Strings.passcode,
@@ -57,7 +58,10 @@ class SettingsPage extends StatelessWidget {
                       Strings.change,
                       style: AppTextStyle.settingValue,
                     ),
-                    onTap: () => _pushUpdatePasscodePage(context),
+                    onTap: () => Navigator.push(
+                      context,
+                      ChangePasscodePage.route,
+                    ),
                   ),
                   SettingListEntry(
                     name: Strings.logOut,
@@ -101,35 +105,6 @@ class SettingsPage extends StatelessWidget {
       ),
     );
   }
-}
-
-Future<void> _pushUpdateEmailPage(BuildContext context, String currentEmail) {
-  return pushPageScaffold(
-    context: context,
-    title: Strings.changeEmail,
-    body: EmailBody(
-      initialValue: currentEmail,
-      onSubmit: (context, email) {
-        context.read<UserCubit>().setUserEmail(email);
-        Navigator.pop(context);
-        // token becomes invalid, sign the user out
-        context.read<AuthenticationCubit>().unauthenticated();
-      },
-    ),
-  );
-}
-
-Future<void> _pushUpdatePasscodePage(BuildContext context) {
-  return pushPageScaffold(
-    context: context,
-    title: Strings.changePasscode,
-    body: PasscodeBody(
-      onSubmit: (context, passcode) {
-        context.read<UserCubit>().setUserPasscode(passcode);
-        Navigator.pop(context);
-      },
-    ),
-  );
 }
 
 void _showDeleteAccountDialog(BuildContext context, String email) {
