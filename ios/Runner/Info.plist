@@ -56,6 +56,11 @@
         </array>
         </dict>
     </array>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>mobilepaydk-test</string>
+		<string>mobilepaydk</string>
+	</array>
 
 </dict>
 </plist>
