@@ -44,7 +44,6 @@ class AppScaffold extends StatelessWidget {
       backgroundColor: AppColor.primary,
       appBar: AppBar(
         title: title,
-        elevation: 0,
         toolbarHeight: appBarHeight,
       ),
       body: BlocBuilder<EnvironmentCubit, EnvironmentState>(
