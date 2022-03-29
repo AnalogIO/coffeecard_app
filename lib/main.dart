@@ -29,14 +29,14 @@ class App extends StatelessWidget {
         BlocProvider.value(value: sl<AuthenticationCubit>()..appStarted()),
         BlocProvider(create: _createEnvironmentCubit),
       ],
-      child: SplashRouter(
-        navigatorKey: _navigatorKey,
-        child: MaterialApp(
-          title: Strings.appTitle,
-          theme: analogTheme,
-          home: SplashPage(),
+      child: MaterialApp(
+        title: Strings.appTitle,
+        theme: analogTheme,
+        home: SplashRouter(
           navigatorKey: _navigatorKey,
+          child: const SplashPage(),
         ),
+        navigatorKey: _navigatorKey,
       ),
     );
   }

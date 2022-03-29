@@ -1,3 +1,4 @@
+import 'package:chopper/chopper.dart';
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.swagger.dart';
 import 'package:coffeecard/models/api/api_error.dart';
@@ -12,7 +13,12 @@ class AppConfigRepository {
   AppConfigRepository(this._api, this._logger);
 
   Future<Either<ApiError, Environment>> getEnvironmentType() async {
-    final response = await _api.apiV2AppconfigGet();
+    final Response<AppConfig> response;
+    try {
+      response = await _api.apiV2AppconfigGet();
+    } catch (e) {
+      return Left(ApiError("Couldn't connect to the server"));
+    }
 
     if (response.isSuccessful) {
       final environmentType = environmentTypeFromJson(

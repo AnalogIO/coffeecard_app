@@ -107,6 +107,12 @@ abstract class AppTextStyle {
     fontWeight: FontWeight.bold,
     fontFamily: AppFont.body,
   );
+  static final TextStyle buttonTextDark = TextStyle(
+    color: AppColor.primary,
+    fontSize: 14,
+    fontWeight: FontWeight.bold,
+    fontFamily: AppFont.body,
+  );
   static final TextStyle buttonTextDisabled = TextStyle(
     color: AppColor.gray,
     fontSize: 14,
