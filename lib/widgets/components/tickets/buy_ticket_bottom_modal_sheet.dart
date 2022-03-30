@@ -1,6 +1,7 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/models/purchase/payment.dart';
 import 'package:coffeecard/models/ticket/product.dart';
 import 'package:coffeecard/payment/payment_handler.dart';
 import 'package:coffeecard/widgets/components/purchase/purchase_overlay.dart';
@@ -96,8 +97,15 @@ class _BottomModalSheetButtonBar extends StatelessWidget {
           text: Strings.paymentOptionMobilePay,
           productId: product.id,
           price: product.price,
-          onTap: () async => PurchaseOverlay.of(context)
-              .show(InternalPaymentType.mobilePay, product),
+          onTap: () async {
+            final payment = await PurchaseOverlay.of(context)
+                .show(InternalPaymentType.mobilePay, product);
+            //ignore: use_build_context_synchronously
+            Navigator.pop<Payment>(
+              context,
+              payment,
+            ); //Removes this bottom modal sheet
+          },
         ),
       ],
     );

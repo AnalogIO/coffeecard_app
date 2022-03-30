@@ -54,19 +54,19 @@ class PurchaseCubit extends Cubit<PurchaseState> {
         final status = either.right;
 
         if (status == PaymentStatus.completed) {
-          emit(PurchaseCompleted(payment));
+          emit(PurchaseCompleted(payment.copyWith(status: status)));
         } else if (status == PaymentStatus.reserved) {
           //NOTE, recursive call, potentially infinite.
           //If payment has been reserved, i.e. approved by user
           //we will keep checking the backend to verify payment has been captured
           emit(
             PurchaseProcessing(
-              payment,
+              payment.copyWith(status: status),
             ),
           ); //Change to processing to allow the verifyPurchase process again
           verifyPurchase();
         } else {
-          emit(PurchasePaymentRejected(payment));
+          emit(PurchasePaymentRejected(payment.copyWith(status: status)));
           //TODO Consider if more error handling is needed
         }
       } else {

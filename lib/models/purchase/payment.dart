@@ -7,8 +7,7 @@ class Payment {
   final String deeplink;
   final int price;
   final DateTime purchaseTime;
-  //TODO consider whether the product name should be added to the object.
-  // Backend support would be required to pass it in a sensible manner
+  String? productName; //TODO make not nullable, by receiving from backend
 
   Payment({
     required this.id,
@@ -17,5 +16,26 @@ class Payment {
     required this.paymentId,
     required this.status,
     required this.deeplink,
+    this.productName,
   });
+
+  Payment copyWith({
+    int? id,
+    String? paymentId,
+    PaymentStatus? status,
+    String? deeplink,
+    int? price,
+    DateTime? purchaseTime,
+    String? productName,
+  }) {
+    return Payment(
+      id: id ?? this.id,
+      paymentId: paymentId ?? this.paymentId,
+      status: status ?? this.status,
+      deeplink: deeplink ?? this.deeplink,
+      price: price ?? this.price,
+      purchaseTime: purchaseTime ?? this.purchaseTime,
+      productName: productName ?? this.productName,
+    );
+  }
 }

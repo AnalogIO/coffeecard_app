@@ -1,26 +1,23 @@
 import 'package:coffeecard/base/style/colors.dart';
-import 'package:coffeecard/cubits/environment/environment_cubit.dart';
 import 'package:coffeecard/cubits/purchase/purchase_cubit.dart';
 import 'package:coffeecard/cubits/receipt/receipt_cubit.dart';
 import 'package:coffeecard/cubits/tickets/tickets_cubit.dart';
-import 'package:coffeecard/models/receipts/receipt.dart';
+import 'package:coffeecard/models/purchase/payment.dart';
 import 'package:coffeecard/models/ticket/product.dart';
 import 'package:coffeecard/payment/payment_handler.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/widgets/components/purchase/purchase_process.dart';
-import 'package:coffeecard/widgets/components/receipt/receipt_overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PurchaseOverlay {
   final BuildContext _context;
 
-  void hide() {
-    Navigator.of(_context, rootNavigator: true).pop();
-  }
-
-  void show(InternalPaymentType paymentType, Product product) {
-    showDialog(
+  Future<Payment?> show(
+    InternalPaymentType paymentType,
+    Product product,
+  ) async {
+    return showDialog<Payment>(
       context: _context,
       barrierColor: AppColor.scrim,
       barrierDismissible: false,
@@ -37,35 +34,22 @@ class PurchaseOverlay {
             child: BlocListener<PurchaseCubit, PurchaseState>(
               listener: (context, state) async {
                 if (state is PurchaseCompleted) {
-                  hide(); //Removes this overlay
-                  // FIXME: Correct navigation
-                  Navigator.pop(context);
+                  final payment = state.payment;
+                  payment.productName =
+                      product.name; //TODO Receive this from backend
+                  Navigator.pop<Payment>(context, payment);
+
                   //TODO Consider if these calls should be moved elsewhere, e.g. inside the purchase cubit
                   final ticketCubit = sl.get<TicketsCubit>();
                   final updateTicketsRequest = ticketCubit.getTickets();
                   final receiptCubit = sl.get<ReceiptCubit>();
                   final updateReceiptsRequest = receiptCubit.fetchReceipts();
-                  final env = context.read<EnvironmentCubit>().state;
 
-                  final payment = state.payment;
-                  ReceiptOverlay.of(context).show(
-                    receipt: Receipt(
-                      timeUsed: payment.purchaseTime,
-                      amountPurchased: product.amount,
-                      transactionType: TransactionType.purchase,
-                      productName: product.name,
-                      //TODO, change the productName to use the name from the payment instead, once the backend returns this
-                      price: payment.price,
-                      id: product.id,
-                    ),
-                    isTestEnvironment:
-                        env is EnvironmentLoaded && env.isTestEnvironment,
-                  );
                   await updateTicketsRequest;
                   await updateReceiptsRequest;
                 }
               },
-              child: PurchaseProcess(),
+              child: const PurchaseProcess(),
             ),
           ),
         );
