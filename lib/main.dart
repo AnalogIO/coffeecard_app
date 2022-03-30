@@ -4,7 +4,6 @@ import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
 import 'package:coffeecard/cubits/environment/environment_cubit.dart';
 import 'package:coffeecard/data/repositories/v2/app_config_repository.dart';
 import 'package:coffeecard/service_locator.dart';
-import 'package:coffeecard/widgets/pages/splash_page.dart';
 import 'package:coffeecard/widgets/routers/splash_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,10 +31,7 @@ class App extends StatelessWidget {
       child: MaterialApp(
         title: Strings.appTitle,
         theme: analogTheme,
-        home: SplashRouter(
-          navigatorKey: _navigatorKey,
-          child: const SplashPage(),
-        ),
+        home: const SplashRouter(),
         navigatorKey: _navigatorKey,
       ),
     );
