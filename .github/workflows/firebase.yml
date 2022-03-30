@@ -6,9 +6,6 @@ on:
     type: [complete]
     branches: [develop]
 
-  push:
-    branches: [feature/jonas/automate-ios-build]
-
 jobs:
   build_ios:
     name: Build iOS App
