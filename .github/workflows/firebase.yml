@@ -19,7 +19,7 @@ jobs:
           APPLE_IOS_SIGNING_CERT: ${{ secrets.APPLE_IOS_SIGNING_CERT }}
           APPLE_IOS_SIGNING_CERT_PW: ${{ secrets.APPLE_IOS_SIGNING_CERT_PW }}
           APPLE_IOS_PROVISIONING_PROFILE: ${{ secrets.APPLE_IOS_PROVISIONING_PROFILE }}
-          MAC_KEYCHAIN_PASSWORD: ${{ secrets.APPLE_KEYCHAIN_PW }}
+          APPLE_KEYCHAIN_PW: ${{ secrets.APPLE_KEYCHAIN_PW }}
         run: |
           # create variables
           CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
@@ -68,7 +68,7 @@ jobs:
         uses: actions/upload-artifact@v3.0.0
         with:
           name: ios
-          path: build/ios/iphoneos/Payload.ipa
+          path: build/ios/ipa
   build_apk:
     name: Build Android App
     runs-on: ubuntu-latest
@@ -116,7 +116,7 @@ jobs:
           appId: ${{ secrets.FIREBASE_IOS_APP_ID }}
           token: ${{ secrets.FIREBASE_TOKEN }}
           groups: analogio-devs
-          file: Payload.ipa
+          file: Analog.ipa
   upload_apk:
     name: Upload Android build to Firebase App Distribution
     runs-on: ubuntu-latest
