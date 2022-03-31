@@ -75,11 +75,18 @@ class _ModalContent extends StatelessWidget {
   }
 }
 
-class _BottomModalSheetButtonBar extends StatelessWidget {
+class _BottomModalSheetButtonBar extends StatefulWidget {
   const _BottomModalSheetButtonBar({required this.product});
 
   final Product product;
 
+  @override
+  State<_BottomModalSheetButtonBar> createState() =>
+      _BottomModalSheetButtonBarState();
+}
+
+class _BottomModalSheetButtonBarState
+    extends State<_BottomModalSheetButtonBar> {
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -87,20 +94,21 @@ class _BottomModalSheetButtonBar extends StatelessWidget {
       children: [
         _ButtomModalSheetButton(
           text: Strings.paymentOptionOther,
-          productId: product.id,
-          price: product.price,
+          productId: widget.product.id,
+          price: widget.product.price,
           disabled: true,
           disabledText: Strings.paymentOptionOtherComingSoon,
         ),
         const Gap(8),
         _ButtomModalSheetButton(
           text: Strings.paymentOptionMobilePay,
-          productId: product.id,
-          price: product.price,
+          productId: widget.product.id,
+          price: widget.product.price,
           onTap: () async {
             final payment = await PurchaseOverlay.of(context)
-                .show(InternalPaymentType.mobilePay, product);
-            //ignore: use_build_context_synchronously
+                .show(InternalPaymentType.mobilePay, widget.product);
+
+            if (!mounted) return;
             Navigator.pop<Payment>(
               context,
               payment,
