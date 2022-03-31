@@ -274,4 +274,8 @@ abstract class Strings {
   static String invalidVoucher(String voucher) {
     return 'The voucher "$voucher" is invalid';
   }
+
+  static String noInternet =
+      "Oops, we couldn't connect to the server\n Are you connected to the internet?";
+  static String retry = 'Retry';
 }
