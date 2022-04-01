@@ -38,9 +38,9 @@ class App extends StatelessWidget {
           navigatorKey: _navigatorKey,
           home: BlocBuilder<EnvironmentCubit, EnvironmentState>(
             builder: (_, state) {
-              return (state is EnvironmentLoaded || state is EnvironmentInitial)
-                  ? const SplashLoadingPage()
-                  : const SplashErrorPage();
+              return (state is EnvironmentError)
+                  ? const SplashErrorPage()
+                  : const SplashLoadingPage();
             },
           ),
         ),

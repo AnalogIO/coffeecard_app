@@ -16,29 +16,17 @@ class SplashRouter extends StatefulWidget {
 }
 
 class _SplashRouterState extends State<SplashRouter> {
-  var _authStatus = AuthenticationStatus.unknown;
-  bool? _isTestEnvironment;
+  /// Navigates out of the splash screen if both
+  /// authentication status and enviornment status are loaded.
+  void _maybeNavigate(BuildContext context) {
+    final envState = context.read<EnvironmentCubit>().state;
+    final authStatus = context.read<AuthenticationCubit>().state.status;
 
-  void _authListener(BuildContext _, AuthenticationState state) {
-    _authStatus = state.status;
-    _maybeNavigate();
-  }
+    if (authStatus.isUnknown || envState is! EnvironmentLoaded) return;
 
-  void _envListener(BuildContext _, EnvironmentState state) {
-    if (state is EnvironmentError) {
-      // FIXME: Handle error
-    }
-    _isTestEnvironment = state is EnvironmentLoaded && state.isTestEnvironment;
-    _maybeNavigate();
-  }
-
-  /// Navigates to the appropriate flow when both
-  /// _authStatus and _environment are loaded.
-  void _maybeNavigate() {
-    if (_authStatus.isUnknown || _isTestEnvironment == null) return;
     // FIXME: The transition needs animation
     widget.navigatorKey.currentState!.pushAndRemoveUntil(
-      _authStatus.isAuthenticated ? HomePage.route : LoginRouter.route,
+      authStatus.isAuthenticated ? HomePage.route : LoginRouter.route,
       (route) => false,
     );
   }
@@ -48,10 +36,10 @@ class _SplashRouterState extends State<SplashRouter> {
     return MultiBlocListener(
       listeners: [
         BlocListener<EnvironmentCubit, EnvironmentState>(
-          listener: _envListener,
+          listener: (context, _) => _maybeNavigate(context),
         ),
         BlocListener<AuthenticationCubit, AuthenticationState>(
-          listener: _authListener,
+          listener: (context, _) => _maybeNavigate(context),
         ),
       ],
       child: widget.child,
