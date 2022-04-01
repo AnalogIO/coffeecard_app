@@ -1,31 +1,44 @@
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
 import 'package:coffeecard/cubits/environment/environment_cubit.dart';
 import 'package:coffeecard/widgets/pages/home_page.dart';
-import 'package:coffeecard/widgets/pages/splash/splash_error_page.dart';
-import 'package:coffeecard/widgets/pages/splash/splash_loading_page.dart';
-import 'package:coffeecard/widgets/routers/entry_router.dart';
+import 'package:coffeecard/widgets/routers/login_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SplashRouter extends StatefulWidget {
-  const SplashRouter();
+  const SplashRouter({required this.navigatorKey, required this.child});
+
+  final GlobalKey<NavigatorState> navigatorKey;
+  final Widget child;
 
   @override
   _SplashRouterState createState() => _SplashRouterState();
 }
 
 class _SplashRouterState extends State<SplashRouter> {
-  /// Navigates out of the splash screen if both
-  /// authentication status and enviornment status are loaded.
-  void _maybeNavigate(BuildContext context) {
-    final envState = context.read<EnvironmentCubit>().state;
-    final authStatus = context.read<AuthenticationCubit>().state.status;
+  var _authStatus = AuthenticationStatus.unknown;
+  bool? _isTestEnvironment;
 
-    if (authStatus.isUnknown || envState is! EnvironmentLoaded) return;
+  void _authListener(BuildContext _, AuthenticationState state) {
+    _authStatus = state.status;
+    _maybeNavigate();
+  }
+
+  void _envListener(BuildContext _, EnvironmentState state) {
+    if (state is EnvironmentError) {
+      // FIXME: Handle error
+    }
+    _isTestEnvironment = state is EnvironmentLoaded && state.isTestEnvironment;
+    _maybeNavigate();
+  }
+
+  /// Navigates to the appropriate flow when both
+  /// _authStatus and _environment are loaded.
+  void _maybeNavigate() {
+    if (_authStatus.isUnknown || _isTestEnvironment == null) return;
     // FIXME: The transition needs animation
-    Navigator.pushAndRemoveUntil(
-      context,
-      authStatus.isAuthenticated ? HomePage.route : EntryRouter.route,
+    widget.navigatorKey.currentState!.pushAndRemoveUntil(
+      _authStatus.isAuthenticated ? HomePage.route : LoginRouter.route,
       (route) => false,
     );
   }
@@ -35,21 +48,13 @@ class _SplashRouterState extends State<SplashRouter> {
     return MultiBlocListener(
       listeners: [
         BlocListener<EnvironmentCubit, EnvironmentState>(
-          listener: (context, _) => _maybeNavigate(context),
+          listener: _envListener,
         ),
         BlocListener<AuthenticationCubit, AuthenticationState>(
-          listener: (context, _) => _maybeNavigate(context),
+          listener: _authListener,
         ),
       ],
-      child: BlocBuilder<EnvironmentCubit, EnvironmentState>(
-        builder: (context, state) {
-          if (state is EnvironmentLoaded || state is EnvironmentInitial) {
-            return const SplashLoadingPage();
-          } else {
-            return const SplashErrorPage();
-          }
-        },
-      ),
+      child: widget.child,
     );
   }
 }

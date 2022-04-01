@@ -7,12 +7,19 @@ import 'package:coffeecard/widgets/pages/login/login_passcode_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+// FIXME: Replace with a navigator/flow class
+//        instead of navigating based on bloc state
 class LoginRouter extends StatelessWidget {
+  const LoginRouter();
+
+  static Route get route =>
+      MaterialPageRoute(builder: (_) => const LoginRouter());
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => LoginCubit(
-        authenticationCubit: BlocProvider.of<AuthenticationCubit>(context),
+        authenticationCubit: sl<AuthenticationCubit>(),
         accountRepository: sl.get<AccountRepository>(),
       ),
       child: BlocBuilder<LoginCubit, LoginState>(

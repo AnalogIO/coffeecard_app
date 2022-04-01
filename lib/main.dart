@@ -4,6 +4,8 @@ import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
 import 'package:coffeecard/cubits/environment/environment_cubit.dart';
 import 'package:coffeecard/data/repositories/v2/app_config_repository.dart';
 import 'package:coffeecard/service_locator.dart';
+import 'package:coffeecard/widgets/pages/splash/splash_error_page.dart';
+import 'package:coffeecard/widgets/pages/splash/splash_loading_page.dart';
 import 'package:coffeecard/widgets/routers/splash_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,11 +30,20 @@ class App extends StatelessWidget {
         BlocProvider.value(value: sl<AuthenticationCubit>()..appStarted()),
         BlocProvider(create: _createEnvironmentCubit),
       ],
-      child: MaterialApp(
-        title: Strings.appTitle,
-        theme: analogTheme,
-        home: const SplashRouter(),
+      child: SplashRouter(
         navigatorKey: _navigatorKey,
+        child: MaterialApp(
+          title: Strings.appTitle,
+          theme: analogTheme,
+          navigatorKey: _navigatorKey,
+          home: BlocBuilder<EnvironmentCubit, EnvironmentState>(
+            builder: (_, state) {
+              return (state is EnvironmentLoaded || state is EnvironmentInitial)
+                  ? const SplashLoadingPage()
+                  : const SplashErrorPage();
+            },
+          ),
+        ),
       ),
     );
   }
