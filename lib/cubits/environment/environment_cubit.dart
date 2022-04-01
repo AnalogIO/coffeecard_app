@@ -17,7 +17,6 @@ class EnvironmentCubit extends Cubit<EnvironmentState> {
           Environment.production; //TODO handle potential other types better
       emit(EnvironmentLoaded(isTestEnvironment: isTest));
     } else {
-      // FIXME: Handle error
       emit(EnvironmentError());
     }
   }
