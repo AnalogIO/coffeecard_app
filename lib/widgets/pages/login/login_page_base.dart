@@ -1,4 +1,4 @@
-import 'package:coffeecard/base/style/colors.dart';
+import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/utils/responsive.dart';
 import 'package:coffeecard/widgets/analog_logo.dart';
 import 'package:coffeecard/widgets/components/entry/login/login_input_hint.dart';
@@ -42,12 +42,7 @@ class LoginPageBase extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,
-                  // FIXME: Should be defined in AppTextStyle
-                  style: const TextStyle(
-                    color: AppColor.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: AppTextStyle.pageTitle,
                 ),
                 const Gap(16),
                 inputWidget,

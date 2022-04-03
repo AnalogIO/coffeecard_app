@@ -14,7 +14,7 @@ class LoginPageEmail extends StatefulWidget {
   final Duration transitionDuration;
 
   static Route get routeFromSplash {
-    const duration = Duration(milliseconds: 1000);
+    const duration = Duration(milliseconds: 850);
     return FastSlideTransition(
       duration: duration,
       child: const LoginPageEmail(transitionDuration: duration),
