@@ -1,10 +1,12 @@
+import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
 import 'package:coffeecard/cubits/environment/environment_cubit.dart';
 import 'package:coffeecard/widgets/pages/home_page.dart';
-import 'package:coffeecard/widgets/routers/login_router.dart';
+import 'package:coffeecard/widgets/pages/login/login_page_email.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+// TODO: Name of this widget should be reconsidered
 class SplashRouter extends StatefulWidget {
   const SplashRouter({required this.navigatorKey, required this.child});
 
@@ -16,19 +18,28 @@ class SplashRouter extends StatefulWidget {
 }
 
 class _SplashRouterState extends State<SplashRouter> {
+  bool firstNavigation = true;
+
   /// Navigates out of the splash screen if both
-  /// authentication status and enviornment status are loaded.
+  /// authentication status and environment status are loaded.
   void _maybeNavigate(BuildContext context) {
     final envState = context.read<EnvironmentCubit>().state;
     final authStatus = context.read<AuthenticationCubit>().state.status;
 
     if (authStatus.isUnknown || envState is! EnvironmentLoaded) return;
 
-    // FIXME: The transition needs animation
-    widget.navigatorKey.currentState!.pushAndRemoveUntil(
-      authStatus.isAuthenticated ? HomePage.route : LoginRouter.route,
-      (route) => false,
-    );
+    final Route route;
+    if (authStatus.isAuthenticated) {
+      route = HomePage.route;
+    } else {
+      route = firstNavigation
+          ? LoginPageEmail.routeFromSplash
+          : LoginPageEmail.routeFromLogout;
+    }
+    firstNavigation = false;
+
+    // Replaces the whole navigation stack with the approriate route.
+    widget.navigatorKey.currentState!.pushAndRemoveUntil(route, (_) => false);
   }
 
   @override
@@ -42,7 +53,9 @@ class _SplashRouterState extends State<SplashRouter> {
           listener: (context, _) => _maybeNavigate(context),
         ),
       ],
-      child: widget.child,
+      // The colored container prevents brief black flashes
+      // during page transitions
+      child: Container(color: AppColor.primary, child: widget.child),
     );
   }
 }

@@ -19,4 +19,10 @@ final ThemeData analogTheme = ThemeData(
     focusColor: AppColor.error,
   ),
   disabledColor: AppColor.lightGray,
+  pageTransitionsTheme: const PageTransitionsTheme(
+    builders: {
+      TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+      TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+    },
+  ),
 );

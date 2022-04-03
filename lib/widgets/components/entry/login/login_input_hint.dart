@@ -1,29 +1,21 @@
 import 'package:coffeecard/base/style/colors.dart';
-import 'package:coffeecard/cubits/login/login_cubit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginInputHint extends StatelessWidget {
-  final String defaultHint;
+  const LoginInputHint({required this.defaultHint, this.error});
 
-  const LoginInputHint({
-    Key? key,
-    required this.defaultHint,
-  }) : super(key: key);
+  final String defaultHint;
+  final String? error;
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginCubit, LoginState>(
-      builder: (context, state) {
-        return Text(
-          state.error ?? defaultHint,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: state.hasError ? AppColor.error : AppColor.white,
-            fontSize: 14,
-          ),
-        );
-      },
+    return Text(
+      error ?? defaultHint,
+      textAlign: TextAlign.center,
+      style: TextStyle(
+        color: (error != null) ? AppColor.error : AppColor.white,
+        fontSize: 14,
+      ),
     );
   }
 }

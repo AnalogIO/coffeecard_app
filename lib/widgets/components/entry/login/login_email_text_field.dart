@@ -1,26 +1,55 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/colors.dart';
-import 'package:coffeecard/cubits/login/login_cubit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-class LoginEmailTextField extends StatelessWidget {
-  const LoginEmailTextField();
+class LoginEmailTextField extends StatefulWidget {
+  const LoginEmailTextField({
+    required this.hasError,
+    required this.autoFocusDelay,
+    required this.onSubmit,
+    required this.onChange,
+  });
+
+  final bool hasError;
+  final Duration autoFocusDelay;
+  final void Function(BuildContext, String) onSubmit;
+  final void Function() onChange;
+
+  @override
+  State<LoginEmailTextField> createState() => _LoginEmailTextFieldState();
+}
+
+class _LoginEmailTextFieldState extends State<LoginEmailTextField> {
+  final _controller = TextEditingController();
+  final _focusNode = FocusNode();
+
+  @override
+  void initState() {
+    // Focus the text field after animations have completed
+    () async {
+      await Future.delayed(widget.autoFocusDelay);
+      if (mounted) _focusNode.requestFocus();
+    }();
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     void onSubmit() {
-      context.read<LoginCubit>().validateEmail();
+      widget.onSubmit(context, _controller.text.trim());
     }
 
-    void onChange(String email) {
-      context.read<LoginCubit>().updateEmail(email);
-    }
-
-    InputDecoration inputDecoration({required bool hasError}) {
+    InputDecoration getInputDecoration() {
       final border = OutlineInputBorder(
         borderRadius: BorderRadius.circular(32),
-        borderSide: hasError
+        borderSide: widget.hasError
             ? const BorderSide(color: AppColor.error, width: 2)
             : const BorderSide(color: Colors.transparent, width: 0),
       );
@@ -40,26 +69,20 @@ class LoginEmailTextField extends StatelessWidget {
           onPressed: onSubmit,
           tooltip: Strings.loginTooltipContinue,
         ),
-        contentPadding: const EdgeInsets.only(
-          top: 12,
-          bottom: 12,
-          left: 24,
-        ),
+        contentPadding: const EdgeInsets.only(top: 12, bottom: 12, left: 24),
       );
     }
 
-    return BlocBuilder<LoginCubit, LoginState>(
-      builder: (context, state) {
-        return TextField(
-          autofocus: true,
-          keyboardType: TextInputType.emailAddress,
-          decoration: inputDecoration(hasError: state.hasError),
-          style: const TextStyle(color: AppColor.primary),
-          cursorWidth: 1,
-          onEditingComplete: onSubmit,
-          onChanged: onChange,
-        );
-      },
+    return TextField(
+      controller: _controller,
+      autocorrect: false,
+      focusNode: _focusNode,
+      keyboardType: TextInputType.emailAddress,
+      decoration: getInputDecoration(),
+      style: const TextStyle(color: AppColor.primary),
+      cursorWidth: 1,
+      onEditingComplete: onSubmit,
+      onChanged: (_) => widget.onChange(),
     );
   }
 }

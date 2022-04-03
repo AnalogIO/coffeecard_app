@@ -1,25 +1,27 @@
 import 'package:coffeecard/base/style/colors.dart';
-import 'package:coffeecard/cubits/login/login_cubit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginPasscodeDots extends StatelessWidget {
+  const LoginPasscodeDots({
+    required this.passcodeLength,
+    required this.hasError,
+  });
+
+  final int passcodeLength;
+  final bool hasError;
+
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginCubit, LoginState>(
-      builder: (context, state) {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: List.generate(
-            4,
-            (index) => _PasscodeDot(
-              isLit: index < state.passcode.length,
-              isError: state.hasError,
-            ),
-            growable: false,
-          ),
-        );
-      },
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: List.generate(
+        4,
+        (index) => _PasscodeDot(
+          isLit: index < passcodeLength,
+          isError: hasError,
+        ),
+        growable: false,
+      ),
     );
   }
 }
@@ -37,7 +39,7 @@ class _PasscodeDot extends StatelessWidget {
     final Color fill = isError ? AppColor.error : AppColor.white;
     final double opacity = isLit || isError ? 1 : 0.35;
 
-    return Container(
+    return AnimatedContainer(
       width: 20,
       height: 20,
       margin: const EdgeInsets.symmetric(horizontal: 7, vertical: 15),
@@ -45,6 +47,8 @@ class _PasscodeDot extends StatelessWidget {
         color: fill.withOpacity(opacity),
         shape: BoxShape.circle,
       ),
+      duration: const Duration(milliseconds: 150),
+      curve: Curves.easeOut,
     );
   }
 }

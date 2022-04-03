@@ -6,78 +6,120 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show HapticFeedback;
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-// TODO: disable when LoginBloc is loading (e.g. sending request)
-class Numpad extends StatelessWidget {
+class Numpad extends StatefulWidget {
+  const Numpad({required this.forgotPasscodeAction});
+  final void Function(BuildContext context) forgotPasscodeAction;
+
+  @override
+  State<Numpad> createState() => _NumpadState();
+}
+
+class _NumpadState extends State<Numpad> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<Offset> _animation;
+
+  @override
+  void initState() {
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 600),
+    );
+    _animation = Tween(begin: const Offset(0, 1), end: Offset.zero).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: const Interval(0.5, 1.0, curve: Curves.easeInOutCubicEmphasized),
+      ),
+    );
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    _controller.forward();
+
     const borderInside = BorderSide(color: AppColor.lightGray, width: 2);
 
-    return BlocBuilder<LoginCubit, LoginState>(
-      builder: (context, state) {
-        return Container(
-          color: AppColor.white,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
-            child: Table(
-              border: const TableBorder(
-                horizontalInside: borderInside,
-                verticalInside: borderInside,
+    return SlideTransition(
+      position: _animation,
+      child: BlocBuilder<LoginCubit, LoginState>(
+        builder: (context, state) {
+          return Container(
+            color: AppColor.white,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+              child: Table(
+                border: const TableBorder(
+                  horizontalInside: borderInside,
+                  verticalInside: borderInside,
+                ),
+                children: [
+                  const TableRow(
+                    children: [
+                      _NumpadDigitButton('1'),
+                      _NumpadDigitButton('2'),
+                      _NumpadDigitButton('3'),
+                    ],
+                  ),
+                  const TableRow(
+                    children: [
+                      _NumpadDigitButton('4'),
+                      _NumpadDigitButton('5'),
+                      _NumpadDigitButton('6'),
+                    ],
+                  ),
+                  const TableRow(
+                    children: [
+                      _NumpadDigitButton('7'),
+                      _NumpadDigitButton('8'),
+                      _NumpadDigitButton('9'),
+                    ],
+                  ),
+                  TableRow(
+                    children: [
+                      TableCell(
+                        verticalAlignment: TableCellVerticalAlignment.fill,
+                        child: _NumpadButton(
+                          onPressed: widget.forgotPasscodeAction,
+                          child: const Text(
+                            'Forgot?',
+                            style: AppTextStyle.numpadText,
+                          ),
+                        ),
+                      ),
+                      const _NumpadDigitButton('0'),
+                      TableCell(
+                        verticalAlignment: TableCellVerticalAlignment.fill,
+                        child: _NumpadButton(
+                          onPressed: (context) {
+                            context.read<LoginCubit>().clearPasscode();
+                          },
+                          child: const Icon(Icons.backspace, size: 24),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
-              children: const [
-                TableRow(
-                  children: [
-                    NumpadDigitButton('1'),
-                    NumpadDigitButton('2'),
-                    NumpadDigitButton('3'),
-                  ],
-                ),
-                TableRow(
-                  children: [
-                    NumpadDigitButton('4'),
-                    NumpadDigitButton('5'),
-                    NumpadDigitButton('6'),
-                  ],
-                ),
-                TableRow(
-                  children: [
-                    NumpadDigitButton('7'),
-                    NumpadDigitButton('8'),
-                    NumpadDigitButton('9'),
-                  ],
-                ),
-                TableRow(
-                  children: [
-                    TableCell(
-                      verticalAlignment: TableCellVerticalAlignment.fill,
-                      child: NumpadActionButton(
-                        icon: Icons.backspace,
-                        action: NumpadAction.delete,
-                      ),
-                    ),
-                    NumpadDigitButton('0'),
-                    TableCell(
-                      verticalAlignment: TableCellVerticalAlignment.fill,
-                      child: NumpadActionButton(
-                        icon: Icons.fingerprint,
-                        action: NumpadAction.biometric,
-                      ),
-                    )
-                  ],
-                ),
-              ],
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }
 
-class NumpadButton extends StatelessWidget {
+class _NumpadButton extends StatelessWidget {
   final void Function(BuildContext) onPressed;
   final Widget child;
 
-  const NumpadButton({
+  const _NumpadButton({
     required this.child,
     required this.onPressed,
   });
@@ -94,13 +136,13 @@ class NumpadButton extends StatelessWidget {
   }
 }
 
-class NumpadDigitButton extends StatelessWidget {
-  const NumpadDigitButton(this.digit);
+class _NumpadDigitButton extends StatelessWidget {
+  const _NumpadDigitButton(this.digit);
   final String digit;
 
   @override
   Widget build(BuildContext context) {
-    return NumpadButton(
+    return _NumpadButton(
       onPressed: (BuildContext context) {
         context.read<LoginCubit>().addPasscodeInput(digit);
       },
@@ -111,39 +153,5 @@ class NumpadDigitButton extends StatelessWidget {
             : AppTextStyle.numpadDigit,
       ),
     );
-  }
-}
-
-class NumpadActionButton extends StatelessWidget {
-  const NumpadActionButton({
-    required this.action,
-    required this.icon,
-  });
-
-  final void Function(BuildContext) action;
-  final IconData icon;
-
-  @override
-  Widget build(BuildContext context) {
-    return NumpadButton(
-      onPressed: action,
-      child: Icon(icon),
-    );
-  }
-}
-
-abstract class NumpadAction {
-  static void delete(BuildContext context) {
-    return context.read<LoginCubit>().clearPasscode();
-  }
-
-  static void biometric(BuildContext context) {
-    throw UnimplementedError();
-    // context.read<LoginBloc>().add(const LoginChangeAuthentication());
-  }
-
-  static void forgot(BuildContext context) {
-    throw UnimplementedError();
-    // return context.read<LoginBloc>().add(const LoginForgotPasscode());
   }
 }
