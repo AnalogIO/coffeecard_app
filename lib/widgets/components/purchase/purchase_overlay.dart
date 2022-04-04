@@ -10,15 +10,13 @@ import 'package:coffeecard/widgets/components/purchase/purchase_process.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class PurchaseOverlay {
-  final BuildContext _context;
-
-  Future<Payment?> show(
-    InternalPaymentType paymentType,
-    Product product,
-  ) async {
-    return showDialog<Payment>(
-      context: _context,
+Future<Payment?> showPurchaseOverlay({
+  required BuildContext context,
+  required Product product,
+  required InternalPaymentType paymentType,
+}) async =>
+    showDialog<Payment>(
+      context: context,
       barrierColor: AppColor.scrim,
       barrierDismissible: false,
       useRootNavigator: true,
@@ -55,11 +53,3 @@ class PurchaseOverlay {
         );
       },
     );
-  }
-
-  PurchaseOverlay.__create(this._context);
-
-  factory PurchaseOverlay.of(BuildContext context) {
-    return PurchaseOverlay.__create(context);
-  }
-}

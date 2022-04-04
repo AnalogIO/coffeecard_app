@@ -17,26 +17,24 @@ class BuyTicketBottomModalSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IntrinsicHeight(
-      // TODO: Possibily very expensive widget, look into alternatives?
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          BottomModalSheetHelper(
-            children: [
-              Text(
-                Strings.confirmPurchase,
-                style: AppTextStyle.explainerBright,
-              ),
-              Text(
-                Strings.tapHereToCancel,
-                style: AppTextStyle.explainerBright,
-              ),
-            ],
-          ),
-          _ModalContent(product: product),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        BottomModalSheetHelper(
+          children: [
+            Text(
+              Strings.confirmPurchase,
+              style: AppTextStyle.explainerBright,
+            ),
+            Text(
+              Strings.tapHereToCancel,
+              style: AppTextStyle.explainerBright,
+            ),
+          ],
+        ),
+        _ModalContent(product: product),
+      ],
     );
   }
 }
@@ -92,7 +90,7 @@ class _BottomModalSheetButtonBarState
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _ButtomModalSheetButton(
+        _BottomModalSheetButton(
           text: Strings.paymentOptionOther,
           productId: widget.product.id,
           price: widget.product.price,
@@ -100,13 +98,16 @@ class _BottomModalSheetButtonBarState
           disabledText: Strings.paymentOptionOtherComingSoon,
         ),
         const Gap(8),
-        _ButtomModalSheetButton(
+        _BottomModalSheetButton(
           text: Strings.paymentOptionMobilePay,
           productId: widget.product.id,
           price: widget.product.price,
           onTap: () async {
-            final payment = await PurchaseOverlay.of(context)
-                .show(InternalPaymentType.mobilePay, widget.product);
+            final payment = await showPurchaseOverlay(
+              paymentType: InternalPaymentType.mobilePay,
+              product: widget.product,
+              context: context,
+            );
 
             if (!mounted) return;
             Navigator.pop<Payment>(
@@ -120,8 +121,8 @@ class _BottomModalSheetButtonBarState
   }
 }
 
-class _ButtomModalSheetButton extends StatelessWidget {
-  const _ButtomModalSheetButton({
+class _BottomModalSheetButton extends StatelessWidget {
+  const _BottomModalSheetButton({
     this.disabled = false,
     this.disabledText,
     required this.text,
