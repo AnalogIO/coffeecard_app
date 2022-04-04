@@ -1,6 +1,7 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/models/purchase/payment.dart';
 import 'package:coffeecard/models/ticket/product.dart';
 import 'package:coffeecard/payment/payment_handler.dart';
 import 'package:coffeecard/widgets/components/purchase/purchase_overlay.dart';
@@ -16,26 +17,24 @@ class BuyTicketBottomModalSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IntrinsicHeight(
-      // TODO: Possibily very expensive widget, look into alternatives?
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          BottomModalSheetHelper(
-            children: [
-              Text(
-                Strings.confirmPurchase,
-                style: AppTextStyle.explainerBright,
-              ),
-              Text(
-                Strings.tapHereToCancel,
-                style: AppTextStyle.explainerBright,
-              ),
-            ],
-          ),
-          _ModalContent(product: product),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        BottomModalSheetHelper(
+          children: [
+            Text(
+              Strings.confirmPurchase,
+              style: AppTextStyle.explainerBright,
+            ),
+            Text(
+              Strings.tapHereToCancel,
+              style: AppTextStyle.explainerBright,
+            ),
+          ],
+        ),
+        _ModalContent(product: product),
+      ],
     );
   }
 }
@@ -74,38 +73,56 @@ class _ModalContent extends StatelessWidget {
   }
 }
 
-class _BottomModalSheetButtonBar extends StatelessWidget {
+class _BottomModalSheetButtonBar extends StatefulWidget {
   const _BottomModalSheetButtonBar({required this.product});
 
   final Product product;
 
   @override
+  State<_BottomModalSheetButtonBar> createState() =>
+      _BottomModalSheetButtonBarState();
+}
+
+class _BottomModalSheetButtonBarState
+    extends State<_BottomModalSheetButtonBar> {
+  @override
   Widget build(BuildContext context) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _ButtomModalSheetButton(
+        _BottomModalSheetButton(
           text: Strings.paymentOptionOther,
-          productId: product.id,
-          price: product.price,
+          productId: widget.product.id,
+          price: widget.product.price,
           disabled: true,
           disabledText: Strings.paymentOptionOtherComingSoon,
         ),
         const Gap(8),
-        _ButtomModalSheetButton(
+        _BottomModalSheetButton(
           text: Strings.paymentOptionMobilePay,
-          productId: product.id,
-          price: product.price,
-          onTap: () async => PurchaseOverlay.of(context)
-              .show(InternalPaymentType.mobilePay, product),
+          productId: widget.product.id,
+          price: widget.product.price,
+          onTap: () async {
+            final payment = await showPurchaseOverlay(
+              paymentType: InternalPaymentType.mobilePay,
+              product: widget.product,
+              context: context,
+            );
+
+            if (!mounted) return;
+            Navigator.pop<Payment>(
+              context,
+              payment,
+            ); //Removes this bottom modal sheet
+          },
         ),
       ],
     );
   }
 }
 
-class _ButtomModalSheetButton extends StatelessWidget {
-  const _ButtomModalSheetButton({
+class _BottomModalSheetButton extends StatelessWidget {
+  const _BottomModalSheetButton({
     this.disabled = false,
     this.disabledText,
     required this.text,
