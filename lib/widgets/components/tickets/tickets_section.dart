@@ -21,8 +21,11 @@ class TicketSection extends StatelessWidget {
         BlocConsumer<TicketsCubit, TicketsState>(
           listener: (context, state) {
             if (state is TicketUsing) {
-              // Remove the swipe overlay
-              Navigator.of(context, rootNavigator: true).pop();
+              if (Navigator.of(context, rootNavigator: true).canPop()) {
+                  //If a ticket was used from the puy single drink flow, there is no swipe overlay
+                  Navigator.of(context, rootNavigator: true)
+                      .pop(); // Remove the swipe overlay
+                }
               // TODO consider using a nicer loading indicator
               LoadingOverlay.of(context).show();
             } else if (state is TicketUsed) {

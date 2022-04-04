@@ -1,6 +1,5 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/colors.dart';
-import 'package:coffeecard/cubits/environment/environment_cubit.dart';
 import 'package:coffeecard/cubits/products/products_cubit.dart';
 import 'package:coffeecard/cubits/receipt/receipt_cubit.dart';
 import 'package:coffeecard/cubits/tickets/tickets_cubit.dart';
@@ -8,24 +7,21 @@ import 'package:coffeecard/data/repositories/v1/product_repository.dart';
 import 'package:coffeecard/errors/match_case_incomplete_exception.dart';
 import 'package:coffeecard/models/purchase/payment.dart';
 import 'package:coffeecard/models/purchase/payment_status.dart';
-import 'package:coffeecard/models/receipts/receipt.dart';
 import 'package:coffeecard/models/ticket/product.dart';
 import 'package:coffeecard/service_locator.dart';
-import 'package:coffeecard/widgets/components/error_section.dart';
 import 'package:coffeecard/widgets/components/helpers/grid.dart';
 import 'package:coffeecard/widgets/components/loading.dart';
-import 'package:coffeecard/widgets/components/receipt/receipt_overlay.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:coffeecard/widgets/components/tickets/buy_ticket_bottom_modal_sheet.dart';
 import 'package:coffeecard/widgets/components/tickets/buy_tickets_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class BuyTicketsPage extends StatelessWidget {
-  const BuyTicketsPage();
+class BuySingleDrinkPage extends StatelessWidget {
+  const BuySingleDrinkPage();
 
   static Route get route =>
-      MaterialPageRoute(builder: (_) => const BuyTicketsPage());
+      MaterialPageRoute(builder: (_) => const BuySingleDrinkPage());
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +29,7 @@ class BuyTicketsPage extends StatelessWidget {
       create: (context) =>
           ProductsCubit(sl.get<ProductRepository>())..getProducts(),
       child: AppScaffold.withTitle(
-        title: Strings.buyTickets,
+        title: Strings.buyOneDrink,
         body: BlocBuilder<ProductsCubit, ProductsState>(
           builder: (context, state) {
             if (state is ProductsLoading) {
@@ -45,22 +41,19 @@ class BuyTicketsPage extends StatelessWidget {
                   gap: GridGap.normal,
                   gapSmall: GridGap.tight,
                   singleColumnOnSmallDevice: true,
-                  children: state.ticketProducts
+                  children: state.singleDrinkProducts
                       .map(
                         (product) => BuyTicketsCard(
                           product: product,
-                          onTap: buyTicketsModal,
+                          onTap: buyNSwipeModal,
                         ),
                       )
                       .toList(),
                 ),
               );
             } else if (state is ProductsError) {
-              return ErrorSection(
-                center: true,
-                error: state.error,
-                retry: context.read<ProductsCubit>().getProducts,
-              );
+              // FIXME handle error
+              return const Text('error');
             }
 
             throw MatchCaseIncompleteException(this);
@@ -70,12 +63,13 @@ class BuyTicketsPage extends StatelessWidget {
     );
   }
 
-  Future<void> buyTicketsModal(
+  Future<void> buyNSwipeModal(
     BuildContext context,
     Product product,
     State state,
   ) async {
     {
+      //TODO change this to just use a single endpoint, once the backend supports it
       final payment = await showModalBottomSheet<Payment>(
         context: context,
         barrierColor: AppColor.scrim,
@@ -84,7 +78,7 @@ class BuyTicketsPage extends StatelessWidget {
         useRootNavigator: true,
         builder: (_) => BuyTicketBottomModalSheet(
           product: product,
-          description: Strings.paymentConfirmationTopTickets(
+          description: Strings.paymentConfirmationTopSingle(
             product.amount,
             product.name,
           ),
@@ -94,24 +88,8 @@ class BuyTicketsPage extends StatelessWidget {
       if (payment != null && payment.status == PaymentStatus.completed) {
         Navigator.pop(context); //Sends the user back to the home-screen
 
-        final env = context.read<EnvironmentCubit>().state;
-
-        final updateTicketsRequest = sl<TicketsCubit>().getTickets();
-        final updateReceiptsRequest = sl<ReceiptCubit>().fetchReceipts();
-
-        ReceiptOverlay.of(context).show(
-          receipt: Receipt(
-            timeUsed: payment.purchaseTime,
-            amountPurchased: product.amount,
-            transactionType: TransactionType.purchase,
-            productName: payment.productName!,
-            price: payment.price,
-            id: product.id,
-          ),
-          isTestEnvironment: env is EnvironmentLoaded && env.isTestEnvironment,
-        );
-        await updateTicketsRequest;
-        await updateReceiptsRequest;
+        await sl<TicketsCubit>().useTicket(product.id);
+        await sl<ReceiptCubit>().fetchReceipts();
       }
     }
   }
