@@ -2,8 +2,8 @@ name: Build And Deploy Coffeecard App To Firebase Distribution
 
 on:
   workflow_run:
-    workflows: ["Flutter build and test"]
-    type: [complete]
+    workflows: [Flutter build and test]
+    types: [completed]
     branches: [develop]
 
 jobs:
