@@ -3,6 +3,7 @@ import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/receipt/receipt_cubit.dart';
 import 'package:coffeecard/cubits/statistics/statistics_cubit.dart';
+import 'package:coffeecard/cubits/tickets/tickets_cubit.dart';
 import 'package:coffeecard/cubits/user/user_cubit.dart';
 import 'package:coffeecard/data/repositories/shared/account_repository.dart';
 import 'package:coffeecard/data/repositories/v1/leaderboard_repository.dart';
@@ -36,6 +37,9 @@ class _HomePageState extends State<HomePage> {
             sl.get<AccountRepository>(),
             sl.get<ProgrammeRepository>(),
           )..fetchUserDetails(),
+        ),
+        BlocProvider.value(
+          value: sl.get<TicketsCubit>()..getTickets(),
         ),
         BlocProvider.value(
           value: sl.get<ReceiptCubit>()..fetchReceipts(),
