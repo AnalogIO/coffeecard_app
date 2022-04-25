@@ -39,7 +39,7 @@ Future<Payment?> showPurchaseOverlay({
 
                   //TODO Consider if these calls should be moved elsewhere, e.g. inside the purchase cubit
                   final ticketCubit = sl.get<TicketsCubit>();
-                  final updateTicketsRequest = ticketCubit.getTickets();
+                  final updateTicketsRequest = ticketCubit.refreshTickets();
                   final receiptCubit = sl.get<ReceiptCubit>();
                   final updateReceiptsRequest = receiptCubit.fetchReceipts();
 

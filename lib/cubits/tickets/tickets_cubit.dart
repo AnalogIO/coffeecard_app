@@ -18,7 +18,7 @@ class TicketsCubit extends Cubit<TicketsState> {
       return;
     }
     emit(const TicketsLoading());
-    _refreshTickets();
+    refreshTickets();
   }
 
   Future<void> useTicket(int productId) async {
@@ -29,7 +29,7 @@ class TicketsCubit extends Cubit<TicketsState> {
       if (response is Right) {
         emit(TicketUsed(response.right, previousState.tickets));
         // Refresh tickets, so the user sees the right count
-        _refreshTickets();
+        refreshTickets();
       } else {
         emit(TicketsError(response.left.errorMessage));
       }
@@ -40,7 +40,7 @@ class TicketsCubit extends Cubit<TicketsState> {
     emit(const TicketsLoading());
   }
 
-  Future<void> _refreshTickets() async {
+  Future<void> refreshTickets() async {
     final response = await _ticketRepository.getUserTickets();
     if (response is Right) {
       emit(TicketsLoaded(response.right));
