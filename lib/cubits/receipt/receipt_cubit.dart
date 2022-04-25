@@ -32,6 +32,10 @@ class ReceiptCubit extends Cubit<ReceiptState> {
     }
   }
 
+  void resetCubit() {
+    emit(ReceiptState());
+  }
+
   void filterReceipts(ReceiptFilterCategory filterBy) {
     if (filterBy == state.filterBy) return;
     emit(
