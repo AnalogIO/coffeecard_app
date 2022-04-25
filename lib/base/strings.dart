@@ -152,7 +152,8 @@ abstract class Strings {
   static const receiptPlaceholderName = 'Swiped Espresso based';
   static const receiptCardSwiped = 'Ticket swiped';
   static const receiptCardPurchased = 'Purchased';
-  static const receiptCardNote = 'This can be found again under Reciepts.';
+  static const receiptCardNote =
+      'This can be found again under $receiptsPageTitle.';
   static const receiptTapAnywhereToDismiss = 'Tap anywhere to dismiss';
 
   static const receipts = 'receipts';
