@@ -1,8 +1,5 @@
-import 'package:coffeecard/cubits/receipt/receipt_cubit.dart';
-import 'package:coffeecard/cubits/tickets/tickets_cubit.dart';
 import 'package:coffeecard/data/storage/secure_storage.dart';
 import 'package:coffeecard/models/account/authenticated_user.dart';
-import 'package:coffeecard/service_locator.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
