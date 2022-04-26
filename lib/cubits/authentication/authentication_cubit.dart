@@ -44,9 +44,6 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
 
   Future<void> unauthenticated() async {
     await _storage.clearAuthenticatedUser();
-    //Reset all cubits registered in the service locator. Otherwise their state is persisted to other user logins
-    sl<TicketsCubit>().resetCubit();
-    sl<ReceiptCubit>().resetCubit();
     emit(const AuthenticationState.unauthenticated());
   }
 }

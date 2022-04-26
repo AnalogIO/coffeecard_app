@@ -13,10 +13,6 @@ class TicketsCubit extends Cubit<TicketsState> {
   TicketsCubit(this._ticketRepository) : super(const TicketsLoading());
 
   Future<void> getTickets() async {
-    // Only fetch tickets from backend if they are not loaded already
-    if (state is TicketsLoaded) {
-      return;
-    }
     emit(const TicketsLoading());
     refreshTickets();
   }
@@ -34,10 +30,6 @@ class TicketsCubit extends Cubit<TicketsState> {
         emit(TicketsError(response.left.errorMessage));
       }
     }
-  }
-
-  void resetCubit() {
-    emit(const TicketsLoading());
   }
 
   Future<void> refreshTickets() async {
