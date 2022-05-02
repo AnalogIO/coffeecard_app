@@ -44,7 +44,6 @@ class _NameBodyState extends State<NameBody> {
   Future<void> _submit(BuildContext context) async {
     _showError = true;
     _validateName();
-    if (!mounted) return;
     if (_error != null) return;
 
     // If custom onSubmit is given, run it & ignore rest of code
