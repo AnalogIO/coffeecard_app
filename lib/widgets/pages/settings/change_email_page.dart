@@ -32,6 +32,7 @@ class _ChangeEmailPageState extends State<ChangeEmailPage> {
         padding: const EdgeInsets.all(16),
         child: EmailBody(
           initialValue: widget.currentEmail,
+          preventDuplicate: true,
           hint: 'After changing your email, you must log in again.',
           onSubmit: (context, email) async {
             context.read<UserCubit>().setUserEmail(email);

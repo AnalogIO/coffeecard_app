@@ -14,7 +14,13 @@ class AppScaffold extends StatelessWidget {
   final bool resizeToAvoidBottomInset;
   final double? appBarHeight;
 
+  bool get hasTitle => title != null;
+
   /// A Scaffold with a normal app bar.
+  ///
+  /// If connected to test envrionment, an environment
+  /// warning button is shown below the title.
+  ///
   /// The body's background color is always `AppColor.background`.
   AppScaffold.withTitle({
     required String title,
@@ -24,14 +30,18 @@ class AppScaffold extends StatelessWidget {
         backgroundColor = AppColor.background,
         appBarHeight = null; // Use default app bar height
 
-  /// A Scaffold with an empty, 24 dp tall app bar.
+  /// A Scaffold with an empty, 48 dp tall app bar.
+  ///
+  /// If connected to test envrionment, an environment warning
+  /// button is shown where the title would normally show.
+  ///
   /// The body's background color is, by default, the same as the app bar.
   const AppScaffold.withoutTitle({
     this.backgroundColor = AppColor.primary,
     this.resizeToAvoidBottomInset = true,
     required this.body,
   })  : title = null,
-        appBarHeight = 24;
+        appBarHeight = 48;
 
   @override
   Widget build(BuildContext context) {
@@ -43,15 +53,19 @@ class AppScaffold extends StatelessWidget {
       // in the child of the Expanded widget below.
       backgroundColor: AppColor.primary,
       appBar: AppBar(
-        title: title,
+        title: hasTitle ? title : const _EnvironmentButton(tappable: true),
+        centerTitle: hasTitle ? null : true,
         toolbarHeight: appBarHeight,
       ),
       body: BlocBuilder<EnvironmentCubit, EnvironmentState>(
-        builder: (context, state) {
+        builder: (_, state) {
+          final bool isTestEnvironment =
+              state is EnvironmentLoaded && state.isTestEnvironment;
+
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              if (state is EnvironmentLoaded && state.isTestEnvironment)
+              if (hasTitle && isTestEnvironment)
                 const _EnvironmentBanner(tappable: true),
               Expanded(
                 child: Container(

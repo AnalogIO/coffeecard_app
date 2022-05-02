@@ -6,9 +6,12 @@ class AnalogLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: deviceIsSmall(context) ? 52 : 78,
-      child: Image.asset('assets/logo.png'),
+    return Hero(
+      tag: 'ANALOG_LOGO',
+      child: SizedBox(
+        height: deviceIsSmall(context) ? 52 : 78,
+        child: Image.asset('assets/logo.png'),
+      ),
     );
   }
 }

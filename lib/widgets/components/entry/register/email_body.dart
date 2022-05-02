@@ -5,15 +5,19 @@ import 'package:coffeecard/widgets/components/continue_button.dart';
 import 'package:coffeecard/widgets/components/forms/text_field.dart';
 import 'package:flutter/material.dart';
 
+// FIXME: Widget is not meant to be used in multiple scenarios.
+// Some of the code should be adjusted to better work across multiple screens
 class EmailBody extends StatefulWidget {
   final Function(BuildContext context, String email) onSubmit;
   final String? initialValue;
   final String? hint;
+  final bool preventDuplicate;
 
   const EmailBody({
     required this.onSubmit,
     this.initialValue,
     this.hint,
+    this.preventDuplicate = false,
   });
   @override
   State<EmailBody> createState() => _EmailBodyState();
@@ -43,7 +47,9 @@ class _EmailBodyState extends State<EmailBody> {
       error = Strings.registerEmailEmpty;
     } else if (!emailIsValid(_email)) {
       error = Strings.registerEmailInvalid;
-    } else if (widget.initialValue != null && _email == widget.initialValue) {
+    } else if (widget.preventDuplicate &&
+        widget.initialValue != null &&
+        _email == widget.initialValue) {
       error = Strings.changeEmailCannotBeSame;
     } else {
       final isDuplicate = await emailIsDuplicate(_email);
