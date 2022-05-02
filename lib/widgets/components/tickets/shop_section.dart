@@ -19,7 +19,7 @@ class ShopSection extends StatelessWidget {
           children: [
             ShopCard(
               title: Strings.buyTickets,
-              icon: Icons.style,
+              icon: Icons.confirmation_num,
               onTapped: (_) => Navigator.push(context, BuyTicketsPage.route),
             ),
             const ShopCard(
