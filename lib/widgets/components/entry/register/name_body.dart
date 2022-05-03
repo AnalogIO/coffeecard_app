@@ -153,7 +153,7 @@ class _NameBodyState extends State<NameBody> {
           label: Strings.registerNameLabel,
           autofocus: true,
           error: _showError ? _error : null,
-          onChanged: () => _validateName(),
+          onChanged: _validateName,
           onEditingComplete: () => _submit(context),
           controller: _controller,
         ),
