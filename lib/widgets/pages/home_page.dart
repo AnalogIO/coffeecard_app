@@ -76,7 +76,7 @@ class _HomePageState extends State<HomePage> {
 
 const _bottomNavBarItems = [
   BottomNavigationBarItem(
-    icon: Icon(Icons.style),
+    icon: Icon(Icons.confirmation_num),
     label: Strings.ticketsNavTitle,
   ),
   BottomNavigationBarItem(
