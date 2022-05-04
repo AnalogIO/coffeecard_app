@@ -42,7 +42,11 @@ class UserCubit extends Cubit<UserState> {
     final either = await _accountRepository.updateUser(user);
 
     if (either.isRight) {
-      _enrichUserWithProgrammes(either.right);
+      // Refreshes twice as a work-around for
+      // a backend bug that returns a user object with all ranks set to 0.
+      await _enrichUserWithProgrammes(either.right);
+      // FIXME: Remove fetchUserDetails when backend bug is fixed
+      return fetchUserDetails();
     } else {
       emit(UserError(either.left.errorMessage));
     }

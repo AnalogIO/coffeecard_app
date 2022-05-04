@@ -13,16 +13,26 @@ class UserError extends UserState {
 
 class UserLoading extends UserState {}
 
-class UserUpdating extends UserLoaded {
+abstract class UserWithData extends UserState {
+  final User user;
+  final List<ProgrammeDto> programmes;
+
+  UserWithData({required this.user, required this.programmes});
+}
+
+class UserUpdating extends UserWithData {
   UserUpdating({required User user, required List<ProgrammeDto> programmes})
       : super(user: user, programmes: programmes);
 }
 
-class UserLoaded extends UserState {
-  final User user;
-  final List<ProgrammeDto> programmes;
+class UserUpdated extends UserWithData {
+  UserUpdated({required User user, required List<ProgrammeDto> programmes})
+      : super(user: user, programmes: programmes);
+}
 
-  UserLoaded({required this.user, required this.programmes});
+class UserLoaded extends UserWithData {
+  UserLoaded({required User user, required List<ProgrammeDto> programmes})
+      : super(user: user, programmes: programmes);
 
   UserLoaded copyWith({
     User? user,

@@ -11,6 +11,7 @@ class StatisticsCubit extends Cubit<StatisticsState> {
   final LeaderboardRepository _repo;
   static const defaultFilterCategory = StatisticsFilterCategory.month;
 
+  /// Load the leaderboard with the given filter category, or the default.
   Future<void> fetchLeaderboards({
     StatisticsFilterCategory category = defaultFilterCategory,
   }) async {
@@ -24,6 +25,20 @@ class StatisticsCubit extends Cubit<StatisticsState> {
     } else {
       // TODO: handle failure
       emit(StatisticsFailure(errorMessage: either.left.errorMessage));
+    }
+  }
+
+  /// Refresh the leaderboard without changing the filter category.
+  ///
+  /// If the leaderboard is not loaded yet, or an error is present,
+  /// load the leaderboard with the default filter category.
+  Future<void> refreshLeaderboards() async {
+    final state = this.state;
+    if (state is! StatisticsStateWithFilterCategory) {
+      return fetchLeaderboards();
+    }
+    if (state is StatisticsLoaded) {
+      return fetchLeaderboards(category: state.filterBy);
     }
   }
 }
