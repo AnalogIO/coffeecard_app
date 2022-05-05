@@ -75,7 +75,10 @@ class _EditProfile extends StatelessWidget {
           listItems: [
             SettingListEntry(
               name: Strings.name,
-              valueWidget: SettingDescription(text: user.name),
+              valueWidget: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 150),
+                child: SettingDescription(text: user.name),
+              ),
               onTap: () => Navigator.push(
                 context,
                 ChangeNamePage.routeWith(name: user.name),

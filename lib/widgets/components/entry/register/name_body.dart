@@ -150,6 +150,7 @@ class _NameBodyState extends State<NameBody> {
     return Column(
       children: [
         AppTextField(
+          maxLength: 30,
           label: Strings.registerNameLabel,
           autofocus: true,
           error: _showError ? _error : null,

@@ -30,9 +30,14 @@ class SettingListEntry extends StatelessWidget {
 
   Widget get _leftWidget {
     return _opacity(
-      child: destructive
-          ? Text(name, style: const TextStyle(color: AppColor.errorOnBright))
-          : Text(name),
+      child: Text(
+        name,
+        style: destructive
+            ? AppTextStyle.settingKeyDestructive
+            : AppTextStyle.settingKey,
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
+      ),
     );
   }
 
@@ -50,7 +55,10 @@ class SettingListEntry extends StatelessWidget {
       child: ListEntry(
         onTap: _disabled ? null : onTap,
         leftWidget: _leftWidget,
-        rightWidget: _rightWidget,
+        rightWidget: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 150),
+          child: _rightWidget,
+        ),
       ),
     );
   }
@@ -68,11 +76,13 @@ class SettingDescription extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         if (text != null)
-          Text(
-            text!,
-            style: AppTextStyle.settingValue,
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.end,
+          Flexible(
+            child: Text(
+              text!,
+              style: AppTextStyle.settingValue,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.end,
+            ),
           ),
         if (showArrow)
           const Icon(Icons.chevron_right, color: AppColor.secondary),

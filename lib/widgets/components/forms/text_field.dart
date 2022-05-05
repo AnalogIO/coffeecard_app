@@ -9,6 +9,7 @@ class AppTextField extends StatefulWidget {
   final String? initialValue;
   final String? hint;
   final String? error;
+  final int? maxLength;
   final TextFieldType type;
   final bool autofocus;
   final bool lastField;
@@ -25,6 +26,7 @@ class AppTextField extends StatefulWidget {
     this.initialValue,
     this.hint,
     this.error,
+    this.maxLength,
     this.type = TextFieldType.text,
     this.autofocus = false,
     this.lastField = false,
@@ -132,6 +134,7 @@ class _AppTextFieldState extends State<AppTextField> {
           color: AppColor.primary,
           letterSpacing: _isPasscode ? 3 : 0,
         ),
+        maxLength: widget.maxLength,
         decoration: InputDecoration(
           border: _defaultBorder,
           enabledBorder: _defaultBorder,
