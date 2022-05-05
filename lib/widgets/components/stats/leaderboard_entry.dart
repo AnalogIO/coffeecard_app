@@ -31,10 +31,14 @@ class LeaderboardEntry extends StatelessWidget {
           _LeaderboardRankMedal(rank),
           const Gap(16),
           const CircleAvatar(),
-          const Gap(8),
-          Text(
-            name,
-            style: AppTextStyle.textField,
+          const Gap(10),
+          Flexible(
+            child: Text(
+              name,
+              style: AppTextStyle.textField,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
         ],
       ),
