@@ -30,6 +30,7 @@ class TicketRepository {
               productId: e.value.first.productId!,
             ),
           )
+          .sortedBy<num>((e) => e.productId)
           .toList();
       return Right(ticketCount);
     } else {
