@@ -121,7 +121,7 @@ void _showDeleteAccountDialog(BuildContext context, String email) {
       TextButton(
         child: const Text(
           Strings.buttonUnderstand,
-          style: TextStyle(color: AppColor.error),
+          style: TextStyle(color: AppColor.errorOnBright),
         ),
         onPressed: () {
           context.read<UserCubit>().requestAccountDeletion();

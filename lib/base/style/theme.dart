@@ -14,10 +14,6 @@ final ThemeData analogTheme = ThemeData(
   canvasColor: AppColor.background,
   textSelectionTheme:
       const TextSelectionThemeData(cursorColor: AppColor.secondary),
-  buttonTheme: const ButtonThemeData(
-    disabledColor: AppColor.error,
-    focusColor: AppColor.error,
-  ),
   disabledColor: AppColor.lightGray,
   pageTransitionsTheme: const PageTransitionsTheme(
     builders: {

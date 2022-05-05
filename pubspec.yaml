@@ -115,6 +115,9 @@ flutter:
         - asset: assets/fonts/roboto_mono/RobotoMono-Regular.ttf
         - asset: assets/fonts/roboto_mono/RobotoMono-Bold.ttf
           weight: 700
+    - family: AnalogIcons
+      fonts:
+        - asset: assets/fonts/AnalogIcons.ttf
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

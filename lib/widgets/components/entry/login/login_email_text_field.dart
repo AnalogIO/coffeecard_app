@@ -50,7 +50,7 @@ class _LoginEmailTextFieldState extends State<LoginEmailTextField> {
       final border = OutlineInputBorder(
         borderRadius: BorderRadius.circular(32),
         borderSide: widget.hasError
-            ? const BorderSide(color: AppColor.error, width: 2)
+            ? const BorderSide(color: AppColor.errorOnDark, width: 2)
             : const BorderSide(color: Colors.transparent, width: 0),
       );
 

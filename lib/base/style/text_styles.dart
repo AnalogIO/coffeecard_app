@@ -59,7 +59,7 @@ abstract class AppTextStyle {
     fontWeight: FontWeight.bold,
     fontFamily: AppFont.body,
   );
-  static final TextStyle ticketsOverflow = TextStyle(
+  static final TextStyle openingHoursIndicator = TextStyle(
     color: AppColor.primary,
     fontSize: 14,
     fontWeight: FontWeight.w500,
@@ -71,7 +71,7 @@ abstract class AppTextStyle {
     fontFamily: AppFont.body,
   );
   static final TextStyle settingKeyDestructive = TextStyle(
-    color: AppColor.error,
+    color: AppColor.errorOnBright,
     fontSize: 14,
     fontFamily: AppFont.body,
   );
@@ -97,7 +97,7 @@ abstract class AppTextStyle {
     fontFamily: AppFont.body,
   );
   static final TextStyle loginError = TextStyle(
-    color: AppColor.error,
+    color: AppColor.errorOnDark,
     fontSize: 14,
     fontFamily: AppFont.body,
   );

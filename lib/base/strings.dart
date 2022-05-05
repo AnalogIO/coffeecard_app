@@ -33,9 +33,6 @@ abstract class Strings {
 
   // Tickets
   static const ticketsMyTickets = 'My tickets';
-  static const analogClosedTitle = 'Cafe Analog is closed';
-  static const analogClosedText =
-      'Analog is currently closed, come back later!';
   static const shopText = 'Shop';
   static const buyTickets = 'Buy tickets';
   static const buyOneDrink = 'Buy one drink';
@@ -43,6 +40,11 @@ abstract class Strings {
   static const redeemVoucher = 'Redeem voucher';
   static const newLabel = 'NEW';
   static const comingSoonLabel = 'COMING SOON';
+
+  // Opening hours indicator
+  static const open = 'open';
+  static const closed = 'closed';
+  static const openingHoursIndicatorPrefix = "We're";
 
   // Register
   static const registerAppBarTitle = 'Register';
