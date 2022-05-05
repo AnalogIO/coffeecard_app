@@ -80,6 +80,7 @@ class _LeaderboardRankMedal extends StatelessWidget {
           child: Text(
             '$rank',
             style: AppTextStyle.rankingNumber,
+            textAlign: TextAlign.center,
           ),
         ),
       ],
