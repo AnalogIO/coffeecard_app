@@ -84,7 +84,7 @@ const _bottomNavBarItems = [
     label: Strings.receiptsNavTitle,
   ),
   BottomNavigationBarItem(
-    icon: Icon(Icons.trending_up),
+    icon: Icon(Icons.leaderboard_rounded),
     label: Strings.statsNavTitle,
   ),
   BottomNavigationBarItem(
