@@ -8,6 +8,8 @@ import 'package:coffeecard/cubits/user/user_cubit.dart';
 import 'package:coffeecard/data/repositories/shared/account_repository.dart';
 import 'package:coffeecard/data/repositories/v1/leaderboard_repository.dart';
 import 'package:coffeecard/data/repositories/v1/programme_repository.dart';
+import 'package:coffeecard/data/repositories/v1/receipt_repository.dart';
+import 'package:coffeecard/data/repositories/v1/ticket_repository.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/widgets/components/helpers/lazy_indexed_stack.dart';
 import 'package:coffeecard/widgets/pages/receipts/receipts_page.dart';
@@ -38,11 +40,15 @@ class _HomePageState extends State<HomePage> {
             sl.get<ProgrammeRepository>(),
           )..fetchUserDetails(),
         ),
-        BlocProvider.value(
-          value: sl.get<TicketsCubit>()..getTickets(),
+        BlocProvider(
+          create: (_) => TicketsCubit(
+            sl.get<TicketRepository>(),
+          )..getTickets(),
         ),
-        BlocProvider.value(
-          value: sl.get<ReceiptCubit>()..fetchReceipts(),
+        BlocProvider(
+          create: (_) => ReceiptCubit(
+            sl.get<ReceiptRepository>(),
+          )..fetchReceipts(),
         ),
         BlocProvider(
           create: (_) => StatisticsCubit(

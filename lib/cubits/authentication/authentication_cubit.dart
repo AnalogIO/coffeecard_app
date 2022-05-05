@@ -1,8 +1,5 @@
-import 'package:coffeecard/cubits/receipt/receipt_cubit.dart';
-import 'package:coffeecard/cubits/tickets/tickets_cubit.dart';
 import 'package:coffeecard/data/storage/secure_storage.dart';
 import 'package:coffeecard/models/account/authenticated_user.dart';
-import 'package:coffeecard/service_locator.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -44,9 +41,6 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
 
   Future<void> unauthenticated() async {
     await _storage.clearAuthenticatedUser();
-    //Reset all cubits registered in the service locator. Otherwise their state is persisted to other user logins
-    sl<TicketsCubit>().resetCubit();
-    sl<ReceiptCubit>().resetCubit();
     emit(const AuthenticationState.unauthenticated());
   }
 }
