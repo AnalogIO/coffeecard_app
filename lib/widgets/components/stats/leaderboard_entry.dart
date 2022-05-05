@@ -67,8 +67,8 @@ class _LeaderboardRankMedal extends StatelessWidget {
       alignment: Alignment.center,
       children: [
         Container(
-          width: 20,
-          height: 20,
+          width: 19,
+          height: 19,
           decoration: BoxDecoration(
             color: _fillColor,
             shape: BoxShape.circle,
