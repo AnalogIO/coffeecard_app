@@ -8,10 +8,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class StatsPage extends StatelessWidget {
-  const StatsPage();
+  const StatsPage({required this.scrollController});
 
-  static Route get route =>
-      MaterialPageRoute(builder: (_) => const StatsPage());
+  final ScrollController scrollController;
+
+  static Route routeWith({required ScrollController scrollController}) =>
+      MaterialPageRoute(
+        builder: (_) => StatsPage(scrollController: scrollController),
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +30,7 @@ class StatsPage extends StatelessWidget {
         displacement: 24,
         onRefresh: _refresh,
         child: ListView(
+          controller: scrollController,
           children: const [
             StatsSection(),
             LeaderboardSection(),

@@ -7,10 +7,14 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 class TicketsPage extends StatelessWidget {
-  const TicketsPage();
+  const TicketsPage({required this.scrollController});
 
-  static Route get route =>
-      MaterialPageRoute(builder: (_) => const TicketsPage());
+  final ScrollController scrollController;
+
+  static Route routeWith({required ScrollController scrollController}) =>
+      MaterialPageRoute(
+        builder: (_) => TicketsPage(scrollController: scrollController),
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +25,7 @@ class TicketsPage extends StatelessWidget {
         children: [
           Expanded(
             child: ListView(
+              controller: scrollController,
               shrinkWrap: true,
               padding: const EdgeInsets.all(16.0),
               children: const [

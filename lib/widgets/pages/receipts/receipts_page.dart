@@ -6,10 +6,14 @@ import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:flutter/material.dart';
 
 class ReceiptsPage extends StatelessWidget {
-  const ReceiptsPage();
+  const ReceiptsPage({required this.scrollController});
 
-  static Route get route =>
-      MaterialPageRoute(builder: (_) => const ReceiptsPage());
+  final ScrollController scrollController;
+
+  static Route routeWith({required ScrollController scrollController}) =>
+      MaterialPageRoute(
+        builder: (_) => ReceiptsPage(scrollController: scrollController),
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +25,7 @@ class ReceiptsPage extends StatelessWidget {
             title: 'Show',
             dropdown: ReceiptDropdown(),
           ),
-          ReceiptsListView(),
+          ReceiptsListView(scrollController: scrollController),
         ],
       ),
     );
