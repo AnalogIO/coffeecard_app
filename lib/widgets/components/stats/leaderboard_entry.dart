@@ -28,13 +28,10 @@ class LeaderboardEntry extends StatelessWidget {
       backgroundColor: highlight ? AppColor.slightlyHighlighted : null,
       leftWidget: Row(
         children: [
-          Text(
-            '$rank',
-            style: AppTextStyle.rankingNumber,
-          ),
-          const Gap(10),
+          _LeaderboardRankMedal(rank),
+          const Gap(16),
           const CircleAvatar(),
-          const Gap(10),
+          const Gap(8),
           Text(
             name,
             style: AppTextStyle.textField,
@@ -42,6 +39,50 @@ class LeaderboardEntry extends StatelessWidget {
         ],
       ),
       rightWidget: Text(_scoreText),
+    );
+  }
+}
+
+class _LeaderboardRankMedal extends StatelessWidget {
+  const _LeaderboardRankMedal(this.rank);
+  final int rank;
+
+  Color get _fillColor {
+    if (rank == 1) return const Color(0xffFFD91D);
+    if (rank == 2) return const Color(0xffC2C2C2);
+    if (rank == 3) return const Color(0xffD9A169);
+    return Colors.transparent;
+  }
+
+  Color get _borderColor {
+    if (rank == 1) return const Color(0xffB3980E);
+    if (rank == 2) return const Color(0xff767676);
+    if (rank == 3) return const Color(0xff7A4C1F);
+    return Colors.transparent;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Container(
+          width: 20,
+          height: 20,
+          decoration: BoxDecoration(
+            color: _fillColor,
+            shape: BoxShape.circle,
+            border: Border.all(width: 1.5, color: _borderColor),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 1.5),
+          child: Text(
+            '$rank',
+            style: AppTextStyle.rankingNumber,
+          ),
+        ),
+      ],
     );
   }
 }
