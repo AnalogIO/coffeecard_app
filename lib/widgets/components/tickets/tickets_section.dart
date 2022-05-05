@@ -1,6 +1,5 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/cubits/environment/environment_cubit.dart';
-import 'package:coffeecard/cubits/statistics/statistics_cubit.dart';
 import 'package:coffeecard/cubits/tickets/tickets_cubit.dart';
 import 'package:coffeecard/cubits/user/user_cubit.dart';
 import 'package:coffeecard/errors/match_case_incomplete_exception.dart';
