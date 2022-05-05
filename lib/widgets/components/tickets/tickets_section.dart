@@ -1,12 +1,16 @@
+import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/cubits/environment/environment_cubit.dart';
 import 'package:coffeecard/cubits/tickets/tickets_cubit.dart';
 import 'package:coffeecard/errors/match_case_incomplete_exception.dart';
+import 'package:coffeecard/widgets/components/helpers/shimmer_builder.dart';
 import 'package:coffeecard/widgets/components/loading_overlay.dart';
 import 'package:coffeecard/widgets/components/receipt/receipt_overlay.dart';
 import 'package:coffeecard/widgets/components/tickets/coffee_card.dart';
 import 'package:coffeecard/widgets/components/tickets/coffee_card_placeholder.dart';
+import 'package:coffeecard/widgets/components/tickets/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gap/gap.dart';
 
 class TicketSection extends StatelessWidget {
   const TicketSection();
@@ -34,7 +38,7 @@ class TicketSection extends StatelessWidget {
           },
           builder: (context, state) {
             if (state is TicketsLoading) {
-              return const Text('loading');
+              return const _CoffeeCardLoading();
             } else if (state is TicketsLoaded) {
               // States extending this are also caught on this
               if (state.tickets.isEmpty) {
@@ -58,11 +62,43 @@ class TicketSection extends StatelessWidget {
                     .toList(),
               );
             } else if (state is TicketsError) {
-              //FIXME: display error
-              return const Text('error');
+              return Column(
+                children: [
+                  Text('${Strings.error}: ${state.message}'),
+                  const Gap(8),
+                  RoundedButton(
+                    text: Strings.buttonTryAgain,
+                    onTap: context.read<TicketsCubit>().getTickets,
+                  ),
+                ],
+              );
             }
 
             throw MatchCaseIncompleteException(this);
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class _CoffeeCardLoading extends StatelessWidget {
+  const _CoffeeCardLoading();
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        ShimmerBuilder(
+          showShimmer: true,
+          builder: (context, colorIfShimmer) {
+            return const IgnorePointer(
+              child: CoffeeCard(
+                amountOwned: -1,
+                productId: -1,
+                title: '',
+              ),
+            );
           },
         ),
       ],

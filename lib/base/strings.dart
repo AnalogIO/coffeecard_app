@@ -92,6 +92,7 @@ abstract class Strings {
   static const buttonGotIt = 'Got it';
   static const buttonCancel = 'Cancel';
   static const buttonUnderstand = 'I understand';
+  static const buttonTryAgain = 'Try again';
 
   // Coffee/ticket card
   static const emptyCoffeeCardTextTop =
@@ -260,6 +261,8 @@ abstract class Strings {
   static const moreThan = 'More than';
 
   // Errors
+  static const error = 'Error';
+
   static String unknownFilterCategory(Object category) {
     return 'Unknown filter category: $category';
   }
