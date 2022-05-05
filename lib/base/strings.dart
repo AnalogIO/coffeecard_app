@@ -241,7 +241,7 @@ abstract class Strings {
   static const yourProfileDescription =
       'These settings affect your appearance on the leaderboards.';
 
-  static const madeBy = 'Made with ❤ by Analog IO\nIT University of Copenhagen';
+  static const madeBy = 'Made with ❤ by AnalogIO\nIT University of Copenhagen';
   static const userID = 'User ID';
 
   // Time since utility
