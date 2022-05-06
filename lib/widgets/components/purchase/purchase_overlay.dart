@@ -5,7 +5,6 @@ import 'package:coffeecard/cubits/tickets/tickets_cubit.dart';
 import 'package:coffeecard/models/purchase/payment.dart';
 import 'package:coffeecard/models/ticket/product.dart';
 import 'package:coffeecard/payment/payment_handler.dart';
-import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/widgets/components/purchase/purchase_process.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -38,9 +37,9 @@ Future<Payment?> showPurchaseOverlay({
                   Navigator.pop<Payment>(context, payment);
 
                   //TODO Consider if these calls should be moved elsewhere, e.g. inside the purchase cubit
-                  final ticketCubit = sl.get<TicketsCubit>();
-                  final updateTicketsRequest = ticketCubit.getTickets();
-                  final receiptCubit = sl.get<ReceiptCubit>();
+                  final ticketCubit = context.read<TicketsCubit>();
+                  final updateTicketsRequest = ticketCubit.refreshTickets();
+                  final receiptCubit = context.read<ReceiptCubit>();
                   final updateReceiptsRequest = receiptCubit.fetchReceipts();
 
                   await updateTicketsRequest;

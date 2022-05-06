@@ -4,11 +4,11 @@ import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/tickets/tickets_cubit.dart';
-import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/widgets/components/card.dart';
 import 'package:coffeecard/widgets/components/tickets/bottom_modal_sheet_helper.dart';
 import 'package:coffeecard/widgets/components/tickets/slide_to_act.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 Future<T?> showSwipeTicketConfirm<T>({
   required BuildContext context,
@@ -20,6 +20,7 @@ Future<T?> showSwipeTicketConfirm<T>({
     _HeroDialogRoute(
       builder: (_) {
         return _ModalContent(
+          context: context,
           productName: productName,
           amountOwned: amountOwned,
           productId: productId,
@@ -31,11 +32,13 @@ Future<T?> showSwipeTicketConfirm<T>({
 
 class _ModalContent extends StatefulWidget {
   const _ModalContent({
+    required this.context,
     required this.productName,
     required this.amountOwned,
     required this.productId,
   });
 
+  final BuildContext context;
   final String productName;
   final int amountOwned;
   final int productId;
@@ -127,7 +130,9 @@ class _ModalContentState extends State<_ModalContent>
                       onSubmit: () {
                         // Disable hero animation in the reverse direction
                         setState(() => _heroTag = -1);
-                        sl.get<TicketsCubit>().useTicket(widget.productId);
+                        widget.context
+                            .read<TicketsCubit>()
+                            .useTicket(widget.productId);
                       },
                     ),
                   ),
