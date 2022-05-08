@@ -66,6 +66,9 @@ dependencies:
   # rest
   http: 0.13.4
 
+  # brightness
+  screen_brightness: 0.2.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
