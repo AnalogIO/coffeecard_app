@@ -1,6 +1,7 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/cubits/environment/environment_cubit.dart';
 import 'package:coffeecard/cubits/tickets/tickets_cubit.dart';
+import 'package:coffeecard/cubits/user/user_cubit.dart';
 import 'package:coffeecard/errors/match_case_incomplete_exception.dart';
 import 'package:coffeecard/widgets/components/helpers/shimmer_builder.dart';
 import 'package:coffeecard/widgets/components/loading_overlay.dart';
@@ -27,6 +28,10 @@ class TicketSection extends StatelessWidget {
               // TODO consider using a nicer loading indicator
               LoadingOverlay.of(context).show();
             } else if (state is TicketUsed) {
+              // Refresh or load user info (for updated rank stats)
+              // (also refreshes leaderboard)
+              context.read<UserCubit>().fetchUserDetails();
+
               final envState = context.read<EnvironmentCubit>().state;
               LoadingOverlay.of(context).hide();
               ReceiptOverlay.of(context).show(

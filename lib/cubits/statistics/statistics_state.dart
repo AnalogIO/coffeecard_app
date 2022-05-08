@@ -6,25 +6,33 @@ abstract class StatisticsState extends Equatable {
   const StatisticsState();
 
   @override
-  List<Object?> get props => throw UnimplementedError;
+  List<Object?> get props => [];
 }
 
 class StatisticsInitial extends StatisticsState {}
 
-class StatisticsLoading extends StatisticsState {
-  const StatisticsLoading({required this.filterBy});
+abstract class StatisticsStateWithFilterCategory extends StatisticsState {
+  const StatisticsStateWithFilterCategory(this.filterBy);
   final StatisticsFilterCategory filterBy;
 
   @override
   List<Object?> get props => [filterBy];
 }
 
-class StatisticsLoaded extends StatisticsState {
+class StatisticsLoading extends StatisticsStateWithFilterCategory {
+  const StatisticsLoading({required StatisticsFilterCategory filterBy})
+      : super(filterBy);
+
+  @override
+  List<Object?> get props => [filterBy];
+}
+
+class StatisticsLoaded extends StatisticsStateWithFilterCategory {
   const StatisticsLoaded({
-    required this.filterBy,
     required this.leaderboard,
-  });
-  final StatisticsFilterCategory filterBy;
+    required StatisticsFilterCategory filterBy,
+  }) : super(filterBy);
+
   final List<LeaderboardUser> leaderboard;
 
   @override
