@@ -63,6 +63,33 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  final _bottomNavAppFlows = <AppFlow>[
+    AppFlow(
+      navigatorKey: _pages[0].navigatorKey,
+      initialRoute: TicketsPage.routeWith(
+        scrollController: _pages[0].scrollController,
+      ),
+    ),
+    AppFlow(
+      navigatorKey: _pages[1].navigatorKey,
+      initialRoute: ReceiptsPage.routeWith(
+        scrollController: _pages[1].scrollController,
+      ),
+    ),
+    AppFlow(
+      navigatorKey: _pages[2].navigatorKey,
+      initialRoute: StatsPage.routeWith(
+        scrollController: _pages[2].scrollController,
+      ),
+    ),
+    AppFlow(
+      navigatorKey: _pages[3].navigatorKey,
+      initialRoute: SettingsPage.routeWith(
+        scrollController: _pages[3].scrollController,
+      ),
+    ),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -151,33 +178,6 @@ final _pages = <PageSettings>[
     bottomNavigationBarItem: const BottomNavigationBarItem(
       icon: Icon(Icons.settings),
       label: Strings.settingsNavTitle,
-    ),
-  ),
-];
-
-final _bottomNavAppFlows = <AppFlow>[
-  AppFlow(
-    navigatorKey: _pages[0].navigatorKey,
-    initialRoute: TicketsPage.routeWith(
-      scrollController: _pages[0].scrollController,
-    ),
-  ),
-  AppFlow(
-    navigatorKey: _pages[1].navigatorKey,
-    initialRoute: ReceiptsPage.routeWith(
-      scrollController: _pages[1].scrollController,
-    ),
-  ),
-  AppFlow(
-    navigatorKey: _pages[2].navigatorKey,
-    initialRoute: StatsPage.routeWith(
-      scrollController: _pages[2].scrollController,
-    ),
-  ),
-  AppFlow(
-    navigatorKey: _pages[3].navigatorKey,
-    initialRoute: SettingsPage.routeWith(
-      scrollController: _pages[3].scrollController,
     ),
   ),
 ];
