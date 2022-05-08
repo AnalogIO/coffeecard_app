@@ -1,4 +1,6 @@
 import 'package:coffeecard/base/strings.dart';
+import 'package:coffeecard/data/repositories/shared/account_repository.dart';
+import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/utils/debouncer.dart';
 import 'package:coffeecard/utils/email_utils.dart';
 import 'package:coffeecard/widgets/components/continue_button.dart';
@@ -9,13 +11,13 @@ class EmailButtonGroup extends StatefulWidget {
   final Function(BuildContext context, String email) onSubmit;
   final String? initialValue;
   final String? hint;
-  final bool preventDuplicate;
+  final bool preventIdenticalInitialValue;
 
   const EmailButtonGroup({
     required this.onSubmit,
     this.initialValue,
     this.hint,
-    this.preventDuplicate = false,
+    this.preventIdenticalInitialValue = false,
   });
   @override
   State<EmailButtonGroup> createState() => _EmailButtonGroupState();
@@ -48,18 +50,24 @@ class _EmailButtonGroupState extends State<EmailButtonGroup> {
       error = Strings.registerEmailEmpty;
     } else if (!emailIsValid(_email)) {
       error = Strings.registerEmailInvalid;
-    } else if (widget.preventDuplicate &&
+    } else if (widget.preventIdenticalInitialValue &&
         widget.initialValue != null &&
         _email == widget.initialValue) {
       error = Strings.changeEmailCannotBeSame;
     } else {
-      final isDuplicate = await emailIsDuplicate(_email);
+      final either = await sl.get<AccountRepository>().emailExists(_email);
+
       if (!mounted) return; // Needs to be checked after an async call.
-      if (isDuplicate) {
-        _showError = true;
-        error = Strings.registerEmailInUseSuffix(email);
+
+      if (either.isRight) {
+        if (either.right) {
+          _showError = true;
+          error = Strings.registerEmailInUseSuffix(email);
+        } else {
+          error = null;
+        }
       } else {
-        error = null;
+        error = either.left.message;
       }
     }
 

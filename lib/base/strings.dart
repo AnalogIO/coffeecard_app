@@ -215,6 +215,11 @@ abstract class Strings {
   static const changePasscode = 'Change passcode';
   static const changeEmailCannotBeSame =
       'New email cannot be the same as the old one';
+  static const changeEmailLogInAgain =
+      'After changing your email, you must log in again.';
+  static const changeEmailSuccess = 'Email changed!';
+  static const changeEmailLogInAgainNewEmail =
+      'Please log in again with your updated email.';
 
   static const forgotPasscode = 'Forgot passcode';
   static const forgotPasscodeLinkSent = 'Passcode reset link sent';

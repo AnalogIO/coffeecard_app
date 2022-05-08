@@ -53,6 +53,43 @@
         ]
       }
     },
+    "/api/v2/account/email-exists": {
+      "post": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "Check if a given email is in use",
+        "operationId": "Account_EmailExists",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The email that should be checked",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmailExistsRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "Successful request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmailExistsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid credentials"
+          }
+        }
+      }
+    },
     "/api/v2/appconfig": {
       "get": {
         "tags": [
@@ -135,20 +172,26 @@
         "operationId": "Purchases_GetAllPurchases",
         "responses": {
           "200": {
-            "description": "Successful request",
+            "description": "All purchases",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/SinglePurchaseResponse"
+                    "$ref": "#/components/schemas/SimplePurchaseResponse"
                   }
                 }
               }
             }
           },
+          "204": {
+            "description": "No purchases"
+          },
           "401": {
             "description": "Invalid credentials"
+          },
+          "default": {
+            "description": ""
           }
         },
         "security": [
@@ -178,7 +221,7 @@
         },
         "responses": {
           "200": {
-            "description": "Purchase with payment details",
+            "description": "Purchased initiated",
             "content": {
               "application/json": {
                 "schema": {
@@ -338,6 +381,43 @@
           }
         }
       },
+      "EmailExistsResponse": {
+        "type": "object",
+        "description": "Contains information about an email being in use",
+        "example": {
+          "emailExists": true
+        },
+        "additionalProperties": false,
+        "required": [
+          "emailExists"
+        ],
+        "properties": {
+          "emailExists": {
+            "type": "boolean",
+            "description": "Contains information about an email being in use"
+          }
+        }
+      },
+      "EmailExistsRequest": {
+        "type": "object",
+        "description": "An email that should be checked if it already exists",
+        "example": {
+          "email": "johndoe@mail.com"
+        },
+        "additionalProperties": false,
+        "required": [
+          "email"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "Email",
+            "format": "email",
+            "minLength": 1,
+            "example": "johndoe@mail.com"
+          }
+        }
+      },
       "AppConfig": {
         "type": "object",
         "description": "App Configuration",
@@ -434,6 +514,77 @@
           }
         }
       },
+      "SimplePurchaseResponse": {
+        "type": "object",
+        "description": "Represents a purchase",
+        "example": {
+          "id": 22,
+          "dateCreated": "2022-01-09T21:03:52.2283208Z",
+          "productId": 1,
+          "totalAmount": 300,
+          "purchaseStatus": "Completed"
+        },
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "dateCreated",
+          "productId",
+          "totalAmount",
+          "purchaseStatus"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Id of purchase",
+            "format": "int32",
+            "example": 1371
+          },
+          "dateCreated": {
+            "type": "string",
+            "description": "Date time for purchase in Utc format",
+            "format": "date-time",
+            "minLength": 1,
+            "example": "2022-01-09T21:03:52.2283208Z"
+          },
+          "productId": {
+            "type": "integer",
+            "description": "Id of purchased product",
+            "format": "int32",
+            "example": 1
+          },
+          "totalAmount": {
+            "type": "integer",
+            "description": "Total purchase price in Danish Kroner (kr)",
+            "format": "int32",
+            "example": 300
+          },
+          "purchaseStatus": {
+            "description": "Status of the purchase",
+            "example": "Completed",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/PurchaseStatus"
+              }
+            ]
+          }
+        }
+      },
+      "PurchaseStatus": {
+        "type": "string",
+        "description": "Status of purchase",
+        "x-enumNames": [
+          "Completed",
+          "Cancelled",
+          "PendingPayment",
+          "Refunded"
+        ],
+        "enum": [
+          "Completed",
+          "Cancelled",
+          "PendingPayment",
+          "Refunded"
+        ]
+      },
       "SinglePurchaseResponse": {
         "type": "object",
         "description": "Represents a purchase",
@@ -503,22 +654,6 @@
             ]
           }
         }
-      },
-      "PurchaseStatus": {
-        "type": "string",
-        "description": "Status of purchase",
-        "x-enumNames": [
-          "Completed",
-          "Cancelled",
-          "PendingPayment",
-          "Refunded"
-        ],
-        "enum": [
-          "Completed",
-          "Cancelled",
-          "PendingPayment",
-          "Refunded"
-        ]
       },
       "PaymentDetails": {
         "type": "object",

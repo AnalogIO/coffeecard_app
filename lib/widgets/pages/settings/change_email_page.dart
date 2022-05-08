@@ -32,15 +32,15 @@ class _ChangeEmailPageState extends State<ChangeEmailPage> {
         padding: const EdgeInsets.all(16),
         child: EmailButtonGroup(
           initialValue: widget.currentEmail,
-          preventDuplicate: true,
-          hint: 'After changing your email, you must log in again.',
+          preventIdenticalInitialValue: true,
+          hint: Strings.changeEmailLogInAgain,
           onSubmit: (context, email) async {
             context.read<UserCubit>().setUserEmail(email);
             await appDialog(
               context: context,
-              title: 'Email changed!',
+              title: Strings.changeEmailSuccess,
               children: [
-                const Text('Please log in again with your updated email.'),
+                const Text(Strings.changeEmailLogInAgainNewEmail),
               ],
               actions: [
                 TextButton(
