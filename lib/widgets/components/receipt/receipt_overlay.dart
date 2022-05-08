@@ -6,6 +6,7 @@ import 'package:coffeecard/utils/responsive.dart';
 import 'package:coffeecard/widgets/components/receipt/receipt_card.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:screen_brightness/screen_brightness.dart';
 
 class ReceiptOverlay {
   //TODO see if a more generic version can be made that supports both the loading overlay and this one
@@ -15,12 +16,13 @@ class ReceiptOverlay {
     Navigator.of(_context).pop();
   }
 
-  void show({
+  Future<void> show({
     required Receipt receipt,
     required bool isTestEnvironment,
     String? optionalText,
-  }) {
-    showDialog(
+  }) async {
+    await ScreenBrightness().setScreenBrightness(1);
+    await showDialog(
       context: _context,
       barrierColor: AppColor.scrim,
       builder: (context) {
@@ -49,6 +51,7 @@ class ReceiptOverlay {
         );
       },
     );
+    await ScreenBrightness().resetScreenBrightness();
   }
 
   ReceiptOverlay.__create(this._context);
