@@ -15,29 +15,25 @@ class StatisticsCubit extends Cubit<StatisticsState> {
   Future<void> fetchLeaderboards({
     StatisticsFilterCategory category = defaultFilterCategory,
   }) async {
-    assert(state is! StatisticsLoading); // Shouldn't be true
     emit(StatisticsLoading(filterBy: category));
+    refreshLeaderboards();
+  }
 
+  Future<void> refreshLeaderboards() async {
+    final state = this.state; // for promotion purposes
+    assert(
+      state is StatisticsStateWithFilterCategory,
+      'Attempted to fetch leaderboard with no filter category present',
+    );
+
+    if (state is! StatisticsStateWithFilterCategory) return;
+    final category = state.filterBy;
     final either = await _repo.getLeaderboard(category);
 
     if (either.isRight) {
       emit(StatisticsLoaded(filterBy: category, leaderboard: either.right));
     } else {
       emit(StatisticsError(either.left.message));
-    }
-  }
-
-  /// Refresh the leaderboard without changing the filter category.
-  ///
-  /// If the leaderboard is not loaded yet, or an error is present,
-  /// load the leaderboard with the default filter category.
-  Future<void> refreshLeaderboards() async {
-    final state = this.state;
-    if (state is! StatisticsStateWithFilterCategory) {
-      return fetchLeaderboards();
-    }
-    if (state is StatisticsLoaded) {
-      return fetchLeaderboards(category: state.filterBy);
     }
   }
 }

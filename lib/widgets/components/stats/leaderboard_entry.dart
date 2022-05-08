@@ -1,6 +1,7 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/widgets/components/helpers/shimmer_builder.dart';
 import 'package:coffeecard/widgets/components/list_entry.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -10,14 +11,21 @@ class LeaderboardEntry extends StatelessWidget {
   final int score;
   final int rank;
   final bool highlight;
+  final bool isPlaceholder;
 
-  const LeaderboardEntry(
-    this.name,
-    this.score,
-    this.rank, {
+  const LeaderboardEntry({
+    required this.name,
+    required this.score,
+    required this.rank,
     required this.highlight,
-    Key? key,
-  }) : super(key: key);
+  }) : isPlaceholder = false;
+
+  const LeaderboardEntry.placeholder()
+      : name = 'placeholder',
+        score = 0,
+        rank = 10,
+        highlight = false,
+        isPlaceholder = true;
 
   String get _scoreText =>
       '$score ${score != 1 ? Strings.statCups : Strings.statCup}';
@@ -26,23 +34,45 @@ class LeaderboardEntry extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListEntry(
       backgroundColor: highlight ? AppColor.slightlyHighlighted : null,
-      leftWidget: Row(
-        children: [
-          _LeaderboardRankMedal(rank),
-          const Gap(16),
-          const CircleAvatar(),
-          const Gap(10),
-          Flexible(
-            child: Text(
-              name,
-              style: AppTextStyle.textField,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-        ],
+      leftWidget: ShimmerBuilder(
+        showShimmer: isPlaceholder,
+        builder: (context, colorIfShimmer) {
+          return Row(
+            children: [
+              Container(
+                color: colorIfShimmer,
+                child: _LeaderboardRankMedal(rank),
+              ),
+              const Gap(16),
+              Container(
+                color: colorIfShimmer,
+                child: const CircleAvatar(),
+              ),
+              const Gap(10),
+              Flexible(
+                child: Container(
+                  color: colorIfShimmer,
+                  child: Text(
+                    name,
+                    style: AppTextStyle.textField,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
       ),
-      rightWidget: Text(_scoreText),
+      rightWidget: ShimmerBuilder(
+        showShimmer: isPlaceholder,
+        builder: (context, colorIfShimmer) {
+          return Container(
+            color: colorIfShimmer,
+            child: Text(_scoreText),
+          );
+        },
+      ),
     );
   }
 }
