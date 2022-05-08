@@ -20,7 +20,7 @@ class NameBody extends StatefulWidget {
 
 class _NameBodyState extends State<NameBody> {
   final _controller = TextEditingController();
-  String get name => _controller.text;
+  String get name => _controller.text.trim();
 
   bool _showError = false;
   String? _error;
@@ -37,22 +37,21 @@ class _NameBodyState extends State<NameBody> {
     super.initState();
   }
 
-  Future<void> _validateName(String name) async {
+  void _validateName() {
     setState(() => _error = name.isEmpty ? Strings.registerNameEmpty : null);
   }
 
   Future<void> _submit(BuildContext context) async {
+    _showError = true;
+    _validateName();
+    if (_error != null) return;
+
+    // If custom onSubmit is given, run it & ignore rest of code
     if (widget.onSubmit != null) {
-      final text = _controller.text;
-      _validateName(text);
-      widget.onSubmit!(context, text);
+      widget.onSubmit!(context, name);
       return;
     }
 
-    _showError = true;
-    await _validateName(name.trim());
-    if (!mounted) return;
-    if (_error != null) return;
     LoadingOverlay.of(context).show();
     // Delay to allow keyboard to disappear before showing dialog
     await Future.delayed(const Duration(milliseconds: 250));
@@ -154,7 +153,7 @@ class _NameBodyState extends State<NameBody> {
           label: Strings.registerNameLabel,
           autofocus: true,
           error: _showError ? _error : null,
-          onChanged: () => _validateName(_controller.text),
+          onChanged: _validateName,
           onEditingComplete: () => _submit(context),
           controller: _controller,
         ),
