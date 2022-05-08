@@ -3,6 +3,8 @@ import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
 import 'package:coffeecard/cubits/user/user_cubit.dart';
+import 'package:coffeecard/data/repositories/shiftplanning/opening_hours_repository.dart';
+import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/widgets/components/dialog.dart';
 import 'package:coffeecard/widgets/components/helpers/shimmer_builder.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
@@ -106,11 +108,18 @@ class SettingsPage extends StatelessWidget {
                   ),
                 ],
               ),
-              const SettingsGroup(
+              SettingsGroup(
                 title: Strings.settingsGroupAbout,
                 listItems: [
-                  SettingListEntry(
+                  const SettingListEntry(
                     name: Strings.faq,
+                  ),
+                  SettingListEntry(
+                    name: Strings.openingHours,
+                    onTap: () {},
+                    valueWidget: Text(
+                      sl.get<OpeningHoursRepository>().getOpeningHours(),
+                    ),
                   ),
                 ],
               ),

@@ -22,4 +22,22 @@ class OpeningHoursRepository {
       throw Left(ApiError(response.error.toString()));
     }
   }
+
+  String getOpeningHours() {
+    //FIXME: fetch data when available
+    const String normalOperation = '8 - 16';
+    const String closed = 'Closed';
+
+    final Map<int, String> openingHours = {
+      DateTime.monday: 'Mondays: $normalOperation',
+      DateTime.tuesday: 'Tuesdays: $normalOperation',
+      DateTime.wednesday: 'Wednesdays: $normalOperation',
+      DateTime.thursday: 'Thursdays: $normalOperation',
+      DateTime.friday: 'Fridays: 8 - 14',
+      DateTime.saturday: 'Saturdays: $closed',
+      DateTime.sunday: 'Sundays: $closed',
+    };
+
+    return openingHours[DateTime.now().weekday]!;
+  }
 }
