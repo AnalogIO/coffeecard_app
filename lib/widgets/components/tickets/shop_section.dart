@@ -1,6 +1,7 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/widgets/components/helpers/grid.dart';
 import 'package:coffeecard/widgets/components/tickets/shop_card.dart';
+import 'package:coffeecard/widgets/pages/tickets/buy_single_drink_page.dart';
 import 'package:coffeecard/widgets/pages/tickets/buy_tickets_page.dart';
 import 'package:coffeecard/widgets/pages/tickets/redeem_voucher_page.dart';
 import 'package:flutter/material.dart';
@@ -22,10 +23,11 @@ class ShopSection extends StatelessWidget {
               icon: Icons.confirmation_num,
               onTapped: (_) => Navigator.push(context, BuyTicketsPage.route),
             ),
-            const ShopCard(
+            ShopCard(
               title: Strings.buyOneDrink,
               icon: Icons.coffee,
-              type: ShopCardType.comingSoon,
+              onTapped: (_) =>
+                  Navigator.push(context, BuySingleDrinkPage.route),
             ),
             const ShopCard(
               title: Strings.buyOther,

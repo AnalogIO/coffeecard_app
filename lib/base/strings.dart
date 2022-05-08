@@ -55,7 +55,8 @@ abstract class Strings {
       'You will need to verify your email address later.';
   static const registerEmailEmpty = 'Enter an email';
   static const registerEmailInvalid = 'Enter a valid email';
-  static const registerEmailInUseSuffix = 'is already in use';
+  static String registerEmailInUseSuffix(String email) =>
+      '$email is already in use';
 
   static const registerPasscodeTitle = 'Enter a passcode';
   static const registerPasscodeLabel = 'Passcode';
@@ -114,8 +115,12 @@ abstract class Strings {
   static const confirmPurchase = 'Confirm purchase';
   static const tapHereToCancel = 'Tap here to cancel';
 
-  static String paymentConfirmationTop(int amount, String title) {
+  static String paymentConfirmationTopTickets(int amount, String title) {
     return "You're buying $amount $title tickets";
+  }
+
+  static String paymentConfirmationTopSingle(int amount, String title) {
+    return "You're buying and swiping $amount $title";
   }
 
   static String paymentConfirmationBottom(int price) {
@@ -214,6 +219,11 @@ abstract class Strings {
   static const changePasscode = 'Change passcode';
   static const changeEmailCannotBeSame =
       'New email cannot be the same as the old one';
+  static const changeEmailLogInAgain =
+      'After changing your email, you must log in again.';
+  static const changeEmailSuccess = 'Email changed!';
+  static const changeEmailLogInAgainNewEmail =
+      'Please log in again with your updated email.';
 
   static const forgotPasscode = 'Forgot passcode';
   static const forgotPasscodeLinkSent = 'Passcode reset link sent';

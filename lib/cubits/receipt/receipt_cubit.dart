@@ -26,6 +26,7 @@ class ReceiptCubit extends Cubit<ReceiptState> {
     } else {
       emit(
         state.copyWith(
+          error: either.left.message,
           status: ReceiptStatus.failure,
         ),
       );

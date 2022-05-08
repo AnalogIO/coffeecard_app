@@ -49,11 +49,6 @@ class AccountRepository {
     }
   }
 
-  Future<Either<ApiError, bool>> emailExists(String email) async {
-    // TODO implement emailExists
-    throw UnimplementedError();
-  }
-
   /// Returns the user token or throws an error.
   Future<Either<UnauthorizedError, AuthenticatedUser>> login(
     String email,
@@ -125,6 +120,18 @@ class AccountRepository {
     final response = await _apiV2.apiV2AccountDelete();
     if (response.isSuccessful) {
       return const Right(null);
+    } else {
+      _logger.e(Strings.formatApiError(response));
+      return Left(ApiError(response.error.toString()));
+    }
+  }
+
+  Future<Either<ApiError, bool>> emailExists(String email) async {
+    final response = await _apiV2.apiV2AccountEmailExistsPost(
+      body: EmailExistsRequest(email: email),
+    );
+    if (response.isSuccessful) {
+      return Right(response.body!.emailExists!);
     } else {
       _logger.e(Strings.formatApiError(response));
       return Left(ApiError(response.error.toString()));

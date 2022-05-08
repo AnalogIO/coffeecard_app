@@ -11,9 +11,13 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 class BuyTicketBottomModalSheet extends StatelessWidget {
-  const BuyTicketBottomModalSheet({required this.product});
+  const BuyTicketBottomModalSheet({
+    required this.product,
+    required this.description,
+  });
 
   final Product product;
+  final String description;
 
   @override
   Widget build(BuildContext context) {
@@ -33,16 +37,17 @@ class BuyTicketBottomModalSheet extends StatelessWidget {
             ),
           ],
         ),
-        _ModalContent(product: product),
+        _ModalContent(product: product, description: description),
       ],
     );
   }
 }
 
 class _ModalContent extends StatelessWidget {
-  const _ModalContent({required this.product});
+  const _ModalContent({required this.product, required this.description});
 
   final Product product;
+  final String description;
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +60,7 @@ class _ModalContent extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                Strings.paymentConfirmationTop(product.amount, product.name),
+                description,
                 style: AppTextStyle.explainerDark,
               ),
               const Gap(4),

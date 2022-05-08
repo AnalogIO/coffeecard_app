@@ -5,7 +5,7 @@ import 'package:coffeecard/data/repositories/v1/voucher_repository.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/widgets/components/continue_button.dart';
 import 'package:coffeecard/widgets/components/dialog.dart';
-import 'package:coffeecard/widgets/components/forms/text_field.dart';
+import 'package:coffeecard/widgets/components/forms/app_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

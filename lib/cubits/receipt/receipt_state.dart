@@ -29,11 +29,13 @@ class ReceiptState extends Equatable {
   final ReceiptFilterCategory filterBy;
   final List<Receipt> receipts;
   final List<Receipt> filteredReceipts;
+  final String? error;
   ReceiptState({
     this.status = ReceiptStatus.initial,
     this.filterBy = ReceiptFilterCategory.all,
     List<Receipt>? receipts,
     List<Receipt>? filteredReceipts,
+    this.error,
   })  : receipts = receipts ?? [],
         filteredReceipts = filteredReceipts ?? [];
 
@@ -45,12 +47,14 @@ class ReceiptState extends Equatable {
     ReceiptFilterCategory? filterBy,
     List<Receipt>? receipts,
     List<Receipt>? filteredReceipts,
+    String? error,
   }) {
     return ReceiptState(
       status: status ?? this.status,
       filterBy: filterBy ?? this.filterBy,
       receipts: receipts ?? this.receipts,
       filteredReceipts: filteredReceipts ?? this.filteredReceipts,
+      error: error ?? this.error,
     );
   }
 }

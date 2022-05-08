@@ -1,10 +1,10 @@
 class ApiError implements Exception {
-  final String errorMessage;
+  final String message;
 
-  ApiError(this.errorMessage);
+  ApiError(this.message);
 
   @override
   String toString() {
-    return 'ApiError{errorMessage: $errorMessage}';
+    return 'ApiError{message: $message}';
   }
 }

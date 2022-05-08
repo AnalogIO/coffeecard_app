@@ -2,6 +2,7 @@ import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/receipt/receipt_cubit.dart';
 import 'package:coffeecard/models/receipts/receipt.dart';
+import 'package:coffeecard/widgets/components/error_section.dart';
 import 'package:coffeecard/widgets/components/receipt/receipt_list_entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,26 +17,34 @@ class ReceiptsListView extends StatelessWidget {
     return Expanded(
       child: BlocBuilder<ReceiptCubit, ReceiptState>(
         builder: (context, state) {
-          if (state.status.isInitial) {
-            return _ReceiptsPlaceholder();
+          switch (state.status) {
+            case ReceiptStatus.initial:
+              return _ReceiptsPlaceholder();
+            case ReceiptStatus.success:
+              return RefreshIndicator(
+                displacement: 24,
+                onRefresh: context.read<ReceiptCubit>().fetchReceipts,
+                child: state.filteredReceipts.isEmpty
+                    ? _ReceiptsEmptyIndicator(
+                        hasNoReceipts: state.receipts.isEmpty,
+                        filterCategory: state.filterBy,
+                      )
+                    : ListView.builder(
+                        controller: scrollController,
+                        itemCount: state.filteredReceipts.length,
+                        itemBuilder: (_, index) {
+                          final r = state.filteredReceipts[index];
+                          return ReceiptListEntry(receipt: r);
+                        },
+                      ),
+              );
+            case ReceiptStatus.failure:
+              return ErrorSection(
+                center: true,
+                error: state.error!,
+                retry: context.read<ReceiptCubit>().fetchReceipts,
+              );
           }
-          return RefreshIndicator(
-            displacement: 24,
-            onRefresh: context.read<ReceiptCubit>().fetchReceipts,
-            child: state.filteredReceipts.isEmpty
-                ? _ReceiptsEmptyIndicator(
-                    hasNoReceipts: state.receipts.isEmpty,
-                    filterCategory: state.filterBy,
-                  )
-                : ListView.builder(
-                    controller: scrollController,
-                    itemCount: state.filteredReceipts.length,
-                    itemBuilder: (_, index) {
-                      final r = state.filteredReceipts[index];
-                      return ReceiptListEntry(receipt: r);
-                    },
-                  ),
-          );
         },
       ),
     );

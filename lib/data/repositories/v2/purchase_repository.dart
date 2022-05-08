@@ -31,19 +31,6 @@ class PurchaseRepository {
     }
   }
 
-  /// Get all user's purchases
-  Future<Either<ApiError, List<SinglePurchaseResponse>>>
-      getAllPurchases() async {
-    final response = await _api.apiV2PurchasesGet();
-
-    if (response.isSuccessful) {
-      return Right(response.body!);
-    } else {
-      _logger.e(Strings.formatApiError(response));
-      return Left(ApiError(response.error.toString()));
-    }
-  }
-
   /// Get a purchase by its purchase id
   Future<Either<ApiError, SinglePurchaseResponse>> getPurchase(
     int purchaseId,

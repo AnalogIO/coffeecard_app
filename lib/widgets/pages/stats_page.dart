@@ -19,22 +19,28 @@ class StatsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<void> _refresh() async {
-      context.read<UserCubit>().fetchUserDetails();
-      context.read<StatisticsCubit>().fetchLeaderboards();
+    Future<void> _refresh({required bool loadUserData}) async {
+      await Future.wait([
+        if (loadUserData) context.read<UserCubit>().fetchUserDetails(),
+        context.read<StatisticsCubit>().refreshLeaderboards(),
+      ]);
     }
 
-    return AppScaffold.withTitle(
-      title: Strings.statsPageTitle,
-      body: RefreshIndicator(
-        displacement: 24,
-        onRefresh: _refresh,
-        child: ListView(
-          controller: scrollController,
-          children: const [
-            StatsSection(),
-            LeaderboardSection(),
-          ],
+    return BlocListener<UserCubit, UserState>(
+      listenWhen: (_, current) => current is UserLoaded,
+      listener: (context, state) => _refresh(loadUserData: false),
+      child: AppScaffold.withTitle(
+        title: Strings.statsPageTitle,
+        body: RefreshIndicator(
+          displacement: 24,
+          onRefresh: () => _refresh(loadUserData: true),
+          child: ListView(
+            controller: scrollController,
+            children: const [
+              StatsSection(),
+              LeaderboardSection(),
+            ],
+          ),
         ),
       ),
     );

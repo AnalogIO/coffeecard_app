@@ -37,7 +37,7 @@ class PurchaseCubit extends Cubit<PurchaseState> {
           emit(PurchasePaymentRejected(payment));
         }
       } else {
-        emit(PurchaseError(either.left.errorMessage));
+        emit(PurchaseError(either.left.message));
       }
     }
   }
@@ -70,7 +70,7 @@ class PurchaseCubit extends Cubit<PurchaseState> {
           //TODO Consider if more error handling is needed
         }
       } else {
-        emit(PurchaseError(either.left.errorMessage));
+        emit(PurchaseError(either.left.message));
       }
     }
   }
