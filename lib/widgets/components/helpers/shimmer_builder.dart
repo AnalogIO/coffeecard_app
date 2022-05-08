@@ -8,7 +8,8 @@ class ShimmerBuilder extends StatelessWidget {
 
   const ShimmerBuilder({required this.showShimmer, required this.builder});
 
-  Color get _colorIfShimmer => showShimmer ? Colors.black : Colors.transparent;
+  Color get _colorIfShimmer =>
+      showShimmer ? AppColor.shimmerBackground : Colors.transparent;
 
   @override
   Widget build(BuildContext context) {
