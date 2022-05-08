@@ -25,7 +25,8 @@ class SettingsPage extends StatelessWidget {
         builder: (_) => SettingsPage(scrollController: scrollController),
       );
 
-  /// `null` if `state is! Userloaded`, otherwise `callback(UserLoaded state)`.
+  // For setting list entries that shouldn't
+  // be tappable while user data is loading.
   void Function()? _ifLoaded(
     UserState state,
     void Function(UserLoaded) callback,
