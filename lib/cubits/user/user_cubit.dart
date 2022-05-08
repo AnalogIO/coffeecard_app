@@ -17,7 +17,10 @@ class UserCubit extends Cubit<UserState> {
 
   Future<void> fetchUserDetails() async {
     emit(UserLoading());
+    refreshUserDetails();
+  }
 
+  Future<void> refreshUserDetails() async {
     final either = await _accountRepository.getUser();
 
     if (either.isRight) {

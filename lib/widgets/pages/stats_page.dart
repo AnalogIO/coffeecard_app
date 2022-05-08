@@ -22,7 +22,7 @@ class StatsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     Future<void> refresh({required bool loadUserData}) async {
       await Future.wait([
-        if (loadUserData) context.read<UserCubit>().fetchUserDetails(),
+        if (loadUserData) context.read<UserCubit>().refreshUserDetails(),
         context.read<StatisticsCubit>().refreshLeaderboards(),
       ]);
     }
