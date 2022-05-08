@@ -1,7 +1,7 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/cubits/register/register_cubit.dart';
 import 'package:coffeecard/utils/fast_slide_transition.dart';
-import 'package:coffeecard/widgets/components/entry/register/email_body.dart';
+import 'package:coffeecard/widgets/components/email_button_group.dart';
 import 'package:coffeecard/widgets/pages/register/register_page_base.dart';
 import 'package:coffeecard/widgets/pages/register/register_page_passcode.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +17,7 @@ class RegisterPageEmail extends StatelessWidget {
   Widget build(BuildContext context) {
     return RegisterPageBase(
       sectionTitle: Strings.registerEmailTitle,
-      body: EmailBody(
+      body: EmailButtonGroup(
         hint: Strings.registerEmailHint,
         onSubmit: (context, email) {
           context.read<RegisterCubit>().setEmail(email);
