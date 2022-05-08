@@ -2,9 +2,8 @@ import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
+import 'package:coffeecard/cubits/opening_hours/opening_hours_cubit.dart';
 import 'package:coffeecard/cubits/user/user_cubit.dart';
-import 'package:coffeecard/data/repositories/shiftplanning/opening_hours_repository.dart';
-import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/widgets/components/dialog.dart';
 import 'package:coffeecard/widgets/components/helpers/shimmer_builder.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
@@ -38,107 +37,126 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final openingHoursState = context.watch<OpeningHoursCubit>().state;
+    final userState = context.watch<UserCubit>().state;
+
     return AppScaffold.withTitle(
       title: Strings.settingsPageTitle,
-      body: BlocBuilder<UserCubit, UserState>(
-        buildWhen: (previous, current) => previous != current,
-        builder: (context, state) {
-          return ListView(
-            controller: scrollController,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
-                child: (state is UserLoaded)
-                    ? UserCard(
-                        name: state.user.name,
-                        occupation: state.user.programme.fullName,
-                      )
-                    : const UserCard.placeholder(),
-              ),
-              SettingsGroup(
-                title: Strings.settingsGroupAccount,
-                listItems: [
-                  SettingListEntry(
-                    name: Strings.email,
-                    valueWidget: ShimmerBuilder(
-                      showShimmer: state is! UserLoaded,
-                      builder: (context, colorIfShimmer) {
-                        return Container(
-                          color: colorIfShimmer,
-                          child: SettingDescription(
-                            text: (state is UserLoaded)
-                                ? state.user.email
-                                : 'Loading...',
-                          ),
-                        );
-                      },
-                    ),
-                    onTap: _ifLoaded(
-                      state,
-                      (st) => Navigator.push(
-                        context,
-                        ChangeEmailPage.routeWith(currentEmail: st.user.email),
+      body: ListView(
+        controller: scrollController,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
+            child: (userState is UserLoaded)
+                ? UserCard(
+                    name: userState.user.name,
+                    occupation: userState.user.programme.fullName,
+                  )
+                : const UserCard.placeholder(),
+          ),
+          SettingsGroup(
+            title: Strings.settingsGroupAccount,
+            listItems: [
+              SettingListEntry(
+                name: Strings.email,
+                valueWidget: ShimmerBuilder(
+                  showShimmer: userState is! UserLoaded,
+                  builder: (context, colorIfShimmer) {
+                    return Container(
+                      color: colorIfShimmer,
+                      child: Text(
+                        (userState is UserLoaded)
+                            ? userState.user.email
+                            : 'Loading...',
+                        style: AppTextStyle.settingValue,
                       ),
-                    ),
+                    );
+                  },
+                ),
+                onTap: _ifLoaded(
+                  userState,
+                  (st) => Navigator.push(
+                    context,
+                    ChangeEmailPage.routeWith(currentEmail: st.user.email),
                   ),
-                  SettingListEntry(
-                    name: Strings.passcode,
-                    valueWidget: const SettingDescription(text: Strings.change),
-                    onTap: _ifLoaded(
-                      state,
-                      (_) => Navigator.push(
-                        context,
-                        ChangePasscodePage.route,
-                      ),
-                    ),
-                  ),
-                  SettingListEntry(
-                    name: Strings.logOut,
-                    onTap: () {
-                      context.read<AuthenticationCubit>().unauthenticated();
-                    },
-                  ),
-                  SettingListEntry(
-                    name: Strings.deleteAccount,
-                    destructive: true,
-                    onTap: _ifLoaded(
-                      state,
-                      (st) => _showDeleteAccountDialog(context, st.user.email),
-                    ),
-                  ),
-                ],
+                ),
+                // },
               ),
-              SettingsGroup(
-                title: Strings.settingsGroupAbout,
-                listItems: [
-                  const SettingListEntry(
-                    name: Strings.faq,
+              SettingListEntry(
+                name: Strings.passcode,
+                valueWidget: Text(
+                  Strings.change,
+                  style: AppTextStyle.settingValue,
+                ),
+                onTap: _ifLoaded(
+                  userState,
+                  (_) => Navigator.push(
+                    context,
+                    ChangePasscodePage.route,
                   ),
-                  SettingListEntry(
-                    name: Strings.openingHours,
-                    onTap: () {},
-                    valueWidget: Text(
-                      sl.get<OpeningHoursRepository>().getOpeningHours(),
-                    ),
-                  ),
-                ],
+                ),
               ),
-              const Gap(24),
-              Text(
-                Strings.madeBy,
-                style: AppTextStyle.explainer,
-                textAlign: TextAlign.center,
+              SettingListEntry(
+                name: Strings.logOut,
+                onTap: () {
+                  context.read<AuthenticationCubit>().unauthenticated();
+                },
               ),
-              const Gap(8),
-              Text(
-                '${Strings.userID}: ${state is UserLoaded ? state.user.id : '...'}',
-                style: AppTextStyle.explainer,
-                textAlign: TextAlign.center,
+              SettingListEntry(
+                name: Strings.deleteAccount,
+                destructive: true,
+                onTap: _ifLoaded(
+                  userState,
+                  (st) => _showDeleteAccountDialog(context, st.user.email),
+                ),
               ),
-              const Gap(24),
             ],
-          );
-        },
+          ),
+          SettingsGroup(
+            title: Strings.settingsGroupAbout,
+            listItems: [
+              const SettingListEntry(
+                name: Strings.faq,
+              ),
+              SettingListEntry(
+                name: Strings.openingHours,
+                onTap: () {},
+                valueWidget: ShimmerBuilder(
+                  showShimmer: openingHoursState is OpeningHoursLoading,
+                  builder: (context, colorIfShimmer) {
+                    final today = DateTime.now().weekday;
+                    final String text;
+                    if (openingHoursState is OpeningHoursLoaded) {
+                      text = openingHoursState.openingHours[today]!;
+                    } else if (openingHoursState is OpeningHoursLoading) {
+                      text = 'Somedays: 8-16';
+                    } else {
+                      text = '';
+                    }
+
+                    return Container(
+                      color: colorIfShimmer,
+                      child: Text(text, style: AppTextStyle.settingValue),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+          const Gap(24),
+          Text(
+            Strings.madeBy,
+            style: AppTextStyle.explainer,
+            textAlign: TextAlign.center,
+          ),
+          const Gap(8),
+          Text(
+            '${Strings.userID}: ${userState is UserLoaded ? userState.user.id : '...'}',
+            style: AppTextStyle.explainer,
+            textAlign: TextAlign.center,
+          ),
+          const Gap(24),
+        ],
       ),
     );
   }

@@ -10,12 +10,20 @@ class OpeningHoursCubit extends Cubit<OpeningHoursState> {
 
   Future<void> getOpeninghours() async {
     emit(const OpeningHoursLoading());
-    final either = await _repo.isOpen();
+    final isOpenResult = await _repo.isOpen();
+    final openingHoursResult = await _repo.getOpeningHours();
 
-    if (either.isRight) {
-      emit(OpeningHoursLoaded(isOpen: either.right));
+    if (isOpenResult.isLeft) {
+      emit(OpeningHoursError(isOpenResult.left.message));
+    } else if (openingHoursResult.isLeft) {
+      emit(OpeningHoursError(openingHoursResult.left.message));
     } else {
-      emit(OpeningHoursError(either.left.message));
+      emit(
+        OpeningHoursLoaded(
+          isOpen: isOpenResult.right,
+          openingHours: openingHoursResult.right,
+        ),
+      );
     }
   }
 }

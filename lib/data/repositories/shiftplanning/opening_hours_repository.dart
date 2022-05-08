@@ -23,7 +23,7 @@ class OpeningHoursRepository {
     }
   }
 
-  String getOpeningHours() {
+  Future<Either<ApiError, Map<int, String>>> getOpeningHours() {
     //FIXME: fetch data when available
     const String normalOperation = '8 - 16';
     const String closed = 'Closed';
@@ -38,6 +38,6 @@ class OpeningHoursRepository {
       DateTime.sunday: 'Sundays: $closed',
     };
 
-    return openingHours[DateTime.now().weekday]!;
+    return Future.value(Right(openingHours));
   }
 }

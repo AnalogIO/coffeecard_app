@@ -15,11 +15,12 @@ class OpeningHoursLoading extends OpeningHoursState {
 }
 
 class OpeningHoursLoaded extends OpeningHoursState {
-  const OpeningHoursLoaded({required this.isOpen});
+  const OpeningHoursLoaded({required this.isOpen, required this.openingHours});
   final bool isOpen;
+  final Map<int, String> openingHours; // Map<Datetime.weekday, String>
 
   @override
-  List<Object?> get props => [isOpen];
+  List<Object?> get props => [isOpen, openingHours];
 }
 
 class OpeningHoursError extends OpeningHoursState {
