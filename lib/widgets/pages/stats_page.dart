@@ -1,6 +1,7 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/cubits/statistics/statistics_cubit.dart';
 import 'package:coffeecard/cubits/user/user_cubit.dart';
+import 'package:coffeecard/widgets/components/error_section.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:coffeecard/widgets/components/stats/leaderboard_section.dart';
 import 'package:coffeecard/widgets/components/stats/stats_section.dart';
@@ -19,26 +20,51 @@ class StatsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<void> _refresh({required bool loadUserData}) async {
+    Future<void> refresh({required bool loadUserData}) async {
       await Future.wait([
         if (loadUserData) context.read<UserCubit>().fetchUserDetails(),
         context.read<StatisticsCubit>().refreshLeaderboards(),
       ]);
     }
 
+    final userState = context.watch<UserCubit>().state;
+    final statsState = context.watch<StatisticsCubit>().state;
+    final loading = userState is! UserLoaded || statsState is! StatisticsLoaded;
+
+    if (userState is UserError) {
+      return ErrorSection(
+        center: true,
+        error: userState.error,
+        retry: context.read<UserCubit>().fetchUserDetails,
+      );
+    }
+
+    if (statsState is StatisticsError) {
+      return ErrorSection(
+        center: true,
+        error: statsState.errorMessage,
+        retry: () => context.read<StatisticsCubit>().fetchLeaderboards(),
+      );
+    }
+
     return BlocListener<UserCubit, UserState>(
       listenWhen: (_, current) => current is UserLoaded,
-      listener: (context, state) => _refresh(loadUserData: false),
+      listener: (context, state) => refresh(loadUserData: false),
       child: AppScaffold.withTitle(
         title: Strings.statsPageTitle,
         body: RefreshIndicator(
           displacement: 24,
-          onRefresh: () => _refresh(loadUserData: true),
+          onRefresh: () => refresh(loadUserData: true),
           child: ListView(
             controller: scrollController,
-            children: const [
-              StatsSection(),
-              LeaderboardSection(),
+            physics: loading ? const NeverScrollableScrollPhysics() : null,
+            children: [
+              const StatsSection(),
+              LeaderboardSection(
+                loading: loading,
+                userState: userState,
+                statsState: statsState,
+              ),
             ],
           ),
         ),
