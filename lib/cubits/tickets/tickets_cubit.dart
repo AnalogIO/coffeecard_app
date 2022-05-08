@@ -27,7 +27,7 @@ class TicketsCubit extends Cubit<TicketsState> {
         // Refresh tickets, so the user sees the right count
         refreshTickets();
       } else {
-        emit(TicketsError(response.left.errorMessage));
+        emit(TicketsError(response.left.message));
       }
     }
   }
@@ -37,7 +37,7 @@ class TicketsCubit extends Cubit<TicketsState> {
     if (response is Right) {
       emit(TicketsLoaded(response.right));
     } else {
-      emit(TicketsError(response.left.errorMessage));
+      emit(TicketsError(response.left.message));
     }
   }
 }

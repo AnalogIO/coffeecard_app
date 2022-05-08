@@ -24,7 +24,7 @@ class ProductsCubit extends Cubit<ProductsState> {
         ),
       );
     } else {
-      emit(ProductsError(response.left.errorMessage));
+      emit(ProductsError(response.left.message));
     }
   }
 }
