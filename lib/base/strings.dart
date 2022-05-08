@@ -115,8 +115,12 @@ abstract class Strings {
   static const confirmPurchase = 'Confirm purchase';
   static const tapHereToCancel = 'Tap here to cancel';
 
-  static String paymentConfirmationTop(int amount, String title) {
+  static String paymentConfirmationTopTickets(int amount, String title) {
     return "You're buying $amount $title tickets";
+  }
+
+  static String paymentConfirmationTopSingle(int amount, String title) {
+    return "You're buying and swiping $amount $title";
   }
 
   static String paymentConfirmationBottom(int price) {
