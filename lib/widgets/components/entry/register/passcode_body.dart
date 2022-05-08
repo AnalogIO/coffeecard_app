@@ -1,6 +1,6 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/widgets/components/continue_button.dart';
-import 'package:coffeecard/widgets/components/forms/text_field.dart';
+import 'package:coffeecard/widgets/components/forms/app_text_field.dart';
 import 'package:flutter/material.dart';
 
 class PasscodeBody extends StatefulWidget {

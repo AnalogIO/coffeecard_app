@@ -55,7 +55,8 @@ abstract class Strings {
       'You will need to verify your email address later.';
   static const registerEmailEmpty = 'Enter an email';
   static const registerEmailInvalid = 'Enter a valid email';
-  static const registerEmailInUseSuffix = 'is already in use';
+  static String registerEmailInUseSuffix(String email) =>
+      '$email is already in use';
 
   static const registerPasscodeTitle = 'Enter a passcode';
   static const registerPasscodeLabel = 'Passcode';

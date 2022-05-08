@@ -2,39 +2,39 @@ import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/utils/debouncer.dart';
 import 'package:coffeecard/utils/email_utils.dart';
 import 'package:coffeecard/widgets/components/continue_button.dart';
-import 'package:coffeecard/widgets/components/forms/text_field.dart';
+import 'package:coffeecard/widgets/components/forms/app_text_field.dart';
 import 'package:flutter/material.dart';
 
-// FIXME: Widget is not meant to be used in multiple scenarios.
-// Some of the code should be adjusted to better work across multiple screens
-class EmailBody extends StatefulWidget {
+class EmailButtonGroup extends StatefulWidget {
   final Function(BuildContext context, String email) onSubmit;
   final String? initialValue;
   final String? hint;
   final bool preventDuplicate;
 
-  const EmailBody({
+  const EmailButtonGroup({
     required this.onSubmit,
     this.initialValue,
     this.hint,
     this.preventDuplicate = false,
   });
   @override
-  State<EmailBody> createState() => _EmailBodyState();
+  State<EmailButtonGroup> createState() => _EmailButtonGroupState();
 }
 
-class _EmailBodyState extends State<EmailBody> {
+class _EmailButtonGroupState extends State<EmailButtonGroup> {
   final _controller = TextEditingController();
   final _debounce = Debouncer(delay: const Duration(milliseconds: 250));
 
   bool _loading = false;
   bool _showError = false;
   bool _readOnly = false;
+
   String? _validatedEmail;
   bool get _validated => _validatedEmail == _controller.text;
 
   String? _error;
   String? get error => _error;
+
   set error(String? error) {
     setState(() => _error = error);
   }
@@ -43,6 +43,7 @@ class _EmailBodyState extends State<EmailBody> {
 
   Future<void> _validateEmail(String email) async {
     final _email = email.trim();
+
     if (_email.isEmpty) {
       error = Strings.registerEmailEmpty;
     } else if (!emailIsValid(_email)) {
@@ -56,11 +57,12 @@ class _EmailBodyState extends State<EmailBody> {
       if (!mounted) return; // Needs to be checked after an async call.
       if (isDuplicate) {
         _showError = true;
-        error = '$_email ${Strings.registerEmailInUseSuffix}';
+        error = Strings.registerEmailInUseSuffix(email);
       } else {
         error = null;
       }
     }
+
     setState(() {
       _validatedEmail = (error == null) ? email : null;
       _loading = false;

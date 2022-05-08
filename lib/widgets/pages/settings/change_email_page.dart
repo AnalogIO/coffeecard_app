@@ -2,7 +2,7 @@ import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
 import 'package:coffeecard/cubits/user/user_cubit.dart';
 import 'package:coffeecard/widgets/components/dialog.dart';
-import 'package:coffeecard/widgets/components/entry/register/email_body.dart';
+import 'package:coffeecard/widgets/components/email_button_group.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,7 +30,7 @@ class _ChangeEmailPageState extends State<ChangeEmailPage> {
       title: Strings.changeEmail,
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
-        child: EmailBody(
+        child: EmailButtonGroup(
           initialValue: widget.currentEmail,
           preventDuplicate: true,
           hint: 'After changing your email, you must log in again.',

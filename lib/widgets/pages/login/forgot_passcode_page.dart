@@ -2,7 +2,7 @@ import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/data/repositories/shared/account_repository.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/widgets/components/dialog.dart';
-import 'package:coffeecard/widgets/components/entry/register/email_body.dart';
+import 'package:coffeecard/widgets/components/email_button_group.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:flutter/material.dart';
 
@@ -28,8 +28,7 @@ class _ForgotPasscodePageState extends State<ForgotPasscodePage> {
       title: Strings.forgotPasscode,
       body: Padding(
         padding: const EdgeInsets.all(16),
-        // FIXME generalize email widget body further
-        child: EmailBody(
+        child: EmailButtonGroup(
           hint: Strings.forgotPasscodeHint,
           initialValue: widget.initialValue,
           onSubmit: (_, email) async {
