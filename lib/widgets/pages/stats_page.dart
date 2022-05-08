@@ -35,6 +35,7 @@ class StatsPage extends StatelessWidget {
           displacement: 24,
           onRefresh: () => _refresh(loadUserData: true),
           child: ListView(
+            controller: scrollController,
             children: const [
               StatsSection(),
               LeaderboardSection(),
