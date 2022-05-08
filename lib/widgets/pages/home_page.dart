@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
@@ -30,6 +32,35 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _currentPageIndex = 0;
 
+  void onBottomNavTap(int index) {
+    if (index != _currentPageIndex) {
+      setState(() => _currentPageIndex = index);
+      return;
+    }
+
+    // Reset navigation stack
+    {
+      final navigatorKey = _pages[index].navigatorKey;
+      navigatorKey.currentState!.popUntil((route) => route.isFirst);
+    }
+
+    // Scroll to the top of the page
+    {
+      final scrollController = _pages[index].scrollController;
+      final ms = () {
+        final d = max(1, scrollController.position.pixels); // Don't div by zero
+        final t = ((1 - 150 / d) * 1500).ceil();
+        return max(t, 100);
+      }();
+
+      scrollController.animateTo(
+        0,
+        duration: Duration(milliseconds: ms),
+        curve: Curves.easeOutBack,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -60,17 +91,12 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: AppColor.background,
         body: LazyIndexedStack(
           index: _currentPageIndex,
-          children: [
-            AppFlow(initialRoute: TicketsPage.route),
-            AppFlow(initialRoute: ReceiptsPage.route),
-            AppFlow(initialRoute: StatsPage.route),
-            AppFlow(initialRoute: SettingsPage.route),
-          ],
+          children: _bottomNavAppFlows,
         ),
         bottomNavigationBar: BottomNavigationBar(
-          items: _bottomNavBarItems,
+          items: _pages.map((p) => p.bottomNavigationBarItem).toList(),
           currentIndex: _currentPageIndex,
-          onTap: (index) => setState(() => _currentPageIndex = index),
+          onTap: onBottomNavTap,
           type: BottomNavigationBarType.fixed,
           backgroundColor: AppColor.primary,
           selectedItemColor: AppColor.white,
@@ -84,21 +110,67 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-const _bottomNavBarItems = [
-  BottomNavigationBarItem(
-    icon: Icon(Icons.confirmation_num),
-    label: Strings.ticketsNavTitle,
+class PageSettings {
+  final ScrollController scrollController;
+  final GlobalKey<NavigatorState> navigatorKey;
+  final BottomNavigationBarItem bottomNavigationBarItem;
+
+  PageSettings({
+    required this.bottomNavigationBarItem,
+  })  : scrollController = ScrollController(),
+        navigatorKey = GlobalKey<NavigatorState>();
+}
+
+final _pages = <PageSettings>[
+  PageSettings(
+    bottomNavigationBarItem: const BottomNavigationBarItem(
+      icon: Icon(Icons.confirmation_num),
+      label: Strings.ticketsNavTitle,
+    ),
   ),
-  BottomNavigationBarItem(
-    icon: Icon(Icons.receipt),
-    label: Strings.receiptsNavTitle,
+  PageSettings(
+    bottomNavigationBarItem: const BottomNavigationBarItem(
+      icon: Icon(Icons.receipt),
+      label: Strings.receiptsNavTitle,
+    ),
   ),
-  BottomNavigationBarItem(
-    icon: Icon(Icons.leaderboard_rounded),
-    label: Strings.statsNavTitle,
+  PageSettings(
+    bottomNavigationBarItem: const BottomNavigationBarItem(
+      icon: Icon(Icons.leaderboard_rounded),
+      label: Strings.statsNavTitle,
+    ),
   ),
-  BottomNavigationBarItem(
-    icon: Icon(Icons.settings),
-    label: Strings.settingsNavTitle,
+  PageSettings(
+    bottomNavigationBarItem: const BottomNavigationBarItem(
+      icon: Icon(Icons.settings),
+      label: Strings.settingsNavTitle,
+    ),
+  ),
+];
+
+final _bottomNavAppFlows = <AppFlow>[
+  AppFlow(
+    navigatorKey: _pages[0].navigatorKey,
+    initialRoute: TicketsPage.routeWith(
+      scrollController: _pages[0].scrollController,
+    ),
+  ),
+  AppFlow(
+    navigatorKey: _pages[1].navigatorKey,
+    initialRoute: ReceiptsPage.routeWith(
+      scrollController: _pages[1].scrollController,
+    ),
+  ),
+  AppFlow(
+    navigatorKey: _pages[2].navigatorKey,
+    initialRoute: StatsPage.routeWith(
+      scrollController: _pages[2].scrollController,
+    ),
+  ),
+  AppFlow(
+    navigatorKey: _pages[3].navigatorKey,
+    initialRoute: SettingsPage.routeWith(
+      scrollController: _pages[3].scrollController,
+    ),
   ),
 ];

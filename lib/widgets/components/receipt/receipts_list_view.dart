@@ -8,6 +8,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 
 class ReceiptsListView extends StatelessWidget {
+  const ReceiptsListView({required this.scrollController});
+  final ScrollController scrollController;
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -25,6 +28,7 @@ class ReceiptsListView extends StatelessWidget {
                     filterCategory: state.filterBy,
                   )
                 : ListView.builder(
+                    controller: scrollController,
                     itemCount: state.filteredReceipts.length,
                     itemBuilder: (_, index) {
                       final r = state.filteredReceipts[index];

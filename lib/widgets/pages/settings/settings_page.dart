@@ -15,10 +15,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 
 class SettingsPage extends StatelessWidget {
-  const SettingsPage();
+  const SettingsPage({required this.scrollController});
 
-  static Route get route =>
-      MaterialPageRoute(builder: (_) => const SettingsPage());
+  final ScrollController scrollController;
+
+  static Route routeWith({required ScrollController scrollController}) =>
+      MaterialPageRoute(
+        builder: (_) => SettingsPage(scrollController: scrollController),
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +37,7 @@ class SettingsPage extends StatelessWidget {
             );
           }
           return ListView(
+            controller: scrollController,
             children: [
               const Padding(
                 padding: EdgeInsets.only(left: 16, right: 16, top: 16),
