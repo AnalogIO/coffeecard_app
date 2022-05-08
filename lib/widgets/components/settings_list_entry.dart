@@ -31,7 +31,7 @@ class SettingListEntry extends StatelessWidget {
   Widget get _leftWidget {
     return _opacity(
       child: destructive
-          ? Text(name, style: const TextStyle(color: AppColor.error))
+          ? Text(name, style: const TextStyle(color: AppColor.errorOnBright))
           : Text(name),
     );
   }

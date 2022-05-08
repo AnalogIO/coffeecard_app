@@ -36,7 +36,7 @@ class _PasscodeDot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color fill = isError ? AppColor.error : AppColor.white;
+    final Color fill = isError ? AppColor.errorOnDark : AppColor.white;
     final double opacity = isLit || isError ? 1 : 0.35;
 
     return AnimatedContainer(

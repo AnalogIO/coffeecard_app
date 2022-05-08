@@ -12,8 +12,9 @@ abstract class AppColor {
 
   static const highlight = Color(0xffFF9500);
   static const slightlyHighlighted = Color(0xffFEF4D2);
-  static const success = Color(0xff4CAF50);
-  static const error = Color(0xffFF4D00);
+  static const success = Color(0xff006F02);
+  static const errorOnDark = Color(0xffFF7215);
+  static const errorOnBright = Color(0xffA80000);
   static const testEnvironment = Color.fromARGB(255, 239, 255, 15);
 
   /// Modal backdrop

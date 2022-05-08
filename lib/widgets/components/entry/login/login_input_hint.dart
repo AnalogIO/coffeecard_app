@@ -13,7 +13,7 @@ class LoginInputHint extends StatelessWidget {
       error ?? defaultHint,
       textAlign: TextAlign.center,
       style: TextStyle(
-        color: (error != null) ? AppColor.error : AppColor.white,
+        color: (error != null) ? AppColor.errorOnDark : AppColor.white,
         fontSize: 14,
       ),
     );
