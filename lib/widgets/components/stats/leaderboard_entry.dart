@@ -48,16 +48,16 @@ class _LeaderboardRankMedal extends StatelessWidget {
   final int rank;
 
   Color get _fillColor {
-    if (rank == 1) return const Color(0xffFFD91D);
-    if (rank == 2) return const Color(0xffC2C2C2);
-    if (rank == 3) return const Color(0xffD9A169);
+    if (rank == 1) return AppColor.goldMedal;
+    if (rank == 2) return AppColor.silverMedal;
+    if (rank == 3) return AppColor.bronzeMedal;
     return Colors.transparent;
   }
 
   Color get _borderColor {
-    if (rank == 1) return const Color(0xffB3980E);
-    if (rank == 2) return const Color(0xff767676);
-    if (rank == 3) return const Color(0xff7A4C1F);
+    if (rank == 1) return AppColor.goldMedalBorder;
+    if (rank == 2) return AppColor.silverMedalBorder;
+    if (rank == 3) return AppColor.bronzeMedalBorder;
     return Colors.transparent;
   }
 
