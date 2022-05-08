@@ -96,8 +96,9 @@ class BuyTicketsPage extends StatelessWidget {
 
         final env = context.read<EnvironmentCubit>().state;
 
-        final updateTicketsRequest = sl<TicketsCubit>().getTickets();
-        final updateReceiptsRequest = sl<ReceiptCubit>().fetchReceipts();
+        final updateTicketsRequest = context.read<TicketsCubit>().getTickets();
+        final updateReceiptsRequest =
+            context.read<ReceiptCubit>().fetchReceipts();
 
         ReceiptOverlay.of(context).show(
           receipt: Receipt(

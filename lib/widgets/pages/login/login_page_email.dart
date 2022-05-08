@@ -86,7 +86,7 @@ class _LoginPageEmailState extends State<LoginPageEmail>
     return FadeTransition(
       opacity: _animation,
       child: LoginPageBase(
-        resizeToAvoidBottomInset: true,
+        resizeToAvoidBottomInset: false,
         title: Strings.loginSignIn,
         inputWidget: LoginEmailTextField(
           hasError: error != null,
