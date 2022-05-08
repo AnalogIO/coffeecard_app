@@ -17,7 +17,7 @@ class VoucherCubit extends Cubit<VoucherState> {
     if (either.isRight) {
       emit(VoucherSuccess(either.right));
     } else {
-      emit(VoucherError(either.left.errorMessage));
+      emit(VoucherError(either.left.message));
     }
   }
 }

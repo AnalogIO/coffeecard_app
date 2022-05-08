@@ -39,9 +39,10 @@ class StatisticsLoaded extends StatisticsStateWithFilterCategory {
   List<Object?> get props => [filterBy, ...leaderboard];
 }
 
-class StatisticsFailure extends StatisticsState {
-  const StatisticsFailure({required this.errorMessage});
+class StatisticsError extends StatisticsState {
   final String errorMessage;
+
+  const StatisticsError(this.errorMessage);
 
   @override
   List<Object?> get props => [errorMessage];

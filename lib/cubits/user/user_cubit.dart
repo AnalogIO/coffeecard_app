@@ -23,7 +23,7 @@ class UserCubit extends Cubit<UserState> {
     if (either.isRight) {
       _enrichUserWithProgrammes(either.right);
     } else {
-      emit(UserError(either.left.errorMessage));
+      emit(UserError(either.left.message));
     }
   }
 
@@ -48,7 +48,7 @@ class UserCubit extends Cubit<UserState> {
       // FIXME: Remove fetchUserDetails when backend bug is fixed
       return fetchUserDetails();
     } else {
-      emit(UserError(either.left.errorMessage));
+      emit(UserError(either.left.message));
     }
   }
 
@@ -64,7 +64,7 @@ class UserCubit extends Cubit<UserState> {
       if (either.isRight) {
         programmes = either.right;
       } else {
-        emit(UserError(either.left.errorMessage));
+        emit(UserError(either.left.message));
         return;
       }
     }

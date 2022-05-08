@@ -23,8 +23,7 @@ class StatisticsCubit extends Cubit<StatisticsState> {
     if (either.isRight) {
       emit(StatisticsLoaded(filterBy: category, leaderboard: either.right));
     } else {
-      // TODO: handle failure
-      emit(StatisticsFailure(errorMessage: either.left.errorMessage));
+      emit(StatisticsError(either.left.message));
     }
   }
 

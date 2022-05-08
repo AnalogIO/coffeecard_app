@@ -15,7 +15,7 @@ class OpeningHoursCubit extends Cubit<OpeningHoursState> {
     if (either.isRight) {
       emit(OpeningHoursLoaded(isOpen: either.right));
     } else {
-      emit(OpeningHoursError(either.left.errorMessage));
+      emit(OpeningHoursError(either.left.message));
     }
   }
 }
