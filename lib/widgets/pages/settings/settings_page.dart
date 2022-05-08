@@ -4,6 +4,7 @@ import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
 import 'package:coffeecard/cubits/user/user_cubit.dart';
 import 'package:coffeecard/widgets/components/dialog.dart';
+import 'package:coffeecard/widgets/components/helpers/shimmer_builder.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:coffeecard/widgets/components/settings_group.dart';
 import 'package:coffeecard/widgets/components/settings_list_entry.dart';
@@ -24,6 +25,14 @@ class SettingsPage extends StatelessWidget {
         builder: (_) => SettingsPage(scrollController: scrollController),
       );
 
+  /// `null` if `state is! Userloaded`, otherwise `callback(UserLoaded state)`.
+  void Function()? _ifLoaded(
+    UserState state,
+    void Function(UserLoaded) callback,
+  ) {
+    return (state is! UserLoaded) ? null : () => callback(state);
+  }
+
   @override
   Widget build(BuildContext context) {
     return AppScaffold.withTitle(
@@ -31,31 +40,45 @@ class SettingsPage extends StatelessWidget {
       body: BlocBuilder<UserCubit, UserState>(
         buildWhen: (previous, current) => previous != current,
         builder: (context, state) {
-          if (state is! UserLoaded) {
-            return Column(
-              children: const [LinearProgressIndicator()],
-            );
-          }
           return ListView(
             controller: scrollController,
             children: [
-              const Padding(
-                padding: EdgeInsets.only(left: 16, right: 16, top: 16),
-                child: UserCard(),
+              Padding(
+                padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
+                child: (state is UserLoaded)
+                    ? UserCard(
+                        name: state.user.name,
+                        occupation: state.user.programme.fullName,
+                      )
+                    : const UserCard.placeholder(),
               ),
               SettingsGroup(
                 title: Strings.settingsGroupAccount,
                 listItems: [
                   SettingListEntry(
                     name: Strings.email,
-                    valueWidget: Text(
-                      state.user.email,
-                      style: AppTextStyle.settingValue,
+                    valueWidget: ShimmerBuilder(
+                      showShimmer: state is! UserLoaded,
+                      builder: (context, colorIfShimmer) {
+                        return Container(
+                          color: colorIfShimmer,
+                          child: Text(
+                            (state is UserLoaded)
+                                ? state.user.email
+                                : 'Loading...',
+                            style: AppTextStyle.settingValue,
+                          ),
+                        );
+                      },
                     ),
-                    onTap: () => Navigator.push(
-                      context,
-                      ChangeEmailPage.routeWith(currentEmail: state.user.email),
+                    onTap: _ifLoaded(
+                      state,
+                      (st) => Navigator.push(
+                        context,
+                        ChangeEmailPage.routeWith(currentEmail: st.user.email),
+                      ),
                     ),
+                    // },
                   ),
                   SettingListEntry(
                     name: Strings.passcode,
@@ -63,9 +86,12 @@ class SettingsPage extends StatelessWidget {
                       Strings.change,
                       style: AppTextStyle.settingValue,
                     ),
-                    onTap: () => Navigator.push(
-                      context,
-                      ChangePasscodePage.route,
+                    onTap: _ifLoaded(
+                      state,
+                      (_) => Navigator.push(
+                        context,
+                        ChangePasscodePage.route,
+                      ),
                     ),
                   ),
                   SettingListEntry(
@@ -77,9 +103,10 @@ class SettingsPage extends StatelessWidget {
                   SettingListEntry(
                     name: Strings.deleteAccount,
                     destructive: true,
-                    onTap: () {
-                      _showDeleteAccountDialog(context, state.user.email);
-                    },
+                    onTap: _ifLoaded(
+                      state,
+                      (st) => _showDeleteAccountDialog(context, st.user.email),
+                    ),
                   ),
                 ],
               ),
@@ -99,7 +126,7 @@ class SettingsPage extends StatelessWidget {
               ),
               const Gap(8),
               Text(
-                '${Strings.userID}: ${state.user.id}',
+                '${Strings.userID}: ${state is UserLoaded ? state.user.id : '...'}',
                 style: AppTextStyle.explainer,
                 textAlign: TextAlign.center,
               ),
