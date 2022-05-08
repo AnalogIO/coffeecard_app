@@ -9,6 +9,7 @@ import 'package:coffeecard/models/purchase/payment.dart';
 import 'package:coffeecard/models/purchase/payment_status.dart';
 import 'package:coffeecard/models/ticket/product.dart';
 import 'package:coffeecard/service_locator.dart';
+import 'package:coffeecard/widgets/components/error_section.dart';
 import 'package:coffeecard/widgets/components/helpers/grid.dart';
 import 'package:coffeecard/widgets/components/loading.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
@@ -52,8 +53,10 @@ class BuySingleDrinkPage extends StatelessWidget {
                 ),
               );
             } else if (state is ProductsError) {
-              // FIXME handle error
-              return const Text('error');
+              return ErrorSection(
+                error: state.error,
+                retry: context.read<ProductsCubit>().getProducts,
+              );
             }
 
             throw MatchCaseIncompleteException(this);
@@ -88,8 +91,8 @@ class BuySingleDrinkPage extends StatelessWidget {
       if (payment != null && payment.status == PaymentStatus.completed) {
         Navigator.pop(context); //Sends the user back to the home-screen
 
-        await sl<TicketsCubit>().useTicket(product.id);
-        await sl<ReceiptCubit>().fetchReceipts();
+        context.read<TicketsCubit>().useTicket(product.id);
+        context.read<ReceiptCubit>().fetchReceipts();
       }
     }
   }
