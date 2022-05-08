@@ -20,6 +20,14 @@ abstract class AppColor {
   /// Modal backdrop
   static const scrim = Color(0xcc000000);
 
+  // Leaderboard rank medals
+  static const goldMedal = Color(0xffFFD91D);
+  static const goldMedalBorder = Color(0xffB3980E);
+  static const silverMedal = Color(0xffC2C2C2);
+  static const silverMedalBorder = Color(0xff767676);
+  static const bronzeMedal = Color(0xffD9A169);
+  static const bronzeMedalBorder = Color(0xff7A4C1F);
+
   // Shimmer colors
   static const shimmerBackground = Color(0xFFE0E0E0);
   static const shimmerHighlight = Color(0xFFBDBDBD);
