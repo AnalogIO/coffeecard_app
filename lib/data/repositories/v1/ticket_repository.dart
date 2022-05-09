@@ -34,7 +34,7 @@ class TicketRepository {
           .toList();
       return Right(ticketCount);
     } else {
-      _logger.e(Strings.formatApiError(response));
+      _logger.e(Strings.formatApiError(response.statusCode, response.error));
       return Left(ApiError(response.error.toString()));
     }
   }

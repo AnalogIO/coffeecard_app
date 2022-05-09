@@ -31,7 +31,7 @@ class LeaderboardRepository {
         response.body!.map((e) => LeaderboardUser.fromDTO(e)).toList(),
       );
     } else {
-      _logger.e(Strings.formatApiError(response));
+      _logger.e(Strings.formatApiError(response.statusCode, response.error));
       return Left(ApiError(response.error.toString()));
     }
   }

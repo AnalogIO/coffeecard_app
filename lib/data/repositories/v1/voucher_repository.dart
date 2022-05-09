@@ -26,7 +26,7 @@ class VoucherRepository {
       );
       return Right(redeemedVoucher);
     } else if (response.statusCode == 404) {
-      _logger.e(Strings.formatApiError(response));
+      _logger.e(Strings.formatApiError(response.statusCode, response.error));
       return Left(ApiError(Strings.invalidVoucher(voucher)));
     } else if (response.statusCode == 400) {
       return Left(ApiError(Strings.voucherUsed));

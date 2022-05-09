@@ -36,7 +36,10 @@ class ReceiptRepository {
       );
     } else {
       _logger.e(
-        Strings.formatApiError(usedTicketResponse),
+        Strings.formatApiError(
+          usedTicketResponse.statusCode,
+          usedTicketResponse.error,
+        ),
       );
       return Left(ApiError(usedTicketResponse.error.toString()));
     }
@@ -54,7 +57,10 @@ class ReceiptRepository {
       );
     } else {
       _logger.e(
-        Strings.formatApiError(purchaseResponse),
+        Strings.formatApiError(
+          purchaseResponse.statusCode,
+          purchaseResponse.error,
+        ),
       );
       return Left(ApiError(purchaseResponse.error.toString()));
     }

@@ -1,5 +1,3 @@
-import 'package:chopper/chopper.dart';
-
 abstract class Strings {
   static const appTitle = 'Cafe Analog';
 
@@ -267,7 +265,9 @@ abstract class Strings {
   static const yourProfileDescription =
       'These settings affect your appearance on the leaderboards.';
 
-  static const madeBy = 'Made with ❤ by AnalogIO\nIT University of Copenhagen';
+  static const madeBy = 'Made with ❤ by ';
+  static const analogIO = 'AnalogIO';
+  static const itu = '\nIT University of Copenhagen';
   static const userID = 'User ID';
 
   // Time since utility
@@ -293,8 +293,8 @@ abstract class Strings {
     return 'Unknown filter category: $category';
   }
 
-  static String formatApiError(Response response) {
-    return 'API Error ${response.statusCode} ${response.error}';
+  static String formatApiError(int statusCode, Object? error) {
+    return 'API Error $statusCode $error';
   }
 
   static String invalidRoute(String c, String? route) {

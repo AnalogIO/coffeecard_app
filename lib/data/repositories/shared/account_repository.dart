@@ -44,7 +44,7 @@ class AccountRepository {
     if (response.isSuccessful) {
       return const Right(null);
     } else {
-      _logger.e(Strings.formatApiError(response));
+      _logger.e(Strings.formatApiError(response.statusCode, response.error));
       return Left(UnauthorizedError(response.error.toString()));
     }
   }
@@ -67,7 +67,7 @@ class AccountRepository {
         AuthenticatedUser(email: email, token: response.body!.token!),
       );
     } else {
-      _logger.e(Strings.formatApiError(response));
+      _logger.e(Strings.formatApiError(response.statusCode, response.error));
       return Left(UnauthorizedError(response.error.toString()));
     }
   }
@@ -79,7 +79,7 @@ class AccountRepository {
       final user = User.fromDTO(response.body!);
       return Right(user);
     } else {
-      _logger.e(Strings.formatApiError(response));
+      _logger.e(Strings.formatApiError(response.statusCode, response.error));
       return Left(ApiError(response.error.toString()));
     }
   }
@@ -99,7 +99,7 @@ class AccountRepository {
       final user = User.fromDTO(response.body!);
       return Right(user);
     } else {
-      _logger.e(Strings.formatApiError(response));
+      _logger.e(Strings.formatApiError(response.statusCode, response.error));
       return Left(ApiError(response.error.toString()));
     }
   }
@@ -111,7 +111,7 @@ class AccountRepository {
     if (response.isSuccessful) {
       return const Right(null);
     } else {
-      _logger.e(Strings.formatApiError(response));
+      _logger.e(Strings.formatApiError(response.statusCode, response.error));
       return Left(ApiError(response.error.toString()));
     }
   }
@@ -121,7 +121,7 @@ class AccountRepository {
     if (response.isSuccessful) {
       return const Right(null);
     } else {
-      _logger.e(Strings.formatApiError(response));
+      _logger.e(Strings.formatApiError(response.statusCode, response.error));
       return Left(ApiError(response.error.toString()));
     }
   }
@@ -133,7 +133,7 @@ class AccountRepository {
     if (response.isSuccessful) {
       return Right(response.body!.emailExists);
     } else {
-      _logger.e(Strings.formatApiError(response));
+      _logger.e(Strings.formatApiError(response.statusCode, response.error));
       return Left(ApiError(response.error.toString()));
     }
   }

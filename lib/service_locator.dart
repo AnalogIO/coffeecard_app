@@ -2,6 +2,7 @@ import 'package:chopper/chopper.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
 import 'package:coffeecard/data/api/coffee_card_api_constants.dart';
 import 'package:coffeecard/data/api/interceptors/authentication_interceptor.dart';
+import 'package:coffeecard/data/repositories/external/contributor_repository.dart';
 import 'package:coffeecard/data/repositories/shared/account_repository.dart';
 import 'package:coffeecard/data/repositories/shiftplanning/opening_hours_repository.dart';
 import 'package:coffeecard/data/repositories/v1/coffeecard_repository.dart';
@@ -128,5 +129,10 @@ void configureServices() {
   // shiftplanning
   sl.registerFactory<OpeningHoursRepository>(
     () => OpeningHoursRepository(sl<ShiftplanningApi>(), sl<Logger>()),
+  );
+
+  // external
+  sl.registerFactory<ContributorRepository>(
+    () => ContributorRepository(sl<Logger>()),
   );
 }

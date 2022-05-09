@@ -18,7 +18,7 @@ class OpeningHoursRepository {
     if (response.isSuccessful) {
       return Right(response.body!.open);
     } else {
-      _logger.e(Strings.formatApiError(response));
+      _logger.e(Strings.formatApiError(response.statusCode, response.error));
       throw Left(ApiError(response.error.toString()));
     }
   }

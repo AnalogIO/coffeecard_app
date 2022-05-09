@@ -16,7 +16,7 @@ class ProgrammeRepository {
     if (response.isSuccessful) {
       return Right(response.body!);
     } else {
-      _logger.e(Strings.formatApiError(response));
+      _logger.e(Strings.formatApiError(response.statusCode, response.error));
       return Left(ApiError(response.error.toString()));
     }
   }
