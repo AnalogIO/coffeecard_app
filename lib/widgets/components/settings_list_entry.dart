@@ -54,11 +54,9 @@ class SettingListEntry extends StatelessWidget {
       height: 50,
       child: ListEntry(
         onTap: _disabled ? null : onTap,
+        sideToExpand: ListEntrySide.left,
         leftWidget: _leftWidget,
-        rightWidget: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 150),
-          child: _rightWidget,
-        ),
+        rightWidget: _rightWidget,
       ),
     );
   }
