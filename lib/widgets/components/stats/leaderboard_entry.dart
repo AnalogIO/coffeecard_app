@@ -34,6 +34,7 @@ class LeaderboardEntry extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListEntry(
       backgroundColor: highlight ? AppColor.slightlyHighlighted : null,
+      sideToExpand: ListEntrySide.right,
       leftWidget: ShimmerBuilder(
         showShimmer: isPlaceholder,
         builder: (context, colorIfShimmer) {

@@ -46,6 +46,7 @@ class ReceiptListEntry extends StatelessWidget {
           showShimmer: receipt.transactionType == TransactionType.placeholder,
           builder: (context, colorIfShimmer) {
             return ListEntry(
+              sideToExpand: ListEntrySide.right,
               leftWidget: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

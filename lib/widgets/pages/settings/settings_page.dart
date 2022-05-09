@@ -63,11 +63,10 @@ class SettingsPage extends StatelessWidget {
                       builder: (context, colorIfShimmer) {
                         return Container(
                           color: colorIfShimmer,
-                          child: Text(
-                            (state is UserLoaded)
+                          child: SettingDescription(
+                            text: (state is UserLoaded)
                                 ? state.user.email
                                 : 'Loading...',
-                            style: AppTextStyle.settingValue,
                           ),
                         );
                       },
@@ -79,14 +78,10 @@ class SettingsPage extends StatelessWidget {
                         ChangeEmailPage.routeWith(currentEmail: st.user.email),
                       ),
                     ),
-                    // },
                   ),
                   SettingListEntry(
                     name: Strings.passcode,
-                    valueWidget: Text(
-                      Strings.change,
-                      style: AppTextStyle.settingValue,
-                    ),
+                    valueWidget: const SettingDescription(text: Strings.change),
                     onTap: _ifLoaded(
                       state,
                       (_) => Navigator.push(
