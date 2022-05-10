@@ -25,17 +25,18 @@ class OpeningHoursRepository {
 
   Future<Either<ApiError, Map<int, String>>> getOpeningHours() {
     //FIXME: fetch data when available
-    const String normalOperation = '8 - 16';
+    const String normalOperation = '8.00-16:00';
+    const String shortDayOperation = '8.00-14:00';
     const String closed = 'Closed';
 
     final Map<int, String> openingHours = {
-      DateTime.monday: 'Mondays: $normalOperation',
-      DateTime.tuesday: 'Tuesdays: $normalOperation',
-      DateTime.wednesday: 'Wednesdays: $normalOperation',
-      DateTime.thursday: 'Thursdays: $normalOperation',
-      DateTime.friday: 'Fridays: 8 - 14',
-      DateTime.saturday: 'Saturdays: $closed',
-      DateTime.sunday: 'Sundays: $closed',
+      DateTime.monday: normalOperation,
+      DateTime.tuesday: normalOperation,
+      DateTime.wednesday: normalOperation,
+      DateTime.thursday: normalOperation,
+      DateTime.friday: shortDayOperation,
+      DateTime.saturday: closed,
+      DateTime.sunday: closed,
     };
 
     return Future.value(Right(openingHours));

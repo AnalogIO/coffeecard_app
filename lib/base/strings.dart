@@ -41,10 +41,21 @@ abstract class Strings {
   static const newLabel = 'NEW';
   static const comingSoonLabel = 'COMING SOON';
 
-  // Opening hours indicator
+  // Opening hours
   static const open = 'open';
   static const closed = 'closed';
   static const openingHoursIndicatorPrefix = "We're";
+  static const openingHoursDisclaimer =
+      'Holidays and exam periods may affect opening hours.';
+  static const Map<int, String> weekdaysPlural = {
+    DateTime.monday: 'Mondays',
+    DateTime.tuesday: 'Tuesdays',
+    DateTime.wednesday: 'Wednesdays',
+    DateTime.thursday: 'Thursdays',
+    DateTime.friday: 'Fridays',
+    DateTime.saturday: 'Saturdays',
+    DateTime.sunday: 'Sundays',
+  };
 
   // Register
   static const registerAppBarTitle = 'Register';

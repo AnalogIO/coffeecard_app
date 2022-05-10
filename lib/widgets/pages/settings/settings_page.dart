@@ -12,6 +12,7 @@ import 'package:coffeecard/widgets/components/settings_list_entry.dart';
 import 'package:coffeecard/widgets/components/user_card.dart';
 import 'package:coffeecard/widgets/pages/settings/change_email_page.dart';
 import 'package:coffeecard/widgets/pages/settings/change_passcode_page.dart';
+import 'package:coffeecard/widgets/pages/settings/opening_hours_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
@@ -26,13 +27,20 @@ class SettingsPage extends StatelessWidget {
         builder: (_) => SettingsPage(scrollController: scrollController),
       );
 
-  // For setting list entries that shouldn't
-  // be tappable while user data is loading.
+  /// Tappable only if user data has been loaded.
   void Function()? _ifUserStateLoaded(
     UserState state,
     void Function(UserLoaded) callback,
   ) {
     return (state is! UserLoaded) ? null : () => callback(state);
+  }
+
+  /// Tappable only if opening hours data has been loaded.
+  void Function()? _ifOpeningHoursLoaded(
+    OpeningHoursState state,
+    void Function(OpeningHoursLoaded) callback,
+  ) {
+    return (state is! OpeningHoursLoaded) ? null : () => callback(state);
   }
 
   @override
@@ -118,14 +126,23 @@ class SettingsPage extends StatelessWidget {
               const SettingListEntry(name: Strings.faq),
               SettingListEntry(
                 name: Strings.openingHours,
-                onTap: () {},
+                onTap: _ifOpeningHoursLoaded(
+                  openingHoursState,
+                  (st) => Navigator.push(
+                    context,
+                    OpeningHoursPage.routeWith(state: st),
+                  ),
+                ),
                 valueWidget: ShimmerBuilder(
                   showShimmer: openingHoursState is OpeningHoursLoading,
                   builder: (context, colorIfShimmer) {
                     final today = DateTime.now().weekday;
+                    final weekdayPlural = Strings.weekdaysPlural[today]!;
                     final String text;
+
                     if (openingHoursState is OpeningHoursLoaded) {
-                      text = openingHoursState.openingHours[today]!;
+                      final hours = openingHoursState.openingHours[today]!;
+                      text = '$weekdayPlural: $hours';
                     } else if (openingHoursState is OpeningHoursLoading) {
                       text = Strings.openingHoursShimmerText;
                     } else {
