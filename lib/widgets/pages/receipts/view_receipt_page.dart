@@ -25,15 +25,17 @@ class ViewReceiptPage extends StatelessWidget {
         builder: (context, state) {
           return Padding(
             padding: EdgeInsets.all(deviceIsSmall(context) ? 24 : 48),
-            child: IntrinsicHeight(
-              child: ReceiptCard(
-                productName: name,
-                time: time,
-                isPurchase: isPurchase,
-                isInOverlay: false,
-                isTestEnvironment:
-                    state is EnvironmentLoaded && state.isTestEnvironment,
-              ),
+            child: Column(
+              children: [
+                ReceiptCard(
+                  productName: name,
+                  time: time,
+                  isPurchase: isPurchase,
+                  isInOverlay: false,
+                  isTestEnvironment:
+                      state is EnvironmentLoaded && state.isTestEnvironment,
+                ),
+              ],
             ),
           );
         },

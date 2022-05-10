@@ -30,7 +30,9 @@ class ReceiptCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return IgnorePointer(
       child: CardBase(
-        color: isTestEnvironment ? AppColor.testEnvironment : AppColor.white,
+        color: isTestEnvironment
+            ? AppColor.testEnvironmentReceipt
+            : AppColor.white,
         top: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
