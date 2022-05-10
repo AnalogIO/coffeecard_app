@@ -28,7 +28,7 @@ class SettingsPage extends StatelessWidget {
 
   // For setting list entries that shouldn't
   // be tappable while user data is loading.
-  void Function()? _ifLoaded(
+  void Function()? _ifUserStateLoaded(
     UserState state,
     void Function(UserLoaded) callback,
   ) {
@@ -67,13 +67,13 @@ class SettingsPage extends StatelessWidget {
                       child: Text(
                         (userState is UserLoaded)
                             ? userState.user.email
-                            : 'Loading...',
+                            : Strings.emailShimmerText,
                         style: AppTextStyle.settingValue,
                       ),
                     );
                   },
                 ),
-                onTap: _ifLoaded(
+                onTap: _ifUserStateLoaded(
                   userState,
                   (st) => Navigator.push(
                     context,
@@ -88,7 +88,7 @@ class SettingsPage extends StatelessWidget {
                   Strings.change,
                   style: AppTextStyle.settingValue,
                 ),
-                onTap: _ifLoaded(
+                onTap: _ifUserStateLoaded(
                   userState,
                   (_) => Navigator.push(
                     context,
@@ -105,7 +105,7 @@ class SettingsPage extends StatelessWidget {
               SettingListEntry(
                 name: Strings.deleteAccount,
                 destructive: true,
-                onTap: _ifLoaded(
+                onTap: _ifUserStateLoaded(
                   userState,
                   (st) => _showDeleteAccountDialog(context, st.user.email),
                 ),
@@ -115,9 +115,7 @@ class SettingsPage extends StatelessWidget {
           SettingsGroup(
             title: Strings.settingsGroupAbout,
             listItems: [
-              const SettingListEntry(
-                name: Strings.faq,
-              ),
+              const SettingListEntry(name: Strings.faq),
               SettingListEntry(
                 name: Strings.openingHours,
                 onTap: () {},
@@ -129,7 +127,7 @@ class SettingsPage extends StatelessWidget {
                     if (openingHoursState is OpeningHoursLoaded) {
                       text = openingHoursState.openingHours[today]!;
                     } else if (openingHoursState is OpeningHoursLoading) {
-                      text = 'Somedays: 8-16';
+                      text = Strings.openingHoursShimmerText;
                     } else {
                       text = '';
                     }

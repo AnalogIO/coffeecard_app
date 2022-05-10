@@ -213,6 +213,9 @@ abstract class Strings {
   static const logOut = 'Log out';
   static const deleteAccount = 'Delete account';
 
+  static const emailShimmerText = 'sample@sample.com';
+  static const openingHoursShimmerText = 'Somedays: 8-16';
+
   static const changeEmail = 'Change email';
   static const changeName = 'Change name';
   static const changeOccupation = 'Change occupation';
