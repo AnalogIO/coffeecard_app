@@ -39,11 +39,13 @@ class OpeningHoursPage extends StatelessWidget {
                 const Gap(36),
                 Row(
                   children: [
+                    const Spacer(),
                     Flexible(
-                      flex: 2,
+                      flex: 3,
                       child: Text(
                         Strings.openingHoursDisclaimer,
-                        style: AppTextStyle.explainer,
+                        style: AppTextStyle.explainerDark,
+                        textAlign: TextAlign.center,
                       ),
                     ),
                     const Spacer(),
