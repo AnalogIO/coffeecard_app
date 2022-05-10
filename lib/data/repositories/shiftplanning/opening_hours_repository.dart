@@ -23,7 +23,7 @@ class OpeningHoursRepository {
     }
   }
 
-  Future<Either<ApiError, Map<int, String>>> getOpeningHours() {
+  Future<Either<ApiError, Map<int, String>>> getOpeningHours() async {
     //FIXME: fetch data when available
     const String normalOperation = '8.00-16:00';
     const String shortDayOperation = '8.00-14:00';
