@@ -65,6 +65,7 @@ dependencies:
 
   # rest
   http: 0.13.4
+  cached_network_image: 3.2.0
 
   # brightness
   screen_brightness: 0.2.1

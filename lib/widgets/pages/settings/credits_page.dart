@@ -1,8 +1,10 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/cubits/contributor/contributor_cubit.dart';
+import 'package:coffeecard/data/api/coffee_card_api_constants.dart';
 import 'package:coffeecard/data/repositories/external/contributor_repository.dart';
 import 'package:coffeecard/errors/match_case_incomplete_exception.dart';
 import 'package:coffeecard/service_locator.dart';
+import 'package:coffeecard/utils/launch.dart';
 import 'package:coffeecard/widgets/components/contributor_card.dart';
 import 'package:coffeecard/widgets/components/error_section.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
@@ -23,46 +25,54 @@ class CreditsPage extends StatelessWidget {
       body: BlocProvider(
         create: (context) => ContributorCubit(sl.get<ContributorRepository>())
           ..getContributors(),
-        child: BlocBuilder<ContributorCubit, ContributorState>(
-          builder: (context, state) {
-            if (state is ContributorLoading) {
-              return const CircularProgressIndicator();
-            } else if (state is ContributorLoaded) {
-              return ListView(
-                children: [
-                  const Gap(16),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16),
-                    child: SectionTitle(Strings.appTeam),
-                  ),
-                  ...state.contributors.map((e) => ContributorCard(e)).toList(),
-                  const SettingsGroup(
-                    title: Strings.aboutAnalogIO,
-                    listItems: [
-                      SettingListEntry(
-                        name: Strings.github,
+        child: ListView(
+          children: [
+            BlocBuilder<ContributorCubit, ContributorState>(
+              builder: (context, state) {
+                if (state is ContributorLoading) {
+                  return const CircularProgressIndicator();
+                } else if (state is ContributorLoaded) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Gap(16),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        child: SectionTitle(Strings.appTeam),
                       ),
-                      SettingListEntry(
-                        name: Strings.sendUsAnEmail,
-                      ),
+                      ...state.contributors
+                          .map((e) => ContributorCard(e))
+                          .toList(),
                     ],
-                  ),
-                  const SettingsGroup(
-                    title: Strings.licenses,
-                    listItems: [SettingListEntry(name: Strings.viewLicenses)],
-                  ),
-                ],
-              );
-            } else if (state is ContributorError) {
-              return ErrorSection(
-                center: true,
-                error: state.error,
-                retry: context.read<ContributorCubit>().getContributors,
-              );
-            }
+                  );
+                } else if (state is ContributorError) {
+                  return ErrorSection(
+                    center: true,
+                    error: state.error,
+                    retry: context.read<ContributorCubit>().getContributors,
+                  );
+                }
 
-            throw MatchCaseIncompleteException(this);
-          },
+                throw MatchCaseIncompleteException(this);
+              },
+            ),
+            SettingsGroup(
+              title: Strings.aboutAnalogIO,
+              listItems: [
+                SettingListEntry(
+                  name: Strings.github,
+                  onTap: () => launchURL(CoffeeCardApiConstants.analogIOGitHub),
+                ),
+                const SettingListEntry(
+                  name: Strings.sendUsAnEmail,
+                ),
+              ],
+            ),
+            const SettingsGroup(
+              title: Strings.licenses,
+              listItems: [SettingListEntry(name: Strings.viewLicenses)],
+            ),
+          ],
         ),
       ),
     );

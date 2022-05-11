@@ -12,4 +12,5 @@ class CoffeeCardApiConstants {
   static const String analogIOmembersUrl =
       '$githubApiBaseUrl/orgs/AnalogIO/members';
   static const String githubApiUserUrl = '$githubApiBaseUrl/users/';
+  static const String analogIOGitHub = 'https://github.com/AnalogIO/';
 }
