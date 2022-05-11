@@ -33,10 +33,31 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _currentPageIndex = 0;
+  List<int> _navFlowsStack = [0];
+
+  void onNavFlowChange(int newFlowIndex) {
+    setState(() => _currentPageIndex = newFlowIndex);
+
+    if (newFlowIndex == 0) {
+      _navFlowsStack = [0];
+      return;
+    }
+    _navFlowsStack
+      ..remove(newFlowIndex)
+      ..add(newFlowIndex);
+  }
+
+  Future<bool> onWillPop() async {
+    if (_navFlowsStack.removeLast() == 0) {
+      return true;
+    }
+    setState(() => _currentPageIndex = _navFlowsStack.last);
+    return false;
+  }
 
   void onBottomNavTap(int index) {
     if (index != _currentPageIndex) {
-      setState(() => _currentPageIndex = index);
+      onNavFlowChange(index);
       return;
     }
 
@@ -121,23 +142,26 @@ class _HomePageState extends State<HomePage> {
           )..getOpeninghours(),
         )
       ],
-      child: Scaffold(
-        backgroundColor: AppColor.background,
-        body: LazyIndexedStack(
-          index: _currentPageIndex,
-          children: _bottomNavAppFlows,
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: _pages.map((p) => p.bottomNavigationBarItem).toList(),
-          currentIndex: _currentPageIndex,
-          onTap: onBottomNavTap,
-          type: BottomNavigationBarType.fixed,
-          backgroundColor: AppColor.primary,
-          selectedItemColor: AppColor.white,
-          unselectedItemColor: AppColor.white.withOpacity(0.5),
-          selectedFontSize: 12,
-          unselectedLabelStyle: AppTextStyle.medium,
-          selectedLabelStyle: AppTextStyle.medium,
+      child: WillPopScope(
+        onWillPop: onWillPop,
+        child: Scaffold(
+          backgroundColor: AppColor.background,
+          body: LazyIndexedStack(
+            index: _currentPageIndex,
+            children: _bottomNavAppFlows,
+          ),
+          bottomNavigationBar: BottomNavigationBar(
+            items: _pages.map((p) => p.bottomNavigationBarItem).toList(),
+            currentIndex: _currentPageIndex,
+            onTap: onBottomNavTap,
+            type: BottomNavigationBarType.fixed,
+            backgroundColor: AppColor.primary,
+            selectedItemColor: AppColor.white,
+            unselectedItemColor: AppColor.white.withOpacity(0.5),
+            selectedFontSize: 12,
+            unselectedLabelStyle: AppTextStyle.medium,
+            selectedLabelStyle: AppTextStyle.medium,
+          ),
         ),
       ),
     );
