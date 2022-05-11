@@ -6,8 +6,12 @@ import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/widgets/components/contributor_card.dart';
 import 'package:coffeecard/widgets/components/error_section.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
+import 'package:coffeecard/widgets/components/section_title.dart';
+import 'package:coffeecard/widgets/components/settings_group.dart';
+import 'package:coffeecard/widgets/components/settings_list_entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gap/gap.dart';
 
 class CreditsPage extends StatelessWidget {
   static Route get route => MaterialPageRoute(builder: (_) => CreditsPage());
@@ -25,8 +29,29 @@ class CreditsPage extends StatelessWidget {
               return const CircularProgressIndicator();
             } else if (state is ContributorLoaded) {
               return ListView(
-                children:
-                    state.contributors.map((e) => ContributorCard(e)).toList(),
+                children: [
+                  const Gap(16),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: SectionTitle(Strings.appTeam),
+                  ),
+                  ...state.contributors.map((e) => ContributorCard(e)).toList(),
+                  const SettingsGroup(
+                    title: Strings.aboutAnalogIO,
+                    listItems: [
+                      SettingListEntry(
+                        name: Strings.github,
+                      ),
+                      SettingListEntry(
+                        name: Strings.sendUsAnEmail,
+                      ),
+                    ],
+                  ),
+                  const SettingsGroup(
+                    title: Strings.licenses,
+                    listItems: [SettingListEntry(name: Strings.viewLicenses)],
+                  ),
+                ],
               );
             } else if (state is ContributorError) {
               return ErrorSection(

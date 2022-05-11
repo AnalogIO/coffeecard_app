@@ -269,6 +269,14 @@ abstract class Strings {
   static const madeBy = 'Made with ❤ by AnalogIO\nIT University of Copenhagen';
   static const userID = 'User ID';
 
+  // Credits
+  static const appTeam = 'App team';
+  static const aboutAnalogIO = 'About AnalogIO';
+  static const github = 'GitHub';
+  static const sendUsAnEmail = 'Send us an email';
+  static const licenses = 'Licenses';
+  static const viewLicenses = 'View licenses';
+
   // Time since utility
   static const justNow = 'Just now';
   static const minutesAgo = 'minutes $ago';
