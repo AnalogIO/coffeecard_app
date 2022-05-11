@@ -221,6 +221,7 @@ abstract class Strings {
   static const change = 'Change';
   static const logOut = 'Log out';
   static const deleteAccount = 'Delete account';
+  static const credits = 'Credits';
 
   static const emailShimmerText = 'sample@sample.com';
   static const openingHoursShimmerText = 'Somedays: 8-16';
@@ -265,9 +266,7 @@ abstract class Strings {
   static const yourProfileDescription =
       'These settings affect your appearance on the leaderboards.';
 
-  static const madeBy = 'Made with ❤ by ';
-  static const analogIO = 'AnalogIO';
-  static const itu = '\nIT University of Copenhagen';
+  static const madeBy = 'Made with ❤ by AnalogIO\nIT University of Copenhagen';
   static const userID = 'User ID';
 
   // Time since utility

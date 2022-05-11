@@ -8,6 +8,8 @@ class CoffeeCardApiConstants {
 
   static const String minAppVersion = '2.1.0';
 
+  static const String githubApiBaseUrl = 'https://api.github.com';
   static const String analogIOmembersUrl =
-      'https://api.github.com/orgs/AnalogIO/members';
+      '$githubApiBaseUrl/orgs/AnalogIO/members';
+  static const String githubApiUserUrl = '$githubApiBaseUrl/users/';
 }

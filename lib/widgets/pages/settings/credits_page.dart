@@ -1,3 +1,4 @@
+import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/cubits/contributor/contributor_cubit.dart';
 import 'package:coffeecard/data/repositories/external/contributor_repository.dart';
 import 'package:coffeecard/errors/match_case_incomplete_exception.dart';
@@ -8,14 +9,13 @@ import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ContributorPage extends StatelessWidget {
-  static Route get route =>
-      MaterialPageRoute(builder: (_) => ContributorPage());
+class CreditsPage extends StatelessWidget {
+  static Route get route => MaterialPageRoute(builder: (_) => CreditsPage());
 
   @override
   Widget build(BuildContext context) {
     return AppScaffold.withTitle(
-      title: 'Contributors',
+      title: Strings.credits,
       body: BlocProvider(
         create: (context) => ContributorCubit(sl.get<ContributorRepository>())
           ..getContributors(),
