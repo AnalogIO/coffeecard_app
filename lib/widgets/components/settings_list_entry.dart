@@ -8,12 +8,14 @@ class SettingListEntry extends StatelessWidget {
   final Widget? valueWidget;
   final bool destructive;
   final void Function()? onTap;
+  final ListEntrySide sideToExpand;
 
   const SettingListEntry({
     required this.name,
     this.onTap,
     this.valueWidget,
     this.destructive = false,
+    this.sideToExpand = ListEntrySide.left,
   });
 
   bool get _disabled => onTap == null;
@@ -54,7 +56,7 @@ class SettingListEntry extends StatelessWidget {
       height: 50,
       child: ListEntry(
         onTap: _disabled ? null : onTap,
-        sideToExpand: ListEntrySide.left,
+        sideToExpand: sideToExpand,
         leftWidget: _leftWidget,
         rightWidget: _rightWidget,
       ),
