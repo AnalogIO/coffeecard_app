@@ -1,5 +1,7 @@
 import 'package:coffeecard/base/strings.dart';
+import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/user/user_cubit.dart';
+import 'package:coffeecard/widgets/components/list_entry.dart';
 import 'package:coffeecard/widgets/components/loading.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:coffeecard/widgets/components/settings_list_entry.dart';
@@ -33,18 +35,25 @@ class ChangeOccupationPage extends StatelessWidget {
                     userLoadedState.programmes
                         .sort((a, b) => a.fullName!.compareTo(b.fullName!));
                     final programme = userLoadedState.programmes[index];
-                    return SettingListEntry(
-                      name: '${programme.fullName!} (${programme.shortName!})',
-                      valueWidget: Radio(
-                        value: programme.shortName!,
-                        groupValue: userLoadedState.user.programme.shortName,
-                        onChanged: (_) {},
+                    return SizedBox(
+                      height: 50,
+                      child: ListEntry(
+                        sideToExpand: ListEntrySide.right,
+                        leftWidget: Text(
+                          '${programme.fullName!} (${programme.shortName!})',
+                          style: AppTextStyle.settingKey,
+                        ),
+                        rightWidget: Radio(
+                          value: programme.shortName!,
+                          groupValue: userLoadedState.user.programme.shortName,
+                          onChanged: (_) {},
+                        ),
+                        onTap: () {
+                          context
+                              .read<UserCubit>()
+                              .setUserProgramme(programme.id!);
+                        },
                       ),
-                      onTap: () {
-                        context
-                            .read<UserCubit>()
-                            .setUserProgramme(programme.id!);
-                      },
                     );
                   },
                 ),
