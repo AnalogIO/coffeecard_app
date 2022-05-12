@@ -1,4 +1,6 @@
 import 'package:coffeecard/base/strings.dart';
+import 'package:coffeecard/base/style/colors.dart';
+import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/contributor/contributor_cubit.dart';
 import 'package:coffeecard/data/api/coffee_card_api_constants.dart';
 import 'package:coffeecard/data/repositories/external/contributor_repository.dart';
@@ -7,6 +9,7 @@ import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/utils/launch.dart';
 import 'package:coffeecard/widgets/components/contributor_card.dart';
 import 'package:coffeecard/widgets/components/error_section.dart';
+import 'package:coffeecard/widgets/components/images/analogio_logo.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:coffeecard/widgets/components/section_title.dart';
 import 'package:coffeecard/widgets/components/settings_group.dart';
@@ -59,6 +62,26 @@ class CreditsPage extends StatelessWidget {
             SettingsGroup(
               title: Strings.aboutAnalogIO,
               listItems: [
+                Container(
+                  color: AppColor.white,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const AnalogIOLogo(),
+                        const Gap(16),
+                        Flexible(
+                          child: Text(
+                            Strings.analogIOBody,
+                            overflow: TextOverflow.visible,
+                            style: AppTextStyle.explainer,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
                 SettingListEntry(
                   name: Strings.github,
                   onTap: () => launchURL(CoffeeCardApiConstants.analogIOGitHub),

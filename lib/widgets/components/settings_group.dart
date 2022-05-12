@@ -1,12 +1,11 @@
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/widgets/components/section_title.dart';
-import 'package:coffeecard/widgets/components/settings_list_entry.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 class SettingsGroup extends StatelessWidget {
   final String title;
-  final List<SettingListEntry> listItems;
+  final List<Widget> listItems;
   final String? description;
 
   const SettingsGroup({
