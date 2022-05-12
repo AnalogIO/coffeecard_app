@@ -17,7 +17,10 @@ class ContributorCard extends StatelessWidget {
     return Tappable(
       onTap: () => launchURL(contributor.githubUrl),
       child: Container(
-        color: AppColor.white,
+        decoration: const BoxDecoration(
+          color: AppColor.white,
+          border: Border(bottom: BorderSide(color: AppColor.lightGray)),
+        ),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
           child: Row(
@@ -44,7 +47,7 @@ class ContributorCard extends StatelessWidget {
                   ),
                 ),
               ),
-              const Gap(4),
+              const Gap(8),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

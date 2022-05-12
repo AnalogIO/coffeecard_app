@@ -33,7 +33,7 @@ class CreditsPage extends StatelessWidget {
             BlocBuilder<ContributorCubit, ContributorState>(
               builder: (context, state) {
                 if (state is ContributorLoading) {
-                  return const CircularProgressIndicator();
+                  return const LinearProgressIndicator();
                 } else if (state is ContributorLoaded) {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,7 +63,11 @@ class CreditsPage extends StatelessWidget {
               title: Strings.aboutAnalogIO,
               listItems: [
                 Container(
-                  color: AppColor.white,
+                  decoration: const BoxDecoration(
+                    color: AppColor.white,
+                    border:
+                        Border(bottom: BorderSide(color: AppColor.lightGray)),
+                  ),
                   child: Padding(
                     padding: const EdgeInsets.all(16),
                     child: Row(
@@ -75,7 +79,7 @@ class CreditsPage extends StatelessWidget {
                           child: Text(
                             Strings.analogIOBody,
                             overflow: TextOverflow.visible,
-                            style: AppTextStyle.explainer,
+                            style: AppTextStyle.settingKey,
                           ),
                         )
                       ],
