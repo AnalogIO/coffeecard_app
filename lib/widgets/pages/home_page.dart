@@ -48,6 +48,15 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<bool> onWillPop() async {
+    // If back arrow is present on page, go back in the current flow
+    {
+      final currentFlow = _navFlowsStack.last;
+      final currentNavigator = _pages[currentFlow].navigatorKey.currentState!;
+      if (currentNavigator.canPop()) {
+        return true;
+      }
+    }
+
     if (_navFlowsStack.removeLast() == 0) {
       return true;
     }
