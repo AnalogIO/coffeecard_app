@@ -47,7 +47,6 @@ class _HomePageState extends State<HomePage> {
       ..add(newFlowIndex);
   }
 
-  // When back button is pressed (Android devices)
   Future<bool> onWillPop() async {
     // If back arrow is present on page, go back in the current flow
     {
