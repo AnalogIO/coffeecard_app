@@ -1,9 +1,9 @@
-import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/cubits/statistics/statistics_cubit.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/models/api/api_error.dart';
 import 'package:coffeecard/models/leaderboard_user.dart';
 import 'package:coffeecard/utils/either.dart';
+import 'package:coffeecard/utils/extensions.dart';
 import 'package:logger/logger.dart';
 
 extension _FilterCategoryToPresetInteger on StatisticsFilterCategory {
@@ -31,7 +31,7 @@ class LeaderboardRepository {
         response.body!.map((e) => LeaderboardUser.fromDTO(e)).toList(),
       );
     } else {
-      _logger.e(Strings.formatApiError(response.statusCode, response.error));
+      _logger.e(response.formatError());
       return Left(ApiError(response.error.toString()));
     }
   }

@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/data/api/coffee_card_api_constants.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
@@ -10,6 +9,7 @@ import 'package:coffeecard/models/account/user.dart';
 import 'package:coffeecard/models/api/api_error.dart';
 import 'package:coffeecard/models/api/unauthorized_error.dart';
 import 'package:coffeecard/utils/either.dart';
+import 'package:coffeecard/utils/extensions.dart';
 import 'package:crypto/crypto.dart' show sha256;
 import 'package:logger/logger.dart';
 
@@ -44,7 +44,7 @@ class AccountRepository {
     if (response.isSuccessful) {
       return const Right(null);
     } else {
-      _logger.e(Strings.formatApiError(response.statusCode, response.error));
+      _logger.e(response.formatError());
       return Left(UnauthorizedError(response.error.toString()));
     }
   }
@@ -67,7 +67,7 @@ class AccountRepository {
         AuthenticatedUser(email: email, token: response.body!.token!),
       );
     } else {
-      _logger.e(Strings.formatApiError(response.statusCode, response.error));
+      _logger.e(response.formatError());
       return Left(UnauthorizedError(response.error.toString()));
     }
   }
@@ -79,7 +79,7 @@ class AccountRepository {
       final user = User.fromDTO(response.body!);
       return Right(user);
     } else {
-      _logger.e(Strings.formatApiError(response.statusCode, response.error));
+      _logger.e(response.formatError());
       return Left(ApiError(response.error.toString()));
     }
   }
@@ -99,7 +99,7 @@ class AccountRepository {
       final user = User.fromDTO(response.body!);
       return Right(user);
     } else {
-      _logger.e(Strings.formatApiError(response.statusCode, response.error));
+      _logger.e(response.formatError());
       return Left(ApiError(response.error.toString()));
     }
   }
@@ -111,7 +111,7 @@ class AccountRepository {
     if (response.isSuccessful) {
       return const Right(null);
     } else {
-      _logger.e(Strings.formatApiError(response.statusCode, response.error));
+      _logger.e(response.formatError());
       return Left(ApiError(response.error.toString()));
     }
   }
@@ -121,7 +121,7 @@ class AccountRepository {
     if (response.isSuccessful) {
       return const Right(null);
     } else {
-      _logger.e(Strings.formatApiError(response.statusCode, response.error));
+      _logger.e(response.formatError());
       return Left(ApiError(response.error.toString()));
     }
   }
@@ -133,7 +133,7 @@ class AccountRepository {
     if (response.isSuccessful) {
       return Right(response.body!.emailExists);
     } else {
-      _logger.e(Strings.formatApiError(response.statusCode, response.error));
+      _logger.e(response.formatError());
       return Left(ApiError(response.error.toString()));
     }
   }

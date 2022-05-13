@@ -133,6 +133,6 @@ void configureServices() {
 
   // external
   sl.registerFactory<ContributorRepository>(
-    () => ContributorRepository(sl<Logger>()),
+    () => ContributorRepository(),
   );
 }

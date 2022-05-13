@@ -302,10 +302,6 @@ abstract class Strings {
     return 'Unknown filter category: $category';
   }
 
-  static String formatApiError(int statusCode, Object? error) {
-    return 'API Error $statusCode $error';
-  }
-
   static String invalidRoute(String c, String? route) {
     return '($c) Unknown route: $route';
   }
