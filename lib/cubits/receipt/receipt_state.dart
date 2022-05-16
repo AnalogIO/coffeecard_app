@@ -1,6 +1,7 @@
 part of 'receipt_cubit.dart';
 
 enum ReceiptFilterCategory { all, swipes, purchases }
+
 enum ReceiptStatus { initial, success, failure }
 
 extension DropdownName on ReceiptFilterCategory {
