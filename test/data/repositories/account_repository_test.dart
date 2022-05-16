@@ -15,7 +15,7 @@ import 'account_repository_test.mocks.dart';
 
 @GenerateMocks([CoffeecardApi, CoffeecardApiV2, Logger])
 void main() {
-  test('register_given_successfull_api_response_returns_right', () async {
+  test('register given successfull api response returns right', () async {
     final _coffeecardApi = MockCoffeecardApi();
 
     final _repository = AccountRepository(
@@ -37,7 +37,7 @@ void main() {
     expect(expected.isRight, actual.isRight);
   });
 
-  test('register_given_unsuccessfull_api_response_returns_left', () async {
+  test('register given unsuccessfull api response returns left', () async {
     final _coffeecardApi = MockCoffeecardApi();
 
     final _repository = AccountRepository(
