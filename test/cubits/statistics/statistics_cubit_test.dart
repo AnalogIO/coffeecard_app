@@ -40,7 +40,7 @@ void main() {
       build: () {
         when(_leaderboardRepository.getLeaderboard(any))
             .thenAnswer((_) => Future.value(const Right([])));
-        return statisticsCubit;
+        return statisticsCubit..fetchLeaderboards();
       },
       act: (cubit) => cubit.refreshLeaderboards(),
       expect: () => [
@@ -49,6 +49,17 @@ void main() {
           leaderboard: [],
         )
       ],
+    );
+
+    blocTest<StatisticsCubit, StatisticsState>(
+      'refreshLeaderboards fails assertion if fetchLeaderboards has not been called before',
+      build: () {
+        when(_leaderboardRepository.getLeaderboard(any))
+            .thenAnswer((_) => Future.value(const Right([])));
+        return statisticsCubit;
+      },
+      act: (cubit) => cubit.refreshLeaderboards(),
+      errors: () => [isA<AssertionError>()],
     );
 
     tearDown(() {
