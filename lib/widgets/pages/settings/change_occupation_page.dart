@@ -32,20 +32,20 @@ class ChangeOccupationPage extends StatelessWidget {
                   itemCount: userLoadedState.programmes.length,
                   itemBuilder: (context, index) {
                     userLoadedState.programmes
-                        .sort((a, b) => a.fullName!.compareTo(b.fullName!));
+                        .sort((a, b) => a.fullName.compareTo(b.fullName));
                     final programme = userLoadedState.programmes[index];
                     return SettingListEntry(
                       sideToExpand: ListEntrySide.right,
-                      name: '${programme.fullName!} (${programme.shortName!})',
+                      name: '${programme.fullName} (${programme.shortName})',
                       valueWidget: Radio(
-                        value: programme.shortName!,
+                        value: programme.shortName,
                         groupValue: userLoadedState.user.programme.shortName,
                         onChanged: (_) {},
                       ),
                       onTap: () {
                         context
                             .read<UserCubit>()
-                            .setUserProgramme(programme.id!);
+                            .setUserProgramme(programme.id);
                       },
                     );
                   },

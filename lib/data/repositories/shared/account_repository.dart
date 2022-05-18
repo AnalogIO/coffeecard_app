@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/data/api/coffee_card_api_constants.dart';
-import 'package:coffeecard/generated/api/coffeecard_api.swagger.swagger.dart';
-import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.swagger.dart';
+import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
+import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
 import 'package:coffeecard/models/account/authenticated_user.dart';
 import 'package:coffeecard/models/account/update_user.dart';
 import 'package:coffeecard/models/account/user.dart';
@@ -131,7 +131,7 @@ class AccountRepository {
       body: EmailExistsRequest(email: email),
     );
     if (response.isSuccessful) {
-      return Right(response.body!.emailExists!);
+      return Right(response.body!.emailExists);
     } else {
       _logger.e(Strings.formatApiError(response));
       return Left(ApiError(response.error.toString()));

@@ -1,4 +1,4 @@
-import 'package:coffeecard/generated/api/coffeecard_api.swagger.swagger.dart';
+import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:equatable/equatable.dart';
 
 class LeaderboardUser extends Equatable {

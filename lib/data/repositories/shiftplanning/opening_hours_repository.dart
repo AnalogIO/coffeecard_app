@@ -1,5 +1,5 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/generated/api/shiftplanning_api.swagger.swagger.dart';
+import 'package:coffeecard/generated/api/shiftplanning_api.swagger.dart';
 import 'package:coffeecard/models/api/api_error.dart';
 import 'package:coffeecard/utils/either.dart';
 import 'package:logger/logger.dart';
@@ -16,7 +16,7 @@ class OpeningHoursRepository {
     );
 
     if (response.isSuccessful) {
-      return Right(response.body!.open!);
+      return Right(response.body!.open);
     } else {
       _logger.e(Strings.formatApiError(response));
       throw Left(ApiError(response.error.toString()));

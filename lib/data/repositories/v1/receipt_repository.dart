@@ -1,5 +1,5 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/generated/api/coffeecard_api.swagger.swagger.dart';
+import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/models/api/api_error.dart';
 import 'package:coffeecard/models/receipts/receipt.dart';
 import 'package:coffeecard/utils/either.dart';
@@ -26,12 +26,12 @@ class ReceiptRepository {
     if (usedTicketResponse.isSuccessful) {
       ticketReceipts = usedTicketResponse.body!.map(
         (ticket) => Receipt(
-          productName: ticket.productName!,
+          productName: ticket.productName,
           transactionType: TransactionType.ticketSwipe,
           price: 1,
           amountPurchased: 1,
-          timeUsed: ticket.dateUsed!,
-          id: ticket.id!,
+          timeUsed: ticket.dateUsed,
+          id: ticket.id,
         ),
       );
     } else {
@@ -44,12 +44,12 @@ class ReceiptRepository {
     if (purchaseResponse.isSuccessful) {
       purchaseReceipts = purchaseResponse.body!.map(
         (purchase) => Receipt(
-          productName: purchase.productName!,
+          productName: purchase.productName,
           transactionType: TransactionType.purchase,
-          price: purchase.price!,
-          amountPurchased: purchase.numberOfTickets!,
-          timeUsed: purchase.dateCreated!,
-          id: purchase.id!,
+          price: purchase.price,
+          amountPurchased: purchase.numberOfTickets,
+          timeUsed: purchase.dateCreated,
+          id: purchase.id,
         ),
       );
     } else {

@@ -14,10 +14,10 @@ import 'package:coffeecard/data/repositories/v1/voucher_repository.dart';
 import 'package:coffeecard/data/repositories/v2/app_config_repository.dart';
 import 'package:coffeecard/data/repositories/v2/purchase_repository.dart';
 import 'package:coffeecard/data/storage/secure_storage.dart';
-import 'package:coffeecard/generated/api/coffeecard_api.swagger.swagger.dart';
-import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.swagger.dart'
+import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
+import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart'
     hide $JsonSerializableConverter;
-import 'package:coffeecard/generated/api/shiftplanning_api.swagger.swagger.dart'
+import 'package:coffeecard/generated/api/shiftplanning_api.swagger.dart'
     hide $JsonSerializableConverter;
 import 'package:coffeecard/utils/reactivation_authenticator.dart';
 import 'package:get_it/get_it.dart';

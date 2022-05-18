@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:coffeecard/data/repositories/shared/account_repository.dart';
 import 'package:coffeecard/data/repositories/v1/programme_repository.dart';
-import 'package:coffeecard/generated/api/coffeecard_api.swagger.swagger.dart';
+import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/models/account/update_user.dart';
 import 'package:coffeecard/models/account/user.dart';
 import 'package:equatable/equatable.dart';
@@ -78,7 +78,7 @@ class UserCubit extends Cubit<UserState> {
     emit(
       UserLoaded(
         user: user.copyWith(
-          programme: ProgrammeInfo(programme.shortName!, programme.fullName!),
+          programme: ProgrammeInfo(programme.shortName, programme.fullName),
         ),
         programmes: programmes,
       ),
