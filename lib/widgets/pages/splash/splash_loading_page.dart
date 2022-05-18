@@ -1,5 +1,5 @@
 import 'package:coffeecard/base/style/colors.dart';
-import 'package:coffeecard/widgets/analog_logo.dart';
+import 'package:coffeecard/widgets/components/images/analog_logo.dart';
 import 'package:flutter/material.dart';
 
 class SplashLoadingPage extends StatelessWidget {

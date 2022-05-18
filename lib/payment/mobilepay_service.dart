@@ -7,14 +7,13 @@ import 'package:coffeecard/models/purchase/payment.dart';
 import 'package:coffeecard/models/purchase/payment_status.dart';
 import 'package:coffeecard/payment/payment_handler.dart';
 import 'package:coffeecard/utils/either.dart';
-import 'package:logger/logger.dart';
+import 'package:coffeecard/utils/launch.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MobilePayService implements PaymentHandler {
   final PurchaseRepository _repository;
-  final Logger _logger;
 
-  MobilePayService(this._repository, this._logger);
+  MobilePayService(this._repository);
 
   @override
   Future<Either<ApiError, Payment>> initPurchase(int productId) async {
@@ -57,11 +56,7 @@ class MobilePayService implements PaymentHandler {
         throw 'Could not launch $mobilePayDeeplink';
       }
 
-      if (await canLaunchUrl(url)) {
-        await launchUrl(url);
-      } else {
-        _logger.i('could not launch $url');
-      }
+      launchURL(url);
     }
   }
 

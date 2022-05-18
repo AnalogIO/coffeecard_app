@@ -7,4 +7,6 @@ class CoffeeCardApiConstants {
   static const String apiVersion = '1';
 
   static const String minAppVersion = '2.1.0';
+
+  static Uri analogIOGitHub = Uri.parse('https://github.com/AnalogIO/');
 }

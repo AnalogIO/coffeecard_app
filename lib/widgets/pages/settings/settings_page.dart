@@ -12,6 +12,7 @@ import 'package:coffeecard/widgets/components/settings_list_entry.dart';
 import 'package:coffeecard/widgets/components/user_card.dart';
 import 'package:coffeecard/widgets/pages/settings/change_email_page.dart';
 import 'package:coffeecard/widgets/pages/settings/change_passcode_page.dart';
+import 'package:coffeecard/widgets/pages/settings/credits_page.dart';
 import 'package:coffeecard/widgets/pages/settings/opening_hours_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -155,6 +156,10 @@ class SettingsPage extends StatelessWidget {
                     );
                   },
                 ),
+              ),
+              SettingListEntry(
+                name: Strings.credits,
+                onTap: () => Navigator.push(context, CreditsPage.route),
               ),
             ],
           ),

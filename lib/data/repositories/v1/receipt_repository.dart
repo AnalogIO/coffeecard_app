@@ -1,8 +1,8 @@
-import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/models/api/api_error.dart';
 import 'package:coffeecard/models/receipts/receipt.dart';
 import 'package:coffeecard/utils/either.dart';
+import 'package:coffeecard/utils/extensions.dart';
 import 'package:logger/logger.dart';
 
 class ReceiptRepository {
@@ -36,7 +36,7 @@ class ReceiptRepository {
       );
     } else {
       _logger.e(
-        Strings.formatApiError(usedTicketResponse),
+        usedTicketResponse.formatError(),
       );
       return Left(ApiError(usedTicketResponse.error.toString()));
     }
@@ -54,7 +54,7 @@ class ReceiptRepository {
       );
     } else {
       _logger.e(
-        Strings.formatApiError(purchaseResponse),
+        purchaseResponse.formatError(),
       );
       return Left(ApiError(purchaseResponse.error.toString()));
     }

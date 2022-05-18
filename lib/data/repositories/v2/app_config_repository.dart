@@ -1,9 +1,9 @@
 import 'package:chopper/chopper.dart';
-import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
 import 'package:coffeecard/models/api/api_error.dart';
 import 'package:coffeecard/models/environment.dart';
 import 'package:coffeecard/utils/either.dart';
+import 'package:coffeecard/utils/extensions.dart';
 import 'package:logger/logger.dart';
 
 class AppConfigRepository {
@@ -43,7 +43,7 @@ class AppConfigRepository {
 
       return Right(environment);
     } else {
-      _logger.e(Strings.formatApiError(response));
+      _logger.e(response.formatError());
       return Left(ApiError(response.error.toString()));
     }
   }

@@ -1,5 +1,3 @@
-import 'package:chopper/chopper.dart';
-
 abstract class Strings {
   static const appTitle = 'Cafe Analog';
 
@@ -223,6 +221,7 @@ abstract class Strings {
   static const change = 'Change';
   static const logOut = 'Log out';
   static const deleteAccount = 'Delete account';
+  static const credits = 'Credits';
 
   static const emailShimmerText = 'sample@sample.com';
   static const openingHoursShimmerText = 'Somedays: 8-16';
@@ -270,6 +269,16 @@ abstract class Strings {
   static const madeBy = 'Made with ❤ by AnalogIO\nIT University of Copenhagen';
   static const userID = 'User ID';
 
+  // Credits
+  static const appTeam = 'App team';
+  static const aboutAnalogIO = 'About AnalogIO';
+  static const analogIOBody =
+      "AnalogIO is a group of volunteer software students, supporting the student organization Cafe Analog.\n\nWe create and maintain backend systems, apps and websites for both customers and baristas of the cafe.\n\nWant to help? Have any feedback? Don't hesitate to contact us.";
+  static const github = 'GitHub';
+  static const sendUsAnEmail = 'Send us an email';
+  static const licenses = 'Licenses';
+  static const viewLicenses = 'View licenses';
+
   // Time since utility
   static const justNow = 'Just now';
   static const minutesAgo = 'minutes $ago';
@@ -291,10 +300,6 @@ abstract class Strings {
 
   static String unknownFilterCategory(Object category) {
     return 'Unknown filter category: $category';
-  }
-
-  static String formatApiError(Response response) {
-    return 'API Error ${response.statusCode} ${response.error}';
   }
 
   static String invalidRoute(String c, String? route) {
