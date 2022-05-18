@@ -1,5 +1,5 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/generated/api/coffeecard_api.swagger.swagger.dart';
+import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/models/api/api_error.dart';
 import 'package:coffeecard/models/voucher/redeemed_voucher.dart';
 import 'package:coffeecard/utils/either.dart';
@@ -21,8 +21,8 @@ class VoucherRepository {
     if (response.isSuccessful) {
       final body = response.body!;
       final redeemedVoucher = RedeemedVoucher(
-        numberOfTickets: body.numberOfTickets!,
-        productName: body.productName!,
+        numberOfTickets: body.numberOfTickets,
+        productName: body.productName,
       );
       return Right(redeemedVoucher);
     } else if (response.statusCode == 404) {

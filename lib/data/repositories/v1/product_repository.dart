@@ -1,5 +1,5 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/generated/api/coffeecard_api.swagger.swagger.dart';
+import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/models/api/api_error.dart';
 import 'package:coffeecard/models/ticket/product.dart';
 import 'package:coffeecard/utils/either.dart';

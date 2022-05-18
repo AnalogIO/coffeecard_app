@@ -1,4 +1,4 @@
-import 'package:coffeecard/generated/api/coffeecard_api.swagger.swagger.dart';
+import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:equatable/equatable.dart';
 
 class User extends Equatable {
@@ -25,15 +25,15 @@ class User extends Equatable {
   });
 
   User.fromDTO(UserDto dto)
-      : id = dto.id!,
-        name = dto.name!,
-        email = dto.email!,
-        privacyActivated = dto.privacyActivated!,
-        programmeId = dto.programmeId!,
+      : id = dto.id,
+        name = dto.name,
+        email = dto.email,
+        privacyActivated = dto.privacyActivated,
+        programmeId = dto.programmeId,
         programme = const ProgrammeInfo('None', 'None'),
-        rankMonth = dto.rankMonth!,
-        rankSemester = dto.rankSemester!,
-        rankTotal = dto.rankAllTime!;
+        rankMonth = dto.rankMonth,
+        rankSemester = dto.rankSemester,
+        rankTotal = dto.rankAllTime;
 
   User copyWith({
     int? id,

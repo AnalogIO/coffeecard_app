@@ -883,6 +883,7 @@
           },
           "dateUsed": {
             "type": "string",
+            "nullable": true,
             "description": "Used date time for ticket in Utc format",
             "format": "date-time",
             "minLength": 1,

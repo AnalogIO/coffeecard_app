@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:coffeecard/data/repositories/v2/purchase_repository.dart';
-import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.swagger.dart';
+import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
 import 'package:coffeecard/models/api/api_error.dart';
 import 'package:coffeecard/models/purchase/payment.dart';
 import 'package:coffeecard/models/purchase/payment_status.dart';
@@ -29,36 +29,36 @@ class MobilePayService implements PaymentHandler {
 
       return Right(
         Payment(
-          id: purchaseResponse.id!,
+          id: purchaseResponse.id,
           paymentId: paymentDetails.paymentId!,
           status: PaymentStatus.awaitingPayment,
           deeplink: paymentDetails.mobilePayAppRedirectUri!,
-          purchaseTime: purchaseResponse.dateCreated!,
-          price: purchaseResponse.totalAmount!,
+          purchaseTime: purchaseResponse.dateCreated,
+          price: purchaseResponse.totalAmount,
         ),
       );
     }
     return Left(response.left);
   }
 
-  Future<void> invokeMobilePay(String mobilePayDeeplink) async {
-    if (await canLaunch(mobilePayDeeplink)) {
-      await launch(mobilePayDeeplink, forceSafariVC: false);
+  Future<void> invokeMobilePay(Uri mobilePayDeeplink) async {
+    if (await canLaunchUrl(mobilePayDeeplink)) {
+      await launchUrl(mobilePayDeeplink);
     } else {
-      final String url;
+      final Uri url;
 
       // MobilePay not installed, send user to appstore
       if (Platform.isAndroid) {
         //FIXME: should these URL's be stored somewhere?
-        url = 'market://details?id=dk.danskebank.mobilepay';
+        url = Uri.parse('market://details?id=dk.danskebank.mobilepay');
       } else if (Platform.isIOS) {
-        url = 'itms-apps://itunes.apple.com/app/id624499138';
+        url = Uri.parse('itms-apps://itunes.apple.com/app/id624499138');
       } else {
         throw 'Could not launch $mobilePayDeeplink';
       }
 
-      if (await canLaunch(url)) {
-        await launch(url);
+      if (await canLaunchUrl(url)) {
+        await launchUrl(url);
       } else {
         _logger.i('could not launch $url');
       }

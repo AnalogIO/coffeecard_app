@@ -1,6 +1,6 @@
 import 'package:chopper/chopper.dart';
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.swagger.dart';
+import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
 import 'package:coffeecard/models/api/api_error.dart';
 import 'package:coffeecard/models/environment.dart';
 import 'package:coffeecard/utils/either.dart';

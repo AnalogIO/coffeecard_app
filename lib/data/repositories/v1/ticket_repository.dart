@@ -1,6 +1,6 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/generated/api/coffeecard_api.swagger.swagger.dart';
-import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.swagger.dart';
+import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
+import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
 import 'package:coffeecard/models/api/api_error.dart';
 import 'package:coffeecard/models/receipts/receipt.dart';
 import 'package:coffeecard/models/ticket/ticket_count.dart';
@@ -25,9 +25,9 @@ class TicketRepository {
           .entries
           .map(
             (e) => TicketCount(
-              productName: e.key!,
+              productName: e.key,
               count: e.value.length,
-              productId: e.value.first.productId!,
+              productId: e.value.first.productId,
             ),
           )
           .sortedBy<num>((e) => e.productId)
@@ -48,10 +48,10 @@ class TicketRepository {
       final ticketDto = response.body!;
       return Right(
         Receipt(
-          productName: ticketDto.productName!,
-          id: ticketDto.id!,
+          productName: ticketDto.productName,
+          id: ticketDto.id,
           transactionType: TransactionType.ticketSwipe,
-          timeUsed: ticketDto.dateUsed!,
+          timeUsed: ticketDto.dateUsed,
           //TODO Find a better alternative to these default values.
           // They unused on the receipt overlay
           amountPurchased: -1,
