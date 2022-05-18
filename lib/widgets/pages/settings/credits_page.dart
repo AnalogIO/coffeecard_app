@@ -43,9 +43,7 @@ class CreditsPage extends StatelessWidget {
                         padding: EdgeInsets.symmetric(horizontal: 16),
                         child: SectionTitle(Strings.appTeam),
                       ),
-                      ...state.contributors
-                          .map((e) => ContributorCard(e))
-                          .toList(),
+                      ...state.contributors.map((e) => ContributorCard(e))
                     ],
                   );
                 } else if (state is ContributorError) {
@@ -69,12 +67,12 @@ class CreditsPage extends StatelessWidget {
                         Border(bottom: BorderSide(color: AppColor.lightGray)),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(24),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const AnalogIOLogo(),
-                        const Gap(16),
+                        const Gap(24),
                         Flexible(
                           child: Text(
                             Strings.analogIOBody,
@@ -99,6 +97,7 @@ class CreditsPage extends StatelessWidget {
               title: Strings.licenses,
               listItems: [SettingListEntry(name: Strings.viewLicenses)],
             ),
+            const Gap(36),
           ],
         ),
       ),

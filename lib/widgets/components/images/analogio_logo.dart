@@ -7,7 +7,7 @@ class AnalogIOLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: deviceIsSmall(context) ? 52 : 78,
+      height: deviceIsSmall(context) ? 86 : 100,
       child: Image.asset('assets/analogio_logo.png'),
     );
   }
