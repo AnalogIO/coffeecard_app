@@ -17,7 +17,7 @@
   },
   "servers": [
     {
-      "url": "https://api-test.analogio.dk/coffeecard"
+      "url": "https://beta.analogio.dk/api/clippy"
     }
   ],
   "paths": {
@@ -121,9 +121,9 @@
         "parameters": [
           {
             "name": "x-mobilepay-signature",
-            "x-originalName": "signature",
+            "x-originalName": "mpSignatureHeader",
             "in": "header",
-            "description": "Webhook signature",
+            "description": "Webhook mpSignatureHeader",
             "schema": {
               "type": "string"
             },
