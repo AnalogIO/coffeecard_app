@@ -23,7 +23,7 @@ class PurchaseCubit extends Cubit<PurchaseState> {
   Future<void> payWithMobilePay() async {
     if (state is PurchaseInitial) {
       emit(const PurchaseStarted());
-      //FIXME: Consider if cast can be removed/ abstracted away
+      //TODO: Consider if cast can be removed/ abstracted away
       final MobilePayService service = paymentHandler as MobilePayService;
 
       final either = await service.initPurchase(product.id);

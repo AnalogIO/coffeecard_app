@@ -20,7 +20,7 @@ class LeaderboardListView extends StatelessWidget {
     final userRank = _getUserRank(userState.user, statsState.filterBy);
     final userInLeaderboard = userRank <= leaderboard.length;
     if (!userInLeaderboard) {
-      // FIXME: how can we access an individual's score by id?
+      // TODO: how can we access an individual's score by id?
       leaderboard.add(LeaderboardUser(name: userState.user.name, score: 0));
     }
 

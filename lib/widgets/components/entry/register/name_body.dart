@@ -119,7 +119,7 @@ class _NameBodyState extends State<NameBody> {
       );
       if (mounted) LoadingOverlay.of(context).hide();
     } on Exception catch (e) {
-      // FIXME wrong error type
+      // TODO wrong error type
       await appDialog(
         context: context,
         dismissible: false,

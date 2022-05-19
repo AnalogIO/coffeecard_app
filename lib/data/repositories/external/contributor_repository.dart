@@ -4,7 +4,7 @@ import 'package:coffeecard/utils/either.dart';
 
 class ContributorRepository {
   Future<Either<ApiError, List<Contributor>>> getContributors() async {
-    //FIXME: fetch data from API when available
+    //TODO: fetch data from API when available
     return Future.value(
       Right([
         Contributor(

@@ -9,4 +9,10 @@ class CoffeeCardApiConstants {
   static const String minAppVersion = '2.1.0';
 
   static Uri analogIOGitHub = Uri.parse('https://github.com/AnalogIO/');
+
+  // mobilepay urls
+  static Uri mobilepayAndroid =
+      Uri.parse('market://details?id=dk.danskebank.mobilepay');
+  static Uri mobilepayIOS =
+      Uri.parse('itms-apps://itunes.apple.com/app/id624499138');
 }
