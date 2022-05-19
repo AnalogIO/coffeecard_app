@@ -93,9 +93,17 @@ class CreditsPage extends StatelessWidget {
                 ),
               ],
             ),
-            const SettingsGroup(
+            SettingsGroup(
               title: Strings.licenses,
-              listItems: [SettingListEntry(name: Strings.viewLicenses)],
+              listItems: [
+                SettingListEntry(
+                  name: Strings.viewLicenses,
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const LicensePage()),
+                  ),
+                ),
+              ],
             ),
             const Gap(36),
           ],
