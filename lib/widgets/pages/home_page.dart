@@ -80,7 +80,8 @@ class _HomePageState extends State<HomePage> {
     {
       final scrollController = _pages[index].scrollController;
       final ms = () {
-        final d = max(1, scrollController.position.pixels); // Don't div by zero
+        // We divide by d in the next line, so make sure it cannot be zero
+        final d = max(1, scrollController.position.pixels);
         final t = ((1 - 150 / d) * 1500).ceil();
         return max(t, 100);
       }();

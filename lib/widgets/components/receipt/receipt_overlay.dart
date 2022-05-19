@@ -9,7 +9,8 @@ import 'package:gap/gap.dart';
 import 'package:screen_brightness/screen_brightness.dart';
 
 class ReceiptOverlay {
-  //TODO see if a more generic version can be made that supports both the loading overlay and this one
+  // TODO: see if a more generic version can be made
+  //  that supports both the loading overlay and this one
   BuildContext _context;
 
   void hide() {

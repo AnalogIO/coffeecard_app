@@ -30,8 +30,8 @@ Future<Payment?> showPurchaseOverlay({
               listener: (context, state) async {
                 if (state is PurchaseCompleted) {
                   final payment = state.payment;
-                  payment.productName =
-                      product.name; //TODO Receive this from backend
+                  // TODO: Receive this from backend
+                  payment.productName = product.name;
                   Navigator.pop<Payment>(context, payment);
                 }
               },

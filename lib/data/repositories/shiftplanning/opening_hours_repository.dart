@@ -24,7 +24,7 @@ class OpeningHoursRepository {
   }
 
   Future<Either<ApiError, Map<int, String>>> getOpeningHours() async {
-    //TODO: fetch data when available
+    // TODO: fetch data when available
     const String normalOperation = '8.00-16:00';
     const String shortDayOperation = '8.00-14:00';
     const String closed = 'Closed';

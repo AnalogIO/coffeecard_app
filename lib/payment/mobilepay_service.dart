@@ -76,7 +76,7 @@ class MobilePayService implements PaymentHandler {
       if (status == PaymentStatus.completed) {
         return const Right(PaymentStatus.completed);
       }
-      //TODO Cover more cases for PaymentStatus
+      // TODO: Cover more cases for PaymentStatus
       return const Right(PaymentStatus.error);
     }
 
@@ -95,7 +95,8 @@ class MobilePayService implements PaymentHandler {
       case 'Captured':
         status = PaymentStatus.completed;
         break;
-      default: //cancelledByMerchant, cancelledBySystem, cancelledByUser
+      // Cases (cancelledByMerchant, cancelledBySystem, cancelledByUser)
+      default:
         status = PaymentStatus.rejectedPayment;
         break;
     }

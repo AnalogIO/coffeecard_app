@@ -15,7 +15,9 @@ class SettingsGroup extends StatelessWidget {
   });
 
   List<Widget> get _groupDescription {
-    final description = this.description; // Needed for promotion
+    // Needed for promotion
+    final description = this.description;
+
     if (description == null) return [];
     return [
       Padding(

@@ -20,7 +20,7 @@ class TicketRepository {
 
     if (response.isSuccessful) {
       final ticketCount = response.body!
-          //Groups all products by their id, and returns the amount of products for each id, and their name
+          // Groups all products by their id, and returns the amount of products for each id, and their name
           .groupListsBy((t) => t.productName)
           .entries
           .map(
@@ -52,8 +52,8 @@ class TicketRepository {
           id: ticketDto.id,
           transactionType: TransactionType.ticketSwipe,
           timeUsed: ticketDto.dateUsed,
-          //TODO Find a better alternative to these default values.
-          // They unused on the receipt overlay
+          // TODO: Find a better alternative to these default values.
+          //  They are unused on the receipt overlay
           amountPurchased: -1,
           price: -1,
         ),

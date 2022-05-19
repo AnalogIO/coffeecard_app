@@ -35,7 +35,7 @@ class ReceiptListEntry extends StatelessWidget {
       tappable: receipt.transactionType != TransactionType.placeholder,
       openBuilder: (context, _) {
         return ViewReceiptPage(
-          //TODO consider if this should also take a receipt object instead
+          // TODO: consider if this should also take a receipt object instead
           name: receipt.productName,
           time: receipt.timeUsed,
           isPurchase: receipt.transactionType == TransactionType.purchase,

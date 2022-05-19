@@ -7,7 +7,8 @@ class Payment {
   final String deeplink;
   final int price;
   final DateTime purchaseTime;
-  String? productName; //TODO make not nullable, by receiving from backend
+  // TODO: make not nullable, by receiving from backend
+  String? productName;
 
   Payment({
     required this.id,

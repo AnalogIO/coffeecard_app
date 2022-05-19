@@ -20,7 +20,8 @@ class StatisticsCubit extends Cubit<StatisticsState> {
   }
 
   Future<void> refreshLeaderboards() async {
-    final state = this.state; // for promotion purposes
+    // For promotion purposes
+    final state = this.state;
     assert(
       state is StatisticsStateWithFilterCategory,
       'Attempted to fetch leaderboard with no filter category present',

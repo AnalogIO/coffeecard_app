@@ -45,7 +45,7 @@ void configureServices() {
   // Rest Client, Chopper client
   final _coffeCardChopper = ChopperClient(
     baseUrl: CoffeeCardApiConstants.betav2Url,
-    // TODO load the url from config files
+    // TODO: load the url from config files
     interceptors: [AuthenticationInterceptor(sl<SecureStorage>())],
     converter: $JsonSerializableConverter(),
     services: [
@@ -57,7 +57,7 @@ void configureServices() {
 
   final _shiftplanningChopper = ChopperClient(
     baseUrl: CoffeeCardApiConstants.shiftyUrl,
-    // TODO load the url from config files
+    // TODO: load the url from config files
     converter: $JsonSerializableConverter(),
     services: [ShiftplanningApi.create()],
     authenticator: sl.get<ReactivationAuthenticator>(),

@@ -26,8 +26,8 @@ class AccountRepository {
     return base64Encode(passcodeHash.bytes);
   }
 
-  // TODO Should probably have another return type in order to support
-  //      the intended registration flow?
+  // TODO: Should probably have another return type
+  //  in order to support the intended registration flow?
   Future<Either<UnauthorizedError, void>> register(
     String name,
     String email,

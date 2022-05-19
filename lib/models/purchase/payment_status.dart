@@ -1,8 +1,18 @@
 enum PaymentStatus {
-  completed, //payment is completed
-  error, //payment errored out
-  reserved, //payment is not yet complete
-  awaitingPayment, //user has not approved the purchase
-  rejectedPayment, //user has rejected payment
-  awaitingCompletionAfterRetry
+  /// Payment is completed
+  completed,
+
+  /// Payment errored out
+  error,
+
+  /// Payment is not yet complete
+  reserved,
+
+  // User has not approved the purchase
+  awaitingPayment,
+
+  // User has rejected payment
+  rejectedPayment,
+
+  awaitingCompletionAfterRetry,
 }
