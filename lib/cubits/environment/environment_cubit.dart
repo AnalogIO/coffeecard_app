@@ -13,8 +13,8 @@ class EnvironmentCubit extends Cubit<EnvironmentState> {
     final either = await _configRepository.getEnvironmentType();
 
     if (either.isRight) {
-      final isTest = either.right !=
-          Environment.production; //TODO handle potential other types better
+      // TODO: handle potential other types better
+      final isTest = either.right != Environment.production;
       emit(EnvironmentLoaded(isTestEnvironment: isTest));
     } else {
       emit(EnvironmentError());

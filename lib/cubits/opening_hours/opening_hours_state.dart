@@ -17,7 +17,9 @@ class OpeningHoursLoading extends OpeningHoursState {
 class OpeningHoursLoaded extends OpeningHoursState {
   const OpeningHoursLoaded({required this.isOpen, required this.openingHours});
   final bool isOpen;
-  final Map<int, String> openingHours; // Map<Datetime.weekday, String>
+
+  /// Opening hours in the format of Map<Datetime.weekday, String>
+  final Map<int, String> openingHours;
 
   @override
   List<Object?> get props => [isOpen, openingHours];

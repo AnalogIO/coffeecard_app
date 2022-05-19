@@ -47,7 +47,7 @@ class _PurchaseProcessState extends State<PurchaseProcess>
                 cubit.verifyPurchase();
               }
               if (state is PurchaseInitial) {
-                //Not related to previous check, hence a separate if statement
+                // Not related to previous check, hence a separate if statement
                 cubit.payWithMobilePay();
                 return makeLoadingDialog(
                   title: Strings.purchaseTalking,
@@ -78,7 +78,7 @@ class _PurchaseProcessState extends State<PurchaseProcess>
                   content: Text(state.message),
                 );
               } else {
-                //FIXME: message
+                // TODO: message
                 throw MatchCaseIncompleteException(
                   'Unmatched state for PurchaseState',
                 );

@@ -23,3 +23,5 @@ analyzer:
     missing_return: error
     dead_code: info
     argument_type_not_assignable: warning
+    todo: info
+    fixme: warning

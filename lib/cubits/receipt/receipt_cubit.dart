@@ -11,7 +11,7 @@ class ReceiptCubit extends Cubit<ReceiptState> {
 
   ReceiptCubit(this._repository) : super(ReceiptState());
 
-  Future<void> fetchReceipts(/*String? latestReciept*/) async {
+  Future<void> fetchReceipts() async {
     final either = await _repository.getUserReceipts();
 
     if (either.isRight) {

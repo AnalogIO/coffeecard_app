@@ -57,7 +57,8 @@ class _EmailButtonGroupState extends State<EmailButtonGroup> {
     } else {
       final either = await sl.get<AccountRepository>().emailExists(_email);
 
-      if (!mounted) return; // Needs to be checked after an async call.
+      // `mounted` needs to be checked after an async call.
+      if (!mounted) return;
 
       if (either.isRight) {
         if (either.right) {

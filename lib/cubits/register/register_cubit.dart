@@ -17,7 +17,7 @@ class RegisterCubit extends Cubit<RegisterState> {
     final either =
         await repository.register(state.name!, state.email!, state.passcode!);
 
-    // FIXME: Handle error by emitting new state instead of throwing?
+    // TODO: Handle error by emitting new state instead of throwing?
     if (either.isLeft) {
       throw Exception(either.left.message);
     }

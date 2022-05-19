@@ -6,7 +6,10 @@ import 'package:flutter/material.dart';
 
 class SingleCoffeeCard extends StatelessWidget {
   final String title;
-  final Map<String, int> options; //{"single": 17, "double": 20}
+
+  /// prices in the format {"single": 17, "double": 20}.
+  final Map<String, int> options;
+
   final int price;
   final Function() onTap;
 

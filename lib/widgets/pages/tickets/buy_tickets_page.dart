@@ -92,7 +92,8 @@ class BuyTicketsPage extends StatelessWidget {
       );
       if (!state.mounted) return;
       if (payment != null && payment.status == PaymentStatus.completed) {
-        Navigator.pop(context); //Sends the user back to the home-screen
+        // Send the user back to the home-screen.
+        Navigator.pop(context);
 
         final env = context.read<EnvironmentCubit>().state;
 

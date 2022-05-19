@@ -16,14 +16,14 @@ class PurchaseCubit extends Cubit<PurchaseState> {
       : super(const PurchaseInitial());
 
   Future<void> payWithApplePay() async {
-    //TODO implement me
+    // TODO: implement me
     throw UnimplementedError();
   }
 
   Future<void> payWithMobilePay() async {
     if (state is PurchaseInitial) {
       emit(const PurchaseStarted());
-      //FIXME: Consider if cast can be removed/ abstracted away
+      // TODO: Consider if cast can be removed/ abstracted away
       final MobilePayService service = paymentHandler as MobilePayService;
 
       final either = await service.initPurchase(product.id);
@@ -56,18 +56,20 @@ class PurchaseCubit extends Cubit<PurchaseState> {
         if (status == PaymentStatus.completed) {
           emit(PurchaseCompleted(payment.copyWith(status: status)));
         } else if (status == PaymentStatus.reserved) {
-          //NOTE, recursive call, potentially infinite.
-          //If payment has been reserved, i.e. approved by user
-          //we will keep checking the backend to verify payment has been captured
+          // NOTE, recursive call, potentially infinite.
+          // If payment has been reserved, i.e. approved by user
+          // we will keep checking the backend to verify payment has been captured
+
+          // Emit processing state to allow the verifyPurchase process again
           emit(
             PurchaseProcessing(
               payment.copyWith(status: status),
             ),
-          ); //Change to processing to allow the verifyPurchase process again
+          );
           verifyPurchase();
         } else {
           emit(PurchasePaymentRejected(payment.copyWith(status: status)));
-          //TODO Consider if more error handling is needed
+          // TODO: Consider if more error handling is needed
         }
       } else {
         emit(PurchaseError(either.left.message));

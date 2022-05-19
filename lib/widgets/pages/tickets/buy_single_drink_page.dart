@@ -72,7 +72,8 @@ class BuySingleDrinkPage extends StatelessWidget {
     State state,
   ) async {
     {
-      //TODO change this to just use a single endpoint, once the backend supports it
+      // TODO: change this to just use a single
+      //  endpoint, once the backend supports it
       final payment = await showModalBottomSheet<Payment>(
         context: context,
         barrierColor: AppColor.scrim,
@@ -89,7 +90,8 @@ class BuySingleDrinkPage extends StatelessWidget {
       );
       if (!state.mounted) return;
       if (payment != null && payment.status == PaymentStatus.completed) {
-        Navigator.pop(context); //Sends the user back to the home-screen
+        // Send the user back to the home-screen
+        Navigator.pop(context);
 
         context.read<TicketsCubit>().useTicket(product.id);
         context.read<ReceiptCubit>().fetchReceipts();

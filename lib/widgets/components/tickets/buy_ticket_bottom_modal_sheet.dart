@@ -115,10 +115,11 @@ class _BottomModalSheetButtonBarState
             );
 
             if (!mounted) return;
+            // Remove this bottom modal sheet.
             Navigator.pop<Payment>(
               context,
               payment,
-            ); //Removes this bottom modal sheet
+            );
           },
         ),
       ],

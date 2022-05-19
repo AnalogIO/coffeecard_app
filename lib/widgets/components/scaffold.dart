@@ -28,7 +28,8 @@ class AppScaffold extends StatelessWidget {
     required this.body,
   })  : title = Text(title, style: AppTextStyle.pageTitle),
         backgroundColor = AppColor.background,
-        appBarHeight = null; // Use default app bar height
+        // Use default app bar height
+        appBarHeight = null;
 
   /// A Scaffold with an empty, 48 dp tall app bar.
   ///
