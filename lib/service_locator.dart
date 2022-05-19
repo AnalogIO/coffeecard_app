@@ -44,7 +44,7 @@ void configureServices() {
 
   // Rest Client, Chopper client
   final _coffeCardChopper = ChopperClient(
-    baseUrl: CoffeeCardApiConstants.betav2Url,
+    baseUrl: CoffeeCardApiConstants.testUrl,
     // TODO: load the url from config files
     interceptors: [AuthenticationInterceptor(sl<SecureStorage>())],
     converter: $JsonSerializableConverter(),
