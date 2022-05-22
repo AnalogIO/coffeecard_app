@@ -7,9 +7,12 @@ on:
 jobs:
   build_and_test:
     uses: ./.github/workflows/flutter.yml
+
   build_ios:
     name: Build iOS App
     runs-on: macos-latest
+    needs: [build_and_test]
+
     steps:
       - name: Install the Apple certificate and provisioning profile
         env:
@@ -70,6 +73,8 @@ jobs:
   build_apk:
     name: Build Android App
     runs-on: ubuntu-latest
+    needs: [build_and_test]
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -151,7 +156,7 @@ jobs:
       - name: Upload to Google Play Store
         uses: r0adkll/upload-google-play@v1.0.16
         with:
-          serviceAccountJsonPlainText: ${{ PLAYSTORE_SERVICE_ACCOUNT_JSON }}
+          serviceAccountJsonPlainText: ${{ secrets.PLAYSTORE_SERVICE_ACCOUNT_JSON }}
           packageName: dk.analog.digitalclipcard
           releaseFile: app-release.apk
           track: internal
