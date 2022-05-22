@@ -1,12 +1,12 @@
 name: Build And Release Coffeecard App
 
 on:
-  workflow_run:
-    workflows: [Flutter build and test]
-    types: [completed]
+  push:
     branches: [develop, production, feature/jonas/prod-release-pipeline]
 
 jobs:
+  build_and_test:
+    uses: ./.github/workflows/flutter.yml
   build_ios:
     name: Build iOS App
     runs-on: macos-latest

@@ -3,10 +3,10 @@ name: Flutter build and test
 on:
   pull_request:
     branches: [develop, production]
-  push:
-    branches: [develop, production]
 
   workflow_dispatch:
+
+  workflow_call:
 
 jobs:
   build-and-test:
