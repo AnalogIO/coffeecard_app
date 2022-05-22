@@ -153,11 +153,20 @@ jobs:
         uses: actions/download-artifact@v3.0.0
         with:
           name: android
+      - name: Sign Android APK
+        uses: r0adkll/sign-android-release@v1
+        id: sign_app
+        with:
+          releaseDirectory: .
+          signingKeyBase64: ${{ secrets.ANDROID_KEYSTORE }}
+          alias: ${{ secrets.ANDROID_KEY_ALIAS }}
+          keyStorePassword: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          keyPassword: ${{ secrets.ANDROID_KEY_PASSWORD }}
       - name: Upload to Google Play Store
         uses: r0adkll/upload-google-play@v1.0.16
         with:
           serviceAccountJsonPlainText: ${{ secrets.PLAYSTORE_SERVICE_ACCOUNT_JSON }}
           packageName: dk.analog.digitalclipcard
-          releaseFile: app-release.apk
+          releaseFiles: ${{ steps.sign_app.outputs.signedReleaseFile }}
           track: internal
           status: draft
