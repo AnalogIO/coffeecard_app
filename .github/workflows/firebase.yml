@@ -1,10 +1,10 @@
-name: Build And Deploy Coffeecard App To Firebase Distribution
+name: Build And Release Coffeecard App
 
 on:
   workflow_run:
     workflows: [Flutter build and test]
     types: [completed]
-    branches: [develop]
+    branches: [develop, production, feature/jonas/prod-release-pipeline]
 
 jobs:
   build_ios:
@@ -66,6 +66,7 @@ jobs:
         with:
           name: ios
           path: build/ios/ipa
+
   build_apk:
     name: Build Android App
     runs-on: ubuntu-latest
@@ -97,10 +98,12 @@ jobs:
         with:
           name: android
           path: build/app/outputs/apk/release
-  upload_ios:
+
+  dev_upload_ios:
     name: Upload iOS build to Firebase App Distribution
     runs-on: ubuntu-latest
     needs: [build_ios]
+    if: github.ref_name == 'develop'
 
     steps:
       - name: Download Artifact
@@ -114,10 +117,12 @@ jobs:
           token: ${{ secrets.FIREBASE_TOKEN }}
           groups: analogio-devs
           file: Analog.ipa
-  upload_apk:
+
+  dev_upload_apk:
     name: Upload Android build to Firebase App Distribution
     runs-on: ubuntu-latest
     needs: [build_apk]
+    if: github.ref_name == 'develop'
 
     steps:
       - name: Download artifact
@@ -131,3 +136,23 @@ jobs:
           token: ${{ secrets.FIREBASE_TOKEN }}
           groups: analogio-devs
           file: app-release.apk
+
+  prod_release_android:
+    name: Upload Android build to Play Store
+    runs-on: ubuntu-latest
+    needs: [build_apk]
+    # if: github.ref_name == 'production'
+
+    steps:
+      - name: Download artifact
+        uses: actions/download-aritifact@v3.0.0
+        with:
+          name: android
+      - name: Upload to Google Play Store
+        uses: r0adkll/upload-google-play@v1.0.16
+        with:
+          serviceAccountJsonPlainText: ${{ PLAYSTORE_SERVICE_ACCOUNT_JSON }}
+          packageName: dk.analog.digitalclipcard
+          releaseFile: app-release.apk
+          track: internal
+          status: draft
