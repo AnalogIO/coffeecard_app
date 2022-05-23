@@ -11,7 +11,7 @@
 	<key>provisioningProfiles</key>
 	<dict>
 		<key>DK.AnalogIO.DigitalCoffeeCard</key>
-		<string>cicd-iosdev</string>
+		<string>Analog_prod</string>
 	</dict>
 	<key>signingCertificate</key>
 	<string>Apple Development</string>
