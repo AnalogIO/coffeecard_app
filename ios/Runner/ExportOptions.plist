@@ -10,7 +10,7 @@
 	<string>development</string>
 	<key>provisioningProfiles</key>
 	<dict>
-		<key>DK-AnalogIO-DigitalCoffeeCard</key>
+		<key>DK.AnalogIO.DigitalCoffeeCard</key>
 		<string>cicd-iosdev</string>
 	</dict>
 	<key>signingCertificate</key>
