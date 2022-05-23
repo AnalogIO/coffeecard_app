@@ -168,7 +168,7 @@ jobs:
   prod_release_ios:
     name: Upload iOS build to App Store connect
     runs-on: macos-latest
-    needs: [build_apk]
+    needs: [build_ios]
     # if: github.ref_name == 'production'
 
     steps:
