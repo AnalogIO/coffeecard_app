@@ -164,6 +164,24 @@ jobs:
           token: ${{ secrets.FIREBASE_TOKEN }}
           groups: analogio-devs
           file: app-release.apk
+          
+  prod_release_ios:
+    name: Upload iOS build to App Store connect
+    runs-on: macos-latest
+    needs: [build_apk]
+    # if: github.ref_name == 'production'
+
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v3.0.0
+        with:
+          name: android
+      - name: Upload app to App Store Connect
+        env:
+          APP_STORE_CONNECT_USERNAME: ${{ secrets.APP_STORE_CONNECT_USERNAME }}
+          APP_STORE_CONNECT_PASSWORD: ${{ secrets.APP_STORE_CONNECT_PASSWORD }}
+        run: |
+          xcrun altool --upload-app -t ios -f "Analog.ipa" -u "$APP_STORE_CONNECT_USERNAME" -p "$APP_STORE_CONNECT_PASSWORD"
 
   prod_release_android:
     name: Upload Android build to Play Store
