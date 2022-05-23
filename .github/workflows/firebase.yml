@@ -39,6 +39,8 @@ jobs:
     needs: [build_and_test, version]
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
       - name: Install the Apple certificate and provisioning profile
         env:
           APPLE_IOS_SIGNING_CERT: ${{ secrets.APPLE_IOS_SIGNING_CERT_PROD }}
@@ -47,8 +49,6 @@ jobs:
           APPLE_KEYCHAIN_PW: ${{ secrets.APPLE_KEYCHAIN_PW }}
         # if: github.ref_name == 'develop'
         run: scripts/setup-certs.sh
-      - name: Checkout code
-        uses: actions/checkout@v2
       - name: Setup Java
         uses: actions/setup-java@v2.4.0
         with:
