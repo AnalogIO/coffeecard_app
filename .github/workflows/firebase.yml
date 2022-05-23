@@ -41,7 +41,7 @@ jobs:
     steps:
       - name: Install the Apple certificate and provisioning profile
         env:
-          APPLE_IOS_SIGNING_CERT: ${{ secrets.APPLE_IOS_SIGNING_CERT }}
+          APPLE_IOS_SIGNING_CERT: ${{ secrets.APPLE_IOS_SIGNING_CERT_PROD }}
           APPLE_IOS_SIGNING_CERT_PW: ${{ secrets.APPLE_IOS_SIGNING_CERT_PW }}
           APPLE_IOS_PROVISIONING_PROFILE: ${{ secrets.APPLE_IOS_PROVISIONING_PROFILE_PROD }}
           APPLE_KEYCHAIN_PW: ${{ secrets.APPLE_KEYCHAIN_PW }}
@@ -88,7 +88,7 @@ jobs:
       - name: Generate code
         run: scripts/.generate-code.sh code
       - name: Build iOS
-        run: flutter build ipa --release --export-options-plist=ios/Runner/ExportOptions.plist --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.increment }}
+        run: flutter build ipa --release --export-options-plist=ios/exportOptions.prod.plist --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.increment }}
       - name: Upload iOS build
         uses: actions/upload-artifact@v3.0.0
         with:
