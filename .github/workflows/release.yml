@@ -41,13 +41,21 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Install the Apple certificate and provisioning profile
+      - name: Install Apple certificate and provisioning profile (dev)
+        env:
+          APPLE_IOS_SIGNING_CERT: ${{ secrets.APPLE_IOS_SIGNING_CERT }}
+          APPLE_IOS_SIGNING_CERT_PW: ${{ secrets.APPLE_IOS_SIGNING_CERT_PW }}
+          APPLE_IOS_PROVISIONING_PROFILE: ${{ secrets.APPLE_IOS_PROVISIONING_PROFILE }}
+          APPLE_KEYCHAIN_PW: ${{ secrets.APPLE_KEYCHAIN_PW }}
+        if: github.ref_name == 'develop'
+        run: scripts/setup-certs.sh
+      - name: Install Apple certificate and provisioning profile (prod)
         env:
           APPLE_IOS_SIGNING_CERT: ${{ secrets.APPLE_IOS_SIGNING_CERT_PROD }}
           APPLE_IOS_SIGNING_CERT_PW: ${{ secrets.APPLE_IOS_SIGNING_CERT_PW }}
           APPLE_IOS_PROVISIONING_PROFILE: ${{ secrets.APPLE_IOS_PROVISIONING_PROFILE_PROD }}
           APPLE_KEYCHAIN_PW: ${{ secrets.APPLE_KEYCHAIN_PW }}
-        # if: github.ref_name == 'develop'
+        if: github.ref_name == 'production'
         run: scripts/setup-certs.sh
       - name: Setup Java
         uses: actions/setup-java@v2.4.0
@@ -67,7 +75,11 @@ jobs:
         run: echo $SERVICES_JSON > ios/Runner/GoogleService-Info.plist
       - name: Generate code
         run: scripts/.generate-code.sh code
-      - name: Build iOS
+      - name: Build iOS (dev)
+        if: github.ref_name == 'production'
+        run: flutter build ipa --release --export-options-plist=ios/exportOptions.dev.plist --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.increment }}
+      - name: Build iOS (prod)
+        if: github.ref_name == 'production'
         run: flutter build ipa --release --export-options-plist=ios/exportOptions.prod.plist --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.increment }}
       - name: Upload iOS build
         uses: actions/upload-artifact@v3.0.0
@@ -151,7 +163,7 @@ jobs:
     name: Upload iOS build to App Store connect
     runs-on: macos-latest
     needs: [build_ios]
-    # if: github.ref_name == 'production'
+    if: github.ref_name == 'production'
 
     steps:
       - name: Download artifact
@@ -169,7 +181,7 @@ jobs:
     name: Upload Android build to Play Store
     runs-on: ubuntu-latest
     needs: [build_apk]
-    # if: github.ref_name == 'production'
+    if: github.ref_name == 'production'
 
     steps:
       - name: Download artifact
