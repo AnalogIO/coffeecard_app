@@ -13,8 +13,10 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
       - name: Determine versioning
-        uses: paulhatch/semantic-version@v4.0.2
+        uses: paulhatch/semantic-version@v4.0.3
         id: versioning
         with:
           tag_prefix: v
@@ -84,7 +86,7 @@ jobs:
       - name: Generate code
         run: scripts/.generate-code.sh code
       - name: Build iOS
-        run: flutter build ipa --release --export-options-plist=ios/Runner/ExportOptions.plist --build-name --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.increment }}
+        run: flutter build ipa --release --export-options-plist=ios/Runner/ExportOptions.plist --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.increment }}
       - name: Upload iOS build
         uses: actions/upload-artifact@v3.0.0
         with:
