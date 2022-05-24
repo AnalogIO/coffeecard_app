@@ -25,10 +25,11 @@ class SettingsPage extends StatelessWidget {
 
   final ScrollController scrollController;
 
-  static Route routeWith({required ScrollController scrollController}) =>
-      MaterialPageRoute(
-        builder: (_) => SettingsPage(scrollController: scrollController),
-      );
+  static Route routeWith({required ScrollController scrollController}) {
+    return MaterialPageRoute(
+      builder: (_) => SettingsPage(scrollController: scrollController),
+    );
+  }
 
   /// Tappable only if user data has been loaded.
   void Function()? _ifUserStateLoaded(

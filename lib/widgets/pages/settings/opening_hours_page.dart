@@ -11,8 +11,9 @@ class OpeningHoursPage extends StatelessWidget {
 
   final OpeningHoursLoaded state;
 
-  static Route routeWith({required OpeningHoursLoaded state}) =>
-      MaterialPageRoute(builder: (_) => OpeningHoursPage(state: state));
+  static Route routeWith({required OpeningHoursLoaded state}) {
+    return MaterialPageRoute(builder: (_) => OpeningHoursPage(state: state));
+  }
 
   List<MapEntry<int, String>> get openingHours {
     return state.openingHours.entries.toList()

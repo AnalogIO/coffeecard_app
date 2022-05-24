@@ -12,10 +12,11 @@ class TicketsPage extends StatelessWidget {
 
   final ScrollController scrollController;
 
-  static Route routeWith({required ScrollController scrollController}) =>
-      MaterialPageRoute(
-        builder: (_) => TicketsPage(scrollController: scrollController),
-      );
+  static Route routeWith({required ScrollController scrollController}) {
+    return MaterialPageRoute(
+      builder: (_) => TicketsPage(scrollController: scrollController),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

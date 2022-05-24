@@ -8,7 +8,7 @@ import 'package:flutter/material.dart' hide FormState;
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-part 'app_text_field.dart';
+part 'form_text_field.dart';
 
 enum TextFieldType { text, email, passcode }
 
