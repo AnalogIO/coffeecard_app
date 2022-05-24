@@ -46,9 +46,9 @@ class _LoginPagePasscodeState extends State<LoginPagePasscode> {
             previous is LoginLoading || current is LoginLoading,
         listener: (context, state) {
           if (state is LoginLoading) {
-            LoadingOverlay.of(context).show();
+            showLoadingOverlay(context);
           } else {
-            LoadingOverlay.of(context).hide();
+            hideLoadingOverlay(context);
           }
         },
         buildWhen: (_, current) => current is! LoginLoading,

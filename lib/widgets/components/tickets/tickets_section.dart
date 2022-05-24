@@ -29,14 +29,14 @@ class TicketSection extends StatelessWidget {
                 Navigator.of(context, rootNavigator: true).pop();
               }
               // TODO: consider using a nicer loading indicator
-              LoadingOverlay.of(context).show();
+              showLoadingOverlay(context);
             } else if (state is TicketUsed) {
               // Refresh or load user info (for updated rank stats)
               // (also refreshes leaderboard)
               context.read<UserCubit>().fetchUserDetails();
 
               final envState = context.read<EnvironmentCubit>().state;
-              LoadingOverlay.of(context).hide();
+              hideLoadingOverlay(context);
               ReceiptOverlay.of(context).show(
                 receipt: state.receipt,
                 isTestEnvironment:

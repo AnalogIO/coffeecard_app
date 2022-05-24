@@ -1,5 +1,5 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/utils/email_utils.dart';
+import 'package:coffeecard/utils/email_is_valid.dart';
 import 'package:coffeecard/utils/fast_slide_transition.dart';
 import 'package:coffeecard/widgets/components/entry/login/login_cta.dart';
 import 'package:coffeecard/widgets/components/entry/login/login_email_text_field.dart';
