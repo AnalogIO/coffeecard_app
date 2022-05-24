@@ -36,11 +36,10 @@ jobs:
           format: "${major}.${minor}.${patch}-b${increment}"
           change_path: android/ ios/ lib/
           bump_each_commit: false
-          search_commit_body: true
-          user_format_type: "csv"
     outputs:
-      version: ${{ steps.versioning.outputs.version }}
       increment: ${{ steps.versioning.outputs.increment }}
+      version: ${{ steps.versioning.outputs.version }}
+      version_tag: ${{ steps.versioning.outputs.version_tag }}
 
   build_ios:
     name: Build iOS App
