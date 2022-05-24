@@ -103,9 +103,7 @@ jobs:
     if: ${{ needs.prod_release_ios.result == 'success' && needs.prod_release_android.result == 'success' }}
     steps:
       - name: Bump version and push tag
-        id: tag
-        uses: mathieudutour/github-tag-action@v6.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          default_bump: false
-          custom_tag: ${{ needs.build_and_test.outputs.version_tag }}
+        uses: anothrNick/github-tag-action@1.36.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CUSTOM_TAG: ${{ needs.build_and_test.outputs.version_tag }}
