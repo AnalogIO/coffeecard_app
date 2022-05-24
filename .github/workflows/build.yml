@@ -12,9 +12,9 @@ on:
         required: true
         type: boolean
 
-env:
-  FLUTTER_VERSION: 3.0.0
-  JAVA_VERSION: 11.x
+# env:
+#   FLUTTER_VERSION: 3.0.0
+#   JAVA_VERSION: 11.x
 
 jobs:
   version:
