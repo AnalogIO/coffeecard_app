@@ -9,6 +9,7 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       storeArtifacts: true
+    secrets: inherit
 
   dev_upload_ios:
     name: Upload iOS build to Firebase App Distribution
