@@ -6,6 +6,7 @@ import 'package:coffeecard/cubits/receipt/receipt_cubit.dart';
 import 'package:coffeecard/cubits/tickets/tickets_cubit.dart';
 import 'package:coffeecard/data/repositories/v1/product_repository.dart';
 import 'package:coffeecard/errors/match_case_incomplete_exception.dart';
+import 'package:coffeecard/models/environment.dart';
 import 'package:coffeecard/models/purchase/payment.dart';
 import 'package:coffeecard/models/purchase/payment_status.dart';
 import 'package:coffeecard/models/receipts/receipt.dart';
@@ -116,7 +117,7 @@ class BuyTicketsPage extends StatelessWidget {
         // Send the user back to the home-screen.
         Navigator.pop(context);
 
-        final env = context.read<EnvironmentCubit>().state;
+        final envState = context.read<EnvironmentCubit>().state;
 
         final updateTicketsRequest = context.read<TicketsCubit>().getTickets();
         final updateReceiptsRequest =
@@ -131,7 +132,8 @@ class BuyTicketsPage extends StatelessWidget {
             price: payment.price,
             id: product.id,
           ),
-          isTestEnvironment: env is EnvironmentLoaded && env.isTestEnvironment,
+          isTestEnvironment:
+              envState is EnvironmentLoaded && envState.env.isTest,
         );
         await updateTicketsRequest;
         await updateReceiptsRequest;
