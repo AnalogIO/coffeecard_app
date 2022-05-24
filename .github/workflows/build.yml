@@ -50,21 +50,21 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Install Apple certificate and provisioning profile (dev)
+        run: scripts/setup-certs.command
+        # if: github.ref_name == 'develop'
         env:
           APPLE_IOS_SIGNING_CERT: ${{ secrets.APPLE_IOS_SIGNING_CERT }}
           APPLE_IOS_SIGNING_CERT_PW: ${{ secrets.APPLE_IOS_SIGNING_CERT_PW }}
           APPLE_IOS_PROVISIONING_PROFILE: ${{ secrets.APPLE_IOS_PROVISIONING_PROFILE }}
           APPLE_KEYCHAIN_PW: ${{ secrets.APPLE_KEYCHAIN_PW }}
-#         if: github.ref_name == 'develop'
-        run: scripts/setup-certs.command
       - name: Install Apple certificate and provisioning profile (prod)
+        run: scripts/setup-certs.command
+        # if: github.ref_name == 'production'
         env:
           APPLE_IOS_SIGNING_CERT: ${{ secrets.APPLE_IOS_SIGNING_CERT_PROD }}
           APPLE_IOS_SIGNING_CERT_PW: ${{ secrets.APPLE_IOS_SIGNING_CERT_PW }}
           APPLE_IOS_PROVISIONING_PROFILE: ${{ secrets.APPLE_IOS_PROVISIONING_PROFILE_PROD }}
           APPLE_KEYCHAIN_PW: ${{ secrets.APPLE_KEYCHAIN_PW }}
-#         if: github.ref_name == 'production'
-        run: scripts/setup-certs.command
       - name: Setup Java
         uses: actions/setup-java@v2.4.0
         with:
