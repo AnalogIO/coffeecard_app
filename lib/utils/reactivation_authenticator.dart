@@ -74,16 +74,16 @@ class ReactivationAuthenticator extends Authenticator {
     Response response,
   ) async {
     final email = await secureStorage.readEmail();
-    final passcode = await secureStorage.readPasscode();
+    final encodedPasscode = await secureStorage.readEncodedPasscode();
 
-    if (email != null && passcode != null) {
+    if (email != null && encodedPasscode != null) {
       final accountRepository = serviceLocator.get<AccountRepository>();
 
       mutex.lock();
 
       // this call may return 401 which triggers a recursive call, use a guard
       try {
-        final either = await accountRepository.login(email, passcode);
+        final either = await accountRepository.login(email, encodedPasscode);
 
         if (either.isRight) {
           // refresh succeeded, update the token in secure storage
