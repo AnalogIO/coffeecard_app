@@ -1,3 +1,5 @@
+#! /bin/bash
+
 # create variables
 CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
 PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
