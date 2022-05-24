@@ -55,7 +55,7 @@ jobs:
           APPLE_IOS_SIGNING_CERT_PW: ${{ secrets.APPLE_IOS_SIGNING_CERT_PW }}
           APPLE_IOS_PROVISIONING_PROFILE: ${{ secrets.APPLE_IOS_PROVISIONING_PROFILE }}
           APPLE_KEYCHAIN_PW: ${{ secrets.APPLE_KEYCHAIN_PW }}
-        if: github.ref_name == 'develop'
+#         if: github.ref_name == 'develop'
         run: scripts/setup-certs.sh
       - name: Install Apple certificate and provisioning profile (prod)
         env:
