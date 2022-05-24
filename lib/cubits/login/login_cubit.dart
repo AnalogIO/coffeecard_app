@@ -1,5 +1,6 @@
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
 import 'package:coffeecard/data/repositories/shared/account_repository.dart';
+import 'package:coffeecard/utils/encode_passcode.dart';
 import 'package:coffeecard/utils/http_utils.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -49,15 +50,15 @@ class LoginCubit extends Cubit<LoginState> {
 
     emit(LoginLoading());
 
-    final passcode = _state.passcode;
-    final either = await accountRepository.login(email, passcode);
+    final encodedPasscode = encodePasscode(_state.passcode);
+    final either = await accountRepository.login(email, encodedPasscode);
 
     if (either.isRight) {
       final authenticatedUser = either.right;
 
       authenticationCubit.authenticated(
         authenticatedUser.email,
-        passcode,
+        encodedPasscode,
         authenticatedUser.token,
       );
     } else {

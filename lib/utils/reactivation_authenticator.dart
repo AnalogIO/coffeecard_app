@@ -83,10 +83,7 @@ class ReactivationAuthenticator extends Authenticator {
 
       // this call may return 401 which triggers a recursive call, use a guard
       try {
-        final either = await accountRepository.login(
-          email,
-          passcode,
-        );
+        final either = await accountRepository.login(email, passcode);
 
         if (either.isRight) {
           // refresh succeeded, update the token in secure storage
