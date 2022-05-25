@@ -9,8 +9,12 @@ on:
   workflow_call:
     inputs:
       storeArtifacts:
-        required: true
         type: boolean
+        required: true
+      prodRelease:
+        type: boolean
+        required: false
+        default: false
 
 env:
   FLUTTER_VERSION: 3.0.0
@@ -102,10 +106,10 @@ jobs:
         run: scripts/.generate-code.sh code
       - name: Build iOS (dev)
         if: github.ref_name == 'develop'
-        run: flutter build ipa --release --export-options-plist=ios/exportOptions.dev.plist --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_no }}
+        run: flutter build ipa --release --export-options-plist=ios/exportOptions.dev.plist --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_version }}
       - name: Build iOS (prod)
         # if: github.ref_name == 'production'
-        run: flutter build ipa --release --export-options-plist=ios/exportOptions.prod.plist --dart-define=IS_PROD=true --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_no }}
+        run: flutter build ipa --release --export-options-plist=ios/exportOptions.prod.plist --dart-define=IS_PROD=true --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_version }}
       - name: Upload iOS build
         if: ${{ inputs.storeArtifacts }}
         uses: actions/upload-artifact@v3.0.0
@@ -140,7 +144,7 @@ jobs:
       - name: Generate code
         run: scripts/.generate-code.sh code
       - name: Build APK
-        run: flutter build apk --dart-define=IS_PROD=true --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_no }}
+        run: flutter build apk --dart-define=IS_PROD=true --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_version }}
       - name: Upload Android build
         if: ${{ inputs.storeArtifacts }}
         uses: actions/upload-artifact@v3.0.0
