@@ -40,7 +40,7 @@ jobs:
         id: run_no
         run: |
           RUN_NO=$((${{ github.run_number }} + 100))
-          ::set-output name=run_no::$RUN_NO
+          echo "::set-output name=run_no::$RUN_NO"
       - name: Print versioning
         run: |
           echo "Version: $VERSION"
