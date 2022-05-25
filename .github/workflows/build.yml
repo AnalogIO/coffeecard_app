@@ -39,7 +39,7 @@ jobs:
       - name: Determine build version
         id: run_no
         run: |
-          RUN_NO=${{ github.run_number }} + 100
+          RUN_NO=$((${{ github.run_number }} + 100))
           ::set-output name=run_no::$RUN_NO
       - name: Print versioning
         run: |
