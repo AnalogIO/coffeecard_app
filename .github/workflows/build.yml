@@ -19,7 +19,6 @@ on:
 env:
   FLUTTER_VERSION: 3.0.0
   JAVA_VERSION: 11.x
-  IS_PROD_BUILD: ${{ github.ref_name }} == 'production'
 
 jobs:
   version:
@@ -73,7 +72,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Install Apple certificate and provisioning profile (dev)
         run: scripts/setup-certs.command
-        # if: github.ref_name == 'develop'
+        if: github.ref_name != 'production'
         env:
           APPLE_IOS_SIGNING_CERT: ${{ secrets.APPLE_IOS_SIGNING_CERT }}
           APPLE_IOS_SIGNING_CERT_PW: ${{ secrets.APPLE_IOS_SIGNING_CERT_PW }}
@@ -81,7 +80,7 @@ jobs:
           APPLE_KEYCHAIN_PW: ${{ secrets.APPLE_KEYCHAIN_PW }}
       - name: Install Apple certificate and provisioning profile (prod)
         run: scripts/setup-certs.command
-        # if: github.ref_name == 'production'
+        if: github.ref_name == 'production'
         env:
           APPLE_IOS_SIGNING_CERT: ${{ secrets.APPLE_IOS_SIGNING_CERT_PROD }}
           APPLE_IOS_SIGNING_CERT_PW: ${{ secrets.APPLE_IOS_SIGNING_CERT_PW }}
@@ -106,10 +105,10 @@ jobs:
       - name: Generate code
         run: scripts/.generate-code.sh code
       - name: Build iOS (dev)
-        if: ${{ env.IS_PROD_BUILD }} == false
+        if: github.ref_name != 'production'
         run: flutter build ipa --release --export-options-plist=ios/exportOptions.dev.plist --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_version }}
       - name: Build iOS (prod)
-        if: ${{ env.IS_PROD_BUILD }} == true
+        if: github.ref_name == 'production'
         run: flutter build ipa --release --export-options-plist=ios/exportOptions.prod.plist --dart-define=IS_PROD=true --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_version }}
       - name: Upload iOS build
         if: ${{ inputs.storeArtifacts }}
@@ -144,7 +143,11 @@ jobs:
         run: echo $SERVICES_JSON > android/app/google-services.json
       - name: Generate code
         run: scripts/.generate-code.sh code
-      - name: Build APK
+      - name: Build APK (dev)
+        if: github.ref_name != 'production'
+        run: flutter build apk --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_version }}
+      - name: Build APK (prod)
+        if: github.ref_name == 'production'
         run: flutter build apk --dart-define=IS_PROD=true --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_version }}
       - name: Upload Android build
         if: ${{ inputs.storeArtifacts }}
