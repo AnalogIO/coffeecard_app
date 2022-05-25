@@ -37,24 +37,26 @@ jobs:
           change_path: android/ ios/ lib/
           bump_each_commit: false
       - name: Determine build version
-        id: run_no
+        id: build_version
         run: |
-          RUN_NO=$((${{ github.run_number }} + 100))
-          echo "::set-output name=run_no::$RUN_NO"
+          BUILD_NO=$((${{ github.run_number }} + 100))
+          echo "::set-output name=build_no::$BUILD_NO"
       - name: Print versioning
         run: |
+          echo "Increment: $INCREMENT"
           echo "Version: $VERSION"
           echo "Version Tag: $VERSION_TAG"
-          echo "Run No: $RUN_NO"
+          echo "Run No: $BUILD_NO"
         env:
+          INCREMENT: ${{ steps.versioning.outputs.increment }}
           VERSION: ${{ steps.versioning.outputs.major }}.${{ steps.versioning.outputs.minor }}.${{ steps.versioning.outputs.patch }}
           VERSION_TAG: ${{ steps.versioning.outputs.version_tag }}
-          RUN_NO: ${{ steps.run_no.outputs.run_no }}
+          BUILD_NO: ${{ steps.build_version.outputs.build_no }}
     outputs:
       increment: ${{ steps.versioning.outputs.increment }}
       version: ${{ steps.versioning.outputs.major }}.${{ steps.versioning.outputs.minor }}.${{ steps.versioning.outputs.patch }}
       version_tag: ${{ steps.versioning.outputs.version_tag }}
-      run_no: ${{ steps.run_no.outputs.run_no }}
+      build_version: ${{ steps.build_version.outputs.build_no }}
 
   build_ios:
     name: Build iOS App
@@ -100,10 +102,10 @@ jobs:
         run: scripts/.generate-code.sh code
       - name: Build iOS (dev)
         if: github.ref_name == 'develop'
-        run: flutter build ipa --release --export-options-plist=ios/exportOptions.dev.plist --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.increment }}
+        run: flutter build ipa --release --export-options-plist=ios/exportOptions.dev.plist --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_no }}
       - name: Build iOS (prod)
         # if: github.ref_name == 'production'
-        run: flutter build ipa --release --export-options-plist=ios/exportOptions.prod.plist --dart-define=IS_PROD=true --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.increment }}
+        run: flutter build ipa --release --export-options-plist=ios/exportOptions.prod.plist --dart-define=IS_PROD=true --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_no }}
       - name: Upload iOS build
         if: ${{ inputs.storeArtifacts }}
         uses: actions/upload-artifact@v3.0.0
@@ -138,7 +140,7 @@ jobs:
       - name: Generate code
         run: scripts/.generate-code.sh code
       - name: Build APK
-        run: flutter build apk --dart-define=IS_PROD=true --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.run_no }}
+        run: flutter build apk --dart-define=IS_PROD=true --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_no }}
       - name: Upload Android build
         if: ${{ inputs.storeArtifacts }}
         uses: actions/upload-artifact@v3.0.0
