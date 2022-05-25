@@ -1,4 +1,4 @@
-name: Build And Release Coffeecard App
+name: Release Coffeecard App
 
 on:
   push:
