@@ -102,7 +102,9 @@ jobs:
     needs: [prod_release_ios, prod_release_android]
     if: ${{ needs.prod_release_ios.result == 'success' && needs.prod_release_android.result == 'success' }}
     steps:
-      - name: Bump version and push tag
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Git Tag ${{ needs.build_and_test.outputs.version_tag }}
         uses: anothrNick/github-tag-action@1.36.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
