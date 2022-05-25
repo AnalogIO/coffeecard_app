@@ -11,14 +11,11 @@ on:
       storeArtifacts:
         type: boolean
         required: true
-      prodRelease:
-        type: boolean
-        required: false
-        default: false
 
 env:
   FLUTTER_VERSION: 3.0.0
   JAVA_VERSION: 11.x
+  IS_PROD_BUILD: ${{ github.ref_name }} == 'production'
 
 jobs:
   version:
@@ -105,10 +102,10 @@ jobs:
       - name: Generate code
         run: scripts/.generate-code.sh code
       - name: Build iOS (dev)
-        if: github.ref_name == 'develop'
+        if: ${{ env.IS_PROD_BUILD }} == false
         run: flutter build ipa --release --export-options-plist=ios/exportOptions.dev.plist --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_version }}
       - name: Build iOS (prod)
-        # if: github.ref_name == 'production'
+        if: ${{ env.IS_PROD_BUILD }} == true
         run: flutter build ipa --release --export-options-plist=ios/exportOptions.prod.plist --dart-define=IS_PROD=true --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_version }}
       - name: Upload iOS build
         if: ${{ inputs.storeArtifacts }}
