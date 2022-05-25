@@ -4,11 +4,15 @@ on:
   push:
     branches: [develop, production, feature/jonas/prod-release-pipeline]
 
+env:
+  IS_PROD_RELEASE: ${{ github.ref_name }} == 'production'
+
 jobs:
   build_and_test:
     uses: ./.github/workflows/build.yml
     with:
       storeArtifacts: true
+      prodRelease: ${{ env.IS_PROD_RELEASE }}
     secrets: inherit
 
   dev_upload_ios:
