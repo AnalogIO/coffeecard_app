@@ -11,6 +11,10 @@ on:
       storeArtifacts:
         type: boolean
         required: true
+    outputs:
+      version_tag:
+        description: "Version used for Git tag"
+        value: ${{ jobs.version.outputs.version_tag }}
 
 env:
   FLUTTER_VERSION: 3.0.0
