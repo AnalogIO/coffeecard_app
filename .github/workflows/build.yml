@@ -104,7 +104,6 @@ jobs:
         run: echo $SERVICES_JSON > ios/Runner/GoogleService-Info.plist
       - name: Generate code
         run: scripts/.generate-code.sh code
-      - name: Build Flutter iOS
       - name: Build iOS (dev)
         if: github.ref_name != 'production'
         run: flutter build ios --release --no-codesign --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_version }}
