@@ -21,6 +21,7 @@ abstract class AppTextStyle {
     fontSize: 18,
     fontWeight: FontWeight.bold,
     fontFamily: AppFont.heading,
+    height: 1,
   );
   static final TextStyle comingSoonShopCardTitle = loginTitle.copyWith(
     color: AppColor.gray,

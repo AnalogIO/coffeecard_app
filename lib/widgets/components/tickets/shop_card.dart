@@ -1,6 +1,7 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/utils/responsive.dart';
 import 'package:coffeecard/widgets/components/card.dart';
 import 'package:flutter/material.dart';
 
@@ -26,22 +27,25 @@ class ShopCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CardBase(
-      color: type.isComingSoon ? AppColor.lightGray : AppColor.secondary,
-      gap: 12,
-      onTap: type.isComingSoon ? null : onTapped,
-      top: Text(
-        title,
-        style: type.isComingSoon
-            ? AppTextStyle.comingSoonShopCardTitle
-            : AppTextStyle.loginTitle,
-      ),
-      bottom: CardBottomRow(
+    return SizedBox(
+      height: 116,
+      child: CardBase(
+        color: type.isComingSoon ? AppColor.lightGray : AppColor.secondary,
         gap: 8,
-        left: _OptionalLabel(type: type),
-        right: Icon(
-          icon,
-          color: type.isComingSoon ? AppColor.gray : AppColor.white,
+        onTap: type.isComingSoon ? null : onTapped,
+        top: Text(
+          title,
+          style: type.isComingSoon
+              ? AppTextStyle.comingSoonShopCardTitle
+              : AppTextStyle.loginTitle,
+        ),
+        bottom: CardBottomRow(
+          gap: 8,
+          left: _OptionalLabel(type: type),
+          right: Icon(
+            icon,
+            color: type.isComingSoon ? AppColor.gray : AppColor.white,
+          ),
         ),
       ),
     );
@@ -55,6 +59,7 @@ class _OptionalLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (deviceIsSmall(context)) return const SizedBox.shrink();
     if (type.isNew) {
       return Text(Strings.newLabel, style: AppTextStyle.newLabel);
     }
