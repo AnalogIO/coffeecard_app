@@ -2,7 +2,7 @@ name: Build and test
 
 on:
   pull_request:
-    branches: [develop, production]
+    branches: [develop, production, feature/jonas/prod-release-pipeline]
 
   workflow_dispatch:
 
