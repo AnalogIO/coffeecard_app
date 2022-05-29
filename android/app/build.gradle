@@ -45,7 +45,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.analogio.coffeecard"
+        applicationId "dk.analog.digitalclipcard"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
@@ -62,7 +62,7 @@ android {
     lint {
         disable 'InvalidPackage'
     }
-    namespace 'com.analogio.coffeecard'
+    namespace 'dk.analog.digitalclipcard'
 }
 
 flutter {

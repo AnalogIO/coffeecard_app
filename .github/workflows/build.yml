@@ -1,0 +1,201 @@
+name: Build and test
+
+on:
+  pull_request:
+    branches: [develop, production]
+
+  workflow_dispatch:
+
+  workflow_call:
+    inputs:
+      storeArtifacts:
+        type: boolean
+        required: true
+    outputs:
+      version_tag:
+        description: "Version used for Git tag"
+        value: ${{ jobs.version.outputs.version_tag }}
+
+env:
+  FLUTTER_VERSION: 3.0.0
+  JAVA_VERSION: 11.x
+
+jobs:
+  version:
+    name: Versioning
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Determine versioning
+        uses: paulhatch/semantic-version@v4.0.3
+        id: versioning
+        with:
+          tag_prefix: "v"
+          major_pattern: "(MAJOR)"
+          minor_pattern: "(MINOR)"
+          format: "${major}.${minor}.${patch}"
+          bump_each_commit: false
+      - name: Determine build version
+        id: build_version
+        run: |
+          BUILD_NO=$((${{ github.run_number }} + 100))
+          echo "::set-output name=build_no::$BUILD_NO"
+      - name: Print versioning
+        run: |
+          echo "Version: $VERSION"
+          echo "Version Tag: $VERSION_TAG"
+          echo "Run No: $BUILD_NO"
+        env:
+          VERSION: ${{ steps.versioning.outputs.version }}
+          VERSION_TAG: ${{ steps.versioning.outputs.version_tag }}
+          BUILD_NO: ${{ steps.build_version.outputs.build_no }}
+    outputs:
+      version: ${{ steps.versioning.outputs.version }}
+      version_tag: ${{ steps.versioning.outputs.version_tag }}
+      build_version: ${{ steps.build_version.outputs.build_no }}
+
+  build_ios:
+    name: Build iOS App
+    runs-on: macos-latest
+    needs: [version]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install Apple certificate and provisioning profile (dev)
+        run: .github/scripts/setup-certs.command
+        if: github.ref_name != 'production'
+        env:
+          APPLE_IOS_SIGNING_CERT: ${{ secrets.APPLE_IOS_SIGNING_CERT }}
+          APPLE_IOS_SIGNING_CERT_PW: ${{ secrets.APPLE_IOS_SIGNING_CERT_PW }}
+          APPLE_IOS_PROVISIONING_PROFILE: ${{ secrets.APPLE_IOS_PROVISIONING_PROFILE }}
+          APPLE_KEYCHAIN_PW: ${{ secrets.APPLE_KEYCHAIN_PW }}
+      - name: Install Apple certificate and provisioning profile (prod)
+        run: .github/scripts/setup-certs.command
+        if: github.ref_name == 'production'
+        env:
+          APPLE_IOS_SIGNING_CERT: ${{ secrets.APPLE_IOS_SIGNING_CERT_PROD }}
+          APPLE_IOS_SIGNING_CERT_PW: ${{ secrets.APPLE_IOS_SIGNING_CERT_PW }}
+          APPLE_IOS_PROVISIONING_PROFILE: ${{ secrets.APPLE_IOS_PROVISIONING_PROFILE_PROD }}
+          APPLE_KEYCHAIN_PW: ${{ secrets.APPLE_KEYCHAIN_PW }}
+      - name: Setup Java
+        uses: actions/setup-java@v2.4.0
+        with:
+          distribution: "adopt"
+          java-version: ${{ env.JAVA_VERSION }}
+      - name: Setup Flutter environment
+        uses: subosito/flutter-action@v2.3.0
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: "stable"
+      - name: Download dependencies
+        run: flutter pub get
+      - name: Decode GoogleService-Info.plist
+        env:
+          SERVICES_JSON: ${{ secrets.FIREBASE_IOS_SERVICES_JSON }}
+        run: echo $SERVICES_JSON > ios/Runner/GoogleService-Info.plist
+      - name: Generate code
+        run: scripts/.generate-code.sh code
+      - name: Build iOS (dev)
+        if: github.ref_name != 'production'
+        run: flutter build ios --release --no-codesign --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_version }}
+      - name: Build iOS (prod)
+        if: github.ref_name == 'production'
+        run: flutter build ios --release --no-codesign --dart-define=IS_PROD=true --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_version }}
+      - name: Build resolve Swift dependencies
+        run: xcodebuild -resolvePackageDependencies -workspace ios/Runner.xcworkspace -scheme Runner -configuration Release
+      - name: Build xArchive (dev)
+        if: github.ref_name != 'production'
+        run: |
+          xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -configuration Release DEVELOPMENT_TEAM=Y5U9T77F2K -sdk 'iphoneos' -destination 'generic/platform=iOS' -archivePath build-output/app.xcarchive PROVISIONING_PROFILE_SPECIFIER="githubactions-dev" clean archive CODE_SIGN_IDENTITY="Apple Development: Jonas Anker Rasmussen"
+      - name: Build xArchive (prod)
+        if: github.ref_name == 'production'
+        run: |
+            xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -configuration Release DEVELOPMENT_TEAM=Y5U9T77F2K -sdk 'iphoneos' -destination 'generic/platform=iOS' -archivePath build-output/app.xcarchive PROVISIONING_PROFILE_SPECIFIER="githubactions-prod" clean archive CODE_SIGN_IDENTITY="Apple Distribution"  
+      - name: Export ipa (dev)
+        if: github.ref_name != 'production'
+        run: xcodebuild -exportArchive -archivePath build-output/app.xcarchive -exportPath build-output/ios -exportOptionsPlist ios/exportOptions.dev.plist
+      - name: Export ipa (prod)
+        if: github.ref_name == 'production'
+        run: xcodebuild -exportArchive -archivePath build-output/app.xcarchive -exportPath build-output/ios -exportOptionsPlist ios/exportOptions.prod.plist
+      - name: Upload iOS build
+        if: ${{ inputs.storeArtifacts }}
+        uses: actions/upload-artifact@v3.0.0
+        with:
+          name: ios
+          path: build-output/ios
+          retention-days: 1
+          if-no-files-found: error
+
+  build_android:
+    name: Build Android App
+    runs-on: ubuntu-latest
+    needs: [version]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Setup Java
+        uses: actions/setup-java@v2.4.0
+        with:
+          distribution: "adopt"
+          java-version: ${{ env.JAVA_VERSION }}
+      - name: Setup Flutter environment
+        uses: subosito/flutter-action@v2.3.0
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: "stable"
+      - name: Download dependencies
+        run: flutter pub get
+      - name: Decode google-services.json
+        env:
+          SERVICES_JSON: ${{ secrets.FIREBASE_ANDROID_SERVICES_JSON }}
+        run: echo $SERVICES_JSON > android/app/google-services.json
+      - name: Generate code
+        run: scripts/.generate-code.sh code
+      - name: Build appbundle (dev)
+        if: github.ref_name != 'production'
+        run: flutter build apk --release --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_version }}
+      - name: Build appbundle (prod)
+        if: github.ref_name == 'production'
+        run: flutter build apk --release --dart-define=IS_PROD=true --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_version }}
+      - name: Upload Android build
+        if: ${{ inputs.storeArtifacts }}
+        uses: actions/upload-artifact@v3.0.0
+        with:
+          name: android
+          path: build/app/outputs/apk/release
+          retention-days: 1
+          if-no-files-found: error
+
+  test:
+    name: Test Flutter app
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2.4.0
+      - name: Setup Flutter environment
+        uses: subosito/flutter-action@v1.5.3
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: "stable"
+      - name: Download dependencies
+        run: flutter pub get
+      - name: Generate code
+        run: scripts/.generate-code.sh code
+      - name: Check formatting
+        run: flutter format --set-exit-if-changed .
+      - name: Static Analysis
+        run: flutter analyze
+      - name: Run tests
+        run: flutter test --coverage
+      - name: Upload test report to Codecov
+        uses: codecov/codecov-action@v2.1.0
+        with:
+          flags: unittests
+          file: coverage/lcov.info
