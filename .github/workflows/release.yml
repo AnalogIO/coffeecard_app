@@ -15,7 +15,7 @@ jobs:
     name: Upload iOS build to Firebase App Distribution
     runs-on: ubuntu-latest
     needs: [build_and_test]
-    # if: github.ref_name == 'develop'
+    if: github.ref_name == 'develop'
 
     steps:
       - name: Download Artifact
@@ -34,7 +34,7 @@ jobs:
     name: Upload Android build to Firebase App Distribution
     runs-on: ubuntu-latest
     needs: [build_and_test]
-    # if: github.ref_name == 'develop'
+    if: github.ref_name == 'develop'
 
     steps:
       - name: Download artifact
@@ -53,7 +53,7 @@ jobs:
     name: Upload iOS build to App Store connect
     runs-on: macos-latest
     needs: [build_and_test]
-    if: github.ref_name == 'production'
+    # if: github.ref_name == 'production'
 
     steps:
       - name: Download artifact
@@ -71,7 +71,7 @@ jobs:
     name: Upload Android build to Play Store
     runs-on: ubuntu-latest
     needs: [build_and_test]
-    if: github.ref_name == 'production'
+    # if: github.ref_name == 'production'
 
     steps:
       - name: Download artifact
