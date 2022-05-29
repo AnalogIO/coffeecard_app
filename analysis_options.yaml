@@ -1,0 +1,27 @@
+# Custom flutter analyze rules used to avoid certain analyzer rules
+#
+# Avoid adding rules if they are not strictly needed to be avoided.
+
+include: package:lint/analysis_options.yaml
+
+linter:
+  rules:
+    avoid_classes_with_only_static_members: false
+    argument_type_not_assignable: false # Consider if it should be included or not
+    prefer_single_quotes: true
+    avoid_relative_lib_imports: true
+    sort_pub_dependencies: false
+
+analyzer:
+  strong-mode:
+    implicit-casts: false
+  exclude:
+    - lib/generated/**
+    - test/**.mocks.dart
+  errors:
+    invalid_assignment: warning
+    missing_return: error
+    dead_code: info
+    argument_type_not_assignable: warning
+    todo: info
+    fixme: warning

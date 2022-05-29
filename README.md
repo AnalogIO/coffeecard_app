@@ -1,16 +1,23 @@
-# coffeecard
+# Coffee card App [in development]
 
-Cafe Analog Coffee card
+![Flutter build and test](https://github.com/AnalogIO/coffeecard_app/workflows/Flutter%20build%20and%20test/badge.svg) [![codecov](https://codecov.io/gh/AnalogIO/coffeecard_app/branch/master/graph/badge.svg)](https://codecov.io/gh/AnalogIO/coffeecard_app)
 
-## Getting Started
+**Contact** AnalogIO at *support [at] analogio.dk*
 
-This project is a starting point for a Flutter application.
+We are rewriting our Coffee card app for Cafe Analog to a new cross platform one in Flutter. The app
+allows users to buy and use clip cards in Cafe Analog @ IT University of Copenhagen.
 
-A few resources to get you started if this is your first Flutter project:
+## SDKs
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+We are building the Flutter app with these SDK versions
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+| SDK     | Version |
+| ------- | ------- |
+| Dart    | 2.17.0  |
+| Flutter | 3.0.0   |
+
+## Relevant READMEs
+
+- [Contribution guidelines](CONTRIBUTING.md) `CONTRIBUTING.md`
+- [Testing guidelines](test/README.md) `test/README.md`
+- [Generated CoffeeCardApi](lib/data/api/README.md) `lib/persistence/api/README.md`
