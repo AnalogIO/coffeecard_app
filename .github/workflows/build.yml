@@ -81,7 +81,7 @@ jobs:
           APPLE_KEYCHAIN_PW: ${{ secrets.APPLE_KEYCHAIN_PW }}
       - name: Install Apple certificate and provisioning profile (prod)
         run: scripts/setup-certs.command
-        if: ${{ env.PROD_BUILD }}
+        if: ${{ env.PROD_BUILD }} == 'true'
         env:
           APPLE_IOS_SIGNING_CERT: ${{ secrets.APPLE_IOS_SIGNING_CERT_PROD }}
           APPLE_IOS_SIGNING_CERT_PW: ${{ secrets.APPLE_IOS_SIGNING_CERT_PW }}
