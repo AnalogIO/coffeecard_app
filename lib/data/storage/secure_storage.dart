@@ -5,7 +5,7 @@ import 'package:logger/logger.dart';
 class SecureStorage {
   static const _emailKey = 'email';
   static const _tokenKey = 'authentication_token';
-  static const _passcodeKey = 'password';
+  static const _encodedPasscodeKey = 'encoded_passcode';
 
   final FlutterSecureStorage _storage;
   final Logger _logger;
@@ -16,13 +16,15 @@ class SecureStorage {
 
   Future<void> saveAuthenticatedUser(
     String email,
-    String passcode,
+    String encodedPasscode,
     String token,
   ) async {
     await _storage.write(key: _emailKey, value: email);
-    await _storage.write(key: _passcodeKey, value: passcode);
+    await _storage.write(key: _encodedPasscodeKey, value: encodedPasscode);
     await _storage.write(key: _tokenKey, value: token);
-    _logger.d('Email ($email), passcode and token added to Secure Storage');
+    _logger.d(
+      'Email ($email), encoded passcode and token added to Secure Storage',
+    );
   }
 
   Future<AuthenticatedUser?> getAuthenticatedUser() async {
@@ -36,9 +38,9 @@ class SecureStorage {
   Future<void> clearAuthenticatedUser() async {
     if (await getAuthenticatedUser() == null) return;
     await _storage.delete(key: _emailKey);
-    await _storage.delete(key: _passcodeKey);
+    await _storage.delete(key: _encodedPasscodeKey);
     await _storage.delete(key: _tokenKey);
-    _logger.d('Email, passcode and token removed from Secure Storage');
+    _logger.d('Email, encoded passcode and token removed from Secure Storage');
   }
 
   Future<void> updateToken(String token) async {
@@ -50,8 +52,8 @@ class SecureStorage {
     return _storage.read(key: _emailKey);
   }
 
-  Future<String?> readPasscode() async {
-    return _storage.read(key: _passcodeKey);
+  Future<String?> readEncodedPasscode() async {
+    return _storage.read(key: _encodedPasscodeKey);
   }
 
   Future<String?> readToken() async {

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:coffeecard/data/api/coffee_card_api_constants.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
@@ -10,7 +8,6 @@ import 'package:coffeecard/models/api/api_error.dart';
 import 'package:coffeecard/models/api/unauthorized_error.dart';
 import 'package:coffeecard/utils/either.dart';
 import 'package:coffeecard/utils/extensions.dart';
-import 'package:crypto/crypto.dart' show sha256;
 import 'package:logger/logger.dart';
 
 class AccountRepository {
@@ -20,23 +17,15 @@ class AccountRepository {
 
   AccountRepository(this._apiV1, this._apiV2, this._logger);
 
-  String _encodePasscode(String passcode) {
-    final bytes = utf8.encode(passcode);
-    final passcodeHash = sha256.convert(bytes);
-    return base64Encode(passcodeHash.bytes);
-  }
-
-  // TODO: Should probably have another return type
-  //  in order to support the intended registration flow?
   Future<Either<UnauthorizedError, void>> register(
     String name,
     String email,
-    String passcode,
+    String encodedPasscode,
   ) async {
     final dto = RegisterDto(
       name: name,
       email: email,
-      password: _encodePasscode(passcode),
+      password: encodedPasscode,
     );
 
     final response = await _apiV1.apiV1AccountRegisterPost(body: dto);
@@ -52,12 +41,12 @@ class AccountRepository {
   /// Returns the user token or throws an error.
   Future<Either<UnauthorizedError, AuthenticatedUser>> login(
     String email,
-    String passcode,
+    String encodedPasscode,
   ) async {
     final response = await _apiV1.apiV1AccountLoginPost(
       body: LoginDto(
         email: email,
-        password: _encodePasscode(passcode),
+        password: encodedPasscode,
         version: CoffeeCardApiConstants.minAppVersion,
       ),
     );
@@ -91,7 +80,7 @@ class AccountRepository {
       programmeId: user.programmeId,
       email: user.email,
       privacyActivated: user.privacyActivated,
-      password: user.password != null ? _encodePasscode(user.password!) : null,
+      password: user.encodedPasscode,
     );
     final response = await _apiV1.apiV1AccountPut(body: userDTO);
 

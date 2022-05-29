@@ -1,4 +1,5 @@
 import 'package:coffeecard/data/repositories/shared/account_repository.dart';
+import 'package:coffeecard/utils/encode_passcode.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -14,8 +15,11 @@ class RegisterCubit extends Cubit<RegisterState> {
   void setName(String name) => emit(state.copyWith(name: name));
 
   Future<void> register() async {
-    final either =
-        await repository.register(state.name!, state.email!, state.passcode!);
+    final either = await repository.register(
+      state.name!,
+      state.email!,
+      encodePasscode(state.passcode!),
+    );
 
     // TODO: Handle error by emitting new state instead of throwing?
     if (either.isLeft) {

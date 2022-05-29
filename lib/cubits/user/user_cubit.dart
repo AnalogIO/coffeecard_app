@@ -4,6 +4,7 @@ import 'package:coffeecard/data/repositories/v1/programme_repository.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/models/account/update_user.dart';
 import 'package:coffeecard/models/account/user.dart';
+import 'package:coffeecard/utils/encode_passcode.dart';
 import 'package:equatable/equatable.dart';
 
 part 'user_state.dart';
@@ -98,7 +99,7 @@ class UserCubit extends Cubit<UserState> {
   }
 
   Future<void> setUserPasscode(String passcode) async {
-    _updateUser(UpdateUser(password: passcode));
+    _updateUser(UpdateUser(encodedPasscode: encodePasscode(passcode)));
   }
 
   Future<void> setUserProgramme(int programmeId) async {

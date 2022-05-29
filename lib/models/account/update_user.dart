@@ -3,14 +3,14 @@ import 'package:equatable/equatable.dart';
 class UpdateUser extends Equatable {
   final String? name;
   final String? email;
-  final String? password;
+  final String? encodedPasscode;
   final bool? privacyActivated;
   final int? programmeId;
 
   const UpdateUser({
     this.name,
     this.email,
-    this.password,
+    this.encodedPasscode,
     this.privacyActivated,
     this.programmeId,
   });
@@ -20,7 +20,7 @@ class UpdateUser extends Equatable {
     return [
       name,
       email,
-      password,
+      encodedPasscode,
       privacyActivated,
       programmeId,
     ];
