@@ -19,7 +19,7 @@ on:
 env:
   FLUTTER_VERSION: 3.0.0
   JAVA_VERSION: 11.x
-  PROD_BUILD: github.ref_name == 'production'
+  PROD_BUILD: ${{ github.ref_name == 'production' }}
 
 jobs:
   version:
