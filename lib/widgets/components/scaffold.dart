@@ -54,29 +54,21 @@ class AppScaffold extends StatelessWidget {
       // in the child of the Expanded widget below.
       backgroundColor: AppColor.primary,
       appBar: AppBar(
-        title: hasTitle ? title : const _EnvironmentButton(tappable: true),
+        title: hasTitle ? title : const _EnvironmentButton(),
         centerTitle: hasTitle ? null : true,
         toolbarHeight: appBarHeight,
       ),
-      body: BlocBuilder<EnvironmentCubit, EnvironmentState>(
-        builder: (_, state) {
-          final bool isTestEnvironment =
-              state is EnvironmentLoaded && state.isTestEnvironment;
-
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              if (hasTitle && isTestEnvironment)
-                const _EnvironmentBanner(tappable: true),
-              Expanded(
-                child: Container(
-                  color: backgroundColor,
-                  child: body,
-                ),
-              ),
-            ],
-          );
-        },
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          if (hasTitle) const _EnvironmentBanner(),
+          Expanded(
+            child: Container(
+              color: backgroundColor,
+              child: body,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -84,79 +76,84 @@ class AppScaffold extends StatelessWidget {
 
 // TODO: Extract to its own file as more widgets want to use this widget
 class _EnvironmentBanner extends StatelessWidget {
-  const _EnvironmentBanner({required this.tappable});
-  final bool tappable;
+  const _EnvironmentBanner();
 
   @override
   Widget build(BuildContext context) {
     return Container(
       color: AppColor.primary,
-      padding: const EdgeInsets.only(bottom: 2),
-      child: Center(
-        child: _EnvironmentButton(tappable: tappable),
-      ),
+      child: const Center(child: _EnvironmentButton()),
     );
   }
 }
 
 class _EnvironmentButton extends StatelessWidget {
-  const _EnvironmentButton({required this.tappable});
-  final bool tappable;
+  const _EnvironmentButton();
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: tappable
-          ? () => appDialog(
-                context: context,
-                title: TestEnvironmentStrings.title,
-                children: [
-                  Text(
-                    TestEnvironmentStrings.description[0],
-                    style: AppTextStyle.settingKey,
-                  ),
-                  const Gap(8),
-                  Text(
-                    TestEnvironmentStrings.description[1],
-                    style: AppTextStyle.settingKey,
-                  ),
-                  const Gap(8),
-                  Text(
-                    TestEnvironmentStrings.description[2],
-                    style: AppTextStyle.settingKey,
-                  ),
-                ],
-                actions: [
-                  TextButton(
-                    child: const Text(TestEnvironmentStrings.understood),
-                    onPressed: () => closeAppDialog(context),
-                  ),
-                ],
-                dismissible: true,
-              )
-          : null,
-      style: TextButton.styleFrom(
-        backgroundColor: AppColor.white,
-        padding: const EdgeInsets.only(left: 16, right: 12),
-        shape: const StadiumBorder(),
-        visualDensity: VisualDensity.comfortable,
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            TestEnvironmentStrings.title,
-            style: AppTextStyle.environmentNotifier,
-          ),
-          if (tappable) const Gap(8),
-          if (tappable)
-            const Icon(
-              Icons.info_outline,
-              color: AppColor.primary,
-              size: 18,
+    return BlocBuilder<EnvironmentCubit, EnvironmentState>(
+      builder: (context, state) {
+        final bool isTestEnvironment =
+            state is EnvironmentLoaded && state.isTestEnvironment;
+
+        if (!isTestEnvironment) {
+          return const SizedBox.shrink();
+        }
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 2),
+          child: TextButton(
+            onPressed: () => appDialog(
+              context: context,
+              title: TestEnvironmentStrings.title,
+              children: [
+                Text(
+                  TestEnvironmentStrings.description[0],
+                  style: AppTextStyle.settingKey,
+                ),
+                const Gap(8),
+                Text(
+                  TestEnvironmentStrings.description[1],
+                  style: AppTextStyle.settingKey,
+                ),
+                const Gap(8),
+                Text(
+                  TestEnvironmentStrings.description[2],
+                  style: AppTextStyle.settingKey,
+                ),
+              ],
+              actions: [
+                TextButton(
+                  child: const Text(TestEnvironmentStrings.understood),
+                  onPressed: () => closeAppDialog(context),
+                ),
+              ],
+              dismissible: true,
             ),
-        ],
-      ),
+            style: TextButton.styleFrom(
+              backgroundColor: AppColor.white,
+              padding: const EdgeInsets.only(left: 16, right: 12),
+              shape: const StadiumBorder(),
+              visualDensity: VisualDensity.comfortable,
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  TestEnvironmentStrings.title,
+                  style: AppTextStyle.environmentNotifier,
+                ),
+                const Gap(8),
+                const Icon(
+                  Icons.info_outline,
+                  color: AppColor.primary,
+                  size: 18,
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
