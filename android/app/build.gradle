@@ -62,7 +62,7 @@ android {
     lint {
         disable 'InvalidPackage'
     }
-    namespace 'com.analogio.coffeecard'
+    namespace 'dk.analog.digitalclipcard'
 }
 
 flutter {
