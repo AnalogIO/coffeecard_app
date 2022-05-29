@@ -19,6 +19,7 @@ on:
 env:
   FLUTTER_VERSION: 3.0.0
   JAVA_VERSION: 11.x
+  PROD_BUILD: github.ref_name == 'production'
 
 jobs:
   version:
@@ -80,7 +81,7 @@ jobs:
           APPLE_KEYCHAIN_PW: ${{ secrets.APPLE_KEYCHAIN_PW }}
       - name: Install Apple certificate and provisioning profile (prod)
         run: scripts/setup-certs.command
-        if: github.ref_name == 'production'
+        if: ${{ env.PROD_BUILD }}
         env:
           APPLE_IOS_SIGNING_CERT: ${{ secrets.APPLE_IOS_SIGNING_CERT_PROD }}
           APPLE_IOS_SIGNING_CERT_PW: ${{ secrets.APPLE_IOS_SIGNING_CERT_PW }}
@@ -114,11 +115,16 @@ jobs:
         # run: flutter build ipa --release --export-options-plist=ios/exportOptions.prod.plist --dart-define=IS_PROD=true --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_version }}
       - name: Build resolve Swift dependencies
         run: xcodebuild -resolvePackageDependencies -workspace ios/Runner.xcworkspace -scheme Runner -configuration Release
-      - name: Build xArchive
+      - name: Build xArchive (dev)
         run: |
           xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -configuration Release DEVELOPMENT_TEAM=Y5U9T77F2K -sdk 'iphoneos' -destination 'generic/platform=iOS' -archivePath build-output/app.xcarchive PROVISIONING_PROFILE_SPECIFIER="githubactions-dev" clean archive CODE_SIGN_IDENTITY="Apple Development: Jonas Anker Rasmussen"
-      - name: Export ipa
+      - name: Build xArchive (prod)
+        run: |
+            xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -configuration Release DEVELOPMENT_TEAM=Y5U9T77F2K -sdk 'iphoneos' -destination 'generic/platform=iOS' -archivePath build-output/app.xcarchive PROVISIONING_PROFILE_SPECIFIER="githubactions-prod" clean archive CODE_SIGN_IDENTITY="Apple Distribution"  
+      - name: Export ipa (dev)
         run: xcodebuild -exportArchive -archivePath build-output/app.xcarchive -exportPath build-output/ios -exportOptionsPlist ios/exportOptions.dev.plist
+      - name: Export ipa (prod)
+        run: xcodebuild -exportArchive -archivePath build-output/app.xcarchive -exportPath build-output/ios -exportOptionsPlist ios/exportOptions.prod.plist
       - name: Upload iOS build
         if: ${{ inputs.storeArtifacts }}
         uses: actions/upload-artifact@v3.0.0
