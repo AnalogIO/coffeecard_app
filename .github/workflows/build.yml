@@ -132,6 +132,8 @@ jobs:
         with:
           name: ios
           path: build-output/ios
+          retention-days: 1
+          if-no-files-found: error
 
   build_android:
     name: Build Android App
@@ -159,10 +161,10 @@ jobs:
         run: echo $SERVICES_JSON > android/app/google-services.json
       - name: Generate code
         run: scripts/.generate-code.sh code
-      - name: Build APK (dev)
+      - name: Build appbundle (dev)
         if: github.ref_name != 'production'
         run: flutter build appbundle --release --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_version }}
-      - name: Build APK (prod)
+      - name: Build appbundle (prod)
         if: github.ref_name == 'production'
         run: flutter build appbundle --release --dart-define=IS_PROD=true --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_version }}
       - name: Upload Android build
@@ -170,7 +172,9 @@ jobs:
         uses: actions/upload-artifact@v3.0.0
         with:
           name: android
-          path: build/app/outputs/apk/release
+          path: build/app/outputs/bundle/release
+          retention-days: 1
+          if-no-files-found: error
 
   test:
     name: Test Flutter app

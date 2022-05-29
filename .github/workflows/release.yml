@@ -30,7 +30,7 @@ jobs:
           groups: analogio-devs
           file: Analog.ipa
 
-  dev_upload_apk:
+  dev_upload_android:
     name: Upload Android build to Firebase App Distribution
     runs-on: ubuntu-latest
     needs: [build_and_test]
@@ -47,7 +47,7 @@ jobs:
           appId: ${{ secrets.FIREBASE_ANDROID_APP_ID }}
           token: ${{ secrets.FIREBASE_TOKEN }}
           groups: analogio-devs
-          file: app-release.apk
+          file: app-release.aab
           
   prod_release_ios:
     name: Upload iOS build to App Store connect
@@ -78,7 +78,7 @@ jobs:
         uses: actions/download-artifact@v3.0.0
         with:
           name: android
-      - name: Sign Android APK
+      - name: Sign Android appbundle
         uses: r0adkll/sign-android-release@v1
         id: sign_app
         with:
