@@ -47,7 +47,7 @@ jobs:
           appId: ${{ secrets.FIREBASE_ANDROID_APP_ID }}
           token: ${{ secrets.FIREBASE_TOKEN }}
           groups: analogio-devs
-          file: app-release.aab
+          file: app-release.apk
           
   prod_release_ios:
     name: Upload iOS build to App Store connect

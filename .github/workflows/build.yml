@@ -163,16 +163,16 @@ jobs:
         run: scripts/.generate-code.sh code
       - name: Build appbundle (dev)
         if: github.ref_name != 'production'
-        run: flutter build appbundle --release --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_version }}
+        run: flutter build apk --release --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_version }}
       - name: Build appbundle (prod)
         if: github.ref_name == 'production'
-        run: flutter build appbundle --release --dart-define=IS_PROD=true --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_version }}
+        run: flutter build apk --release --dart-define=IS_PROD=true --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_version }}
       - name: Upload Android build
         if: ${{ inputs.storeArtifacts }}
         uses: actions/upload-artifact@v3.0.0
         with:
           name: android
-          path: build/app/outputs/bundle/release
+          path: build/app/outputs/apk/release
           retention-days: 1
           if-no-files-found: error
 
