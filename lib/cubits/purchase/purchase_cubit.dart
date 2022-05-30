@@ -5,6 +5,9 @@ import 'package:coffeecard/models/ticket/product.dart';
 import 'package:coffeecard/payment/mobilepay_service.dart';
 import 'package:coffeecard/payment/payment_handler.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+
+import '../../service_locator.dart';
 
 part 'purchase_state.dart';
 
@@ -54,6 +57,14 @@ class PurchaseCubit extends Cubit<PurchaseState> {
         final status = either.right;
 
         if (status == PaymentStatus.completed) {
+          sl<FirebaseAnalytics>().logPurchase(
+              currency: 'DKK',
+              value: payment.price.toDouble(),
+              items: [
+                AnalyticsEventItem(
+                    itemId: payment.productId, itemName: payment.productName)
+              ],
+              transactionId: payment.id.toString());
           emit(PurchaseCompleted(payment.copyWith(status: status)));
         } else if (status == PaymentStatus.reserved) {
           // NOTE, recursive call, potentially infinite.

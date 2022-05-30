@@ -7,6 +7,7 @@ class Payment {
   final String deeplink;
   final int price;
   final DateTime purchaseTime;
+  final int productId;
   final String productName;
 
   Payment({
@@ -16,6 +17,7 @@ class Payment {
     required this.paymentId,
     required this.status,
     required this.deeplink,
+    required this.productId,
     required this.productName,
   });
 
@@ -26,6 +28,7 @@ class Payment {
     String? deeplink,
     int? price,
     DateTime? purchaseTime,
+    int? productId,
     String? productName,
   }) {
     return Payment(
@@ -35,6 +38,7 @@ class Payment {
       deeplink: deeplink ?? this.deeplink,
       price: price ?? this.price,
       purchaseTime: purchaseTime ?? this.purchaseTime,
+      productId: productId ?? this.productId,
       productName: productName ?? this.productName,
     );
   }

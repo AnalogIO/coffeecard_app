@@ -21,6 +21,7 @@ import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart'
 import 'package:coffeecard/generated/api/shiftplanning_api.swagger.dart'
     hide $JsonSerializableConverter;
 import 'package:coffeecard/utils/reactivation_authenticator.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 
@@ -134,4 +135,6 @@ void configureServices() {
   sl.registerFactory<ContributorRepository>(
     () => ContributorRepository(),
   );
+
+  sl.registerSingleton<FirebaseAnalytics>(FirebaseAnalytics.instance);
 }
