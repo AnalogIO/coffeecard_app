@@ -4,10 +4,9 @@ import 'package:coffeecard/models/purchase/payment_status.dart';
 import 'package:coffeecard/models/ticket/product.dart';
 import 'package:coffeecard/payment/mobilepay_service.dart';
 import 'package:coffeecard/payment/payment_handler.dart';
+import 'package:coffeecard/service_locator.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-
-import '../../service_locator.dart';
 
 part 'purchase_state.dart';
 
@@ -25,6 +24,16 @@ class PurchaseCubit extends Cubit<PurchaseState> {
 
   Future<void> payWithMobilePay() async {
     if (state is PurchaseInitial) {
+      sl<FirebaseAnalytics>().logBeginCheckout(
+        value: product.price.toDouble(),
+        currency: 'DKK',
+        items: [
+          AnalyticsEventItem(
+            itemId: product.id.toString(),
+            itemName: product.name,
+          )
+        ],
+      );
       emit(const PurchaseStarted());
       // TODO: Consider if cast can be removed/ abstracted away
       final MobilePayService service = paymentHandler as MobilePayService;
@@ -58,13 +67,16 @@ class PurchaseCubit extends Cubit<PurchaseState> {
 
         if (status == PaymentStatus.completed) {
           sl<FirebaseAnalytics>().logPurchase(
-              currency: 'DKK',
-              value: payment.price.toDouble(),
-              items: [
-                AnalyticsEventItem(
-                    itemId: payment.productId, itemName: payment.productName)
-              ],
-              transactionId: payment.id.toString());
+            currency: 'DKK',
+            value: payment.price.toDouble(),
+            items: [
+              AnalyticsEventItem(
+                itemId: payment.productId.toString(),
+                itemName: payment.productName,
+              )
+            ],
+            transactionId: payment.id.toString(),
+          );
           emit(PurchaseCompleted(payment.copyWith(status: status)));
         } else if (status == PaymentStatus.reserved) {
           // NOTE, recursive call, potentially infinite.
