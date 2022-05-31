@@ -69,10 +69,12 @@ dependencies:
 
   # brightness
   screen_brightness: 0.2.1
-  firebase_core: ^1.17.1
-  firebase_analytics: ^9.1.9
-  firebase_crashlytics: ^2.8.1
-  firebase_performance: ^0.8.0+13
+
+  # firebase
+  firebase_core: 1.17.1
+  firebase_analytics: 9.1.9
+  firebase_crashlytics: 2.8.1
+  firebase_performance: 0.8.0+13
 
 dev_dependencies:
   flutter_test:

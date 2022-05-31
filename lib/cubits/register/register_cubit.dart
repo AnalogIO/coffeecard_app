@@ -23,11 +23,11 @@ class RegisterCubit extends Cubit<RegisterState> {
       encodePasscode(state.passcode!),
     );
 
-    sl<FirebaseAnalyticsEventLogging>().signUpEvent();
-
     // TODO: Handle error by emitting new state instead of throwing?
     if (either.isLeft) {
       throw Exception(either.left.message);
     }
+
+    sl<FirebaseAnalyticsEventLogging>().signUpEvent();
   }
 }

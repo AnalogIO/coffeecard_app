@@ -50,7 +50,6 @@ class LoginCubit extends Cubit<LoginState> {
       );
     }
 
-    sl<FirebaseAnalyticsEventLogging>().loginEvent();
     emit(LoginLoading());
 
     final encodedPasscode = encodePasscode(_state.passcode);
@@ -58,6 +57,8 @@ class LoginCubit extends Cubit<LoginState> {
 
     if (either.isRight) {
       final authenticatedUser = either.right;
+
+      sl<FirebaseAnalyticsEventLogging>().loginEvent();
 
       authenticationCubit.authenticated(
         authenticatedUser.email,
