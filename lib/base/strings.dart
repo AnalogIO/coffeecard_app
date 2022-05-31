@@ -214,7 +214,7 @@ abstract class Strings {
 
   static const settingsGroupAccount = 'Account';
   static const settingsGroupFeatures = 'Features';
-  static const settingsGroupAbout = 'About Cafe Analog';
+  static const settingsGroupAbout = 'About';
   static const settingsGroupProfile = 'Edit profile';
 
   static const email = 'Email';
@@ -223,7 +223,7 @@ abstract class Strings {
   static const logOut = 'Log out';
   static const deleteAccount = 'Delete account';
   static const credits = 'Credits';
-  static const privacyPolicy = 'Privacy Policy';
+  static const privacyPolicy = 'Privacy policy';
 
   static const emailShimmerText = 'sample@sample.com';
   static const openingHoursShimmerText = 'Somedays: 8-16';
