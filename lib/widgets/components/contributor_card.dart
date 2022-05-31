@@ -16,7 +16,9 @@ class ContributorCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Tappable(
       onTap: () => launchUrlExternalApplication(
-          Uri.parse(contributor.githubUrl), context,),
+        Uri.parse(contributor.githubUrl),
+        context,
+      ),
       child: Container(
         decoration: const BoxDecoration(
           color: AppColor.white,
