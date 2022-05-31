@@ -17,7 +17,7 @@
   },
   "servers": [
     {
-      "url": "https://beta.analogio.dk/api/clippy"
+      "url": "https://analogio.dk/clippy"
     }
   ],
   "paths": {
@@ -1139,11 +1139,13 @@
         "description": "",
         "x-enumNames": [
           "Production",
-          "Test"
+          "Test",
+          "LocalDevelopment"
         ],
         "enum": [
           "Production",
-          "Test"
+          "Test",
+          "LocalDevelopment"
         ]
       },
       "CoffeeCardDto": {
