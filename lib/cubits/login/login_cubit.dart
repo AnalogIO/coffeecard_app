@@ -2,9 +2,9 @@ import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
 import 'package:coffeecard/data/repositories/shared/account_repository.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/utils/encode_passcode.dart';
+import 'package:coffeecard/utils/firebase_analytics_event_logging.dart';
 import 'package:coffeecard/utils/http_utils.dart';
 import 'package:equatable/equatable.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'login_state.dart';
@@ -50,11 +50,11 @@ class LoginCubit extends Cubit<LoginState> {
       );
     }
 
+    sl<FirebaseAnalyticsEventLogging>().loginEvent();
     emit(LoginLoading());
 
     final encodedPasscode = encodePasscode(_state.passcode);
     final either = await accountRepository.login(email, encodedPasscode);
-    sl<FirebaseAnalytics>().logLogin(loginMethod: 'UsernamePassword');
 
     if (either.isRight) {
       final authenticatedUser = either.right;

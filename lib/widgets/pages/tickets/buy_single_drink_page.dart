@@ -9,6 +9,7 @@ import 'package:coffeecard/models/purchase/payment.dart';
 import 'package:coffeecard/models/purchase/payment_status.dart';
 import 'package:coffeecard/models/ticket/product.dart';
 import 'package:coffeecard/service_locator.dart';
+import 'package:coffeecard/utils/firebase_analytics_event_logging.dart';
 import 'package:coffeecard/widgets/components/error_section.dart';
 import 'package:coffeecard/widgets/components/helpers/grid.dart';
 import 'package:coffeecard/widgets/components/loading.dart';
@@ -20,6 +21,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BuySingleDrinkPage extends StatelessWidget {
   const BuySingleDrinkPage();
+
+  static const String _fbAnalyticsListId = 'buy_one_drink';
+  static const String _fbAnalyticsListName = Strings.buyOneDrink;
 
   static Route get route =>
       MaterialPageRoute(builder: (_) => const BuySingleDrinkPage());
@@ -36,6 +40,12 @@ class BuySingleDrinkPage extends StatelessWidget {
             if (state is ProductsLoading) {
               return const Loading(loading: true);
             } else if (state is ProductsLoaded) {
+              sl<FirebaseAnalyticsEventLogging>().viewProductsListEvent(
+                state.singleDrinkProducts,
+                _fbAnalyticsListId,
+                _fbAnalyticsListName,
+              );
+
               return SingleChildScrollView(
                 padding: const EdgeInsets.all(16.0),
                 child: Grid(
@@ -48,7 +58,7 @@ class BuySingleDrinkPage extends StatelessWidget {
                           product: product,
                           onTap: buyNSwipeModal,
                         ),
-                      )
+                  )
                       .toList(),
                 ),
               );
@@ -72,6 +82,17 @@ class BuySingleDrinkPage extends StatelessWidget {
     State state,
   ) async {
     {
+      sl<FirebaseAnalyticsEventLogging>().selectProductFromListEvent(
+        product,
+        _fbAnalyticsListId,
+        _fbAnalyticsListName,
+      );
+      sl<FirebaseAnalyticsEventLogging>().viewProductEvent(
+        product,
+        _fbAnalyticsListId,
+        _fbAnalyticsListName,
+      );
+
       // TODO: change this to just use a single
       //  endpoint, once the backend supports it
       final payment = await showModalBottomSheet<Payment>(
@@ -82,11 +103,11 @@ class BuySingleDrinkPage extends StatelessWidget {
         useRootNavigator: true,
         builder: (_) => BuyTicketBottomModalSheet(
           product: product,
-          description: Strings.paymentConfirmationTopSingle(
-            product.amount,
-            product.name,
-          ),
-        ),
+              description: Strings.paymentConfirmationTopSingle(
+                product.amount,
+                product.name,
+              ),
+            ),
       );
       if (!state.mounted) return;
       if (payment != null && payment.status == PaymentStatus.completed) {
