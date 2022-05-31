@@ -17,7 +17,7 @@
   },
   "servers": [
     {
-      "url": "https://beta.analogio.dk/api/clippy"
+      "url": "https://analogio.dk/clippy"
     }
   ],
   "paths": {
@@ -766,6 +766,7 @@
           "id": 122,
           "dateCreated": "",
           "productId": 1,
+          "productName": "Coffee",
           "totalAmount": 100,
           "purchaseStatus": "PendingPayment",
           "paymentDetails": {
@@ -780,6 +781,7 @@
           "id",
           "dateCreated",
           "productId",
+          "productName",
           "totalAmount",
           "purchaseStatus",
           "paymentDetails"
@@ -803,6 +805,12 @@
             "description": "Id of the product to be purchased",
             "format": "int32",
             "example": 1
+          },
+          "productName": {
+            "type": "string",
+            "description": "Name of the product to be purchased",
+            "minLength": 1,
+            "example": "Coffee"
           },
           "totalAmount": {
             "type": "integer",
