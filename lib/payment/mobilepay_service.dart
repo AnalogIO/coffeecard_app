@@ -35,6 +35,7 @@ class MobilePayService implements PaymentHandler {
           deeplink: paymentDetails.mobilePayAppRedirectUri!,
           purchaseTime: purchaseResponse.dateCreated,
           price: purchaseResponse.totalAmount,
+          productName: purchaseResponse.productName,
         ),
       );
     }
