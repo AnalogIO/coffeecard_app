@@ -138,5 +138,6 @@ void configureServices() {
   );
 
   sl.registerSingleton<FirebaseAnalyticsEventLogging>(
-      FirebaseAnalyticsEventLogging(FirebaseAnalytics.instance));
+    FirebaseAnalyticsEventLogging(FirebaseAnalytics.instance),
+  );
 }
