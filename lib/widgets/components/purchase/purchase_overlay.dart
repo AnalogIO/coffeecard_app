@@ -23,7 +23,7 @@ Future<Payment?> showPurchaseOverlay({
           onWillPop: () async => false,
           child: BlocProvider(
             create: (context) => PurchaseCubit(
-              paymentHandler: PaymentHandler(paymentType),
+              paymentHandler: PaymentHandler(paymentType, context),
               product: product,
             ),
             child: BlocListener<PurchaseCubit, PurchaseState>(
