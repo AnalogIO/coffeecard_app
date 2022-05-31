@@ -106,7 +106,7 @@ class BuyTicketsPage extends StatelessWidget {
             timeUsed: payment.purchaseTime,
             amountPurchased: product.amount,
             transactionType: TransactionType.purchase,
-            productName: payment.productName!,
+            productName: payment.productName,
             price: payment.price,
             id: product.id,
           ),
