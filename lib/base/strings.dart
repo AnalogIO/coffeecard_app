@@ -64,6 +64,7 @@ abstract class Strings {
       'You will need to verify your email address later.';
   static const registerEmailEmpty = 'Enter an email';
   static const registerEmailInvalid = 'Enter a valid email';
+
   static String registerEmailInUseSuffix(String email) =>
       '$email is already in use';
 
@@ -222,6 +223,7 @@ abstract class Strings {
   static const logOut = 'Log out';
   static const deleteAccount = 'Delete account';
   static const credits = 'Credits';
+  static const privacyPolicy = 'Privacy Policy';
 
   static const emailShimmerText = 'sample@sample.com';
   static const openingHoursShimmerText = 'Somedays: 8-16';
