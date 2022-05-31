@@ -162,7 +162,7 @@ class SettingsPage extends StatelessWidget {
               SettingListEntry(
                 name: Strings.privacyPolicy,
                 onTap: () => launchUrlExternalApplication(
-                    CoffeeCardApiConstants.privacyPolicyUri, context),
+                    CoffeeCardApiConstants.privacyPolicyUri, context,),
               ),
               SettingListEntry(
                 name: Strings.credits,

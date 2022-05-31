@@ -9,7 +9,7 @@ import 'package:coffeecard/models/purchase/payment_status.dart';
 import 'package:coffeecard/payment/payment_handler.dart';
 import 'package:coffeecard/utils/either.dart';
 import 'package:coffeecard/utils/launch.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/widgets.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MobilePayService implements PaymentHandler {
