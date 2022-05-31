@@ -11,6 +11,7 @@ import 'package:coffeecard/models/purchase/payment_status.dart';
 import 'package:coffeecard/models/receipts/receipt.dart';
 import 'package:coffeecard/models/ticket/product.dart';
 import 'package:coffeecard/service_locator.dart';
+import 'package:coffeecard/utils/firebase_analytics_event_logging.dart';
 import 'package:coffeecard/widgets/components/error_section.dart';
 import 'package:coffeecard/widgets/components/helpers/grid.dart';
 import 'package:coffeecard/widgets/components/loading.dart';
@@ -23,6 +24,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BuyTicketsPage extends StatelessWidget {
   const BuyTicketsPage();
+
+  static const String _fbAnalyticsListId = 'buy_tickets';
+  static const String _fbAnalyticsListName = Strings.buyTickets;
 
   static Route get route =>
       MaterialPageRoute(builder: (_) => const BuyTicketsPage());
@@ -39,6 +43,12 @@ class BuyTicketsPage extends StatelessWidget {
             if (state is ProductsLoading) {
               return const Loading(loading: true);
             } else if (state is ProductsLoaded) {
+              sl<FirebaseAnalyticsEventLogging>().viewProductsListEvent(
+                state.ticketProducts,
+                _fbAnalyticsListId,
+                _fbAnalyticsListName,
+              );
+
               return SingleChildScrollView(
                 padding: const EdgeInsets.all(16.0),
                 child: Grid(
@@ -76,6 +86,17 @@ class BuyTicketsPage extends StatelessWidget {
     State state,
   ) async {
     {
+      sl<FirebaseAnalyticsEventLogging>().selectProductFromListEvent(
+        product,
+        _fbAnalyticsListId,
+        _fbAnalyticsListName,
+      );
+      sl<FirebaseAnalyticsEventLogging>().viewProductEvent(
+        product,
+        _fbAnalyticsListId,
+        _fbAnalyticsListName,
+      );
+
       final payment = await showModalBottomSheet<Payment>(
         context: context,
         barrierColor: AppColor.scrim,

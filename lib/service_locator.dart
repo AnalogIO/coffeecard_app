@@ -20,7 +20,9 @@ import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart'
     hide $JsonSerializableConverter;
 import 'package:coffeecard/generated/api/shiftplanning_api.swagger.dart'
     hide $JsonSerializableConverter;
+import 'package:coffeecard/utils/firebase_analytics_event_logging.dart';
 import 'package:coffeecard/utils/reactivation_authenticator.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 
@@ -133,5 +135,9 @@ void configureServices() {
   // external
   sl.registerFactory<ContributorRepository>(
     () => ContributorRepository(),
+  );
+
+  sl.registerSingleton<FirebaseAnalyticsEventLogging>(
+    FirebaseAnalyticsEventLogging(FirebaseAnalytics.instance),
   );
 }
