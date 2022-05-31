@@ -58,7 +58,7 @@ class BuySingleDrinkPage extends StatelessWidget {
                           product: product,
                           onTap: buyNSwipeModal,
                         ),
-                  )
+                      )
                       .toList(),
                 ),
               );
@@ -103,11 +103,11 @@ class BuySingleDrinkPage extends StatelessWidget {
         useRootNavigator: true,
         builder: (_) => BuyTicketBottomModalSheet(
           product: product,
-              description: Strings.paymentConfirmationTopSingle(
-                product.amount,
-                product.name,
-              ),
-            ),
+          description: Strings.paymentConfirmationTopSingle(
+            product.amount,
+            product.name,
+          ),
+        ),
       );
       if (!state.mounted) return;
       if (payment != null && payment.status == PaymentStatus.completed) {

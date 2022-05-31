@@ -61,7 +61,7 @@ class BuyTicketsPage extends StatelessWidget {
                           product: product,
                           onTap: buyTicketsModal,
                         ),
-                  )
+                      )
                       .toList(),
                 ),
               );
@@ -107,9 +107,9 @@ class BuyTicketsPage extends StatelessWidget {
           product: product,
           description: Strings.paymentConfirmationTopTickets(
             product.amount,
-                product.name,
-              ),
-            ),
+            product.name,
+          ),
+        ),
       );
       if (!state.mounted) return;
       if (payment != null && payment.status == PaymentStatus.completed) {
@@ -120,7 +120,7 @@ class BuyTicketsPage extends StatelessWidget {
 
         final updateTicketsRequest = context.read<TicketsCubit>().getTickets();
         final updateReceiptsRequest =
-        context.read<ReceiptCubit>().fetchReceipts();
+            context.read<ReceiptCubit>().fetchReceipts();
 
         ReceiptOverlay.of(context).show(
           receipt: Receipt(
