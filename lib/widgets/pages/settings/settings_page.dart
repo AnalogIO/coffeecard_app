@@ -5,6 +5,7 @@ import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
 import 'package:coffeecard/cubits/opening_hours/opening_hours_cubit.dart';
 import 'package:coffeecard/cubits/user/user_cubit.dart';
 import 'package:coffeecard/data/api/coffee_card_api_constants.dart';
+import 'package:coffeecard/utils/launch.dart';
 import 'package:coffeecard/widgets/components/dialog.dart';
 import 'package:coffeecard/widgets/components/helpers/shimmer_builder.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
@@ -18,7 +19,6 @@ import 'package:coffeecard/widgets/pages/settings/opening_hours_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({required this.scrollController});
@@ -161,10 +161,8 @@ class SettingsPage extends StatelessWidget {
               ),
               SettingListEntry(
                 name: Strings.privacyPolicy,
-                onTap: () => launchUrl(
-                  CoffeeCardApiConstants.privacyPolicyUri,
-                  mode: LaunchMode.externalApplication,
-                ),
+                onTap: () => launchUrlExternalApplication(
+                    CoffeeCardApiConstants.privacyPolicyUri, context),
               ),
               SettingListEntry(
                 name: Strings.credits,

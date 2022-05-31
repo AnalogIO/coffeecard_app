@@ -5,6 +5,7 @@ import 'package:coffeecard/models/purchase/payment_status.dart';
 import 'package:coffeecard/payment/mobilepay_service.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/utils/either.dart';
+import 'package:flutter/widgets.dart';
 
 enum InternalPaymentType {
   mobilePay,
@@ -12,10 +13,10 @@ enum InternalPaymentType {
 }
 
 abstract class PaymentHandler {
-  factory PaymentHandler(InternalPaymentType type) {
+  factory PaymentHandler(InternalPaymentType type, BuildContext context) {
     switch (type) {
       case InternalPaymentType.mobilePay:
-        return MobilePayService(sl.get<PurchaseRepository>());
+        return MobilePayService(sl.get<PurchaseRepository>(), context);
       case InternalPaymentType.applePay:
         throw UnimplementedError();
     }

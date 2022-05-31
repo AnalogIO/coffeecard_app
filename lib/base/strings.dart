@@ -299,6 +299,7 @@ abstract class Strings {
 
   // Errors
   static const error = 'Error';
+  static const cantLaunchUrl = 'The app can not launch the Url';
 
   static String unknownFilterCategory(Object category) {
     return 'Unknown filter category: $category';
