@@ -91,13 +91,6 @@ class CreditsPage extends StatelessWidget {
                     context,
                   ),
                 ),
-                SettingListEntry(
-                  name: Strings.provideFeedback,
-                  onTap: () => launchUrlExternalApplication(
-                    ApiUriConstants.feedbackFormUri,
-                    context,
-                  ),
-                ),
               ],
             ),
             SettingsGroup(

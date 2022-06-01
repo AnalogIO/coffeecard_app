@@ -165,6 +165,13 @@ class SettingsPage extends StatelessWidget {
                 ),
               ),
               SettingListEntry(
+                name: Strings.provideFeedback,
+                onTap: () => launchUrlExternalApplication(
+                  ApiUriConstants.feedbackFormUri,
+                  context,
+                ),
+              ),
+              SettingListEntry(
                 name: Strings.credits,
                 onTap: () => Navigator.push(context, CreditsPage.route),
               ),
