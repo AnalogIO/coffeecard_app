@@ -69,8 +69,7 @@ class AppScaffold extends StatelessWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              if (hasTitle && isTestEnvironment)
-                const _EnvironmentBanner(),
+              if (hasTitle && isTestEnvironment) const _EnvironmentBanner(),
               Expanded(
                 child: Container(
                   padding: applyPadding ? const EdgeInsets.all(16) : null,
