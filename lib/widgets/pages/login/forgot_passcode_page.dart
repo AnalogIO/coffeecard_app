@@ -31,6 +31,7 @@ class _ForgotPasscodePageState extends State<ForgotPasscodePage> {
         child: EmailButtonGroup(
           hint: Strings.forgotPasscodeHint,
           initialValue: widget.initialValue,
+          checkForDuplicateEmail: false,
           onSubmit: (_, email) async {
             // UserCubit is not initialized, use the repository directly
             final either =

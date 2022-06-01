@@ -12,13 +12,16 @@ class EmailButtonGroup extends StatefulWidget {
   final String? initialValue;
   final String? hint;
   final bool preventIdenticalInitialValue;
+  final bool checkForDuplicateEmail;
 
   const EmailButtonGroup({
     required this.onSubmit,
     this.initialValue,
     this.hint,
     this.preventIdenticalInitialValue = false,
+    this.checkForDuplicateEmail = true,
   });
+
   @override
   State<EmailButtonGroup> createState() => _EmailButtonGroupState();
 }
@@ -54,7 +57,7 @@ class _EmailButtonGroupState extends State<EmailButtonGroup> {
         widget.initialValue != null &&
         _email == widget.initialValue) {
       error = Strings.changeEmailCannotBeSame;
-    } else {
+    } else if (widget.checkForDuplicateEmail) {
       final either = await sl.get<AccountRepository>().emailExists(_email);
 
       // `mounted` needs to be checked after an async call.
