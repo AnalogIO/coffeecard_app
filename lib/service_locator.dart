@@ -46,7 +46,7 @@ void configureServices() {
 
   // Rest Client, Chopper client
   final _coffeCardChopper = ChopperClient(
-    baseUrl: CoffeeCardApiConstants.getCoffeeCardUrl(),
+    baseUrl: ApiUriConstants.getCoffeeCardUrl(),
     interceptors: [AuthenticationInterceptor(sl<SecureStorage>())],
     converter: $JsonSerializableConverter(),
     services: [
@@ -57,7 +57,7 @@ void configureServices() {
   );
 
   final _shiftplanningChopper = ChopperClient(
-    baseUrl: CoffeeCardApiConstants.shiftyUrl,
+    baseUrl: ApiUriConstants.shiftyUrl,
     // TODO: load the url from config files
     converter: $JsonSerializableConverter(),
     services: [ShiftplanningApi.create()],

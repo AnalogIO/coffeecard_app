@@ -47,7 +47,7 @@ class AccountRepository {
       body: LoginDto(
         email: email,
         password: encodedPasscode,
-        version: CoffeeCardApiConstants.minAppVersion,
+        version: ApiUriConstants.minAppVersion,
       ),
     );
 

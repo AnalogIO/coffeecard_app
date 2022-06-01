@@ -53,9 +53,9 @@ class MobilePayService implements PaymentHandler {
 
       // MobilePay not installed, send user to appstore
       if (Platform.isAndroid) {
-        url = CoffeeCardApiConstants.mobilepayAndroid;
+        url = ApiUriConstants.mobilepayAndroid;
       } else if (Platform.isIOS) {
-        url = CoffeeCardApiConstants.mobilepayIOS;
+        url = ApiUriConstants.mobilepayIOS;
       } else {
         throw 'Could not launch $mobilePayDeeplink';
       }

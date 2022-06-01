@@ -87,12 +87,16 @@ class CreditsPage extends StatelessWidget {
                 SettingListEntry(
                   name: Strings.github,
                   onTap: () => launchUrlExternalApplication(
-                    CoffeeCardApiConstants.analogIOGitHub,
+                    ApiUriConstants.analogIOGitHub,
                     context,
                   ),
                 ),
-                const SettingListEntry(
-                  name: Strings.sendUsAnEmail,
+                SettingListEntry(
+                  name: Strings.provideFeedback,
+                  onTap: () => launchUrlExternalApplication(
+                    ApiUriConstants.feedbackFormUri,
+                    context,
+                  ),
                 ),
               ],
             ),
