@@ -10,10 +10,11 @@ class ReceiptsPage extends StatelessWidget {
 
   final ScrollController scrollController;
 
-  static Route routeWith({required ScrollController scrollController}) =>
-      MaterialPageRoute(
-        builder: (_) => ReceiptsPage(scrollController: scrollController),
-      );
+  static Route routeWith({required ScrollController scrollController}) {
+    return MaterialPageRoute(
+      builder: (_) => ReceiptsPage(scrollController: scrollController),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

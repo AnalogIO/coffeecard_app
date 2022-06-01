@@ -13,7 +13,7 @@ import 'package:coffeecard/widgets/components/settings_group.dart';
 import 'package:coffeecard/widgets/components/settings_list_entry.dart';
 import 'package:coffeecard/widgets/components/user_card.dart';
 import 'package:coffeecard/widgets/pages/settings/change_email_page.dart';
-import 'package:coffeecard/widgets/pages/settings/change_passcode_page.dart';
+import 'package:coffeecard/widgets/pages/settings/change_passcode_flow.dart';
 import 'package:coffeecard/widgets/pages/settings/credits_page.dart';
 import 'package:coffeecard/widgets/pages/settings/opening_hours_page.dart';
 import 'package:flutter/material.dart';
@@ -25,10 +25,11 @@ class SettingsPage extends StatelessWidget {
 
   final ScrollController scrollController;
 
-  static Route routeWith({required ScrollController scrollController}) =>
-      MaterialPageRoute(
-        builder: (_) => SettingsPage(scrollController: scrollController),
-      );
+  static Route routeWith({required ScrollController scrollController}) {
+    return MaterialPageRoute(
+      builder: (_) => SettingsPage(scrollController: scrollController),
+    );
+  }
 
   /// Tappable only if user data has been loaded.
   void Function()? _ifUserStateLoaded(
@@ -101,10 +102,7 @@ class SettingsPage extends StatelessWidget {
                 ),
                 onTap: _ifUserStateLoaded(
                   userState,
-                  (_) => Navigator.push(
-                    context,
-                    ChangePasscodePage.route,
-                  ),
+                  (_) => Navigator.push(context, ChangePasscodeFlow.route),
                 ),
               ),
               SettingListEntry(

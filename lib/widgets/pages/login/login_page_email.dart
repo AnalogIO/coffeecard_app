@@ -1,8 +1,8 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/utils/email_utils.dart';
+import 'package:coffeecard/utils/email_is_valid.dart';
 import 'package:coffeecard/utils/fast_slide_transition.dart';
-import 'package:coffeecard/widgets/components/entry/login/login_cta.dart';
-import 'package:coffeecard/widgets/components/entry/login/login_email_text_field.dart';
+import 'package:coffeecard/widgets/components/login/login_cta.dart';
+import 'package:coffeecard/widgets/components/login/login_email_text_field.dart';
 import 'package:coffeecard/widgets/pages/login/login_page_base.dart';
 import 'package:coffeecard/widgets/pages/login/login_page_passcode.dart';
 import 'package:coffeecard/widgets/pages/register/register_flow.dart';

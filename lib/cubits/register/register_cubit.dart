@@ -2,7 +2,6 @@ import 'package:coffeecard/data/repositories/shared/account_repository.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/utils/encode_passcode.dart';
 import 'package:coffeecard/utils/firebase_analytics_event_logging.dart';
-import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'register_state.dart';
@@ -10,22 +9,19 @@ part 'register_state.dart';
 class RegisterCubit extends Cubit<RegisterState> {
   AccountRepository repository;
 
-  RegisterCubit({required this.repository}) : super(const RegisterState());
+  RegisterCubit({required this.repository}) : super(RegisterInitial());
 
-  void setEmail(String email) => emit(state.copyWith(email: email.trim()));
-  void setPasscode(String passcode) => emit(state.copyWith(passcode: passcode));
-  void setName(String name) => emit(state.copyWith(name: name));
-
-  Future<void> register() async {
+  Future<void> register(String name, String email, String passcode) async {
     final either = await repository.register(
-      state.name!,
-      state.email!,
-      encodePasscode(state.passcode!),
+      name,
+      email,
+      encodePasscode(passcode),
     );
 
-    // TODO: Handle error by emitting new state instead of throwing?
-    if (either.isLeft) {
-      throw Exception(either.left.message);
+    if (either.isRight) {
+      emit(RegisterSuccess());
+    } else {
+      emit(RegisterError(either.left.message));
     }
 
     sl<FirebaseAnalyticsEventLogging>().signUpEvent();

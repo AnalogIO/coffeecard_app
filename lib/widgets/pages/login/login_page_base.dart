@@ -1,7 +1,7 @@
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/utils/responsive.dart';
-import 'package:coffeecard/widgets/components/entry/login/login_input_hint.dart';
 import 'package:coffeecard/widgets/components/images/analog_logo.dart';
+import 'package:coffeecard/widgets/components/login/login_input_hint.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
