@@ -1,28 +1,14 @@
 part of 'register_cubit.dart';
 
-class RegisterState extends Equatable {
-  final String? email;
-  final String? passcode;
-  final String? name;
+abstract class RegisterState {}
 
-  const RegisterState({
-    this.email,
-    this.passcode,
-    this.name,
-  });
+class RegisterInitial extends RegisterState {}
 
-  RegisterState copyWith({
-    String? email,
-    String? passcode,
-    String? name,
-  }) {
-    return RegisterState(
-      email: email ?? this.email,
-      passcode: passcode ?? this.passcode,
-      name: name ?? this.name,
-    );
-  }
+/// The user has created their account.
+class RegisterSuccess extends RegisterState {}
 
-  @override
-  List<Object?> get props => [email, passcode, name];
+/// An error occurred trying to create an account.
+class RegisterError extends RegisterState {
+  RegisterError(this.errorMessage);
+  final String errorMessage;
 }

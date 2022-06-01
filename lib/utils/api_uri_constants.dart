@@ -1,4 +1,4 @@
-class CoffeeCardApiConstants {
+class ApiUriConstants {
   static const String _productionUrl = 'https://analogio.dk/clippy';
   static const String _testUrl = 'https://beta.analogio.dk/api/clippy';
 
@@ -18,6 +18,9 @@ class CoffeeCardApiConstants {
 
   static Uri privacyPolicyUri =
       Uri.parse('https://analogio.dk/policies/privacypolicy.pdf');
+
+  static Uri feedbackFormUri =
+      Uri.parse('https://www.cognitoforms.com/CafeAnalog1/BugReport');
 
   static String getCoffeeCardUrl() {
     const isProd = bool.fromEnvironment('IS_PROD');
