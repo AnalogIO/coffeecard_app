@@ -16,6 +16,9 @@ class CoffeeCardApiConstants {
   static Uri mobilepayIOS =
       Uri.parse('itms-apps://itunes.apple.com/app/id624499138');
 
+  static Uri privacyPolicyUri =
+      Uri.parse('https://analogio.dk/policies/privacypolicy.pdf');
+
   static String getCoffeeCardUrl() {
     const isProd = bool.fromEnvironment('IS_PROD');
 

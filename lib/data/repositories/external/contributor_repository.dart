@@ -13,7 +13,7 @@ class ContributorRepository {
           avatarUrl: 'https://avatars.githubusercontent.com/u/39860858?v=4',
         ),
         Contributor(
-          name: 'Jonas Anker',
+          name: 'Jonas Anker Rasmussen',
           githubUrl: 'https://github.com/jonasanker',
           avatarUrl: 'https://avatars.githubusercontent.com/u/25930103?v=4',
         ),

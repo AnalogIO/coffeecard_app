@@ -3,6 +3,16 @@ name: Release Coffeecard App
 on:
   push:
     branches: [develop, production]
+    paths:
+      - android/**
+      - assets/**
+      - ios/**
+      - lib/**
+      - openapi/**
+      - .metadata
+      - build.yml
+      - pubspec.lock
+      - pubspec.yml
 
 jobs:
   build_and_test:

@@ -7,8 +7,8 @@ class Payment {
   final String deeplink;
   final int price;
   final DateTime purchaseTime;
-  // TODO: make not nullable, by receiving from backend
-  String? productName;
+  final int productId;
+  final String productName;
 
   Payment({
     required this.id,
@@ -17,7 +17,8 @@ class Payment {
     required this.paymentId,
     required this.status,
     required this.deeplink,
-    this.productName,
+    required this.productId,
+    required this.productName,
   });
 
   Payment copyWith({
@@ -27,6 +28,7 @@ class Payment {
     String? deeplink,
     int? price,
     DateTime? purchaseTime,
+    int? productId,
     String? productName,
   }) {
     return Payment(
@@ -36,6 +38,7 @@ class Payment {
       deeplink: deeplink ?? this.deeplink,
       price: price ?? this.price,
       purchaseTime: purchaseTime ?? this.purchaseTime,
+      productId: productId ?? this.productId,
       productName: productName ?? this.productName,
     );
   }

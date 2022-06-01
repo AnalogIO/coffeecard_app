@@ -1,5 +1,7 @@
 import 'package:coffeecard/data/repositories/shared/account_repository.dart';
+import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/utils/encode_passcode.dart';
+import 'package:coffeecard/utils/firebase_analytics_event_logging.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -25,5 +27,7 @@ class RegisterCubit extends Cubit<RegisterState> {
     if (either.isLeft) {
       throw Exception(either.left.message);
     }
+
+    sl<FirebaseAnalyticsEventLogging>().signUpEvent();
   }
 }

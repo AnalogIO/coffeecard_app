@@ -64,6 +64,7 @@ abstract class Strings {
       'You will need to verify your email address later.';
   static const registerEmailEmpty = 'Enter an email';
   static const registerEmailInvalid = 'Enter a valid email';
+
   static String registerEmailInUseSuffix(String email) =>
       '$email is already in use';
 
@@ -213,7 +214,7 @@ abstract class Strings {
 
   static const settingsGroupAccount = 'Account';
   static const settingsGroupFeatures = 'Features';
-  static const settingsGroupAbout = 'About Cafe Analog';
+  static const settingsGroupAbout = 'About';
   static const settingsGroupProfile = 'Edit profile';
 
   static const email = 'Email';
@@ -222,6 +223,7 @@ abstract class Strings {
   static const logOut = 'Log out';
   static const deleteAccount = 'Delete account';
   static const credits = 'Credits';
+  static const privacyPolicy = 'Privacy policy';
 
   static const emailShimmerText = 'sample@sample.com';
   static const openingHoursShimmerText = 'Somedays: 8-16';
@@ -297,6 +299,7 @@ abstract class Strings {
 
   // Errors
   static const error = 'Error';
+  static const cantLaunchUrl = 'The app can not launch the Url';
 
   static String unknownFilterCategory(Object category) {
     return 'Unknown filter category: $category';
