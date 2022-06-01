@@ -4,7 +4,7 @@ import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
 import 'package:coffeecard/cubits/opening_hours/opening_hours_cubit.dart';
 import 'package:coffeecard/cubits/user/user_cubit.dart';
-import 'package:coffeecard/data/api/coffee_card_api_constants.dart';
+import 'package:coffeecard/utils/api_uri_constants.dart';
 import 'package:coffeecard/utils/launch.dart';
 import 'package:coffeecard/widgets/components/dialog.dart';
 import 'package:coffeecard/widgets/components/helpers/shimmer_builder.dart';

@@ -1,4 +1,3 @@
-import 'package:coffeecard/data/api/coffee_card_api_constants.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
 import 'package:coffeecard/models/account/authenticated_user.dart';
@@ -6,6 +5,7 @@ import 'package:coffeecard/models/account/update_user.dart';
 import 'package:coffeecard/models/account/user.dart';
 import 'package:coffeecard/models/api/api_error.dart';
 import 'package:coffeecard/models/api/unauthorized_error.dart';
+import 'package:coffeecard/utils/api_uri_constants.dart';
 import 'package:coffeecard/utils/either.dart';
 import 'package:coffeecard/utils/extensions.dart';
 import 'package:logger/logger.dart';
