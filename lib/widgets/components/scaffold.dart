@@ -106,7 +106,7 @@ class _EnvironmentButton extends StatelessWidget {
     return BlocBuilder<EnvironmentCubit, EnvironmentState>(
       builder: (context, state) {
         final bool isTestEnvironment =
-            state is EnvironmentLoaded && state.isTestEnvironment;
+            state is EnvironmentLoaded && state.env.isTest;
 
         if (!isTestEnvironment) {
           return const SizedBox.shrink();
