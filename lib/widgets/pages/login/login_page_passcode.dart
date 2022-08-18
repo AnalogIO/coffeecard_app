@@ -4,9 +4,9 @@ import 'package:coffeecard/cubits/login/login_cubit.dart';
 import 'package:coffeecard/data/repositories/shared/account_repository.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/utils/fast_slide_transition.dart';
-import 'package:coffeecard/widgets/components/entry/login/login_numpad.dart';
-import 'package:coffeecard/widgets/components/entry/login/login_passcode_dots.dart';
 import 'package:coffeecard/widgets/components/loading_overlay.dart';
+import 'package:coffeecard/widgets/components/login/login_numpad.dart';
+import 'package:coffeecard/widgets/components/login/login_passcode_dots.dart';
 import 'package:coffeecard/widgets/pages/login/forgot_passcode_page.dart';
 import 'package:coffeecard/widgets/pages/login/login_page_base.dart';
 import 'package:flutter/material.dart';
@@ -46,9 +46,9 @@ class _LoginPagePasscodeState extends State<LoginPagePasscode> {
             previous is LoginLoading || current is LoginLoading,
         listener: (context, state) {
           if (state is LoginLoading) {
-            LoadingOverlay.of(context).show();
+            showLoadingOverlay(context);
           } else {
-            LoadingOverlay.of(context).hide();
+            hideLoadingOverlay(context);
           }
         },
         buildWhen: (_, current) => current is! LoginLoading,

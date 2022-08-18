@@ -2,14 +2,12 @@ import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
 import 'package:coffeecard/cubits/user/user_cubit.dart';
 import 'package:coffeecard/widgets/components/dialog.dart';
-import 'package:coffeecard/widgets/components/email_button_group.dart';
+import 'package:coffeecard/widgets/components/forms/settings/change_email_form.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-// StatefulWidget is used because we can check if it's still `mounted`
-// after an asynchronous gap (showing the app dialog)
-class ChangeEmailPage extends StatefulWidget {
+class ChangeEmailPage extends StatelessWidget {
   const ChangeEmailPage({required this.currentEmail});
   final String currentEmail;
 
@@ -20,42 +18,37 @@ class ChangeEmailPage extends StatefulWidget {
   }
 
   @override
-  State<ChangeEmailPage> createState() => _ChangeEmailPageState();
-}
-
-class _ChangeEmailPageState extends State<ChangeEmailPage> {
-  @override
   Widget build(BuildContext context) {
     return AppScaffold.withTitle(
       title: Strings.changeEmail,
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: EmailButtonGroup(
-          initialValue: widget.currentEmail,
-          preventIdenticalInitialValue: true,
-          hint: Strings.changeEmailLogInAgain,
-          onSubmit: (context, email) async {
-            context.read<UserCubit>().setUserEmail(email);
-            await appDialog(
-              context: context,
-              title: Strings.changeEmailSuccess,
-              children: [
-                const Text(Strings.changeEmailLogInAgainNewEmail),
-              ],
-              actions: [
-                TextButton(
-                  onPressed: () => closeAppDialog(context),
-                  child: const Text(
-                    Strings.buttonOK,
-                  ),
-                ),
-              ],
-              dismissible: false,
-            );
-            if (mounted) context.read<AuthenticationCubit>().unauthenticated();
-          },
-        ),
+      applyPadding: true,
+      body: ChangeEmailForm(
+        currentEmail: currentEmail,
+        onSubmit: (email) => _onSubmit(context, email),
       ),
+    );
+  }
+
+  void _onSubmit(BuildContext context, String email) {
+    context.read<UserCubit>().setUserEmail(email);
+    appDialog(
+      context: context,
+      title: Strings.changeEmailSuccess,
+      children: [
+        const Text(Strings.changeEmailLogInAgainNewEmail),
+      ],
+      actions: [
+        TextButton(
+          onPressed: () {
+            context.read<AuthenticationCubit>().unauthenticated();
+            closeAppDialog(context);
+          },
+          child: const Text(
+            Strings.buttonOK,
+          ),
+        ),
+      ],
+      dismissible: false,
     );
   }
 }

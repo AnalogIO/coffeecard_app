@@ -20,6 +20,7 @@ class RegisterFlow extends StatelessWidget {
       create: (context) => RegisterCubit(repository: sl<AccountRepository>()),
       child: AppScaffold.withTitle(
         title: Strings.registerAppBarTitle,
+        applyPadding: true,
         body: AppFlow(initialRoute: RegisterPageEmail.route),
       ),
     );

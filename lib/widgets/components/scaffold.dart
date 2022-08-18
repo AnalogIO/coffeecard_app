@@ -10,6 +10,7 @@ import 'package:gap/gap.dart';
 class AppScaffold extends StatelessWidget {
   final Widget? title;
   final Widget body;
+  final bool applyPadding;
   final Color backgroundColor;
   final bool resizeToAvoidBottomInset;
   final double? appBarHeight;
@@ -24,6 +25,7 @@ class AppScaffold extends StatelessWidget {
   /// The body's background color is always `AppColor.background`.
   AppScaffold.withTitle({
     required String title,
+    this.applyPadding = false,
     this.resizeToAvoidBottomInset = true,
     required this.body,
   })  : title = Text(title, style: AppTextStyle.pageTitle),
@@ -42,6 +44,7 @@ class AppScaffold extends StatelessWidget {
     this.resizeToAvoidBottomInset = true,
     required this.body,
   })  : title = null,
+        applyPadding = false,
         appBarHeight = 48;
 
   @override
@@ -58,23 +61,30 @@ class AppScaffold extends StatelessWidget {
         centerTitle: hasTitle ? null : true,
         toolbarHeight: appBarHeight,
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          if (hasTitle) const _EnvironmentBanner(),
-          Expanded(
-            child: Container(
-              color: backgroundColor,
-              child: body,
-            ),
-          ),
-        ],
+      body: BlocBuilder<EnvironmentCubit, EnvironmentState>(
+        builder: (_, state) {
+          final bool isTestEnvironment =
+              state is EnvironmentLoaded && state.isTestEnvironment;
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (hasTitle && isTestEnvironment) const _EnvironmentBanner(),
+              Expanded(
+                child: Container(
+                  padding: applyPadding ? const EdgeInsets.all(16) : null,
+                  color: backgroundColor,
+                  child: body,
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
 }
 
-// TODO: Extract to its own file as more widgets want to use this widget
 class _EnvironmentBanner extends StatelessWidget {
   const _EnvironmentBanner();
 

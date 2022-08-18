@@ -1,6 +1,5 @@
 import 'package:chopper/chopper.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
-import 'package:coffeecard/data/api/coffee_card_api_constants.dart';
 import 'package:coffeecard/data/api/interceptors/authentication_interceptor.dart';
 import 'package:coffeecard/data/repositories/external/contributor_repository.dart';
 import 'package:coffeecard/data/repositories/shared/account_repository.dart';
@@ -20,6 +19,7 @@ import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart'
     hide $JsonSerializableConverter;
 import 'package:coffeecard/generated/api/shiftplanning_api.swagger.dart'
     hide $JsonSerializableConverter;
+import 'package:coffeecard/utils/api_uri_constants.dart';
 import 'package:coffeecard/utils/firebase_analytics_event_logging.dart';
 import 'package:coffeecard/utils/reactivation_authenticator.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -46,7 +46,7 @@ void configureServices() {
 
   // Rest Client, Chopper client
   final _coffeCardChopper = ChopperClient(
-    baseUrl: CoffeeCardApiConstants.getCoffeeCardUrl(),
+    baseUrl: ApiUriConstants.getCoffeeCardUrl(),
     interceptors: [AuthenticationInterceptor(sl<SecureStorage>())],
     converter: $JsonSerializableConverter(),
     services: [
@@ -57,7 +57,7 @@ void configureServices() {
   );
 
   final _shiftplanningChopper = ChopperClient(
-    baseUrl: CoffeeCardApiConstants.shiftyUrl,
+    baseUrl: ApiUriConstants.shiftyUrl,
     // TODO: load the url from config files
     converter: $JsonSerializableConverter(),
     services: [ShiftplanningApi.create()],

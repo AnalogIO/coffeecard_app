@@ -59,17 +59,16 @@ abstract class Strings {
   static const registerAppBarTitle = 'Register';
 
   static const registerEmailTitle = 'Enter your email';
-  static const registerEmailLabel = 'Email';
+  static const registerEmailLabel = email;
   static const registerEmailHint =
       'You will need to verify your email address later.';
   static const registerEmailEmpty = 'Enter an email';
   static const registerEmailInvalid = 'Enter a valid email';
+  static String registerEmailInUse(String email) => '$email is already in use';
 
-  static String registerEmailInUseSuffix(String email) =>
-      '$email is already in use';
-
-  static const registerPasscodeTitle = 'Enter a passcode';
+  static const registerPasscodeTitle = loginPasscodeEmpty;
   static const registerPasscodeLabel = 'Passcode';
+  static const registerPasscodeRepeatTitle = 'Repeat the passcode';
   static const registerPasscodeRepeatLabel = 'Repeat passcode';
   static const registerPasscodeHint =
       'Enter a four-digit passcode for your account.';
@@ -97,7 +96,19 @@ abstract class Strings {
   static const registerSuccessBody =
       "To log in, please verify your email address by clicking the link we've sent to ";
 
+  // Forgot passcode
+  static const forgotPasscode = 'Forgot passcode';
+  static const forgotPasscodeHint =
+      "We'll send you a link to reset your passcode.";
+  static const forgotPasscodeNoAccountExists =
+      'No account exists with that email';
+  static const forgotPasscodeLinkSent = 'Passcode reset link sent';
+  static String forgotPasscodeSentRequestTo(String email) =>
+      "We've sent a request to reset your passcode to $email.";
+  static const forgotPasscodeError = 'An error has occurred';
+
   // Buttons
+  static const buttonContinue = 'Continue';
   static const buttonOK = 'OK';
   static const buttonClose = 'Close';
   static const buttonAccept = 'Accept';
@@ -240,22 +251,16 @@ abstract class Strings {
   static const changeEmailLogInAgainNewEmail =
       'Please log in again with your updated email.';
 
-  static const forgotPasscode = 'Forgot passcode';
-  static const forgotPasscodeLinkSent = 'Passcode reset link sent';
-  static String forgotPasscodeSentRequestTo(String email) =>
-      'We have sent a request to reset your passcode to $email, please check your email';
-  static const forgotPasscodeTitleError = 'Looks like an error occoured';
-  static const forgotPasscodeBodyError =
-      'We were unable to complete your request, please try again later';
-  static const forgotPasscodeHint =
-      "We'll send you a link to reset your passcode";
+  static const changePasscodeTitle = 'Enter a new passcode';
+  static const changePasscodeLabel = 'New passcode';
+  static const changePasscodeHint = 'Enter a new passcode for your account.';
+  static const changePasscodeRepeatTitle = 'Repeat the new passcode';
+  static const changePasscodeRepeatLabel = 'Repeat new passcode';
 
   static const deleteAccountText =
       'Performing this action will delete your account and any tickets you own.\n\nThis cannot be undone.\n\nAre you sure you want to proceed?';
   static String deleteAccountEmailConfirmation(String email) =>
       'We have sent a verification link to $email.\n\nPlease confirm your request to delete your account using the provided link.';
-
-  static const signInWithFingerprint = 'Sign in with fingerprint';
 
   static const faq = 'Frequently Asked Questions';
   static const openingHours = 'Opening hours';
@@ -277,7 +282,7 @@ abstract class Strings {
   static const analogIOBody =
       "AnalogIO is a group of volunteer software students, supporting the student organization Cafe Analog.\n\nWe create and maintain backend systems, apps and websites for both customers and baristas of the cafe.\n\nWant to help? Have any feedback? Don't hesitate to contact us.";
   static const github = 'GitHub';
-  static const sendUsAnEmail = 'Send us an email';
+  static const provideFeedback = 'Provide feedback or report a bug';
   static const licenses = 'Licenses';
   static const viewLicenses = 'View licenses';
 
@@ -300,6 +305,8 @@ abstract class Strings {
   // Errors
   static const error = 'Error';
   static const cantLaunchUrl = 'The app can not launch the Url';
+  static const emailValidationError =
+      'An error occurred. Try typing your email again.';
 
   static String unknownFilterCategory(Object category) {
     return 'Unknown filter category: $category';
