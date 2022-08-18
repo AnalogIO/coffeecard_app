@@ -218,7 +218,10 @@ void _showDeleteAccountDialog(BuildContext context, String email) {
             actions: [
               TextButton(
                 child: const Text(Strings.buttonOK),
-                onPressed: () => closeAppDialog(context),
+                onPressed: () {
+                  closeAppDialog(context);
+                  context.read<AuthenticationCubit>().unauthenticated();
+                },
               ),
             ],
             dismissible: false,
