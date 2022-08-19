@@ -5,9 +5,8 @@ abstract class EnvironmentState {}
 class EnvironmentInitial extends EnvironmentState {}
 
 class EnvironmentLoaded extends EnvironmentState {
-  EnvironmentLoaded({required this.isTestEnvironment});
-
-  final bool isTestEnvironment;
+  EnvironmentLoaded({required this.env});
+  final Environment env;
 }
 
 class EnvironmentError extends EnvironmentState {}
