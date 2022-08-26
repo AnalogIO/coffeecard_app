@@ -47,7 +47,7 @@ class MobilePayService implements PaymentHandler {
 
   Future<void> invokeMobilePay(Uri mobilePayDeeplink) async {
     if (await canLaunchUrl(mobilePayDeeplink)) {
-      await launchUrl(mobilePayDeeplink);
+      await launchUrl(mobilePayDeeplink, mode: LaunchMode.externalApplication);
     } else {
       final Uri url;
 

@@ -2,6 +2,7 @@ import 'package:coffeecard/base/strings_environment.dart';
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/environment/environment_cubit.dart';
+import 'package:coffeecard/models/environment.dart';
 import 'package:coffeecard/widgets/components/dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -64,7 +65,7 @@ class AppScaffold extends StatelessWidget {
       body: BlocBuilder<EnvironmentCubit, EnvironmentState>(
         builder: (_, state) {
           final bool isTestEnvironment =
-              state is EnvironmentLoaded && state.isTestEnvironment;
+              state is EnvironmentLoaded && state.env.isTest;
 
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -105,7 +106,7 @@ class _EnvironmentButton extends StatelessWidget {
     return BlocBuilder<EnvironmentCubit, EnvironmentState>(
       builder: (context, state) {
         final bool isTestEnvironment =
-            state is EnvironmentLoaded && state.isTestEnvironment;
+            state is EnvironmentLoaded && state.env.isTest;
 
         if (!isTestEnvironment) {
           return const SizedBox.shrink();

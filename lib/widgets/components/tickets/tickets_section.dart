@@ -2,6 +2,7 @@ import 'package:coffeecard/cubits/environment/environment_cubit.dart';
 import 'package:coffeecard/cubits/tickets/tickets_cubit.dart';
 import 'package:coffeecard/cubits/user/user_cubit.dart';
 import 'package:coffeecard/errors/match_case_incomplete_exception.dart';
+import 'package:coffeecard/models/environment.dart';
 import 'package:coffeecard/widgets/components/error_section.dart';
 import 'package:coffeecard/widgets/components/helpers/shimmer_builder.dart';
 import 'package:coffeecard/widgets/components/loading_overlay.dart';
@@ -40,7 +41,7 @@ class TicketSection extends StatelessWidget {
               ReceiptOverlay.of(context).show(
                 receipt: state.receipt,
                 isTestEnvironment:
-                    envState is EnvironmentLoaded && envState.isTestEnvironment,
+                    envState is EnvironmentLoaded && envState.env.isTest,
               );
             }
           },
