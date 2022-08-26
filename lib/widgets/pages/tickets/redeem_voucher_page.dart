@@ -1,5 +1,6 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/cubits/tickets/tickets_cubit.dart';
 import 'package:coffeecard/cubits/voucher/voucher_cubit.dart';
 import 'package:coffeecard/data/repositories/v1/voucher_repository.dart';
 import 'package:coffeecard/service_locator.dart';
@@ -37,6 +38,9 @@ class RedeemVoucherPage extends StatelessWidget {
   }
 
   void _onSuccess(BuildContext context, VoucherSuccess state) {
+    // Refresh tickets, so the user sees the redeemed ticket(s)
+    context.read<TicketsCubit>().refreshTickets();
+
     appDialog(
       context: context,
       title: Strings.voucherRedeemed,
