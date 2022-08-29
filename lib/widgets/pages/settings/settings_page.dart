@@ -126,8 +126,8 @@ class SettingsPage extends StatelessWidget {
             title: Strings.settingsGroupAbout,
             listItems: [
               SettingListEntry(
-                name: Strings.faq,
-                onTap:() => Navigator.push(context, FAQPage.route),
+                name: Strings.frequentlyAskedQuestions,
+                onTap: () => Navigator.push(context, FAQPage.route),
               ),
               SettingListEntry(
                 name: Strings.openingHours,

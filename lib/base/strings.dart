@@ -262,7 +262,8 @@ abstract class Strings {
   static String deleteAccountEmailConfirmation(String email) =>
       'We have sent a verification link to $email.\n\nPlease confirm your request to delete your account using the provided link.';
 
-  static const faq = 'Frequently Asked Questions';
+  static const frequentlyAskedQuestions = 'Frequently Asked Questions';
+  static const faq = 'FAQ';
   static const openingHours = 'Opening hours';
   static const today = 'Today';
 
@@ -277,25 +278,20 @@ abstract class Strings {
   static const userID = 'User ID';
 
   // FAQ
-  static const faqHowToUseTicket = 'How do I use my tickets?';
-  static const faqHowToUseTicketAnswer =
-      'To use a ticket, swipe it by dragging it to the side.';
-  static const faqWhereCanIFindID = 'Where can I find my ID?';
-  static const faqWhereCanIFindIDAnswer =
-      'You can find your ID at the top of the navigation bar in the top left corner.';
-  static const faqAppPurpose = 'What is the purpose of this app?';
-  static const faqAppPurposeAnswer =
-      "This app replaces the Café Analog's physical coffee card. The idea is that you use a ticket when you pour yourself coffee. For beverages you cannot pour yourself, show the barista your phone when using the ticket.";
-  static const faqDisableConfirmationDialog =
-      'Can I disable/reenable confirmation dialog after ticket use?';
-  static const faqDisableConfirmationDialogAnswer =
-      'Yes, to disable or reenable the confirmation dialog, go to settings and check or uncheck "Confirmation on ticket use".';
-  static const faqCashPurchase = 'Can I buy tickets with cash or credit card?';
-  static const faqCashPurchaseAnswer =
-      'Yes! Just give the barista at Café Analog your ID, and they will add tickets to your account. Then press the update button in the Tickets screen to get the tickets.';
-  static const faqLevel = 'How do I increase my level?';
-  static const faqLevelAnswer =
-      'You increase your level by gaining experience points, which you gain by swiping your tickets. The more the tickets cost, the more experience points they give.';
+  static const faqEntries = {
+    'How do I use my tickets?':
+        'To use a ticket, swipe it by dragging it to the side.',
+    'Where can I find my ID?':
+        'You can find your ID at the top of the navigation bar in the top left corner.',
+    'What is the purpose of this app?':
+        "This app replaces the Café Analog's physical coffee card. The idea is that you use a ticket when you pour yourself coffee. For beverages you cannot pour yourself, show the barista your phone when using the ticket.",
+    'Can I disable/reenable confirmation dialog after ticket use?':
+        'Yes, to disable or reenable the confirmation dialog, go to settings and check or uncheck "Confirmation on ticket use".',
+    'Can I buy tickets with cash or credit card?':
+        'Yes! Just give the barista at Café Analog your ID, and they will add tickets to your account. Then press the update button in the Tickets screen to get the tickets.',
+    'How do I increase my level?':
+        'You increase your level by gaining experience points, which you gain by swiping your tickets. The more the tickets cost, the more experience points they give.',
+  };
 
   // Credits
   static const appTeam = 'App team';
