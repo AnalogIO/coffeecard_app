@@ -15,6 +15,7 @@ import 'package:coffeecard/widgets/components/user_card.dart';
 import 'package:coffeecard/widgets/pages/settings/change_email_page.dart';
 import 'package:coffeecard/widgets/pages/settings/change_passcode_flow.dart';
 import 'package:coffeecard/widgets/pages/settings/credits_page.dart';
+import 'package:coffeecard/widgets/pages/settings/faq_page.dart';
 import 'package:coffeecard/widgets/pages/settings/opening_hours_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -124,7 +125,10 @@ class SettingsPage extends StatelessWidget {
           SettingsGroup(
             title: Strings.settingsGroupAbout,
             listItems: [
-              const SettingListEntry(name: Strings.faq),
+              SettingListEntry(
+                name: Strings.frequentlyAskedQuestions,
+                onTap: () => Navigator.push(context, FAQPage.route),
+              ),
               SettingListEntry(
                 name: Strings.openingHours,
                 onTap: _ifOpeningHoursLoaded(
