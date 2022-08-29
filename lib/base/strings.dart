@@ -279,18 +279,20 @@ abstract class Strings {
 
   // FAQ
   static const faqEntries = {
-    'How do I use my tickets?':
-        'To use a ticket, swipe it by dragging it to the side.',
-    'Where can I find my ID?':
-        'You can find your ID at the top of the navigation bar in the top left corner.',
     'What is the purpose of this app?':
-        "This app replaces the Café Analog's physical coffee card. The idea is that you use a ticket when you pour yourself coffee. For beverages you cannot pour yourself, show the barista your phone when using the ticket.",
-    'Can I disable/reenable confirmation dialog after ticket use?':
-        'Yes, to disable or reenable the confirmation dialog, go to settings and check or uncheck "Confirmation on ticket use".',
-    'Can I buy tickets with cash or credit card?':
-        'Yes! Just give the barista at Café Analog your ID, and they will add tickets to your account. Then press the update button in the Tickets screen to get the tickets.',
-    'How do I increase my level?':
-        'You increase your level by gaining experience points, which you gain by swiping your tickets. The more the tickets cost, the more experience points they give.',
+        "This app replaces Cafe Analog's physical coffee card. The idea is that you swipe a ticket when you pour yourself coffee, or show your phone to the barista when swiping a ticket for another beverage.",
+    'What is Coffee drinker of the semester?':
+        'At the end of each semester, the leaderboards are checked. The person with the most swipes during the semester is crowned Coffee drinker of the semester! They will be rewarded with a special cup that is entitled to free filter coffee refills for the entirety of the next semester. Check how you stack up against the competition under the Statistics tab.',
+    "Where'd my tickets go?":
+        'Logged in to find no tickets associated with your account? Try checking if you have had any recent activity in the Receipts page. If not, you may be logged into the wrong account.',
+    'Where can I find my ID?':
+        'You can find your ID at the bottom of the settings page.',
+    'Can I buy tickets with cash or card?':
+        'You can buy physical coffee cards in the cafe. We are planning to add Google Pay and Apple Pay integration in the app.',
+    "Something doesn't seem to work.":
+        "If you find something that doesn't seem right, please report it by filling out of the feedback form found under 'Settings > Report a bug or send feedback'.",
+    'I have an idea for the app!':
+        "We will happily take suggestions! Fill out the feedback form under 'Settings > Report a bug or send feedback' or send an email to feedback@analogio.dk."
   };
 
   // Credits
