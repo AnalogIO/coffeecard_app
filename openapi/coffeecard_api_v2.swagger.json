@@ -111,6 +111,102 @@
         }
       }
     },
+    "/api/v2/leaderboard/top": {
+      "get": {
+        "tags": [
+          "Leaderboard"
+        ],
+        "summary": "Gets the top leaderboard by the specified preset",
+        "operationId": "Leaderboard_GetTopEntries",
+        "parameters": [
+          {
+            "name": "preset",
+            "in": "query",
+            "description": "Leaderboard preset for date filtering",
+            "schema": {
+              "default": "Semester",
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/LeaderboardPreset"
+                }
+              ]
+            },
+            "x-position": 1
+          },
+          {
+            "name": "top",
+            "in": "query",
+            "description": "Number of top results to return",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            },
+            "x-position": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Top leader board entries",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LeaderboardEntry"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/leaderboard": {
+      "get": {
+        "tags": [
+          "Leaderboard"
+        ],
+        "summary": "Get leaderboard stats for authenticated user. A user will have rank 0 if they do not have any valid swipes",
+        "operationId": "Leaderboard_Get",
+        "parameters": [
+          {
+            "name": "preset",
+            "in": "query",
+            "description": "Leaderboard preset for date filtering",
+            "schema": {
+              "default": "Semester",
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/LeaderboardPreset"
+                }
+              ]
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Leaderboard entry for user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LeaderboardEntry"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid credentials"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
     "/api/v2/mobilepay/webhook": {
       "post": {
         "tags": [
@@ -452,6 +548,56 @@
           "Production",
           "Test",
           "LocalDevelopment"
+        ]
+      },
+      "LeaderboardEntry": {
+        "type": "object",
+        "description": "A user on the leaderboard",
+        "example": {
+          "id": "1",
+          "name": "John Doe",
+          "rank": 2,
+          "score": 25
+        },
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Account Id",
+            "format": "int32",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "description": "Account name",
+            "example": "John Doe"
+          },
+          "rank": {
+            "type": "integer",
+            "description": "Leaderboard rank",
+            "format": "int32",
+            "example": 2
+          },
+          "score": {
+            "type": "integer",
+            "description": "Account score",
+            "format": "int32",
+            "example": 25
+          }
+        }
+      },
+      "LeaderboardPreset": {
+        "type": "string",
+        "description": "Preset for filtering Leaderboard based on date range",
+        "x-enumNames": [
+          "Month",
+          "Semester",
+          "Total"
+        ],
+        "enum": [
+          "Month",
+          "Semester",
+          "Total"
         ]
       },
       "MobilePayWebhook": {
