@@ -16,7 +16,6 @@ Future<Payment?> showPurchaseOverlay({
       context: context,
       barrierColor: AppColor.scrim,
       barrierDismissible: false,
-      useRootNavigator: true,
       builder: (_) {
         return WillPopScope(
           // Will prevent Android back button from closing overlay.

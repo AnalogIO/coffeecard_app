@@ -49,7 +49,7 @@ class ShopCard extends StatelessWidget {
 }
 
 class _OptionalLabel extends StatelessWidget {
-  const _OptionalLabel({Key? key, required this.type}) : super(key: key);
+  const _OptionalLabel({required this.type});
 
   final ShopCardType type;
 

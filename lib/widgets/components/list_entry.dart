@@ -47,7 +47,7 @@ class ListEntry extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final childWidget = Container(
+    final childWidget = DecoratedBox(
       decoration: BoxDecoration(
         color: backgroundColor ?? AppColor.white,
         border: const Border(bottom: BorderSide(color: AppColor.lightGray)),

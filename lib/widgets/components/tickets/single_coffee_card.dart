@@ -14,12 +14,11 @@ class SingleCoffeeCard extends StatelessWidget {
   final Function() onTap;
 
   const SingleCoffeeCard({
-    Key? key,
     required this.title,
     required this.options,
     required this.price,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

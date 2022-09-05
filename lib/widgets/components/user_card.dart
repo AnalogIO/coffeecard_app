@@ -48,7 +48,7 @@ class UserCard extends StatelessWidget {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
+                        ColoredBox(
                           color: colorIfShimmer,
                           child: Text(
                             name,
@@ -58,7 +58,7 @@ class UserCard extends StatelessWidget {
                           ),
                         ),
                         const Gap(3),
-                        Container(
+                        ColoredBox(
                           color: colorIfShimmer,
                           child: Text(
                             occupation,

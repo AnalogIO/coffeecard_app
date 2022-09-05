@@ -27,7 +27,7 @@ class StatisticsCard extends StatelessWidget {
         right: ShimmerBuilder(
           showShimmer: rank == null,
           builder: (context, colorIfShimmer) {
-            return Container(
+            return ColoredBox(
               color: colorIfShimmer,
               child: Text.rich(
                 TextSpan(

@@ -55,7 +55,7 @@ class _SplashRouterState extends State<SplashRouter> {
       ],
       // The colored container prevents brief black flashes
       // during page transitions
-      child: Container(color: AppColor.primary, child: widget.child),
+      child: ColoredBox(color: AppColor.primary, child: widget.child),
     );
   }
 }

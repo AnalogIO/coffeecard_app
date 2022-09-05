@@ -21,7 +21,7 @@ class TicketsLoaded extends TicketsState {
 }
 
 class TicketUsing extends TicketsLoaded {
-  const TicketUsing(List<TicketCount> tickets) : super(tickets);
+  const TicketUsing(super.tickets);
 }
 
 class TicketUsed extends TicketsLoaded {

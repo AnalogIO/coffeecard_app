@@ -51,7 +51,7 @@ class _ModalContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return ColoredBox(
       color: AppColor.background,
       child: SafeArea(
         child: Padding(

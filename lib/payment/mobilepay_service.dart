@@ -32,9 +32,9 @@ class MobilePayService implements PaymentHandler {
       return Right(
         Payment(
           id: purchaseResponse.id,
-          paymentId: paymentDetails.paymentId!,
+          paymentId: paymentDetails.paymentId,
           status: PaymentStatus.awaitingPayment,
-          deeplink: paymentDetails.mobilePayAppRedirectUri!,
+          deeplink: paymentDetails.mobilePayAppRedirectUri,
           purchaseTime: purchaseResponse.dateCreated,
           price: purchaseResponse.totalAmount,
           productId: purchaseResponse.productId,
@@ -76,7 +76,7 @@ class MobilePayService implements PaymentHandler {
         either.right.paymentDetails as Map<String, dynamic>,
       );
 
-      final status = _mapPaymentStateToStatus(paymentDetails.state!);
+      final status = _mapPaymentStateToStatus(paymentDetails.state);
       if (status == PaymentStatus.completed) {
         return const Right(PaymentStatus.completed);
       }

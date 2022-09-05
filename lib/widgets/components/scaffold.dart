@@ -91,9 +91,9 @@ class _EnvironmentBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return const ColoredBox(
       color: AppColor.primary,
-      child: const Center(child: _EnvironmentButton()),
+      child: Center(child: _EnvironmentButton()),
     );
   }
 }

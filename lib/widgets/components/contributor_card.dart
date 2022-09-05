@@ -19,7 +19,7 @@ class ContributorCard extends StatelessWidget {
         Uri.parse(contributor.githubUrl),
         context,
       ),
-      child: Container(
+      child: DecoratedBox(
         decoration: const BoxDecoration(
           color: AppColor.white,
           border: Border(bottom: BorderSide(color: AppColor.lightGray)),
