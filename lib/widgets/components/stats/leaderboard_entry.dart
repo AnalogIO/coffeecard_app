@@ -40,18 +40,18 @@ class LeaderboardEntry extends StatelessWidget {
         builder: (context, colorIfShimmer) {
           return Row(
             children: [
-              Container(
+              ColoredBox(
                 color: colorIfShimmer,
                 child: _LeaderboardRankMedal(rank),
               ),
               const Gap(16),
-              Container(
+              ColoredBox(
                 color: colorIfShimmer,
                 child: const CircleAvatar(),
               ),
               const Gap(10),
               Flexible(
-                child: Container(
+                child: ColoredBox(
                   color: colorIfShimmer,
                   child: Text(
                     name,
@@ -68,7 +68,7 @@ class LeaderboardEntry extends StatelessWidget {
       rightWidget: ShimmerBuilder(
         showShimmer: isPlaceholder,
         builder: (context, colorIfShimmer) {
-          return Container(
+          return ColoredBox(
             color: colorIfShimmer,
             child: Text(_scoreText),
           );

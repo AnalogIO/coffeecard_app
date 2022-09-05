@@ -9,7 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 
 class StatsSection extends StatelessWidget {
-  const StatsSection({Key? key}) : super(key: key);
+  const StatsSection();
 
   @override
   Widget build(BuildContext context) {

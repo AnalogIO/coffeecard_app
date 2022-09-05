@@ -60,7 +60,7 @@ class CreditsPage extends StatelessWidget {
             SettingsGroup(
               title: Strings.aboutAnalogIO,
               listItems: [
-                Container(
+                DecoratedBox(
                   decoration: const BoxDecoration(
                     color: AppColor.white,
                     border:

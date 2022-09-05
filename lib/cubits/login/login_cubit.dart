@@ -21,12 +21,12 @@ class LoginCubit extends Cubit<LoginState> {
   final AccountRepository accountRepository;
 
   void addPasscodeInput(String input) {
-    // _state is used for type promotion
-    final _state = state;
+    // used for type promotion
+    final st = state;
 
     final String newPasscode;
-    if (_state is LoginTypingPasscode) {
-      newPasscode = _state.passcode + input;
+    if (st is LoginTypingPasscode) {
+      newPasscode = st.passcode + input;
     } else {
       newPasscode = input;
     }
@@ -41,10 +41,10 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   Future<void> _loginRequested() async {
-    // _state is used for type promotion
-    final _state = state;
+    // used for type promotion
+    final st = state;
 
-    if (_state is! LoginTypingPasscode) {
+    if (st is! LoginTypingPasscode) {
       throw Exception(
         '_loginRequested called while state type is not LoginTypingPasscode',
       );
@@ -52,7 +52,7 @@ class LoginCubit extends Cubit<LoginState> {
 
     emit(LoginLoading());
 
-    final encodedPasscode = encodePasscode(_state.passcode);
+    final encodedPasscode = encodePasscode(st.passcode);
     final either = await accountRepository.login(email, encodedPasscode);
 
     if (either.isRight) {

@@ -6,13 +6,13 @@ typedef LazyWidgetBuilder = Widget Function(BuildContext context);
 
 class LazyIndexedStack extends StatefulWidget {
   const LazyIndexedStack({
-    Key? key,
+    super.key,
     required this.index,
     required this.children,
     this.alignment = AlignmentDirectional.topStart,
     this.textDirection,
     this.sizing = StackFit.loose,
-  }) : super(key: key);
+  });
 
   final int index;
   final List<Widget> children;

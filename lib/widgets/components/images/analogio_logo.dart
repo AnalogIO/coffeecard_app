@@ -2,7 +2,7 @@ import 'package:coffeecard/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 class AnalogIOLogo extends StatelessWidget {
-  const AnalogIOLogo({Key? key}) : super(key: key);
+  const AnalogIOLogo();
 
   @override
   Widget build(BuildContext context) {
