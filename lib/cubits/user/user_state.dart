@@ -21,18 +21,15 @@ abstract class UserWithData extends UserState {
 }
 
 class UserUpdating extends UserWithData {
-  UserUpdating({required User user, required List<ProgrammeDto> programmes})
-      : super(user: user, programmes: programmes);
+  UserUpdating({required super.user, required super.programmes});
 }
 
 class UserUpdated extends UserWithData {
-  UserUpdated({required User user, required List<ProgrammeDto> programmes})
-      : super(user: user, programmes: programmes);
+  UserUpdated({required super.user, required super.programmes});
 }
 
 class UserLoaded extends UserWithData {
-  UserLoaded({required User user, required List<ProgrammeDto> programmes})
-      : super(user: user, programmes: programmes);
+  UserLoaded({required super.user, required super.programmes});
 
   UserLoaded copyWith({
     User? user,

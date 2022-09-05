@@ -102,7 +102,6 @@ class BuyTicketsPage extends StatelessWidget {
         context: context,
         barrierColor: AppColor.scrim,
         backgroundColor: Colors.transparent,
-        isDismissible: true,
         useRootNavigator: true,
         builder: (_) => BuyTicketBottomModalSheet(
           product: product,

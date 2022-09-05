@@ -16,7 +16,7 @@ class SplashErrorPage extends StatefulWidget {
 class _SplashErrorPageState extends State<SplashErrorPage> {
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return ColoredBox(
       color: AppColor.primary,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

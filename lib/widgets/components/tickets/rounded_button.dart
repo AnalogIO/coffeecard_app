@@ -3,14 +3,10 @@ import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:flutter/material.dart';
 
 class RoundedButton extends StatelessWidget {
+  const RoundedButton({required this.text, required this.onTap});
+
   final String text;
   final void Function()? onTap;
-
-  const RoundedButton({
-    Key? key,
-    required this.text,
-    required this.onTap,
-  }) : super(key: key);
 
   bool get disabled => onTap == null;
 

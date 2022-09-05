@@ -7,9 +7,9 @@ class SplashLoadingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return const ColoredBox(
       color: AppColor.primary,
-      child: const Center(child: AnalogLogo()),
+      child: Center(child: AnalogLogo()),
     );
   }
 }

@@ -12,7 +12,6 @@ class CardBase extends StatelessWidget {
   /// If [onTap] is not null, the card will show a
   /// splash effect when tapped.
   const CardBase({
-    Key? key,
     required this.top,
     this.bottom = const SizedBox.shrink(),
     this.gap = 0,
@@ -20,7 +19,7 @@ class CardBase extends StatelessWidget {
     this.borderColor,
     this.dense = false,
     this.onTap,
-  }) : super(key: key);
+  });
 
   /// Widget to be placed at the top of the card.
   final Widget top;
@@ -71,13 +70,10 @@ class CardBase extends StatelessWidget {
 /// Helper widget to include a title and an (optional)
 /// description at the top of a card.
 class CardTitle extends StatelessWidget {
+  const CardTitle({required this.title, this.description});
+
   final Text title;
   final Text? description;
-  const CardTitle({
-    Key? key,
-    required this.title,
-    this.description,
-  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -96,11 +92,11 @@ class CardTitle extends StatelessWidget {
 /// widget to be placed at the bottom of a card.
 class CardBottomRow extends StatelessWidget {
   const CardBottomRow({
-    Key? key,
+    super.key,
     this.gap = 0,
     this.left = const SizedBox.shrink(),
     this.right = const SizedBox.shrink(),
-  }) : super(key: key);
+  });
 
   /// The minimum space between the left and right widget.
   final double gap;

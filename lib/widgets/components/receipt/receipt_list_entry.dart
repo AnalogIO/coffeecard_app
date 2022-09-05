@@ -50,7 +50,7 @@ class ReceiptListEntry extends StatelessWidget {
               leftWidget: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
+                  ColoredBox(
                     color: colorIfShimmer,
                     child: Text(
                       receipt.transactionType == TransactionType.purchase
@@ -59,7 +59,7 @@ class ReceiptListEntry extends StatelessWidget {
                       style: AppTextStyle.recieptItemKey,
                     ),
                   ),
-                  Container(
+                  ColoredBox(
                     color: colorIfShimmer,
                     child: Text(
                       _formatter.format(receipt.timeUsed),
@@ -68,7 +68,7 @@ class ReceiptListEntry extends StatelessWidget {
                   )
                 ],
               ),
-              rightWidget: Container(
+              rightWidget: ColoredBox(
                 color: colorIfShimmer,
                 child: Text(
                   receipt.transactionType == TransactionType.purchase

@@ -75,7 +75,7 @@ class SettingsPage extends StatelessWidget {
                 valueWidget: ShimmerBuilder(
                   showShimmer: userState is! UserLoaded,
                   builder: (context, colorIfShimmer) {
-                    return Container(
+                    return ColoredBox(
                       color: colorIfShimmer,
                       child: Text(
                         (userState is UserLoaded)
@@ -154,7 +154,7 @@ class SettingsPage extends StatelessWidget {
                       text = '';
                     }
 
-                    return Container(
+                    return ColoredBox(
                       color: colorIfShimmer,
                       child: Text(text, style: AppTextStyle.settingValue),
                     );
