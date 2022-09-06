@@ -14,23 +14,21 @@ class ReceiptCubit extends Cubit<ReceiptState> {
   Future<void> fetchReceipts() async {
     final either = await _repository.getUserReceipts();
 
-    if (either.isRight) {
-      final receipts = either.right;
-      emit(
+    either.fold(
+      (error) => emit(
+        state.copyWith(
+          status: ReceiptStatus.failure,
+          error: error.message,
+        ),
+      ),
+      (receipts) => emit(
         state.copyWith(
           status: ReceiptStatus.success,
           receipts: receipts,
           filteredReceipts: _filter(receipts, state.filterBy),
         ),
-      );
-    } else {
-      emit(
-        state.copyWith(
-          error: either.left.message,
-          status: ReceiptStatus.failure,
-        ),
-      );
-    }
+      ),
+    );
   }
 
   void filterReceipts(ReceiptFilterCategory filterBy) {
@@ -58,8 +56,6 @@ class ReceiptCubit extends Cubit<ReceiptState> {
         return receipts
             .where((r) => r.transactionType == TransactionType.purchase)
             .toList();
-      default:
-        throw Exception(Strings.unknownFilterCategory(filterBy));
     }
   }
 }
