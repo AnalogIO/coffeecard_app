@@ -12,4 +12,4 @@ update_name:
 analyze:
 	flutter analyze
 cov:
-	flutter test --coverage && genhtml coverage/lcov.info -o coverage/html
+	flutter test --coverage && lcov --remove coverage/lcov.info '*/base/*' 'lib/generated/*' -o coverage/lcov.info && genhtml coverage/lcov.info -o coverage/html
