@@ -6,17 +6,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class StatisticsDropdown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    void onChanged(StatisticsFilterCategory? category) =>
-        context.read<StatisticsCubit>().fetchLeaderboards(category: category!);
+    void onChanged(LeaderboardFilter? filter) =>
+        context.read<StatisticsCubit>().setFilter(filter!);
 
     return BlocBuilder<StatisticsCubit, StatisticsState>(
       buildWhen: (previous, current) =>
           current is StatisticsLoaded || current is StatisticsLoading,
       builder: (_, state) {
-        return Dropdown<StatisticsFilterCategory>(
+        return Dropdown<LeaderboardFilter>(
           loading: state is StatisticsLoading,
           onChanged: onChanged,
-          value: _getValue(state),
+          value: state.filter,
           items: _menuItems,
         );
       },
@@ -24,23 +24,17 @@ class StatisticsDropdown extends StatelessWidget {
   }
 }
 
-StatisticsFilterCategory _getValue(StatisticsState state) {
-  if (state is StatisticsLoading) return state.filterBy;
-  if (state is StatisticsLoaded) return state.filterBy;
-  return StatisticsCubit.defaultFilterCategory;
-}
-
 const _menuItems = [
   DropdownMenuItem(
-    value: StatisticsFilterCategory.month,
+    value: LeaderboardFilter.month,
     child: Text('This month'),
   ),
   DropdownMenuItem(
-    value: StatisticsFilterCategory.semester,
+    value: LeaderboardFilter.semester,
     child: Text('This semester'),
   ),
   DropdownMenuItem(
-    value: StatisticsFilterCategory.total,
+    value: LeaderboardFilter.total,
     child: Text('Of all time'),
   ),
 ];

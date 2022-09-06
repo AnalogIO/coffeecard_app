@@ -6,11 +6,11 @@ import 'package:coffeecard/utils/either.dart';
 import 'package:coffeecard/utils/extensions.dart';
 import 'package:logger/logger.dart';
 
-extension _FilterCategoryToPresetInteger on StatisticsFilterCategory {
+extension _FilterCategoryToPresetInteger on LeaderboardFilter {
   int get preset {
-    if (this == StatisticsFilterCategory.month) return 0;
-    if (this == StatisticsFilterCategory.semester) return 1;
-    if (this == StatisticsFilterCategory.total) return 2;
+    if (this == LeaderboardFilter.month) return 0;
+    if (this == LeaderboardFilter.semester) return 1;
+    if (this == LeaderboardFilter.total) return 2;
     throw Exception(message: 'Unknown filter category: $this');
   }
 }
@@ -22,7 +22,7 @@ class LeaderboardRepository {
   LeaderboardRepository(this._api, this._logger);
 
   Future<Either<ApiError, List<LeaderboardUser>>> getLeaderboard(
-    StatisticsFilterCategory category,
+    LeaderboardFilter category,
   ) async {
     final response = await _api.apiV1LeaderboardGet(preset: category.preset);
 

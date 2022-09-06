@@ -20,72 +20,57 @@ void main() {
     });
 
     blocTest<StatisticsCubit, StatisticsState>(
-      'fetchLeaderboards emits StatisticsLoaded after successful fetch',
+      'fetch emits StatisticsLoaded after successful fetch',
       build: () {
         when(leaderboardRepository.getLeaderboard(any))
             .thenAnswer((_) async => const Right([]));
         return statisticsCubit;
       },
-      act: (cubit) => cubit.fetchLeaderboards(),
+      act: (cubit) => cubit.fetch(),
       expect: () => [
-        const StatisticsLoading(filterBy: StatisticsFilterCategory.month),
-        const StatisticsLoaded(
-          filterBy: StatisticsFilterCategory.month,
-          leaderboard: [],
-        )
+        const StatisticsLoaded([], filter: LeaderboardFilter.month),
       ],
     );
 
     blocTest<StatisticsCubit, StatisticsState>(
-      'fetchLeaderboards emits StatisticsError after failed fetch',
+      'fetch emits StatisticsError after failed fetch',
       build: () {
         when(leaderboardRepository.getLeaderboard(any))
             .thenAnswer((_) async => Left(ApiError('ERROR_MESSAGE')));
         return statisticsCubit;
       },
-      act: (cubit) => cubit.fetchLeaderboards(),
+      act: (cubit) => cubit.fetch(),
       expect: () => [
-        const StatisticsLoading(filterBy: StatisticsFilterCategory.month),
-        const StatisticsError('ERROR_MESSAGE'),
+        const StatisticsError('ERROR_MESSAGE', filter: LeaderboardFilter.month),
       ],
     );
 
     blocTest<StatisticsCubit, StatisticsState>(
-      'refreshLeaderboards emits StatisticsLoaded after successful refresh',
+      'setFilter emits StatisticsLoading with correct filter and then emits StatisticsLoaded after successful fetch',
       build: () {
         when(leaderboardRepository.getLeaderboard(any))
             .thenAnswer((_) async => const Right([]));
-        return statisticsCubit..fetchLeaderboards();
+        return statisticsCubit;
       },
-      act: (cubit) => cubit.refreshLeaderboards(),
+      act: (cubit) => cubit.setFilter(LeaderboardFilter.semester),
       expect: () => [
-        const StatisticsLoaded(
-          filterBy: StatisticsFilterCategory.month,
-          leaderboard: [],
-        )
+        const StatisticsLoading(filter: LeaderboardFilter.semester),
+        const StatisticsLoaded([], filter: LeaderboardFilter.semester),
       ],
     );
 
     blocTest<StatisticsCubit, StatisticsState>(
-      'refreshLeaderboards emits StatisticsError after failed refresh',
+      'setFilter emits StatisticsLoading with correct filter and then emits StatisticsError after failed fetch',
       build: () {
         when(leaderboardRepository.getLeaderboard(any))
             .thenAnswer((_) async => Left(ApiError('ERROR_MESSAGE')));
-        return statisticsCubit..fetchLeaderboards();
-      },
-      act: (cubit) => cubit.refreshLeaderboards(),
-      expect: () => [const StatisticsError('ERROR_MESSAGE')],
-    );
-
-    blocTest<StatisticsCubit, StatisticsState>(
-      'refreshLeaderboards fails assertion if fetchLeaderboards has not been called before',
-      build: () {
-        when(leaderboardRepository.getLeaderboard(any))
-            .thenAnswer((_) => Future.value(const Right([])));
         return statisticsCubit;
       },
-      act: (cubit) => cubit.refreshLeaderboards(),
-      errors: () => [isA<AssertionError>()],
+      act: (cubit) => cubit.setFilter(LeaderboardFilter.total),
+      expect: () => [
+        const StatisticsLoading(filter: LeaderboardFilter.total),
+        const StatisticsError('ERROR_MESSAGE', filter: LeaderboardFilter.total),
+      ],
     );
 
     tearDown(() {
