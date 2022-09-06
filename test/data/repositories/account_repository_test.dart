@@ -16,44 +16,44 @@ import 'account_repository_test.mocks.dart';
 @GenerateMocks([CoffeecardApi, CoffeecardApiV2, Logger])
 void main() {
   test('register given successfull api response returns right', () async {
-    final _coffeecardApi = MockCoffeecardApi();
+    final coffeecardApi = MockCoffeecardApi();
 
-    final _repository = AccountRepository(
-      _coffeecardApi,
+    final repository = AccountRepository(
+      coffeecardApi,
       MockCoffeecardApiV2(),
       MockLogger(),
     );
 
-    when(_coffeecardApi.apiV1AccountRegisterPost(body: anyNamed('body')))
+    when(coffeecardApi.apiV1AccountRegisterPost(body: anyNamed('body')))
         .thenAnswer(
       (_) => Future.value(
         chopper.Response(Response('', 200), null),
       ),
     );
 
-    final actual = await _repository.register('name', 'email', 'passcode');
+    final actual = await repository.register('name', 'email', 'passcode');
     const Either<UnauthorizedError, void> expected = Right(null);
 
     expect(expected.isRight, actual.isRight);
   });
 
   test('register given unsuccessfull api response returns left', () async {
-    final _coffeecardApi = MockCoffeecardApi();
+    final coffeecardApi = MockCoffeecardApi();
 
-    final _repository = AccountRepository(
-      _coffeecardApi,
+    final repository = AccountRepository(
+      coffeecardApi,
       MockCoffeecardApiV2(),
       MockLogger(),
     );
 
-    when(_coffeecardApi.apiV1AccountRegisterPost(body: anyNamed('body')))
+    when(coffeecardApi.apiV1AccountRegisterPost(body: anyNamed('body')))
         .thenAnswer(
       (_) => Future.value(
         chopper.Response(Response('not found', 404), null),
       ),
     );
 
-    final actual = await _repository.register('name', 'email', 'passcode');
+    final actual = await repository.register('name', 'email', 'passcode');
     final Either<UnauthorizedError, void> expected =
         Left(UnauthorizedError('not found'));
 

@@ -13,16 +13,16 @@ import 'statistics_cubit_test.mocks.dart';
 void main() {
   group('statistics cubit tests', () {
     late StatisticsCubit statisticsCubit;
-    final _leaderboardRepository = MockLeaderboardRepository();
+    final leaderboardRepository = MockLeaderboardRepository();
 
     setUp(() {
-      statisticsCubit = StatisticsCubit(_leaderboardRepository);
+      statisticsCubit = StatisticsCubit(leaderboardRepository);
     });
 
     blocTest<StatisticsCubit, StatisticsState>(
       'fetchLeaderboards emits StatisticsLoaded after successful fetch',
       build: () {
-        when(_leaderboardRepository.getLeaderboard(any))
+        when(leaderboardRepository.getLeaderboard(any))
             .thenAnswer((_) async => const Right([]));
         return statisticsCubit;
       },
@@ -39,7 +39,7 @@ void main() {
     blocTest<StatisticsCubit, StatisticsState>(
       'fetchLeaderboards emits StatisticsError after failed fetch',
       build: () {
-        when(_leaderboardRepository.getLeaderboard(any))
+        when(leaderboardRepository.getLeaderboard(any))
             .thenAnswer((_) async => Left(ApiError('ERROR_MESSAGE')));
         return statisticsCubit;
       },
@@ -53,7 +53,7 @@ void main() {
     blocTest<StatisticsCubit, StatisticsState>(
       'refreshLeaderboards emits StatisticsLoaded after successful refresh',
       build: () {
-        when(_leaderboardRepository.getLeaderboard(any))
+        when(leaderboardRepository.getLeaderboard(any))
             .thenAnswer((_) async => const Right([]));
         return statisticsCubit..fetchLeaderboards();
       },
@@ -69,7 +69,7 @@ void main() {
     blocTest<StatisticsCubit, StatisticsState>(
       'refreshLeaderboards emits StatisticsError after failed refresh',
       build: () {
-        when(_leaderboardRepository.getLeaderboard(any))
+        when(leaderboardRepository.getLeaderboard(any))
             .thenAnswer((_) async => Left(ApiError('ERROR_MESSAGE')));
         return statisticsCubit..fetchLeaderboards();
       },
@@ -80,7 +80,7 @@ void main() {
     blocTest<StatisticsCubit, StatisticsState>(
       'refreshLeaderboards fails assertion if fetchLeaderboards has not been called before',
       build: () {
-        when(_leaderboardRepository.getLeaderboard(any))
+        when(leaderboardRepository.getLeaderboard(any))
             .thenAnswer((_) => Future.value(const Right([])));
         return statisticsCubit;
       },
