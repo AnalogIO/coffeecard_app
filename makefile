@@ -11,3 +11,5 @@ update_name:
 	flutter pub run flutter_app_name
 analyze:
 	flutter analyze
+cov:
+	flutter test --coverage && genhtml coverage/lcov.info -o coverage/html
