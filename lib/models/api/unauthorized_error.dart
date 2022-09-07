@@ -1,4 +1,4 @@
 class UnauthorizedError implements Exception {
-  UnauthorizedError(this.message);
+  const UnauthorizedError(this.message);
   final String message;
 }

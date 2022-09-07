@@ -41,32 +41,24 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   Future<void> _loginRequested() async {
-    // used for type promotion
-    final st = state;
+    final passcode = (state as LoginTypingPasscode).passcode;
+    final encodedPasscode = encodePasscode(passcode);
 
-    if (st is! LoginTypingPasscode) {
-      throw Exception(
-        '_loginRequested called while state type is not LoginTypingPasscode',
-      );
-    }
+    emit(const LoginLoading());
 
-    emit(LoginLoading());
-
-    final encodedPasscode = encodePasscode(st.passcode);
     final either = await accountRepository.login(email, encodedPasscode);
 
-    if (either.isRight) {
-      final authenticatedUser = either.right;
+    either.fold(
+      (error) => emit(LoginError(formatErrorMessage(error.message))),
+      (user) {
+        sl<FirebaseAnalyticsEventLogging>().loginEvent();
 
-      sl<FirebaseAnalyticsEventLogging>().loginEvent();
-
-      authenticationCubit.authenticated(
-        authenticatedUser.email,
-        encodedPasscode,
-        authenticatedUser.token,
-      );
-    } else {
-      emit(LoginError(formatErrorMessage(either.left.message)));
-    }
+        authenticationCubit.authenticated(
+          user.email,
+          encodedPasscode,
+          user.token,
+        );
+      },
+    );
   }
 }
