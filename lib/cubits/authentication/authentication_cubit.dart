@@ -9,9 +9,9 @@ part 'authentication_state.dart';
 // trigger a logout (for instance, when the user requests logs out themselves
 // vs the user's token expires and fails to renew).
 class AuthenticationCubit extends Cubit<AuthenticationState> {
-  final SecureStorage _storage;
-
   AuthenticationCubit(this._storage) : super(const AuthenticationState._());
+
+  final SecureStorage _storage;
 
   Future<void> appStarted() async {
     final authenticatedUser = await _storage.getAuthenticatedUser();
