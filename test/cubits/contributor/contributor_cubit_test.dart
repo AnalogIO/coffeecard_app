@@ -50,7 +50,7 @@ void main() {
       'getContributors emits Loading, Error when the repo returns an error',
       build: () {
         when(repo.getContributors())
-            .thenAnswer((_) async => Left(ApiError('ERROR_MESSAGE')));
+            .thenAnswer((_) async => const Left(ApiError('ERROR_MESSAGE')));
         return contributorCubit;
       },
       act: (cubit) => cubit.getContributors(),

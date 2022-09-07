@@ -39,7 +39,7 @@ void main() {
       'getConfig emits Error when the repo returns an error',
       build: () {
         when(repo.getEnvironmentType())
-            .thenAnswer((_) async => Left(ApiError('ERROR_MESSAGE')));
+            .thenAnswer((_) async => const Left(ApiError('ERROR_MESSAGE')));
         return environmentCubit;
       },
       act: (cubit) => cubit.getConfig(),

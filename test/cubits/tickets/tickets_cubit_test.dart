@@ -44,7 +44,7 @@ void main() {
       'getTickets emits Loading then Error (on failed fetch)',
       build: () {
         when(repo.getUserTickets())
-            .thenAnswer((_) async => Left(ApiError('ERROR_MESSAGE')));
+            .thenAnswer((_) async => const Left(ApiError('ERROR_MESSAGE')));
         return cubit;
       },
       act: (cubit) => cubit.getTickets(),
@@ -68,7 +68,7 @@ void main() {
       'refreshTickets emits Error (on failed fetch)',
       build: () {
         when(repo.getUserTickets())
-            .thenAnswer((_) async => Left(ApiError('ERROR_MESSAGE')));
+            .thenAnswer((_) async => const Left(ApiError('ERROR_MESSAGE')));
         return cubit;
       },
       act: (cubit) => cubit.refreshTickets(),
@@ -111,7 +111,7 @@ void main() {
       build: () {
         when(repo.getUserTickets()).thenAnswer((_) async => const Right([]));
         when(repo.useTicket(any))
-            .thenAnswer((_) async => Left(ApiError('ERROR_MESSAGE')));
+            .thenAnswer((_) async => const Left(ApiError('ERROR_MESSAGE')));
         return cubit;
       },
       act: (cubit) async {

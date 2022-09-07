@@ -60,7 +60,7 @@ void main() {
       'fetchReceipts emits ReceiptState (with Status.failure and non-null error) after failed fetch',
       build: () {
         when(receiptRepository.getUserReceipts())
-            .thenAnswer((_) async => Left(ApiError('ERROR_MESSAGE')));
+            .thenAnswer((_) async => const Left(ApiError('ERROR_MESSAGE')));
         return receiptCubit;
       },
       act: (cubit) => cubit.fetchReceipts(),

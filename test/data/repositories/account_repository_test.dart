@@ -54,7 +54,7 @@ void main() {
     );
 
     final actual = await repository.register('name', 'email', 'passcode');
-    final Either<UnauthorizedError, void> expected =
+    const Either<UnauthorizedError, void> expected =
         Left(UnauthorizedError('not found'));
 
     expect(expected.isLeft, actual.isLeft);

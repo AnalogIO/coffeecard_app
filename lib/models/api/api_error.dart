@@ -1,4 +1,4 @@
 class ApiError implements Exception {
-  ApiError(this.message);
+  const ApiError(this.message);
   final String message;
 }

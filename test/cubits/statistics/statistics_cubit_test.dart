@@ -36,7 +36,7 @@ void main() {
       'fetch emits StatisticsError after failed fetch',
       build: () {
         when(leaderboardRepository.getLeaderboard(any))
-            .thenAnswer((_) async => Left(ApiError('ERROR_MESSAGE')));
+            .thenAnswer((_) async => const Left(ApiError('ERROR_MESSAGE')));
         return statisticsCubit;
       },
       act: (cubit) => cubit.fetch(),
@@ -63,7 +63,7 @@ void main() {
       'setFilter emits StatisticsLoading with correct filter and then emits StatisticsError after failed fetch',
       build: () {
         when(leaderboardRepository.getLeaderboard(any))
-            .thenAnswer((_) async => Left(ApiError('ERROR_MESSAGE')));
+            .thenAnswer((_) async => const Left(ApiError('ERROR_MESSAGE')));
         return statisticsCubit;
       },
       act: (cubit) => cubit.setFilter(LeaderboardFilter.total),

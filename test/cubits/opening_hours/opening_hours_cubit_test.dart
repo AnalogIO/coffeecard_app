@@ -47,7 +47,7 @@ void main() {
     blocTest<OpeningHoursCubit, OpeningHoursState>(
       'should emit loading and error when fetching repo.isOpen fails',
       build: () {
-        when(repo.isOpen()).thenAnswer((_) async => Left(ApiError('ERROR')));
+        when(repo.isOpen()).thenAnswer((_) async => const Left(ApiError('ERROR')));
         when(repo.getOpeningHours())
             .thenAnswer((_) async => const Right(dummyOpeningHours));
         return openinghoursCubit;
@@ -64,7 +64,7 @@ void main() {
       build: () {
         when(repo.isOpen()).thenAnswer((_) async => const Right(true));
         when(repo.getOpeningHours())
-            .thenAnswer((_) async => Left(ApiError('ERROR')));
+            .thenAnswer((_) async => const Left(ApiError('ERROR')));
         return openinghoursCubit;
       },
       act: (cubit) => cubit.getOpeninghours(),
