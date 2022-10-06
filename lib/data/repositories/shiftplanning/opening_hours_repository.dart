@@ -1,7 +1,9 @@
 import 'package:coffeecard/generated/api/shiftplanning_api.swagger.dart';
 import 'package:coffeecard/models/api/api_error.dart';
+import 'package:coffeecard/models/opening_hours_day.dart';
 import 'package:coffeecard/utils/either.dart';
 import 'package:coffeecard/utils/extensions.dart';
+import 'package:collection/collection.dart';
 import 'package:logger/logger.dart';
 
 class OpeningHoursRepository {
@@ -24,11 +26,27 @@ class OpeningHoursRepository {
   }
 
   Future<Either<ApiError, Map<int, String>>> getOpeningHours() async {
-    // TODO: fetch data when available
-    const String normalOperation = '8.00-16:00';
-    const String shortDayOperation = '8.00-14:00';
-    const String closed = 'Closed';
+    final response = await _api.apiShiftsShortKeyGet(shortKey: 'analog');
 
+    if (response.isSuccessful) {
+      final content = response.body!..sortBy((element) => element.start);
+
+      final m =
+          groupBy<OpeningHoursDTO, int>(content, (dto) => dto.start.weekday);
+
+      final m2 = m.map((key, value) => MapEntry(
+          key, OpeningHoursDay(value.first.start, value.last.end).toString()));
+
+      for (var i = DateTime.monday; i <= DateTime.sunday; i++) {
+        m2.putIfAbsent(i, () => 'Closed');
+      }
+
+      return Right(m2);
+    } else {
+      return Left(ApiError(response.error.toString()));
+    }
+
+/*
     final Map<int, String> openingHours = {
       DateTime.monday: normalOperation,
       DateTime.tuesday: normalOperation,
@@ -40,5 +58,6 @@ class OpeningHoursRepository {
     };
 
     return Future.value(Right(openingHours));
+   */
   }
 }

@@ -2,7 +2,7 @@ class ApiUriConstants {
   static const String _productionUrl = 'https://analogio.dk/clippy';
   static const String _testUrl = 'https://beta.analogio.dk/api/clippy';
 
-  static const String shiftyUrl = 'https://shifty.analogio.dk/shiftplanning';
+  static const String shiftyUrl = 'https://analogio.dk/shiftplanning';
 
   static const String apiVersion = '1';
 
