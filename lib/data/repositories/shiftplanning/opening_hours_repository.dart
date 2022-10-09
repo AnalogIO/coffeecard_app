@@ -1,3 +1,4 @@
+import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/generated/api/shiftplanning_api.swagger.dart';
 import 'package:coffeecard/models/api/api_error.dart';
 import 'package:coffeecard/models/opening_hours_day.dart';
@@ -29,35 +30,38 @@ class OpeningHoursRepository {
     final response = await _api.apiShiftsShortKeyGet(shortKey: 'analog');
 
     if (response.isSuccessful) {
-      final content = response.body!..sortBy((element) => element.start);
+      final content = response.body!..sortBy((dto) => dto.start);
 
-      final m =
+      final openingHoursPerWeekday =
           groupBy<OpeningHoursDTO, int>(content, (dto) => dto.start.weekday);
 
-      final m2 = m.map((key, value) => MapEntry(
-          key, OpeningHoursDay(value.first.start, value.last.end).toString()));
+      /*
+        create map associating each weekday to its opening hours:
+        { 
+          0: 8 - 16,
+          1: 8 - 16, ... 
+        }
+      */
+      final weekDayOpeningHours = openingHoursPerWeekday.map(
+        (day, value) => MapEntry(
+          day,
+          OpeningHoursDay(value.first.start, value.last.end).toString(),
+        ),
+      );
 
-      for (var i = DateTime.monday; i <= DateTime.sunday; i++) {
-        m2.putIfAbsent(i, () => 'Closed');
-      }
+      // closed string is not capitalized
+      var closed = Strings.closed;
+      closed = closed.replaceFirst(closed[0], closed[0].toUpperCase());
 
-      return Right(m2);
+      // the previous map only contains weekdays, mark weekends as closed
+      weekDayOpeningHours.addAll({
+        DateTime.saturday: closed,
+        DateTime.sunday: closed,
+      });
+
+      return Right(weekDayOpeningHours);
     } else {
       return Left(ApiError(response.error.toString()));
     }
-
-/*
-    final Map<int, String> openingHours = {
-      DateTime.monday: normalOperation,
-      DateTime.tuesday: normalOperation,
-      DateTime.wednesday: normalOperation,
-      DateTime.thursday: normalOperation,
-      DateTime.friday: shortDayOperation,
-      DateTime.saturday: closed,
-      DateTime.sunday: closed,
-    };
-
-    return Future.value(Right(openingHours));
-   */
   }
 }
