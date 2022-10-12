@@ -90,7 +90,7 @@ dev_dependencies:
   # Chopper api and rest client
   chopper_generator: 4.0.6
   json_serializable: 6.3.1
-  swagger_dart_code_generator: 2.7.8
+  swagger_dart_code_generator: 2.6.0
 
   # linter
   lint: 1.10.0

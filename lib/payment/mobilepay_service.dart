@@ -32,9 +32,9 @@ class MobilePayService implements PaymentHandler {
       return Right(
         Payment(
           id: purchaseResponse.id,
-          paymentId: paymentDetails.paymentId,
+          paymentId: paymentDetails.paymentId!,
           status: PaymentStatus.awaitingPayment,
-          deeplink: paymentDetails.mobilePayAppRedirectUri,
+          deeplink: paymentDetails.mobilePayAppRedirectUri!,
           purchaseTime: purchaseResponse.dateCreated,
           price: purchaseResponse.totalAmount,
           productId: purchaseResponse.productId,
@@ -87,7 +87,7 @@ class MobilePayService implements PaymentHandler {
     return Left(either.left);
   }
 
-  PaymentStatus _mapPaymentStateToStatus(String state) {
+  PaymentStatus _mapPaymentStateToStatus(String? state) {
     PaymentStatus status;
     switch (state) {
       case 'Initiated':
