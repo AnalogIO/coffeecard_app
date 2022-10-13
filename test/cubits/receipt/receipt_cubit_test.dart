@@ -34,16 +34,16 @@ final dummyReceipts = [
 void main() {
   group('receipt cubit tests', () {
     late ReceiptCubit receiptCubit;
-    final receiptRepository = MockReceiptRepository();
+    final repo = MockReceiptRepository();
 
     setUp(() {
-      receiptCubit = ReceiptCubit(receiptRepository);
+      receiptCubit = ReceiptCubit(repo);
     });
 
     blocTest<ReceiptCubit, ReceiptState>(
       'fetchReceipts emits ReceiptState (with Status.success and null error) after successful fetch',
       build: () {
-        when(receiptRepository.getUserReceipts())
+        when(repo.getUserReceipts())
             .thenAnswer((_) async => Right(dummyReceipts));
         return receiptCubit;
       },
@@ -59,7 +59,7 @@ void main() {
     blocTest<ReceiptCubit, ReceiptState>(
       'fetchReceipts emits ReceiptState (with Status.failure and non-null error) after failed fetch',
       build: () {
-        when(receiptRepository.getUserReceipts())
+        when(repo.getUserReceipts())
             .thenAnswer((_) async => const Left(ApiError('ERROR_MESSAGE')));
         return receiptCubit;
       },
@@ -74,7 +74,7 @@ void main() {
     blocTest<ReceiptCubit, ReceiptState>(
       'filterReceipts emits ReceiptState (with Status.success, appropriate filterBy/filteredReceipts, and correct dropdown name)',
       build: () {
-        when(receiptRepository.getUserReceipts())
+        when(repo.getUserReceipts())
             .thenAnswer((_) async => Right(dummyReceipts));
         return receiptCubit;
       },

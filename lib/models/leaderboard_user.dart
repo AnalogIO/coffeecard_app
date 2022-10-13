@@ -1,4 +1,4 @@
-import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
+import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
 import 'package:equatable/equatable.dart';
 
 class LeaderboardUser extends Equatable {
@@ -10,7 +10,7 @@ class LeaderboardUser extends Equatable {
     required this.score,
   });
 
-  LeaderboardUser.fromDTO(LeaderboardDto dto)
+  LeaderboardUser.fromDTO(LeaderboardEntry dto)
       : name = dto.name!,
         score = dto.score!;
 

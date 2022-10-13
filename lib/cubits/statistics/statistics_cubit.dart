@@ -1,4 +1,4 @@
-import 'package:coffeecard/data/repositories/v1/leaderboard_repository.dart';
+import 'package:coffeecard/data/repositories/v2/leaderboard_repository.dart';
 import 'package:coffeecard/models/leaderboard_user.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,6 +20,7 @@ class StatisticsCubit extends Cubit<StatisticsState> {
   Future<void> fetch() async {
     final filter = state.filter;
     final either = await _repo.getLeaderboard(filter);
+    final user = await _repo.getUserLeaderboardEntry(filter);
     either.caseOf(
       (error) => emit(StatisticsError(error.message, filter: filter)),
       (leaderboard) => emit(StatisticsLoaded(leaderboard, filter: filter)),

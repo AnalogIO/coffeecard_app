@@ -5,13 +5,13 @@ import 'package:coffeecard/data/repositories/external/contributor_repository.dar
 import 'package:coffeecard/data/repositories/shared/account_repository.dart';
 import 'package:coffeecard/data/repositories/shiftplanning/opening_hours_repository.dart';
 import 'package:coffeecard/data/repositories/v1/coffeecard_repository.dart';
-import 'package:coffeecard/data/repositories/v1/leaderboard_repository.dart';
 import 'package:coffeecard/data/repositories/v1/product_repository.dart';
 import 'package:coffeecard/data/repositories/v1/programme_repository.dart';
 import 'package:coffeecard/data/repositories/v1/receipt_repository.dart';
 import 'package:coffeecard/data/repositories/v1/ticket_repository.dart';
 import 'package:coffeecard/data/repositories/v1/voucher_repository.dart';
 import 'package:coffeecard/data/repositories/v2/app_config_repository.dart';
+import 'package:coffeecard/data/repositories/v2/leaderboard_repository.dart';
 import 'package:coffeecard/data/repositories/v2/purchase_repository.dart';
 import 'package:coffeecard/data/storage/secure_storage.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
@@ -101,7 +101,7 @@ void configureServices() {
   );
 
   sl.registerFactory<LeaderboardRepository>(
-    () => LeaderboardRepository(sl<CoffeecardApi>(), sl<Logger>()),
+    () => LeaderboardRepository(sl<CoffeecardApiV2>(), sl<Logger>()),
   );
 
   sl.registerFactory<VoucherRepository>(
