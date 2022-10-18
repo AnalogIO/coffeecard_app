@@ -6,12 +6,12 @@ import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart'
 import 'package:coffeecard/models/api/unauthorized_error.dart';
 import 'package:coffeecard/utils/either.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:http/http.dart';
 import 'package:logger/logger.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import 'account_repository_test.mocks.dart';
+import './account_repository_test.mocks.dart';
+import '../../responses.dart';
 
 @GenerateMocks([CoffeecardApi, CoffeecardApiV2, Logger])
 void main() {
@@ -27,7 +27,7 @@ void main() {
     when(coffeecardApi.apiV1AccountRegisterPost(body: anyNamed('body')))
         .thenAnswer(
       (_) => Future.value(
-        chopper.Response(Response('', 200), null),
+        chopper.Response(Responses.succeeding(), null),
       ),
     );
 
@@ -49,7 +49,7 @@ void main() {
     when(coffeecardApi.apiV1AccountRegisterPost(body: anyNamed('body')))
         .thenAnswer(
       (_) => Future.value(
-        chopper.Response(Response('not found', 404), null),
+        chopper.Response(Responses.unauthorized(msg: 'not found'), null),
       ),
     );
 
