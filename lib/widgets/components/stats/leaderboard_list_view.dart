@@ -27,7 +27,7 @@ class LeaderboardListView extends StatelessWidget {
           score: entry.score,
           // rank: index + 1,
           // highlight: index == userRank - 1,
-          // FIXME use new scheme like so:
+          // TODO use new scheme like so:
           //  rank: entry.rank,
           //  highlight: entry.id == userState.user.id,
           highlight: false,
