@@ -48,7 +48,7 @@ class LoginCubit extends Cubit<LoginState> {
 
     final either = await accountRepository.login(email, encodedPasscode);
 
-    either.fold(
+    either.bind(
       (error) => emit(LoginError(formatErrorMessage(error.message))),
       (user) {
         sl<FirebaseAnalyticsEventLogging>().loginEvent();

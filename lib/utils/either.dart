@@ -7,8 +7,7 @@ abstract class Either<L, R> {
   L get left => (this as Left<L, R>)._l;
   R get right => (this as Right<L, R>)._r;
 
-  /// Fold Left and Right into the value of one type
-  T fold<T>(T Function(L) left, T Function(R) right) {
+  T bind<T>(T Function(L) left, T Function(R) right) {
     if (this is Left<L, R>) {
       return left((this as Left<L, R>)._l);
     } else {

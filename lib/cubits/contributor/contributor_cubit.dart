@@ -12,7 +12,7 @@ class ContributorCubit extends Cubit<ContributorState> {
   Future<void> getContributors() async {
     emit(const ContributorLoading());
     final either = await _repository.getContributors();
-    either.fold(
+    either.bind(
       (error) => emit(ContributorError(error.message)),
       (contributors) => emit(ContributorLoaded(contributors)),
     );
