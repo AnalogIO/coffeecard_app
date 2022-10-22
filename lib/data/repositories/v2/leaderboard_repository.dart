@@ -6,12 +6,16 @@ import 'package:coffeecard/utils/either.dart';
 import 'package:coffeecard/utils/extensions.dart';
 import 'package:logger/logger.dart';
 
-extension _FilterCategoryToPresetInteger on LeaderboardFilter {
-  int get preset {
-    if (this == LeaderboardFilter.month) return 0;
-    if (this == LeaderboardFilter.semester) return 1;
-    if (this == LeaderboardFilter.total) return 2;
-    throw Exception(message: 'Unknown filter category: $this');
+extension _FilterCategoryToPresetString on LeaderboardFilter {
+  String get label {
+    switch (this) {
+      case LeaderboardFilter.semester:
+        return 'Semester';
+      case LeaderboardFilter.month:
+        return 'Month';
+      case LeaderboardFilter.total:
+        return 'Total';
+    }
   }
 }
 
@@ -24,13 +28,22 @@ class LeaderboardRepository {
   Future<Either<ApiError, List<LeaderboardUser>>> getLeaderboard(
     LeaderboardFilter category,
   ) async {
-    //TODO: show top X?
     final response =
-        await _api.apiV2LeaderboardTopGet(preset: category.preset, top: 3);
+        await _api.apiV2LeaderboardTopGet(preset: category.label, top: 10);
 
     if (response.isSuccessful) {
       return Right(
-        response.body!.map((e) => LeaderboardUser.fromDTO(e)).toList(),
+        response.body!
+            .map(
+              (e) => LeaderboardUser(
+                id: e.id!,
+                name: e.name!,
+                score: e.score!,
+                highlight: false,
+                rank: e.rank!,
+              ),
+            )
+            .toList(),
       );
     } else {
       _logger.e(response.formatError());
@@ -41,11 +54,7 @@ class LeaderboardRepository {
   Future<Either<ApiError, LeaderboardEntry>> getUserLeaderboardEntry(
     LeaderboardFilter category,
   ) async {
-    final response = await _api.apiV2LeaderboardGet(preset: 'Semester');
-
-    // Month OK
-    // Total Fail
-    // Semester OK
+    final response = await _api.apiV2LeaderboardGet(preset: category.label);
 
     if (response.isSuccessful) {
       return Right(response.body!);
