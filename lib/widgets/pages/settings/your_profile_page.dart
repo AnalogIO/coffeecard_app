@@ -3,6 +3,7 @@ import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/user/user_cubit.dart';
 import 'package:coffeecard/models/account/user.dart';
 import 'package:coffeecard/utils/responsive.dart';
+import 'package:coffeecard/widgets/components/gravatar_image.dart';
 import 'package:coffeecard/widgets/components/loading.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:coffeecard/widgets/components/settings_group.dart';
@@ -57,7 +58,9 @@ class _EditProfile extends StatelessWidget {
     return Column(
       children: [
         const Gap(24),
-        const CircleAvatar(radius: 54),
+        GravatarImage.large(
+          hash: user.name,
+        ),
         const Gap(12),
         Text(
           user.name,

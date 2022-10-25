@@ -1,6 +1,7 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/widgets/components/gravatar_image.dart';
 import 'package:coffeecard/widgets/components/helpers/shimmer_builder.dart';
 import 'package:coffeecard/widgets/components/list_entry.dart';
 import 'package:flutter/material.dart';
@@ -45,9 +46,8 @@ class LeaderboardListEntry extends StatelessWidget {
                 child: _LeaderboardRankMedal(rank),
               ),
               const Gap(16),
-              ColoredBox(
-                color: colorIfShimmer,
-                child: const CircleAvatar(),
+              GravatarImage.small(
+                hash: name,
               ),
               const Gap(10),
               Flexible(

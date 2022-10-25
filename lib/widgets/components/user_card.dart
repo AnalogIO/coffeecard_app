@@ -1,5 +1,6 @@
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/widgets/components/gravatar_image.dart';
 import 'package:coffeecard/widgets/components/helpers/shimmer_builder.dart';
 import 'package:coffeecard/widgets/components/helpers/tappable.dart';
 import 'package:coffeecard/widgets/pages/settings/your_profile_page.dart';
@@ -33,19 +34,18 @@ class UserCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(24.0),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              ShimmerBuilder(
-                showShimmer: isPlaceholder,
-                builder: (_, __) => const CircleAvatar(),
-              ),
-              const Gap(8),
-              Expanded(
-                child: ShimmerBuilder(
-                  showShimmer: isPlaceholder,
-                  builder: (context, colorIfShimmer) {
-                    return Column(
+          child: ShimmerBuilder(
+            showShimmer: isPlaceholder,
+            builder: (context, colorIfShimmer) {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GravatarImage.small(
+                    hash: name,
+                  ),
+                  const Gap(8),
+                  Expanded(
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         ColoredBox(
@@ -66,14 +66,14 @@ class UserCard extends StatelessWidget {
                           ),
                         ),
                       ],
-                    );
-                  },
-                ),
-              ),
-              const Gap(16),
-              const Icon(Icons.edit, color: AppColor.primary),
-              const Gap(12),
-            ],
+                    ),
+                  ),
+                  const Gap(16),
+                  const Icon(Icons.edit, color: AppColor.primary),
+                  const Gap(12),
+                ],
+              );
+            },
           ),
         ),
       ),
