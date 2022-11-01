@@ -82,6 +82,8 @@ class _LeaderboardRankMedal extends StatelessWidget {
   const _LeaderboardRankMedal(this.rank);
   final int rank;
 
+  String get rankString => rank == 0 ? '-' : '$rank';
+
   Color get _fillColor {
     if (rank == 1) return AppColor.goldMedal;
     if (rank == 2) return AppColor.silverMedal;
@@ -113,7 +115,7 @@ class _LeaderboardRankMedal extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(bottom: 1.5),
           child: Text(
-            '$rank',
+            rankString,
             style: AppTextStyle.rankingNumber,
             textAlign: TextAlign.center,
           ),
