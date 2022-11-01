@@ -17,11 +17,12 @@ class LeaderboardListView extends StatelessWidget {
     return Column(
       children: statsState.leaderboard
           .map(
-            (e) => LeaderboardListEntry(
-              name: e.name,
-              score: e.score,
-              rank: e.rank,
-              highlight: e.highlight,
+            (user) => LeaderboardListEntry(
+              id: user.id,
+              name: user.name,
+              score: user.score,
+              rank: user.rank,
+              highlight: user.highlight,
             ),
           )
           .toList(),

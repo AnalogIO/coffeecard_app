@@ -8,14 +8,19 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 class UserCard extends StatelessWidget {
-  const UserCard({required this.name, required this.occupation})
-      : isPlaceholder = false;
+  const UserCard({
+    required this.name,
+    required this.occupation,
+    required this.id,
+  }) : isPlaceholder = false;
 
   const UserCard.placeholder()
-      : isPlaceholder = true,
+      : id = 0,
+        isPlaceholder = true,
         name = 'Loading',
         occupation = 'Occupation name fullname';
 
+  final int id;
   final String name;
   final String occupation;
   final bool isPlaceholder;
@@ -40,9 +45,7 @@ class UserCard extends StatelessWidget {
               return Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const GravatarImage.small(
-                    id: 0, //FIXME: ID
-                  ),
+                  GravatarImage.small(id: id),
                   const Gap(8),
                   Expanded(
                     child: Column(

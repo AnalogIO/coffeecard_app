@@ -62,6 +62,7 @@ class SettingsPage extends StatelessWidget {
             padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
             child: (userState is UserLoaded)
                 ? UserCard(
+                    id: userState.user.id,
                     name: userState.user.name,
                     occupation: userState.user.programme.fullName,
                   )
