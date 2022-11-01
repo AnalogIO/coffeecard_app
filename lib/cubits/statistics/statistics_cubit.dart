@@ -20,7 +20,7 @@ class StatisticsCubit extends Cubit<StatisticsState> {
   Future<void> fetch() async {
     final filter = state.filter;
     final either = await _repo.getLeaderboard(filter);
-    either.bind(
+    either.caseOf(
       (error) => emit(StatisticsError(error.message, filter: filter)),
       (leaderboard) => emit(StatisticsLoaded(leaderboard, filter: filter)),
     );

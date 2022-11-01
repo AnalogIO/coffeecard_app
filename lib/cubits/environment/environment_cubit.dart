@@ -13,7 +13,7 @@ class EnvironmentCubit extends Cubit<EnvironmentState> {
   Future<void> getConfig() async {
     final either = await _configRepository.getEnvironmentType();
 
-    either.bind(
+    either.caseOf(
       (error) => emit(EnvironmentError(error.message)),
       (env) => emit(EnvironmentLoaded(env: env)),
     );
