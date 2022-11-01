@@ -7,9 +7,9 @@ class StatisticsDropdown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void onChanged(LeaderboardFilter? filter) =>
-        context.read<StatisticsCubit>().setFilter(filter!);
+        context.read<LeaderboardCubit>().setFilter(filter!);
 
-    return BlocBuilder<StatisticsCubit, StatisticsState>(
+    return BlocBuilder<LeaderboardCubit, StatisticsState>(
       buildWhen: (previous, current) =>
           current is StatisticsLoaded || current is StatisticsLoading,
       builder: (_, state) {

@@ -1,8 +1,8 @@
-import 'package:coffeecard/widgets/components/stats/leaderboard_entry.dart';
+import 'package:coffeecard/widgets/components/stats/leaderboard_list_entry.dart';
 import 'package:flutter/material.dart';
 
 final _placeholderListEntries =
-    List.generate(10, (_) => const LeaderboardEntry.placeholder());
+    List.generate(10, (_) => const LeaderboardListEntry.placeholder());
 
 class LeaderboardListViewPlaceholder extends StatelessWidget {
   const LeaderboardListViewPlaceholder();
