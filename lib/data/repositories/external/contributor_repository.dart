@@ -6,7 +6,7 @@ class ContributorRepository {
   Future<Either<ApiError, List<Contributor>>> getContributors() async {
     // TODO: fetch data from API when available
     return Future.value(
-      Right([
+      const Right([
         Contributor(
           name: 'Frederik Martini',
           githubUrl: 'https://github.com/fremartini',

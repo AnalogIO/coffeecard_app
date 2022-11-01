@@ -48,5 +48,5 @@ app.*.map.json
 *.mocks.dart
 /lib/generated/
 
-# test coverage file
-/coverage/lcov.info
+# test coverage files
+/coverage/

@@ -5,36 +5,24 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'statistics_state.dart';
 
+// TODO: Decide on naming (StatisticsCubit vs. LeaderboardCubit)
 class StatisticsCubit extends Cubit<StatisticsState> {
-  StatisticsCubit(this._repo) : super(StatisticsInitial());
+  StatisticsCubit(this._repo)
+      : super(const StatisticsLoading(filter: LeaderboardFilter.month));
 
   final LeaderboardRepository _repo;
-  static const defaultFilterCategory = StatisticsFilterCategory.month;
 
-  /// Load the leaderboard with the given filter category, or the default.
-  Future<void> fetchLeaderboards({
-    StatisticsFilterCategory category = defaultFilterCategory,
-  }) async {
-    emit(StatisticsLoading(filterBy: category));
-    refreshLeaderboards();
+  Future<void> setFilter(LeaderboardFilter filter) async {
+    emit(StatisticsLoading(filter: filter));
+    fetch();
   }
 
-  Future<void> refreshLeaderboards() async {
-    // For promotion purposes
-    final state = this.state;
-    assert(
-      state is StatisticsStateWithFilterCategory,
-      'Attempted to fetch leaderboard with no filter category present',
+  Future<void> fetch() async {
+    final filter = state.filter;
+    final either = await _repo.getLeaderboard(filter);
+    either.caseOf(
+      (error) => emit(StatisticsError(error.message, filter: filter)),
+      (leaderboard) => emit(StatisticsLoaded(leaderboard, filter: filter)),
     );
-
-    if (state is! StatisticsStateWithFilterCategory) return;
-    final category = state.filterBy;
-    final either = await _repo.getLeaderboard(category);
-
-    if (either.isRight) {
-      emit(StatisticsLoaded(filterBy: category, leaderboard: either.right));
-    } else {
-      emit(StatisticsError(either.left.message));
-    }
   }
 }

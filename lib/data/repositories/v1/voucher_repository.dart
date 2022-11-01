@@ -30,7 +30,7 @@ class VoucherRepository {
       _logger.e(response.formatError());
       return Left(ApiError(Strings.invalidVoucher(voucher)));
     } else if (response.statusCode == 400) {
-      return Left(ApiError(Strings.voucherUsed));
+      return const Left(ApiError(Strings.voucherUsed));
     } else {
       return Left(ApiError(response.error.toString()));
     }

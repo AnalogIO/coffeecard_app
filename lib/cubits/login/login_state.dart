@@ -15,7 +15,9 @@ class LoginTypingPasscode extends LoginState {
   List<Object?> get props => [passcode];
 }
 
-class LoginLoading extends LoginState {}
+class LoginLoading extends LoginState {
+  const LoginLoading();
+}
 
 class LoginError extends LoginState {
   const LoginError(this.errorMessage);

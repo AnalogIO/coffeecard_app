@@ -6,23 +6,15 @@ enum ReceiptStatus { initial, success, failure }
 
 extension DropdownName on ReceiptFilterCategory {
   String get name {
-    if (this == ReceiptFilterCategory.all) {
-      return Strings.receiptFilterAll;
+    switch (this) {
+      case ReceiptFilterCategory.all:
+        return Strings.receiptFilterAll;
+      case ReceiptFilterCategory.swipes:
+        return Strings.receiptFilterSwipes;
+      case ReceiptFilterCategory.purchases:
+        return Strings.receiptFilterPurchases;
     }
-    if (this == ReceiptFilterCategory.swipes) {
-      return Strings.receiptFilterSwipes;
-    }
-    if (this == ReceiptFilterCategory.purchases) {
-      return Strings.receiptFilterPurchases;
-    }
-    throw Exception(Strings.unknownFilterCategory(this));
   }
-}
-
-extension ReceiptStatusIs on ReceiptStatus {
-  bool get isInitial => this == ReceiptStatus.initial;
-  bool get isSuccess => this == ReceiptStatus.success;
-  bool get isFailure => this == ReceiptStatus.failure;
 }
 
 class ReceiptState extends Equatable {

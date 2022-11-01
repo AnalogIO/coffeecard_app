@@ -144,7 +144,7 @@ class _HomePageState extends State<HomePage> {
         BlocProvider(
           create: (_) => StatisticsCubit(
             sl.get<LeaderboardRepository>(),
-          )..fetchLeaderboards(),
+          )..fetch(),
         ),
         BlocProvider(
           create: (_) => OpeningHoursCubit(
