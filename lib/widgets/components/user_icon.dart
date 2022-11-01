@@ -12,9 +12,13 @@ class GravatarImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = [
-      Colors.yellow,
-      Colors.red,
-      Colors.blue,
+      const Color(0xffedd8e9),
+      const Color(0xffbde7c6),
+      const Color(0xffdce0c7),
+      const Color(0xffcbc7eb),
+      const Color(0xffc19b94),
+      const Color(0xffa0dab5),
+      const Color(0xfff8d9da),
     ];
     final images = List.generate(9, (i) => i); // [0..8]
 
