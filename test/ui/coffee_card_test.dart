@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  testWidgets('Coffee card widget has a title', (tester) async {
+  testWidgets('CoffeeCard has a title', (tester) async {
     await tester.pumpWidget(
       const MaterialApp(
         home: Scaffold(
