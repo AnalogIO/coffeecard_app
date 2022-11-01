@@ -58,7 +58,7 @@ class _EditProfile extends StatelessWidget {
     return Column(
       children: [
         const Gap(24),
-        GravatarImage.large(
+        UserIcon.large(
           id: user.id,
         ),
         const Gap(12),

@@ -49,7 +49,7 @@ class LeaderboardListEntry extends StatelessWidget {
                 child: _LeaderboardRankMedal(rank),
               ),
               const Gap(16),
-              GravatarImage.small(id: id),
+              UserIcon.small(id: id),
               const Gap(10),
               Flexible(
                 child: ColoredBox(

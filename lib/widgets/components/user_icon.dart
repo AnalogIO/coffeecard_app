@@ -1,13 +1,12 @@
 import 'package:coffeecard/widgets/components/images/coffee_image.dart';
 import 'package:flutter/material.dart';
 
-class GravatarImage extends StatelessWidget {
+class UserIcon extends StatelessWidget {
+  const UserIcon.large({required this.id}) : size = 100;
+  const UserIcon.small({required this.id}) : size = 40;
+
   final int id;
   final double size;
-
-  const GravatarImage.large({required this.id}) : size = 100;
-
-  const GravatarImage.small({required this.id}) : size = 40;
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +18,9 @@ class GravatarImage extends StatelessWidget {
       const Color(0xffc19b94),
       const Color(0xffa0dab5),
       const Color(0xfff8d9da),
+      const Color(0xffCDFCF6),
+      const Color(0xff92BA92),
+      const Color(0xff86b4c3),
     ];
     final images = List.generate(9, (i) => i); // [0..8]
 

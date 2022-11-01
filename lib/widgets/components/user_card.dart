@@ -45,7 +45,7 @@ class UserCard extends StatelessWidget {
               return Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  GravatarImage.small(id: id),
+                  UserIcon.small(id: id),
                   const Gap(8),
                   Expanded(
                     child: Column(
