@@ -8,6 +8,7 @@ import 'package:coffeecard/utils/api_uri_constants.dart';
 import 'package:coffeecard/utils/launch.dart';
 import 'package:coffeecard/widgets/components/dialog.dart';
 import 'package:coffeecard/widgets/components/helpers/shimmer_builder.dart';
+import 'package:coffeecard/widgets/components/images/analogio_logo.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:coffeecard/widgets/components/settings_group.dart';
 import 'package:coffeecard/widgets/components/settings_list_entry.dart';
@@ -182,16 +183,29 @@ class SettingsPage extends StatelessWidget {
             ],
           ),
           const Gap(24),
-          Text(
-            Strings.madeBy,
-            style: AppTextStyle.explainer,
-            textAlign: TextAlign.center,
-          ),
-          const Gap(8),
-          Text(
-            '${Strings.userID}: ${userState is UserLoaded ? userState.user.id : '...'}',
-            style: AppTextStyle.explainer,
-            textAlign: TextAlign.center,
+          GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () => Navigator.push(context, CreditsPage.route),
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  Text(
+                    Strings.madeBy,
+                    style: AppTextStyle.explainer,
+                    textAlign: TextAlign.center,
+                  ),
+                  const Gap(8),
+                  Text(
+                    '${Strings.userID}: ${userState is UserLoaded ? userState.user.id : '...'}',
+                    style: AppTextStyle.explainer,
+                    textAlign: TextAlign.center,
+                  ),
+                  const Gap(24),
+                  const AnalogIOLogo.small(),
+                ],
+              ),
+            ),
           ),
           const Gap(24),
         ],
