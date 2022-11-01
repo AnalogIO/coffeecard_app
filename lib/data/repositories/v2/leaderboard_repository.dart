@@ -1,7 +1,7 @@
 import 'package:coffeecard/cubits/statistics/statistics_cubit.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
 import 'package:coffeecard/models/api/api_error.dart';
-import 'package:coffeecard/models/leaderboard_user.dart';
+import 'package:coffeecard/models/leaderboard/leaderboard_user.dart';
 import 'package:coffeecard/utils/either.dart';
 import 'package:coffeecard/utils/extensions.dart';
 import 'package:logger/logger.dart';
@@ -51,13 +51,13 @@ class LeaderboardRepository {
     }
   }
 
-  Future<Either<ApiError, LeaderboardEntry>> getUserLeaderboardEntry(
+  Future<Either<ApiError, LeaderboardUser>> getLeaderboardUser(
     LeaderboardFilter category,
   ) async {
     final response = await _api.apiV2LeaderboardGet(preset: category.label);
 
     if (response.isSuccessful) {
-      return Right(response.body!);
+      return Right(LeaderboardUser.fromDTO(response.body!));
     } else {
       _logger.e(response.formatError());
       return Left(ApiError(response.error.toString()));

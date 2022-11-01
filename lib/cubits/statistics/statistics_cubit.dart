@@ -1,5 +1,5 @@
 import 'package:coffeecard/data/repositories/v2/leaderboard_repository.dart';
-import 'package:coffeecard/models/leaderboard_user.dart';
+import 'package:coffeecard/models/leaderboard/leaderboard_user.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -20,7 +20,7 @@ class LeaderboardCubit extends Cubit<StatisticsState> {
     final filter = state.filter;
 
     final maybeLeaderboard = await _repo.getLeaderboard(filter);
-    final maybeUser = await _repo.getUserLeaderboardEntry(filter);
+    final maybeUser = await _repo.getLeaderboardUser(filter);
 
     if (maybeUser.isLeft) {
       emit(StatisticsError(maybeUser.left.message, filter: filter));
@@ -56,11 +56,11 @@ class LeaderboardCubit extends Cubit<StatisticsState> {
     if (!userInLeaderboard) {
       leaderboard.add(
         LeaderboardUser(
-          id: user.id!,
-          name: user.name!,
-          score: user.score!,
+          id: user.id,
+          name: user.name,
           highlight: true,
-          rank: user.rank!,
+          score: user.score,
+          rank: user.rank,
         ),
       );
     }

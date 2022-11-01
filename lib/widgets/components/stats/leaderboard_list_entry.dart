@@ -6,21 +6,21 @@ import 'package:coffeecard/widgets/components/list_entry.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-class LeaderboardEntry extends StatelessWidget {
+class LeaderboardListEntry extends StatelessWidget {
   final String name;
   final int score;
   final int rank;
   final bool highlight;
   final bool isPlaceholder;
 
-  const LeaderboardEntry({
+  const LeaderboardListEntry({
     required this.name,
     required this.score,
     required this.rank,
     required this.highlight,
   }) : isPlaceholder = false;
 
-  const LeaderboardEntry.placeholder()
+  const LeaderboardListEntry.placeholder()
       : name = 'placeholder',
         score = 0,
         rank = 10,

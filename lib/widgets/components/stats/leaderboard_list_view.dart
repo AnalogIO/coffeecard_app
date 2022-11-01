@@ -1,6 +1,6 @@
 import 'package:coffeecard/cubits/statistics/statistics_cubit.dart';
 import 'package:coffeecard/cubits/user/user_cubit.dart';
-import 'package:coffeecard/widgets/components/stats/leaderboard_entry.dart';
+import 'package:coffeecard/widgets/components/stats/leaderboard_list_entry.dart';
 import 'package:flutter/material.dart';
 
 class LeaderboardListView extends StatelessWidget {
@@ -17,7 +17,7 @@ class LeaderboardListView extends StatelessWidget {
     return Column(
       children: statsState.leaderboard
           .map(
-            (e) => LeaderboardEntry(
+            (e) => LeaderboardListEntry(
               name: e.name,
               score: e.score,
               rank: e.rank,
