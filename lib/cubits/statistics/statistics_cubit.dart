@@ -5,9 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'statistics_state.dart';
 
-// FIXME: Decide on naming (StatisticsCubit vs. LeaderboardCubit)
-class StatisticsCubit extends Cubit<StatisticsState> {
-  StatisticsCubit(this._repo)
+class LeaderboardCubit extends Cubit<StatisticsState> {
+  LeaderboardCubit(this._repo)
       : super(const StatisticsLoading(filter: LeaderboardFilter.month));
 
   final LeaderboardRepository _repo;

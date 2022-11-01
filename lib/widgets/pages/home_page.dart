@@ -142,7 +142,7 @@ class _HomePageState extends State<HomePage> {
           )..fetchReceipts(),
         ),
         BlocProvider(
-          create: (_) => StatisticsCubit(
+          create: (_) => LeaderboardCubit(
             sl.get<LeaderboardRepository>(),
           )..fetch(),
         ),

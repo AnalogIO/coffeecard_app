@@ -12,14 +12,14 @@ import 'statistics_cubit_test.mocks.dart';
 @GenerateMocks([LeaderboardRepository])
 void main() {
   group('statistics cubit tests', () {
-    late StatisticsCubit statisticsCubit;
+    late LeaderboardCubit statisticsCubit;
     final leaderboardRepository = MockLeaderboardRepository();
 
     setUp(() {
-      statisticsCubit = StatisticsCubit(leaderboardRepository);
+      statisticsCubit = LeaderboardCubit(leaderboardRepository);
     });
 
-    blocTest<StatisticsCubit, StatisticsState>(
+    blocTest<LeaderboardCubit, StatisticsState>(
       'fetch emits StatisticsLoaded after successful fetch',
       build: () {
         when(leaderboardRepository.getLeaderboard(any))
@@ -32,7 +32,7 @@ void main() {
       ],
     );
 
-    blocTest<StatisticsCubit, StatisticsState>(
+    blocTest<LeaderboardCubit, StatisticsState>(
       'fetch emits StatisticsError after failed fetch',
       build: () {
         when(leaderboardRepository.getLeaderboard(any))
@@ -45,7 +45,7 @@ void main() {
       ],
     );
 
-    blocTest<StatisticsCubit, StatisticsState>(
+    blocTest<LeaderboardCubit, StatisticsState>(
       'setFilter emits StatisticsLoading with correct filter and then emits StatisticsLoaded after successful fetch',
       build: () {
         when(leaderboardRepository.getLeaderboard(any))
@@ -59,7 +59,7 @@ void main() {
       ],
     );
 
-    blocTest<StatisticsCubit, StatisticsState>(
+    blocTest<LeaderboardCubit, StatisticsState>(
       'setFilter emits StatisticsLoading with correct filter and then emits StatisticsError after failed fetch',
       build: () {
         when(leaderboardRepository.getLeaderboard(any))
