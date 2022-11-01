@@ -1,8 +1,8 @@
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
-import 'package:coffeecard/widgets/components/gravatar_image.dart';
 import 'package:coffeecard/widgets/components/helpers/shimmer_builder.dart';
 import 'package:coffeecard/widgets/components/helpers/tappable.dart';
+import 'package:coffeecard/widgets/components/user_icon.dart';
 import 'package:coffeecard/widgets/pages/settings/your_profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -40,8 +40,8 @@ class UserCard extends StatelessWidget {
               return Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  GravatarImage.small(
-                    hash: name,
+                  const GravatarImage.small(
+                    id: 0, //FIXME: ID
                   ),
                   const Gap(8),
                   Expanded(

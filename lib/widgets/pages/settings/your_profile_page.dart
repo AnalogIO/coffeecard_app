@@ -3,11 +3,11 @@ import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/user/user_cubit.dart';
 import 'package:coffeecard/models/account/user.dart';
 import 'package:coffeecard/utils/responsive.dart';
-import 'package:coffeecard/widgets/components/gravatar_image.dart';
 import 'package:coffeecard/widgets/components/loading.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:coffeecard/widgets/components/settings_group.dart';
 import 'package:coffeecard/widgets/components/settings_list_entry.dart';
+import 'package:coffeecard/widgets/components/user_icon.dart';
 import 'package:coffeecard/widgets/pages/settings/change_name_page.dart';
 import 'package:coffeecard/widgets/pages/settings/change_occupation_page.dart';
 import 'package:flutter/material.dart';
@@ -59,7 +59,7 @@ class _EditProfile extends StatelessWidget {
       children: [
         const Gap(24),
         GravatarImage.large(
-          hash: user.name,
+          id: user.id,
         ),
         const Gap(12),
         Text(
