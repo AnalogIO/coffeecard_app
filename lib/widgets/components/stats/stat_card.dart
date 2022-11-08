@@ -31,7 +31,7 @@ class StatisticsCard extends StatelessWidget {
               color: colorIfShimmer,
               child: Text.rich(
                 TextSpan(
-                  text: '${rank ?? 0}',
+                  text: '${rank == 0 ? '-' : rank}',
                   style: AppTextStyle.ticketsCount,
                   children: [
                     TextSpan(
@@ -52,6 +52,7 @@ class StatisticsCard extends StatelessWidget {
 String formatLeaderboardPostfix(int rank) {
   const def = 'th';
 
+  if (rank == 0) return '';
   if (rank > 10 && rank < 20) return def;
 
   switch (rank % 10) {
