@@ -7,9 +7,15 @@ import 'package:flutter/widgets.dart';
 
 class StatisticsCard extends StatelessWidget {
   final String title;
-  final int? rank;
+  final int rank;
+  final bool loading;
 
-  const StatisticsCard({required this.title, this.rank});
+  const StatisticsCard({required this.title, required this.rank})
+      : loading = false;
+
+  const StatisticsCard.loading({required this.title})
+      : rank = 0,
+        loading = true;
 
   @override
   Widget build(BuildContext context) {
@@ -25,19 +31,20 @@ class StatisticsCard extends StatelessWidget {
       ),
       bottom: CardBottomRow(
         right: ShimmerBuilder(
-          showShimmer: rank == null,
+          showShimmer: loading,
           builder: (context, colorIfShimmer) {
             return ColoredBox(
               color: colorIfShimmer,
               child: Text.rich(
                 TextSpan(
-                  text: '${rank == 0 ? '-' : rank}',
+                  text: '${rank == 0 ? 'N/A' : rank}',
                   style: AppTextStyle.ticketsCount,
                   children: [
-                    TextSpan(
-                      text: formatLeaderboardPostfix(rank ?? 0),
-                      style: AppTextStyle.leaderboardScore,
-                    ),
+                    if (rank != 0)
+                      TextSpan(
+                        text: formatLeaderboardPostfix(rank ?? 0),
+                        style: AppTextStyle.leaderboardScore,
+                      ),
                   ],
                 ),
               ),
@@ -52,7 +59,6 @@ class StatisticsCard extends StatelessWidget {
 String formatLeaderboardPostfix(int rank) {
   const def = 'th';
 
-  if (rank == 0) return '';
   if (rank > 10 && rank < 20) return def;
 
   switch (rank % 10) {
