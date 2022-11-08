@@ -7,7 +7,7 @@ import 'package:coffeecard/widgets/components/loading.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:coffeecard/widgets/components/settings_group.dart';
 import 'package:coffeecard/widgets/components/settings_list_entry.dart';
-import 'package:coffeecard/widgets/components/user_icon.dart';
+import 'package:coffeecard/widgets/components/user/user_icon.dart';
 import 'package:coffeecard/widgets/pages/settings/change_name_page.dart';
 import 'package:coffeecard/widgets/pages/settings/change_occupation_page.dart';
 import 'package:flutter/material.dart';
@@ -58,9 +58,7 @@ class _EditProfile extends StatelessWidget {
     return Column(
       children: [
         const Gap(24),
-        UserIcon.large(
-          id: user.id,
-        ),
+        UserIcon.large(id: user.id),
         const Gap(12),
         Text(
           user.name,
