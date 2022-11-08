@@ -10,12 +10,11 @@ class StatisticsCard extends StatelessWidget {
   final int rank;
   final bool loading;
 
-  const StatisticsCard({required this.title, required this.rank})
-      : loading = false;
-
-  const StatisticsCard.loading({required this.title})
-      : rank = 0,
-        loading = true;
+  const StatisticsCard({
+    required this.title,
+    required this.rank,
+    required this.loading,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +41,7 @@ class StatisticsCard extends StatelessWidget {
                   children: [
                     if (rank != 0)
                       TextSpan(
-                        text: formatLeaderboardPostfix(rank ?? 0),
+                        text: formatLeaderboardPostfix(rank),
                         style: AppTextStyle.leaderboardScore,
                       ),
                   ],
