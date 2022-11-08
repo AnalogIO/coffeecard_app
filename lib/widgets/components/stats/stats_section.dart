@@ -26,6 +26,8 @@ class _YourStatsGrid extends StatelessWidget {
 
   final User? user;
 
+  bool get isUserLoading => user == null;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -42,15 +44,18 @@ class _YourStatsGrid extends StatelessWidget {
             children: [
               StatisticsCard(
                 title: Strings.statCardMonth,
-                rank: user?.rankMonth,
+                rank: user?.rankMonth ?? 0,
+                loading: isUserLoading,
               ),
               StatisticsCard(
                 title: Strings.statCardSemester,
-                rank: user?.rankSemester,
+                rank: user?.rankSemester ?? 0,
+                loading: isUserLoading,
               ),
               StatisticsCard(
                 title: Strings.statCardTotal,
-                rank: user?.rankTotal,
+                rank: user?.rankTotal ?? 0,
+                loading: isUserLoading,
               ),
             ],
           ),
