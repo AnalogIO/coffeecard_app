@@ -3,10 +3,12 @@ import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/widgets/components/helpers/shimmer_builder.dart';
 import 'package:coffeecard/widgets/components/list_entry.dart';
+import 'package:coffeecard/widgets/components/user/user_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 class LeaderboardListEntry extends StatelessWidget {
+  final int id;
   final String name;
   final int score;
   final int rank;
@@ -14,6 +16,7 @@ class LeaderboardListEntry extends StatelessWidget {
   final bool isPlaceholder;
 
   const LeaderboardListEntry({
+    required this.id,
     required this.name,
     required this.score,
     required this.rank,
@@ -21,7 +24,8 @@ class LeaderboardListEntry extends StatelessWidget {
   }) : isPlaceholder = false;
 
   const LeaderboardListEntry.placeholder()
-      : name = 'placeholder',
+      : id = 0,
+        name = 'placeholder',
         score = 0,
         rank = 10,
         highlight = false,
@@ -45,10 +49,7 @@ class LeaderboardListEntry extends StatelessWidget {
                 child: _LeaderboardRankMedal(rank),
               ),
               const Gap(16),
-              ColoredBox(
-                color: colorIfShimmer,
-                child: const CircleAvatar(),
-              ),
+              UserIcon.small(id: id),
               const Gap(10),
               Flexible(
                 child: ColoredBox(

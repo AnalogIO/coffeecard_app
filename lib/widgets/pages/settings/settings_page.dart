@@ -12,7 +12,7 @@ import 'package:coffeecard/widgets/components/images/analogio_logo.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:coffeecard/widgets/components/settings_group.dart';
 import 'package:coffeecard/widgets/components/settings_list_entry.dart';
-import 'package:coffeecard/widgets/components/user_card.dart';
+import 'package:coffeecard/widgets/components/user/user_card.dart';
 import 'package:coffeecard/widgets/pages/settings/change_email_page.dart';
 import 'package:coffeecard/widgets/pages/settings/change_passcode_flow.dart';
 import 'package:coffeecard/widgets/pages/settings/credits_page.dart';
@@ -63,6 +63,7 @@ class SettingsPage extends StatelessWidget {
             padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
             child: (userState is UserLoaded)
                 ? UserCard(
+                    id: userState.user.id,
                     name: userState.user.name,
                     occupation: userState.user.programme.fullName,
                   )
