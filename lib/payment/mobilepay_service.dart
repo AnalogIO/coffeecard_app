@@ -12,11 +12,15 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/widgets.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class MobilePayService implements PaymentHandler {
+class MobilePayService extends PaymentHandler {
   final PurchaseRepository _repository;
   final BuildContext _context;
 
-  MobilePayService(this._repository, this._context);
+  MobilePayService({
+    required super.repository,
+    required super.context,
+  })  : _repository = repository,
+        _context = context;
 
   @override
   Future<Either<Failure, Payment>> initPurchase(int productId) async {
@@ -45,7 +49,6 @@ class MobilePayService implements PaymentHandler {
     );
   }
 
-  @override
   Future<void> invokePaymentMethod(Uri uri) async {
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri, mode: LaunchMode.externalApplication);
@@ -64,46 +67,5 @@ class MobilePayService implements PaymentHandler {
         launchUrlExternalApplication(url, _context);
       }
     }
-  }
-
-  @override
-  Future<Either<NetworkFailure, PaymentStatus>> verifyPurchase(
-    int purchaseId,
-  ) async {
-    // Call API endpoint, receive PaymentStatus
-    final either = await _repository.getPurchase(purchaseId);
-
-    return either.map((purchase) {
-      final paymentDetails =
-          MobilePayPaymentDetails.fromJsonFactory(purchase.paymentDetails);
-
-      final status = _mapPaymentStateToStatus(paymentDetails.state);
-      if (status == PaymentStatus.completed) {
-        return PaymentStatus.completed;
-      }
-
-      // TODO(marfavi): Cover more cases for PaymentStatus, https://github.com/AnalogIO/coffeecard_app/issues/385
-      return PaymentStatus.error;
-    });
-  }
-
-  PaymentStatus _mapPaymentStateToStatus(String? state) {
-    PaymentStatus status;
-    switch (state) {
-      case 'Initiated':
-        status = PaymentStatus.awaitingPayment;
-        break;
-      case 'Reserved':
-        status = PaymentStatus.reserved;
-        break;
-      case 'Captured':
-        status = PaymentStatus.completed;
-        break;
-      // Cases (cancelledByMerchant, cancelledBySystem, cancelledByUser)
-      default:
-        status = PaymentStatus.rejectedPayment;
-        break;
-    }
-    return status;
   }
 }

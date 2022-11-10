@@ -1271,6 +1271,8 @@
         "required": [
           "paymentType",
           "orderId",
+          "paymentId",
+          "purchaseStatus",
           "discriminator"
         ],
         "properties": {
@@ -1288,6 +1290,21 @@
             "description": "Order id of purchase",
             "minLength": 1,
             "example": "f5cb3e0f-3b9b-4f50-8c4f-a7450f300a5c"
+          },
+          "paymentId": {
+            "type": "string",
+            "description": "Id for a payment",
+            "minLength": 1,
+            "example": "186d2b31-ff25-4414-9fd1-bfe9807fa8b7"
+          },
+          "purchaseStatus": {
+            "description": "The status of the payment for the purchase",
+            "example": "PurchaseStatus.PendingPayment",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/PurchaseStatus"
+              }
+            ]
           },
           "discriminator": {
             "type": "string"
@@ -1337,12 +1354,6 @@
                 "minLength": 1,
                 "example": "mobilepay://merchant_payments?payment_id=186d2b31-ff25-4414-9fd1-bfe9807fa8b7"
               },
-              "paymentId": {
-                "type": "string",
-                "description": "MobilePay Id for a payment",
-                "minLength": 1,
-                "example": "186d2b31-ff25-4414-9fd1-bfe9807fa8b7"
-              },
               "state": {
                 "type": "string",
                 "description": "MobilePay state",
@@ -1356,7 +1367,7 @@
           }
         ]
       },
-      "FreePurchasePaymentDetails": {
+      "FreeProductPaymentDetails": {
         "allOf": [
           {
             "$ref": "#/components/schemas/PaymentDetails"
@@ -1382,6 +1393,21 @@
             }
           }
         ]
+      },
+      "MessageResponseDto": {
+        "type": "object",
+        "description": "Simple response class with a string message",
+        "example": {
+          "message": "Successful completion"
+        },
+        "additionalProperties": false,
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Message with API response",
+            "example": "Successful completion"
+          }
+        }
       },
       "InitiatePurchaseResponse": {
         "type": "object",
