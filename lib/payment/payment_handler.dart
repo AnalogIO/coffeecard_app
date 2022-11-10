@@ -26,10 +26,11 @@ abstract class PaymentHandler {
   })  : _repository = repository,
         _context = context;
 
-  static PaymentHandler createPaymentHandler(InternalPaymentType paymentType, BuildContext context){
+  static PaymentHandler createPaymentHandler(
+      InternalPaymentType paymentType, BuildContext context) {
     final repository = sl.get<PurchaseRepository>();
 
-    switch(paymentType) {
+    switch (paymentType) {
       case InternalPaymentType.mobilePay:
         return MobilePayService(repository: repository, context: context);
       case InternalPaymentType.free:
@@ -41,25 +42,22 @@ abstract class PaymentHandler {
 
   Future<Either<Failure, Payment>> initPurchase(int productId);
 
-  Future<Either<RequestFailure, PaymentStatus>> verifyPurchase(int purchaseId) async {
+  Future<Either<RequestFailure, PaymentStatus>> verifyPurchase(
+      int purchaseId) async {
     // Call API endpoint, receive PaymentStatus
     final either = await _repository.getPurchase(purchaseId);
 
-    return either.fold(
-            (error) => Left(error),
-            (purchase) {
-              final paymentDetails = FreeProductPaymentDetails.fromJson(
-                purchase.paymentDetails,
-              );
+    return either.fold((error) => Left(error), (purchase) {
+      final paymentDetails = FreeProductPaymentDetails.fromJson(
+        purchase.paymentDetails,
+      );
 
-              final status = purchaseStatusFromJson(paymentDetails.purchaseStatus);
-              if (status == PurchaseStatus.completed) {
-                return const Right(PaymentStatus.completed);
-              }
-              // TODO: Cover more cases for PurchaseStatus
-              return const Right(PaymentStatus.error);
-            }
-            );
+      final status = purchaseStatusFromJson(paymentDetails.purchaseStatus);
+      if (status == PurchaseStatus.completed) {
+        return const Right(PaymentStatus.completed);
+      }
+      // TODO: Cover more cases for PurchaseStatus
+      return const Right(PaymentStatus.error);
+    });
   }
-
 }

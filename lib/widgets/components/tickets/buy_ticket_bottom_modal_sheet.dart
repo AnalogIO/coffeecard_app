@@ -65,7 +65,9 @@ class _ModalContent extends StatelessWidget {
               ),
               const Gap(4),
               Text(
-                product.price != 0 ? Strings.paymentConfirmationBottom(product.price) : 'Get your free product',
+                product.price != 0
+                    ? Strings.paymentConfirmationBottom(product.price)
+                    : 'Get your free product',
                 style: AppTextStyle.price,
               ),
               const Gap(12),
@@ -84,10 +86,12 @@ class _BottomModalSheetButtonBar extends StatefulWidget {
   final Product product;
 
   @override
-  State<_BottomModalSheetButtonBar> createState() => _BottomModalSheetButtonBarState();
+  State<_BottomModalSheetButtonBar> createState() =>
+      _BottomModalSheetButtonBarState();
 }
 
-class _BottomModalSheetButtonBarState extends State<_BottomModalSheetButtonBar> {
+class _BottomModalSheetButtonBarState
+    extends State<_BottomModalSheetButtonBar> {
   @override
   Widget build(BuildContext context) {
     if (widget.product.price == 0) {
@@ -187,7 +191,9 @@ class _BottomModalSheetButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: (disabled && disabledText != null) ? _withDisabledText(_button, disabledText!) : _button,
+      child: (disabled && disabledText != null)
+          ? _withDisabledText(_button, disabledText!)
+          : _button,
     );
   }
 }
