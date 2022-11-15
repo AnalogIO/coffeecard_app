@@ -10,6 +10,7 @@ void main() {
           body: StatisticsCard(
             title: 'StatsTest',
             rank: 2,
+            loading: false,
           ),
         ),
       ),
@@ -19,6 +20,23 @@ void main() {
     expect(find.text('2nd'), findsOneWidget);
   });
 
+  testWidgets('Statistics card shows N/A if rank is 0', (tester) async {
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: Scaffold(
+          body: StatisticsCard(
+            title: 'StatsTest',
+            rank: 0,
+            loading: false,
+          ),
+        ),
+      ),
+    );
+
+    expect(find.text('StatsTest'), findsOneWidget);
+    expect(find.textContaining('N/A'), findsOneWidget);
+  });
+
   testWidgets('Statistics card matches golden file', (tester) async {
     await tester.pumpWidget(
       const MaterialApp(
@@ -26,6 +44,7 @@ void main() {
           body: StatisticsCard(
             title: 'This semester',
             rank: 2,
+            loading: false,
           ),
         ),
       ),
