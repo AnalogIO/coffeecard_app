@@ -1,9 +1,9 @@
-import 'package:coffeecard/models/api/api_error.dart';
+import 'package:coffeecard/errors/request_error.dart';
 import 'package:coffeecard/models/contributor.dart';
 import 'package:coffeecard/utils/either.dart';
 
 class ContributorRepository {
-  Future<Either<ApiError, List<Contributor>>> getContributors() async {
+  Future<Either<RequestError, List<Contributor>>> getContributors() async {
     // TODO: fetch data from API when available
     return Future.value(
       const Right([

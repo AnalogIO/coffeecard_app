@@ -1,7 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:coffeecard/cubits/opening_hours/opening_hours_cubit.dart';
 import 'package:coffeecard/data/repositories/shiftplanning/opening_hours_repository.dart';
-import 'package:coffeecard/models/api/api_error.dart';
+import 'package:coffeecard/errors/request_error.dart';
 import 'package:coffeecard/utils/either.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -48,7 +48,7 @@ void main() {
       'should emit loading and error when fetching repo.isOpen fails',
       build: () {
         when(repo.isOpen())
-            .thenAnswer((_) async => const Left(ApiError('ERROR')));
+            .thenAnswer((_) async => const Left(RequestError('ERROR', 0)));
         when(repo.getOpeningHours())
             .thenAnswer((_) async => const Right(dummyOpeningHours));
         return openinghoursCubit;
@@ -65,7 +65,7 @@ void main() {
       build: () {
         when(repo.isOpen()).thenAnswer((_) async => const Right(true));
         when(repo.getOpeningHours())
-            .thenAnswer((_) async => const Left(ApiError('ERROR')));
+            .thenAnswer((_) async => const Left(RequestError('ERROR', 0)));
         return openinghoursCubit;
       },
       act: (cubit) => cubit.getOpeninghours(),

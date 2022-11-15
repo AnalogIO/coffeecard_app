@@ -56,7 +56,7 @@ class App extends StatelessWidget {
           home: BlocBuilder<EnvironmentCubit, EnvironmentState>(
             builder: (_, state) {
               return (state is EnvironmentError)
-                  ? const SplashErrorPage()
+                  ? SplashErrorPage(errorMessage: state.message)
                   : const SplashLoadingPage();
             },
           ),

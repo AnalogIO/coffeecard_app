@@ -5,9 +5,11 @@ import 'package:coffeecard/cubits/environment/environment_cubit.dart';
 import 'package:coffeecard/widgets/components/loading_overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gap/gap.dart';
 
 class SplashErrorPage extends StatefulWidget {
-  const SplashErrorPage();
+  const SplashErrorPage({required this.errorMessage});
+  final String errorMessage;
 
   @override
   State<SplashErrorPage> createState() => _SplashErrorPageState();
@@ -16,16 +18,18 @@ class SplashErrorPage extends StatefulWidget {
 class _SplashErrorPageState extends State<SplashErrorPage> {
   @override
   Widget build(BuildContext context) {
-    return ColoredBox(
+    return Container(
+      padding: const EdgeInsets.all(48),
       color: AppColor.primary,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            Strings.noInternet,
+            'Error: ${widget.errorMessage}',
             style: AppTextStyle.explainerBright,
             textAlign: TextAlign.center,
           ),
+          const Gap(8),
           ElevatedButton(
             style: ButtonStyle(
               foregroundColor: MaterialStateProperty.all(AppColor.primary),

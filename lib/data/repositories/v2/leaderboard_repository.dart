@@ -1,6 +1,7 @@
+import 'package:chopper/chopper.dart';
 import 'package:coffeecard/cubits/statistics/statistics_cubit.dart';
+import 'package:coffeecard/errors/request_error.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
-import 'package:coffeecard/models/api/api_error.dart';
 import 'package:coffeecard/models/leaderboard/leaderboard_user.dart';
 import 'package:coffeecard/utils/either.dart';
 import 'package:coffeecard/utils/extensions.dart';
@@ -25,11 +26,18 @@ class LeaderboardRepository {
 
   LeaderboardRepository(this._api, this._logger);
 
-  Future<Either<ApiError, List<LeaderboardUser>>> getLeaderboard(
+  Future<Either<RequestError, List<LeaderboardUser>>> getLeaderboard(
     LeaderboardFilter category,
   ) async {
-    final response =
-        await _api.apiV2LeaderboardTopGet(preset: category.label, top: 10);
+    final Response<List<LeaderboardEntry>> response;
+    try {
+      response = await _api.apiV2LeaderboardTopGet(
+        preset: category.label,
+        top: 10,
+      );
+    } catch (e) {
+      return Left(ClientNetworkError());
+    }
 
     if (response.isSuccessful) {
       return Right(
@@ -45,13 +53,12 @@ class LeaderboardRepository {
             )
             .toList(),
       );
-    } else {
-      _logger.e(response.formatError());
-      return Left(ApiError(response.error.toString()));
     }
+    _logger.e(response.formatError());
+    return Left(RequestError(response.error.toString(), response.statusCode));
   }
 
-  Future<Either<ApiError, LeaderboardUser>> getLeaderboardUser(
+  Future<Either<RequestError, LeaderboardUser>> getLeaderboardUser(
     LeaderboardFilter category,
   ) async {
     final response = await _api.apiV2LeaderboardGet(preset: category.label);
@@ -60,7 +67,7 @@ class LeaderboardRepository {
       return Right(LeaderboardUser.fromDTO(response.body!));
     } else {
       _logger.e(response.formatError());
-      return Left(ApiError(response.error.toString()));
+      return Left(RequestError(response.error.toString(), response.statusCode));
     }
   }
 }

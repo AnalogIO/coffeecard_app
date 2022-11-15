@@ -1,7 +1,7 @@
 import 'package:chopper/chopper.dart' as chopper;
 import 'package:coffeecard/data/repositories/v1/ticket_repository.dart';
+import 'package:coffeecard/errors/request_error.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
-import 'package:coffeecard/models/api/api_error.dart';
 import 'package:coffeecard/models/ticket/ticket_count.dart';
 import 'package:coffeecard/utils/either.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -32,7 +32,7 @@ void main() {
     );
 
     final actual = await repository.getUserTickets();
-    const Either<ApiError, List<TicketCount>> expected = Right([]);
+    const Either<RequestError, List<TicketCount>> expected = Right([]);
 
     expect(expected.isRight, actual.isRight);
   });
@@ -55,8 +55,7 @@ void main() {
     );
 
     final actual = await repository.getUserTickets();
-    const Either<ApiError, List<TicketCount>> expected = Left(ApiError(''));
-
+    const expected = Left(RequestError('', 0));
     expect(expected.isLeft, actual.isLeft);
   });
 }

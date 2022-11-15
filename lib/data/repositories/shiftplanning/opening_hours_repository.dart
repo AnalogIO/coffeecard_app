@@ -1,6 +1,7 @@
+import 'package:chopper/chopper.dart';
 import 'package:coffeecard/base/strings.dart';
+import 'package:coffeecard/errors/request_error.dart';
 import 'package:coffeecard/generated/api/shiftplanning_api.swagger.dart';
-import 'package:coffeecard/models/api/api_error.dart';
 import 'package:coffeecard/models/opening_hours_day.dart';
 import 'package:coffeecard/utils/either.dart';
 import 'package:coffeecard/utils/extensions.dart';
@@ -13,21 +14,29 @@ class OpeningHoursRepository {
 
   OpeningHoursRepository(this._api, this._logger);
 
-  Future<Either<ApiError, bool>> isOpen() async {
-    final response = await _api.apiOpenShortKeyGet(
-      shortKey: 'analog',
-    );
+  Future<Either<RequestError, bool>> isOpen() async {
+    final Response<IsOpenDTO> response;
+    try {
+      response = await _api.apiOpenShortKeyGet(shortKey: 'analog');
+    } catch (e) {
+      return Left(ClientNetworkError());
+    }
 
     if (response.isSuccessful) {
       return Right(response.body!.open);
     } else {
       _logger.e(response.formatError());
-      throw Left(ApiError(response.error.toString()));
+      throw Left(RequestError(response.error.toString(), response.statusCode));
     }
   }
 
-  Future<Either<ApiError, Map<int, String>>> getOpeningHours() async {
-    final response = await _api.apiShiftsShortKeyGet(shortKey: 'analog');
+  Future<Either<RequestError, Map<int, String>>> getOpeningHours() async {
+    final Response<List<OpeningHoursDTO>> response;
+    try {
+      response = await _api.apiShiftsShortKeyGet(shortKey: 'analog');
+    } catch (e) {
+      return Left(ClientNetworkError());
+    }
 
     if (response.isSuccessful) {
       final content = response.body!..sortBy((dto) => dto.start);
@@ -61,7 +70,7 @@ class OpeningHoursRepository {
 
       return Right(weekDayOpeningHours);
     } else {
-      return Left(ApiError(response.error.toString()));
+      return Left(RequestError(response.error.toString(), response.statusCode));
     }
   }
 }

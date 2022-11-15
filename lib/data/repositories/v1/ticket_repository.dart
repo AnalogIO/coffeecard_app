@@ -1,6 +1,7 @@
+import 'package:chopper/chopper.dart';
+import 'package:coffeecard/errors/request_error.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
-import 'package:coffeecard/models/api/api_error.dart';
 import 'package:coffeecard/models/receipts/receipt.dart';
 import 'package:coffeecard/models/ticket/ticket_count.dart';
 import 'package:coffeecard/utils/either.dart';
@@ -15,8 +16,13 @@ class TicketRepository {
 
   TicketRepository(this._api, this._apiV2, this._logger);
 
-  Future<Either<ApiError, List<TicketCount>>> getUserTickets() async {
-    final response = await _apiV2.apiV2TicketsGet(includeUsed: false);
+  Future<Either<RequestError, List<TicketCount>>> getUserTickets() async {
+    final Response<List<TicketResponse>> response;
+    try {
+      response = await _apiV2.apiV2TicketsGet(includeUsed: false);
+    } catch (e) {
+      return Left(ClientNetworkError());
+    }
 
     if (response.isSuccessful) {
       final ticketCount = response.body!
@@ -33,16 +39,20 @@ class TicketRepository {
           .sortedBy<num>((e) => e.productId)
           .toList();
       return Right(ticketCount);
-    } else {
-      _logger.e(response.formatError());
-      return Left(ApiError(response.error.toString()));
     }
+    _logger.e(response.formatError());
+    return Left(RequestError(response.error.toString(), response.statusCode));
   }
 
-  Future<Either<ApiError, Receipt>> useTicket(int productId) async {
-    final response = await _api.apiV1TicketsUsePost(
-      body: UseTicketDTO(productId: productId),
-    );
+  Future<Either<RequestError, Receipt>> useTicket(int productId) async {
+    final Response<TicketDto> response;
+    try {
+      response = await _api.apiV1TicketsUsePost(
+        body: UseTicketDTO(productId: productId),
+      );
+    } catch (e) {
+      return Left(ClientNetworkError());
+    }
 
     if (response.isSuccessful) {
       final ticketDto = response.body!;
@@ -59,6 +69,7 @@ class TicketRepository {
         ),
       );
     }
-    return Left(ApiError(response.error.toString()));
+    _logger.e(response.formatError());
+    return Left(RequestError(response.error.toString(), response.statusCode));
   }
 }

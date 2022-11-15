@@ -1,7 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:coffeecard/cubits/tickets/tickets_cubit.dart';
 import 'package:coffeecard/data/repositories/v1/ticket_repository.dart';
-import 'package:coffeecard/models/api/api_error.dart';
+import 'package:coffeecard/errors/request_error.dart';
 import 'package:coffeecard/models/receipts/receipt.dart';
 import 'package:coffeecard/utils/either.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -43,8 +43,9 @@ void main() {
     blocTest<TicketsCubit, TicketsState>(
       'getTickets emits Loading then Error (on failed fetch)',
       build: () {
-        when(repo.getUserTickets())
-            .thenAnswer((_) async => const Left(ApiError('ERROR_MESSAGE')));
+        when(repo.getUserTickets()).thenAnswer(
+          (_) async => const Left(RequestError('ERROR_MESSAGE', 0)),
+        );
         return cubit;
       },
       act: (cubit) => cubit.getTickets(),
@@ -67,8 +68,9 @@ void main() {
     blocTest<TicketsCubit, TicketsState>(
       'refreshTickets emits Error (on failed fetch)',
       build: () {
-        when(repo.getUserTickets())
-            .thenAnswer((_) async => const Left(ApiError('ERROR_MESSAGE')));
+        when(repo.getUserTickets()).thenAnswer(
+          (_) async => const Left(RequestError('ERROR_MESSAGE', 0)),
+        );
         return cubit;
       },
       act: (cubit) => cubit.refreshTickets(),
@@ -110,8 +112,9 @@ void main() {
       'useTicket emits Using, Error (on failure) when state is Loaded',
       build: () {
         when(repo.getUserTickets()).thenAnswer((_) async => const Right([]));
-        when(repo.useTicket(any))
-            .thenAnswer((_) async => const Left(ApiError('ERROR_MESSAGE')));
+        when(repo.useTicket(any)).thenAnswer(
+          (_) async => const Left(RequestError('ERROR_MESSAGE', 0)),
+        );
         return cubit;
       },
       act: (cubit) async {

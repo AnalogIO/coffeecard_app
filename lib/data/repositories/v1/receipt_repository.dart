@@ -1,5 +1,6 @@
+import 'package:chopper/chopper.dart';
+import 'package:coffeecard/errors/request_error.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
-import 'package:coffeecard/models/api/api_error.dart';
 import 'package:coffeecard/models/receipts/receipt.dart';
 import 'package:coffeecard/utils/either.dart';
 import 'package:coffeecard/utils/extensions.dart';
@@ -13,9 +14,15 @@ class ReceiptRepository {
 
   /// Retrieves all of the users receipts
   /// This includes both their used tickets and purchased tickets
-  Future<Either<ApiError, List<Receipt>>> getUserReceipts() async {
-    final usedTicketRequest = _api.apiV1TicketsGet(used: true);
-    final purchaseRequest = _api.apiV1PurchasesGet();
+  Future<Either<RequestError, List<Receipt>>> getUserReceipts() async {
+    final Future<Response<List<TicketDto>>> usedTicketRequest;
+    final Future<Response<List<PurchaseDto>>> purchaseRequest;
+    try {
+      usedTicketRequest = _api.apiV1TicketsGet(used: true);
+      purchaseRequest = _api.apiV1PurchasesGet();
+    } catch (e) {
+      return Left(ClientNetworkError());
+    }
 
     final usedTicketResponse = await usedTicketRequest;
     final purchaseResponse = await purchaseRequest;
@@ -38,7 +45,12 @@ class ReceiptRepository {
       _logger.e(
         usedTicketResponse.formatError(),
       );
-      return Left(ApiError(usedTicketResponse.error.toString()));
+      return Left(
+        RequestError(
+          usedTicketResponse.error.toString(),
+          usedTicketResponse.statusCode,
+        ),
+      );
     }
 
     if (purchaseResponse.isSuccessful) {
@@ -56,7 +68,12 @@ class ReceiptRepository {
       _logger.e(
         purchaseResponse.formatError(),
       );
-      return Left(ApiError(purchaseResponse.error.toString()));
+      return Left(
+        RequestError(
+          purchaseResponse.error.toString(),
+          purchaseResponse.statusCode,
+        ),
+      );
     }
 
     return Right(

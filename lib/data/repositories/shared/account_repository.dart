@@ -1,10 +1,11 @@
+import 'package:chopper/chopper.dart';
+import 'package:coffeecard/errors/request_error.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
-import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
+import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart'
+    hide MessageResponseDto;
 import 'package:coffeecard/models/account/authenticated_user.dart';
 import 'package:coffeecard/models/account/update_user.dart';
 import 'package:coffeecard/models/account/user.dart';
-import 'package:coffeecard/models/api/api_error.dart';
-import 'package:coffeecard/models/api/unauthorized_error.dart';
 import 'package:coffeecard/utils/api_uri_constants.dart';
 import 'package:coffeecard/utils/either.dart';
 import 'package:coffeecard/utils/extensions.dart';
@@ -17,7 +18,7 @@ class AccountRepository {
 
   AccountRepository(this._apiV1, this._apiV2, this._logger);
 
-  Future<Either<UnauthorizedError, void>> register(
+  Future<Either<RequestError, void>> register(
     String name,
     String email,
     String encodedPasscode,
@@ -28,18 +29,22 @@ class AccountRepository {
       password: encodedPasscode,
     );
 
-    final response = await _apiV1.apiV1AccountRegisterPost(body: dto);
+    final Response<MessageResponseDto> response;
+    try {
+      response = await _apiV1.apiV1AccountRegisterPost(body: dto);
+    } catch (e) {
+      return Left(ClientNetworkError());
+    }
 
     if (response.isSuccessful) {
       return const Right(null);
-    } else {
-      _logger.e(response.formatError());
-      return Left(UnauthorizedError(response.error.toString()));
     }
+    _logger.e(response.formatError());
+    return Left(RequestError(response.error.toString(), response.statusCode));
   }
 
   /// Returns the user token or throws an error.
-  Future<Either<UnauthorizedError, AuthenticatedUser>> login(
+  Future<Either<RequestError, AuthenticatedUser>> login(
     String email,
     String encodedPasscode,
   ) async {
@@ -57,11 +62,11 @@ class AccountRepository {
       );
     } else {
       _logger.e(response.formatError());
-      return Left(UnauthorizedError(response.error.toString()));
+      return Left(RequestError(response.error.toString(), response.statusCode));
     }
   }
 
-  Future<Either<ApiError, User>> getUser() async {
+  Future<Either<RequestError, User>> getUser() async {
     final response = await _apiV1.apiV1AccountGet();
 
     if (response.isSuccessful) {
@@ -69,12 +74,17 @@ class AccountRepository {
       return Right(user);
     } else {
       _logger.e(response.formatError());
-      return Left(ApiError(response.error.toString()));
+      return Left(
+        RequestError(
+          response.error.toString(),
+          response.statusCode,
+        ),
+      );
     }
   }
 
   /// Update user information
-  Future<Either<ApiError, User>> updateUser(UpdateUser user) async {
+  Future<Either<RequestError, User>> updateUser(UpdateUser user) async {
     final userDTO = UpdateUserDto(
       name: user.name,
       programmeId: user.programmeId,
@@ -89,11 +99,15 @@ class AccountRepository {
       return Right(user);
     } else {
       _logger.e(response.formatError());
-      return Left(ApiError(response.error.toString()));
+      return Left(
+        RequestError(response.error.toString(), response.statusCode),
+      );
     }
   }
 
-  Future<Either<ApiError, void>> requestPasscodeReset(String email) async {
+  Future<Either<RequestError, void>> requestPasscodeReset(
+    String email,
+  ) async {
     final response = await _apiV1.apiV1AccountForgotpasswordPost(
       body: EmailDto(email: email),
     );
@@ -101,21 +115,23 @@ class AccountRepository {
       return const Right(null);
     } else {
       _logger.e(response.formatError());
-      return Left(ApiError(response.error.toString()));
+      return Left(
+        RequestError(response.error.toString(), response.statusCode),
+      );
     }
   }
 
-  Future<Either<ApiError, void>> requestAccountDeletion() async {
+  Future<Either<RequestError, void>> requestAccountDeletion() async {
     final response = await _apiV2.apiV2AccountDelete();
     if (response.isSuccessful) {
       return const Right(null);
     } else {
       _logger.e(response.formatError());
-      return Left(ApiError(response.error.toString()));
+      return Left(RequestError(response.error.toString(), response.statusCode));
     }
   }
 
-  Future<Either<ApiError, bool>> emailExists(String email) async {
+  Future<Either<RequestError, bool>> emailExists(String email) async {
     final response = await _apiV2.apiV2AccountEmailExistsPost(
       body: EmailExistsRequest(email: email),
     );
@@ -123,7 +139,7 @@ class AccountRepository {
       return Right(response.body!.emailExists);
     } else {
       _logger.e(response.formatError());
-      return Left(ApiError(response.error.toString()));
+      return Left(RequestError(response.error.toString(), response.statusCode));
     }
   }
 }
