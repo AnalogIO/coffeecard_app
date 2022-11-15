@@ -1,9 +1,9 @@
 import 'package:chopper/chopper.dart' as chopper;
 import 'package:coffeecard/data/repositories/shared/account_repository.dart';
+import 'package:coffeecard/errors/request_error.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart'
     show CoffeecardApiV2;
-import 'package:coffeecard/models/api/unauthorized_error.dart';
 import 'package:coffeecard/utils/either.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logger/logger.dart';
@@ -32,7 +32,7 @@ void main() {
     );
 
     final actual = await repository.register('name', 'email', 'passcode');
-    const Either<UnauthorizedError, void> expected = Right(null);
+    const expected = Right(null);
 
     expect(expected.isRight, actual.isRight);
   });
@@ -54,8 +54,7 @@ void main() {
     );
 
     final actual = await repository.register('name', 'email', 'passcode');
-    const Either<UnauthorizedError, void> expected =
-        Left(UnauthorizedError('not found'));
+    const expected = Left(RequestError('not found', 0));
 
     expect(expected.isLeft, actual.isLeft);
   });

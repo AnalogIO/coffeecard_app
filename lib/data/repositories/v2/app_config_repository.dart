@@ -1,6 +1,6 @@
 import 'package:chopper/chopper.dart';
+import 'package:coffeecard/errors/request_error.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
-import 'package:coffeecard/models/api/api_error.dart';
 import 'package:coffeecard/models/environment.dart';
 import 'package:coffeecard/utils/either.dart';
 import 'package:coffeecard/utils/extensions.dart';
@@ -12,12 +12,12 @@ class AppConfigRepository {
 
   AppConfigRepository(this._api, this._logger);
 
-  Future<Either<ApiError, Environment>> getEnvironmentType() async {
+  Future<Either<RequestError, Environment>> getEnvironmentType() async {
     final Response<AppConfig> response;
     try {
       response = await _api.apiV2AppconfigGet();
     } catch (e) {
-      return const Left(ApiError("Couldn't connect to the server"));
+      return Left(ClientNetworkError());
     }
 
     if (response.isSuccessful) {
@@ -42,9 +42,8 @@ class AppConfigRepository {
       }
 
       return Right(environment);
-    } else {
-      _logger.e(response.formatError());
-      return Left(ApiError(response.error.toString()));
     }
+    _logger.e(response.formatError());
+    return Left(RequestError(response.error.toString(), response.statusCode));
   }
 }

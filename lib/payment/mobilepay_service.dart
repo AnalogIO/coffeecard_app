@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:coffeecard/data/repositories/v2/purchase_repository.dart';
+import 'package:coffeecard/errors/request_error.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
-import 'package:coffeecard/models/api/api_error.dart';
 import 'package:coffeecard/models/purchase/payment.dart';
 import 'package:coffeecard/models/purchase/payment_status.dart';
 import 'package:coffeecard/payment/payment_handler.dart';
@@ -19,9 +19,16 @@ class MobilePayService implements PaymentHandler {
   MobilePayService(this._repository, this._context);
 
   @override
-  Future<Either<ApiError, Payment>> initPurchase(int productId) async {
-    final response =
-        await _repository.initiatePurchase(productId, PaymentType.mobilepay);
+  Future<Either<RequestError, Payment>> initPurchase(int productId) async {
+    final Either<RequestError, InitiatePurchaseResponse> response;
+    try {
+      response = await _repository.initiatePurchase(
+        productId,
+        PaymentType.mobilepay,
+      );
+    } catch (e) {
+      return Left(RequestError(e.toString(), 500));
+    }
 
     if (response is Right) {
       final purchaseResponse = response.right;
@@ -57,7 +64,8 @@ class MobilePayService implements PaymentHandler {
       } else if (Platform.isIOS) {
         url = ApiUriConstants.mobilepayIOS;
       } else {
-        throw 'Could not launch $mobilePayDeeplink';
+        // Should never happen
+        throw UnsupportedError('Unsupported platform');
       }
 
       launchUrlExternalApplication(url, _context);
@@ -65,7 +73,7 @@ class MobilePayService implements PaymentHandler {
   }
 
   @override
-  Future<Either<ApiError, PaymentStatus>> verifyPurchase(
+  Future<Either<RequestError, PaymentStatus>> verifyPurchase(
     int purchaseId,
   ) async {
     // Call API endpoint, receive PaymentStatus
