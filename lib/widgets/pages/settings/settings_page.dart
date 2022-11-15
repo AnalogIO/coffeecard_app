@@ -18,6 +18,7 @@ import 'package:coffeecard/widgets/pages/settings/change_passcode_flow.dart';
 import 'package:coffeecard/widgets/pages/settings/credits_page.dart';
 import 'package:coffeecard/widgets/pages/settings/faq_page.dart';
 import 'package:coffeecard/widgets/pages/settings/opening_hours_page.dart';
+import 'package:coffeecard/widgets/pages/settings/setting_value_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
@@ -79,11 +80,10 @@ class SettingsPage extends StatelessWidget {
                   builder: (context, colorIfShimmer) {
                     return ColoredBox(
                       color: colorIfShimmer,
-                      child: Text(
-                        (userState is UserLoaded)
+                      child: SettingValueText(
+                        value: (userState is UserLoaded)
                             ? userState.user.email
                             : Strings.emailShimmerText,
-                        style: AppTextStyle.settingValue,
                       ),
                     );
                   },
@@ -99,9 +99,8 @@ class SettingsPage extends StatelessWidget {
               ),
               SettingListEntry(
                 name: Strings.passcode,
-                valueWidget: Text(
-                  Strings.change,
-                  style: AppTextStyle.settingValue,
+                valueWidget: const SettingValueText(
+                  value: Strings.change,
                 ),
                 onTap: _ifUserStateLoaded(
                   userState,
@@ -158,7 +157,7 @@ class SettingsPage extends StatelessWidget {
 
                     return ColoredBox(
                       color: colorIfShimmer,
-                      child: Text(text, style: AppTextStyle.settingValue),
+                      child: SettingValueText(value: text),
                     );
                   },
                 ),
