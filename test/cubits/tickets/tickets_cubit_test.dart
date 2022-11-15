@@ -51,7 +51,7 @@ void main() {
       act: (cubit) => cubit.getTickets(),
       expect: () => [
         const TicketsLoading(),
-        const TicketsError('ERROR_MESSAGE'),
+        const TicketsLoadError('ERROR_MESSAGE'),
       ],
     );
 
@@ -74,7 +74,7 @@ void main() {
         return cubit;
       },
       act: (cubit) => cubit.refreshTickets(),
-      expect: () => [const TicketsError('ERROR_MESSAGE')],
+      expect: () => [const TicketsLoadError('ERROR_MESSAGE')],
     );
 
     blocTest<TicketsCubit, TicketsState>(
@@ -125,7 +125,7 @@ void main() {
       skip: 2,
       expect: () => [
         const TicketUsing([]),
-        const TicketsError('ERROR_MESSAGE'),
+        const TicketsUseError('ERROR_MESSAGE'),
       ],
     );
 

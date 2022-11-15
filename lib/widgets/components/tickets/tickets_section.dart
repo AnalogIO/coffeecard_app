@@ -1,8 +1,11 @@
+import 'package:coffeecard/base/strings.dart';
+import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/environment/environment_cubit.dart';
 import 'package:coffeecard/cubits/tickets/tickets_cubit.dart';
 import 'package:coffeecard/cubits/user/user_cubit.dart';
 import 'package:coffeecard/errors/match_case_incomplete_exception.dart';
 import 'package:coffeecard/models/environment.dart';
+import 'package:coffeecard/widgets/components/dialog.dart';
 import 'package:coffeecard/widgets/components/error_section.dart';
 import 'package:coffeecard/widgets/components/helpers/shimmer_builder.dart';
 import 'package:coffeecard/widgets/components/loading_overlay.dart';
@@ -20,6 +23,10 @@ class TicketSection extends StatelessWidget {
     return Column(
       children: [
         BlocConsumer<TicketsCubit, TicketsState>(
+          listenWhen: (previous, current) =>
+              current is TicketUsing ||
+              current is TicketUsed ||
+              current is TicketsUseError,
           listener: (context, state) {
             if (state is TicketUsing) {
               if (Navigator.of(context, rootNavigator: true).canPop()) {
@@ -31,7 +38,8 @@ class TicketSection extends StatelessWidget {
               }
               // TODO: consider using a nicer loading indicator
               showLoadingOverlay(context);
-            } else if (state is TicketUsed) {
+            }
+            if (state is TicketUsed) {
               // Refresh or load user info (for updated rank stats)
               // (also refreshes leaderboard)
               context.read<UserCubit>().fetchUserDetails();
@@ -44,11 +52,31 @@ class TicketSection extends StatelessWidget {
                     envState is EnvironmentLoaded && envState.env.isTest,
               );
             }
+            if (state is TicketsUseError) {
+              hideLoadingOverlay(context);
+              appDialog(
+                context: context,
+                title: Strings.error,
+                actions: [
+                  TextButton(
+                    child: const Text(Strings.buttonOK),
+                    onPressed: () => closeAppDialog(context),
+                  ),
+                ],
+                children: [Text(state.message, style: AppTextStyle.settingKey)],
+                dismissible: true,
+              );
+            }
           },
+          buildWhen: (previous, current) =>
+              current is TicketsLoading ||
+              current is TicketsLoaded ||
+              current is TicketsLoadError,
           builder: (context, state) {
             if (state is TicketsLoading) {
               return const _CoffeeCardLoading();
-            } else if (state is TicketsLoaded) {
+            }
+            if (state is TicketsLoaded) {
               // States extending this are also caught on this
               if (state.tickets.isEmpty) {
                 return const CoffeeCardPlaceholder();
@@ -70,7 +98,8 @@ class TicketSection extends StatelessWidget {
                     )
                     .toList(),
               );
-            } else if (state is TicketsError) {
+            }
+            if (state is TicketsLoadError) {
               return ErrorSection(
                 error: state.message,
                 retry: context.read<TicketsCubit>().getTickets,

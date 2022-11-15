@@ -33,9 +33,17 @@ class TicketUsed extends TicketsLoaded {
   List<Object?> get props => [receipt];
 }
 
-class TicketsError extends TicketsState {
+class TicketsUseError extends TicketsState {
   final String message;
-  const TicketsError(this.message);
+  const TicketsUseError(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+
+class TicketsLoadError extends TicketsState {
+  final String message;
+  const TicketsLoadError(this.message);
 
   @override
   List<Object?> get props => [message];
