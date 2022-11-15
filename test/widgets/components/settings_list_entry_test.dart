@@ -1,4 +1,3 @@
-import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/widgets/components/settings_list_entry.dart';
 import 'package:coffeecard/widgets/pages/settings/setting_value_text.dart';
 import 'package:flutter/material.dart';
