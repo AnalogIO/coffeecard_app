@@ -1,4 +1,5 @@
 import 'package:chopper/chopper.dart';
+import 'package:coffeecard/data/repositories/utils/executor.dart';
 import 'package:coffeecard/errors/request_error.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
 import 'package:coffeecard/utils/either.dart';
@@ -17,40 +18,24 @@ class PurchaseRepository {
     int productId,
     PaymentType paymentType,
   ) async {
-    final Response<InitiatePurchaseResponse> response;
-    try {
-      response = await _api.apiV2PurchasesPost(
+    return Executor.executeNetworkRequestSafely(
+      () => _api.apiV2PurchasesPost(
         body: InitiatePurchaseRequest(
           productId: productId,
-          paymentType: paymentTypeToJson(paymentType),
+          paymentType: paymentType,
         ),
-      );
-    } catch (e) {
-      return Left(ClientNetworkError());
-    }
-
-    if (response.isSuccessful) {
-      return Right(response.body!);
-    }
-    _logger.e(response.formatError());
-    return Left(RequestError(response.error.toString(), response.statusCode));
+      ),
+      _logger,
+    );
   }
 
   /// Get a purchase by its purchase id
   Future<Either<RequestError, SinglePurchaseResponse>> getPurchase(
     int purchaseId,
   ) async {
-    final Response<SinglePurchaseResponse> response;
-    try {
-      response = await _api.apiV2PurchasesIdGet(id: purchaseId);
-    } catch (e) {
-      return Left(ClientNetworkError());
-    }
-
-    if (response.isSuccessful) {
-      return Right(response.body!);
-    }
-    _logger.e(response.formatError());
-    return Left(RequestError(response.error.toString(), response.statusCode));
+    return Executor.executeNetworkRequestSafely(
+      () => _api.apiV2PurchasesIdGet(id: purchaseId),
+      _logger,
+    );
   }
 }
