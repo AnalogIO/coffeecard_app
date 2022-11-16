@@ -41,7 +41,7 @@ void main() {
     );
 
     blocTest<TicketsCubit, TicketsState>(
-      'getTickets emits Loading then Error (on failed fetch)',
+      'getTickets emits Loading then LoadError (on failed fetch)',
       build: () {
         when(repo.getUserTickets()).thenAnswer(
           (_) async => const Left(RequestError('ERROR_MESSAGE', 0)),
@@ -66,7 +66,7 @@ void main() {
     );
 
     blocTest<TicketsCubit, TicketsState>(
-      'refreshTickets emits Error (on failed fetch)',
+      'refreshTickets emits LoadError (on failed fetch)',
       build: () {
         when(repo.getUserTickets()).thenAnswer(
           (_) async => const Left(RequestError('ERROR_MESSAGE', 0)),
@@ -109,7 +109,7 @@ void main() {
     );
 
     blocTest<TicketsCubit, TicketsState>(
-      'useTicket emits Using, Error (on failure) when state is Loaded',
+      'useTicket emits Using, UseError (on use failure), then Loaded (on success fetch) when state is Loaded',
       build: () {
         when(repo.getUserTickets()).thenAnswer((_) async => const Right([]));
         when(repo.useTicket(any)).thenAnswer(
@@ -126,6 +126,7 @@ void main() {
       expect: () => [
         const TicketUsing([]),
         const TicketsUseError('ERROR_MESSAGE'),
+        const TicketsLoaded([]),
       ],
     );
 
