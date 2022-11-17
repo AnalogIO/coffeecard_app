@@ -18,7 +18,7 @@ class VoucherRepository {
   ) async {
     return executor.execute(
       () => apiV1.apiV1PurchasesRedeemvoucherPost(voucherCode: voucher),
-      transformer: RedeemedVoucher.fromDTO,
+      RedeemedVoucher.fromDTO,
     );
   }
 }

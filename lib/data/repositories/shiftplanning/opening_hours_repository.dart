@@ -18,14 +18,14 @@ class OpeningHoursRepository {
   Future<Either<RequestError, bool>> isOpen() async {
     return executor.execute(
       () => api.apiOpenShortKeyGet(shortKey: 'analog'),
-      transformer: (dto) => dto.open,
+      (dto) => dto.open,
     );
   }
 
   Future<Either<RequestError, Map<int, String>>> getOpeningHours() async {
     return executor.execute(
       () => api.apiShiftsShortKeyGet(shortKey: 'analog'),
-      transformer: _transformOpeningHours,
+      _transformOpeningHours,
     );
   }
 

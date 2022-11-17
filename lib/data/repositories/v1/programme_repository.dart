@@ -16,7 +16,7 @@ class ProgrammeRepository {
   Future<Either<RequestError, List<Programme>>> getProgramme() async {
     return executor.execute(
       apiV1.apiV1ProgrammesGet,
-      transformer: (dto) => dto.map(Programme.fromDTO).toList(),
+      (dto) => dto.map(Programme.fromDTO).toList(),
     );
   }
 }

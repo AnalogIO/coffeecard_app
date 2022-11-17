@@ -9,11 +9,13 @@ class Executor {
   final Logger logger;
 
   /// Executes a network request and handles errors, including IO errors.
-  /// Returns either a [RequestError] or the transformed success type.
-  Future<Either<RequestError, Ret>> execute<Dto, Ret>(
-    Future<Response<Dto>> Function() request, {
-    required Ret Function(Dto dto) transformer,
-  }) async {
+  ///
+  /// Returns an [Either] with a [RequestError]
+  /// or the transformed success type [RightType].
+  Future<Either<RequestError, RightType>> execute<Dto, RightType>(
+    Future<Response<Dto>> Function() request,
+    RightType Function(Dto dto) transformer,
+  ) async {
     try {
       final response = await request();
       if (response.isSuccessful) {

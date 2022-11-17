@@ -21,7 +21,7 @@ class TicketRepository {
   Future<Either<RequestError, List<TicketCount>>> getUserTickets() async {
     return executor.execute(
       () => apiV2.apiV2TicketsGet(includeUsed: false),
-      transformer: (dtoList) {
+      (dtoList) {
         return dtoList
             .groupListsBy((t) => t.productName)
             .entries
@@ -41,7 +41,7 @@ class TicketRepository {
   Future<Either<RequestError, Receipt>> useTicket(int productId) async {
     return executor.execute(
       () => apiV1.apiV1TicketsUsePost(body: UseTicketDTO(productId: productId)),
-      transformer: (dto) {
+      (dto) {
         return Receipt(
           productName: dto.productName,
           id: dto.id,
