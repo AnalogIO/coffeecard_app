@@ -1,16 +1,16 @@
-import 'package:chopper/chopper.dart';
 import 'package:coffeecard/data/repositories/utils/executor.dart';
-import 'package:coffeecard/errors/request_error.dart';
+import 'package:coffeecard/data/repositories/utils/request_types.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
 import 'package:coffeecard/utils/either.dart';
-import 'package:coffeecard/utils/extensions.dart';
-import 'package:logger/logger.dart';
 
 class PurchaseRepository {
-  final CoffeecardApiV2 _api;
-  final Logger _logger;
+  PurchaseRepository({
+    required this.apiV2,
+    required this.executor,
+  });
 
-  PurchaseRepository(this._api, this._logger);
+  final CoffeecardApiV2 apiV2;
+  final Executor executor;
 
   /// Initiate a new Purchase Request. The return is a purchase request
   /// with payment details on how to pay for the purchase
@@ -18,14 +18,15 @@ class PurchaseRepository {
     int productId,
     PaymentType paymentType,
   ) async {
-    return Executor.executeNetworkRequestSafely(
-      () => _api.apiV2PurchasesPost(
+    return executor.execute(
+      () => apiV2.apiV2PurchasesPost(
         body: InitiatePurchaseRequest(
           productId: productId,
           paymentType: paymentType,
         ),
       ),
-      _logger,
+      // FIXME: No generated code as return type!
+      transformer: (dto) => dto,
     );
   }
 
@@ -33,9 +34,10 @@ class PurchaseRepository {
   Future<Either<RequestError, SinglePurchaseResponse>> getPurchase(
     int purchaseId,
   ) async {
-    return Executor.executeNetworkRequestSafely(
-      () => _api.apiV2PurchasesIdGet(id: purchaseId),
-      _logger,
+    return executor.execute(
+      () => apiV2.apiV2PurchasesIdGet(id: purchaseId),
+      // FIXME: No generated code as return type!
+      transformer: (dto) => dto,
     );
   }
 }

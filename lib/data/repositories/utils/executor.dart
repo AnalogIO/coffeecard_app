@@ -1,25 +1,30 @@
 import 'package:chopper/chopper.dart';
-import 'package:coffeecard/errors/request_error.dart';
+import 'package:coffeecard/data/repositories/utils/request_types.dart';
 import 'package:coffeecard/utils/either.dart';
-import 'package:coffeecard/utils/extensions.dart';
 import 'package:logger/logger.dart';
 
+/// Helper class that executes network requests and handles errors
 class Executor {
-  Future<Either<RequestError, T>> executeNetworkRequestSafely<T>(
-    Future<Response<T>> Function() f,
-    Logger logger,
-  ) async {
-    final Response<T> response;
-    try {
-      response = await f();
-      if (response.isSuccessful) {
-        return Right(response.body!);
-      }
-    } catch (e) {
-      return Left(ClientNetworkError());
-    }
+  const Executor(this.logger);
+  final Logger logger;
 
-    logger.e(response.formatError());
-    return Left(RequestError(response.error.toString(), response.statusCode));
+  /// Executes a network request and handles errors, including IO errors.
+  /// Returns either a [RequestError] or the transformed success type.
+  Future<Either<RequestError, Ret>> execute<Dto, Ret>(
+    Future<Response<Dto>> Function() request, {
+    required Ret Function(Dto dto) transformer,
+  }) async {
+    try {
+      final response = await request();
+      if (response.isSuccessful) {
+        return Right(transformer(response.body as Dto));
+      } else {
+        logger.e('API Error: (${response.statusCode}) ${response.error}');
+        return Left(RequestError.fromResponse(response));
+      }
+    } on Exception catch (e) {
+      logger.e('HTTP Client Error: $e');
+      return Left(RequestError.clientNetworkError());
+    }
   }
 }

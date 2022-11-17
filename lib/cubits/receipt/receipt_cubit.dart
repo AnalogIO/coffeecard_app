@@ -41,8 +41,8 @@ class ReceiptCubit extends Cubit<ReceiptState> {
     );
   }
 
-  List<Receipt> _filter(
-    List<Receipt> receipts,
+  Iterable<Receipt> _filter(
+    Iterable<Receipt> receipts,
     ReceiptFilterCategory filterBy,
   ) {
     switch (filterBy) {
@@ -50,12 +50,10 @@ class ReceiptCubit extends Cubit<ReceiptState> {
         return receipts;
       case ReceiptFilterCategory.swipes:
         return receipts
-            .where((r) => r.transactionType == TransactionType.ticketSwipe)
-            .toList();
+            .where((r) => r.transactionType == TransactionType.ticketSwipe);
       case ReceiptFilterCategory.purchases:
         return receipts
-            .where((r) => r.transactionType == TransactionType.purchase)
-            .toList();
+            .where((r) => r.transactionType == TransactionType.purchase);
     }
   }
 }

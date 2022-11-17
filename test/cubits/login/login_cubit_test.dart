@@ -2,7 +2,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
 import 'package:coffeecard/cubits/login/login_cubit.dart';
 import 'package:coffeecard/data/repositories/shared/account_repository.dart';
-import 'package:coffeecard/errors/request_error.dart';
+import 'package:coffeecard/data/repositories/utils/request_types.dart';
 import 'package:coffeecard/utils/either.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -48,7 +48,7 @@ void main() {
       'addPasscodeInput emits TypingPasscode, Loading when passcode length is 4, then emits LoginError when login fails',
       build: () {
         when(accountRepository.login(any, any)).thenAnswer(
-          (_) async => const Left(RequestError('{"message": "ERROR"}', 0)),
+          (_) async => Left(RequestError('{"message": "ERROR"}', 0)),
         );
         return loginCubit
           ..addPasscodeInput('1')

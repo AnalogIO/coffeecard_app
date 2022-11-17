@@ -1,3 +1,5 @@
+import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
+
 enum TransactionType { purchase, ticketSwipe, placeholder }
 
 /// A receipt for either a used ticket, or a purchase
@@ -18,8 +20,21 @@ class Receipt {
     required this.id,
   });
 
-  @override
-  String toString() {
-    return 'Receipt{productName: $productName, transactionType: $transactionType, timeUsed: $timeUsed, price: $price, amountPurchased: $amountPurchased, id: $id}';
-  }
+  /// Creates a receipt from a used ticket DTO
+  Receipt.fromTicketDTO(TicketDto dto)
+      : productName = dto.productName,
+        transactionType = TransactionType.ticketSwipe,
+        timeUsed = dto.dateUsed,
+        price = 1,
+        amountPurchased = 1,
+        id = dto.id;
+
+  /// Creates a receipt from a purchase DTO
+  Receipt.fromPurchaseDTO(PurchaseDto dto)
+      : productName = dto.productName,
+        transactionType = TransactionType.purchase,
+        timeUsed = dto.dateCreated,
+        price = dto.price,
+        amountPurchased = dto.numberOfTickets,
+        id = dto.id;
 }
