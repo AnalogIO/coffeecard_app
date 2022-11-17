@@ -17,8 +17,9 @@ class AppConfigRepository {
     switch (environmentTypeFromJson(dto.environmentType as String)) {
       case EnvironmentType.production:
         return Environment.production;
-      case EnvironmentType.localdevelopment:
+      // both test and localdevelopment are treated as test
       case EnvironmentType.test:
+      case EnvironmentType.localdevelopment:
         return Environment.test;
       case EnvironmentType.swaggerGeneratedUnknown:
         return Environment.unknown;
@@ -28,7 +29,7 @@ class AppConfigRepository {
   Future<Either<RequestError, Environment>> getEnvironmentType() async {
     return executor.execute(
       apiV2.apiV2AppconfigGet,
-      transformer: _onSuccessfulRequest,
+      _onSuccessfulRequest,
     );
   }
 }

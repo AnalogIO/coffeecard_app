@@ -33,7 +33,7 @@ class AccountRepository {
 
     return executor.execute(
       () => apiV1.apiV1AccountRegisterPost(body: dto),
-      transformer: (_) => RequestSuccess(),
+      (_) => RequestSuccess(),
     );
   }
 
@@ -50,14 +50,14 @@ class AccountRepository {
           version: ApiUriConstants.minAppVersion,
         ),
       ),
-      transformer: (dto) => AuthenticatedUser(email: email, token: dto.token!),
+      (dto) => AuthenticatedUser(email: email, token: dto.token!),
     );
   }
 
   Future<Either<RequestError, User>> getUser() async {
     return executor.execute(
       apiV1.apiV1AccountGet,
-      transformer: User.fromDTO,
+      User.fromDTO,
     );
   }
 
@@ -73,7 +73,7 @@ class AccountRepository {
 
     return executor.execute(
       () => apiV1.apiV1AccountPut(body: userDTO),
-      transformer: User.fromDTO,
+      User.fromDTO,
     );
   }
 
@@ -82,14 +82,14 @@ class AccountRepository {
   ) async {
     return executor.execute(
       () => apiV1.apiV1AccountForgotpasswordPost(body: EmailDto(email: email)),
-      transformer: (_) => RequestSuccess(),
+      (_) => RequestSuccess(),
     );
   }
 
   Future<Either<RequestError, RequestSuccess>> requestAccountDeletion() async {
     return executor.execute(
       apiV2.apiV2AccountDelete,
-      transformer: (_) => RequestSuccess(),
+      (_) => RequestSuccess(),
     );
   }
 
@@ -98,7 +98,7 @@ class AccountRepository {
       () => apiV2.apiV2AccountEmailExistsPost(
         body: EmailExistsRequest(email: email),
       ),
-      transformer: (dto) => dto.emailExists,
+      (dto) => dto.emailExists,
     );
   }
 }

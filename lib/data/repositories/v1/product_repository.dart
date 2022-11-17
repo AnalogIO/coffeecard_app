@@ -16,7 +16,7 @@ class ProductRepository {
   Future<Either<RequestError, Iterable<Product>>> getProducts() async {
     return executor.execute(
       apiV1.apiV1ProductsGet,
-      transformer: (dto) => dto.map((e) => Product.fromDTO(e)),
+      (dto) => dto.map((e) => Product.fromDTO(e)),
     );
   }
 }
