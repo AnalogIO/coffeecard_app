@@ -1,7 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:coffeecard/cubits/contributor/contributor_cubit.dart';
 import 'package:coffeecard/data/repositories/external/contributor_repository.dart';
-import 'package:coffeecard/errors/request_error.dart';
+import 'package:coffeecard/data/repositories/utils/request_types.dart';
 import 'package:coffeecard/models/contributor.dart';
 import 'package:coffeecard/utils/either.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -50,7 +50,7 @@ void main() {
       'getContributors emits Loading, Error when the repo returns an error',
       build: () {
         when(repo.getContributors()).thenAnswer(
-          (_) async => const Left(RequestError('ERROR_MESSAGE', 0)),
+          (_) async => Left(RequestError('ERROR_MESSAGE', 0)),
         );
         return contributorCubit;
       },

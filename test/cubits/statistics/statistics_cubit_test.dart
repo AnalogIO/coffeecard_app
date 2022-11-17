@@ -1,7 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:coffeecard/cubits/statistics/statistics_cubit.dart';
+import 'package:coffeecard/data/repositories/utils/request_types.dart';
 import 'package:coffeecard/data/repositories/v2/leaderboard_repository.dart';
-import 'package:coffeecard/errors/request_error.dart';
 import 'package:coffeecard/models/leaderboard/leaderboard_user.dart';
 import 'package:coffeecard/utils/either.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -50,7 +50,7 @@ void main() {
       'fetch emits StatisticsError after failed fetch',
       build: () {
         when(leaderboardRepository.getLeaderboard(any)).thenAnswer(
-          (_) async => const Left(RequestError('ERROR_MESSAGE', 0)),
+          (_) async => Left(RequestError('ERROR_MESSAGE', 0)),
         );
         return statisticsCubit;
       },
@@ -83,7 +83,7 @@ void main() {
       'setFilter emits StatisticsLoading with correct filter and then emits StatisticsError after failed fetch',
       build: () {
         when(leaderboardRepository.getLeaderboard(any)).thenAnswer(
-          (_) async => const Left(RequestError('ERROR_MESSAGE', 0)),
+          (_) async => Left(RequestError('ERROR_MESSAGE', 0)),
         );
         return statisticsCubit;
       },

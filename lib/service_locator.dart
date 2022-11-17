@@ -4,6 +4,7 @@ import 'package:coffeecard/data/api/interceptors/authentication_interceptor.dart
 import 'package:coffeecard/data/repositories/external/contributor_repository.dart';
 import 'package:coffeecard/data/repositories/shared/account_repository.dart';
 import 'package:coffeecard/data/repositories/shiftplanning/opening_hours_repository.dart';
+import 'package:coffeecard/data/repositories/utils/executor.dart';
 import 'package:coffeecard/data/repositories/v1/coffeecard_repository.dart';
 import 'package:coffeecard/data/repositories/v1/product_repository.dart';
 import 'package:coffeecard/data/repositories/v1/programme_repository.dart';
@@ -31,6 +32,9 @@ final GetIt sl = GetIt.instance;
 void configureServices() {
   // Logger
   sl.registerSingleton(Logger());
+
+  // Executor
+  sl.registerSingleton(Executor(sl<Logger>()));
 
   // Storage
   sl.registerSingleton(SecureStorage(sl<Logger>()));
@@ -77,64 +81,90 @@ void configureServices() {
   // Repositories
   // v1
   sl.registerFactory<ReceiptRepository>(
-    () => ReceiptRepository(sl<CoffeecardApi>(), sl<Logger>()),
+    () => ReceiptRepository(
+      apiV1: sl<CoffeecardApi>(),
+      executor: sl<Executor>(),
+    ),
   );
 
   sl.registerFactory<ProgrammeRepository>(
-    () => ProgrammeRepository(sl<CoffeecardApi>(), sl<Logger>()),
-  );
-
-  sl.registerFactory<TicketRepository>(
-    () => TicketRepository(
-      sl<CoffeecardApi>(),
-      sl<CoffeecardApiV2>(),
-      sl<Logger>(),
+    () => ProgrammeRepository(
+      apiV1: sl<CoffeecardApi>(),
+      executor: sl<Executor>(),
     ),
   );
 
   sl.registerFactory<CoffeeCardRepository>(
-    () => CoffeeCardRepository(sl<CoffeecardApi>(), sl<Logger>()),
+    () => CoffeeCardRepository(
+      apiV1: sl<CoffeecardApi>(),
+      executor: sl<Executor>(),
+    ),
   );
 
   sl.registerFactory<ProductRepository>(
-    () => ProductRepository(sl<CoffeecardApi>(), sl<Logger>()),
-  );
-
-  sl.registerFactory<LeaderboardRepository>(
-    () => LeaderboardRepository(sl<CoffeecardApiV2>(), sl<Logger>()),
+    () => ProductRepository(
+      apiV1: sl<CoffeecardApi>(),
+      executor: sl<Executor>(),
+    ),
   );
 
   sl.registerFactory<VoucherRepository>(
-    () => VoucherRepository(sl<CoffeecardApi>(), sl<Logger>()),
+    () => VoucherRepository(
+      apiV1: sl<CoffeecardApi>(),
+      executor: sl<Executor>(),
+    ),
   );
 
-  // v2
-  sl.registerFactory<PurchaseRepository>(
-    () => PurchaseRepository(sl<CoffeecardApiV2>(), sl<Logger>()),
+  // v1 and v2
+  sl.registerFactory<TicketRepository>(
+    () => TicketRepository(
+      apiV1: sl<CoffeecardApi>(),
+      apiV2: sl<CoffeecardApiV2>(),
+      executor: sl<Executor>(),
+    ),
   );
-
-  sl.registerFactory<AppConfigRepository>(
-    () => AppConfigRepository(sl<CoffeecardApiV2>(), sl<Logger>()),
-  );
-
-  // shared
 
   sl.registerFactory<AccountRepository>(
     () => AccountRepository(
-      sl<CoffeecardApi>(),
-      sl<CoffeecardApiV2>(),
-      sl<Logger>(),
+      apiV1: sl<CoffeecardApi>(),
+      apiV2: sl<CoffeecardApiV2>(),
+      executor: sl<Executor>(),
+    ),
+  );
+
+  // v2
+  sl.registerFactory<LeaderboardRepository>(
+    () => LeaderboardRepository(
+      apiV2: sl<CoffeecardApiV2>(),
+      executor: sl<Executor>(),
+    ),
+  );
+
+  sl.registerFactory<PurchaseRepository>(
+    () => PurchaseRepository(
+      apiV2: sl<CoffeecardApiV2>(),
+      executor: sl<Executor>(),
+    ),
+  );
+
+  sl.registerFactory<AppConfigRepository>(
+    () => AppConfigRepository(
+      apiV2: sl<CoffeecardApiV2>(),
+      executor: sl<Executor>(),
     ),
   );
 
   // shiftplanning
   sl.registerFactory<OpeningHoursRepository>(
-    () => OpeningHoursRepository(sl<ShiftplanningApi>(), sl<Logger>()),
+    () => OpeningHoursRepository(
+      api: sl<ShiftplanningApi>(),
+      executor: sl<Executor>(),
+    ),
   );
 
   // external
   sl.registerFactory<ContributorRepository>(
-    () => ContributorRepository(),
+    ContributorRepository.new,
   );
 
   sl.registerSingleton<FirebaseAnalyticsEventLogging>(
