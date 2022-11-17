@@ -1,5 +1,5 @@
+import 'package:coffeecard/data/repositories/utils/request_types.dart';
 import 'package:coffeecard/data/repositories/v2/purchase_repository.dart';
-import 'package:coffeecard/errors/request_error.dart';
 import 'package:coffeecard/models/purchase/payment.dart';
 import 'package:coffeecard/models/purchase/payment_status.dart';
 import 'package:coffeecard/payment/mobilepay_service.dart';

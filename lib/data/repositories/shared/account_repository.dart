@@ -1,5 +1,5 @@
-import 'package:chopper/chopper.dart';
-import 'package:coffeecard/errors/request_error.dart';
+import 'package:coffeecard/data/repositories/utils/executor.dart';
+import 'package:coffeecard/data/repositories/utils/request_types.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart'
     hide MessageResponseDto;
@@ -8,17 +8,19 @@ import 'package:coffeecard/models/account/update_user.dart';
 import 'package:coffeecard/models/account/user.dart';
 import 'package:coffeecard/utils/api_uri_constants.dart';
 import 'package:coffeecard/utils/either.dart';
-import 'package:coffeecard/utils/extensions.dart';
-import 'package:logger/logger.dart';
 
 class AccountRepository {
-  final CoffeecardApi _apiV1;
-  final CoffeecardApiV2 _apiV2;
-  final Logger _logger;
+  AccountRepository({
+    required this.apiV1,
+    required this.apiV2,
+    required this.executor,
+  });
 
-  AccountRepository(this._apiV1, this._apiV2, this._logger);
+  final CoffeecardApi apiV1;
+  final CoffeecardApiV2 apiV2;
+  final Executor executor;
 
-  Future<Either<RequestError, void>> register(
+  Future<Either<RequestError, RequestSuccess>> register(
     String name,
     String email,
     String encodedPasscode,
@@ -29,18 +31,10 @@ class AccountRepository {
       password: encodedPasscode,
     );
 
-    final Response<MessageResponseDto> response;
-    try {
-      response = await _apiV1.apiV1AccountRegisterPost(body: dto);
-    } catch (e) {
-      return Left(ClientNetworkError());
-    }
-
-    if (response.isSuccessful) {
-      return const Right(null);
-    }
-    _logger.e(response.formatError());
-    return Left(RequestError(response.error.toString(), response.statusCode));
+    return executor.execute(
+      () => apiV1.apiV1AccountRegisterPost(body: dto),
+      transformer: (_) => RequestSuccess(),
+    );
   }
 
   /// Returns the user token or throws an error.
@@ -48,39 +42,23 @@ class AccountRepository {
     String email,
     String encodedPasscode,
   ) async {
-    final response = await _apiV1.apiV1AccountLoginPost(
-      body: LoginDto(
-        email: email,
-        password: encodedPasscode,
-        version: ApiUriConstants.minAppVersion,
+    return executor.execute(
+      () => apiV1.apiV1AccountLoginPost(
+        body: LoginDto(
+          email: email,
+          password: encodedPasscode,
+          version: ApiUriConstants.minAppVersion,
+        ),
       ),
+      transformer: (dto) => AuthenticatedUser(email: email, token: dto.token!),
     );
-
-    if (response.isSuccessful) {
-      return Right(
-        AuthenticatedUser(email: email, token: response.body!.token!),
-      );
-    } else {
-      _logger.e(response.formatError());
-      return Left(RequestError(response.error.toString(), response.statusCode));
-    }
   }
 
   Future<Either<RequestError, User>> getUser() async {
-    final response = await _apiV1.apiV1AccountGet();
-
-    if (response.isSuccessful) {
-      final user = User.fromDTO(response.body!);
-      return Right(user);
-    } else {
-      _logger.e(response.formatError());
-      return Left(
-        RequestError(
-          response.error.toString(),
-          response.statusCode,
-        ),
-      );
-    }
+    return executor.execute(
+      apiV1.apiV1AccountGet,
+      transformer: User.fromDTO,
+    );
   }
 
   /// Update user information
@@ -92,54 +70,35 @@ class AccountRepository {
       privacyActivated: user.privacyActivated,
       password: user.encodedPasscode,
     );
-    final response = await _apiV1.apiV1AccountPut(body: userDTO);
 
-    if (response.isSuccessful) {
-      final user = User.fromDTO(response.body!);
-      return Right(user);
-    } else {
-      _logger.e(response.formatError());
-      return Left(
-        RequestError(response.error.toString(), response.statusCode),
-      );
-    }
+    return executor.execute(
+      () => apiV1.apiV1AccountPut(body: userDTO),
+      transformer: User.fromDTO,
+    );
   }
 
-  Future<Either<RequestError, void>> requestPasscodeReset(
+  Future<Either<RequestError, RequestSuccess>> requestPasscodeReset(
     String email,
   ) async {
-    final response = await _apiV1.apiV1AccountForgotpasswordPost(
-      body: EmailDto(email: email),
+    return executor.execute(
+      () => apiV1.apiV1AccountForgotpasswordPost(body: EmailDto(email: email)),
+      transformer: (_) => RequestSuccess(),
     );
-    if (response.isSuccessful) {
-      return const Right(null);
-    } else {
-      _logger.e(response.formatError());
-      return Left(
-        RequestError(response.error.toString(), response.statusCode),
-      );
-    }
   }
 
-  Future<Either<RequestError, void>> requestAccountDeletion() async {
-    final response = await _apiV2.apiV2AccountDelete();
-    if (response.isSuccessful) {
-      return const Right(null);
-    } else {
-      _logger.e(response.formatError());
-      return Left(RequestError(response.error.toString(), response.statusCode));
-    }
+  Future<Either<RequestError, RequestSuccess>> requestAccountDeletion() async {
+    return executor.execute(
+      apiV2.apiV2AccountDelete,
+      transformer: (_) => RequestSuccess(),
+    );
   }
 
   Future<Either<RequestError, bool>> emailExists(String email) async {
-    final response = await _apiV2.apiV2AccountEmailExistsPost(
-      body: EmailExistsRequest(email: email),
+    return executor.execute(
+      () => apiV2.apiV2AccountEmailExistsPost(
+        body: EmailExistsRequest(email: email),
+      ),
+      transformer: (dto) => dto.emailExists,
     );
-    if (response.isSuccessful) {
-      return Right(response.body!.emailExists);
-    } else {
-      _logger.e(response.formatError());
-      return Left(RequestError(response.error.toString(), response.statusCode));
-    }
   }
 }

@@ -1,7 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:coffeecard/cubits/products/products_cubit.dart';
+import 'package:coffeecard/data/repositories/utils/request_types.dart';
 import 'package:coffeecard/data/repositories/v1/product_repository.dart';
-import 'package:coffeecard/errors/request_error.dart';
 import 'package:coffeecard/models/ticket/product.dart';
 import 'package:coffeecard/utils/either.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -55,7 +55,7 @@ void main() {
       'should emit loading and error when repo.getProducts fails',
       build: () {
         when(repo.getProducts())
-            .thenAnswer((_) async => const Left(RequestError('ERROR', 0)));
+            .thenAnswer((_) async => Left(RequestError('ERROR', 0)));
         return productsCubit;
       },
       act: (cubit) => cubit.getProducts(),

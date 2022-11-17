@@ -20,14 +20,14 @@ extension DropdownName on ReceiptFilterCategory {
 class ReceiptState extends Equatable {
   final ReceiptStatus status;
   final ReceiptFilterCategory filterBy;
-  final List<Receipt> receipts;
-  final List<Receipt> filteredReceipts;
+  final Iterable<Receipt> receipts;
+  final Iterable<Receipt> filteredReceipts;
   final String? error;
   ReceiptState({
     this.status = ReceiptStatus.initial,
     this.filterBy = ReceiptFilterCategory.all,
-    List<Receipt>? receipts,
-    List<Receipt>? filteredReceipts,
+    Iterable<Receipt>? receipts,
+    Iterable<Receipt>? filteredReceipts,
     this.error,
   })  : receipts = receipts ?? [],
         filteredReceipts = filteredReceipts ?? [];
@@ -38,8 +38,8 @@ class ReceiptState extends Equatable {
   ReceiptState copyWith({
     ReceiptStatus? status,
     ReceiptFilterCategory? filterBy,
-    List<Receipt>? receipts,
-    List<Receipt>? filteredReceipts,
+    Iterable<Receipt>? receipts,
+    Iterable<Receipt>? filteredReceipts,
     String? error,
   }) {
     return ReceiptState(

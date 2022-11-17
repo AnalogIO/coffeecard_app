@@ -1,4 +1,4 @@
-import 'package:coffeecard/errors/request_error.dart';
+import 'package:coffeecard/data/repositories/utils/request_types.dart';
 import 'package:coffeecard/models/contributor.dart';
 import 'package:coffeecard/utils/either.dart';
 

@@ -21,6 +21,7 @@ class ReceiptsListView extends StatelessWidget {
             case ReceiptStatus.initial:
               return _ReceiptsPlaceholder();
             case ReceiptStatus.success:
+              final filteredReceipts = state.filteredReceipts.toList();
               return RefreshIndicator(
                 displacement: 24,
                 onRefresh: context.read<ReceiptCubit>().fetchReceipts,
@@ -31,9 +32,9 @@ class ReceiptsListView extends StatelessWidget {
                       )
                     : ListView.builder(
                         controller: scrollController,
-                        itemCount: state.filteredReceipts.length,
+                        itemCount: filteredReceipts.length,
                         itemBuilder: (_, index) {
-                          final r = state.filteredReceipts[index];
+                          final r = filteredReceipts[index];
                           return ReceiptListEntry(receipt: r);
                         },
                       ),
