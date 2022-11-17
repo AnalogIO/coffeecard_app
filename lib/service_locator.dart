@@ -5,7 +5,6 @@ import 'package:coffeecard/data/repositories/external/contributor_repository.dar
 import 'package:coffeecard/data/repositories/shared/account_repository.dart';
 import 'package:coffeecard/data/repositories/shiftplanning/opening_hours_repository.dart';
 import 'package:coffeecard/data/repositories/utils/executor.dart';
-import 'package:coffeecard/data/repositories/v1/coffeecard_repository.dart';
 import 'package:coffeecard/data/repositories/v1/product_repository.dart';
 import 'package:coffeecard/data/repositories/v1/programme_repository.dart';
 import 'package:coffeecard/data/repositories/v1/receipt_repository.dart';
@@ -89,13 +88,6 @@ void configureServices() {
 
   sl.registerFactory<ProgrammeRepository>(
     () => ProgrammeRepository(
-      apiV1: sl<CoffeecardApi>(),
-      executor: sl<Executor>(),
-    ),
-  );
-
-  sl.registerFactory<CoffeeCardRepository>(
-    () => CoffeeCardRepository(
       apiV1: sl<CoffeecardApi>(),
       executor: sl<Executor>(),
     ),
