@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:coffeecard/data/repositories/shared/account_repository.dart';
 import 'package:coffeecard/data/repositories/v1/programme_repository.dart';
-import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/models/account/update_user.dart';
 import 'package:coffeecard/models/account/user.dart';
+import 'package:coffeecard/models/programme.dart';
 import 'package:coffeecard/utils/encode_passcode.dart';
 import 'package:equatable/equatable.dart';
 
@@ -57,7 +57,7 @@ class UserCubit extends Cubit<UserState> {
   }
 
   Future<void> _enrichUserWithProgrammes(User user) async {
-    final List<ProgrammeDto> programmes;
+    final List<Programme> programmes;
     if (state is UserUpdating) {
       programmes = (state as UserUpdating).programmes;
     } else if (state is UserLoaded) {
