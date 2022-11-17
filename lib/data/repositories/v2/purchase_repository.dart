@@ -26,7 +26,7 @@ class PurchaseRepository {
         ),
       ),
       // FIXME: No generated code as return type!
-      transformer: (dto) => dto,
+      (dto) => dto,
     );
   }
 
@@ -37,7 +37,7 @@ class PurchaseRepository {
     return executor.execute(
       () => apiV2.apiV2PurchasesIdGet(id: purchaseId),
       // FIXME: No generated code as return type!
-      transformer: (dto) => dto,
+      (dto) => dto,
     );
   }
 }

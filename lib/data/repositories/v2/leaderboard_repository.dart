@@ -32,7 +32,7 @@ class LeaderboardRepository {
   ) async {
     return executor.execute(
       () => apiV2.apiV2LeaderboardTopGet(preset: category.label, top: 10),
-      transformer: (dtoList) => dtoList.map(LeaderboardUser.fromDTO).toList(),
+      (dtoList) => dtoList.map(LeaderboardUser.fromDTO).toList(),
     );
   }
 
@@ -41,7 +41,7 @@ class LeaderboardRepository {
   ) async {
     return executor.execute(
       () => apiV2.apiV2LeaderboardGet(preset: category.label),
-      transformer: LeaderboardUser.fromDTO,
+      LeaderboardUser.fromDTO,
     );
   }
 }

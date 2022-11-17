@@ -18,11 +18,11 @@ class ReceiptRepository {
   Future<Either<RequestError, List<Receipt>>> getUserReceipts() async {
     final usedTicketsFutureEither = executor.execute(
       () => apiV1.apiV1TicketsGet(used: true),
-      transformer: (dto) => dto.map(Receipt.fromTicketDTO),
+      (dto) => dto.map(Receipt.fromTicketDTO),
     );
     final purchasedTicketsFutureEither = executor.execute(
       apiV1.apiV1PurchasesGet,
-      transformer: (dto) => dto.map(Receipt.fromPurchaseDTO),
+      (dto) => dto.map(Receipt.fromPurchaseDTO),
     );
 
     final usedTicketsEither = await usedTicketsFutureEither;
