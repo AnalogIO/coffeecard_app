@@ -9,11 +9,11 @@ class RequestFailure {
 }
 
 class RequestHttpFailure extends RequestFailure {
-  RequestHttpFailure(super.message, this.code);
-  final int code;
+  RequestHttpFailure(super.message, this.statusCode);
+  final int statusCode;
 
   RequestHttpFailure.fromResponse(Response response)
       : assert(!response.isSuccessful),
-        code = response.statusCode,
+        statusCode = response.statusCode,
         super(response.error.toString());
 }
