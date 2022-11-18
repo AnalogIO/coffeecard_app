@@ -14,7 +14,7 @@ class PurchaseRepository {
 
   /// Initiate a new Purchase Request. The return is a purchase request
   /// with payment details on how to pay for the purchase
-  Future<Either<RequestError, InitiatePurchaseResponse>> initiatePurchase(
+  Future<Either<RequestFailure, InitiatePurchaseResponse>> initiatePurchase(
     int productId,
     PaymentType paymentType,
   ) async {
@@ -31,7 +31,7 @@ class PurchaseRepository {
   }
 
   /// Get a purchase by its purchase id
-  Future<Either<RequestError, SinglePurchaseResponse>> getPurchase(
+  Future<Either<RequestFailure, SinglePurchaseResponse>> getPurchase(
     int purchaseId,
   ) async {
     return executor.execute(

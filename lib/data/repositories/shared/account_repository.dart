@@ -20,7 +20,7 @@ class AccountRepository {
   final CoffeecardApiV2 apiV2;
   final Executor executor;
 
-  Future<Either<RequestError, RequestSuccess>> register(
+  Future<Either<RequestFailure, RequestSuccess>> register(
     String name,
     String email,
     String encodedPasscode,
@@ -38,7 +38,7 @@ class AccountRepository {
   }
 
   /// Returns the user token or throws an error.
-  Future<Either<RequestError, AuthenticatedUser>> login(
+  Future<Either<RequestFailure, AuthenticatedUser>> login(
     String email,
     String encodedPasscode,
   ) async {
@@ -54,7 +54,7 @@ class AccountRepository {
     );
   }
 
-  Future<Either<RequestError, User>> getUser() async {
+  Future<Either<RequestFailure, User>> getUser() async {
     return executor.execute(
       apiV1.apiV1AccountGet,
       User.fromDTO,
@@ -62,7 +62,7 @@ class AccountRepository {
   }
 
   /// Update user information
-  Future<Either<RequestError, User>> updateUser(UpdateUser user) async {
+  Future<Either<RequestFailure, User>> updateUser(UpdateUser user) async {
     final userDTO = UpdateUserDto(
       name: user.name,
       programmeId: user.programmeId,
@@ -77,7 +77,7 @@ class AccountRepository {
     );
   }
 
-  Future<Either<RequestError, RequestSuccess>> requestPasscodeReset(
+  Future<Either<RequestFailure, RequestSuccess>> requestPasscodeReset(
     String email,
   ) async {
     return executor.execute(
@@ -86,14 +86,15 @@ class AccountRepository {
     );
   }
 
-  Future<Either<RequestError, RequestSuccess>> requestAccountDeletion() async {
+  Future<Either<RequestFailure, RequestSuccess>>
+      requestAccountDeletion() async {
     return executor.execute(
       apiV2.apiV2AccountDelete,
       (_) => RequestSuccess(),
     );
   }
 
-  Future<Either<RequestError, bool>> emailExists(String email) async {
+  Future<Either<RequestFailure, bool>> emailExists(String email) async {
     return executor.execute(
       () => apiV2.apiV2AccountEmailExistsPost(
         body: EmailExistsRequest(email: email),

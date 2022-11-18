@@ -39,7 +39,7 @@ void main() {
       'getConfig emits Error when the repo returns an error',
       build: () {
         when(repo.getEnvironmentType()).thenAnswer(
-          (_) async => Left(RequestError('ERROR_MESSAGE', 0)),
+          (_) async => Left(RequestHttpFailure('ERROR_MESSAGE', 0)),
         );
         return environmentCubit;
       },

@@ -18,7 +18,7 @@ class TicketRepository {
   final CoffeecardApiV2 apiV2;
   final Executor executor;
 
-  Future<Either<RequestError, List<TicketCount>>> getUserTickets() async {
+  Future<Either<RequestFailure, List<TicketCount>>> getUserTickets() async {
     return executor.execute(
       () => apiV2.apiV2TicketsGet(includeUsed: false),
       (dtoList) {
@@ -38,7 +38,7 @@ class TicketRepository {
     );
   }
 
-  Future<Either<RequestError, Receipt>> useTicket(int productId) async {
+  Future<Either<RequestFailure, Receipt>> useTicket(int productId) async {
     return executor.execute(
       () => apiV1.apiV1TicketsUsePost(body: UseTicketDTO(productId: productId)),
       (dto) {

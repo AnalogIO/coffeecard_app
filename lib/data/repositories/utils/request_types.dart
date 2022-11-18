@@ -1,20 +1,19 @@
 import 'package:chopper/chopper.dart';
-import 'package:coffeecard/base/strings.dart';
 
 /// Empty success class.
 class RequestSuccess {}
 
-class RequestError {
-  RequestError(this.message, this.code);
+class RequestFailure {
+  RequestFailure(this.message);
   final String message;
+}
+
+class RequestHttpFailure extends RequestFailure {
+  RequestHttpFailure(super.message, this.code);
   final int code;
 
-  RequestError.fromResponse(Response response)
+  RequestHttpFailure.fromResponse(Response response)
       : assert(!response.isSuccessful),
-        message = response.error.toString(),
-        code = response.statusCode;
-
-  RequestError.clientNetworkError()
-      : message = Strings.noInternet,
-        code = 0;
+        code = response.statusCode,
+        super(response.error.toString());
 }

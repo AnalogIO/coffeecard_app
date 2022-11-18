@@ -1,6 +1,10 @@
-import 'package:chopper/chopper.dart';
+import 'dart:io';
+
+import 'package:chopper/chopper.dart' show Response;
+import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/data/repositories/utils/request_types.dart';
 import 'package:coffeecard/utils/either.dart';
+import 'package:http/http.dart' show ClientException;
 import 'package:logger/logger.dart';
 
 /// Helper class that executes network requests and handles errors
@@ -10,9 +14,9 @@ class Executor {
 
   /// Executes a network request and handles errors, including IO errors.
   ///
-  /// Returns an [Either] with a [RequestError]
+  /// Returns an [Either] with a [RequestFailure]
   /// or the transformed success type [RightType].
-  Future<Either<RequestError, RightType>> execute<Dto, RightType>(
+  Future<Either<RequestFailure, RightType>> execute<Dto, RightType>(
     Future<Response<Dto>> Function() request,
     RightType Function(Dto dto) transformer,
   ) async {
@@ -21,12 +25,15 @@ class Executor {
       if (response.isSuccessful) {
         return Right(transformer(response.body as Dto));
       } else {
-        logger.e('API Error: (${response.statusCode}) ${response.error}');
-        return Left(RequestError.fromResponse(response));
+        logger.e('API failure: (${response.statusCode}) ${response.error}');
+        return Left(RequestHttpFailure.fromResponse(response));
       }
-    } on Exception catch (e) {
-      logger.e('HTTP Client Error: $e');
-      return Left(RequestError.clientNetworkError());
+    } on SocketException catch (e) {
+      logger.e('HTTP client failure: ${e.message}');
+      return Left(RequestFailure(Strings.noInternet));
+    } on ClientException catch (e) {
+      logger.e('HTTP client failure: ${e.message}');
+      return Left(RequestFailure(Strings.noInternet));
     }
   }
 }

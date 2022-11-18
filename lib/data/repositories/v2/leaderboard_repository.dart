@@ -27,7 +27,7 @@ class LeaderboardRepository {
   final CoffeecardApiV2 apiV2;
   final Executor executor;
 
-  Future<Either<RequestError, List<LeaderboardUser>>> getLeaderboard(
+  Future<Either<RequestFailure, List<LeaderboardUser>>> getLeaderboard(
     LeaderboardFilter category,
   ) async {
     return executor.execute(
@@ -36,7 +36,7 @@ class LeaderboardRepository {
     );
   }
 
-  Future<Either<RequestError, LeaderboardUser>> getLeaderboardUser(
+  Future<Either<RequestFailure, LeaderboardUser>> getLeaderboardUser(
     LeaderboardFilter category,
   ) async {
     return executor.execute(

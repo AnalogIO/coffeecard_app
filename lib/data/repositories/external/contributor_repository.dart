@@ -3,7 +3,7 @@ import 'package:coffeecard/models/contributor.dart';
 import 'package:coffeecard/utils/either.dart';
 
 class ContributorRepository {
-  Future<Either<RequestError, List<Contributor>>> getContributors() async {
+  Future<Either<RequestFailure, List<Contributor>>> getContributors() async {
     // TODO: fetch data from API when available
     return Future.value(
       const Right([
