@@ -13,7 +13,7 @@ class VoucherRepository {
   final CoffeecardApi apiV1;
   final Executor executor;
 
-  Future<Either<RequestError, RedeemedVoucher>> redeemVoucher(
+  Future<Either<RequestFailure, RedeemedVoucher>> redeemVoucher(
     String voucher,
   ) async {
     return executor.execute(

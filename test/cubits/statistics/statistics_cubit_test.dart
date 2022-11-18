@@ -50,7 +50,7 @@ void main() {
       'fetch emits StatisticsError after failed fetch',
       build: () {
         when(leaderboardRepository.getLeaderboard(any)).thenAnswer(
-          (_) async => Left(RequestError('ERROR_MESSAGE', 0)),
+          (_) async => Left(RequestHttpFailure('ERROR_MESSAGE', 0)),
         );
         return statisticsCubit;
       },
@@ -83,7 +83,7 @@ void main() {
       'setFilter emits StatisticsLoading with correct filter and then emits StatisticsError after failed fetch',
       build: () {
         when(leaderboardRepository.getLeaderboard(any)).thenAnswer(
-          (_) async => Left(RequestError('ERROR_MESSAGE', 0)),
+          (_) async => Left(RequestHttpFailure('ERROR_MESSAGE', 0)),
         );
         return statisticsCubit;
       },

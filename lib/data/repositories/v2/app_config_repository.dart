@@ -26,7 +26,7 @@ class AppConfigRepository {
     }
   }
 
-  Future<Either<RequestError, Environment>> getEnvironmentType() async {
+  Future<Either<RequestFailure, Environment>> getEnvironmentType() async {
     return executor.execute(
       apiV2.apiV2AppconfigGet,
       _onSuccessfulRequest,

@@ -55,7 +55,7 @@ void main() {
       'should emit loading and error when repo.getProducts fails',
       build: () {
         when(repo.getProducts())
-            .thenAnswer((_) async => Left(RequestError('ERROR', 0)));
+            .thenAnswer((_) async => Left(RequestHttpFailure('ERROR', 0)));
         return productsCubit;
       },
       act: (cubit) => cubit.getProducts(),
