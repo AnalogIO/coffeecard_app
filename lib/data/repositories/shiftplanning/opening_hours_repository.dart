@@ -15,14 +15,14 @@ class OpeningHoursRepository {
   final ShiftplanningApi api;
   final Executor executor;
 
-  Future<Either<RequestError, bool>> isOpen() async {
+  Future<Either<RequestFailure, bool>> isOpen() async {
     return executor.execute(
       () => api.apiOpenShortKeyGet(shortKey: 'analog'),
       (dto) => dto.open,
     );
   }
 
-  Future<Either<RequestError, Map<int, String>>> getOpeningHours() async {
+  Future<Either<RequestFailure, Map<int, String>>> getOpeningHours() async {
     return executor.execute(
       () => api.apiShiftsShortKeyGet(shortKey: 'analog'),
       _transformOpeningHours,

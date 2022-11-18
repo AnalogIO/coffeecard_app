@@ -13,7 +13,7 @@ class ProductRepository {
   final CoffeecardApi apiV1;
   final Executor executor;
 
-  Future<Either<RequestError, Iterable<Product>>> getProducts() async {
+  Future<Either<RequestFailure, Iterable<Product>>> getProducts() async {
     return executor.execute(
       apiV1.apiV1ProductsGet,
       (dto) => dto.map((e) => Product.fromDTO(e)),

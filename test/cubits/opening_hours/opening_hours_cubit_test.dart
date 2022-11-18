@@ -48,7 +48,7 @@ void main() {
       'should emit loading and error when fetching repo.isOpen fails',
       build: () {
         when(repo.isOpen())
-            .thenAnswer((_) async => Left(RequestError('ERROR', 0)));
+            .thenAnswer((_) async => Left(RequestHttpFailure('ERROR', 0)));
         when(repo.getOpeningHours())
             .thenAnswer((_) async => const Right(dummyOpeningHours));
         return openinghoursCubit;
@@ -65,7 +65,7 @@ void main() {
       build: () {
         when(repo.isOpen()).thenAnswer((_) async => const Right(true));
         when(repo.getOpeningHours())
-            .thenAnswer((_) async => Left(RequestError('ERROR', 0)));
+            .thenAnswer((_) async => Left(RequestFailure('ERROR')));
         return openinghoursCubit;
       },
       act: (cubit) => cubit.getOpeninghours(),

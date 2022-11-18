@@ -15,7 +15,7 @@ class ReceiptRepository {
 
   /// Retrieves all of the users receipts
   /// This includes both their used tickets and purchased tickets
-  Future<Either<RequestError, List<Receipt>>> getUserReceipts() async {
+  Future<Either<RequestFailure, List<Receipt>>> getUserReceipts() async {
     final usedTicketsFutureEither = executor.execute(
       () => apiV1.apiV1TicketsGet(used: true),
       (dto) => dto.map(Receipt.fromTicketDTO),

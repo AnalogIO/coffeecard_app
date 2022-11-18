@@ -19,15 +19,15 @@ class MobilePayService implements PaymentHandler {
   MobilePayService(this._repository, this._context);
 
   @override
-  Future<Either<RequestError, Payment>> initPurchase(int productId) async {
-    final Either<RequestError, InitiatePurchaseResponse> response;
+  Future<Either<RequestFailure, Payment>> initPurchase(int productId) async {
+    final Either<RequestFailure, InitiatePurchaseResponse> response;
     try {
       response = await _repository.initiatePurchase(
         productId,
         PaymentType.mobilepay,
       );
     } catch (e) {
-      return Left(RequestError(e.toString(), 500));
+      return Left(RequestFailure(e.toString()));
     }
 
     if (response is Right) {
@@ -73,7 +73,7 @@ class MobilePayService implements PaymentHandler {
   }
 
   @override
-  Future<Either<RequestError, PaymentStatus>> verifyPurchase(
+  Future<Either<RequestFailure, PaymentStatus>> verifyPurchase(
     int purchaseId,
   ) async {
     // Call API endpoint, receive PaymentStatus

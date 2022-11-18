@@ -22,7 +22,7 @@ abstract class PaymentHandler {
     }
   }
 
-  Future<Either<RequestError, Payment>> initPurchase(int productId);
+  Future<Either<RequestFailure, Payment>> initPurchase(int productId);
 
-  Future<Either<RequestError, PaymentStatus>> verifyPurchase(int purchaseId);
+  Future<Either<RequestFailure, PaymentStatus>> verifyPurchase(int purchaseId);
 }
