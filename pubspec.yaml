@@ -125,7 +125,7 @@ flutter:
   fonts:
     - family: RobotoFlex
       fonts:
-        - asset: assets/fonts/Roboto_flex/RobotoFlex[GRAD,XOPQ,XTRA,YOPQ,YTAS,YTDE,YTFI,YTLC,YTUC,opsz,slnt,wdth,wght].ttf
+        - asset: assets/fonts/Roboto_flex/RobotoFlex.ttf
     - family: RobotoMono
       fonts:
         - asset: assets/fonts/roboto_mono/RobotoMono-Regular.ttf
