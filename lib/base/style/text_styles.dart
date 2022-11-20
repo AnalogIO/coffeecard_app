@@ -1,231 +1,112 @@
 import 'package:coffeecard/base/style/colors.dart';
-import 'package:coffeecard/base/style/fonts.dart';
+import 'package:coffeecard/base/style/text_style_builder.dart';
 import 'package:flutter/material.dart';
 
 abstract class AppTextStyle {
+  static final _heading = TextStyleBuilder.heading;
+  static final _body = TextStyleBuilder.body;
+  static final _mono = TextStyleBuilder.mono;
+
   // Heading text
-  static final TextStyle pageTitle = TextStyle(
-    color: AppColor.white,
-    fontSize: 24,
-    fontWeight: FontWeight.bold,
-    fontFamily: AppFont.heading,
-  );
-  static final TextStyle ownedTicket = TextStyle(
-    color: AppColor.primary,
-    fontSize: 24,
-    fontWeight: FontWeight.bold,
-    fontFamily: AppFont.heading,
-  );
-  static final TextStyle loginTitle = TextStyle(
-    color: AppColor.white,
-    fontSize: 18,
-    fontWeight: FontWeight.bold,
-    fontFamily: AppFont.heading,
-  );
-  static final TextStyle comingSoonShopCardTitle = loginTitle.copyWith(
-    color: AppColor.gray,
-  );
-  static final TextStyle sectionTitle = TextStyle(
-    color: AppColor.primary,
-    fontSize: 18,
-    fontWeight: FontWeight.bold,
-    fontFamily: AppFont.heading,
-  );
-  static final TextStyle environmentNotifier = TextStyle(
-    color: AppColor.primary,
-    fontSize: 12,
-    fontWeight: FontWeight.bold,
-    fontFamily: AppFont.heading,
-  );
+  static final pageTitle = _heading.size(24).color(AppColor.white).style;
+
+  static final ownedTicket = _heading.size(24).color(AppColor.primary).style;
+
+  static final loginTitle = _heading.size(18).color(AppColor.white).style;
+
+  static final comingSoonShopCardTitle =
+      loginTitle.copyWith(color: AppColor.gray);
+
+  static final sectionTitle = loginTitle.copyWith(color: AppColor.primary);
+
+  static final environmentNotifier =
+      _heading.size(12).color(AppColor.primary).style;
 
   // Body text
-  static const TextStyle medium = TextStyle(
-    fontWeight: FontWeight.w500,
-  );
-  static final TextStyle price = TextStyle(
-    color: AppColor.primary,
-    fontSize: 18,
-    fontWeight: FontWeight.bold,
-    fontFamily: AppFont.body,
-  );
-  static final TextStyle textField = TextStyle(
-    color: AppColor.primary,
-    fontSize: 16,
-    fontFamily: AppFont.body,
-  );
-  static final TextStyle textFieldBold = TextStyle(
-    color: AppColor.primary,
-    fontSize: 16,
-    fontWeight: FontWeight.bold,
-    fontFamily: AppFont.body,
-  );
-  static final TextStyle openingHoursIndicator = TextStyle(
-    color: AppColor.primary,
-    fontSize: 14,
-    fontWeight: FontWeight.w500,
-    fontFamily: AppFont.body,
-  );
-  static final TextStyle settingKey = TextStyle(
-    color: AppColor.primary,
-    fontSize: 14,
-    fontFamily: AppFont.body,
-  );
-  static final TextStyle settingKeyDestructive = TextStyle(
-    color: AppColor.errorOnBright,
-    fontSize: 14,
-    fontFamily: AppFont.body,
-  );
-  static final TextStyle settingValue = TextStyle(
-    color: AppColor.secondary,
-    fontSize: 14,
-    fontFamily: AppFont.body,
-  );
-  static final TextStyle recieptItemKey = TextStyle(
-    color: AppColor.primary,
-    fontSize: 14,
-    fontWeight: FontWeight.bold,
-    fontFamily: AppFont.body,
-  );
-  static final TextStyle recieptItemValue = TextStyle(
-    color: AppColor.primary,
-    fontSize: 14,
-    fontFamily: AppFont.body,
-  );
-  static final TextStyle loginExplainer = TextStyle(
-    color: AppColor.white,
-    fontSize: 14,
-    fontFamily: AppFont.body,
-  );
-  static final TextStyle loginError = TextStyle(
-    color: AppColor.errorOnDark,
-    fontSize: 14,
-    fontFamily: AppFont.body,
-  );
-  static final TextStyle buttonText = TextStyle(
-    color: AppColor.white,
-    fontSize: 14,
-    fontWeight: FontWeight.bold,
-    fontFamily: AppFont.body,
-  );
-  static final TextStyle buttonTextDark = TextStyle(
-    color: AppColor.primary,
-    fontSize: 14,
-    fontWeight: FontWeight.bold,
-    fontFamily: AppFont.body,
-  );
-  static final TextStyle buttonTextDisabled = TextStyle(
-    color: AppColor.gray,
-    fontSize: 14,
-    fontWeight: FontWeight.bold,
-    fontFamily: AppFont.body,
-  );
-  static final TextStyle explainer = TextStyle(
-    color: AppColor.secondary,
-    fontSize: 12,
-    fontWeight: FontWeight.w500,
-    fontFamily: AppFont.body,
-  );
-  static final TextStyle explainerBright = TextStyle(
-    color: AppColor.white,
-    fontSize: 12,
-    fontWeight: FontWeight.w500,
-    fontFamily: AppFont.body,
-    decoration: TextDecoration.none,
-  );
-  static final TextStyle explainerBold = TextStyle(
-    color: AppColor.secondary,
-    fontSize: 12,
-    fontWeight: FontWeight.bold,
-    fontFamily: AppFont.body,
-  );
-  static final TextStyle loginLink = TextStyle(
-    color: AppColor.white,
-    fontSize: 12,
-    decoration: TextDecoration.underline,
-    fontFamily: AppFont.body,
-  );
-  static final TextStyle explainerDark = TextStyle(
-    color: AppColor.primary,
-    fontSize: 12,
-    fontWeight: FontWeight.w500,
-    fontFamily: AppFont.body,
-  );
-  static final TextStyle overLine = TextStyle(
-    color: AppColor.primary,
-    fontSize: 12,
-    fontFamily: AppFont.body,
-  );
-  static final TextStyle newLabel = TextStyle(
-    fontSize: 12,
-    letterSpacing: 1,
-    color: AppColor.ticket,
-    fontWeight: FontWeight.w500,
-    fontFamily: AppFont.body,
-  );
-  static final TextStyle comingSoonLabel = newLabel.copyWith(
-    color: AppColor.gray,
-  );
-  static final TextStyle label = TextStyle(
-    color: AppColor.secondary,
-    fontSize: 11,
-    fontFamily: AppFont.body,
-  );
-  static final TextStyle labelUnfocused = TextStyle(
-    color: AppColor.gray,
-    fontSize: 11,
-    fontFamily: AppFont.body,
-  );
-  static final TextStyle explainerSmall = TextStyle(
-    color: AppColor.primary,
-    fontSize: 11,
-    fontFamily: AppFont.body,
-  );
+  static final bottomNavBarLabel = _body.inheritSize().medium().style;
+
+  static final price = _body.size(18).color(AppColor.primary).bold().style;
+
+  static final _textFieldBase = _body.size(16).color(AppColor.primary);
+
+  static final textField = _textFieldBase.style;
+
+  static final textFieldBold = _textFieldBase.bold().style;
+
+  static final openingHoursIndicator =
+      _body.size(14).color(AppColor.primary).medium().style;
+
+  static final settingKey = _body.size(14).color(AppColor.primary).style;
+
+  static final settingKeyDestructive =
+      settingKey.copyWith(color: AppColor.errorOnBright);
+
+  static final settingValue = settingKey.copyWith(color: AppColor.secondary);
+
+  static final recieptItemKey =
+      _body.size(14).color(AppColor.primary).bold().style;
+
+  static final recieptItemValue = settingKey;
+
+  static final loginExplainer = settingKey.copyWith(color: AppColor.white);
+
+  static final loginError = settingKey.copyWith(color: AppColor.errorOnDark);
+
+  static final _buttonBase = _body.size(14).bold();
+
+  static final buttonText = _buttonBase.color(AppColor.white).style;
+
+  static final buttonTextDark = _buttonBase.color(AppColor.primary).style;
+
+  static final buttonTextDisabled = _buttonBase.color(AppColor.gray).style;
+
+  static final explainer = _body.size(12).color(AppColor.secondary).style;
+
+  static final explainerBright = _body
+      .size(12)
+      .color(AppColor.white)
+      .decoration(TextDecoration.none)
+      .style;
+
+  static final explainerDark = _body.size(12).color(AppColor.primary).style;
+
+  static final explainerBold =
+      _body.size(12).color(AppColor.secondary).bold().style;
+
+  static final loginLink =
+      _body.size(12).color(AppColor.white).underline().style;
+
+  static final overLine = _body.size(12).color(AppColor.primary).style;
+
+  static final newLabel = _body.size(12).color(AppColor.ticket).bold().style;
+
+  static final comingSoonLabel = newLabel.copyWith(color: AppColor.gray);
+
+  static final label = _body.size(11).color(AppColor.secondary).style;
+
+  static final labelUnfocused = _body.size(11).color(AppColor.gray).style;
+
+  static final explainerSmall = _body.size(11).color(AppColor.primary).style;
 
   // Mono text
-  static const TextStyle numpadDigit = TextStyle(
-    color: AppColor.primary,
-    fontSize: 33,
-    fontWeight: FontWeight.bold,
-    fontFamily: AppFont.mono,
-  );
-  static const TextStyle ticketsCount = TextStyle(
-    color: AppColor.primary,
-    fontSize: 24,
-    fontWeight: FontWeight.bold,
-    fontFamily: AppFont.mono,
-  );
-  static const TextStyle mixMatchTicketCount = TextStyle(
-    color: AppColor.primary,
-    fontSize: 18,
-    fontWeight: FontWeight.bold,
-    fontFamily: AppFont.mono,
-  );
-  static const TextStyle mixMatchTicketCountBright = TextStyle(
-    color: AppColor.white,
-    fontSize: 18,
-    fontWeight: FontWeight.bold,
-    fontFamily: AppFont.mono,
-  );
-  static const TextStyle numpadText = TextStyle(
-    color: AppColor.primary,
-    fontSize: 16,
-    fontWeight: FontWeight.bold,
-    fontFamily: AppFont.mono,
-  );
-  static const TextStyle leaderboardScore = TextStyle(
-    color: AppColor.primary,
-    fontSize: 14,
-    fontFamily: AppFont.mono,
-  );
-  static const TextStyle recieptItemDate = TextStyle(
-    color: AppColor.secondary,
-    fontSize: 12,
-    fontFamily: AppFont.mono,
-  );
-  static const TextStyle rankingNumber = TextStyle(
-    color: AppColor.primary,
-    fontSize: 12,
-    fontWeight: FontWeight.bold,
-    fontFamily: AppFont.mono,
-  );
+  static final numpadDigit =
+      _mono.size(33).color(AppColor.primary).bold().style;
+
+  static final ticketsCount =
+      _mono.size(24).color(AppColor.primary).bold().style;
+
+  static final mixMatchTicketCount =
+      _mono.size(18).color(AppColor.primary).bold().style;
+
+  static final mixMatchTicketCountBright =
+      _mono.size(18).color(AppColor.white).bold().style;
+
+  static final numpadText = _mono.size(16).color(AppColor.primary).bold().style;
+
+  static final leaderboardScore = _mono.size(14).color(AppColor.primary).style;
+
+  static final recieptItemDate = _mono.size(12).color(AppColor.secondary).style;
+
+  static final rankingNumber =
+      _mono.size(12).color(AppColor.primary).bold().style;
 }

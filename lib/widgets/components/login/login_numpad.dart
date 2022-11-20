@@ -87,7 +87,7 @@ class _NumpadState extends State<Numpad> with SingleTickerProviderStateMixin {
                         verticalAlignment: TableCellVerticalAlignment.fill,
                         child: _NumpadButton(
                           onPressed: widget.forgotPasscodeAction,
-                          child: const Text(
+                          child: Text(
                             'Forgot?',
                             style: AppTextStyle.numpadText,
                           ),
