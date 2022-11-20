@@ -9,7 +9,7 @@ import 'package:get_it/get_it.dart';
 
 class ReactivationAuthenticator extends Authenticator {
   final GetIt serviceLocator;
-  static const Duration debounce = Duration(seconds: 10);
+  static const Duration debounce = Duration(seconds: 2);
 
   DateTime? tokenRefreshedAt;
   Mutex mutex = Mutex();
@@ -24,7 +24,7 @@ class ReactivationAuthenticator extends Authenticator {
 
   bool _canRefreshToken() =>
       tokenRefreshedAt == null ||
-      tokenRefreshedAt!.difference(DateTime.now()) < debounce;
+      DateTime.now().difference(tokenRefreshedAt!) > debounce;
 
   Future<void> _evict() async => authenticationCubit.unauthenticated();
 
@@ -46,26 +46,30 @@ class ReactivationAuthenticator extends Authenticator {
     Response response, [
     Request? originalRequest,
   ]) async {
-    if (response.statusCode == 401) {
-      if (mutex.isLocked()) {
-        // someone is updating the token, wait until they are done and read it
-        await mutex.wait();
-        final refreshedToken = await secureStorage.readToken();
-        return refreshedToken != null
-            ? request.copyWith(
-                headers:
-                    _updateHeadersWithToken(request.headers, refreshedToken),
-              )
-            : null;
-      }
+    if (response.statusCode != 401) {
+      return null;
+    }
 
-      // avoid refreshing the token multiple times if requests happen at the same time
-      if (!_canRefreshToken()) {
+    if (mutex.isLocked()) {
+      // someone is updating the token, wait until they are done and read it
+      await mutex.wait();
+
+      final refreshedToken = await secureStorage.readToken();
+
+      if (refreshedToken == null) {
         return null;
       }
 
+      return request.copyWith(
+        headers: _updateHeadersWithToken(request.headers, refreshedToken),
+      );
+    }
+
+    // avoid refreshing the token multiple times if requests happen at the same time
+    if (_canRefreshToken()) {
       return await refreshToken(request, response);
     }
+
     return null;
   }
 

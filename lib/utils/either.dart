@@ -6,6 +6,14 @@ abstract class Either<L, R> {
 
   L get left => (this as Left<L, R>)._l;
   R get right => (this as Right<L, R>)._r;
+
+  T caseOf<T>(T Function(L) left, T Function(R) right) {
+    if (this is Left<L, R>) {
+      return left((this as Left<L, R>)._l);
+    } else {
+      return right((this as Right<L, R>)._r);
+    }
+  }
 }
 
 class Left<L, R> extends Either<L, R> {

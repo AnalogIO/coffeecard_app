@@ -262,7 +262,8 @@ abstract class Strings {
   static String deleteAccountEmailConfirmation(String email) =>
       'We have sent a verification link to $email.\n\nPlease confirm your request to delete your account using the provided link.';
 
-  static const faq = 'Frequently Asked Questions';
+  static const frequentlyAskedQuestions = 'Frequently Asked Questions';
+  static const faq = 'FAQ';
   static const openingHours = 'Opening hours';
   static const today = 'Today';
 
@@ -275,6 +276,24 @@ abstract class Strings {
 
   static const madeBy = 'Made with ❤ by AnalogIO\nIT University of Copenhagen';
   static const userID = 'User ID';
+
+  // FAQ
+  static const faqEntries = {
+    'What is the purpose of this app?':
+        "This app replaces Cafe Analog's physical coffee card. The idea is that you swipe a ticket when you pour yourself coffee, or show your phone to the barista when swiping a ticket for another beverage.",
+    'What is Coffee drinker of the semester?':
+        'At the end of each semester, the leaderboards are checked. The person with the most swipes during the semester is crowned Coffee drinker of the semester! They will be rewarded with a special cup that is entitled to free filter coffee refills for the entirety of the next semester. Check how you stack up against the competition under the Statistics tab.',
+    "Where'd my tickets go?":
+        'Logged in to find no tickets associated with your account? Try checking if you have had any recent activity in the Receipts page. If not, you may be logged into the wrong account.',
+    'Where can I find my ID?':
+        'You can find your ID at the bottom of the settings page.',
+    'Can I buy tickets with cash or card?':
+        'You can buy physical coffee cards in the cafe. We are planning to add Google Pay and Apple Pay integration in the app.',
+    "Something doesn't seem to work.":
+        "If you find something that doesn't seem right, please report it by filling out of the feedback form found under 'Settings > Report a bug or send feedback'.",
+    'I have an idea for the app!':
+        "We will happily take suggestions! Fill out the feedback form under 'Settings > Report a bug or send feedback' or send an email to feedback@analogio.dk."
+  };
 
   // Credits
   static const appTeam = 'App team';

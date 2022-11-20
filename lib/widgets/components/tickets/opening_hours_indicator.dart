@@ -28,7 +28,7 @@ class OpeningHoursIndicator extends StatelessWidget {
               children: [
                 Icon(AnalogIcons.closed, size: 18, color: color),
                 const Gap(8),
-                Container(
+                ColoredBox(
                   color: colorIfShimmer,
                   child: Text(
                     '${Strings.openingHoursIndicatorPrefix} $openOrClosed',

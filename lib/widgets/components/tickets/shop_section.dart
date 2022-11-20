@@ -7,7 +7,7 @@ import 'package:coffeecard/widgets/pages/tickets/redeem_voucher_page.dart';
 import 'package:flutter/material.dart';
 
 class ShopSection extends StatelessWidget {
-  const ShopSection({Key? key}) : super(key: key);
+  const ShopSection();
 
   @override
   Widget build(BuildContext context) {

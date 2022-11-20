@@ -50,7 +50,7 @@ class _NumpadState extends State<Numpad> with SingleTickerProviderStateMixin {
       position: _animation,
       child: BlocBuilder<LoginCubit, LoginState>(
         builder: (context, state) {
-          return Container(
+          return ColoredBox(
             color: AppColor.white,
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),

@@ -60,7 +60,7 @@ class CreditsPage extends StatelessWidget {
             SettingsGroup(
               title: Strings.aboutAnalogIO,
               listItems: [
-                Container(
+                DecoratedBox(
                   decoration: const BoxDecoration(
                     color: AppColor.white,
                     border:
@@ -68,18 +68,16 @@ class CreditsPage extends StatelessWidget {
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(24),
-                    child: Row(
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const AnalogIOLogo(),
+                        Text(
+                          Strings.analogIOBody,
+                          overflow: TextOverflow.visible,
+                          style: AppTextStyle.settingKey,
+                        ),
                         const Gap(24),
-                        Flexible(
-                          child: Text(
-                            Strings.analogIOBody,
-                            overflow: TextOverflow.visible,
-                            style: AppTextStyle.settingKey,
-                          ),
-                        )
+                        const AnalogIOLogo.large(),
                       ],
                     ),
                   ),

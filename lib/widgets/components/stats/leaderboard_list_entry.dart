@@ -3,25 +3,29 @@ import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/widgets/components/helpers/shimmer_builder.dart';
 import 'package:coffeecard/widgets/components/list_entry.dart';
+import 'package:coffeecard/widgets/components/user/user_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-class LeaderboardEntry extends StatelessWidget {
+class LeaderboardListEntry extends StatelessWidget {
+  final int id;
   final String name;
   final int score;
   final int rank;
   final bool highlight;
   final bool isPlaceholder;
 
-  const LeaderboardEntry({
+  const LeaderboardListEntry({
+    required this.id,
     required this.name,
     required this.score,
     required this.rank,
     required this.highlight,
   }) : isPlaceholder = false;
 
-  const LeaderboardEntry.placeholder()
-      : name = 'placeholder',
+  const LeaderboardListEntry.placeholder()
+      : id = 0,
+        name = 'placeholder',
         score = 0,
         rank = 10,
         highlight = false,
@@ -40,18 +44,15 @@ class LeaderboardEntry extends StatelessWidget {
         builder: (context, colorIfShimmer) {
           return Row(
             children: [
-              Container(
+              ColoredBox(
                 color: colorIfShimmer,
                 child: _LeaderboardRankMedal(rank),
               ),
               const Gap(16),
-              Container(
-                color: colorIfShimmer,
-                child: const CircleAvatar(),
-              ),
+              UserIcon.small(id: id),
               const Gap(10),
               Flexible(
-                child: Container(
+                child: ColoredBox(
                   color: colorIfShimmer,
                   child: Text(
                     name,
@@ -68,7 +69,7 @@ class LeaderboardEntry extends StatelessWidget {
       rightWidget: ShimmerBuilder(
         showShimmer: isPlaceholder,
         builder: (context, colorIfShimmer) {
-          return Container(
+          return ColoredBox(
             color: colorIfShimmer,
             child: Text(_scoreText),
           );
@@ -81,6 +82,8 @@ class LeaderboardEntry extends StatelessWidget {
 class _LeaderboardRankMedal extends StatelessWidget {
   const _LeaderboardRankMedal(this.rank);
   final int rank;
+
+  String get rankString => rank == 0 ? '-' : '$rank';
 
   Color get _fillColor {
     if (rank == 1) return AppColor.goldMedal;
@@ -113,7 +116,7 @@ class _LeaderboardRankMedal extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(bottom: 1.5),
           child: Text(
-            '$rank',
+            rankString,
             style: AppTextStyle.rankingNumber,
             textAlign: TextAlign.center,
           ),

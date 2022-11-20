@@ -17,7 +17,7 @@ class AppConfigRepository {
     try {
       response = await _api.apiV2AppconfigGet();
     } catch (e) {
-      return Left(ApiError("Couldn't connect to the server"));
+      return const Left(ApiError("Couldn't connect to the server"));
     }
 
     if (response.isSuccessful) {

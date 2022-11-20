@@ -24,12 +24,12 @@ class StatsPage extends StatelessWidget {
     Future<void> refresh({required bool loadUserData}) async {
       await Future.wait([
         if (loadUserData) context.read<UserCubit>().refreshUserDetails(),
-        context.read<StatisticsCubit>().refreshLeaderboards(),
+        context.read<LeaderboardCubit>().fetch(),
       ]);
     }
 
     final userState = context.watch<UserCubit>().state;
-    final statsState = context.watch<StatisticsCubit>().state;
+    final statsState = context.watch<LeaderboardCubit>().state;
     final loading = userState is! UserLoaded || statsState is! StatisticsLoaded;
 
     if (userState is UserError) {
@@ -44,7 +44,7 @@ class StatsPage extends StatelessWidget {
       return ErrorSection(
         center: true,
         error: statsState.errorMessage,
-        retry: () => context.read<StatisticsCubit>().fetchLeaderboards(),
+        retry: () => context.read<LeaderboardCubit>().fetch(),
       );
     }
 

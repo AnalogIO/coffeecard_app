@@ -8,13 +8,15 @@ import 'package:coffeecard/utils/api_uri_constants.dart';
 import 'package:coffeecard/utils/launch.dart';
 import 'package:coffeecard/widgets/components/dialog.dart';
 import 'package:coffeecard/widgets/components/helpers/shimmer_builder.dart';
+import 'package:coffeecard/widgets/components/images/analogio_logo.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:coffeecard/widgets/components/settings_group.dart';
 import 'package:coffeecard/widgets/components/settings_list_entry.dart';
-import 'package:coffeecard/widgets/components/user_card.dart';
+import 'package:coffeecard/widgets/components/user/user_card.dart';
 import 'package:coffeecard/widgets/pages/settings/change_email_page.dart';
 import 'package:coffeecard/widgets/pages/settings/change_passcode_flow.dart';
 import 'package:coffeecard/widgets/pages/settings/credits_page.dart';
+import 'package:coffeecard/widgets/pages/settings/faq_page.dart';
 import 'package:coffeecard/widgets/pages/settings/opening_hours_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -61,6 +63,7 @@ class SettingsPage extends StatelessWidget {
             padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
             child: (userState is UserLoaded)
                 ? UserCard(
+                    id: userState.user.id,
                     name: userState.user.name,
                     occupation: userState.user.programme.fullName,
                   )
@@ -74,7 +77,7 @@ class SettingsPage extends StatelessWidget {
                 valueWidget: ShimmerBuilder(
                   showShimmer: userState is! UserLoaded,
                   builder: (context, colorIfShimmer) {
-                    return Container(
+                    return ColoredBox(
                       color: colorIfShimmer,
                       child: Text(
                         (userState is UserLoaded)
@@ -124,7 +127,10 @@ class SettingsPage extends StatelessWidget {
           SettingsGroup(
             title: Strings.settingsGroupAbout,
             listItems: [
-              const SettingListEntry(name: Strings.faq),
+              SettingListEntry(
+                name: Strings.frequentlyAskedQuestions,
+                onTap: () => Navigator.push(context, FAQPage.route),
+              ),
               SettingListEntry(
                 name: Strings.openingHours,
                 onTap: _ifOpeningHoursLoaded(
@@ -150,7 +156,7 @@ class SettingsPage extends StatelessWidget {
                       text = '';
                     }
 
-                    return Container(
+                    return ColoredBox(
                       color: colorIfShimmer,
                       child: Text(text, style: AppTextStyle.settingValue),
                     );
@@ -178,16 +184,29 @@ class SettingsPage extends StatelessWidget {
             ],
           ),
           const Gap(24),
-          Text(
-            Strings.madeBy,
-            style: AppTextStyle.explainer,
-            textAlign: TextAlign.center,
-          ),
-          const Gap(8),
-          Text(
-            '${Strings.userID}: ${userState is UserLoaded ? userState.user.id : '...'}',
-            style: AppTextStyle.explainer,
-            textAlign: TextAlign.center,
+          GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () => Navigator.push(context, CreditsPage.route),
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  Text(
+                    Strings.madeBy,
+                    style: AppTextStyle.explainer,
+                    textAlign: TextAlign.center,
+                  ),
+                  const Gap(8),
+                  Text(
+                    '${Strings.userID}: ${userState is UserLoaded ? userState.user.id : '...'}',
+                    style: AppTextStyle.explainer,
+                    textAlign: TextAlign.center,
+                  ),
+                  const Gap(24),
+                  const AnalogIOLogo.small(),
+                ],
+              ),
+            ),
           ),
           const Gap(24),
         ],

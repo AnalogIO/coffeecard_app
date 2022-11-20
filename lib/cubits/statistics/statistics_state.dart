@@ -1,49 +1,31 @@
 part of 'statistics_cubit.dart';
 
-enum StatisticsFilterCategory { semester, month, total }
+enum LeaderboardFilter { semester, month, total }
 
 abstract class StatisticsState extends Equatable {
-  const StatisticsState();
+  const StatisticsState({required this.filter});
+  final LeaderboardFilter filter;
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [filter];
 }
 
-class StatisticsInitial extends StatisticsState {}
-
-abstract class StatisticsStateWithFilterCategory extends StatisticsState {
-  const StatisticsStateWithFilterCategory(this.filterBy);
-  final StatisticsFilterCategory filterBy;
-
-  @override
-  List<Object?> get props => [filterBy];
+class StatisticsLoading extends StatisticsState {
+  const StatisticsLoading({required super.filter});
 }
 
-class StatisticsLoading extends StatisticsStateWithFilterCategory {
-  const StatisticsLoading({required StatisticsFilterCategory filterBy})
-      : super(filterBy);
-
-  @override
-  List<Object?> get props => [filterBy];
-}
-
-class StatisticsLoaded extends StatisticsStateWithFilterCategory {
-  const StatisticsLoaded({
-    required this.leaderboard,
-    required StatisticsFilterCategory filterBy,
-  }) : super(filterBy);
-
+class StatisticsLoaded extends StatisticsState {
+  const StatisticsLoaded(this.leaderboard, {required super.filter});
   final List<LeaderboardUser> leaderboard;
 
   @override
-  List<Object?> get props => [filterBy, ...leaderboard];
+  List<Object?> get props => [filter, ...leaderboard];
 }
 
 class StatisticsError extends StatisticsState {
+  const StatisticsError(this.errorMessage, {required super.filter});
   final String errorMessage;
 
-  const StatisticsError(this.errorMessage);
-
   @override
-  List<Object?> get props => [errorMessage];
+  List<Object?> get props => [filter, errorMessage];
 }

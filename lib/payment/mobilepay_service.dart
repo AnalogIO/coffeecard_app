@@ -76,7 +76,7 @@ class MobilePayService implements PaymentHandler {
         either.right.paymentDetails as Map<String, dynamic>,
       );
 
-      final status = _mapPaymentStateToStatus(paymentDetails.state!);
+      final status = _mapPaymentStateToStatus(paymentDetails.state);
       if (status == PaymentStatus.completed) {
         return const Right(PaymentStatus.completed);
       }
@@ -87,7 +87,7 @@ class MobilePayService implements PaymentHandler {
     return Left(either.left);
   }
 
-  PaymentStatus _mapPaymentStateToStatus(String state) {
+  PaymentStatus _mapPaymentStateToStatus(String? state) {
     PaymentStatus status;
     switch (state) {
       case 'Initiated':

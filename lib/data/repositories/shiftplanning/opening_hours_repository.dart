@@ -1,7 +1,10 @@
+import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/generated/api/shiftplanning_api.swagger.dart';
 import 'package:coffeecard/models/api/api_error.dart';
+import 'package:coffeecard/models/opening_hours_day.dart';
 import 'package:coffeecard/utils/either.dart';
 import 'package:coffeecard/utils/extensions.dart';
+import 'package:collection/collection.dart';
 import 'package:logger/logger.dart';
 
 class OpeningHoursRepository {
@@ -24,21 +27,41 @@ class OpeningHoursRepository {
   }
 
   Future<Either<ApiError, Map<int, String>>> getOpeningHours() async {
-    // TODO: fetch data when available
-    const String normalOperation = '8.00-16:00';
-    const String shortDayOperation = '8.00-14:00';
-    const String closed = 'Closed';
+    final response = await _api.apiShiftsShortKeyGet(shortKey: 'analog');
 
-    final Map<int, String> openingHours = {
-      DateTime.monday: normalOperation,
-      DateTime.tuesday: normalOperation,
-      DateTime.wednesday: normalOperation,
-      DateTime.thursday: normalOperation,
-      DateTime.friday: shortDayOperation,
-      DateTime.saturday: closed,
-      DateTime.sunday: closed,
-    };
+    if (response.isSuccessful) {
+      final content = response.body!..sortBy((dto) => dto.start);
 
-    return Future.value(Right(openingHours));
+      final openingHoursPerWeekday =
+          groupBy<OpeningHoursDTO, int>(content, (dto) => dto.start.weekday);
+
+      /*
+        create map associating each weekday to its opening hours:
+        { 
+          0: 8 - 16,
+          1: 8 - 16, ... 
+        }
+      */
+      final weekDayOpeningHours = openingHoursPerWeekday.map(
+        (day, value) => MapEntry(
+          day,
+          OpeningHoursDay(value.first.start, value.last.end).toString(),
+        ),
+      );
+
+      // closed string is not capitalized
+      var closed = Strings.closed;
+      closed = closed.replaceFirst(closed[0], closed[0].toUpperCase());
+
+      // the previous map only contains weekdays, mark weekends as closed
+      weekDayOpeningHours.addAll({
+        DateTime.saturday: closed,
+        DateTime.sunday: closed,
+      });
+
+      return Right(weekDayOpeningHours);
+    } else {
+      return Left(ApiError(response.error.toString()));
+    }
   }
 }

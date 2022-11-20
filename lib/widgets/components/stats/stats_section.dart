@@ -9,7 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 
 class StatsSection extends StatelessWidget {
-  const StatsSection({Key? key}) : super(key: key);
+  const StatsSection();
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +25,8 @@ class _YourStatsGrid extends StatelessWidget {
   const _YourStatsGrid({this.user});
 
   final User? user;
+
+  bool get isUserLoading => user == null;
 
   @override
   Widget build(BuildContext context) {
@@ -42,15 +44,18 @@ class _YourStatsGrid extends StatelessWidget {
             children: [
               StatisticsCard(
                 title: Strings.statCardMonth,
-                rank: user?.rankMonth,
+                rank: user?.rankMonth ?? 0,
+                loading: isUserLoading,
               ),
               StatisticsCard(
                 title: Strings.statCardSemester,
-                rank: user?.rankSemester,
+                rank: user?.rankSemester ?? 0,
+                loading: isUserLoading,
               ),
               StatisticsCard(
                 title: Strings.statCardTotal,
-                rank: user?.rankTotal,
+                rank: user?.rankTotal ?? 0,
+                loading: isUserLoading,
               ),
             ],
           ),

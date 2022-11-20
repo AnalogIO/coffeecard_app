@@ -7,7 +7,7 @@ class Product {
   final String name;
   final String description;
 
-  Product({
+  const Product({
     required this.price,
     required this.amount,
     required this.name,

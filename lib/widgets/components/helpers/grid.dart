@@ -12,12 +12,11 @@ extension _GridGapSizes on GridGap {
 
 class Grid extends StatelessWidget {
   const Grid({
-    Key? key,
     required this.singleColumnOnSmallDevice,
     required this.gap,
     required this.gapSmall,
     required this.children,
-  }) : super(key: key);
+  });
 
   /// Whether to show a single column when the display is small.
   final bool singleColumnOnSmallDevice;

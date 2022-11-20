@@ -30,6 +30,7 @@ class SecureStorage {
   Future<AuthenticatedUser?> getAuthenticatedUser() async {
     final email = await readEmail();
     final token = await readToken();
+
     return email != null && token != null
         ? AuthenticatedUser(email: email, token: token)
         : null;

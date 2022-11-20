@@ -2,19 +2,25 @@ import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/widgets/components/helpers/shimmer_builder.dart';
 import 'package:coffeecard/widgets/components/helpers/tappable.dart';
+import 'package:coffeecard/widgets/components/user/user_icon.dart';
 import 'package:coffeecard/widgets/pages/settings/your_profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 class UserCard extends StatelessWidget {
-  const UserCard({required this.name, required this.occupation})
-      : isPlaceholder = false;
+  const UserCard({
+    required this.name,
+    required this.occupation,
+    required this.id,
+  }) : isPlaceholder = false;
 
   const UserCard.placeholder()
-      : isPlaceholder = true,
+      : id = 0,
+        isPlaceholder = true,
         name = 'Loading',
         occupation = 'Occupation name fullname';
 
+  final int id;
   final String name;
   final String occupation;
   final bool isPlaceholder;
@@ -33,22 +39,19 @@ class UserCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(24.0),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              ShimmerBuilder(
-                showShimmer: isPlaceholder,
-                builder: (_, __) => const CircleAvatar(),
-              ),
-              const Gap(8),
-              Expanded(
-                child: ShimmerBuilder(
-                  showShimmer: isPlaceholder,
-                  builder: (context, colorIfShimmer) {
-                    return Column(
+          child: ShimmerBuilder(
+            showShimmer: isPlaceholder,
+            builder: (context, colorIfShimmer) {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  UserIcon.small(id: id),
+                  const Gap(8),
+                  Expanded(
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
+                        ColoredBox(
                           color: colorIfShimmer,
                           child: Text(
                             name,
@@ -58,7 +61,7 @@ class UserCard extends StatelessWidget {
                           ),
                         ),
                         const Gap(3),
-                        Container(
+                        ColoredBox(
                           color: colorIfShimmer,
                           child: Text(
                             occupation,
@@ -66,14 +69,14 @@ class UserCard extends StatelessWidget {
                           ),
                         ),
                       ],
-                    );
-                  },
-                ),
-              ),
-              const Gap(16),
-              const Icon(Icons.edit, color: AppColor.primary),
-              const Gap(12),
-            ],
+                    ),
+                  ),
+                  const Gap(16),
+                  const Icon(Icons.edit, color: AppColor.primary),
+                  const Gap(12),
+                ],
+              );
+            },
           ),
         ),
       ),

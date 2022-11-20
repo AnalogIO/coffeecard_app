@@ -3,7 +3,7 @@ class Contributor {
   final String avatarUrl;
   final String githubUrl;
 
-  Contributor({
+  const Contributor({
     required this.name,
     required this.avatarUrl,
     required this.githubUrl,

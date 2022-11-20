@@ -2,9 +2,6 @@ part of 'opening_hours_cubit.dart';
 
 abstract class OpeningHoursState extends Equatable {
   const OpeningHoursState();
-
-  @override
-  List<Object?> get props => [];
 }
 
 class OpeningHoursLoading extends OpeningHoursState {

@@ -2,14 +2,10 @@ import 'package:coffeecard/base/style/colors.dart';
 import 'package:flutter/material.dart';
 
 class LoginCTA extends StatelessWidget {
+  const LoginCTA({required this.text, required this.onPressed});
+
   final String text;
   final void Function(BuildContext) onPressed;
-
-  const LoginCTA({
-    Key? key,
-    required this.text,
-    required this.onPressed,
-  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

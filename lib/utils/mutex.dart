@@ -11,7 +11,10 @@ class Mutex {
   }
 
   void unlock() {
-    _completer.complete();
+    if (!_completer.isCompleted) {
+      _completer.complete();
+    }
+
     _lock = null;
   }
 

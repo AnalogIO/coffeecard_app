@@ -5,7 +5,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 
 class CoffeeCardPlaceholder extends StatelessWidget {
-  const CoffeeCardPlaceholder({Key? key}) : super(key: key);
+  const CoffeeCardPlaceholder();
 
   @override
   Widget build(BuildContext context) {
