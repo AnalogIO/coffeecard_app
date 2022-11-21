@@ -3,10 +3,21 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class TextStyleBuilder {
-  TextStyleBuilder._({
+  // Used by _TextStyleBuilderWithoutSize
+  TextStyleBuilder._init({
     required _AnalogFontFamily fontFamily,
     double? fontSize,
-    double? fontWeight,
+  })  : _fontFamily = fontFamily,
+        _fontSize = fontSize,
+        _fontWeight = fontFamily == _AnalogFontFamily.heading ? 700 : 400,
+        _color = null,
+        _decoration = null;
+
+  // Used by copyWith
+  TextStyleBuilder._({
+    required _AnalogFontFamily fontFamily,
+    required double fontWeight,
+    double? fontSize,
     Color? color,
     TextDecoration? decoration,
   })  : _fontFamily = fontFamily,
@@ -17,7 +28,7 @@ class TextStyleBuilder {
 
   final _AnalogFontFamily _fontFamily;
   final double? _fontSize;
-  final double? _fontWeight;
+  final double _fontWeight;
   final Color? _color;
   final TextDecoration? _decoration;
 
@@ -36,7 +47,7 @@ class TextStyleBuilder {
   /// final TextStyle body = TextStyleBuilder.heading.inheritSize().style;
   /// ```
   static _TextStyleBuilderWithoutSize get heading =>
-      _TextStyleBuilderWithoutSize._(fontFamily: _AnalogFontFamily.heading);
+      _TextStyleBuilderWithoutSize._(_AnalogFontFamily.heading);
 
   /// Begin building a text style with a body font.
   ///
@@ -53,7 +64,7 @@ class TextStyleBuilder {
   /// final TextStyle body = TextStyleBuilder.body.inheritSize().style;
   /// ```
   static _TextStyleBuilderWithoutSize get body =>
-      _TextStyleBuilderWithoutSize._(fontFamily: _AnalogFontFamily.body);
+      _TextStyleBuilderWithoutSize._(_AnalogFontFamily.body);
 
   /// Begin building a text style with a monospaced font.
   ///
@@ -70,22 +81,11 @@ class TextStyleBuilder {
   /// final TextStyle mono = TextStyleBuilder.mono.inheritSize().style;
   /// ```
   static _TextStyleBuilderWithoutSize get mono =>
-      _TextStyleBuilderWithoutSize._(fontFamily: _AnalogFontFamily.mono);
+      _TextStyleBuilderWithoutSize._(_AnalogFontFamily.mono);
 
   /// Set the font color to the given [color].
   TextStyleBuilder color(Color color) {
     return _copyWith(color: color);
-  }
-
-  /// Set the text decoration to the given [TextDecoraiton].
-  TextStyleBuilder decoration(TextDecoration decoration) {
-    return _copyWith(decoration: decoration);
-  }
-
-  /// Set the font weight using the wght axis or the FontWeight enum
-  /// depending on font support.
-  TextStyleBuilder weight(double fontWeight) {
-    return _copyWith(fontWeight: fontWeight);
   }
 
   /// Set the font size and optical size (for the fonts that support it).
@@ -93,9 +93,23 @@ class TextStyleBuilder {
     return _copyWith(fontSize: fontSize);
   }
 
+  // Text decoration setters
+
+  /// Set the text decoration to the given [TextDecoraiton].
+  TextStyleBuilder decoration(TextDecoration decoration) {
+    return _copyWith(decoration: decoration);
+  }
+
   /// Set the text decoration to [TextDecoration.underline].
   TextStyleBuilder underline() =>
       _copyWith(decoration: TextDecoration.underline);
+
+  // Font weight setters
+
+  /// Set the font weight using the wght axis or the FontWeight enum
+  /// depending on font support.
+  TextStyleBuilder weight(double fontWeight) =>
+      _copyWith(fontWeight: fontWeight);
 
   /// Set the font weight to regular (default for body and mono text).
   TextStyleBuilder regular() => _copyWith(fontWeight: 400);
@@ -125,37 +139,37 @@ class TextStyleBuilder {
     );
   }
 
-  /// Get the corresponding [TextStyle].
+  /// Get the corresponding [TextStyle] for this builder.
   TextStyle get style => _build();
 
   TextStyle _build() {
-    final double defaultFontWeight =
-        _fontFamily == _AnalogFontFamily.heading ? 700 : 400;
+    final isHeading = _fontFamily == _AnalogFontFamily.heading;
+    final isBody = _fontFamily == _AnalogFontFamily.body;
+    final isMono = _fontFamily == _AnalogFontFamily.mono;
 
-    final fontVariations = [
-      FontVariation('wght', _fontWeight ?? defaultFontWeight),
-      if (_fontSize != null) FontVariation('opsz', _fontSize!),
-      if (_fontFamily == _AnalogFontFamily.heading) ..._headingParametricAxes,
-      if (_fontFamily == _AnalogFontFamily.body) ..._bodyParametricAxes,
-    ];
-
-    final fontFamilyString =
-        _fontFamily == _AnalogFontFamily.mono ? 'RobotoMono' : 'RobotoFlex';
-
-    final letterSpacing = _fontFamily == _AnalogFontFamily.body ? 0.25 : null;
-
-    final fontWeight =
-        _fontWeights[_fontWeight?.toInt() ?? defaultFontWeight.toInt()];
-
-    return TextStyle(
-      fontFamily: fontFamilyString,
-      fontSize: _fontSize,
-      fontWeight: fontWeight,
-      color: _color,
-      decoration: _decoration,
-      fontVariations: fontVariations,
-      letterSpacing: letterSpacing,
-    );
+    if (isMono) {
+      return TextStyle(
+        fontFamily: 'RobotoMono',
+        fontSize: _fontSize,
+        fontWeight: _fontWeights[_fontWeight],
+        color: _color,
+        decoration: _decoration,
+      );
+    } else {
+      return TextStyle(
+        fontFamily: 'RobotoFlex',
+        fontSize: _fontSize,
+        color: _color,
+        decoration: _decoration,
+        letterSpacing: _fontFamily == _AnalogFontFamily.body ? 0.25 : null,
+        fontVariations: [
+          FontVariation('wght', _fontWeight),
+          if (_fontSize != null) FontVariation('opsz', _fontSize!),
+          if (isHeading) ..._headingParametricAxes,
+          if (isBody) ..._bodyParametricAxes,
+        ],
+      );
+    }
   }
 }
 
@@ -165,20 +179,18 @@ class TextStyleBuilder {
 /// This forces the user to specify a size (either fixed or inherited)
 /// before building the rest of the text style.
 class _TextStyleBuilderWithoutSize {
-  _TextStyleBuilderWithoutSize._({required _AnalogFontFamily fontFamily})
-      : _fontFamily = fontFamily;
-
-  final _AnalogFontFamily _fontFamily;
+  _TextStyleBuilderWithoutSize._(this.fontFamily);
+  final _AnalogFontFamily fontFamily;
 
   /// Set font size and optical size (for the fonts that support it).
   TextStyleBuilder size(double fontSize) {
-    return TextStyleBuilder._(fontFamily: _fontFamily, fontSize: fontSize);
+    return TextStyleBuilder._init(fontFamily: fontFamily, fontSize: fontSize);
   }
 
   /// Inherit the font size from the parent widget, but
   /// do not set optical size (for the fonts the support it).
   TextStyleBuilder inheritSize() {
-    return TextStyleBuilder._(fontFamily: _fontFamily);
+    return TextStyleBuilder._init(fontFamily: fontFamily);
   }
 }
 
