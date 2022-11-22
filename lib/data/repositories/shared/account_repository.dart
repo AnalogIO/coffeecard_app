@@ -25,14 +25,16 @@ class AccountRepository {
     String email,
     String encodedPasscode,
   ) async {
-    final dto = RegisterDto(
-      name: name,
-      email: email,
-      password: encodedPasscode,
-    );
-
     return executor.execute(
-      () => apiV1.apiV1AccountRegisterPost(body: dto),
+      () => apiV2.apiV2AccountPost(
+        body: RegisterAccountRequest(
+          name: name,
+          email: email,
+          password: encodedPasscode,
+          programmeId: 0 //FIXME:
+          ,
+        ),
+      ),
       (_) => RequestSuccess(),
     );
   }
