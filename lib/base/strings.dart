@@ -321,6 +321,7 @@ abstract class Strings {
   static const around = 'Around';
   static const almost = 'Almost';
   static const moreThan = 'More than';
+  static const inTheFuture = 'In the future';
 
   // Errors
   static const error = 'Error';
