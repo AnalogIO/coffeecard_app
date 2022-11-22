@@ -25,7 +25,7 @@ class PurchaseRepository {
           paymentType: paymentType,
         ),
       ),
-      // FIXME: No generated code as return type!
+      // TODO: No generated code as return type!
       (dto) => dto,
     );
   }
@@ -36,7 +36,7 @@ class PurchaseRepository {
   ) async {
     return executor.execute(
       () => apiV2.apiV2PurchasesIdGet(id: purchaseId),
-      // FIXME: No generated code as return type!
+      // TODO: No generated code as return type!
       (dto) => dto,
     );
   }
