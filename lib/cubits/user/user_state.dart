@@ -15,7 +15,7 @@ class UserLoading extends UserState {}
 
 abstract class UserWithData extends UserState {
   final User user;
-  final List<ProgrammeDto> programmes;
+  final List<Programme> programmes;
 
   UserWithData({required this.user, required this.programmes});
 }
@@ -33,7 +33,7 @@ class UserLoaded extends UserWithData {
 
   UserLoaded copyWith({
     User? user,
-    List<ProgrammeDto>? programmes,
+    List<Programme>? programmes,
   }) {
     return UserLoaded(
       user: user ?? this.user,

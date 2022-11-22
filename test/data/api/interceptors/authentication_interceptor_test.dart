@@ -32,8 +32,7 @@ void main() {
       'GIVEN no token in SecureStorage WHEN calling onRequest THEN no Authorization Header is added to the request',
       () async {
     final mockSecureStorage = MockSecureStorage();
-    // ignore: prefer_void_to_null
-    when(mockSecureStorage.readToken()).thenAnswer((_) => Future<Null>.value());
+    when(mockSecureStorage.readToken()).thenAnswer((_) async => null);
 
     final interceptor = AuthenticationInterceptor(mockSecureStorage);
     const request = Request('POST', 'url', 'baseurl');

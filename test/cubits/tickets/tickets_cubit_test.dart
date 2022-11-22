@@ -1,7 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:coffeecard/cubits/tickets/tickets_cubit.dart';
+import 'package:coffeecard/data/repositories/utils/request_types.dart';
 import 'package:coffeecard/data/repositories/v1/ticket_repository.dart';
-import 'package:coffeecard/models/api/api_error.dart';
 import 'package:coffeecard/models/receipts/receipt.dart';
 import 'package:coffeecard/utils/either.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -41,16 +41,17 @@ void main() {
     );
 
     blocTest<TicketsCubit, TicketsState>(
-      'getTickets emits Loading then Error (on failed fetch)',
+      'getTickets emits Loading then LoadError (on failed fetch)',
       build: () {
-        when(repo.getUserTickets())
-            .thenAnswer((_) async => const Left(ApiError('ERROR_MESSAGE')));
+        when(repo.getUserTickets()).thenAnswer(
+          (_) async => Left(RequestHttpFailure('ERROR_MESSAGE', 0)),
+        );
         return cubit;
       },
       act: (cubit) => cubit.getTickets(),
       expect: () => [
         const TicketsLoading(),
-        const TicketsError('ERROR_MESSAGE'),
+        const TicketsLoadError('ERROR_MESSAGE'),
       ],
     );
 
@@ -65,14 +66,15 @@ void main() {
     );
 
     blocTest<TicketsCubit, TicketsState>(
-      'refreshTickets emits Error (on failed fetch)',
+      'refreshTickets emits LoadError (on failed fetch)',
       build: () {
-        when(repo.getUserTickets())
-            .thenAnswer((_) async => const Left(ApiError('ERROR_MESSAGE')));
+        when(repo.getUserTickets()).thenAnswer(
+          (_) async => Left(RequestHttpFailure('ERROR_MESSAGE', 0)),
+        );
         return cubit;
       },
       act: (cubit) => cubit.refreshTickets(),
-      expect: () => [const TicketsError('ERROR_MESSAGE')],
+      expect: () => [const TicketsLoadError('ERROR_MESSAGE')],
     );
 
     blocTest<TicketsCubit, TicketsState>(
@@ -107,11 +109,12 @@ void main() {
     );
 
     blocTest<TicketsCubit, TicketsState>(
-      'useTicket emits Using, Error (on failure) when state is Loaded',
+      'useTicket emits Using, UseError (on use failure), then Loaded (on success fetch) when state is Loaded',
       build: () {
         when(repo.getUserTickets()).thenAnswer((_) async => const Right([]));
-        when(repo.useTicket(any))
-            .thenAnswer((_) async => const Left(ApiError('ERROR_MESSAGE')));
+        when(repo.useTicket(any)).thenAnswer(
+          (_) async => Left(RequestHttpFailure('ERROR_MESSAGE', 0)),
+        );
         return cubit;
       },
       act: (cubit) async {
@@ -122,7 +125,8 @@ void main() {
       skip: 2,
       expect: () => [
         const TicketUsing([]),
-        const TicketsError('ERROR_MESSAGE'),
+        const TicketsUseError('ERROR_MESSAGE'),
+        const TicketsLoaded([]),
       ],
     );
 

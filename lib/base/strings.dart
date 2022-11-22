@@ -340,6 +340,6 @@ abstract class Strings {
   }
 
   static String noInternet =
-      "Oops, we couldn't connect to the server\n Are you connected to the internet?";
+      "Can't connect to Analog. Are you connected to the internet?";
   static String retry = 'Retry';
 }

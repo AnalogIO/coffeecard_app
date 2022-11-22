@@ -1,5 +1,5 @@
+import 'package:coffeecard/data/repositories/utils/request_types.dart';
 import 'package:coffeecard/data/repositories/v2/purchase_repository.dart';
-import 'package:coffeecard/models/api/api_error.dart';
 import 'package:coffeecard/models/purchase/payment.dart';
 import 'package:coffeecard/models/purchase/payment_status.dart';
 import 'package:coffeecard/payment/mobilepay_service.dart';
@@ -22,7 +22,7 @@ abstract class PaymentHandler {
     }
   }
 
-  Future<Either<ApiError, Payment>> initPurchase(int productId);
+  Future<Either<RequestFailure, Payment>> initPurchase(int productId);
 
-  Future<Either<ApiError, PaymentStatus>> verifyPurchase(int purchaseId);
+  Future<Either<RequestFailure, PaymentStatus>> verifyPurchase(int purchaseId);
 }

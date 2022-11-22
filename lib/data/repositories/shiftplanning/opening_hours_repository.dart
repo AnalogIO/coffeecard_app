@@ -1,67 +1,62 @@
 import 'package:coffeecard/base/strings.dart';
+import 'package:coffeecard/data/repositories/utils/executor.dart';
+import 'package:coffeecard/data/repositories/utils/request_types.dart';
 import 'package:coffeecard/generated/api/shiftplanning_api.swagger.dart';
-import 'package:coffeecard/models/api/api_error.dart';
 import 'package:coffeecard/models/opening_hours_day.dart';
 import 'package:coffeecard/utils/either.dart';
-import 'package:coffeecard/utils/extensions.dart';
 import 'package:collection/collection.dart';
-import 'package:logger/logger.dart';
 
 class OpeningHoursRepository {
-  final ShiftplanningApi _api;
-  final Logger _logger;
+  OpeningHoursRepository({
+    required this.api,
+    required this.executor,
+  });
 
-  OpeningHoursRepository(this._api, this._logger);
+  final ShiftplanningApi api;
+  final Executor executor;
 
-  Future<Either<ApiError, bool>> isOpen() async {
-    final response = await _api.apiOpenShortKeyGet(
-      shortKey: 'analog',
+  Future<Either<RequestFailure, bool>> isOpen() async {
+    return executor.execute(
+      () => api.apiOpenShortKeyGet(shortKey: 'analog'),
+      (dto) => dto.open,
     );
-
-    if (response.isSuccessful) {
-      return Right(response.body!.open);
-    } else {
-      _logger.e(response.formatError());
-      throw Left(ApiError(response.error.toString()));
-    }
   }
 
-  Future<Either<ApiError, Map<int, String>>> getOpeningHours() async {
-    final response = await _api.apiShiftsShortKeyGet(shortKey: 'analog');
+  Future<Either<RequestFailure, Map<int, String>>> getOpeningHours() async {
+    return executor.execute(
+      () => api.apiShiftsShortKeyGet(shortKey: 'analog'),
+      _transformOpeningHours,
+    );
+  }
 
-    if (response.isSuccessful) {
-      final content = response.body!..sortBy((dto) => dto.start);
+  Map<int, String> _transformOpeningHours(List<OpeningHoursDTO> dtoList) {
+    final content = dtoList..sortBy((dto) => dto.start);
 
-      final openingHoursPerWeekday =
-          groupBy<OpeningHoursDTO, int>(content, (dto) => dto.start.weekday);
+    final openingHoursPerWeekday =
+        groupBy<OpeningHoursDTO, int>(content, (dto) => dto.start.weekday);
 
-      /*
-        create map associating each weekday to its opening hours:
-        { 
-          0: 8 - 16,
-          1: 8 - 16, ... 
-        }
-      */
-      final weekDayOpeningHours = openingHoursPerWeekday.map(
-        (day, value) => MapEntry(
-          day,
-          OpeningHoursDay(value.first.start, value.last.end).toString(),
-        ),
-      );
+    // create map associating each weekday to its opening hours:
+    // {
+    //   0: 8 - 16,
+    //   1: 8 - 16, ...
+    // }
+    final weekDayOpeningHours = openingHoursPerWeekday.map(
+      (day, value) => MapEntry(
+        day,
+        OpeningHoursDay(value.first.start, value.last.end).toString(),
+      ),
+    );
 
-      // closed string is not capitalized
-      var closed = Strings.closed;
-      closed = closed.replaceFirst(closed[0], closed[0].toUpperCase());
+    // closed string is not capitalized
+    var closed = Strings.closed;
+    closed = closed.replaceFirst(closed[0], closed[0].toUpperCase());
 
-      // the previous map only contains weekdays, mark weekends as closed
-      weekDayOpeningHours.addAll({
-        DateTime.saturday: closed,
-        DateTime.sunday: closed,
-      });
+    // the previous map only contains weekdays, mark weekends as closed
+    weekDayOpeningHours.addAll({
+      DateTime.saturday: closed,
+      DateTime.sunday: closed,
+    });
 
-      return Right(weekDayOpeningHours);
-    } else {
-      return Left(ApiError(response.error.toString()));
-    }
+    return weekDayOpeningHours;
   }
 }
