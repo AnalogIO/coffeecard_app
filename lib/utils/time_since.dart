@@ -22,14 +22,22 @@ String timeSince(DateTime time) {
 
 String monthsAgo({required int days}) {
   final months = days ~/ 30.5;
-  final monthsStr = months == 1 ? Strings.aMonth : '$months ${Strings.months}';
-  return '${Strings.around} $monthsStr ${Strings.ago}';
+  final rest = days % 30.5;
+  if (rest > 28) return Strings.monthsAgo(months + 1);
+  if (rest < 3) return Strings.monthsAgo(months);
+
+  if (rest > 23) return '${Strings.almost} ${Strings.monthsAgo(months + 1)}';
+  if (rest < 7) return '${Strings.around} ${Strings.monthsAgo(months)}';
+  return '${Strings.moreThan} ${Strings.monthsAgo(months)}';
 }
 
 String yearsAgo({required int days}) {
   final years = days ~/ 365;
   final rest = days % 365;
-  if (rest > 305) return '${Strings.almost} ${years + 1} ${Strings.yearsAgo}';
-  if (rest < 60) return '${Strings.around} $years ${Strings.yearsAgo}';
-  return '${Strings.moreThan} $years ${Strings.yearsAgo}';
+  if (rest > 355) return Strings.yearsAgo(years + 1);
+  if (rest < 10) return Strings.yearsAgo(years);
+
+  if (rest > 305) return '${Strings.almost} ${Strings.yearsAgo(years + 1)}';
+  if (rest < 60) return '${Strings.around} ${Strings.yearsAgo(years)}';
+  return '${Strings.moreThan} ${Strings.yearsAgo(years)}';
 }

@@ -6,30 +6,40 @@ void main() {
   group('years ago tests', () {
     test('years ago given date exactly one year ago returns correct string',
         () {
-      expect(yearsAgo(days: 365), '${Strings.around} 1 ${Strings.yearsAgo}');
+      expect(yearsAgo(days: 365), Strings.yearsAgo(1));
+    });
+    test('years ago given date 370 days ago returns correct string', () {
+      expect(yearsAgo(days: 370), Strings.yearsAgo(1));
+    });
+    test('years ago given date 400 days ago returns correct string', () {
+      expect(yearsAgo(days: 400), '${Strings.around} ${Strings.yearsAgo(1)}');
     });
     test(
         'years ago given date more than one and a half year ago returns correct string',
         () {
-      expect(yearsAgo(days: 600), '${Strings.moreThan} 1 ${Strings.yearsAgo}');
+      expect(yearsAgo(days: 600), '${Strings.moreThan} ${Strings.yearsAgo(1)}');
     });
     test(
         'years ago given date more than two and a half years ago returns correct string',
         () {
-      expect(yearsAgo(days: 650), '${Strings.moreThan} 1 ${Strings.yearsAgo}');
+      expect(yearsAgo(days: 920), '${Strings.moreThan} ${Strings.yearsAgo(2)}');
     });
   });
 
   group('months ago tests', () {
     test('months ago given date exactly one month ago returns correct string',
         () {
-      expect(monthsAgo(days: 31),
-          '${Strings.around} ${Strings.aMonth} ${Strings.ago}');
+      expect(
+        monthsAgo(days: 31),
+        Strings.monthsAgo(1),
+      );
     });
 
     test('months ago given date two months ago returns correct string', () {
-      expect(monthsAgo(days: 62),
-          '${Strings.around} 2 ${Strings.months} ${Strings.ago}');
+      expect(
+        monthsAgo(days: 62),
+        Strings.monthsAgo(2),
+      );
     });
   });
 
@@ -86,6 +96,19 @@ void main() {
       expect(
         timeSince(DateTime.now().subtract(const Duration(days: 27))),
         '27 ${Strings.daysAgo}',
+      );
+    });
+    test('time since given 70 day difference returns more than 2 months ago',
+        () {
+      expect(
+        timeSince(DateTime.now().subtract(const Duration(days: 70))),
+        '${Strings.moreThan} ${Strings.monthsAgo(2)}',
+      );
+    });
+    test('time since given 365 day difference returns a year ago', () {
+      expect(
+        timeSince(DateTime.now().subtract(const Duration(days: 365))),
+        Strings.yearsAgo(1),
       );
     });
   });
