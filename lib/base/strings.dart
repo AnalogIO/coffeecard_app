@@ -28,6 +28,7 @@ abstract class Strings {
   static const loginSignInOtherAccount = 'Sign in using another account';
 
   static const loginForgotYourPasscode = 'Forgot your passcode?';
+  static const loginForgot = 'Forgot?';
 
   // Tickets
   static const ticketsMyTickets = 'My tickets';

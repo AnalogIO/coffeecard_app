@@ -1,3 +1,4 @@
+import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/login/login_cubit.dart';
@@ -88,7 +89,7 @@ class _NumpadState extends State<Numpad> with SingleTickerProviderStateMixin {
                         child: _NumpadButton(
                           onPressed: widget.forgotPasscodeAction,
                           child: Text(
-                            'Forgot?',
+                            Strings.loginForgot,
                             style: AppTextStyle.numpadText,
                           ),
                         ),
