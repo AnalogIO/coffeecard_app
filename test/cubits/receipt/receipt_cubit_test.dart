@@ -1,8 +1,8 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/cubits/receipt/receipt_cubit.dart';
+import 'package:coffeecard/data/repositories/utils/request_types.dart';
 import 'package:coffeecard/data/repositories/v1/receipt_repository.dart';
-import 'package:coffeecard/models/api/api_error.dart';
 import 'package:coffeecard/models/receipts/receipt.dart';
 import 'package:coffeecard/utils/either.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -59,8 +59,9 @@ void main() {
     blocTest<ReceiptCubit, ReceiptState>(
       'fetchReceipts emits ReceiptState (with Status.failure and non-null error) after failed fetch',
       build: () {
-        when(repo.getUserReceipts())
-            .thenAnswer((_) async => const Left(ApiError('ERROR_MESSAGE')));
+        when(repo.getUserReceipts()).thenAnswer(
+          (_) async => Left(RequestHttpFailure('ERROR_MESSAGE', 0)),
+        );
         return receiptCubit;
       },
       act: (cubit) => cubit.fetchReceipts(),

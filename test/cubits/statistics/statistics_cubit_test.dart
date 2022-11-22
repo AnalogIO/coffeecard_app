@@ -1,7 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:coffeecard/cubits/statistics/statistics_cubit.dart';
+import 'package:coffeecard/data/repositories/utils/request_types.dart';
 import 'package:coffeecard/data/repositories/v2/leaderboard_repository.dart';
-import 'package:coffeecard/models/api/api_error.dart';
 import 'package:coffeecard/models/leaderboard/leaderboard_user.dart';
 import 'package:coffeecard/utils/either.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -49,8 +49,9 @@ void main() {
     blocTest<LeaderboardCubit, StatisticsState>(
       'fetch emits StatisticsError after failed fetch',
       build: () {
-        when(leaderboardRepository.getLeaderboard(any))
-            .thenAnswer((_) async => const Left(ApiError('ERROR_MESSAGE')));
+        when(leaderboardRepository.getLeaderboard(any)).thenAnswer(
+          (_) async => Left(RequestHttpFailure('ERROR_MESSAGE', 0)),
+        );
         return statisticsCubit;
       },
       act: (cubit) => cubit.fetch(),
@@ -81,8 +82,9 @@ void main() {
     blocTest<LeaderboardCubit, StatisticsState>(
       'setFilter emits StatisticsLoading with correct filter and then emits StatisticsError after failed fetch',
       build: () {
-        when(leaderboardRepository.getLeaderboard(any))
-            .thenAnswer((_) async => const Left(ApiError('ERROR_MESSAGE')));
+        when(leaderboardRepository.getLeaderboard(any)).thenAnswer(
+          (_) async => Left(RequestHttpFailure('ERROR_MESSAGE', 0)),
+        );
         return statisticsCubit;
       },
       act: (cubit) => cubit.setFilter(LeaderboardFilter.total),

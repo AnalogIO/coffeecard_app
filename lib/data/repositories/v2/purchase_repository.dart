@@ -1,49 +1,43 @@
+import 'package:coffeecard/data/repositories/utils/executor.dart';
+import 'package:coffeecard/data/repositories/utils/request_types.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
-import 'package:coffeecard/models/api/api_error.dart';
 import 'package:coffeecard/utils/either.dart';
-import 'package:coffeecard/utils/extensions.dart';
-import 'package:logger/logger.dart';
 
 class PurchaseRepository {
-  final CoffeecardApiV2 _api;
-  final Logger _logger;
+  PurchaseRepository({
+    required this.apiV2,
+    required this.executor,
+  });
 
-  PurchaseRepository(this._api, this._logger);
+  final CoffeecardApiV2 apiV2;
+  final Executor executor;
 
   /// Initiate a new Purchase Request. The return is a purchase request
   /// with payment details on how to pay for the purchase
-  Future<Either<ApiError, InitiatePurchaseResponse>> initiatePurchase(
+  Future<Either<RequestFailure, InitiatePurchaseResponse>> initiatePurchase(
     int productId,
     PaymentType paymentType,
   ) async {
-    final response = await _api.apiV2PurchasesPost(
-      body: InitiatePurchaseRequest(
-        productId: productId,
-        paymentType: paymentTypeToJson(paymentType),
+    return executor.execute(
+      () => apiV2.apiV2PurchasesPost(
+        body: InitiatePurchaseRequest(
+          productId: productId,
+          paymentType: paymentType,
+        ),
       ),
+      // TODO: No generated code as return type!
+      (dto) => dto,
     );
-
-    if (response.isSuccessful) {
-      return Right(response.body!);
-    } else {
-      _logger.e(response.formatError());
-      return Left(ApiError(response.error.toString()));
-    }
   }
 
   /// Get a purchase by its purchase id
-  Future<Either<ApiError, SinglePurchaseResponse>> getPurchase(
+  Future<Either<RequestFailure, SinglePurchaseResponse>> getPurchase(
     int purchaseId,
   ) async {
-    final response = await _api.apiV2PurchasesIdGet(
-      id: purchaseId,
+    return executor.execute(
+      () => apiV2.apiV2PurchasesIdGet(id: purchaseId),
+      // TODO: No generated code as return type!
+      (dto) => dto,
     );
-
-    if (response.isSuccessful) {
-      return Right(response.body!);
-    } else {
-      _logger.e(response.formatError());
-      return Left(ApiError(response.error.toString()));
-    }
   }
 }

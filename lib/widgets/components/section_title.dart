@@ -1,4 +1,4 @@
-import 'package:coffeecard/base/style/colors.dart';
+import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:flutter/material.dart';
 
 class SectionTitle extends StatelessWidget {
@@ -16,11 +16,7 @@ class SectionTitle extends StatelessWidget {
       margin: EdgeInsets.only(bottom: bottomMargin),
       child: Text(
         title,
-        style: const TextStyle(
-          color: AppColor.primary,
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-        ),
+        style: AppTextStyle.sectionTitle,
       ),
     );
   }

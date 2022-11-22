@@ -28,6 +28,7 @@ abstract class Strings {
   static const loginSignInOtherAccount = 'Sign in using another account';
 
   static const loginForgotYourPasscode = 'Forgot your passcode?';
+  static const loginForgot = 'Forgot?';
 
   // Tickets
   static const ticketsMyTickets = 'My tickets';
@@ -306,20 +307,34 @@ abstract class Strings {
   static const viewLicenses = 'View licenses';
 
   // Time since utility
-  static const justNow = 'Just now';
+  static const justNow = 'just now';
   static const minutesAgo = 'minutes $ago';
-  static const anHourAgo = 'An hour $ago';
+  static const anHourAgo = 'an hour $ago';
   static const hoursAgo = 'hours $ago';
-  static const earlierToday = 'Earlier today';
-  static const yesterday = 'Yesterday';
+  static const earlierToday = 'earlier today';
+  static const yesterday = 'yesterday';
   static const daysAgo = 'days $ago';
-  static const aMonth = 'a month';
-  static const months = 'months';
-  static const yearsAgo = 'years $ago';
   static const ago = 'ago';
-  static const around = 'Around';
-  static const almost = 'Almost';
-  static const moreThan = 'More than';
+  static const around = 'around';
+  static const almost = 'almost';
+  static const moreThan = 'more than';
+  static const inTheFuture = 'in the future';
+
+  static String yearsAgo(int years) {
+    if (years == 1) {
+      return 'a year $ago';
+    } else {
+      return '$years years $ago';
+    }
+  }
+
+  static String monthsAgo(int months) {
+    if (months == 1) {
+      return 'a month $ago';
+    } else {
+      return '$months months $ago';
+    }
+  }
 
   // Errors
   static const error = 'Error';
@@ -340,6 +355,6 @@ abstract class Strings {
   }
 
   static String noInternet =
-      "Oops, we couldn't connect to the server\n Are you connected to the internet?";
+      "Can't connect to Analog. Are you connected to the internet?";
   static String retry = 'Retry';
 }
