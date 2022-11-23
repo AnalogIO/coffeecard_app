@@ -44,10 +44,19 @@ void main() {
   });
 
   group('time since tests', () {
-    test('time since given date in the future returns in the future', () {
+    test(
+        'time since given date five minutes in the future returns in the future',
+        () {
+      expect(
+        timeSince(DateTime.now().add(const Duration(minutes: 5))),
+        Strings.inTheFuture,
+      );
+    });
+
+    test('time since given date one minute in the future returns just now', () {
       expect(
         timeSince(DateTime.now().add(const Duration(minutes: 1))),
-        Strings.inTheFuture,
+        Strings.justNow,
       );
     });
 
