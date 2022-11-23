@@ -2,12 +2,11 @@ import 'package:coffeecard/base/strings.dart';
 
 String timeSince(DateTime time) {
   final currentTime = DateTime.now();
+  final diff = currentTime.difference(time);
 
-  if (time.isAfter(currentTime)) {
+  if (time.isAfter(currentTime) && diff.inMinutes < -1) {
     return Strings.inTheFuture;
   }
-
-  final diff = currentTime.difference(time);
 
   if (diff.inMinutes < 2) return Strings.justNow;
   if (diff.inHours < 1) return '${diff.inMinutes} ${Strings.minutesAgo}';
