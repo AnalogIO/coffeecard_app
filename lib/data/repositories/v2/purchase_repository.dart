@@ -22,7 +22,7 @@ class PurchaseRepository {
       () => apiV2.apiV2PurchasesPost(
         body: InitiatePurchaseRequest(
           productId: productId,
-          paymentType: paymentType,
+          paymentType: paymentTypeToJson(paymentType),
         ),
       ),
       // TODO: No generated code as return type!
