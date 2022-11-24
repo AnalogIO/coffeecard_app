@@ -108,6 +108,13 @@ void main() {
         Strings.monthsAgo(1),
       );
     });
+    test('time since given midday and 34d prior returns around a month ago',
+        () {
+      expect(
+        timeSince(midday.subtract(const Duration(days: 34)), now: midday),
+        Strings.around(Strings.monthsAgo(1)),
+      );
+    });
     test('time since given midday and 40d prior returns more than a month ago',
         () {
       expect(
@@ -134,8 +141,6 @@ void main() {
         Strings.moreThan(Strings.monthsAgo(2)),
       );
     });
-
-    // Years
     test(
         'time since given midday and 345d prior returns more than 11 months ago',
         () {
@@ -151,6 +156,12 @@ void main() {
         Strings.almost(Strings.yearsAgo(1)),
       );
     });
+    test('time since given midday and 360d prior returns a year ago', () {
+      expect(
+        timeSince(midday.subtract(const Duration(days: 360)), now: midday),
+        Strings.yearsAgo(1),
+      );
+    });
     test('time since given midday and 365d prior returns a year ago', () {
       expect(
         timeSince(midday.subtract(const Duration(days: 365)), now: midday),
@@ -161,6 +172,13 @@ void main() {
       expect(
         timeSince(midday.subtract(const Duration(days: 370)), now: midday),
         Strings.yearsAgo(1),
+      );
+    });
+    test('time since given midday and 380d prior returns more than a year ago',
+        () {
+      expect(
+        timeSince(midday.subtract(const Duration(days: 380)), now: midday),
+        Strings.around(Strings.yearsAgo(1)),
       );
     });
     test('time since given midday and 400d prior returns more than a year ago',
