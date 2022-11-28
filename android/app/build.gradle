@@ -65,6 +65,29 @@ android {
         disable 'InvalidPackage'
     }
     namespace 'dk.analog.digitalclipcard'
+
+    flavorDimensions "app"
+
+    productFlavors {
+        development {
+            dimension "app"
+            applicationIdSuffix ".dev"
+            versionNameSuffix "-dev"
+            resValue "string", "app_name", "Analog [DEV]"
+        }
+        production {
+            dimension "app"
+            applicationIdSuffix ""
+            versionNameSuffix "-prod"
+            resValue "string", "app_name", "Analog"
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+        }
+    }
 }
 
 flutter {
