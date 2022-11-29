@@ -78,15 +78,15 @@ void configureServices() {
 
   // Repositories
   // v1
-  sl.registerFactory<ReceiptRepository>(
-    () => ReceiptRepository(
+  sl.registerFactory<ProgrammeRepository>(
+    () => ProgrammeRepository(
       apiV1: sl<CoffeecardApi>(),
       executor: sl<Executor>(),
     ),
   );
 
-  sl.registerFactory<ProgrammeRepository>(
-    () => ProgrammeRepository(
+  sl.registerFactory<ReceiptRepository>(
+    () => ReceiptRepository(
       apiV1: sl<CoffeecardApi>(),
       executor: sl<Executor>(),
     ),

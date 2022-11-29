@@ -66,6 +66,7 @@ class UserCubit extends Cubit<UserState> {
     } else {
       // Fetches the programme info, if we have not cached it beforehand
       final either = await _programmeRepository.getProgrammes();
+
       if (either.isRight) {
         programmes = either.right;
       } else {
