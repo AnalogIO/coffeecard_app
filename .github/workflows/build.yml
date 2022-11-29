@@ -102,10 +102,10 @@ jobs:
         run: scripts/.generate-code.sh code
       - name: Build iOS (dev)
         if: github.ref_name != 'production'
-        run: flutter build ios --release --no-codesign --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_version }}
+        run: flutter build ios --flavor develop --release --no-codesign --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_version }} --target lib/main_development.dart
       - name: Build iOS (prod)
         if: github.ref_name == 'production'
-        run: flutter build ios --release --no-codesign --dart-define=IS_PROD=true --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_version }}
+        run: flutter build ios --flavor production --release --no-codesign --dart-define=IS_PROD=true --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_version }} --target lib/main_production.dart
       - name: Build resolve Swift dependencies
         run: xcodebuild -resolvePackageDependencies -workspace ios/Runner.xcworkspace -scheme Runner -configuration Release
       - name: Build xArchive (dev)
@@ -159,10 +159,10 @@ jobs:
         run: scripts/.generate-code.sh code
       - name: Build appbundle (dev)
         if: github.ref_name != 'production'
-        run: flutter build apk --release --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_version }}
+        run: flutter build apk --flavor development --release --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_version }}
       - name: Build appbundle (prod)
         if: github.ref_name == 'production'
-        run: flutter build apk --release --dart-define=IS_PROD=true --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_version }}
+        run: flutter build apk --flavor production --release --dart-define=IS_PROD=true --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_version }}
       - name: Upload Android build
         if: ${{ inputs.storeArtifacts }}
         uses: actions/upload-artifact@v3.0.0
