@@ -82,6 +82,7 @@ dev_dependencies:
   swagger_dart_code_generator: 2.6.0
 
   # linter
+  lint: 1.10.0
 
 flutter_icons: #remember to update: flutter pub run flutter_launcher_icons:main
   android: true
