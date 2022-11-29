@@ -297,7 +297,7 @@ abstract class Strings {
   };
 
   // Credits
-  static const appTeam = 'App team';
+  static const developmentTeam = 'Development team';
   static const aboutAnalogIO = 'About AnalogIO';
   static const analogIOBody =
       "AnalogIO is a group of volunteer software students, supporting the student organization Cafe Analog.\n\nWe create and maintain backend systems, apps and websites for both customers and baristas of the cafe.\n\nWant to help? Have any feedback? Don't hesitate to contact us.";
