@@ -16,35 +16,6 @@
           "lib/main_development.dart"
         ]
       },
-      {
-        "name": "Production (debug)",
-        "request": "launch",
-        "type": "dart",
-        "program": "lib/main_production.dart",
-        "args": [
-          "--flavor",
-          "production",
-          "--target",
-          "lib/main_production.dart",
-          "--dart-define",
-          "IS_PROD=true"
-        ]
-      },
-      {
-        "name": "Production (profile)",
-        "request": "launch",
-        "type": "dart",
-        "program": "lib/main_production.dart",
-        "args": [
-          "--profile",
-          "--flavor",
-          "production",
-          "--target",
-          "lib/main_production.dart",
-          "--dart-define",
-          "IS_PROD=true"
-        ]
-      },
     ]
   }
   
