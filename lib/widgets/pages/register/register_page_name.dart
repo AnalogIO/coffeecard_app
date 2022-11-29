@@ -31,7 +31,11 @@ class RegisterPageName extends StatelessWidget {
           if (state is RegisterSuccess) return _showSuccessDialog(context);
           if (state is RegisterError) return _showErrorDialog(context, state);
         },
-        child: RegisterNameForm(email: email, passcode: passcode),
+        child: RegisterNameForm(
+          email: email,
+          passcode: passcode,
+          programmeId: 0,
+        ), //FIXME: programme
       ),
     );
   }

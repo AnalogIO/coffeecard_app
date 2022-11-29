@@ -37,7 +37,7 @@ void main() {
       },
     );
 
-    final actual = await repo.register('name', 'email', 'passcode');
+    final actual = await repo.register('name', 'email', 'passcode', 0);
     expectLater(actual.isRight, isTrue);
   });
 
@@ -46,7 +46,7 @@ void main() {
       (_) async => chopper.Response(Responses.failing(), null),
     );
 
-    final actual = await repo.register('name', 'email', 'passcode');
+    final actual = await repo.register('name', 'email', 'passcode', 0);
     expect(actual.isLeft, isTrue);
   });
 }

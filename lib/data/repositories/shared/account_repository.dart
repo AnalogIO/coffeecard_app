@@ -24,6 +24,7 @@ class AccountRepository {
     String name,
     String email,
     String encodedPasscode,
+    int programmeId,
   ) async {
     return executor.execute(
       () => apiV2.apiV2AccountPost(
@@ -31,8 +32,7 @@ class AccountRepository {
           name: name,
           email: email,
           password: encodedPasscode,
-          programmeId: 0 //FIXME:
-          ,
+          programmeId: programmeId,
         ),
       ),
       (_) => RequestSuccess(),

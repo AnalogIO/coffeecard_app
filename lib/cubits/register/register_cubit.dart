@@ -11,11 +11,17 @@ class RegisterCubit extends Cubit<RegisterState> {
 
   RegisterCubit({required this.repository}) : super(RegisterInitial());
 
-  Future<void> register(String name, String email, String passcode) async {
+  Future<void> register(
+    String name,
+    String email,
+    String passcode,
+    int programmeId,
+  ) async {
     final either = await repository.register(
       name,
       email,
       encodePasscode(passcode),
+      programmeId,
     );
 
     if (either.isRight) {

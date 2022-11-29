@@ -1,9 +1,8 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/cubits/user/user_cubit.dart';
-import 'package:coffeecard/widgets/components/list_entry.dart';
 import 'package:coffeecard/widgets/components/loading.dart';
+import 'package:coffeecard/widgets/components/occupation_selection.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
-import 'package:coffeecard/widgets/components/settings_list_entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -28,27 +27,11 @@ class ChangeOccupationPage extends StatelessWidget {
             builder: (context, state) {
               return Loading(
                 loading: state is UserUpdating,
-                child: ListView.builder(
-                  itemCount: userLoadedState.programmes.length,
-                  itemBuilder: (context, index) {
-                    userLoadedState.programmes
-                        .sort((a, b) => a.fullName.compareTo(b.fullName));
-                    final programme = userLoadedState.programmes[index];
-                    return SettingListEntry(
-                      sideToExpand: ListEntrySide.right,
-                      name: '${programme.fullName} (${programme.shortName})',
-                      valueWidget: Radio(
-                        value: programme.shortName,
-                        groupValue: userLoadedState.user.programme.shortName,
-                        onChanged: (_) {},
-                      ),
-                      onTap: () {
-                        context
-                            .read<UserCubit>()
-                            .setUserProgramme(programme.id);
-                      },
-                    );
-                  },
+                child: OccupationSelection(
+                  programmes: userLoadedState.programmes,
+                  selected: userLoadedState.user.programme.shortName,
+                  onTap: (programme) =>
+                      context.read<UserCubit>().setUserProgramme(programme.id),
                 ),
               );
             },
