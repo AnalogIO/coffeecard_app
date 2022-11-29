@@ -65,7 +65,7 @@ class UserCubit extends Cubit<UserState> {
       programmes = (state as UserLoaded).programmes;
     } else {
       // Fetches the programme info, if we have not cached it beforehand
-      final either = await _programmeRepository.getProgramme();
+      final either = await _programmeRepository.getProgrammes();
       if (either.isRight) {
         programmes = either.right;
       } else {

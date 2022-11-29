@@ -13,7 +13,7 @@ class ProgrammeRepository {
   final CoffeecardApi apiV1;
   final Executor executor;
 
-  Future<Either<RequestFailure, List<Programme>>> getProgramme() async {
+  Future<Either<RequestFailure, List<Programme>>> getProgrammes() async {
     return executor.execute(
       apiV1.apiV1ProgrammesGet,
       (dto) => dto.map(Programme.fromDTO).toList(),
