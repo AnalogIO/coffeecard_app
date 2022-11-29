@@ -308,33 +308,33 @@ abstract class Strings {
 
   // Time since utility
   static const justNow = 'just now';
-  static const minutesAgo = 'minutes $ago';
-  static const anHourAgo = 'an hour $ago';
-  static const hoursAgo = 'hours $ago';
   static const earlierToday = 'earlier today';
   static const yesterday = 'yesterday';
-  static const daysAgo = 'days $ago';
   static const ago = 'ago';
-  static const around = 'around';
-  static const almost = 'almost';
-  static const moreThan = 'more than';
   static const inTheFuture = 'in the future';
 
+  static String minutesAgo(int minutes) =>
+      minutes == 1 ? 'a minute $ago' : '$minutes minutes $ago';
+
+  static String hoursAgo(int hours) {
+    return hours == 1 ? 'an hour ago' : '$hours hours ago';
+  }
+
+  static String daysAgo(int days) {
+    return days == 1 ? 'yesterday' : '$days days $ago';
+  }
+
   static String yearsAgo(int years) {
-    if (years == 1) {
-      return 'a year $ago';
-    } else {
-      return '$years years $ago';
-    }
+    return years == 1 ? 'a year $ago' : '$years years $ago';
   }
 
   static String monthsAgo(int months) {
-    if (months == 1) {
-      return 'a month $ago';
-    } else {
-      return '$months months $ago';
-    }
+    return months == 1 ? 'a month $ago' : '$months months $ago';
   }
+
+  static String around(String time) => 'around $time';
+  static String almost(String time) => 'almost $time';
+  static String moreThan(String time) => 'more than $time';
 
   // Errors
   static const error = 'Error';

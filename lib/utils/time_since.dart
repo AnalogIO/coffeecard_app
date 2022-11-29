@@ -1,43 +1,59 @@
 import 'package:coffeecard/base/strings.dart';
 
-String timeSince(DateTime time) {
-  final currentTime = DateTime.now();
+String timeSince(DateTime time, {DateTime? now}) {
+  // Set `now` if not provided
+  now ??= DateTime.now();
 
-  if (time.isAfter(currentTime)) {
-    return Strings.inTheFuture;
-  }
+  final diff = now.difference(time);
 
-  final diff = currentTime.difference(time);
+  // future
+  if (diff.inMinutes < -1) return Strings.inTheFuture;
 
-  if (diff.inMinutes < 2) return Strings.justNow;
-  if (diff.inHours < 1) return '${diff.inMinutes} ${Strings.minutesAgo}';
-  if (diff.inHours == 1) return Strings.anHourAgo;
-  if (diff.inHours < 8) return '${diff.inHours} ${Strings.hoursAgo}';
-  if (diff.inDays == 0) return Strings.earlierToday;
-  if (diff.inDays == 1) return Strings.yesterday;
-  if (diff.inDays < 31) return '${diff.inDays} ${Strings.daysAgo}';
-  if (diff.inDays < 365) return monthsAgo(days: diff.inDays);
-  return yearsAgo(days: diff.inDays);
+  // just now, minutes ago, hours ago
+  if (diff.inMinutes < 1) return Strings.justNow;
+  if (diff.inHours < 1) return Strings.minutesAgo(diff.inMinutes);
+  if (diff.inHours < 8) return Strings.hoursAgo(diff.inHours);
+
+  // earlier today, yesterday, days ago
+  if (diff.inDays == 0 && time.day == now.day) return Strings.earlierToday;
+  if (diff.inDays <= 1) return Strings.yesterday;
+  if (diff.inDays <= 25) return Strings.daysAgo(diff.inDays);
+
+  // months ago, years ago
+  if (diff.inDays <= 345) return _monthsAgo(days: diff.inDays);
+  return _yearsAgo(days: diff.inDays);
 }
 
-String monthsAgo({required int days}) {
+String _monthsAgo({required int days}) {
   final months = days ~/ 30.5;
-  final rest = days % 30.5;
-  if (rest > 28) return Strings.monthsAgo(months + 1);
-  if (rest < 3) return Strings.monthsAgo(months);
+  final remainder = days % 30.5;
 
-  if (rest > 23) return '${Strings.almost} ${Strings.monthsAgo(months + 1)}';
-  if (rest < 7) return '${Strings.around} ${Strings.monthsAgo(months)}';
-  return '${Strings.moreThan} ${Strings.monthsAgo(months)}';
+  // if remainder is less than 2 days, return x months ago
+  if (remainder < 2) return Strings.monthsAgo(months);
+  // if remainder is more than 28 days, return x+1 months ago
+  if (remainder > 28) return Strings.monthsAgo(months + 1);
+
+  // if remainder is less than 5 days, return around x months ago
+  if (remainder < 5) return Strings.around(Strings.monthsAgo(months));
+  // if remainder is more than 25 days, return almost x+1 months ago
+  if (remainder > 25) return Strings.almost(Strings.monthsAgo(months + 1));
+
+  return Strings.moreThan(Strings.monthsAgo(months));
 }
 
-String yearsAgo({required int days}) {
+String _yearsAgo({required int days}) {
   final years = days ~/ 365;
-  final rest = days % 365;
-  if (rest > 355) return Strings.yearsAgo(years + 1);
-  if (rest < 10) return Strings.yearsAgo(years);
+  final remainder = days % 365;
 
-  if (rest > 305) return '${Strings.almost} ${Strings.yearsAgo(years + 1)}';
-  if (rest < 60) return '${Strings.around} ${Strings.yearsAgo(years)}';
-  return '${Strings.moreThan} ${Strings.yearsAgo(years)}';
+  // if remainder is less than 10 days, return x years ago
+  if (remainder < 10) return Strings.yearsAgo(years);
+  // if remainder is more than 355 days, return x+1 years ago
+  if (remainder > 355) return Strings.yearsAgo(years + 1);
+
+  // if remainder is less than 20 days, return around x years ago
+  if (remainder < 20) return Strings.around(Strings.yearsAgo(years));
+  // if remainder is more than 345 days, return almost x+1 years ago
+  if (remainder > 345) return Strings.almost(Strings.yearsAgo(years + 1));
+
+  return Strings.moreThan(Strings.yearsAgo(years));
 }
