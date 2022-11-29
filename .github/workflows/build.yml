@@ -102,7 +102,7 @@ jobs:
         run: scripts/.generate-code.sh code
       - name: Build iOS (dev)
         if: github.ref_name != 'production'
-        run: flutter build ios --flavor develop --release --no-codesign --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_version }} --target lib/main_development.dart
+        run: flutter build ios --flavor development --release --no-codesign --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_version }} --target lib/main_development.dart
       - name: Build iOS (prod)
         if: github.ref_name == 'production'
         run: flutter build ios --flavor production --release --no-codesign --dart-define=IS_PROD=true --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_version }} --target lib/main_production.dart
