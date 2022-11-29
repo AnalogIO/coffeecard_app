@@ -159,10 +159,10 @@ jobs:
         run: scripts/.generate-code.sh code
       - name: Build appbundle (dev)
         if: github.ref_name != 'production'
-        run: flutter build apk --flavor development --release --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_version }}
+        run: flutter build apk --flavor development --release --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_version }} --target lib/main_development.dart
       - name: Build appbundle (prod)
         if: github.ref_name == 'production'
-        run: flutter build apk --flavor production --release --dart-define=IS_PROD=true --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_version }}
+        run: flutter build apk --flavor production --release --dart-define=IS_PROD=true --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_version }} --target lib/main_production.dart
       - name: Upload Android build
         if: ${{ inputs.storeArtifacts }}
         uses: actions/upload-artifact@v3.0.0
