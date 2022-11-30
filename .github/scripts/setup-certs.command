@@ -7,7 +7,7 @@ KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
 
 # import certificate and provisioning profile from secrets
 echo -n "$APPLE_IOS_SIGNING_CERT" | base64 --decode --output $CERTIFICATE_PATH
-echo -n "$APPLE_IOS_PROVISIONING_PROFILE" | base64 --decode --output $PP_PATH
+echo -n "$APPLE_IOS_PROVISIONING_PROFILE_DEVELOPMENT" | base64 --decode --output $PP_PATH
 
 # create temporary keychain
 security create-keychain -p "$APPLE_KEYCHAIN_PW" $KEYCHAIN_PATH
