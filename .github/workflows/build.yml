@@ -115,11 +115,11 @@ jobs:
       - name: Build xArchive (dev)
         if: github.ref_name != 'production'
         run: |
-          xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -configuration Release DEVELOPMENT_TEAM=Y5U9T77F2K -sdk 'iphoneos' -destination 'generic/platform=iOS' -archivePath build-output/app.xcarchive PROVISIONING_PROFILE_SPECIFIER="githubactions-dev" clean archive CODE_SIGN_IDENTITY="Apple Development: Jonas Anker Rasmussen"
+          xcodebuild -workspace ios/Runner.xcworkspace -scheme development -configuration Release-development DEVELOPMENT_TEAM=Y5U9T77F2K -sdk 'iphoneos' -destination 'generic/platform=iOS' -archivePath build-output/app.xcarchive PROVISIONING_PROFILE_SPECIFIER="githubactions-dev" clean archive CODE_SIGN_IDENTITY="Apple Development: Jonas Anker Rasmussen"
       - name: Build xArchive (prod)
         if: github.ref_name == 'production'
         run: |
-          xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -configuration Release DEVELOPMENT_TEAM=Y5U9T77F2K -sdk 'iphoneos' -destination 'generic/platform=iOS' -archivePath build-output/app.xcarchive PROVISIONING_PROFILE_SPECIFIER="githubactions-prod" clean archive CODE_SIGN_IDENTITY="Apple Distribution"  
+          xcodebuild -workspace ios/Runner.xcworkspace -scheme production -configuration Release-production DEVELOPMENT_TEAM=Y5U9T77F2K -sdk 'iphoneos' -destination 'generic/platform=iOS' -archivePath build-output/app.xcarchive PROVISIONING_PROFILE_SPECIFIER="githubactions-prod" clean archive CODE_SIGN_IDENTITY="Apple Distribution"  
       - name: Export ipa (dev)
         if: github.ref_name != 'production'
         run: xcodebuild -exportArchive -archivePath build-output/app.xcarchive -exportPath build-output/ios -exportOptionsPlist ios/exportOptions.dev.plist
