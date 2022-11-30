@@ -13,7 +13,7 @@
     <key>provisioningProfiles</key>
     <dict>
         <key>DK.AnalogIO.DigitalCoffeeCard</key>
-        <string>githubactions-dev</string>
+        <string>development</string>
     </dict>
 </dict>
 </plist>
