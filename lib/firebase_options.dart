@@ -48,7 +48,7 @@ abstract class DefaultFirebaseOptions {
           projectId: 'analogio-development',
           iosClientId:
               '707418028743-sbo7drueernqcuu9sea2o972auv23qaa.apps.googleusercontent.com',
-          iosBundleId: 'DK.AnalogIO.DigitalCoffeeCard.Dev',
+          iosBundleId: 'dk.analogio.analog.dev',
         );
       default:
         throw UnsupportedError(

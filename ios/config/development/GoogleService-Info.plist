@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>DK.AnalogIO.DigitalCoffeeCard.Dev</string>
+	<string>dk.analogio.analog.dev</string>
 	<key>PROJECT_ID</key>
 	<string>analogio-development</string>
 	<key>STORAGE_BUCKET</key>
