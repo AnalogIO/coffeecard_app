@@ -43,11 +43,11 @@ abstract class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return const FirebaseOptions(
           apiKey: 'AIzaSyCxfE-Rz0lTiFp7IrGxfph0_-aWHAlmqMY',
-          appId: '1:707418028743:ios:625bd829bb293e690e1ce2',
+          appId: '1:707418028743:ios:4a7aa2156c4e0f150e1ce2',
           messagingSenderId: '707418028743',
           projectId: 'analogio-development',
           iosClientId:
-              '707418028743-sbo7drueernqcuu9sea2o972auv23qaa.apps.googleusercontent.com',
+              '707418028743-fnktdlvjrcmu3n8af3v83dhr7v7lfpvh.apps.googleusercontent.com',
           iosBundleId: 'dk.analogio.analog.dev',
         );
       default:
