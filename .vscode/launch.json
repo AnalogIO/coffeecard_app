@@ -8,12 +8,24 @@
         "name": "Development flavor (debug mode)",
         "request": "launch",
         "type": "dart",
+        "flutterMode": "debug",
         "program": "lib/main_development.dart",
         "args": [
           "--flavor",
           "development",
           "--target",
           "lib/main_development.dart"
+        ]
+      },
+      {
+        "name": "Production flavor (debug mode)",
+        "request": "launch",
+        "type": "dart",
+        "flutterMode": "debug",
+        "program": "lib/main_production.dart",
+        "args": [
+          "--flavor",
+          "production",
         ]
       },
       {
@@ -25,8 +37,6 @@
         "args": [
           "--flavor",
           "production",
-          "--target",
-          "lib/main_production.dart"
         ]
       },
     ]
