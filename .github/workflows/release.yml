@@ -58,7 +58,7 @@ jobs:
           token: ${{ secrets.FIREBASE_TOKEN }}
           groups: analogio-devs
           file: app-release.apk
-          
+
   prod_release_ios:
     name: Upload iOS build to App Store connect
     runs-on: macos-latest
@@ -105,7 +105,7 @@ jobs:
           releaseFiles: ${{ steps.sign_app.outputs.signedReleaseFile }}
           track: internal
           status: draft
-  
+
   tag:
     name: Git Tag version
     runs-on: ubuntu-latest
