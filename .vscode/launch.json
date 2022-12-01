@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
       {
-        "name": "Development (debug)",
+        "name": "Development flavor (debug mode)",
         "request": "launch",
         "type": "dart",
         "program": "lib/main_development.dart",
@@ -16,6 +16,18 @@
           "lib/main_development.dart"
         ]
       },
+      {
+        "name": "Production flavor (profile mode)",
+        "request": "launch",
+        "type": "dart",
+        "flutterMode": "profile",
+        "program": "lib/main_production.dart",
+        "args": [
+          "--flavor",
+          "production",
+          "--target",
+          "lib/main_production.dart"
+        ]
+      },
     ]
   }
-  
