@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:707418028743:android:6e1200d861c9a5b20e1ce2",
+        "mobilesdk_app_id": "1:707418028743:android:79864852bd8c91f90e1ce2",
         "android_client_info": {
-          "package_name": "dk.analog.digitalclipcard.dev"
+          "package_name": "dk.analogio.analog.dev"
         }
       },
       "oauth_client": [

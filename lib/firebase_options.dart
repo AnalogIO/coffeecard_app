@@ -36,7 +36,7 @@ abstract class DefaultFirebaseOptions {
       case TargetPlatform.android:
         return const FirebaseOptions(
           apiKey: 'AIzaSyCfpHZomC2_5Dw4xlXyg0U77KZDtPEGZlM',
-          appId: '1:707418028743:android:6e1200d861c9a5b20e1ce2',
+          appId: '1:707418028743:android:79864852bd8c91f90e1ce2',
           messagingSenderId: '707418028743',
           projectId: 'analogio-development',
         );
