@@ -51,9 +51,6 @@ dependencies:
   # crypto
   crypto: 3.0.2
 
-  # icon and name
-  flutter_launcher_icons: 0.10.0
-
   # rest
   http: 0.13.5
 
@@ -72,6 +69,9 @@ dev_dependencies:
 
   build_runner: 2.2.0
 
+  flutter_launcher_icons: 0.10.0
+  flutter_native_splash: 2.2.16
+
   # unit testing
   mockito: 5.3.0
   bloc_test: 9.1.0
@@ -83,6 +83,11 @@ dev_dependencies:
 
   # linter
   lint: 1.10.0
+
+flutter_native_splash:
+  color: "#362619"
+  android_12:
+    color: "#E5E2D7"
 
 flutter_icons: #remember to update: flutter pub run flutter_launcher_icons:main
   android: true
