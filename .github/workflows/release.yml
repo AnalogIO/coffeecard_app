@@ -2,7 +2,7 @@ name: Release Coffeecard App
 
 on:
   push:
-    branches: [develop, production]
+    branches: [develop, production, feature/omid/add-debug-build]
     paths:
       - android/**
       - assets/**
@@ -25,7 +25,7 @@ jobs:
     name: Upload iOS build to Firebase App Distribution
     runs-on: ubuntu-latest
     needs: [build_and_test]
-    if: github.ref_name == 'develop'
+    if: true
 
     steps:
       - name: Download Artifact
@@ -44,7 +44,7 @@ jobs:
     name: Upload Android build to Firebase App Distribution
     runs-on: ubuntu-latest
     needs: [build_and_test]
-    if: github.ref_name == 'develop'
+    if: true
 
     steps:
       - name: Download artifact
@@ -63,7 +63,7 @@ jobs:
     name: Upload iOS build to App Store connect
     runs-on: macos-latest
     needs: [build_and_test]
-    if: github.ref_name == 'production'
+    if: false
 
     steps:
       - name: Download artifact
@@ -81,7 +81,7 @@ jobs:
     name: Upload Android build to Play Store
     runs-on: ubuntu-latest
     needs: [build_and_test]
-    if: github.ref_name == 'production'
+    if: false
 
     steps:
       - name: Download artifact
@@ -110,7 +110,7 @@ jobs:
     name: Git Tag version
     runs-on: ubuntu-latest
     needs: [build_and_test, prod_release_ios, prod_release_android]
-    if: ${{ needs.prod_release_ios.result == 'success' && needs.prod_release_android.result == 'success' }}
+    if: false
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
