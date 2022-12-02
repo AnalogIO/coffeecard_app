@@ -84,18 +84,27 @@ dev_dependencies:
   # linter
   lint: 1.10.0
 
+# update splash screen:
+# flutter pub run flutter_native_splash:create
+# OR
+# make splash
 flutter_native_splash:
   color: "#362619"
   android_12:
     color: "#E5E2D7"
 
-flutter_icons: #remember to update: flutter pub run flutter_launcher_icons:main
-  android: true
-  ios: true
-  remove_alpha_ios: true
-  image_path: "assets/icon/Icon.png"
-  adaptive_icon_background: "assets/icon/Background.png"
-  adaptive_icon_foreground: "assets/icon/Foreground.png"
+# update launcher icon:
+# flutter pub run flutter_launcher_icons:main
+# OR
+# make icon
+# WARNING! Don't run this command unless you are sure what you are doing.
+# flutter_icons:
+#   android: true
+#   ios: true
+#   remove_alpha_ios: true
+#   image_path: "assets/icon/Icon.png"
+#   adaptive_icon_background: "assets/icon/Background.png"
+#   adaptive_icon_foreground: "assets/icon/Foreground.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
