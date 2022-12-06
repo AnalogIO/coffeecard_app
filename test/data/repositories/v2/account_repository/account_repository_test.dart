@@ -1,9 +1,8 @@
 import 'package:chopper/chopper.dart' as chopper;
 import 'package:coffeecard/data/repositories/shared/account_repository.dart';
 import 'package:coffeecard/data/repositories/utils/executor.dart';
-import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
-import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart'
-    show CoffeecardApiV2;
+import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart' hide MessageResponseDto;
+import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logger/logger.dart';
 import 'package:mockito/annotations.dart';
@@ -31,7 +30,7 @@ void main() {
   });
 
   test('register given successful api response returns right', () async {
-    when(apiV1.apiV1AccountRegisterPost(body: anyNamed('body'))).thenAnswer(
+    when(apiV2.apiV2AccountPost(body: anyNamed('body'))).thenAnswer(
       (_) async {
         return chopper.Response(Responses.succeeding(), MessageResponseDto());
       },
@@ -42,7 +41,7 @@ void main() {
   });
 
   test('register given unsuccessful api response returns left', () async {
-    when(apiV1.apiV1AccountRegisterPost(body: anyNamed('body'))).thenAnswer(
+    when(apiV2.apiV2AccountPost(body: anyNamed('body'))).thenAnswer(
       (_) async => chopper.Response(Responses.failing(), null),
     );
 
