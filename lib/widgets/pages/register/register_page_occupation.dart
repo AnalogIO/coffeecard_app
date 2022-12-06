@@ -1,6 +1,6 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/colors.dart';
-import 'package:coffeecard/cubits/programme/programme_cubit.dart';
+import 'package:coffeecard/cubits/occupation/occupation_cubit.dart';
 import 'package:coffeecard/errors/match_case_incomplete_exception.dart';
 import 'package:coffeecard/utils/fast_slide_transition.dart';
 import 'package:coffeecard/widgets/components/error_section.dart';
@@ -10,8 +10,8 @@ import 'package:coffeecard/widgets/pages/register/register_page_name.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class RegisterPageProgramme extends StatefulWidget {
-  const RegisterPageProgramme({
+class RegisterPageOccupation extends StatefulWidget {
+  const RegisterPageOccupation({
     required this.email,
     required this.passcode,
   });
@@ -21,23 +21,23 @@ class RegisterPageProgramme extends StatefulWidget {
 
   static Route routeWith({required String email, required String passcode}) {
     return FastSlideTransition(
-      child: RegisterPageProgramme(email: email, passcode: passcode),
+      child: RegisterPageOccupation(email: email, passcode: passcode),
     );
   }
 
   @override
-  State<RegisterPageProgramme> createState() => _RegisterPageProgrammeState();
+  State<RegisterPageOccupation> createState() => _RegisterPageOccupationState();
 }
 
-class _RegisterPageProgrammeState extends State<RegisterPageProgramme> {
-  int? selectedProgrammeId;
+class _RegisterPageOccupationState extends State<RegisterPageOccupation> {
+  int? selectedOccupationId;
   int? selectedIndex;
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProgrammeCubit, ProgrammeState>(
+    return BlocBuilder<OccupationCubit, OccupationState>(
       builder: (context, state) {
-        if (state is ProgrammeLoading) {
+        if (state is OccupationLoading) {
           return const Center(
             child: CircularProgressIndicator(
               color: AppColor.primary,
@@ -45,14 +45,14 @@ class _RegisterPageProgrammeState extends State<RegisterPageProgramme> {
           );
         }
 
-        if (state is ProgrammeError) {
+        if (state is OccupationError) {
           return ErrorSection(
             error: state.message,
-            retry: context.read<ProgrammeCubit>().getProgrammes,
+            retry: context.read<OccupationCubit>().getOccupations,
           );
         }
 
-        if (state is! ProgrammeLoaded) {
+        if (state is! OccupationLoaded) {
           throw MatchCaseIncompleteException(this);
         }
 
@@ -65,28 +65,28 @@ class _RegisterPageProgrammeState extends State<RegisterPageProgramme> {
                 decoration:
                     BoxDecoration(borderRadius: BorderRadius.circular(24)),
                 child: OccupationSelection(
-                  programmes: state.programmes,
+                  occupations: state.occupations,
                   selected: selectedIndex != null
-                      ? state.programmes[selectedIndex!].shortName
+                      ? state.occupations[selectedIndex!].shortName
                       : null,
-                  onTap: (programme) => setState(() {
-                    selectedProgrammeId = programme.id;
-                    selectedIndex = state.programmes
-                        .indexWhere((p) => p.id == programme.id);
+                  onTap: (occupation) => setState(() {
+                    selectedOccupationId = occupation.id;
+                    selectedIndex = state.occupations
+                        .indexWhere((p) => p.id == occupation.id);
                   }),
                 ),
               ),
             ),
             RoundedButton(
               text: Strings.buttonContinue,
-              onTap: selectedProgrammeId != null
+              onTap: selectedOccupationId != null
                   ? () {
                       Navigator.push(
                         context,
                         RegisterPageName.routeWith(
                           email: widget.email,
                           passcode: widget.passcode,
-                          programmeId: selectedProgrammeId!,
+                          occupationId: selectedOccupationId!,
                         ),
                       );
                     }

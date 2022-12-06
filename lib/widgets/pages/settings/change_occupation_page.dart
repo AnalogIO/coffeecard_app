@@ -28,10 +28,11 @@ class ChangeOccupationPage extends StatelessWidget {
               return Loading(
                 loading: state is UserUpdating,
                 child: OccupationSelection(
-                  programmes: userLoadedState.programmes,
-                  selected: userLoadedState.user.programme.shortName,
-                  onTap: (programme) =>
-                      context.read<UserCubit>().setUserProgramme(programme.id),
+                  occupations: userLoadedState.occupations,
+                  selected: userLoadedState.user.occupation.shortName,
+                  onTap: (occupation) => context
+                      .read<UserCubit>()
+                      .setUserOccupation(occupation.id),
                 ),
               );
             },

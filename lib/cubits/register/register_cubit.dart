@@ -15,21 +15,21 @@ class RegisterCubit extends Cubit<RegisterState> {
     String name,
     String email,
     String passcode,
-    int programmeId,
+    int occupationId,
   ) async {
     final either = await repository.register(
       name,
       email,
       encodePasscode(passcode),
-      programmeId,
+      occupationId,
     );
 
-    if (either.isRight) {
-      emit(RegisterSuccess());
-    } else {
-      emit(RegisterError(either.left.message));
-    }
-
-    sl<FirebaseAnalyticsEventLogging>().signUpEvent();
+    either.caseOf(
+      (error) => emit(RegisterError(error.message)),
+      (user) {
+        emit(RegisterSuccess());
+        sl<FirebaseAnalyticsEventLogging>().signUpEvent();
+      },
+    );
   }
 }

@@ -1,8 +1,8 @@
 import 'package:coffeecard/generated/api/coffeecard_api.models.swagger.dart';
 import 'package:equatable/equatable.dart';
 
-class Programme extends Equatable {
-  const Programme({
+class Occupation extends Equatable {
+  const Occupation({
     required this.id,
     required this.shortName,
     required this.fullName,
@@ -12,7 +12,7 @@ class Programme extends Equatable {
   final String shortName;
   final String fullName;
 
-  Programme.fromDTO(ProgrammeDto dto)
+  Occupation.fromDTO(ProgrammeDto dto)
       : id = dto.id,
         shortName = dto.shortName,
         fullName = dto.fullName;

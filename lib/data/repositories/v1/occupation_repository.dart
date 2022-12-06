@@ -1,11 +1,11 @@
 import 'package:coffeecard/data/repositories/utils/executor.dart';
 import 'package:coffeecard/data/repositories/utils/request_types.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
-import 'package:coffeecard/models/programme.dart';
+import 'package:coffeecard/models/occupation.dart';
 import 'package:coffeecard/utils/either.dart';
 
-class ProgrammeRepository {
-  ProgrammeRepository({
+class OccupationRepository {
+  OccupationRepository({
     required this.apiV1,
     required this.executor,
   });
@@ -13,10 +13,10 @@ class ProgrammeRepository {
   final CoffeecardApi apiV1;
   final Executor executor;
 
-  Future<Either<RequestFailure, List<Programme>>> getProgrammes() async {
+  Future<Either<RequestFailure, List<Occupation>>> getOccupations() async {
     return executor.execute(
       apiV1.apiV1ProgrammesGet,
-      (dto) => dto.map(Programme.fromDTO).toList(),
+      (dto) => dto.map(Occupation.fromDTO).toList(),
     );
   }
 }

@@ -6,8 +6,8 @@ class User extends Equatable {
   final String name;
   final String email;
   final bool privacyActivated;
-  final int programmeId;
-  final ProgrammeInfo programme;
+  final int occupationId;
+  final OccupationInfo occupation;
   final int rankMonth;
   final int rankSemester;
   final int rankTotal;
@@ -17,8 +17,8 @@ class User extends Equatable {
     required this.name,
     required this.email,
     required this.privacyActivated,
-    required this.programmeId,
-    this.programme = const ProgrammeInfo('None', 'None'),
+    required this.occupationId,
+    this.occupation = const OccupationInfo('None', 'None'),
     required this.rankMonth,
     required this.rankSemester,
     required this.rankTotal,
@@ -29,8 +29,8 @@ class User extends Equatable {
         name = dto.name,
         email = dto.email,
         privacyActivated = dto.privacyActivated,
-        programmeId = dto.programmeId,
-        programme = const ProgrammeInfo('None', 'None'),
+        occupationId = dto.programmeId,
+        occupation = const OccupationInfo('None', 'None'),
         rankMonth = dto.rankMonth,
         rankSemester = dto.rankSemester,
         rankTotal = dto.rankAllTime;
@@ -40,8 +40,8 @@ class User extends Equatable {
     String? name,
     String? email,
     bool? privacyActivated,
-    int? programmeId,
-    ProgrammeInfo? programme,
+    int? occupationId,
+    OccupationInfo? occupation,
     int? rankMonth,
     int? rankSemester,
     int? rankTotal,
@@ -51,8 +51,8 @@ class User extends Equatable {
       name: name ?? this.name,
       email: email ?? this.email,
       privacyActivated: privacyActivated ?? this.privacyActivated,
-      programmeId: programmeId ?? this.programmeId,
-      programme: programme ?? this.programme,
+      occupationId: occupationId ?? this.occupationId,
+      occupation: occupation ?? this.occupation,
       rankMonth: rankMonth ?? this.rankMonth,
       rankSemester: rankSemester ?? this.rankSemester,
       rankTotal: rankTotal ?? this.rankTotal,
@@ -66,7 +66,7 @@ class User extends Equatable {
       name,
       email,
       privacyActivated,
-      programmeId,
+      occupationId,
       rankMonth,
       rankSemester,
       rankTotal,
@@ -74,9 +74,9 @@ class User extends Equatable {
   }
 }
 
-class ProgrammeInfo {
+class OccupationInfo {
   final String shortName;
   final String fullName;
 
-  const ProgrammeInfo(this.shortName, this.fullName);
+  const OccupationInfo(this.shortName, this.fullName);
 }

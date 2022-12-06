@@ -13,11 +13,11 @@ class RegisterNameForm extends StatefulWidget {
   const RegisterNameForm({
     required this.email,
     required this.passcode,
-    required this.programmeId,
+    required this.occupationId,
   });
   final String email;
   final String passcode;
-  final int programmeId;
+  final int occupationId;
 
   @override
   State<RegisterNameForm> createState() => _RegisterNameFormState();
@@ -74,7 +74,7 @@ class _RegisterNameFormState extends State<RegisterNameForm> {
                   name,
                   widget.email,
                   widget.passcode,
-                  widget.programmeId,
+                  widget.occupationId,
                 );
             closeAppDialog(context);
           },

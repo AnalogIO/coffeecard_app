@@ -24,7 +24,7 @@ class AccountRepository {
     String name,
     String email,
     String encodedPasscode,
-    int programmeId,
+    int occupationId,
   ) async {
     return executor.execute(
       () => apiV2.apiV2AccountPost(
@@ -32,7 +32,7 @@ class AccountRepository {
           name: name,
           email: email,
           password: encodedPasscode,
-          programmeId: programmeId,
+          programmeId: occupationId,
         ),
       ),
       (_) => RequestSuccess(),
@@ -67,7 +67,7 @@ class AccountRepository {
   Future<Either<RequestFailure, User>> updateUser(UpdateUser user) async {
     final userDTO = UpdateUserDto(
       name: user.name,
-      programmeId: user.programmeId,
+      programmeId: user.occupationId,
       email: user.email,
       privacyActivated: user.privacyActivated,
       password: user.encodedPasscode,

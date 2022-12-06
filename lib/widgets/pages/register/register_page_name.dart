@@ -14,23 +14,23 @@ class RegisterPageName extends StatelessWidget {
   const RegisterPageName({
     required this.email,
     required this.passcode,
-    required this.programmeId,
+    required this.occupationId,
   });
 
   final String email;
   final String passcode;
-  final int programmeId;
+  final int occupationId;
 
   static Route routeWith({
     required String email,
     required String passcode,
-    required int programmeId,
+    required int occupationId,
   }) {
     return FastSlideTransition(
       child: RegisterPageName(
         email: email,
         passcode: passcode,
-        programmeId: programmeId,
+        occupationId: occupationId,
       ),
     );
   }
@@ -47,7 +47,7 @@ class RegisterPageName extends StatelessWidget {
         child: RegisterNameForm(
           email: email,
           passcode: passcode,
-          programmeId: programmeId,
+          occupationId: occupationId,
         ),
       ),
     );
