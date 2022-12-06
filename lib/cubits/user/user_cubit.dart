@@ -45,15 +45,16 @@ class UserCubit extends Cubit<UserState> {
 
     final either = await _accountRepository.updateUser(user);
 
-    if (either.isRight) {
+    either.caseOf((error) {
+      emit(UserError(either.left.message));
+    }, (user) async {
       // Refreshes twice as a work-around for
       // a backend bug that returns a user object with all ranks set to 0.
       await _enrichUserWithProgrammes(either.right);
-      // TODO: Remove fetchUserDetails when backend bug is fixed
-      return fetchUserDetails();
-    } else {
-      emit(UserError(either.left.message));
-    }
+
+      // TODO(marfavi): remove fetchUserDetails when backend bug is fixed, https://github.com/AnalogIO/coffeecard_app/issues/378
+      fetchUserDetails();
+    });
   }
 
   Future<void> _enrichUserWithProgrammes(User user) async {

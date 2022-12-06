@@ -52,9 +52,10 @@ class MobilePayService implements PaymentHandler {
     return Left(response.left);
   }
 
-  Future<void> invokeMobilePay(Uri mobilePayDeeplink) async {
-    if (await canLaunchUrl(mobilePayDeeplink)) {
-      await launchUrl(mobilePayDeeplink, mode: LaunchMode.externalApplication);
+  @override
+  Future<void> invokePaymentMethod(Uri uri) async {
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
     } else {
       final Uri url;
 
@@ -79,20 +80,21 @@ class MobilePayService implements PaymentHandler {
     // Call API endpoint, receive PaymentStatus
     final either = await _repository.getPurchase(purchaseId);
 
-    if (either.isRight) {
+    return either.caseOf((error) {
+      return Left(error);
+    }, (purchase) {
       final paymentDetails = MobilePayPaymentDetails.fromJsonFactory(
-        either.right.paymentDetails as Map<String, dynamic>,
+        purchase.paymentDetails as Map<String, dynamic>,
       );
 
       final status = _mapPaymentStateToStatus(paymentDetails.state);
       if (status == PaymentStatus.completed) {
         return const Right(PaymentStatus.completed);
       }
-      // TODO: Cover more cases for PaymentStatus
-      return const Right(PaymentStatus.error);
-    }
 
-    return Left(either.left);
+      // TODO(marfavi): Cover more cases for PaymentStatus, https://github.com/AnalogIO/coffeecard_app/issues/385
+      return const Right(PaymentStatus.error);
+    });
   }
 
   PaymentStatus _mapPaymentStateToStatus(String? state) {

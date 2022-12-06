@@ -61,7 +61,6 @@ void configureServices() {
 
   final shiftplanningChopper = ChopperClient(
     baseUrl: ApiUriConstants.shiftyUrl,
-    // TODO: load the url from config files
     converter: $JsonSerializableConverter(),
     services: [ShiftplanningApi.create()],
     authenticator: sl.get<ReactivationAuthenticator>(),
