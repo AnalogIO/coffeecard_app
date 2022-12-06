@@ -16,11 +16,11 @@ class OccupationSelection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    occupations.sort((a, b) => a.fullName.compareTo(b.fullName));
+
     return ListView.builder(
       itemCount: occupations.length,
-      itemBuilder: (context, index) {
-        occupations.sort((a, b) => a.fullName.compareTo(b.fullName));
-
+      itemBuilder: (_, index) {
         final occupation = occupations[index];
 
         return SettingListEntry(
