@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:coffeecard/data/repositories/utils/request_types.dart';
 import 'package:coffeecard/data/repositories/v2/purchase_repository.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
+import 'package:coffeecard/models/purchase/initiate_purchase.dart';
 import 'package:coffeecard/models/purchase/payment.dart';
 import 'package:coffeecard/models/purchase/payment_status.dart';
 import 'package:coffeecard/payment/payment_handler.dart';
@@ -20,7 +21,7 @@ class MobilePayService implements PaymentHandler {
 
   @override
   Future<Either<RequestFailure, Payment>> initPurchase(int productId) async {
-    final Either<RequestFailure, InitiatePurchaseResponse> response;
+    final Either<RequestFailure, InitiatePurchase> response;
     try {
       response = await _repository.initiatePurchase(
         productId,
@@ -33,7 +34,7 @@ class MobilePayService implements PaymentHandler {
     if (response is Right) {
       final purchaseResponse = response.right;
       final paymentDetails = MobilePayPaymentDetails.fromJsonFactory(
-        purchaseResponse.paymentDetails as Map<String, dynamic>,
+        purchaseResponse.paymentDetails,
       );
 
       return Right(
@@ -83,9 +84,8 @@ class MobilePayService implements PaymentHandler {
     return either.caseOf((error) {
       return Left(error);
     }, (purchase) {
-      final paymentDetails = MobilePayPaymentDetails.fromJsonFactory(
-        purchase.paymentDetails as Map<String, dynamic>,
-      );
+      final paymentDetails =
+          MobilePayPaymentDetails.fromJsonFactory(purchase.paymentDetails);
 
       final status = _mapPaymentStateToStatus(paymentDetails.state);
       if (status == PaymentStatus.completed) {
