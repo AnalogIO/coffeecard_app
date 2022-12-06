@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 class OccupationSelection extends StatelessWidget {
   final List<Programme> programmes;
-  final Object selected;
+  final Object? selected;
   final void Function(Programme) onTap;
 
   const OccupationSelection({

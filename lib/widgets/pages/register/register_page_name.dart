@@ -11,17 +11,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 
 class RegisterPageName extends StatelessWidget {
-  const RegisterPageName(
-      {required this.email, required this.passcode, required this.programmeId,});
+  const RegisterPageName({
+    required this.email,
+    required this.passcode,
+    required this.programmeId,
+  });
 
   final String email;
   final String passcode;
   final int programmeId;
 
-  static Route routeWith(
-      {required String email,
-      required String passcode,
-      required int programmeId,}) {
+  static Route routeWith({
+    required String email,
+    required String passcode,
+    required int programmeId,
+  }) {
     return FastSlideTransition(
       child: RegisterPageName(
         email: email,

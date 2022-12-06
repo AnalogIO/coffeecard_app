@@ -30,8 +30,8 @@ class RegisterPageProgramme extends StatefulWidget {
 }
 
 class _RegisterPageProgrammeState extends State<RegisterPageProgramme> {
-  var selectedProgrammeId = 0;
-  var selectedIndex = 0;
+  int? selectedProgrammeId;
+  int? selectedIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +66,9 @@ class _RegisterPageProgrammeState extends State<RegisterPageProgramme> {
                     BoxDecoration(borderRadius: BorderRadius.circular(24)),
                 child: OccupationSelection(
                   programmes: state.programmes,
-                  selected: state.programmes[selectedIndex].shortName,
+                  selected: selectedIndex != null
+                      ? state.programmes[selectedIndex!].shortName
+                      : null,
                   onTap: (programme) => setState(() {
                     selectedProgrammeId = programme.id;
                     selectedIndex = state.programmes
@@ -77,16 +79,18 @@ class _RegisterPageProgrammeState extends State<RegisterPageProgramme> {
             ),
             RoundedButton(
               text: Strings.buttonContinue,
-              onTap: () {
-                Navigator.push(
-                  context,
-                  RegisterPageName.routeWith(
-                    email: widget.email,
-                    passcode: widget.passcode,
-                    programmeId: selectedProgrammeId,
-                  ),
-                );
-              },
+              onTap: selectedProgrammeId != null
+                  ? () {
+                      Navigator.push(
+                        context,
+                        RegisterPageName.routeWith(
+                          email: widget.email,
+                          passcode: widget.passcode,
+                          programmeId: selectedProgrammeId!,
+                        ),
+                      );
+                    }
+                  : null,
             ),
           ],
         );
