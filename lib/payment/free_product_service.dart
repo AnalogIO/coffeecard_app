@@ -23,15 +23,9 @@ class FreeProductService extends PaymentHandler {
     final response =
         await _repository.initiatePurchase(productId, PaymentType.freepurchase);
 
-    return response.fold((l) => Left(l), (r) {
-      final paymentDetails = FreeProductPaymentDetails.fromJsonFactory(
-        r.paymentDetails,
-      );
-
-      return Right(
+    return response.fold((l) => Left(l), (r) => Right(
         Payment(
           id: r.id,
-          paymentId: paymentDetails.paymentId!,
           status: PaymentStatus.completed,
           deeplink: '',
           purchaseTime: r.dateCreated,
@@ -39,7 +33,7 @@ class FreeProductService extends PaymentHandler {
           productId: r.productId,
           productName: r.productName,
         ),
-      );
-    });
+      ),
+    );
   }
 }

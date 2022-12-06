@@ -23,11 +23,16 @@ class MobilePayService extends PaymentHandler {
         _context = context;
 
   @override
-  Future<Either<Failure, Payment>> initPurchase(int productId) async {
-    final response = await _repository.initiatePurchase(
-      productId,
-      PaymentType.mobilepay,
-    );
+  Future<Either<RequestFailure, Payment>> initPurchase(int productId) async {
+    final Either<RequestFailure, InitiatePurchaseResponse> response;
+    try {
+      response = await _repository.initiatePurchase(
+        productId,
+        PaymentType.mobilepay,
+      );
+    } catch (e) {
+      return Left(RequestFailure(e.toString()));
+    }
 
     return response.map(
       (response) {
