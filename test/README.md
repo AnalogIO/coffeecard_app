@@ -24,3 +24,14 @@ void main() {
   var cat = MockSecureStorage();
 }
 ```
+
+## Golden tests
+
+Golden files for UI tests are auto-generated. This is doing by first implementing the test (Pump widget, compare to golden file), then generating the file using
+```bash
+  flutter test --update-goldens path/to/test.dart
+```
+
+Due to OS specific rendering, golden tests will fail in GHA if not generated using a linux distro. 
+
+(**TODO**: Make dockerfile for golden generation)
