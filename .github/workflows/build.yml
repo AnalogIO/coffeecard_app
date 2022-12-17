@@ -68,7 +68,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Install Apple certificate and provisioning profile (dev)
         run: .github/scripts/setup-certs.command
-        if: false
+        if: true
         env:
           APPLE_IOS_SIGNING_CERT: ${{ secrets.APPLE_IOS_SIGNING_CERTIFICATE_DEVELOPMENT }}
           APPLE_IOS_SIGNING_CERT_PW: ${{ secrets.APPLE_IOS_SIGNING_CERTIFICATE_DEVELOPMENT_PASSWORD }}
@@ -76,7 +76,7 @@ jobs:
           APPLE_KEYCHAIN_PW: ${{ secrets.APPLE_KEYCHAIN_PW }}
       - name: Install Apple certificate and provisioning profile (prod)
         run: .github/scripts/setup-certs.command
-        if: true
+        if: false
         env:
           APPLE_IOS_SIGNING_CERT: ${{ secrets.APPLE_IOS_SIGNING_CERT_PROD }}
           APPLE_IOS_SIGNING_CERT_PW: ${{ secrets.APPLE_IOS_SIGNING_CERT_PW }}
@@ -101,30 +101,30 @@ jobs:
       - name: Generate code
         run: scripts/.generate-code.sh code
       - name: Build iOS (dev)
-        if: false
+        if: true
         run: flutter build ios --flavor development --release --no-codesign --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_version }} --target lib/main_development.dart
       - name: Build iOS (prod)
-        if: true
+        if: false
         run: flutter build ios --flavor production --release --no-codesign --dart-define=IS_PROD=true --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_version }} --target lib/main_production.dart
       - name: Build resolve Swift dependencies (dev)
         if: false
         run: xcodebuild -resolvePackageDependencies -workspace ios/Runner.xcworkspace -scheme production -configuration Release-production
       - name: Build resolve Swift dependencies (prod)
-        if: true
+        if: false
         run: xcodebuild -resolvePackageDependencies -workspace ios/Runner.xcworkspace -scheme development -configuration Release-development
       - name: Build xArchive (dev)
-        if: false
+        if: true
         run: |
           xcodebuild -workspace ios/Runner.xcworkspace -scheme development -configuration Release-development DEVELOPMENT_TEAM=Y5U9T77F2K -sdk 'iphoneos' -destination 'generic/platform=iOS' -archivePath build-output/app.xcarchive PROVISIONING_PROFILE_SPECIFIER="development" clean archive CODE_SIGN_IDENTITY="iPhone Developer"
       - name: Build xArchive (prod)
-        if: true
+        if: false
         run: |
           xcodebuild -workspace ios/Runner.xcworkspace -scheme production -configuration Release-production DEVELOPMENT_TEAM=Y5U9T77F2K -sdk 'iphoneos' -destination 'generic/platform=iOS' -archivePath build-output/app.xcarchive PROVISIONING_PROFILE_SPECIFIER="githubactions-prod" clean archive CODE_SIGN_IDENTITY="Apple Distribution"  
       - name: Export ipa (dev)
-        if: false
+        if: true
         run: xcodebuild -exportArchive -archivePath build-output/app.xcarchive -exportPath build-output/ios -exportOptionsPlist ios/exportOptions.dev.plist
       - name: Export ipa (prod)
-        if: true
+        if: false
         run: xcodebuild -exportArchive -archivePath build-output/app.xcarchive -exportPath build-output/ios -exportOptionsPlist ios/exportOptions.prod.plist
       - name: Upload iOS build
         if: ${{ inputs.storeArtifacts }}
@@ -162,10 +162,10 @@ jobs:
       - name: Generate code
         run: scripts/.generate-code.sh code
       - name: Build appbundle (dev)
-        if: false
+        if: true
         run: flutter build apk --flavor development --release --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_version }} --target lib/main_development.dart
       - name: Build appbundle (prod)
-        if: true
+        if: false
         run: flutter build apk --flavor production --release --dart-define=IS_PROD=true --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_version }} --target lib/main_production.dart
       - name: Upload Android build
         if: ${{ inputs.storeArtifacts }}
