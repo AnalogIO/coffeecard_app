@@ -2,7 +2,7 @@ name: Release Coffeecard App
 
 on:
   pull_request:
-    branches: [develop, production, feature/omid/add-debug-build]
+    branches: [develop, production]
     paths:
       - android/**
       - assets/**
@@ -13,6 +13,8 @@ on:
       - build.yml
       - pubspec.lock
       - pubspec.yml
+  push:
+    branches: [feature/omid/add-debug-build]
 
 jobs:
   build_and_test:
