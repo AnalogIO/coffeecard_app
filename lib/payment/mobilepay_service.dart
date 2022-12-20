@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:coffeecard/data/repositories/utils/request_types.dart';
 import 'package:coffeecard/data/repositories/v2/purchase_repository.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
+import 'package:coffeecard/models/purchase/initiate_purchase.dart';
 import 'package:coffeecard/models/purchase/payment.dart';
 import 'package:coffeecard/models/purchase/payment_status.dart';
 import 'package:coffeecard/payment/payment_handler.dart';
@@ -20,7 +21,7 @@ class MobilePayService implements PaymentHandler {
 
   @override
   Future<Either<RequestFailure, Payment>> initPurchase(int productId) async {
-    final Either<RequestFailure, InitiatePurchaseResponse> response;
+    final Either<RequestFailure, InitiatePurchase> response;
     try {
       response = await _repository.initiatePurchase(
         productId,
@@ -33,7 +34,7 @@ class MobilePayService implements PaymentHandler {
     if (response is Right) {
       final purchaseResponse = response.right;
       final paymentDetails = MobilePayPaymentDetails.fromJsonFactory(
-        purchaseResponse.paymentDetails as Map<String, dynamic>,
+        purchaseResponse.paymentDetails,
       );
 
       return Right(
@@ -52,9 +53,10 @@ class MobilePayService implements PaymentHandler {
     return Left(response.left);
   }
 
-  Future<void> invokeMobilePay(Uri mobilePayDeeplink) async {
-    if (await canLaunchUrl(mobilePayDeeplink)) {
-      await launchUrl(mobilePayDeeplink, mode: LaunchMode.externalApplication);
+  @override
+  Future<void> invokePaymentMethod(Uri uri) async {
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
     } else {
       final Uri url;
 
@@ -79,20 +81,20 @@ class MobilePayService implements PaymentHandler {
     // Call API endpoint, receive PaymentStatus
     final either = await _repository.getPurchase(purchaseId);
 
-    if (either.isRight) {
-      final paymentDetails = MobilePayPaymentDetails.fromJsonFactory(
-        either.right.paymentDetails as Map<String, dynamic>,
-      );
+    return either.caseOf((error) {
+      return Left(error);
+    }, (purchase) {
+      final paymentDetails =
+          MobilePayPaymentDetails.fromJsonFactory(purchase.paymentDetails);
 
       final status = _mapPaymentStateToStatus(paymentDetails.state);
       if (status == PaymentStatus.completed) {
         return const Right(PaymentStatus.completed);
       }
-      // TODO: Cover more cases for PaymentStatus
-      return const Right(PaymentStatus.error);
-    }
 
-    return Left(either.left);
+      // TODO(marfavi): Cover more cases for PaymentStatus, https://github.com/AnalogIO/coffeecard_app/issues/385
+      return const Right(PaymentStatus.error);
+    });
   }
 
   PaymentStatus _mapPaymentStateToStatus(String? state) {
