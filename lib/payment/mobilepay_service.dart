@@ -31,26 +31,27 @@ class MobilePayService implements PaymentHandler {
       return Left(RequestFailure(e.toString()));
     }
 
-    if (response is Right) {
-      final purchaseResponse = response.right;
-      final paymentDetails = MobilePayPaymentDetails.fromJsonFactory(
-        purchaseResponse.paymentDetails,
-      );
+    return response.caseOf(
+      (error) => Left(error),
+      (response) {
+        final paymentDetails = MobilePayPaymentDetails.fromJsonFactory(
+          response.paymentDetails,
+        );
 
-      return Right(
-        Payment(
-          id: purchaseResponse.id,
-          paymentId: paymentDetails.paymentId!,
-          status: PaymentStatus.awaitingPayment,
-          deeplink: paymentDetails.mobilePayAppRedirectUri!,
-          purchaseTime: purchaseResponse.dateCreated,
-          price: purchaseResponse.totalAmount,
-          productId: purchaseResponse.productId,
-          productName: purchaseResponse.productName,
-        ),
-      );
-    }
-    return Left(response.left);
+        return Right(
+          Payment(
+            id: response.id,
+            paymentId: paymentDetails.paymentId!,
+            status: PaymentStatus.awaitingPayment,
+            deeplink: paymentDetails.mobilePayAppRedirectUri!,
+            purchaseTime: response.dateCreated,
+            price: response.totalAmount,
+            productId: response.productId,
+            productName: response.productName,
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -66,7 +67,6 @@ class MobilePayService implements PaymentHandler {
       } else if (Platform.isIOS) {
         url = ApiUriConstants.mobilepayIOS;
       } else {
-        // Should never happen
         throw UnsupportedError('Unsupported platform');
       }
 
