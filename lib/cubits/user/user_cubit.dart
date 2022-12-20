@@ -80,9 +80,7 @@ class UserCubit extends Cubit<UserState> {
 
     emit(
       UserLoaded(
-        user: user.copyWith(
-          occupation: OccupationInfo(occupation.shortName, occupation.fullName),
-        ),
+        user: user.copyWith(occupation: occupation),
         occupations: occupations,
       ),
     );

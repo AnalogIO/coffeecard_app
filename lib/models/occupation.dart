@@ -17,6 +17,11 @@ class Occupation extends Equatable {
         shortName = dto.shortName,
         fullName = dto.fullName;
 
+  const Occupation.empty()
+      : id = 0,
+        shortName = 'None',
+        fullName = 'None';
+
   @override
   List<Object> get props => [id, shortName, fullName];
 }

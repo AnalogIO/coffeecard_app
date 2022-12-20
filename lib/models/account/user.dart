@@ -1,4 +1,5 @@
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
+import 'package:coffeecard/models/occupation.dart';
 import 'package:equatable/equatable.dart';
 
 class User extends Equatable {
@@ -7,7 +8,7 @@ class User extends Equatable {
   final String email;
   final bool privacyActivated;
   final int occupationId;
-  final OccupationInfo occupation;
+  final Occupation occupation;
   final int rankMonth;
   final int rankSemester;
   final int rankTotal;
@@ -18,7 +19,7 @@ class User extends Equatable {
     required this.email,
     required this.privacyActivated,
     required this.occupationId,
-    this.occupation = const OccupationInfo('None', 'None'),
+    this.occupation = const Occupation.empty(),
     required this.rankMonth,
     required this.rankSemester,
     required this.rankTotal,
@@ -30,7 +31,7 @@ class User extends Equatable {
         email = dto.email,
         privacyActivated = dto.privacyActivated,
         occupationId = dto.programmeId,
-        occupation = const OccupationInfo('None', 'None'),
+        occupation = const Occupation.empty(),
         rankMonth = dto.rankMonth,
         rankSemester = dto.rankSemester,
         rankTotal = dto.rankAllTime;
@@ -41,7 +42,7 @@ class User extends Equatable {
     String? email,
     bool? privacyActivated,
     int? occupationId,
-    OccupationInfo? occupation,
+    Occupation? occupation,
     int? rankMonth,
     int? rankSemester,
     int? rankTotal,
@@ -72,11 +73,4 @@ class User extends Equatable {
       rankTotal,
     ];
   }
-}
-
-class OccupationInfo {
-  final String shortName;
-  final String fullName;
-
-  const OccupationInfo(this.shortName, this.fullName);
 }

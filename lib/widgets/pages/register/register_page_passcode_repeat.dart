@@ -20,14 +20,17 @@ class RegisterPagePasscodeRepeat extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RegisterPasscodeRepeatForm(
-      passcode: passcode,
-      onSubmit: (_) {
-        Navigator.push(
-          context,
-          RegisterPageOccupation.routeWith(email: email, passcode: passcode),
-        );
-      },
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: RegisterPasscodeRepeatForm(
+        passcode: passcode,
+        onSubmit: (_) {
+          Navigator.push(
+            context,
+            RegisterPageOccupation.routeWith(email: email, passcode: passcode),
+          );
+        },
+      ),
     );
   }
 }

@@ -37,17 +37,20 @@ class RegisterPageName extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => RegisterCubit(repository: sl<AccountRepository>()),
-      child: BlocListener<RegisterCubit, RegisterState>(
-        listener: (context, state) {
-          if (state is RegisterSuccess) return _showSuccessDialog(context);
-          if (state is RegisterError) return _showErrorDialog(context, state);
-        },
-        child: RegisterNameForm(
-          email: email,
-          passcode: passcode,
-          occupationId: occupationId,
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: BlocProvider(
+        create: (_) => RegisterCubit(repository: sl<AccountRepository>()),
+        child: BlocListener<RegisterCubit, RegisterState>(
+          listener: (context, state) {
+            if (state is RegisterSuccess) return _showSuccessDialog(context);
+            if (state is RegisterError) return _showErrorDialog(context, state);
+          },
+          child: RegisterNameForm(
+            email: email,
+            passcode: passcode,
+            occupationId: occupationId,
+          ),
         ),
       ),
     );

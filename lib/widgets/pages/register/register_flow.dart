@@ -32,7 +32,6 @@ class RegisterFlow extends StatelessWidget {
       ],
       child: AppScaffold.withTitle(
         title: Strings.registerAppBarTitle,
-        applyPadding: true,
         body: AppFlow(initialRoute: RegisterPageEmail.route),
       ),
     );
