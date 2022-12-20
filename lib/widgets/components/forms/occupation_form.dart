@@ -37,7 +37,7 @@ class OccupationForm extends StatelessWidget {
             shrinkWrap: true,
             children: [
               const Gap(16),
-              const SectionTitle('What is your occupation?'),
+              const SectionTitle(Strings.registerOccupationTitle),
               const Gap(16),
               ClipRRect(
                 borderRadius: BorderRadius.circular(24),

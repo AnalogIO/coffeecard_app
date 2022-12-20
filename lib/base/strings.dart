@@ -78,6 +78,8 @@ abstract class Strings {
   static const registerPasscodeRepeatEmpty = 'Repeat the passcode';
   static const registerPasscodeDoesNotMatch = 'Passcodes do not match';
 
+  static const registerOccupationTitle = "What's your occupation?";
+
   static const registerNameTitle = 'Enter your name';
   static const registerNameLabel = 'Name';
   static const registerNameEmpty = 'Enter a name';
