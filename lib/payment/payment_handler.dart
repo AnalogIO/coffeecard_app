@@ -9,7 +9,6 @@ import 'package:flutter/widgets.dart';
 
 enum InternalPaymentType {
   mobilePay,
-  applePay,
 }
 
 abstract class PaymentHandler {
@@ -17,7 +16,7 @@ abstract class PaymentHandler {
     switch (type) {
       case InternalPaymentType.mobilePay:
         return MobilePayService(sl.get<PurchaseRepository>(), context);
-      case InternalPaymentType.applePay:
+      default:
         throw UnimplementedError();
     }
   }
@@ -25,4 +24,6 @@ abstract class PaymentHandler {
   Future<Either<RequestFailure, Payment>> initPurchase(int productId);
 
   Future<Either<RequestFailure, PaymentStatus>> verifyPurchase(int purchaseId);
+
+  Future<void> invokePaymentMethod(Uri uri);
 }
