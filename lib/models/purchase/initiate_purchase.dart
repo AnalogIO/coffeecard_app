@@ -3,7 +3,7 @@ import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
 class InitiatePurchase {
   final int id;
   final int totalAmount;
-  final Map<String, String> paymentDetails;
+  final Map<String, dynamic> paymentDetails;
   final int productId;
   final String productName;
   final String purchaseStatus;
@@ -22,7 +22,7 @@ class InitiatePurchase {
   InitiatePurchase.fromDto(InitiatePurchaseResponse dto)
       : id = dto.id,
         totalAmount = dto.totalAmount,
-        paymentDetails = dto.paymentDetails as Map<String, String>,
+        paymentDetails = dto.paymentDetails as Map<String, dynamic>,
         productId = dto.productId,
         productName = dto.productName,
         purchaseStatus = dto.purchaseStatus as String,
