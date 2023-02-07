@@ -1,32 +1,38 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/data/repositories/utils/executor.dart';
-import 'package:coffeecard/data/repositories/utils/request_types.dart';
+import 'package:coffeecard/core/errors/exceptions.dart';
+import 'package:coffeecard/core/errors/failures.dart';
+import 'package:coffeecard/features/opening_hours/data/datasources/opening_hours_remote_data_source.dart';
+import 'package:coffeecard/features/opening_hours/domain/repositories/opening_hours_repository.dart';
 import 'package:coffeecard/generated/api/shiftplanning_api.swagger.dart';
 import 'package:coffeecard/models/opening_hours_day.dart';
 import 'package:coffeecard/utils/either.dart';
 import 'package:collection/collection.dart';
 
-class OpeningHoursRepository {
-  OpeningHoursRepository({
-    required this.api,
-    required this.executor,
-  });
+class OpeningHoursRepositoryImpl implements OpeningHoursRepository {
+  final OpeningHoursRemoteDataSource dataSource;
 
-  final ShiftplanningApi api;
-  final Executor executor;
+  OpeningHoursRepositoryImpl({required this.dataSource});
 
-  Future<Either<RequestFailure, bool>> isOpen() async {
-    return executor.execute(
-      () => api.apiOpenShortKeyGet(shortKey: 'analog'),
-      (dto) => dto.open,
-    );
+  @override
+  Future<Either<Failure, bool>> getIsOpen() async {
+    try {
+      final isOpen = await dataSource.isOpen();
+
+      return Right(isOpen);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(e.error));
+    }
   }
 
-  Future<Either<RequestFailure, Map<int, String>>> getOpeningHours() async {
-    return executor.execute(
-      () => api.apiShiftsShortKeyGet(shortKey: 'analog'),
-      _transformOpeningHours,
-    );
+  @override
+  Future<Either<Failure, Map<int, String>>> getOpeningHours() async {
+    try {
+      final openingHours = await dataSource.getOpeningHours();
+
+      return Right(_transformOpeningHours(openingHours));
+    } on ServerException catch (e) {
+      return Left(ServerFailure(e.error));
+    }
   }
 
   Map<int, String> _transformOpeningHours(List<OpeningHoursDTO> dtoList) {

@@ -1,7 +1,7 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
-import 'package:coffeecard/cubits/opening_hours/opening_hours_cubit.dart';
+import 'package:coffeecard/features/opening_hours/presentation/cubit/opening_hours_cubit.dart';
 import 'package:coffeecard/utils/analog_icons.dart';
 import 'package:coffeecard/widgets/components/helpers/shimmer_builder.dart';
 import 'package:flutter/widgets.dart';
@@ -16,7 +16,7 @@ class OpeningHoursIndicator extends StatelessWidget {
     return BlocBuilder<OpeningHoursCubit, OpeningHoursState>(
       builder: (context, state) {
         var isOpen = false;
-        if (state is OpeningHoursLoaded) {
+        if (state is Loaded) {
           isOpen = state.isOpen;
         }
         final openOrClosed = isOpen ? Strings.open : Strings.closed;
@@ -25,7 +25,7 @@ class OpeningHoursIndicator extends StatelessWidget {
             AppTextStyle.openingHoursIndicator.copyWith(color: color);
 
         return ShimmerBuilder(
-          showShimmer: state is OpeningHoursLoading,
+          showShimmer: state is Loading,
           builder: (context, colorIfShimmer) {
             return Row(
               children: [

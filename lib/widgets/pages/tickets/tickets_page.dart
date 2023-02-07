@@ -1,7 +1,7 @@
 import 'package:coffeecard/base/strings.dart';
+import 'package:coffeecard/features/opening_hours/presentation/widgets/opening_hours_indicator.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:coffeecard/widgets/components/section_title.dart';
-import 'package:coffeecard/widgets/components/tickets/opening_hours_indicator.dart';
 import 'package:coffeecard/widgets/components/tickets/shop_section.dart';
 import 'package:coffeecard/widgets/components/tickets/tickets_section.dart';
 import 'package:flutter/material.dart';

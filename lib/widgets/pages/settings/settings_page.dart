@@ -2,8 +2,8 @@ import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
-import 'package:coffeecard/cubits/opening_hours/opening_hours_cubit.dart';
 import 'package:coffeecard/cubits/user/user_cubit.dart';
+import 'package:coffeecard/features/opening_hours/presentation/cubit/opening_hours_cubit.dart';
 import 'package:coffeecard/utils/api_uri_constants.dart';
 import 'package:coffeecard/utils/launch.dart';
 import 'package:coffeecard/widgets/components/dialog.dart';
@@ -45,9 +45,9 @@ class SettingsPage extends StatelessWidget {
   /// Tappable only if opening hours data has been loaded.
   void Function()? _ifOpeningHoursLoaded(
     OpeningHoursState state,
-    void Function(OpeningHoursLoaded) callback,
+    void Function(Loaded) callback,
   ) {
-    return (state is! OpeningHoursLoaded) ? null : () => callback(state);
+    return (state is! Loaded) ? null : () => callback(state);
   }
 
   @override
@@ -140,16 +140,16 @@ class SettingsPage extends StatelessWidget {
                   ),
                 ),
                 valueWidget: ShimmerBuilder(
-                  showShimmer: openingHoursState is OpeningHoursLoading,
+                  showShimmer: openingHoursState is Loading,
                   builder: (context, colorIfShimmer) {
                     final today = DateTime.now().weekday;
                     final weekdayPlural = Strings.weekdaysPlural[today]!;
                     final String text;
 
-                    if (openingHoursState is OpeningHoursLoaded) {
+                    if (openingHoursState is Loaded) {
                       final hours = openingHoursState.openingHours[today]!;
                       text = '$weekdayPlural: $hours';
-                    } else if (openingHoursState is OpeningHoursLoading) {
+                    } else if (openingHoursState is Loading) {
                       text = Strings.openingHoursShimmerText;
                     } else {
                       text = '';
