@@ -22,18 +22,19 @@ class PurchaseCubit extends Cubit<PurchaseState> {
       emit(const PurchaseStarted());
 
       final either = await paymentHandler.initPurchase(product.id);
-      if (either.isRight) {
-        final Payment payment = either.right;
 
-        if (payment.status != PaymentStatus.error) {
-          emit(PurchaseProcessing(payment));
-          await paymentHandler.invokePaymentMethod(Uri.parse(payment.deeplink));
-        } else {
-          emit(PurchasePaymentRejected(payment));
-        }
-      } else {
-        emit(PurchaseError(either.left.message));
-      }
+      either.fold(
+        (l) => emit(PurchaseError(l.message)),
+        (payment) async {
+          if (payment.status != PaymentStatus.error) {
+            emit(PurchaseProcessing(payment));
+            await paymentHandler
+                .invokePaymentMethod(Uri.parse(payment.deeplink));
+          } else {
+            emit(PurchasePaymentRejected(payment));
+          }
+        },
+      );
     }
   }
 
@@ -45,28 +46,29 @@ class PurchaseCubit extends Cubit<PurchaseState> {
       emit(PurchaseVerifying(payment));
       final either = await paymentHandler.verifyPurchase(payment.id);
 
-      either.caseOf((error) {
-        emit(PurchaseError(either.left.message));
-      }, (status) {
-        if (status == PaymentStatus.completed) {
-          sl<FirebaseAnalyticsEventLogging>().purchaseCompletedEvent(payment);
-          emit(PurchaseCompleted(payment.copyWith(status: status)));
-        } else if (status == PaymentStatus.reserved) {
-          // NOTE, recursive call, potentially infinite.
-          // If payment has been reserved, i.e. approved by user
-          // we will keep checking the backend to verify payment has been captured
+      either.fold(
+        (error) => emit(PurchaseError(error.message)),
+        (status) {
+          if (status == PaymentStatus.completed) {
+            sl<FirebaseAnalyticsEventLogging>().purchaseCompletedEvent(payment);
+            emit(PurchaseCompleted(payment.copyWith(status: status)));
+          } else if (status == PaymentStatus.reserved) {
+            // NOTE, recursive call, potentially infinite.
+            // If payment has been reserved, i.e. approved by user
+            // we will keep checking the backend to verify payment has been captured
 
-          // Emit processing state to allow the verifyPurchase process again
-          emit(
-            PurchaseProcessing(
-              payment.copyWith(status: status),
-            ),
-          );
-          verifyPurchase();
-        } else {
-          emit(PurchasePaymentRejected(payment.copyWith(status: status)));
-        }
-      });
+            // Emit processing state to allow the verifyPurchase process again
+            emit(
+              PurchaseProcessing(
+                payment.copyWith(status: status),
+              ),
+            );
+            verifyPurchase();
+          } else {
+            emit(PurchasePaymentRejected(payment.copyWith(status: status)));
+          }
+        },
+      );
     }
   }
 }

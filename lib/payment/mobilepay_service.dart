@@ -8,8 +8,8 @@ import 'package:coffeecard/models/purchase/payment.dart';
 import 'package:coffeecard/models/purchase/payment_status.dart';
 import 'package:coffeecard/payment/payment_handler.dart';
 import 'package:coffeecard/utils/api_uri_constants.dart';
-import 'package:coffeecard/utils/either.dart';
 import 'package:coffeecard/utils/launch.dart';
+import 'package:dartz/dartz.dart';
 import 'package:flutter/widgets.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -31,7 +31,7 @@ class MobilePayService implements PaymentHandler {
       return Left(RequestFailure(e.toString()));
     }
 
-    return response.caseOf(
+    return response.fold(
       (error) => Left(error),
       (response) {
         final paymentDetails = MobilePayPaymentDetails.fromJsonFactory(
@@ -81,7 +81,7 @@ class MobilePayService implements PaymentHandler {
     // Call API endpoint, receive PaymentStatus
     final either = await _repository.getPurchase(purchaseId);
 
-    return either.caseOf((error) {
+    return either.fold((error) {
       return Left(error);
     }, (purchase) {
       final paymentDetails =

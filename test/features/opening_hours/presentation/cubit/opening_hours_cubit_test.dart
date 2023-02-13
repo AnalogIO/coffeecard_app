@@ -3,7 +3,7 @@ import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/features/opening_hours/domain/usecases/fetch_opening_hours.dart';
 import 'package:coffeecard/features/opening_hours/domain/usecases/is_open.dart';
 import 'package:coffeecard/features/opening_hours/presentation/cubit/opening_hours_cubit.dart';
-import 'package:coffeecard/utils/either.dart';
+import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -33,7 +33,8 @@ void main() {
         )
       },
       act: (_) async => cubit.getOpeninghours(),
-      expect: () => [const Loading(), const Error('some error')],
+      expect: () =>
+          [const OpeningHoursLoading(), const OpeningHoursError('some error')],
     );
 
     blocTest(
@@ -48,7 +49,8 @@ void main() {
         );
       },
       act: (_) async => cubit.getOpeninghours(),
-      expect: () => [const Loading(), const Error('some error')],
+      expect: () =>
+          [const OpeningHoursLoading(), const OpeningHoursError('some error')],
     );
 
     blocTest(
@@ -64,8 +66,8 @@ void main() {
       },
       act: (_) async => cubit.getOpeninghours(),
       expect: () => [
-        const Loading(),
-        const Loaded(
+        const OpeningHoursLoading(),
+        const OpeningHoursLoaded(
           isOpen: true,
           openingHours: {},
         )

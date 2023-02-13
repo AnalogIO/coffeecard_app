@@ -2,7 +2,7 @@ import 'package:coffeecard/data/repositories/utils/executor.dart';
 import 'package:coffeecard/data/repositories/utils/request_types.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/models/programme.dart';
-import 'package:coffeecard/utils/either.dart';
+import 'package:dartz/dartz.dart';
 
 class ProgrammeRepository {
   ProgrammeRepository({

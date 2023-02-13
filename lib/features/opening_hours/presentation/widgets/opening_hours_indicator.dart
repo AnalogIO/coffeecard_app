@@ -16,7 +16,7 @@ class OpeningHoursIndicator extends StatelessWidget {
     return BlocBuilder<OpeningHoursCubit, OpeningHoursState>(
       builder: (context, state) {
         var isOpen = false;
-        if (state is Loaded) {
+        if (state is OpeningHoursLoaded) {
           isOpen = state.isOpen;
         }
         final openOrClosed = isOpen ? Strings.open : Strings.closed;
@@ -25,7 +25,7 @@ class OpeningHoursIndicator extends StatelessWidget {
             AppTextStyle.openingHoursIndicator.copyWith(color: color);
 
         return ShimmerBuilder(
-          showShimmer: state is Loading,
+          showShimmer: state is OpeningHoursLoading,
           builder: (context, colorIfShimmer) {
             return Row(
               children: [

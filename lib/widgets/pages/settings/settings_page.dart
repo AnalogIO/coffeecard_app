@@ -45,9 +45,9 @@ class SettingsPage extends StatelessWidget {
   /// Tappable only if opening hours data has been loaded.
   void Function()? _ifOpeningHoursLoaded(
     OpeningHoursState state,
-    void Function(Loaded) callback,
+    void Function(OpeningHoursLoaded) callback,
   ) {
-    return (state is! Loaded) ? null : () => callback(state);
+    return (state is! OpeningHoursLoaded) ? null : () => callback(state);
   }
 
   @override
@@ -140,16 +140,16 @@ class SettingsPage extends StatelessWidget {
                   ),
                 ),
                 valueWidget: ShimmerBuilder(
-                  showShimmer: openingHoursState is Loading,
+                  showShimmer: openingHoursState is OpeningHoursLoading,
                   builder: (context, colorIfShimmer) {
                     final today = DateTime.now().weekday;
                     final weekdayPlural = Strings.weekdaysPlural[today]!;
                     final String text;
 
-                    if (openingHoursState is Loaded) {
+                    if (openingHoursState is OpeningHoursLoaded) {
                       final hours = openingHoursState.openingHours[today]!;
                       text = '$weekdayPlural: $hours';
-                    } else if (openingHoursState is Loading) {
+                    } else if (openingHoursState is OpeningHoursLoading) {
                       text = Strings.openingHoursShimmerText;
                     } else {
                       text = '';

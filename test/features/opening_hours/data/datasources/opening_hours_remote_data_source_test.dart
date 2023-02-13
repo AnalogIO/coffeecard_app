@@ -69,14 +69,14 @@ void main() {
       );
     });
 
-    test('should return opening hours if api call succeeds', () {
+    test('should return opening hours if api call succeeds', () async {
       // arrange
       when(api.apiShiftsShortKeyGet(shortKey: anyNamed('shortKey'))).thenAnswer(
         (_) async => ResponseFactory.fromStatusCode(200, body: []),
       );
 
       // act
-      final actual = dataSource.getOpeningHours();
+      final actual = await dataSource.getOpeningHours();
 
       // assert
       expect(actual, []);

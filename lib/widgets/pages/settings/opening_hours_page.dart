@@ -9,9 +9,9 @@ import 'package:gap/gap.dart';
 class OpeningHoursPage extends StatelessWidget {
   const OpeningHoursPage({required this.state});
 
-  final Loaded state;
+  final OpeningHoursLoaded state;
 
-  static Route routeWith({required Loaded state}) {
+  static Route routeWith({required OpeningHoursLoaded state}) {
     return MaterialPageRoute(builder: (_) => OpeningHoursPage(state: state));
   }
 

@@ -1,5 +1,5 @@
 import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/utils/either.dart';
+import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class UseCase<Type, Params> {

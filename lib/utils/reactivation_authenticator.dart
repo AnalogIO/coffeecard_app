@@ -89,21 +89,21 @@ class ReactivationAuthenticator extends Authenticator {
       try {
         final either = await accountRepository.login(email, encodedPasscode);
 
-        if (either.isRight) {
+        either.fold((l) {
+          // refresh failed, sign the user out
+          _evict();
+        }, (r) async {
           // refresh succeeded, update the token in secure storage
           tokenRefreshedAt = DateTime.now();
 
-          final token = either.right.token;
-          final bearerToken = 'Bearer ${either.right.token}';
+          final token = r.token;
+          final bearerToken = 'Bearer ${r.token}';
           await secureStorage.updateToken(token);
 
           return request.copyWith(
             headers: _updateHeadersWithToken(request.headers, bearerToken),
           );
-        } else {
-          // refresh failed, sign the user out
-          _evict();
-        }
+        });
       } finally {
         mutex.unlock();
       }

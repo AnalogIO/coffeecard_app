@@ -18,11 +18,10 @@ class RegisterCubit extends Cubit<RegisterState> {
       encodePasscode(passcode),
     );
 
-    if (either.isRight) {
-      emit(RegisterSuccess());
-    } else {
-      emit(RegisterError(either.left.message));
-    }
+    either.fold(
+      (l) => emit(RegisterError(l.message)),
+      (r) => emit(RegisterSuccess()),
+    );
 
     sl<FirebaseAnalyticsEventLogging>().signUpEvent();
   }

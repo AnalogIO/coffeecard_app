@@ -168,6 +168,14 @@ void initFeatures() {
 }
 
 void initOpeningHours() {
+  // bloc
+  sl.registerSingleton(
+    () => OpeningHoursCubit(
+      fetchOpeningHours: sl(),
+      isOpen: sl(),
+    ),
+  );
+
   // use case
   sl.registerFactory(() => FetchOpeningHours(repository: sl()));
   sl.registerFactory(() => GetIsOpen(repository: sl()));
@@ -180,13 +188,5 @@ void initOpeningHours() {
   // data source
   sl.registerLazySingleton<OpeningHoursRemoteDataSource>(
     () => OpeningHoursRemoteDataSourceImpl(api: sl()),
-  );
-
-  // cubit
-  sl.registerSingleton(
-    () => OpeningHoursCubit(
-      fetchOpeningHours: sl(),
-      isOpen: sl(),
-    ),
   );
 }

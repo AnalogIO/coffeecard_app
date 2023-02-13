@@ -11,28 +11,25 @@ class OpeningHoursCubit extends Cubit<OpeningHoursState> {
   final GetIsOpen isOpen;
 
   OpeningHoursCubit({required this.fetchOpeningHours, required this.isOpen})
-      : super(const Loading());
+      : super(const OpeningHoursLoading());
 
   Future<void> getOpeninghours() async {
-    emit(const Loading());
+    emit(const OpeningHoursLoading());
 
-    final isOpenResult = await isOpen(NoParams());
+    final either = await isOpen(NoParams());
 
-    if (isOpenResult.isLeft) {
-      emit(Error(isOpenResult.left.reason));
-      return;
-    }
+    either.fold((l) => emit(OpeningHoursError(l.reason)), (isOpen) async {
+      final openingHoursResult = await fetchOpeningHours(NoParams());
 
-    final openingHoursResult = await fetchOpeningHours(NoParams());
-
-    openingHoursResult.caseOf(
-      (error) => emit(Error(openingHoursResult.left.reason)),
-      (openingHours) => emit(
-        Loaded(
-          isOpen: isOpenResult.right,
-          openingHours: openingHoursResult.right,
+      openingHoursResult.fold(
+        (error) => emit(OpeningHoursError(error.reason)),
+        (openingHours) => emit(
+          OpeningHoursLoaded(
+            isOpen: isOpen,
+            openingHours: openingHours,
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 }

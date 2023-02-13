@@ -31,22 +31,30 @@ void main() {
   });
 
   test('register given successful api response returns right', () async {
+    // arrange
     when(apiV1.apiV1AccountRegisterPost(body: anyNamed('body'))).thenAnswer(
       (_) async {
         return chopper.Response(Responses.succeeding(), MessageResponseDto());
       },
     );
 
+    // act
     final actual = await repo.register('name', 'email', 'passcode');
-    expectLater(actual.isRight, isTrue);
+
+    // assert
+    expectLater(actual.isRight(), isTrue);
   });
 
   test('register given unsuccessful api response returns left', () async {
+    // arrange
     when(apiV1.apiV1AccountRegisterPost(body: anyNamed('body'))).thenAnswer(
       (_) async => chopper.Response(Responses.failing(), null),
     );
 
+    // act
     final actual = await repo.register('name', 'email', 'passcode');
-    expect(actual.isLeft, isTrue);
+
+    // assert
+    expect(actual.isLeft(), isTrue);
   });
 }

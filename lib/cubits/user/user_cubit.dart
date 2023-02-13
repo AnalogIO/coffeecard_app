@@ -24,11 +24,9 @@ class UserCubit extends Cubit<UserState> {
   Future<void> refreshUserDetails() async {
     final either = await _accountRepository.getUser();
 
-    if (either.isRight) {
-      _enrichUserWithProgrammes(either.right);
-    } else {
-      emit(UserError(either.left.message));
-    }
+    either.fold((l) => emit(UserError(l.message)), (r) {
+      _enrichUserWithProgrammes(r);
+    });
   }
 
   Future<void> _updateUser(UpdateUser user) async {
@@ -45,20 +43,22 @@ class UserCubit extends Cubit<UserState> {
 
     final either = await _accountRepository.updateUser(user);
 
-    either.caseOf((error) {
-      emit(UserError(either.left.message));
-    }, (user) async {
-      // Refreshes twice as a work-around for
-      // a backend bug that returns a user object with all ranks set to 0.
-      await _enrichUserWithProgrammes(either.right);
+    either.fold(
+      (l) => emit(UserError(l.message)),
+      (user) async {
+        // Refreshes twice as a work-around for
+        // a backend bug that returns a user object with all ranks set to 0.
+        await _enrichUserWithProgrammes(user);
 
-      // TODO(marfavi): remove fetchUserDetails when backend bug is fixed, https://github.com/AnalogIO/coffeecard_app/issues/378
-      fetchUserDetails();
-    });
+        // TODO(marfavi): remove fetchUserDetails when backend bug is fixed, https://github.com/AnalogIO/coffeecard_app/issues/378
+        fetchUserDetails();
+      },
+    );
   }
 
   Future<void> _enrichUserWithProgrammes(User user) async {
-    final List<Programme> programmes;
+    List<Programme> programmes = [];
+
     if (state is UserUpdating) {
       programmes = (state as UserUpdating).programmes;
     } else if (state is UserLoaded) {
@@ -66,12 +66,13 @@ class UserCubit extends Cubit<UserState> {
     } else {
       // Fetches the programme info, if we have not cached it beforehand
       final either = await _programmeRepository.getProgramme();
-      if (either.isRight) {
-        programmes = either.right;
-      } else {
-        emit(UserError(either.left.message));
+
+      either.fold((l) {
+        emit(UserError(l.message));
         return;
-      }
+      }, (r) {
+        programmes = r;
+      });
     }
 
     final programme =

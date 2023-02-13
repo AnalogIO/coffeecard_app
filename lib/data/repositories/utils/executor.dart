@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:chopper/chopper.dart' show Response;
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/data/repositories/utils/request_types.dart';
-import 'package:coffeecard/utils/either.dart';
+import 'package:dartz/dartz.dart';
 import 'package:http/http.dart' show ClientException;
 import 'package:logger/logger.dart';
 

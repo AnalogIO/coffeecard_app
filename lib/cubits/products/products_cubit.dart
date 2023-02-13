@@ -14,7 +14,7 @@ class ProductsCubit extends Cubit<ProductsState> {
     emit(const ProductsLoading());
     final either = await _repository.getProducts();
 
-    either.caseOf(
+    either.fold(
       (error) => emit(ProductsError(error.message)),
       (products) {
         final ticketProducts = products.where((p) => p.amount > 1);

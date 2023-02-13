@@ -3,7 +3,8 @@ import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/features/opening_hours/data/datasources/opening_hours_remote_data_source.dart';
 import 'package:coffeecard/features/opening_hours/data/repositories/opening_hours_repository_impl.dart';
 import 'package:coffeecard/features/opening_hours/domain/repositories/opening_hours_repository.dart';
-import 'package:coffeecard/utils/either.dart';
+import 'package:dartz/dartz.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -66,7 +67,17 @@ void main() {
       final actual = await repository.getOpeningHours();
 
       // assert
-      expect(actual, const Right({}));
+      actual.fold(
+        (l) => fail('use case was not a success'),
+        // Dart's map equality is weird, unpack the value and use mapEquals
+        (r) => expect(
+          mapEquals(r, {
+            6: 'Closed',
+            7: 'Closed',
+          }),
+          true,
+        ),
+      );
     });
   });
 }

@@ -4,8 +4,8 @@ import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
 import 'package:coffeecard/models/receipts/receipt.dart';
 import 'package:coffeecard/models/ticket/ticket_count.dart';
-import 'package:coffeecard/utils/either.dart';
 import 'package:collection/collection.dart';
+import 'package:dartz/dartz.dart';
 
 class TicketRepository {
   TicketRepository({

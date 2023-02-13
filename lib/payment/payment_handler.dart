@@ -4,7 +4,7 @@ import 'package:coffeecard/models/purchase/payment.dart';
 import 'package:coffeecard/models/purchase/payment_status.dart';
 import 'package:coffeecard/payment/mobilepay_service.dart';
 import 'package:coffeecard/service_locator.dart';
-import 'package:coffeecard/utils/either.dart';
+import 'package:dartz/dartz.dart';
 import 'package:flutter/widgets.dart';
 
 enum InternalPaymentType {
