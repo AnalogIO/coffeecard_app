@@ -4,8 +4,8 @@ import 'package:coffeecard/data/api/interceptors/authentication_interceptor.dart
 import 'package:coffeecard/data/repositories/external/contributor_repository.dart';
 import 'package:coffeecard/data/repositories/shared/account_repository.dart';
 import 'package:coffeecard/data/repositories/utils/executor.dart';
+import 'package:coffeecard/data/repositories/v1/occupation_repository.dart';
 import 'package:coffeecard/data/repositories/v1/product_repository.dart';
-import 'package:coffeecard/data/repositories/v1/programme_repository.dart';
 import 'package:coffeecard/data/repositories/v1/receipt_repository.dart';
 import 'package:coffeecard/data/repositories/v1/ticket_repository.dart';
 import 'package:coffeecard/data/repositories/v1/voucher_repository.dart';
@@ -86,15 +86,15 @@ void configureServices() {
 
   // Repositories
   // v1
-  sl.registerFactory<ReceiptRepository>(
-    () => ReceiptRepository(
+  sl.registerFactory<OccupationRepository>(
+    () => OccupationRepository(
       apiV1: sl<CoffeecardApi>(),
       executor: sl<Executor>(),
     ),
   );
 
-  sl.registerFactory<ProgrammeRepository>(
-    () => ProgrammeRepository(
+  sl.registerFactory<ReceiptRepository>(
+    () => ReceiptRepository(
       apiV1: sl<CoffeecardApi>(),
       executor: sl<Executor>(),
     ),

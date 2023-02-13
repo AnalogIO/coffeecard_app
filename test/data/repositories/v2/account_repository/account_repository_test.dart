@@ -1,9 +1,10 @@
 import 'package:chopper/chopper.dart' as chopper;
 import 'package:coffeecard/data/repositories/shared/account_repository.dart';
 import 'package:coffeecard/data/repositories/utils/executor.dart';
-import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
+import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart'
+    hide MessageResponseDto;
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart'
-    show CoffeecardApiV2;
+    show CoffeecardApiV2, MessageResponseDto;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logger/logger.dart';
 import 'package:mockito/annotations.dart';
@@ -31,30 +32,22 @@ void main() {
   });
 
   test('register given successful api response returns right', () async {
-    // arrange
-    when(apiV1.apiV1AccountRegisterPost(body: anyNamed('body'))).thenAnswer(
+    when(apiV2.apiV2AccountPost(body: anyNamed('body'))).thenAnswer(
       (_) async {
         return chopper.Response(Responses.succeeding(), MessageResponseDto());
       },
     );
 
-    // act
-    final actual = await repo.register('name', 'email', 'passcode');
-
-    // assert
+    final actual = await repo.register('name', 'email', 'passcode', 0);
     expectLater(actual.isRight(), isTrue);
   });
 
   test('register given unsuccessful api response returns left', () async {
-    // arrange
-    when(apiV1.apiV1AccountRegisterPost(body: anyNamed('body'))).thenAnswer(
+    when(apiV2.apiV2AccountPost(body: anyNamed('body'))).thenAnswer(
       (_) async => chopper.Response(Responses.failing(), null),
     );
 
-    // act
-    final actual = await repo.register('name', 'email', 'passcode');
-
-    // assert
+    final actual = await repo.register('name', 'email', 'passcode', 0);
     expect(actual.isLeft(), isTrue);
   });
 }

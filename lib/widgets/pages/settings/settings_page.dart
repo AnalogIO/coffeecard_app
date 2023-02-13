@@ -66,7 +66,7 @@ class SettingsPage extends StatelessWidget {
                 ? UserCard(
                     id: userState.user.id,
                     name: userState.user.name,
-                    occupation: userState.user.programme.fullName,
+                    occupation: userState.user.occupation.fullName,
                   )
                 : const UserCard.placeholder(),
           ),

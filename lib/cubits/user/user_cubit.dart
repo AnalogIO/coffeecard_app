@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:coffeecard/data/repositories/shared/account_repository.dart';
-import 'package:coffeecard/data/repositories/v1/programme_repository.dart';
+import 'package:coffeecard/data/repositories/v1/occupation_repository.dart';
 import 'package:coffeecard/models/account/update_user.dart';
 import 'package:coffeecard/models/account/user.dart';
-import 'package:coffeecard/models/programme.dart';
+import 'package:coffeecard/models/occupation.dart';
 import 'package:coffeecard/utils/encode_passcode.dart';
 import 'package:equatable/equatable.dart';
 
@@ -11,9 +11,9 @@ part 'user_state.dart';
 
 class UserCubit extends Cubit<UserState> {
   final AccountRepository _accountRepository;
-  final ProgrammeRepository _programmeRepository;
+  final OccupationRepository _occupationRepository;
 
-  UserCubit(this._accountRepository, this._programmeRepository)
+  UserCubit(this._accountRepository, this._occupationRepository)
       : super(UserLoading());
 
   Future<void> fetchUserDetails() async {
@@ -24,9 +24,12 @@ class UserCubit extends Cubit<UserState> {
   Future<void> refreshUserDetails() async {
     final either = await _accountRepository.getUser();
 
-    either.fold((l) => emit(UserError(l.message)), (r) {
-      _enrichUserWithProgrammes(r);
-    });
+    either.fold(
+      (l) => emit(UserError(l.message)),
+      (r) {
+        _enrichUserWithOccupations(r);
+      },
+    );
   }
 
   Future<void> _updateUser(UpdateUser user) async {
@@ -37,7 +40,7 @@ class UserCubit extends Cubit<UserState> {
     emit(
       UserUpdating(
         user: loadedState.user,
-        programmes: loadedState.programmes,
+        occupations: loadedState.occupations,
       ),
     );
 
@@ -48,7 +51,7 @@ class UserCubit extends Cubit<UserState> {
       (user) async {
         // Refreshes twice as a work-around for
         // a backend bug that returns a user object with all ranks set to 0.
-        await _enrichUserWithProgrammes(user);
+        await _enrichUserWithOccupations(user);
 
         // TODO(marfavi): remove fetchUserDetails when backend bug is fixed, https://github.com/AnalogIO/coffeecard_app/issues/378
         fetchUserDetails();
@@ -56,34 +59,30 @@ class UserCubit extends Cubit<UserState> {
     );
   }
 
-  Future<void> _enrichUserWithProgrammes(User user) async {
-    List<Programme> programmes = [];
-
+  Future<void> _enrichUserWithOccupations(User user) async {
+    List<Occupation> occupations = [];
     if (state is UserUpdating) {
-      programmes = (state as UserUpdating).programmes;
+      occupations = (state as UserUpdating).occupations;
     } else if (state is UserLoaded) {
-      programmes = (state as UserLoaded).programmes;
+      occupations = (state as UserLoaded).occupations;
     } else {
       // Fetches the programme info, if we have not cached it beforehand
-      final either = await _programmeRepository.getProgramme();
+      final either = await _occupationRepository.getOccupations();
 
-      either.fold((l) {
-        emit(UserError(l.message));
+      either.fold((l) => emit(UserError(l.message)), (r) => occupations = r);
+
+      if (either.isLeft()) {
         return;
-      }, (r) {
-        programmes = r;
-      });
+      }
     }
 
-    final programme =
-        programmes.firstWhere((element) => element.id == user.programmeId);
+    final occupation =
+        occupations.firstWhere((element) => element.id == user.occupationId);
 
     emit(
       UserLoaded(
-        user: user.copyWith(
-          programme: ProgrammeInfo(programme.shortName, programme.fullName),
-        ),
-        programmes: programmes,
+        user: user.copyWith(occupation: occupation),
+        occupations: occupations,
       ),
     );
   }
@@ -104,8 +103,8 @@ class UserCubit extends Cubit<UserState> {
     _updateUser(UpdateUser(encodedPasscode: encodePasscode(passcode)));
   }
 
-  Future<void> setUserProgramme(int programmeId) async {
-    _updateUser(UpdateUser(programmeId: programmeId));
+  Future<void> setUserOccupation(int occupationId) async {
+    _updateUser(UpdateUser(occupationId: occupationId));
   }
 
   void requestAccountDeletion() {

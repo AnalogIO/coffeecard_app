@@ -8,7 +8,7 @@ import 'package:coffeecard/cubits/statistics/statistics_cubit.dart';
 import 'package:coffeecard/cubits/tickets/tickets_cubit.dart';
 import 'package:coffeecard/cubits/user/user_cubit.dart';
 import 'package:coffeecard/data/repositories/shared/account_repository.dart';
-import 'package:coffeecard/data/repositories/v1/programme_repository.dart';
+import 'package:coffeecard/data/repositories/v1/occupation_repository.dart';
 import 'package:coffeecard/data/repositories/v1/receipt_repository.dart';
 import 'package:coffeecard/data/repositories/v1/ticket_repository.dart';
 import 'package:coffeecard/data/repositories/v2/leaderboard_repository.dart';
@@ -127,7 +127,7 @@ class _HomePageState extends State<HomePage> {
         BlocProvider(
           create: (_) => UserCubit(
             sl.get<AccountRepository>(),
-            sl.get<ProgrammeRepository>(),
+            sl.get<OccupationRepository>(),
           )..fetchUserDetails(),
         ),
         BlocProvider(
