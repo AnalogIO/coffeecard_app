@@ -25,7 +25,7 @@ void main() {
 
   group('getOpeninghours', () {
     blocTest(
-      'should emit [Loading, Error] when isOpen fails',
+      'should emit [Loading, Loaded] with status unknown when isOpen fails',
       build: () => cubit,
       setUp: () => {
         when(isOpen(any)).thenAnswer(
@@ -33,24 +33,34 @@ void main() {
         )
       },
       act: (_) async => cubit.getOpeninghours(),
-      expect: () =>
-          [const OpeningHoursLoading(), const OpeningHoursError('some error')],
+      expect: () => [
+        const OpeningHoursLoading(),
+        const OpeningHoursLoaded(
+          status: OpeningHoursStatus.unknown,
+          openingHours: {},
+        )
+      ],
     );
 
     blocTest(
-      'should emit [Loading, Error] when isOpen and openingHours fails',
+      'should emit [Loading, Error] when openingHours fails',
       build: () => cubit,
       setUp: () {
         when(isOpen(any)).thenAnswer(
-          (_) => Future.value(const Left(ServerFailure('some error'))),
+          (_) => Future.value(const Right(false)),
         );
         when(fetchOpeningHours(any)).thenAnswer(
           (_) => Future.value(const Left(ServerFailure('some error'))),
         );
       },
       act: (_) async => cubit.getOpeninghours(),
-      expect: () =>
-          [const OpeningHoursLoading(), const OpeningHoursError('some error')],
+      expect: () => [
+        const OpeningHoursLoading(),
+        const OpeningHoursLoaded(
+          status: OpeningHoursStatus.closed,
+          openingHours: {},
+        )
+      ],
     );
 
     blocTest(
@@ -68,7 +78,7 @@ void main() {
       expect: () => [
         const OpeningHoursLoading(),
         const OpeningHoursLoaded(
-          isOpen: true,
+          status: OpeningHoursStatus.open,
           openingHours: {},
         )
       ],

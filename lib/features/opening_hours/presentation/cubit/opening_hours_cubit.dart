@@ -18,18 +18,34 @@ class OpeningHoursCubit extends Cubit<OpeningHoursState> {
 
     final either = await isOpen(NoParams());
 
-    either.fold((l) => emit(OpeningHoursError(l.reason)), (isOpen) async {
-      final openingHoursResult = await fetchOpeningHours(NoParams());
-
-      openingHoursResult.fold(
-        (error) => emit(OpeningHoursError(error.reason)),
-        (openingHours) => emit(
-          OpeningHoursLoaded(
-            isOpen: isOpen,
-            openingHours: openingHours,
-          ),
+    either.fold(
+      (error) => emit(
+        const OpeningHoursLoaded(
+          status: OpeningHoursStatus.unknown,
+          openingHours: {},
         ),
-      );
-    });
+      ),
+      (isOpen) async {
+        final openingHoursStatus =
+            isOpen ? OpeningHoursStatus.open : OpeningHoursStatus.closed;
+
+        final openingHoursResult = await fetchOpeningHours(NoParams());
+
+        openingHoursResult.fold(
+          (error) => emit(
+            OpeningHoursLoaded(
+              status: openingHoursStatus,
+              openingHours: const {},
+            ),
+          ),
+          (openingHours) => emit(
+            OpeningHoursLoaded(
+              status: openingHoursStatus,
+              openingHours: openingHours,
+            ),
+          ),
+        );
+      },
+    );
   }
 }

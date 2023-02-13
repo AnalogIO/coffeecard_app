@@ -169,7 +169,7 @@ void initFeatures() {
 
 void initOpeningHours() {
   // bloc
-  sl.registerSingleton(
+  sl.registerFactory(
     () => OpeningHoursCubit(
       fetchOpeningHours: sl(),
       isOpen: sl(),
