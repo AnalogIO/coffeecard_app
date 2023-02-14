@@ -1,7 +1,6 @@
 import 'package:coffeecard/data/repositories/utils/request_types.dart';
 import 'package:coffeecard/data/repositories/v2/purchase_repository.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.enums.swagger.dart';
-import 'package:coffeecard/generated/api/coffeecard_api_v2.models.swagger.dart';
 import 'package:coffeecard/models/purchase/payment.dart';
 import 'package:coffeecard/models/purchase/payment_status.dart';
 import 'package:coffeecard/payment/payment_handler.dart';

@@ -5,12 +5,13 @@ import 'package:coffeecard/data/api/interceptors/authentication_interceptor.dart
 import 'package:coffeecard/data/repositories/external/contributor_repository.dart';
 import 'package:coffeecard/data/repositories/shared/account_repository.dart';
 import 'package:coffeecard/data/repositories/v1/product_repository.dart';
-import 'package:coffeecard/data/repositories/v1/receipt_repository.dart';
+import 'package:coffeecard/data/repositories/v1/programme_repository.dart';
 import 'package:coffeecard/data/repositories/v1/ticket_repository.dart';
 import 'package:coffeecard/data/repositories/v1/voucher_repository.dart';
 import 'package:coffeecard/data/repositories/v2/app_config_repository.dart';
 import 'package:coffeecard/data/repositories/v2/leaderboard_repository.dart';
 import 'package:coffeecard/data/repositories/v2/purchase_repository.dart';
+import 'package:coffeecard/data/repositories/v2/receipt_repository.dart';
 import 'package:coffeecard/data/storage/secure_storage.dart';
 import 'package:coffeecard/env/env.dart';
 import 'package:coffeecard/features/occupation/data/datasources/occupation_remote_data_source.dart';
@@ -93,7 +94,14 @@ void configureServices() {
   );
 
   // Repositories
-  // v1
+  sl.registerFactory<OccupationRepository>(
+    () => OccupationRepository(
+      productRepository: sl<ProductRepository>(),
+      apiV2: sl<CoffeecardApiV2>(),
+      executor: sl<NetworkRequestExecutor>(),
+    ),
+  );
+
   sl.registerFactory<ReceiptRepository>(
     () => ReceiptRepository(
       apiV1: sl<CoffeecardApi>(),

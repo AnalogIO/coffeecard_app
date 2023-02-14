@@ -1518,7 +1518,6 @@
             "description": "Used date time for ticket in Utc format",
             "format": "date-time",
             "nullable": true,
-            "minLength": 1,
             "example": "2022-01-09T21:03:52.2283208Z"
           },
           "productId": {

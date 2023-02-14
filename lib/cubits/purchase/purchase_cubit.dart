@@ -44,8 +44,8 @@ class PurchaseCubit extends Cubit<PurchaseState> {
     final either = await service.initPurchase(product.id);
     either.fold((error) => emit(PurchaseError(error.message)), (payment) {
       if (payment.status != PaymentStatus.error) {
-        emit(PurchaseProcessing(payment));
-        verifyPurchase();
+        emit(PurchaseCompleted(payment));
+        //verifyPurchase();
       } else {
         emit(PurchasePaymentRejected(payment));
       }
