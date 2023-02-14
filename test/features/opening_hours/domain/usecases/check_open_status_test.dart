@@ -5,27 +5,27 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import 'fetch_opening_hours_test.mocks.dart';
+import 'check_open_status_test.mocks.dart';
 
 @GenerateMocks([OpeningHoursRepository])
 void main() {
   late MockOpeningHoursRepository repository;
-  late GetOpeningHours fetchOpeningHours;
+  late CheckOpenStatus getIsOpen;
 
   setUp(() {
     repository = MockOpeningHoursRepository();
-    fetchOpeningHours = GetOpeningHours(repository: repository);
+    getIsOpen = CheckOpenStatus(repository: repository);
   });
 
   test('should call repository', () async {
     // arrange
-    when(repository.getOpeningHours()).thenAnswer((_) async => const Right({}));
+    when(repository.getIsOpen()).thenAnswer((_) async => const Right(true));
 
     // act
-    await fetchOpeningHours(NoParams());
+    await getIsOpen(NoParams());
 
     // assert
-    verify(repository.getOpeningHours());
+    verify(repository.getIsOpen());
     verifyNoMoreInteractions(repository);
   });
 }

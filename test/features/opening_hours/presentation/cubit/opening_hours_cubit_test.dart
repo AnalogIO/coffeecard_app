@@ -1,5 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:coffeecard/core/errors/failures.dart';
+import 'package:coffeecard/features/opening_hours/domain/entities/opening_hours.dart';
 import 'package:coffeecard/features/opening_hours/opening_hours.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -24,6 +25,11 @@ void main() {
   });
 
   group('getOpeninghours', () {
+    const theOpeningHours = OpeningHours(
+      allOpeningHours: {},
+      todaysOpeningHours: '',
+    );
+
     blocTest(
       'should emit [Loading, Error] when isOpen fails',
       build: () => cubit,
@@ -65,7 +71,7 @@ void main() {
           (_) => Future.value(const Right(true)),
         );
         when(getOpeningHours(any)).thenAnswer(
-          (_) => Future.value(const Right({})),
+          (_) => Future.value(const Right(theOpeningHours)),
         );
       },
       act: (_) async => cubit.getOpeninghours(),
