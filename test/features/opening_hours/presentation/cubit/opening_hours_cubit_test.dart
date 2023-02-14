@@ -10,15 +10,15 @@ import 'opening_hours_cubit_test.mocks.dart';
 
 @GenerateMocks([GetOpeningHours, CheckOpenStatus])
 void main() {
-  late MockFetchOpeningHours fetchOpeningHours;
-  late MockGetIsOpen isOpen;
+  late MockGetOpeningHours getOpeningHours;
+  late MockCheckOpenStatus checkOpenStatus;
   late OpeningHoursCubit cubit;
 
   setUp(() {
-    fetchOpeningHours = MockFetchOpeningHours();
-    isOpen = MockGetIsOpen();
-    cubit =
-        OpeningHoursCubit(isOpen: isOpen, fetchOpeningHours: fetchOpeningHours);
+    getOpeningHours = MockGetOpeningHours();
+    checkOpenStatus = MockCheckOpenStatus();
+    cubit = OpeningHoursCubit(
+        isOpen: checkOpenStatus, fetchOpeningHours: getOpeningHours);
   });
 
   group('getOpeninghours', () {
@@ -26,7 +26,7 @@ void main() {
       'should emit [Loading, Loaded] with status unknown when isOpen fails',
       build: () => cubit,
       setUp: () => {
-        when(isOpen(any)).thenAnswer(
+        when(checkOpenStatus(any)).thenAnswer(
           (_) => Future.value(const Left(ServerFailure('some error'))),
         )
       },
@@ -44,10 +44,10 @@ void main() {
       'should emit [Loading, Error] when openingHours fails',
       build: () => cubit,
       setUp: () {
-        when(isOpen(any)).thenAnswer(
+        when(checkOpenStatus(any)).thenAnswer(
           (_) => Future.value(const Right(false)),
         );
-        when(fetchOpeningHours(any)).thenAnswer(
+        when(getOpeningHours(any)).thenAnswer(
           (_) => Future.value(const Left(ServerFailure('some error'))),
         );
       },
@@ -65,10 +65,10 @@ void main() {
       'should emit [Loading, Loaded] when isOpen and openingHours succeeds',
       build: () => cubit,
       setUp: () {
-        when(isOpen(any)).thenAnswer(
+        when(checkOpenStatus(any)).thenAnswer(
           (_) => Future.value(const Right(true)),
         );
-        when(fetchOpeningHours(any)).thenAnswer(
+        when(getOpeningHours(any)).thenAnswer(
           (_) => Future.value(const Right({})),
         );
       },
