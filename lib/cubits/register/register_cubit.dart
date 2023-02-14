@@ -25,8 +25,8 @@ class RegisterCubit extends Cubit<RegisterState> {
     );
 
     either.fold(
-      (l) => emit(RegisterError(l.message)),
-      (r) {
+      (error) => emit(RegisterError(error.message)),
+      (_) {
         emit(RegisterSuccess());
         sl<FirebaseAnalyticsEventLogging>().signUpEvent();
       },
