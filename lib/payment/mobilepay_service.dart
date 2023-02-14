@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/data/repositories/v2/purchase_repository.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
+import 'package:coffeecard/models/purchase/initiate_purchase.dart';
 import 'package:coffeecard/models/purchase/payment.dart';
 import 'package:coffeecard/models/purchase/payment_status.dart';
 import 'package:coffeecard/payment/payment_handler.dart';
@@ -24,7 +25,7 @@ class MobilePayService extends PaymentHandler {
 
   @override
   Future<Either<RequestFailure, Payment>> initPurchase(int productId) async {
-    final Either<RequestFailure, InitiatePurchaseResponse> response;
+    final Either<RequestFailure, InitiatePurchase> response;
     try {
       response = await _repository.initiatePurchase(
         productId,
