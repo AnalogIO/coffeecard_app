@@ -1,7 +1,5 @@
 part of 'opening_hours_cubit.dart';
 
-enum OpeningHoursStatus { open, closed, unknown }
-
 abstract class OpeningHoursState extends Equatable {
   const OpeningHoursState();
 }
@@ -16,14 +14,22 @@ class OpeningHoursLoading extends OpeningHoursState {
 class OpeningHoursLoaded extends OpeningHoursState {
   /// Opening hours in the format of Map<Datetime.weekday, String>
   final Map<int, String> openingHours;
-  final OpeningHoursStatus status;
+  final bool isOpen;
 
-  const OpeningHoursLoaded({required this.status, required this.openingHours});
-
-  bool get isOpen => status == OpeningHoursStatus.open;
-  bool get isCloed => status == OpeningHoursStatus.closed;
-  bool get isUnknown => status == OpeningHoursStatus.unknown;
+  const OpeningHoursLoaded({
+    required this.isOpen,
+    required this.openingHours,
+  });
 
   @override
-  List<Object?> get props => [status, openingHours];
+  List<Object?> get props => [isOpen, openingHours];
+}
+
+class OpeningHoursError extends OpeningHoursState {
+  final String error;
+
+  const OpeningHoursError({required this.error});
+
+  @override
+  List<Object?> get props => [error];
 }

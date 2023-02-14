@@ -15,7 +15,7 @@ class OpeningHoursIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<OpeningHoursCubit, OpeningHoursState>(
       builder: (context, state) {
-        if (state is OpeningHoursLoaded && state.isUnknown) {
+        if (state is OpeningHoursError) {
           return const SizedBox.shrink();
         }
 

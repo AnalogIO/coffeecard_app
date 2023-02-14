@@ -18,12 +18,14 @@ void main() {
     getOpeningHours = MockGetOpeningHours();
     checkOpenStatus = MockCheckOpenStatus();
     cubit = OpeningHoursCubit(
-        isOpen: checkOpenStatus, fetchOpeningHours: getOpeningHours);
+      isOpen: checkOpenStatus,
+      fetchOpeningHours: getOpeningHours,
+    );
   });
 
   group('getOpeninghours', () {
     blocTest(
-      'should emit [Loading, Loaded] with status unknown when isOpen fails',
+      'should emit [Loading, Error] when isOpen fails',
       build: () => cubit,
       setUp: () => {
         when(checkOpenStatus(any)).thenAnswer(
@@ -33,15 +35,12 @@ void main() {
       act: (_) async => cubit.getOpeninghours(),
       expect: () => [
         const OpeningHoursLoading(),
-        const OpeningHoursLoaded(
-          status: OpeningHoursStatus.unknown,
-          openingHours: {},
-        )
+        const OpeningHoursError(error: 'some error'),
       ],
     );
 
     blocTest(
-      'should emit [Loading, Error] when openingHours fails',
+      'should emit [Loading, Error] when fetchOpeningHours fails',
       build: () => cubit,
       setUp: () {
         when(checkOpenStatus(any)).thenAnswer(
@@ -54,10 +53,7 @@ void main() {
       act: (_) async => cubit.getOpeninghours(),
       expect: () => [
         const OpeningHoursLoading(),
-        const OpeningHoursLoaded(
-          status: OpeningHoursStatus.closed,
-          openingHours: {},
-        )
+        const OpeningHoursError(error: 'some error'),
       ],
     );
 
@@ -76,7 +72,7 @@ void main() {
       expect: () => [
         const OpeningHoursLoading(),
         const OpeningHoursLoaded(
-          status: OpeningHoursStatus.open,
+          isOpen: true,
           openingHours: {},
         )
       ],

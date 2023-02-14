@@ -25,7 +25,6 @@ class Executor {
       if (response.isSuccessful) {
         return Right(transformer(response.body as Dto));
       } else {
-        logger.e('API failure: (${response.statusCode}) ${response.error}');
         return Left(RequestHttpFailure.fromResponse(response));
       }
     } on SocketException catch (e) {
