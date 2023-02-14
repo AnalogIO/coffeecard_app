@@ -12,20 +12,26 @@ class OpeningHoursLoading extends OpeningHoursState {
 }
 
 class OpeningHoursLoaded extends OpeningHoursState {
-  const OpeningHoursLoaded({required this.isOpen, required this.openingHours});
-  final bool isOpen;
-
   /// Opening hours in the format of Map<Datetime.weekday, String>
   final Map<int, String> openingHours;
+  final bool isOpen;
+  final String todaysOpeningHours;
+
+  const OpeningHoursLoaded({
+    required this.isOpen,
+    required this.openingHours,
+    required this.todaysOpeningHours,
+  });
 
   @override
   List<Object?> get props => [isOpen, openingHours];
 }
 
 class OpeningHoursError extends OpeningHoursState {
-  const OpeningHoursError(this.message);
-  final String message;
+  final String error;
+
+  const OpeningHoursError({required this.error});
 
   @override
-  List<Object?> get props => [message];
+  List<Object?> get props => [error];
 }

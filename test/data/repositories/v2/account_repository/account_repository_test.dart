@@ -3,7 +3,8 @@ import 'package:coffeecard/data/repositories/shared/account_repository.dart';
 import 'package:coffeecard/data/repositories/utils/executor.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart'
     hide MessageResponseDto;
-import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
+import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart'
+    show CoffeecardApiV2, MessageResponseDto;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logger/logger.dart';
 import 'package:mockito/annotations.dart';
@@ -38,7 +39,7 @@ void main() {
     );
 
     final actual = await repo.register('name', 'email', 'passcode', 0);
-    expectLater(actual.isRight, isTrue);
+    expectLater(actual.isRight(), isTrue);
   });
 
   test('register given unsuccessful api response returns left', () async {
@@ -47,6 +48,6 @@ void main() {
     );
 
     final actual = await repo.register('name', 'email', 'passcode', 0);
-    expect(actual.isLeft, isTrue);
+    expect(actual.isLeft(), isTrue);
   });
 }

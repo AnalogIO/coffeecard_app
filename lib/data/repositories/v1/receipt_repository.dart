@@ -2,7 +2,7 @@ import 'package:coffeecard/data/repositories/utils/executor.dart';
 import 'package:coffeecard/data/repositories/utils/request_types.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/models/receipts/receipt.dart';
-import 'package:coffeecard/utils/either.dart';
+import 'package:dartz/dartz.dart';
 
 class ReceiptRepository {
   ReceiptRepository({
@@ -26,18 +26,21 @@ class ReceiptRepository {
     );
 
     final usedTicketsEither = await usedTicketsFutureEither;
-    final purchasedTicketsEither = await purchasedTicketsFutureEither;
 
-    if (usedTicketsEither.isLeft) {
-      return Left(usedTicketsEither.left);
-    } else if (purchasedTicketsEither.isLeft) {
-      return Left(purchasedTicketsEither.left);
-    } else {
-      final usedTickets = usedTicketsEither.right;
-      final purchasedTickets = purchasedTicketsEither.right;
-      final allTickets = [...usedTickets, ...purchasedTickets];
-      allTickets.sort((a, b) => b.timeUsed.compareTo(a.timeUsed));
-      return Right(allTickets);
-    }
+    return usedTicketsEither.fold(
+      (l) => Left(l),
+      (usedTickets) async {
+        final purchasedTicketsEither = await purchasedTicketsFutureEither;
+
+        return purchasedTicketsEither.fold(
+          (l) => Left(l),
+          (purchasedTickets) {
+            final allTickets = [...usedTickets, ...purchasedTickets];
+            allTickets.sort((a, b) => b.timeUsed.compareTo(a.timeUsed));
+            return Right(allTickets);
+          },
+        );
+      },
+    );
   }
 }

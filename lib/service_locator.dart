@@ -3,7 +3,6 @@ import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
 import 'package:coffeecard/data/api/interceptors/authentication_interceptor.dart';
 import 'package:coffeecard/data/repositories/external/contributor_repository.dart';
 import 'package:coffeecard/data/repositories/shared/account_repository.dart';
-import 'package:coffeecard/data/repositories/shiftplanning/opening_hours_repository.dart';
 import 'package:coffeecard/data/repositories/utils/executor.dart';
 import 'package:coffeecard/data/repositories/v1/occupation_repository.dart';
 import 'package:coffeecard/data/repositories/v1/product_repository.dart';
@@ -14,6 +13,7 @@ import 'package:coffeecard/data/repositories/v2/app_config_repository.dart';
 import 'package:coffeecard/data/repositories/v2/leaderboard_repository.dart';
 import 'package:coffeecard/data/repositories/v2/purchase_repository.dart';
 import 'package:coffeecard/data/storage/secure_storage.dart';
+import 'package:coffeecard/features/opening_hours/opening_hours.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart'
     hide $JsonSerializableConverter;
@@ -46,6 +46,9 @@ void configureServices() {
   sl.registerFactory<ReactivationAuthenticator>(
     () => ReactivationAuthenticator(sl),
   );
+
+  // Features
+  initFeatures();
 
   // Rest Client, Chopper client
   final coffeCardChopper = ChopperClient(
@@ -145,14 +148,6 @@ void configureServices() {
     ),
   );
 
-  // shiftplanning
-  sl.registerFactory<OpeningHoursRepository>(
-    () => OpeningHoursRepository(
-      api: sl<ShiftplanningApi>(),
-      executor: sl<Executor>(),
-    ),
-  );
-
   // external
   sl.registerFactory<ContributorRepository>(
     ContributorRepository.new,
@@ -160,5 +155,33 @@ void configureServices() {
 
   sl.registerSingleton<FirebaseAnalyticsEventLogging>(
     FirebaseAnalyticsEventLogging(FirebaseAnalytics.instance),
+  );
+}
+
+void initFeatures() {
+  initOpeningHours();
+}
+
+void initOpeningHours() {
+  // bloc
+  sl.registerFactory(
+    () => OpeningHoursCubit(
+      fetchOpeningHours: sl(),
+      isOpen: sl(),
+    ),
+  );
+
+  // use case
+  sl.registerFactory(() => GetOpeningHours(repository: sl()));
+  sl.registerFactory(() => CheckOpenStatus(repository: sl()));
+
+  // repository
+  sl.registerLazySingleton<OpeningHoursRepository>(
+    () => OpeningHoursRepositoryImpl(dataSource: sl()),
+  );
+
+  // data source
+  sl.registerLazySingleton<OpeningHoursRemoteDataSource>(
+    () => OpeningHoursRemoteDataSourceImpl(api: sl()),
   );
 }

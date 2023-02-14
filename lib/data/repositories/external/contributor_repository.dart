@@ -1,6 +1,6 @@
 import 'package:coffeecard/data/repositories/utils/request_types.dart';
 import 'package:coffeecard/models/contributor.dart';
-import 'package:coffeecard/utils/either.dart';
+import 'package:dartz/dartz.dart';
 
 class ContributorRepository {
   Future<Either<RequestFailure, List<Contributor>>> getContributors() async {
@@ -20,11 +20,6 @@ class ContributorRepository {
           name: 'Frederik Petersen',
           githubUrl: 'https://github.com/fredpetersen',
           avatarUrl: 'https://avatars.githubusercontent.com/u/43568735?v=4',
-        ),
-        Contributor(
-          name: 'Hjalte Sorgenfrei Mac Dalland',
-          githubUrl: 'https://github.com/Hjaltesorgenfrei',
-          avatarUrl: 'https://avatars.githubusercontent.com/u/8939023?v=4',
         ),
         Contributor(
           name: 'Jonas Anker Rasmussen',

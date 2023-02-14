@@ -24,9 +24,9 @@ class RegisterCubit extends Cubit<RegisterState> {
       occupationId,
     );
 
-    either.caseOf(
+    either.fold(
       (error) => emit(RegisterError(error.message)),
-      (user) {
+      (_) {
         emit(RegisterSuccess());
         sl<FirebaseAnalyticsEventLogging>().signUpEvent();
       },

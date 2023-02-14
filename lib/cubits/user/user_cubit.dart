@@ -24,11 +24,12 @@ class UserCubit extends Cubit<UserState> {
   Future<void> refreshUserDetails() async {
     final either = await _accountRepository.getUser();
 
-    if (either.isRight) {
-      _enrichUserWithOccupations(either.right);
-    } else {
-      emit(UserError(either.left.message));
-    }
+    either.fold(
+      (l) => emit(UserError(l.message)),
+      (r) {
+        _enrichUserWithOccupations(r);
+      },
+    );
   }
 
   Future<void> _updateUser(UpdateUser user) async {
@@ -45,32 +46,32 @@ class UserCubit extends Cubit<UserState> {
 
     final either = await _accountRepository.updateUser(user);
 
-    either.caseOf((error) {
-      emit(UserError(either.left.message));
-    }, (user) async {
-      // Refreshes twice as a work-around for
-      // a backend bug that returns a user object with all ranks set to 0.
-      await _enrichUserWithOccupations(either.right);
+    either.fold(
+      (l) => emit(UserError(l.message)),
+      (user) async {
+        // Refreshes twice as a work-around for
+        // a backend bug that returns a user object with all ranks set to 0.
+        await _enrichUserWithOccupations(user);
 
-      // TODO(marfavi): remove fetchUserDetails when backend bug is fixed, https://github.com/AnalogIO/coffeecard_app/issues/378
-      fetchUserDetails();
-    });
+        // TODO(marfavi): remove fetchUserDetails when backend bug is fixed, https://github.com/AnalogIO/coffeecard_app/issues/378
+        fetchUserDetails();
+      },
+    );
   }
 
   Future<void> _enrichUserWithOccupations(User user) async {
-    final List<Occupation> occupations;
+    List<Occupation> occupations = [];
     if (state is UserUpdating) {
       occupations = (state as UserUpdating).occupations;
     } else if (state is UserLoaded) {
       occupations = (state as UserLoaded).occupations;
     } else {
-      // Fetches occupation info, if we have not cached it beforehand
+      // Fetches the programme info, if we have not cached it beforehand
       final either = await _occupationRepository.getOccupations();
 
-      if (either.isRight) {
-        occupations = either.right;
-      } else {
-        emit(UserError(either.left.message));
+      either.fold((l) => emit(UserError(l.message)), (r) => occupations = r);
+
+      if (either.isLeft()) {
         return;
       }
     }

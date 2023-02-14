@@ -14,7 +14,7 @@ class OccupationCubit extends Cubit<OccupationState> {
   Future<void> getOccupations() async {
     final either = await occupationRepository.getOccupations();
 
-    either.caseOf(
+    either.fold(
       (error) => emit(OccupationError(error.message)),
       (occupations) => emit(OccupationLoaded(occupations: occupations)),
     );
