@@ -24,7 +24,7 @@ class PurchaseCubit extends Cubit<PurchaseState> {
       final either = await paymentHandler.initPurchase(product.id);
 
       either.fold(
-        (l) => emit(PurchaseError(l.message)),
+        (error) => emit(PurchaseError(error.message)),
         (payment) async {
           if (payment.status != PaymentStatus.error) {
             emit(PurchaseProcessing(payment));
