@@ -1,8 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/features/opening_hours/domain/usecases/fetch_opening_hours.dart';
-import 'package:coffeecard/features/opening_hours/domain/usecases/is_open.dart';
-import 'package:coffeecard/features/opening_hours/presentation/cubit/opening_hours_cubit.dart';
+import 'package:coffeecard/features/opening_hours/opening_hours.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';

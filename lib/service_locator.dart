@@ -13,12 +13,7 @@ import 'package:coffeecard/data/repositories/v2/app_config_repository.dart';
 import 'package:coffeecard/data/repositories/v2/leaderboard_repository.dart';
 import 'package:coffeecard/data/repositories/v2/purchase_repository.dart';
 import 'package:coffeecard/data/storage/secure_storage.dart';
-import 'package:coffeecard/features/opening_hours/data/datasources/opening_hours_remote_data_source.dart';
-import 'package:coffeecard/features/opening_hours/data/repositories/opening_hours_repository_impl.dart';
-import 'package:coffeecard/features/opening_hours/domain/repositories/opening_hours_repository.dart';
-import 'package:coffeecard/features/opening_hours/domain/usecases/fetch_opening_hours.dart';
-import 'package:coffeecard/features/opening_hours/domain/usecases/is_open.dart';
-import 'package:coffeecard/features/opening_hours/presentation/cubit/opening_hours_cubit.dart';
+import 'package:coffeecard/features/opening_hours/opening_hours.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart'
     hide $JsonSerializableConverter;

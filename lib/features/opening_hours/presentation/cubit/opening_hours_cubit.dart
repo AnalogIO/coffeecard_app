@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:coffeecard/core/usecases/usecase.dart';
-import 'package:coffeecard/features/opening_hours/domain/usecases/fetch_opening_hours.dart';
-import 'package:coffeecard/features/opening_hours/domain/usecases/is_open.dart';
+import 'package:coffeecard/features/opening_hours/opening_hours.dart';
 import 'package:equatable/equatable.dart';
 
 part 'opening_hours_state.dart';

@@ -1,6 +1,5 @@
 import 'package:coffeecard/core/usecases/usecase.dart';
-import 'package:coffeecard/features/opening_hours/domain/repositories/opening_hours_repository.dart';
-import 'package:coffeecard/features/opening_hours/domain/usecases/is_open.dart';
+import 'package:coffeecard/features/opening_hours/opening_hours.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';

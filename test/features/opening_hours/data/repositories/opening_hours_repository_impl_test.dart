@@ -1,8 +1,6 @@
 import 'package:coffeecard/core/errors/exceptions.dart';
 import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/features/opening_hours/data/datasources/opening_hours_remote_data_source.dart';
-import 'package:coffeecard/features/opening_hours/data/repositories/opening_hours_repository_impl.dart';
-import 'package:coffeecard/features/opening_hours/domain/repositories/opening_hours_repository.dart';
+import 'package:coffeecard/features/opening_hours/opening_hours.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';

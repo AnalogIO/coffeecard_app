@@ -1,5 +1,5 @@
 import 'package:coffeecard/core/errors/exceptions.dart';
-import 'package:coffeecard/features/opening_hours/data/datasources/opening_hours_remote_data_source.dart';
+import 'package:coffeecard/features/opening_hours/opening_hours.dart';
 import 'package:coffeecard/generated/api/shiftplanning_api.swagger.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';

@@ -12,7 +12,7 @@ import 'package:coffeecard/data/repositories/v1/occupation_repository.dart';
 import 'package:coffeecard/data/repositories/v1/receipt_repository.dart';
 import 'package:coffeecard/data/repositories/v1/ticket_repository.dart';
 import 'package:coffeecard/data/repositories/v2/leaderboard_repository.dart';
-import 'package:coffeecard/features/opening_hours/presentation/cubit/opening_hours_cubit.dart';
+import 'package:coffeecard/features/opening_hours/opening_hours.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/widgets/components/helpers/lazy_indexed_stack.dart';
 import 'package:coffeecard/widgets/pages/receipts/receipts_page.dart';
