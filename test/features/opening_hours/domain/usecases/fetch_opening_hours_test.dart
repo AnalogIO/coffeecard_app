@@ -10,11 +10,11 @@ import 'fetch_opening_hours_test.mocks.dart';
 @GenerateMocks([OpeningHoursRepository])
 void main() {
   late MockOpeningHoursRepository repository;
-  late FetchOpeningHours fetchOpeningHours;
+  late GetOpeningHours fetchOpeningHours;
 
   setUp(() {
     repository = MockOpeningHoursRepository();
-    fetchOpeningHours = FetchOpeningHours(repository: repository);
+    fetchOpeningHours = GetOpeningHours(repository: repository);
   });
 
   test('should call repository', () async {

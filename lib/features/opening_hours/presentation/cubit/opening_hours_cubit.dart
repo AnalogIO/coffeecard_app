@@ -6,8 +6,8 @@ import 'package:equatable/equatable.dart';
 part 'opening_hours_state.dart';
 
 class OpeningHoursCubit extends Cubit<OpeningHoursState> {
-  final FetchOpeningHours fetchOpeningHours;
-  final GetIsOpen isOpen;
+  final GetOpeningHours fetchOpeningHours;
+  final CheckOpenStatus isOpen;
 
   OpeningHoursCubit({required this.fetchOpeningHours, required this.isOpen})
       : super(const OpeningHoursLoading());

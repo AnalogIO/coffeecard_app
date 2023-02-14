@@ -8,7 +8,7 @@ import 'package:mockito/mockito.dart';
 
 import 'opening_hours_cubit_test.mocks.dart';
 
-@GenerateMocks([FetchOpeningHours, GetIsOpen])
+@GenerateMocks([GetOpeningHours, CheckOpenStatus])
 void main() {
   late MockFetchOpeningHours fetchOpeningHours;
   late MockGetIsOpen isOpen;

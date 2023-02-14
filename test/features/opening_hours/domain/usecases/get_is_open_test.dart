@@ -10,11 +10,11 @@ import 'get_is_open_test.mocks.dart';
 @GenerateMocks([OpeningHoursRepository])
 void main() {
   late MockOpeningHoursRepository repository;
-  late GetIsOpen getIsOpen;
+  late CheckOpenStatus getIsOpen;
 
   setUp(() {
     repository = MockOpeningHoursRepository();
-    getIsOpen = GetIsOpen(repository: repository);
+    getIsOpen = CheckOpenStatus(repository: repository);
   });
 
   test('should call repository', () async {
