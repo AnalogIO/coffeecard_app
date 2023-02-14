@@ -74,6 +74,7 @@ void main() {
         const OpeningHoursLoaded(
           isOpen: true,
           openingHours: {},
+          todaysOpeningHours: '',
         )
       ],
     );

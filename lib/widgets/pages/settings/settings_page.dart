@@ -135,9 +135,11 @@ class SettingsPage extends StatelessWidget {
                   builder: (context, colorIfShimmer) => ColoredBox(
                     color: colorIfShimmer,
                     child: SettingValueText(
-                      value: context
-                          .read<OpeningHoursCubit>()
-                          .weekdayAndOpeningHours(),
+                      value: openingHoursState is OpeningHoursLoaded
+                          ? openingHoursState.todaysOpeningHours
+                          : openingHoursState is OpeningHoursLoading
+                              ? Strings.openingHoursShimmerText
+                              : '',
                     ),
                   ),
                 ),

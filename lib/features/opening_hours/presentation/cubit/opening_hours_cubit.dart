@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/core/usecases/usecase.dart';
 import 'package:coffeecard/features/opening_hours/opening_hours.dart';
 import 'package:equatable/equatable.dart';
@@ -28,31 +27,12 @@ class OpeningHoursCubit extends Cubit<OpeningHoursState> {
           (openingHours) => emit(
             OpeningHoursLoaded(
               isOpen: isOpen,
-              openingHours: openingHours,
+              openingHours: openingHours.allOpeningHours,
+              todaysOpeningHours: openingHours.todaysOpeningHours,
             ),
           ),
         );
       },
     );
-  }
-
-  /// Return the current weekday and the corresponding opening hours e.g
-  /// 'Monday: 8 - 16'
-  String weekdayAndOpeningHours() {
-    if (state is OpeningHoursLoading) {
-      return Strings.openingHoursShimmerText;
-    }
-
-    final today = DateTime.now().weekday;
-    final weekdayPlural = Strings.weekdaysPlural[today]!;
-
-    if (state is OpeningHoursLoaded) {
-      final st = state as OpeningHoursLoaded;
-
-      final hours = st.openingHours[today];
-      return '$weekdayPlural: $hours';
-    }
-
-    return '';
   }
 }

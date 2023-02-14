@@ -15,10 +15,12 @@ class OpeningHoursLoaded extends OpeningHoursState {
   /// Opening hours in the format of Map<Datetime.weekday, String>
   final Map<int, String> openingHours;
   final bool isOpen;
+  final String todaysOpeningHours;
 
   const OpeningHoursLoaded({
     required this.isOpen,
     required this.openingHours,
+    required this.todaysOpeningHours,
   });
 
   @override

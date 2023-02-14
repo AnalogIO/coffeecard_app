@@ -1,6 +1,7 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/core/errors/exceptions.dart';
 import 'package:coffeecard/core/errors/failures.dart';
+import 'package:coffeecard/features/opening_hours/domain/entities/opening_hours.dart';
 import 'package:coffeecard/features/opening_hours/opening_hours.dart';
 import 'package:coffeecard/generated/api/shiftplanning_api.swagger.dart';
 import 'package:coffeecard/models/opening_hours_day.dart';
@@ -24,17 +25,27 @@ class OpeningHoursRepositoryImpl implements OpeningHoursRepository {
   }
 
   @override
-  Future<Either<Failure, Map<int, String>>> getOpeningHours() async {
+  Future<Either<Failure, OpeningHours>> getOpeningHours(int weekday) async {
     try {
       final openingHours = await dataSource.getOpeningHours();
 
-      return Right(_transformOpeningHours(openingHours));
+      final openingHoursMap = transformOpeningHours(openingHours);
+
+      return Right(
+        OpeningHours(
+          allOpeningHours: openingHoursMap,
+          todaysOpeningHours: calculateTodaysOpeningHours(
+            weekday,
+            openingHoursMap,
+          ),
+        ),
+      );
     } on ServerException catch (e) {
       return Left(ServerFailure(e.error));
     }
   }
 
-  Map<int, String> _transformOpeningHours(List<OpeningHoursDTO> dtoList) {
+  Map<int, String> transformOpeningHours(List<OpeningHoursDTO> dtoList) {
     final content = dtoList..sortBy((dto) => dto.start);
 
     final openingHoursPerWeekday =
@@ -63,5 +74,16 @@ class OpeningHoursRepositoryImpl implements OpeningHoursRepository {
     });
 
     return weekDayOpeningHours;
+  }
+
+  /// Return the current weekday and the corresponding opening hours e.g
+  /// 'Monday: 8 - 16'
+  String calculateTodaysOpeningHours(
+    int weekday,
+    Map<int, String> openingHours,
+  ) {
+    final weekdayPlural = Strings.weekdaysPlural[weekday]!;
+    final hours = openingHours[weekday];
+    return '$weekdayPlural: $hours';
   }
 }
