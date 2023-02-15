@@ -93,8 +93,6 @@ class BuySingleDrinkPage extends StatelessWidget {
         _fbAnalyticsListName,
       );
 
-      // TODO: change this to just use a single
-      //  endpoint, once the backend supports it
       final payment = await showModalBottomSheet<Payment>(
         context: context,
         barrierColor: AppColor.scrim,

@@ -1,16 +1,25 @@
 import 'package:coffeecard/data/repositories/utils/request_types.dart';
 import 'package:coffeecard/models/contributor.dart';
-import 'package:coffeecard/utils/either.dart';
+import 'package:dartz/dartz.dart';
 
 class ContributorRepository {
   Future<Either<RequestFailure, List<Contributor>>> getContributors() async {
-    // TODO: fetch data from API when available
     return Future.value(
       const Right([
+        Contributor(
+          name: 'Andreas Trøstrup',
+          githubUrl: 'https://github.com/duckth',
+          avatarUrl: 'https://avatars.githubusercontent.com/u/8415722?v=4',
+        ),
         Contributor(
           name: 'Frederik Martini',
           githubUrl: 'https://github.com/fremartini',
           avatarUrl: 'https://avatars.githubusercontent.com/u/39860858?v=4',
+        ),
+        Contributor(
+          name: 'Frederik Petersen',
+          githubUrl: 'https://github.com/fredpetersen',
+          avatarUrl: 'https://avatars.githubusercontent.com/u/43568735?v=4',
         ),
         Contributor(
           name: 'Jonas Anker Rasmussen',

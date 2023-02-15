@@ -78,6 +78,9 @@ dependencies:
   firebase_crashlytics: 2.8.9
   firebase_performance: 0.8.2+4
 
+  # functional programming thingies
+  dartz: 0.10.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

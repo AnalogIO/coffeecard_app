@@ -11,27 +11,47 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 
 class RegisterPageName extends StatelessWidget {
-  const RegisterPageName({required this.email, required this.passcode});
+  const RegisterPageName({
+    required this.email,
+    required this.passcode,
+    required this.occupationId,
+  });
 
   final String email;
   final String passcode;
+  final int occupationId;
 
-  static Route routeWith({required String email, required String passcode}) {
+  static Route routeWith({
+    required String email,
+    required String passcode,
+    required int occupationId,
+  }) {
     return FastSlideTransition(
-      child: RegisterPageName(email: email, passcode: passcode),
+      child: RegisterPageName(
+        email: email,
+        passcode: passcode,
+        occupationId: occupationId,
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => RegisterCubit(repository: sl<AccountRepository>()),
-      child: BlocListener<RegisterCubit, RegisterState>(
-        listener: (context, state) {
-          if (state is RegisterSuccess) return _showSuccessDialog(context);
-          if (state is RegisterError) return _showErrorDialog(context, state);
-        },
-        child: RegisterNameForm(email: email, passcode: passcode),
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: BlocProvider(
+        create: (_) => RegisterCubit(repository: sl<AccountRepository>()),
+        child: BlocListener<RegisterCubit, RegisterState>(
+          listener: (context, state) {
+            if (state is RegisterSuccess) return _showSuccessDialog(context);
+            if (state is RegisterError) return _showErrorDialog(context, state);
+          },
+          child: RegisterNameForm(
+            email: email,
+            passcode: passcode,
+            occupationId: occupationId,
+          ),
+        ),
       ),
     );
   }

@@ -30,13 +30,17 @@ void main() {
   });
 
   test('getUserTickets given successfull api response returns right', () async {
+    // arrange
     when(apiV2.apiV2TicketsGet(includeUsed: anyNamed('includeUsed')))
         .thenAnswer(
       (_) async => chopper.Response(Responses.succeeding(), const []),
     );
 
+    // act
     final actual = await repo.getUserTickets();
-    expect(actual.isRight, isTrue);
+
+    // assert
+    expect(actual.isRight(), isTrue);
   });
 
   test('getUserTickets given unsuccessfull api response returns left',
@@ -47,6 +51,6 @@ void main() {
     );
 
     final actual = await repo.getUserTickets();
-    expect(actual.isLeft, isTrue);
+    expect(actual.isLeft(), isTrue);
   });
 }

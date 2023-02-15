@@ -14,7 +14,7 @@ class ReceiptCubit extends Cubit<ReceiptState> {
   Future<void> fetchReceipts() async {
     final either = await _repository.getUserReceipts();
 
-    either.caseOf(
+    either.fold(
       (error) => emit(
         state.copyWith(
           status: ReceiptStatus.failure,
