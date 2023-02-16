@@ -41,7 +41,7 @@ class CreditsPage extends StatelessWidget {
                       const Gap(16),
                       const Padding(
                         padding: EdgeInsets.symmetric(horizontal: 16),
-                        child: SectionTitle(Strings.developmentTeam),
+                        child: SectionTitle(Strings.appTeam),
                       ),
                       ...state.contributors.map((e) => ContributorCard(e))
                     ],

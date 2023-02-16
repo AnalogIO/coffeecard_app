@@ -2,9 +2,8 @@ import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
+import 'package:coffeecard/cubits/opening_hours/opening_hours_cubit.dart';
 import 'package:coffeecard/cubits/user/user_cubit.dart';
-import 'package:coffeecard/features/opening_hours/opening_hours.dart';
-import 'package:coffeecard/features/opening_hours/presentation/pages/opening_hours_page.dart';
 import 'package:coffeecard/utils/api_uri_constants.dart';
 import 'package:coffeecard/utils/launch.dart';
 import 'package:coffeecard/widgets/components/dialog.dart';
@@ -18,7 +17,7 @@ import 'package:coffeecard/widgets/pages/settings/change_email_page.dart';
 import 'package:coffeecard/widgets/pages/settings/change_passcode_flow.dart';
 import 'package:coffeecard/widgets/pages/settings/credits_page.dart';
 import 'package:coffeecard/widgets/pages/settings/faq_page.dart';
-import 'package:coffeecard/widgets/pages/settings/setting_value_text.dart';
+import 'package:coffeecard/widgets/pages/settings/opening_hours_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
@@ -42,6 +41,14 @@ class SettingsPage extends StatelessWidget {
     return (state is! UserLoaded) ? null : () => callback(state);
   }
 
+  /// Tappable only if opening hours data has been loaded.
+  void Function()? _ifOpeningHoursLoaded(
+    OpeningHoursState state,
+    void Function(OpeningHoursLoaded) callback,
+  ) {
+    return (state is! OpeningHoursLoaded) ? null : () => callback(state);
+  }
+
   @override
   Widget build(BuildContext context) {
     final openingHoursState = context.watch<OpeningHoursCubit>().state;
@@ -58,7 +65,7 @@ class SettingsPage extends StatelessWidget {
                 ? UserCard(
                     id: userState.user.id,
                     name: userState.user.name,
-                    occupation: userState.user.occupation.fullName,
+                    occupation: userState.user.programme.fullName,
                   )
                 : const UserCard.placeholder(),
           ),
@@ -72,10 +79,11 @@ class SettingsPage extends StatelessWidget {
                   builder: (context, colorIfShimmer) {
                     return ColoredBox(
                       color: colorIfShimmer,
-                      child: SettingValueText(
-                        value: (userState is UserLoaded)
+                      child: Text(
+                        (userState is UserLoaded)
                             ? userState.user.email
                             : Strings.emailShimmerText,
+                        style: AppTextStyle.settingValue,
                       ),
                     );
                   },
@@ -91,8 +99,9 @@ class SettingsPage extends StatelessWidget {
               ),
               SettingListEntry(
                 name: Strings.passcode,
-                valueWidget: const SettingValueText(
-                  value: Strings.change,
+                valueWidget: Text(
+                  Strings.change,
+                  style: AppTextStyle.settingValue,
                 ),
                 onTap: _ifUserStateLoaded(
                   userState,
@@ -124,24 +133,34 @@ class SettingsPage extends StatelessWidget {
               ),
               SettingListEntry(
                 name: Strings.openingHours,
-                onTap: openingHoursState is OpeningHoursLoaded
-                    ? () => Navigator.push(
-                          context,
-                          OpeningHoursPage.routeWith(state: openingHoursState),
-                        )
-                    : null,
+                onTap: _ifOpeningHoursLoaded(
+                  openingHoursState,
+                  (st) => Navigator.push(
+                    context,
+                    OpeningHoursPage.routeWith(state: st),
+                  ),
+                ),
                 valueWidget: ShimmerBuilder(
                   showShimmer: openingHoursState is OpeningHoursLoading,
-                  builder: (context, colorIfShimmer) => ColoredBox(
-                    color: colorIfShimmer,
-                    child: SettingValueText(
-                      value: openingHoursState is OpeningHoursLoaded
-                          ? openingHoursState.todaysOpeningHours
-                          : openingHoursState is OpeningHoursLoading
-                              ? Strings.openingHoursShimmerText
-                              : '',
-                    ),
-                  ),
+                  builder: (context, colorIfShimmer) {
+                    final today = DateTime.now().weekday;
+                    final weekdayPlural = Strings.weekdaysPlural[today]!;
+                    final String text;
+
+                    if (openingHoursState is OpeningHoursLoaded) {
+                      final hours = openingHoursState.openingHours[today]!;
+                      text = '$weekdayPlural: $hours';
+                    } else if (openingHoursState is OpeningHoursLoading) {
+                      text = Strings.openingHoursShimmerText;
+                    } else {
+                      text = '';
+                    }
+
+                    return ColoredBox(
+                      color: colorIfShimmer,
+                      child: Text(text, style: AppTextStyle.settingValue),
+                    );
+                  },
                 ),
               ),
               SettingListEntry(

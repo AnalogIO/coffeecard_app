@@ -11,13 +11,10 @@ class RegisterPageEmail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: RegisterEmailForm(
-        onSubmit: (email) {
-          Navigator.push(context, RegisterPagePasscode.routeWith(email: email));
-        },
-      ),
+    return RegisterEmailForm(
+      onSubmit: (email) {
+        Navigator.push(context, RegisterPagePasscode.routeWith(email: email));
+      },
     );
   }
 }

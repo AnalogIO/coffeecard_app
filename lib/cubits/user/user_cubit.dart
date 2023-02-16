@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:coffeecard/data/repositories/shared/account_repository.dart';
-import 'package:coffeecard/data/repositories/v1/occupation_repository.dart';
+import 'package:coffeecard/data/repositories/v1/programme_repository.dart';
 import 'package:coffeecard/models/account/update_user.dart';
 import 'package:coffeecard/models/account/user.dart';
-import 'package:coffeecard/models/occupation.dart';
+import 'package:coffeecard/models/programme.dart';
 import 'package:coffeecard/utils/encode_passcode.dart';
 import 'package:equatable/equatable.dart';
 
@@ -11,9 +11,9 @@ part 'user_state.dart';
 
 class UserCubit extends Cubit<UserState> {
   final AccountRepository _accountRepository;
-  final OccupationRepository _occupationRepository;
+  final ProgrammeRepository _programmeRepository;
 
-  UserCubit(this._accountRepository, this._occupationRepository)
+  UserCubit(this._accountRepository, this._programmeRepository)
       : super(UserLoading());
 
   Future<void> fetchUserDetails() async {
@@ -24,12 +24,11 @@ class UserCubit extends Cubit<UserState> {
   Future<void> refreshUserDetails() async {
     final either = await _accountRepository.getUser();
 
-    either.fold(
-      (l) => emit(UserError(l.message)),
-      (r) {
-        _enrichUserWithOccupations(r);
-      },
-    );
+    if (either.isRight) {
+      _enrichUserWithProgrammes(either.right);
+    } else {
+      emit(UserError(either.left.message));
+    }
   }
 
   Future<void> _updateUser(UpdateUser user) async {
@@ -40,49 +39,49 @@ class UserCubit extends Cubit<UserState> {
     emit(
       UserUpdating(
         user: loadedState.user,
-        occupations: loadedState.occupations,
+        programmes: loadedState.programmes,
       ),
     );
 
     final either = await _accountRepository.updateUser(user);
 
-    either.fold(
-      (l) => emit(UserError(l.message)),
-      (user) async {
-        // Refreshes twice as a work-around for
-        // a backend bug that returns a user object with all ranks set to 0.
-        await _enrichUserWithOccupations(user);
-
-        // TODO(marfavi): remove fetchUserDetails when backend bug is fixed, https://github.com/AnalogIO/coffeecard_app/issues/378
-        fetchUserDetails();
-      },
-    );
+    if (either.isRight) {
+      // Refreshes twice as a work-around for
+      // a backend bug that returns a user object with all ranks set to 0.
+      await _enrichUserWithProgrammes(either.right);
+      // TODO: Remove fetchUserDetails when backend bug is fixed
+      return fetchUserDetails();
+    } else {
+      emit(UserError(either.left.message));
+    }
   }
 
-  Future<void> _enrichUserWithOccupations(User user) async {
-    List<Occupation> occupations = [];
+  Future<void> _enrichUserWithProgrammes(User user) async {
+    final List<Programme> programmes;
     if (state is UserUpdating) {
-      occupations = (state as UserUpdating).occupations;
+      programmes = (state as UserUpdating).programmes;
     } else if (state is UserLoaded) {
-      occupations = (state as UserLoaded).occupations;
+      programmes = (state as UserLoaded).programmes;
     } else {
       // Fetches the programme info, if we have not cached it beforehand
-      final either = await _occupationRepository.getOccupations();
-
-      either.fold((l) => emit(UserError(l.message)), (r) => occupations = r);
-
-      if (either.isLeft()) {
+      final either = await _programmeRepository.getProgramme();
+      if (either.isRight) {
+        programmes = either.right;
+      } else {
+        emit(UserError(either.left.message));
         return;
       }
     }
 
-    final occupation =
-        occupations.firstWhere((element) => element.id == user.occupationId);
+    final programme =
+        programmes.firstWhere((element) => element.id == user.programmeId);
 
     emit(
       UserLoaded(
-        user: user.copyWith(occupation: occupation),
-        occupations: occupations,
+        user: user.copyWith(
+          programme: ProgrammeInfo(programme.shortName, programme.fullName),
+        ),
+        programmes: programmes,
       ),
     );
   }
@@ -103,8 +102,8 @@ class UserCubit extends Cubit<UserState> {
     _updateUser(UpdateUser(encodedPasscode: encodePasscode(passcode)));
   }
 
-  Future<void> setUserOccupation(int occupationId) async {
-    _updateUser(UpdateUser(occupationId: occupationId));
+  Future<void> setUserProgramme(int programmeId) async {
+    _updateUser(UpdateUser(programmeId: programmeId));
   }
 
   void requestAccountDeletion() {

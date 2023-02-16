@@ -5,14 +5,14 @@ class UpdateUser extends Equatable {
   final String? email;
   final String? encodedPasscode;
   final bool? privacyActivated;
-  final int? occupationId;
+  final int? programmeId;
 
   const UpdateUser({
     this.name,
     this.email,
     this.encodedPasscode,
     this.privacyActivated,
-    this.occupationId,
+    this.programmeId,
   });
 
   @override
@@ -22,7 +22,7 @@ class UpdateUser extends Equatable {
       email,
       encodedPasscode,
       privacyActivated,
-      occupationId,
+      programmeId,
     ];
   }
 }

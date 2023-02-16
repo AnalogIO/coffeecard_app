@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:chopper/chopper.dart' show Response;
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/data/repositories/utils/request_types.dart';
-import 'package:dartz/dartz.dart';
+import 'package:coffeecard/utils/either.dart';
 import 'package:http/http.dart' show ClientException;
 import 'package:logger/logger.dart';
 
@@ -25,6 +25,7 @@ class Executor {
       if (response.isSuccessful) {
         return Right(transformer(response.body as Dto));
       } else {
+        logger.e('API failure: (${response.statusCode}) ${response.error}');
         return Left(RequestHttpFailure.fromResponse(response));
       }
     } on SocketException catch (e) {
