@@ -3,7 +3,7 @@ import 'package:coffeecard/cubits/environment/environment_cubit.dart';
 import 'package:coffeecard/data/repositories/utils/request_types.dart';
 import 'package:coffeecard/data/repositories/v2/app_config_repository.dart';
 import 'package:coffeecard/models/environment.dart';
-import 'package:dartz/dartz.dart';
+import 'package:coffeecard/utils/either.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';

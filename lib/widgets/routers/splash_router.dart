@@ -6,6 +6,7 @@ import 'package:coffeecard/widgets/pages/login/login_page_email.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+// TODO: Name of this widget should be reconsidered
 class SplashRouter extends StatefulWidget {
   const SplashRouter({required this.navigatorKey, required this.child});
 

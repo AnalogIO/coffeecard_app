@@ -1,11 +1,11 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/data/repositories/shared/account_repository.dart';
 import 'package:coffeecard/service_locator.dart';
+import 'package:coffeecard/utils/either.dart';
 import 'package:coffeecard/utils/input_validator.dart';
 import 'package:coffeecard/widgets/components/dialog.dart';
 import 'package:coffeecard/widgets/components/forms/form.dart';
 import 'package:coffeecard/widgets/components/loading_overlay.dart';
-import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 
 class ForgotPasscodeForm extends StatelessWidget {
@@ -28,13 +28,13 @@ class ForgotPasscodeForm extends StatelessWidget {
           forceErrorMessage: true,
           validate: (text) async {
             final either = await sl<AccountRepository>().emailExists(text);
-
-            return either.fold(
-              (l) => const Left(Strings.emailValidationError),
-              (r) => r
+            if (either.isRight) {
+              return (either.right == false)
                   ? const Left(Strings.forgotPasscodeNoAccountExists)
-                  : const Right(null),
-            );
+                  : const Right(null);
+            } else {
+              return const Left(Strings.emailValidationError);
+            }
           },
         ),
       ],
@@ -53,16 +53,12 @@ class ForgotPasscodeForm extends StatelessWidget {
 
     final either = await sl<AccountRepository>().requestPasscodeReset(email);
 
-    var title = Strings.forgotPasscodeLinkSent;
-    var body = Strings.forgotPasscodeSentRequestTo(email);
-
-    either.fold(
-      (l) {
-        title = Strings.forgotPasscodeError;
-        body = l.message;
-      },
-      (r) => null,
-    );
+    final title = (either.isRight)
+        ? Strings.forgotPasscodeLinkSent
+        : Strings.forgotPasscodeError;
+    final body = (either.isRight)
+        ? Strings.forgotPasscodeSentRequestTo(email)
+        : either.left.message;
 
     appDialog(
       context: context,

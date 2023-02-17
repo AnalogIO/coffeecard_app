@@ -15,29 +15,29 @@ class UserLoading extends UserState {}
 
 abstract class UserWithData extends UserState {
   final User user;
-  final List<Occupation> occupations;
+  final List<Programme> programmes;
 
-  UserWithData({required this.user, required this.occupations});
+  UserWithData({required this.user, required this.programmes});
 }
 
 class UserUpdating extends UserWithData {
-  UserUpdating({required super.user, required super.occupations});
+  UserUpdating({required super.user, required super.programmes});
 }
 
 class UserUpdated extends UserWithData {
-  UserUpdated({required super.user, required super.occupations});
+  UserUpdated({required super.user, required super.programmes});
 }
 
 class UserLoaded extends UserWithData {
-  UserLoaded({required super.user, required super.occupations});
+  UserLoaded({required super.user, required super.programmes});
 
   UserLoaded copyWith({
     User? user,
-    List<Occupation>? occupations,
+    List<Programme>? programmes,
   }) {
     return UserLoaded(
       user: user ?? this.user,
-      occupations: occupations ?? this.occupations,
+      programmes: programmes ?? this.programmes,
     );
   }
 }

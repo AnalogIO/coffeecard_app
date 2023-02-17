@@ -4,8 +4,8 @@ import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
 import 'package:coffeecard/models/receipts/receipt.dart';
 import 'package:coffeecard/models/ticket/ticket_count.dart';
+import 'package:coffeecard/utils/either.dart';
 import 'package:collection/collection.dart';
-import 'package:dartz/dartz.dart';
 
 class TicketRepository {
   TicketRepository({
@@ -47,7 +47,8 @@ class TicketRepository {
           id: dto.id,
           transactionType: TransactionType.ticketSwipe,
           timeUsed: dto.dateUsed,
-          // TODO(fremartini): Find a better alternative to these default values They are unused on the receipt overlay, https://github.com/AnalogIO/coffeecard_app/issues/384
+          // TODO: Find a better alternative to these default values.
+          //  They are unused on the receipt overlay
           amountPurchased: -1,
           price: -1,
         );

@@ -10,14 +10,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 
 class RegisterNameForm extends StatefulWidget {
-  const RegisterNameForm({
-    required this.email,
-    required this.passcode,
-    required this.occupationId,
-  });
+  const RegisterNameForm({required this.email, required this.passcode});
   final String email;
   final String passcode;
-  final int occupationId;
 
   @override
   State<RegisterNameForm> createState() => _RegisterNameFormState();
@@ -70,12 +65,9 @@ class _RegisterNameFormState extends State<RegisterNameForm> {
         TextButton(
           child: const Text(Strings.buttonAccept),
           onPressed: () {
-            context.read<RegisterCubit>().register(
-                  name,
-                  widget.email,
-                  widget.passcode,
-                  widget.occupationId,
-                );
+            context
+                .read<RegisterCubit>()
+                .register(name, widget.email, widget.passcode);
             closeAppDialog(context);
           },
         ),

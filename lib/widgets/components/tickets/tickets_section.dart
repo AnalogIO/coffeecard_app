@@ -30,13 +30,13 @@ class TicketSection extends StatelessWidget {
           listener: (context, state) {
             if (state is TicketUsing) {
               if (Navigator.of(context, rootNavigator: true).canPop()) {
-                // If a ticket was used from the buy
+                // If a ticket was used from the puy
                 // single drink flow, there is no swipe overlay
 
                 // Remove the swipe overlay
                 Navigator.of(context, rootNavigator: true).pop();
               }
-
+              // TODO: consider using a nicer loading indicator
               showLoadingOverlay(context);
             }
             if (state is TicketUsed) {

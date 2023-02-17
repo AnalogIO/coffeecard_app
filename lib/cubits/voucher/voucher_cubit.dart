@@ -14,9 +14,10 @@ class VoucherCubit extends Cubit<VoucherState> {
     emit(VoucherLoading());
     final either = await _voucherRepository.redeemVoucher(voucher);
 
-    either.fold(
-      (l) => emit(VoucherError(l.message)),
-      (r) => emit(VoucherSuccess(r)),
-    );
+    if (either.isRight) {
+      emit(VoucherSuccess(either.right));
+    } else {
+      emit(VoucherError(either.left.message));
+    }
   }
 }

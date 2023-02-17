@@ -6,7 +6,6 @@ import 'package:coffeecard/data/repositories/shared/account_repository.dart';
 import 'package:coffeecard/data/storage/secure_storage.dart';
 import 'package:coffeecard/utils/mutex.dart';
 import 'package:get_it/get_it.dart';
-import 'package:logger/logger.dart';
 
 class ReactivationAuthenticator extends Authenticator {
   final GetIt serviceLocator;
@@ -17,12 +16,10 @@ class ReactivationAuthenticator extends Authenticator {
 
   late SecureStorage secureStorage;
   late AuthenticationCubit authenticationCubit;
-  late Logger logger;
 
   ReactivationAuthenticator(this.serviceLocator) {
     secureStorage = serviceLocator.get<SecureStorage>();
     authenticationCubit = serviceLocator.get<AuthenticationCubit>();
-    logger = serviceLocator.get<Logger>();
   }
 
   bool _canRefreshToken() =>
@@ -49,9 +46,6 @@ class ReactivationAuthenticator extends Authenticator {
     Response response, [
     Request? originalRequest,
   ]) async {
-    logger.d(
-      '${request.url} ${response.statusCode}\n${response.bodyString}',
-    );
     if (response.statusCode != 401) {
       return null;
     }
@@ -95,21 +89,21 @@ class ReactivationAuthenticator extends Authenticator {
       try {
         final either = await accountRepository.login(email, encodedPasscode);
 
-        either.fold((l) {
-          // refresh failed, sign the user out
-          _evict();
-        }, (r) async {
+        if (either.isRight) {
           // refresh succeeded, update the token in secure storage
           tokenRefreshedAt = DateTime.now();
 
-          final token = r.token;
-          final bearerToken = 'Bearer ${r.token}';
+          final token = either.right.token;
+          final bearerToken = 'Bearer ${either.right.token}';
           await secureStorage.updateToken(token);
 
           return request.copyWith(
             headers: _updateHeadersWithToken(request.headers, bearerToken),
           );
-        });
+        } else {
+          // refresh failed, sign the user out
+          _evict();
+        }
       } finally {
         mutex.unlock();
       }

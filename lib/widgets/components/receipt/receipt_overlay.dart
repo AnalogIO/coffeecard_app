@@ -9,7 +9,8 @@ import 'package:gap/gap.dart';
 import 'package:screen_brightness/screen_brightness.dart';
 
 class ReceiptOverlay {
-  // TODO(marfavi): see if a more generic version can be made that supports both the loading overlay and this one, https://github.com/AnalogIO/coffeecard_app/issues/386
+  // TODO: see if a more generic version can be made
+  //  that supports both the loading overlay and this one
   BuildContext _context;
 
   void hide() {

@@ -67,7 +67,7 @@ class _EditProfile extends StatelessWidget {
         ),
         const Gap(8),
         Text(
-          '${user.occupation.fullName} (${user.occupation.shortName})',
+          '${user.programme.fullName} (${user.programme.shortName})',
           style: AppTextStyle.explainer,
         ),
         const Gap(24),
@@ -88,7 +88,7 @@ class _EditProfile extends StatelessWidget {
             SettingListEntry(
               name: Strings.occupation,
               valueWidget: SettingDescription(
-                text: user.occupation.shortName,
+                text: user.programme.shortName,
               ),
               onTap: () => Navigator.push(context, ChangeOccupationPage.route),
             ),

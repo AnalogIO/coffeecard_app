@@ -1,7 +1,7 @@
 import 'dart:async';
 
+import 'package:coffeecard/utils/either.dart';
 import 'package:coffeecard/utils/email_is_valid.dart';
-import 'package:dartz/dartz.dart';
 
 part 'input_validator_helpers.dart';
 

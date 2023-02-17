@@ -1,9 +1,7 @@
 import 'package:coffeecard/data/repositories/utils/executor.dart';
 import 'package:coffeecard/data/repositories/utils/request_types.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
-import 'package:coffeecard/models/purchase/initiate_purchase.dart';
-import 'package:coffeecard/models/purchase/single_purchase.dart';
-import 'package:dartz/dartz.dart';
+import 'package:coffeecard/utils/either.dart';
 
 class PurchaseRepository {
   PurchaseRepository({
@@ -16,7 +14,7 @@ class PurchaseRepository {
 
   /// Initiate a new Purchase Request. The return is a purchase request
   /// with payment details on how to pay for the purchase
-  Future<Either<RequestFailure, InitiatePurchase>> initiatePurchase(
+  Future<Either<RequestFailure, InitiatePurchaseResponse>> initiatePurchase(
     int productId,
     PaymentType paymentType,
   ) async {
@@ -27,17 +25,19 @@ class PurchaseRepository {
           paymentType: paymentTypeToJson(paymentType),
         ),
       ),
-      (dto) => InitiatePurchase.fromDto(dto),
+      // TODO: No generated code as return type!
+      (dto) => dto,
     );
   }
 
   /// Get a purchase by its purchase id
-  Future<Either<RequestFailure, SinglePurchase>> getPurchase(
+  Future<Either<RequestFailure, SinglePurchaseResponse>> getPurchase(
     int purchaseId,
   ) async {
     return executor.execute(
       () => apiV2.apiV2PurchasesIdGet(id: purchaseId),
-      (dto) => SinglePurchase.fromDto(dto),
+      // TODO: No generated code as return type!
+      (dto) => dto,
     );
   }
 }
