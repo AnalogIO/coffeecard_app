@@ -20,25 +20,26 @@ class FormBloc extends Bloc<FormEvent, FormState> {
         for (final validator in validators) {
           final either = await validator.validate(text);
 
-          either.fold(
-            (errorMessage) => emit(
+          if (either.isLeft()) {
+            emit(
               state.copyWith(
                 loading: false,
                 canSubmit: false,
-                error: Left(errorMessage),
+                error: either,
                 shouldDisplayError: validator.forceErrorMessage ? true : null,
               ),
-            ),
-            (_) => emit(
-              state.copyWith(
-                loading: false,
-                text: text,
-                canSubmit: true,
-                error: const Right(null),
-              ),
-            ),
-          );
+            );
+            return;
+          }
         }
+        emit(
+          state.copyWith(
+            loading: false,
+            text: text,
+            canSubmit: true,
+            error: const Right(null),
+          ),
+        );
       },
       transformer: debounce ? debouncing() : null,
     );
