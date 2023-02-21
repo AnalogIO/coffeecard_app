@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import '../../../../response_factory.dart';
+import '../../../../response.dart';
 import 'opening_hours_remote_data_source_test.mocks.dart';
 
 @GenerateMocks([ShiftplanningApi])
@@ -22,7 +22,7 @@ void main() {
     test('should throw [ServerException] if api call fails', () async {
       // arrange
       when(api.apiOpenShortKeyGet(shortKey: anyNamed('shortKey'))).thenAnswer(
-        (_) async => ResponseFactory.fromStatusCode(500),
+        (_) async => Response.fromStatusCode(500),
       );
 
       // act
@@ -38,7 +38,7 @@ void main() {
     test('should return bool if api call succeeds', () async {
       // arrange
       when(api.apiOpenShortKeyGet(shortKey: anyNamed('shortKey'))).thenAnswer(
-        (_) async => ResponseFactory.fromStatusCode(
+        (_) async => Response.fromStatusCode(
           200,
           body: IsOpenDTO(open: true),
         ),
@@ -56,7 +56,7 @@ void main() {
     test('should throw [ServerException] if api call fails', () async {
       // arrange
       when(api.apiShiftsShortKeyGet(shortKey: anyNamed('shortKey'))).thenAnswer(
-        (_) async => ResponseFactory.fromStatusCode(500),
+        (_) async => Response.fromStatusCode(500),
       );
 
       // act
@@ -72,7 +72,7 @@ void main() {
     test('should return opening hours if api call succeeds', () async {
       // arrange
       when(api.apiShiftsShortKeyGet(shortKey: anyNamed('shortKey'))).thenAnswer(
-        (_) async => ResponseFactory.fromStatusCode(200, body: []),
+        (_) async => Response.fromStatusCode(200, body: []),
       );
 
       // act
