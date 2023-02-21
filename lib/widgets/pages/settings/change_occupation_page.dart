@@ -1,6 +1,6 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/cubits/occupation/occupation_cubit.dart';
 import 'package:coffeecard/cubits/user/user_cubit.dart';
+import 'package:coffeecard/features/occupation/presentation/cubit/occupation_cubit.dart';
 import 'package:coffeecard/widgets/components/forms/occupation_form.dart';
 import 'package:coffeecard/widgets/components/loading.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';

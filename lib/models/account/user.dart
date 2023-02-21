@@ -1,5 +1,5 @@
+import 'package:coffeecard/features/occupation/domain/entities/occupation.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
-import 'package:coffeecard/models/occupation.dart';
 import 'package:equatable/equatable.dart';
 
 class User extends Equatable {

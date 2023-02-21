@@ -1,7 +1,7 @@
 import 'package:coffeecard/base/style/colors.dart';
-import 'package:coffeecard/cubits/occupation/occupation_cubit.dart';
 import 'package:coffeecard/errors/match_case_incomplete_exception.dart';
-import 'package:coffeecard/models/occupation.dart';
+import 'package:coffeecard/features/occupation/domain/entities/occupation.dart';
+import 'package:coffeecard/features/occupation/presentation/cubit/occupation_cubit.dart';
 import 'package:coffeecard/utils/fast_slide_transition.dart';
 import 'package:coffeecard/widgets/components/error_section.dart';
 import 'package:coffeecard/widgets/components/forms/occupation_form.dart';
@@ -57,7 +57,7 @@ class _RegisterPageOccupationState extends State<RegisterPageOccupation> {
             return Center(
               child: ErrorSection(
                 error: state.message,
-                retry: context.read<OccupationCubit>().getOccupations,
+                retry: context.read<OccupationCubit>().fetchOccupations,
               ),
             );
           }

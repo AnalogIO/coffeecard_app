@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:coffeecard/data/repositories/shared/account_repository.dart';
+import 'package:coffeecard/features/occupation/domain/entities/occupation.dart';
 import 'package:coffeecard/models/account/update_user.dart';
 import 'package:coffeecard/models/account/user.dart';
-import 'package:coffeecard/models/occupation.dart';
 import 'package:coffeecard/utils/encode_passcode.dart';
 import 'package:equatable/equatable.dart';
 
