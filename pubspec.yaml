@@ -80,6 +80,7 @@ dependencies:
 
   # functional programming thingies
   dartz: 0.10.1
+  upgrader: ^4.11.1
 
 dev_dependencies:
   flutter_test:
