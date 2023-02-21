@@ -1,4 +1,5 @@
 import 'package:coffeecard/base/strings.dart';
+import 'package:coffeecard/cubits/occupation/occupation_cubit.dart';
 import 'package:coffeecard/cubits/user/user_cubit.dart';
 import 'package:coffeecard/widgets/components/forms/occupation_form.dart';
 import 'package:coffeecard/widgets/components/loading.dart';
@@ -26,16 +27,23 @@ class ChangeOccupationPage extends StatelessWidget {
             return BlocBuilder<UserCubit, UserState>(
               buildWhen: (previous, current) =>
                   previous is UserUpdating || current is UserUpdating,
-              builder: (context, state) {
-                return Loading(
-                  loading: state is UserUpdating,
-                  child: OccupationForm(
-                    occupations: userLoadedState.occupations,
-                    selectedOccupation: userLoadedState.user.occupation,
-                    onChange: (occupation) => context
-                        .read<UserCubit>()
-                        .setUserOccupation(occupation.id),
-                  ),
+              builder: (context, userState) {
+                return BlocBuilder<OccupationCubit, OccupationState>(
+                  builder: (context, occupationState) {
+                    return Loading(
+                      loading: userState is UserUpdating ||
+                          occupationState is OccupationLoading,
+                      child: OccupationForm(
+                        // FIXME: remove cast
+                        occupations:
+                            (occupationState as OccupationLoaded).occupations,
+                        selectedOccupation: userLoadedState.user.occupation,
+                        onChange: (occupation) => context
+                            .read<UserCubit>()
+                            .setUserOccupation(occupation.id),
+                      ),
+                    );
+                  },
                 );
               },
             );
