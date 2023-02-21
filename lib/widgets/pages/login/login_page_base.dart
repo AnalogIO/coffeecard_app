@@ -1,13 +1,11 @@
-import 'dart:io';
-
 import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/core/widgets/upgrade_alert.dart';
 import 'package:coffeecard/utils/responsive.dart';
 import 'package:coffeecard/widgets/components/images/analog_logo.dart';
 import 'package:coffeecard/widgets/components/login/login_input_hint.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:upgrader/upgrader.dart';
 
 class LoginPageBase extends StatelessWidget {
   const LoginPageBase({
@@ -31,12 +29,6 @@ class LoginPageBase extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return UpgradeAlert(
-      upgrader: Upgrader(
-        showReleaseNotes: false,
-        dialogStyle: Platform.isIOS
-            ? UpgradeDialogStyle.cupertino
-            : UpgradeDialogStyle.material,
-      ),
       child: AppScaffold.withoutTitle(
         resizeToAvoidBottomInset: resizeToAvoidBottomInset,
         body: Column(
