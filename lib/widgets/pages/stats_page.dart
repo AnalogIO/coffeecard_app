@@ -21,11 +21,7 @@ class StatsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<void> refresh({required bool loadUserData}) async {
-      await Future.wait([
-        context.read<LeaderboardCubit>().fetch(),
-      ]);
-    }
+    Future<void> refresh() async => context.read<LeaderboardCubit>().fetch();
 
     final userState = context.watch<UserCubit>().state;
     final statsState = context.watch<LeaderboardCubit>().state;
@@ -49,12 +45,12 @@ class StatsPage extends StatelessWidget {
 
     return BlocListener<UserCubit, UserState>(
       listenWhen: (_, current) => current is UserLoaded,
-      listener: (context, state) => refresh(loadUserData: false),
+      listener: (context, state) => refresh(),
       child: AppScaffold.withTitle(
         title: Strings.statsPageTitle,
         body: RefreshIndicator(
           displacement: 24,
-          onRefresh: () => refresh(loadUserData: true),
+          onRefresh: () => refresh(),
           child: ListView(
             controller: scrollController,
             physics: loading ? const NeverScrollableScrollPhysics() : null,

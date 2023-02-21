@@ -13,10 +13,12 @@ class OccupationCubit extends Cubit<OccupationState> {
       : super(const OccupationLoading());
 
   Future<void> fetchOccupations() async {
+    emit(const OccupationLoading());
+
     final either = await getOccupations(NoParams());
 
     either.fold(
-      (error) => emit(OccupationError(error.reason)),
+      (error) => emit(OccupationError(error: error.reason)),
       (occupations) => emit(OccupationLoaded(occupations: occupations)),
     );
   }
