@@ -20,6 +20,13 @@ import 'package:coffeecard/features/occupation/domain/repositories/occupation_re
 import 'package:coffeecard/features/occupation/domain/usecases/get_occupations.dart';
 import 'package:coffeecard/features/occupation/presentation/cubit/occupation_cubit.dart';
 import 'package:coffeecard/features/opening_hours/opening_hours.dart';
+import 'package:coffeecard/features/user/data/datasources/user_remote_data_source.dart';
+import 'package:coffeecard/features/user/data/repositories/user_repository_impl.dart';
+import 'package:coffeecard/features/user/domain/repositories/user_repository.dart';
+import 'package:coffeecard/features/user/domain/usecases/get_user.dart';
+import 'package:coffeecard/features/user/domain/usecases/request_account_deletion.dart';
+import 'package:coffeecard/features/user/domain/usecases/update_user_details.dart';
+import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart'
     hide $JsonSerializableConverter;
@@ -160,6 +167,7 @@ void configureServices() {
 void initFeatures() {
   initOpeningHours();
   initOccupation();
+  initUser();
 }
 
 void initOpeningHours() {
@@ -203,5 +211,34 @@ void initOccupation() {
   // data source
   sl.registerLazySingleton<OccupationRemoteDataSource>(
     () => OccupationRemoteDataSourceImpl(api: sl()),
+  );
+}
+
+void initUser() {
+  // bloc
+  sl.registerFactory(
+    () => UserCubit(
+      getUser: sl(),
+      requestAccountDeletion: sl(),
+      updateUserDetails: sl(),
+    ),
+  );
+
+  // use case
+  sl.registerFactory(() => GetUser(repository: sl()));
+  sl.registerFactory(() => RequestAccountDeletion(repository: sl()));
+  sl.registerFactory(() => UpdateUserDetails(repository: sl()));
+
+  // repository
+  sl.registerFactory<UserRepository>(
+    () => UserRepositoryImpl(remoteDataSource: sl()),
+  );
+
+  // data source
+  sl.registerLazySingleton<UserRemoteDataSource>(
+    () => UserRemoteDataSourceImpl(
+      apiV1: sl(),
+      apiV2: sl(),
+    ),
   );
 }

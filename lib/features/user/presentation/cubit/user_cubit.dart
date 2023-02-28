@@ -1,25 +1,34 @@
 import 'package:bloc/bloc.dart';
-import 'package:coffeecard/data/repositories/shared/account_repository.dart';
+import 'package:coffeecard/core/usecases/usecase.dart';
 import 'package:coffeecard/features/occupation/domain/entities/occupation.dart';
+import 'package:coffeecard/features/user/domain/entities/user.dart';
+import 'package:coffeecard/features/user/domain/usecases/get_user.dart';
+import 'package:coffeecard/features/user/domain/usecases/request_account_deletion.dart';
+import 'package:coffeecard/features/user/domain/usecases/update_user_details.dart';
 import 'package:coffeecard/models/account/update_user.dart';
-import 'package:coffeecard/models/account/user.dart';
 import 'package:coffeecard/utils/encode_passcode.dart';
 import 'package:equatable/equatable.dart';
 
 part 'user_state.dart';
 
 class UserCubit extends Cubit<UserState> {
-  final AccountRepository accountRepository;
+  final GetUser getUser;
+  final UpdateUserDetails updateUserDetails;
+  final RequestAccountDeletion requestAccountDeletion;
 
-  UserCubit(this.accountRepository) : super(UserLoading());
+  UserCubit({
+    required this.getUser,
+    required this.updateUserDetails,
+    required this.requestAccountDeletion,
+  }) : super(UserLoading());
 
   Future<void> fetchUserDetails() async {
     emit(UserLoading());
 
-    final either = await accountRepository.getUser();
+    final either = await getUser(NoParams());
 
     either.fold(
-      (l) => emit(UserError(l.message)),
+      (error) => emit(UserError(error.reason)),
       (user) => emit(
         UserLoaded(
           user: user,
@@ -43,10 +52,18 @@ class UserCubit extends Cubit<UserState> {
       ),
     );
 
-    final either = await accountRepository.updateUser(user);
+    final either = await updateUserDetails(
+      Params(
+        email: user.email,
+        encodedPasscode: user.encodedPasscode,
+        name: user.name,
+        occupationId: user.occupationId,
+        privacyActivated: user.privacyActivated,
+      ),
+    );
 
     either.fold(
-      (l) => emit(UserError(l.message)),
+      (error) => emit(UserError(error.reason)),
       (user) => emit(loadedState.copyWith(user: user)),
     );
   }
@@ -71,7 +88,7 @@ class UserCubit extends Cubit<UserState> {
     updateUser(UpdateUser(occupationId: occupationId));
   }
 
-  void requestAccountDeletion() {
-    accountRepository.requestAccountDeletion();
+  void requestUserAccountDeletion() {
+    requestAccountDeletion(NoParams());
   }
 }

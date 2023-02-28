@@ -1,11 +1,12 @@
+import 'package:coffeecard/core/errors/exceptions.dart';
 import 'package:coffeecard/data/repositories/utils/executor.dart';
 import 'package:coffeecard/data/repositories/utils/request_types.dart';
+import 'package:coffeecard/features/user/data/models/user_model.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart'
     hide MessageResponseDto;
 import 'package:coffeecard/models/account/authenticated_user.dart';
 import 'package:coffeecard/models/account/update_user.dart';
-import 'package:coffeecard/models/account/user.dart';
 import 'package:coffeecard/utils/api_uri_constants.dart';
 import 'package:dartz/dartz.dart';
 
@@ -56,27 +57,33 @@ class AccountRepository {
     );
   }
 
-  Future<Either<RequestFailure, User>> getUser() async {
-    return executor.execute(
-      apiV1.apiV1AccountGet,
-      User.fromDTO,
-    );
+  Future<UserModel> getUser() async {
+    final response = await apiV2.apiV2AccountGet();
+
+    if (!response.isSuccessful) {
+      throw ServerException.fromResponse(response);
+    }
+
+    return UserModel.fromResponse(response.body!);
   }
 
   /// Update user information
-  Future<Either<RequestFailure, User>> updateUser(UpdateUser user) async {
-    final userDTO = UpdateUserDto(
-      name: user.name,
-      programmeId: user.occupationId,
-      email: user.email,
-      privacyActivated: user.privacyActivated,
-      password: user.encodedPasscode,
+  Future<UserModel> updateUser(UpdateUser user) async {
+    final response = await apiV2.apiV2AccountPut(
+      body: UpdateUserRequest(
+        name: user.name,
+        programmeId: user.occupationId,
+        email: user.email,
+        privacyActivated: user.privacyActivated,
+        password: user.encodedPasscode,
+      ),
     );
 
-    return executor.execute(
-      () => apiV1.apiV1AccountPut(body: userDTO),
-      User.fromDTO,
-    );
+    if (!response.isSuccessful) {
+      throw ServerException.fromResponse(response);
+    }
+
+    return UserModel.fromResponse(response.body!);
   }
 
   Future<Either<RequestFailure, RequestSuccess>> requestPasscodeReset(

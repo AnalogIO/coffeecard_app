@@ -19,6 +19,6 @@ class OccupationRemoteDataSourceImpl implements OccupationRemoteDataSource {
       throw ServerException.fromResponse(response);
     }
 
-    return response.body!.map(OccupationModel.fromDTO).toList();
+    return response.body!.map(OccupationModel.fromDTOV1).toList();
   }
 }
