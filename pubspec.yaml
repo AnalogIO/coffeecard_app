@@ -83,6 +83,9 @@ dependencies:
 
   # Upgrade notifier
   upgrader: ^4.11.1
+  
+  # env
+  envied: 0.2.0
 
 dev_dependencies:
   flutter_test:
@@ -101,6 +104,9 @@ dev_dependencies:
 
   # linter
   lint: 1.10.0
+
+  # env
+  envied_generator: 0.2.0
 
 flutter_app_name: #remember to update: flutter pub run flutter_app_name
   name: "Analog"
