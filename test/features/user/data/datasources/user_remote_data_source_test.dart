@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:coffeecard/core/errors/exceptions.dart';
 import 'package:coffeecard/features/occupation/data/models/occupation_model.dart';
-import 'package:coffeecard/features/occupation/domain/entities/occupation.dart';
 import 'package:coffeecard/features/user/data/datasources/user_remote_data_source.dart';
 import 'package:coffeecard/features/user/data/models/user_model.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';

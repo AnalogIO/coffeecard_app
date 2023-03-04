@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:coffeecard/core/usecases/usecase.dart';
-import 'package:coffeecard/features/occupation/domain/entities/occupation.dart';
 import 'package:coffeecard/features/user/domain/entities/user.dart';
 import 'package:coffeecard/features/user/domain/usecases/get_user.dart';
 import 'package:coffeecard/features/user/domain/usecases/request_account_deletion.dart';
@@ -29,12 +28,7 @@ class UserCubit extends Cubit<UserState> {
 
     either.fold(
       (error) => emit(UserError(error.reason)),
-      (user) => emit(
-        UserLoaded(
-          user: user,
-          occupation: user.occupation,
-        ),
-      ),
+      (user) => emit(UserLoaded(user: user)),
     );
   }
 
@@ -45,12 +39,7 @@ class UserCubit extends Cubit<UserState> {
 
     final loadedState = state as UserLoaded;
 
-    emit(
-      UserUpdating(
-        user: loadedState.user,
-        occupation: loadedState.occupation,
-      ),
-    );
+    emit(UserUpdating(user: loadedState.user));
 
     final either = await updateUserDetails(
       Params(

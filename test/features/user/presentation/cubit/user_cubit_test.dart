@@ -68,7 +68,7 @@ void main() {
       act: (_) => cubit.fetchUserDetails(),
       expect: () => [
         UserLoading(),
-        UserLoaded(user: tUser, occupation: const Occupation.empty()),
+        UserLoaded(user: tUser),
       ],
     );
   });
@@ -94,7 +94,7 @@ void main() {
       'should not update state if state is [Updating]',
       build: () => cubit,
       act: (_) => cubit.updateUser(const UpdateUser()),
-      seed: () => UserUpdating(user: tUser, occupation: tUser.occupation),
+      seed: () => UserUpdating(user: tUser),
       expect: () => [],
     );
 
@@ -107,9 +107,9 @@ void main() {
         ),
       ),
       act: (_) => cubit.updateUser(const UpdateUser()),
-      seed: () => UserLoaded(user: tUser, occupation: tUser.occupation),
+      seed: () => UserLoaded(user: tUser),
       expect: () => [
-        UserUpdating(user: tUser, occupation: tUser.occupation),
+        UserUpdating(user: tUser),
         UserError('some error'),
       ],
     );
@@ -121,10 +121,10 @@ void main() {
         (_) async => const Right(tUser),
       ),
       act: (_) => cubit.updateUser(const UpdateUser()),
-      seed: () => UserLoaded(user: tUser, occupation: tUser.occupation),
+      seed: () => UserLoaded(user: tUser),
       expect: () => [
-        UserUpdating(user: tUser, occupation: tUser.occupation),
-        UserLoaded(user: tUser, occupation: tUser.occupation),
+        UserUpdating(user: tUser),
+        UserLoaded(user: tUser),
       ],
     );
   });
