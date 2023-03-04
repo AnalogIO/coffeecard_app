@@ -1,23 +1,19 @@
-import 'package:coffeecard/env/env.dart';
-
 class ApiUriConstants {
-  static const String shiftyUrl = Env.shiftyUrl;
+  static const String shiftyUrl = 'https://analogio.dk/shiftplanning';
+  static const String apiVersion = '1';
+  static const String minAppVersion = '2.1.0';
+  static Uri analogIOGitHub = Uri.parse('https://github.com/AnalogIO/');
 
-  static const String apiVersion = Env.apiVersion;
+  // Mobilepay
+  static Uri mobilepayAndroid =
+      Uri.parse('market://details?id=dk.danskebank.mobilepay');
+  static Uri mobilepayIOS =
+      Uri.parse('itms-apps://itunes.apple.com/app/id624499138');
 
-  static const String minAppVersion = Env.minAppVersion;
+  // Settings
+  static Uri privacyPolicyUri =
+      Uri.parse('https://analogio.dk/policies/privacypolicy.pdf');
 
-  static Uri analogIOGitHub = Uri.parse(Env.analogIOGitHub);
-
-  // mobilepay urls
-  static Uri mobilepayAndroid = Uri.parse(Env.mobilepayAndroid);
-  static Uri mobilepayIOS = Uri.parse(Env.mobilepayIOS);
-
-  static Uri privacyPolicyUri = Uri.parse(Env.privacyPolicyUri);
-
-  static Uri feedbackFormUri = Uri.parse(Env.feedbackFormUri);
-
-  static String getCoffeeCardUrl() {
-    return Env.coffeeCardUrl;
-  }
+  static Uri feedbackFormUri =
+      Uri.parse('https://www.cognitoforms.com/CafeAnalog1/BugReport');
 }

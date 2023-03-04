@@ -13,6 +13,7 @@ import 'package:coffeecard/data/repositories/v2/app_config_repository.dart';
 import 'package:coffeecard/data/repositories/v2/leaderboard_repository.dart';
 import 'package:coffeecard/data/repositories/v2/purchase_repository.dart';
 import 'package:coffeecard/data/storage/secure_storage.dart';
+import 'package:coffeecard/env/env.dart';
 import 'package:coffeecard/features/opening_hours/opening_hours.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart'
@@ -52,7 +53,7 @@ void configureServices() {
 
   // Rest Client, Chopper client
   final coffeCardChopper = ChopperClient(
-    baseUrl: ApiUriConstants.getCoffeeCardUrl(),
+    baseUrl: Env.coffeeCardUrl,
     interceptors: [AuthenticationInterceptor(sl<SecureStorage>())],
     converter: $JsonSerializableConverter(),
     services: [
