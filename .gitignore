@@ -49,8 +49,5 @@ app.*.map.json
 *.mocks.dart
 /lib/generated/
 
-# env files
-.env
-
 # test coverage files
 /coverage/
