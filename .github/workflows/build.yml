@@ -108,15 +108,11 @@ jobs:
 
       - name: Set URI (dev)
         if: github.ref_name != 'production'
-        run: |
-          touch .env &&
-          echo "coffeeCardUrl=\"${{ env.DEV_API_URI }}\"" >> .env
+        run: echo "coffeeCardUrl=\"${{ env.DEV_API_URI }}\"" > .env
 
       - name: Set URI (prod)
         if: github.ref_name == 'production'
-        run: |
-          touch .env &&
-          echo "coffeeCardUrl=\"${{ env.PROD_API_URI }}\"" >> .env
+        run: echo "coffeeCardUrl=\"${{ env.PROD_API_URI }}\"" > .env
       
       - name: Decode GoogleService-Info.plist
         env:
@@ -194,15 +190,11 @@ jobs:
 
       - name: Set URI (dev)
         if: github.ref_name != 'production'
-        run: |
-          touch .env &&
-          echo "coffeeCardUrl=\"${{ env.DEV_API_URI }}\"" >> .env
+        run: echo "coffeeCardUrl=\"${{ env.DEV_API_URI }}\"" > .env
 
       - name: Set URI (prod)
         if: github.ref_name == 'production'
-        run: |
-          touch .env &&
-          echo "coffeeCardUrl=\"${{ env.PROD_API_URI }}\"" >> .env
+        run: echo "coffeeCardUrl=\"${{ env.PROD_API_URI }}\"" > .env
 
       - name: Generate code
         run: flutter pub run build_runner build
@@ -243,9 +235,7 @@ jobs:
 
       - name: Set URI (dev)
         if: github.ref_name != 'production'
-        run: |
-          touch .env &&
-          echo "coffeeCardUrl=\"${{ env.DEV_API_URI }}\"" >> .env
+        run: echo "coffeeCardUrl=\"${{ env.DEV_API_URI }}\"" > .env
       
       - name: Generate code
         run: flutter pub run build_runner build
