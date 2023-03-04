@@ -12,7 +12,11 @@ class ServerException implements Exception {
       final jsonString =
           json.decode(response.bodyString) as Map<String, dynamic>;
 
-      return ServerException(error: jsonString['message'] as String);
+      final message = jsonString['message'] as String?;
+
+      return ServerException(
+        error: message ?? response.bodyString,
+      );
     } on Exception {
       return ServerException(error: response.bodyString);
     }
