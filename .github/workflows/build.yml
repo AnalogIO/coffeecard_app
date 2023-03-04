@@ -19,8 +19,6 @@ on:
 env:
   FLUTTER_VERSION: 3.3.7
   JAVA_VERSION: 11.x
-  PROD_API_URI: "https://analogio.dk/clippy"
-  DEV_API_URI: "https://beta.analogio.dk/api/clippy"
 
 jobs:
   version:
@@ -106,14 +104,10 @@ jobs:
       - name: Download dependencies
         run: flutter pub get
 
-      - name: Set URI (dev)
-        if: github.ref_name != 'production'
-        run: echo "coffeeCardUrl=\"${{ env.DEV_API_URI }}\"" > .env
-
       - name: Set URI (prod)
         if: github.ref_name == 'production'
-        run: echo "coffeeCardUrl=\"${{ env.PROD_API_URI }}\"" > .env
-      
+        run: sed -i 's/.env.develop/.env.production/' lib/env/env.dart
+
       - name: Decode GoogleService-Info.plist
         env:
           SERVICES_JSON: ${{ secrets.FIREBASE_IOS_SERVICES_JSON }}
@@ -188,13 +182,9 @@ jobs:
           SERVICES_JSON: ${{ secrets.FIREBASE_ANDROID_SERVICES_JSON }}
         run: echo $SERVICES_JSON > android/app/google-services.json
 
-      - name: Set URI (dev)
-        if: github.ref_name != 'production'
-        run: echo "coffeeCardUrl=\"${{ env.DEV_API_URI }}\"" > .env
-
       - name: Set URI (prod)
         if: github.ref_name == 'production'
-        run: echo "coffeeCardUrl=\"${{ env.PROD_API_URI }}\"" > .env
+        run: sed -i 's/.env.develop/.env.production/' lib/env/env.dart
 
       - name: Generate code
         run: flutter pub run build_runner build
@@ -232,10 +222,6 @@ jobs:
       
       - name: Download dependencies
         run: flutter pub get
-
-      - name: Set URI (dev)
-        if: github.ref_name != 'production'
-        run: echo "coffeeCardUrl=\"${{ env.DEV_API_URI }}\"" > .env
       
       - name: Generate code
         run: flutter pub run build_runner build
