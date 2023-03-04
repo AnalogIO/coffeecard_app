@@ -1,4 +1,5 @@
-import 'package:coffeecard/data/repositories/utils/executor.dart';
+import 'package:coffeecard/core/errors/exceptions.dart';
+import 'package:coffeecard/core/network/executor.dart';
 import 'package:coffeecard/data/repositories/utils/request_types.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/models/ticket/product.dart';
@@ -14,9 +15,14 @@ class ProductRepository {
   final Executor executor;
 
   Future<Either<RequestFailure, Iterable<Product>>> getProducts() async {
-    return executor.execute(
-      apiV1.apiV1ProductsGet,
-      (dto) => dto.map((e) => Product.fromDTO(e)),
-    );
+    try {
+      final result = await executor(
+        apiV1.apiV1ProductsGet,
+      );
+
+      return Right(result!.map((e) => Product.fromDTO(e)));
+    } on ServerException catch (e) {
+      return Left(RequestFailure(e.error));
+    }
   }
 }

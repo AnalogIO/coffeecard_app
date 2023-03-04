@@ -1,4 +1,5 @@
-import 'package:coffeecard/data/repositories/utils/executor.dart';
+import 'package:coffeecard/core/errors/exceptions.dart';
+import 'package:coffeecard/core/network/executor.dart';
 import 'package:coffeecard/data/repositories/utils/request_types.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart'
@@ -20,23 +21,28 @@ class AccountRepository {
   final CoffeecardApiV2 apiV2;
   final Executor executor;
 
-  Future<Either<RequestFailure, RequestSuccess>> register(
+  Future<Either<RequestFailure, void>> register(
     String name,
     String email,
     String encodedPasscode,
     int occupationId,
   ) async {
-    return executor.execute(
-      () => apiV2.apiV2AccountPost(
-        body: RegisterAccountRequest(
-          name: name,
-          email: email,
-          password: encodedPasscode,
-          programmeId: occupationId,
+    try {
+      await executor(
+        () => apiV2.apiV2AccountPost(
+          body: RegisterAccountRequest(
+            name: name,
+            email: email,
+            password: encodedPasscode,
+            programmeId: occupationId,
+          ),
         ),
-      ),
-      (_) => RequestSuccess(),
-    );
+      );
+
+      return const Right(null);
+    } on ServerException catch (e) {
+      return Left(RequestFailure(e.error));
+    }
   }
 
   /// Returns the user token or throws an error.
@@ -44,64 +50,94 @@ class AccountRepository {
     String email,
     String encodedPasscode,
   ) async {
-    return executor.execute(
-      () => apiV1.apiV1AccountLoginPost(
-        body: LoginDto(
-          email: email,
-          password: encodedPasscode,
-          version: ApiUriConstants.minAppVersion,
+    try {
+      final result = await executor(
+        () => apiV1.apiV1AccountLoginPost(
+          body: LoginDto(
+            email: email,
+            password: encodedPasscode,
+            version: ApiUriConstants.minAppVersion,
+          ),
         ),
-      ),
-      (dto) => AuthenticatedUser(email: email, token: dto.token!),
-    );
+      );
+
+      return Right(AuthenticatedUser(email: email, token: result!.token!));
+    } on ServerException catch (e) {
+      return Left(RequestFailure(e.error));
+    }
   }
 
   Future<Either<RequestFailure, User>> getUser() async {
-    return executor.execute(
-      apiV1.apiV1AccountGet,
-      User.fromDTO,
-    );
+    try {
+      final result = await executor(
+        apiV1.apiV1AccountGet,
+      );
+
+      return Right(User.fromDTO(result!));
+    } on ServerException catch (e) {
+      return Left(RequestFailure(e.error));
+    }
   }
 
   /// Update user information
   Future<Either<RequestFailure, User>> updateUser(UpdateUser user) async {
-    final userDTO = UpdateUserDto(
-      name: user.name,
-      programmeId: user.occupationId,
-      email: user.email,
-      privacyActivated: user.privacyActivated,
-      password: user.encodedPasscode,
-    );
+    try {
+      final result = await executor(
+        () => apiV1.apiV1AccountPut(
+          body: UpdateUserDto(
+            name: user.name,
+            programmeId: user.occupationId,
+            email: user.email,
+            privacyActivated: user.privacyActivated,
+            password: user.encodedPasscode,
+          ),
+        ),
+      );
 
-    return executor.execute(
-      () => apiV1.apiV1AccountPut(body: userDTO),
-      User.fromDTO,
-    );
+      return Right(User.fromDTO(result!));
+    } on ServerException catch (e) {
+      return Left(RequestFailure(e.error));
+    }
   }
 
-  Future<Either<RequestFailure, RequestSuccess>> requestPasscodeReset(
+  Future<Either<RequestFailure, void>> requestPasscodeReset(
     String email,
   ) async {
-    return executor.execute(
-      () => apiV1.apiV1AccountForgotpasswordPost(body: EmailDto(email: email)),
-      (_) => RequestSuccess(),
-    );
+    try {
+      executor(
+        () =>
+            apiV1.apiV1AccountForgotpasswordPost(body: EmailDto(email: email)),
+      );
+
+      return const Right(null);
+    } on ServerException catch (e) {
+      return Left(RequestFailure(e.error));
+    }
   }
 
-  Future<Either<RequestFailure, RequestSuccess>>
-      requestAccountDeletion() async {
-    return executor.execute(
-      apiV2.apiV2AccountDelete,
-      (_) => RequestSuccess(),
-    );
+  Future<Either<RequestFailure, void>> requestAccountDeletion() async {
+    try {
+      executor(
+        apiV2.apiV2AccountDelete,
+      );
+
+      return const Right(null);
+    } on ServerException catch (e) {
+      return Left(RequestFailure(e.error));
+    }
   }
 
   Future<Either<RequestFailure, bool>> emailExists(String email) async {
-    return executor.execute(
-      () => apiV2.apiV2AccountEmailExistsPost(
-        body: EmailExistsRequest(email: email),
-      ),
-      (dto) => dto.emailExists,
-    );
+    try {
+      final result = await executor(
+        () => apiV2.apiV2AccountEmailExistsPost(
+          body: EmailExistsRequest(email: email),
+        ),
+      );
+
+      return Right(result!.emailExists);
+    } on ServerException catch (e) {
+      return Left(RequestFailure(e.error));
+    }
   }
 }

@@ -1,4 +1,5 @@
-import 'package:coffeecard/data/repositories/utils/executor.dart';
+import 'package:coffeecard/core/errors/exceptions.dart';
+import 'package:coffeecard/core/network/executor.dart';
 import 'package:coffeecard/data/repositories/utils/request_types.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
@@ -19,10 +20,13 @@ class TicketRepository {
   final Executor executor;
 
   Future<Either<RequestFailure, List<TicketCount>>> getUserTickets() async {
-    return executor.execute(
-      () => apiV2.apiV2TicketsGet(includeUsed: false),
-      (dtoList) {
-        return dtoList
+    try {
+      final result = await executor(
+        () => apiV2.apiV2TicketsGet(includeUsed: false),
+      );
+
+      return Right(
+        result!
             .groupListsBy((t) => t.productName)
             .entries
             .map(
@@ -33,25 +37,34 @@ class TicketRepository {
               ),
             )
             .sortedBy<num>((t) => t.productId)
-            .toList();
-      },
-    );
+            .toList(),
+      );
+    } on ServerException catch (e) {
+      return Left(RequestFailure(e.error));
+    }
   }
 
   Future<Either<RequestFailure, Receipt>> useTicket(int productId) async {
-    return executor.execute(
-      () => apiV1.apiV1TicketsUsePost(body: UseTicketDTO(productId: productId)),
-      (dto) {
-        return Receipt(
-          productName: dto.productName,
-          id: dto.id,
+    try {
+      final result = await executor(
+        () => apiV1.apiV1TicketsUsePost(
+          body: UseTicketDTO(productId: productId),
+        ),
+      );
+
+      return Right(
+        Receipt(
+          productName: result!.productName,
+          id: result.id,
           transactionType: TransactionType.ticketSwipe,
-          timeUsed: dto.dateUsed,
+          timeUsed: result.dateUsed,
           // TODO(fremartini): Find a better alternative to these default values They are unused on the receipt overlay, https://github.com/AnalogIO/coffeecard_app/issues/384
           amountPurchased: -1,
           price: -1,
-        );
-      },
-    );
+        ),
+      );
+    } on ServerException catch (e) {
+      return Left(RequestFailure(e.error));
+    }
   }
 }

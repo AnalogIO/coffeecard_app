@@ -106,10 +106,15 @@ void main() {
         const Right(
           OpeningHours(
             allOpeningHours: {
+              1: 'Closed',
+              2: 'Closed',
+              3: 'Closed',
+              4: 'Closed',
+              5: 'Closed',
               6: 'Closed',
               7: 'Closed',
             },
-            todaysOpeningHours: 'Mondays: null',
+            todaysOpeningHours: 'Mondays: Closed',
           ),
         ),
       );

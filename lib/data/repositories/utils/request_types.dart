@@ -1,8 +1,5 @@
 import 'package:chopper/chopper.dart';
 
-/// Empty success class.
-class RequestSuccess {}
-
 class RequestFailure {
   RequestFailure(this.message);
   final String message;

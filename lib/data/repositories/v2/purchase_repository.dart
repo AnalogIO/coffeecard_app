@@ -1,4 +1,5 @@
-import 'package:coffeecard/data/repositories/utils/executor.dart';
+import 'package:coffeecard/core/errors/exceptions.dart';
+import 'package:coffeecard/core/network/executor.dart';
 import 'package:coffeecard/data/repositories/utils/request_types.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
 import 'package:coffeecard/models/purchase/initiate_purchase.dart';
@@ -20,24 +21,34 @@ class PurchaseRepository {
     int productId,
     PaymentType paymentType,
   ) async {
-    return executor.execute(
-      () => apiV2.apiV2PurchasesPost(
-        body: InitiatePurchaseRequest(
-          productId: productId,
-          paymentType: paymentTypeToJson(paymentType),
+    try {
+      final result = await executor(
+        () => apiV2.apiV2PurchasesPost(
+          body: InitiatePurchaseRequest(
+            productId: productId,
+            paymentType: paymentTypeToJson(paymentType),
+          ),
         ),
-      ),
-      (dto) => InitiatePurchase.fromDto(dto),
-    );
+      );
+
+      return Right(InitiatePurchase.fromDto(result!));
+    } on ServerException catch (e) {
+      return Left(RequestFailure(e.error));
+    }
   }
 
   /// Get a purchase by its purchase id
   Future<Either<RequestFailure, SinglePurchase>> getPurchase(
     int purchaseId,
   ) async {
-    return executor.execute(
-      () => apiV2.apiV2PurchasesIdGet(id: purchaseId),
-      (dto) => SinglePurchase.fromDto(dto),
-    );
+    try {
+      final result = await executor(
+        () => apiV2.apiV2PurchasesIdGet(id: purchaseId),
+      );
+
+      return Right(SinglePurchase.fromDto(result!));
+    } on ServerException catch (e) {
+      return Left(RequestFailure(e.error));
+    }
   }
 }

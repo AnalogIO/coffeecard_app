@@ -1,5 +1,4 @@
-import 'package:chopper/chopper.dart' as chopper;
-import 'package:coffeecard/data/repositories/utils/executor.dart';
+import 'package:coffeecard/core/network/executor.dart';
 import 'package:coffeecard/data/repositories/v1/ticket_repository.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
@@ -8,7 +7,7 @@ import 'package:logger/logger.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import '../../responses.dart';
+import '../../../../response.dart';
 import 'ticket_repository_test.mocks.dart';
 
 @GenerateMocks([CoffeecardApi, CoffeecardApiV2, Logger])
@@ -33,7 +32,7 @@ void main() {
     // arrange
     when(apiV2.apiV2TicketsGet(includeUsed: anyNamed('includeUsed')))
         .thenAnswer(
-      (_) async => chopper.Response(Responses.succeeding(), const []),
+      (_) async => Response.fromStatusCode(200, body: []),
     );
 
     // act
@@ -45,12 +44,16 @@ void main() {
 
   test('getUserTickets given unsuccessfull api response returns left',
       () async {
+    // arrange
     when(apiV2.apiV2TicketsGet(includeUsed: anyNamed('includeUsed')))
         .thenAnswer(
-      (_) async => chopper.Response(Responses.failing(), const []),
+      (_) async => Response.fromStatusCode(500, body: []),
     );
 
+    // act
     final actual = await repo.getUserTickets();
+
+    // assert
     expect(actual.isLeft(), isTrue);
   });
 }
