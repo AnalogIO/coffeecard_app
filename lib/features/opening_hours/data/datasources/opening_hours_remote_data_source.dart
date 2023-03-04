@@ -1,44 +1,28 @@
-import 'package:coffeecard/core/errors/exceptions.dart';
+import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/generated/api/shiftplanning_api.swagger.dart';
+import 'package:dartz/dartz.dart';
 
-abstract class OpeningHoursRemoteDataSource {
-  /// Check if the cafe is open.
-  ///
-  /// Throws a [ServerException] if the api call failed.
-  Future<bool> isOpen();
-
-  /// Get the opening hours of the cafe.
-  ///
-  /// Throws a [ServerException] if the api call failed.
-  Future<List<OpeningHoursDTO>> getOpeningHours();
-}
-
-class OpeningHoursRemoteDataSourceImpl implements OpeningHoursRemoteDataSource {
+class OpeningHoursRemoteDataSource {
   final ShiftplanningApi api;
-
-  OpeningHoursRemoteDataSourceImpl({required this.api});
-
   final shortkey = 'analog';
 
-  @override
-  Future<bool> isOpen() async {
+  OpeningHoursRemoteDataSource({required this.api});
+
+  /// Check if the cafe is open.
+  Future<Either<ServerFailure, bool>> isOpen() async {
     final response = await api.apiOpenShortKeyGet(shortKey: shortkey);
 
-    if (!response.isSuccessful) {
-      throw ServerException.fromResponse(response);
-    }
-
-    return response.body!.open;
+    return response.isSuccessful
+        ? Right(response.body!.open)
+        : Left(ServerFailure.fromResponse(response));
   }
 
-  @override
-  Future<List<OpeningHoursDTO>> getOpeningHours() async {
+  /// Get the opening hours of the cafe.
+  Future<Either<ServerFailure, List<OpeningHoursDTO>>> getOpeningHours() async {
     final response = await api.apiShiftsShortKeyGet(shortKey: shortkey);
 
-    if (!response.isSuccessful) {
-      throw ServerException.fromResponse(response);
-    }
-
-    return response.body!;
+    return response.isSuccessful
+        ? Right(response.body!)
+        : Left(ServerFailure.fromResponse(response));
   }
 }

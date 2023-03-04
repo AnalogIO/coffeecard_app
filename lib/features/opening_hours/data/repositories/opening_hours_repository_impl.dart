@@ -1,11 +1,9 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/core/errors/exceptions.dart';
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/features/opening_hours/domain/entities/opening_hours.dart';
 import 'package:coffeecard/features/opening_hours/opening_hours.dart';
 import 'package:coffeecard/generated/api/shiftplanning_api.swagger.dart';
 import 'package:coffeecard/models/opening_hours_day.dart';
-import 'package:collection/collection.dart';
 import 'package:dartz/dartz.dart';
 
 class OpeningHoursRepositoryImpl implements OpeningHoursRepository {
@@ -14,66 +12,59 @@ class OpeningHoursRepositoryImpl implements OpeningHoursRepository {
   OpeningHoursRepositoryImpl({required this.dataSource});
 
   @override
-  Future<Either<Failure, bool>> getIsOpen() async {
-    try {
-      final isOpen = await dataSource.isOpen();
-
-      return Right(isOpen);
-    } on ServerException catch (e) {
-      return Left(ServerFailure(e.error));
-    }
+  Future<Either<ServerFailure, bool>> getIsOpen() async {
+    return dataSource.isOpen();
   }
 
   @override
-  Future<Either<Failure, OpeningHours>> getOpeningHours(int weekday) async {
-    try {
-      final openingHours = await dataSource.getOpeningHours();
+  Future<Either<ServerFailure, OpeningHours>> getOpeningHours(
+    int weekday,
+  ) async {
+    final either = await dataSource.getOpeningHours();
 
-      final openingHoursMap = transformOpeningHours(openingHours);
-
-      return Right(
+    return either.flatMap(
+      (openingHours) => Right(
         OpeningHours(
-          allOpeningHours: openingHoursMap,
+          allOpeningHours: transformOpeningHours(openingHours),
           todaysOpeningHours: calculateTodaysOpeningHours(
             weekday,
-            openingHoursMap,
+            transformOpeningHours(openingHours),
           ),
         ),
-      );
-    } on ServerException catch (e) {
-      return Left(ServerFailure(e.error));
-    }
-  }
-
-  Map<int, String> transformOpeningHours(List<OpeningHoursDTO> dtoList) {
-    final content = dtoList..sortBy((dto) => dto.start);
-
-    final openingHoursPerWeekday =
-        groupBy<OpeningHoursDTO, int>(content, (dto) => dto.start.weekday);
-
-    // create map associating each weekday to its opening hours:
-    // {
-    //   0: 8 - 16,
-    //   1: 8 - 16, ...
-    // }
-    final weekDayOpeningHours = openingHoursPerWeekday.map(
-      (day, value) => MapEntry(
-        day,
-        OpeningHoursDay(value.first.start, value.last.end).toString(),
       ),
     );
+  }
 
-    // closed string is not capitalized
-    var closed = Strings.closed;
-    closed = closed.replaceFirst(closed[0], closed[0].toUpperCase());
+  // An [OpeningHoursDTO] actually represents a barista shift, so "dto.start"
+  // means the start of the shift and "dto.end" means the end of the shift.
+  Map<int, String> transformOpeningHours(List<OpeningHoursDTO> allShifts) {
+    final shiftsByWeekday = <int, List<OpeningHoursDTO>>{
+      DateTime.monday: [],
+      DateTime.tuesday: [],
+      DateTime.wednesday: [],
+      DateTime.thursday: [],
+      DateTime.friday: [],
+      DateTime.saturday: [],
+      DateTime.sunday: [],
+    };
 
-    // the previous map only contains weekdays, mark weekends as closed
-    weekDayOpeningHours.addAll({
-      DateTime.saturday: closed,
-      DateTime.sunday: closed,
-    });
+    for (final shift in allShifts) {
+      final weekday = shift.start.weekday;
+      shiftsByWeekday[weekday]!.add(shift);
+    }
 
-    return weekDayOpeningHours;
+    // capitalize the closed string
+    final closedString =
+        Strings.closed[0].toUpperCase() + Strings.closed.substring(1);
+
+    return shiftsByWeekday.map(
+      (day, shifts) => MapEntry(
+        day,
+        shifts.isEmpty
+            ? closedString
+            : OpeningHoursDay(shifts.first.start, shifts.last.end).toString(),
+      ),
+    );
   }
 
   /// Return the current weekday and the corresponding opening hours e.g

@@ -182,6 +182,6 @@ void initOpeningHours() {
 
   // data source
   sl.registerLazySingleton<OpeningHoursRemoteDataSource>(
-    () => OpeningHoursRemoteDataSourceImpl(api: sl()),
+    () => OpeningHoursRemoteDataSource(api: sl()),
   );
 }

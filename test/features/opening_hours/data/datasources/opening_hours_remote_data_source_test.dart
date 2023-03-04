@@ -1,6 +1,7 @@
-import 'package:coffeecard/core/errors/exceptions.dart';
+import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/features/opening_hours/opening_hours.dart';
 import 'package:coffeecard/generated/api/shiftplanning_api.swagger.dart';
+import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -15,27 +16,24 @@ void main() {
 
   setUp(() {
     api = MockShiftplanningApi();
-    dataSource = OpeningHoursRemoteDataSourceImpl(api: api);
+    dataSource = OpeningHoursRemoteDataSource(api: api);
   });
 
   group('isOpen', () {
-    test('should throw [ServerException] if api call fails', () async {
+    test('should return [Left<ServerFailure>] if api call fails', () async {
       // arrange
       when(api.apiOpenShortKeyGet(shortKey: anyNamed('shortKey'))).thenAnswer(
         (_) async => ResponseFactory.fromStatusCode(500),
       );
 
       // act
-      final call = dataSource.isOpen;
+      final actual = await dataSource.isOpen();
 
       // assert
-      expect(
-        () async => call(),
-        throwsA(const TypeMatcher<ServerException>()),
-      );
+      expect(actual, const TypeMatcher<Left<ServerFailure, bool>>());
     });
 
-    test('should return bool if api call succeeds', () async {
+    test('should return [Right<bool>] if api call succeeds', () async {
       // arrange
       when(api.apiOpenShortKeyGet(shortKey: anyNamed('shortKey'))).thenAnswer(
         (_) async => ResponseFactory.fromStatusCode(
@@ -48,28 +46,29 @@ void main() {
       final actual = await dataSource.isOpen();
 
       // assert
-      expect(actual, true);
+      expect(actual, const TypeMatcher<Right<ServerFailure, bool>>());
     });
   });
 
   group('getOpeningHours', () {
-    test('should throw [ServerException] if api call fails', () async {
+    test('should return [Left<ServerFailure>] if api call fails', () async {
       // arrange
       when(api.apiShiftsShortKeyGet(shortKey: anyNamed('shortKey'))).thenAnswer(
         (_) async => ResponseFactory.fromStatusCode(500),
       );
 
       // act
-      final call = dataSource.getOpeningHours;
+      final call = await dataSource.getOpeningHours();
 
       // assert
       expect(
-        () async => call(),
-        throwsA(const TypeMatcher<ServerException>()),
+        call,
+        const TypeMatcher<Left<ServerFailure, List<OpeningHoursDTO>>>(),
       );
     });
 
-    test('should return opening hours if api call succeeds', () async {
+    test('should return [Right<List<OpeningHoursDTO>>] if api call succeeds',
+        () async {
       // arrange
       when(api.apiShiftsShortKeyGet(shortKey: anyNamed('shortKey'))).thenAnswer(
         (_) async => ResponseFactory.fromStatusCode(200, body: []),
@@ -79,7 +78,10 @@ void main() {
       final actual = await dataSource.getOpeningHours();
 
       // assert
-      expect(actual, []);
+      expect(
+        actual,
+        const TypeMatcher<Right<ServerFailure, List<OpeningHoursDTO>>>(),
+      );
     });
   });
 }
