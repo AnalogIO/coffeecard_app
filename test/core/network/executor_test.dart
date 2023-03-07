@@ -1,5 +1,6 @@
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/core/network/executor.dart';
+import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logger/logger.dart';
 import 'package:mockito/annotations.dart';
@@ -19,13 +20,13 @@ void main() {
 
   test('should return [ServerFailure] if api call fails', () async {
     // arrange
-    final tResponse = Response.fromStatusCode(500, body: 'some error');
+    final tResponse = Response.fromStatusCode(500);
 
     // act
-    final actual = executor(() async => tResponse);
+    final actual = await executor(() async => tResponse);
 
     // assert
-    expect(actual, const ServerFailure('some error'));
+    expect(actual, const Left(ServerFailure('')));
   });
 
   test('should return response body if api call succeeds', () async {
@@ -36,6 +37,6 @@ void main() {
     final actual = await executor(() async => tResponse);
 
     // assert
-    expect(actual, 'some string');
+    expect(actual, const Right('some string'));
   });
 }

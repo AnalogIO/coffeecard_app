@@ -1,6 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
+import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/cubits/tickets/tickets_cubit.dart';
-import 'package:coffeecard/data/repositories/utils/request_types.dart';
 import 'package:coffeecard/data/repositories/v1/ticket_repository.dart';
 import 'package:coffeecard/models/receipts/receipt.dart';
 import 'package:dartz/dartz.dart';
@@ -44,14 +44,14 @@ void main() {
       'getTickets emits Loading then LoadError (on failed fetch)',
       build: () {
         when(repo.getUserTickets()).thenAnswer(
-          (_) async => Left(RequestHttpFailure('ERROR_MESSAGE', 0)),
+          (_) async => const Left(ServerFailure('some error')),
         );
         return cubit;
       },
       act: (cubit) => cubit.getTickets(),
       expect: () => [
         const TicketsLoading(),
-        const TicketsLoadError('ERROR_MESSAGE'),
+        const TicketsLoadError('some error'),
       ],
     );
 
@@ -69,12 +69,12 @@ void main() {
       'refreshTickets emits LoadError (on failed fetch)',
       build: () {
         when(repo.getUserTickets()).thenAnswer(
-          (_) async => Left(RequestHttpFailure('ERROR_MESSAGE', 0)),
+          (_) async => const Left(ServerFailure('some error')),
         );
         return cubit;
       },
       act: (cubit) => cubit.refreshTickets(),
-      expect: () => [const TicketsLoadError('ERROR_MESSAGE')],
+      expect: () => [const TicketsLoadError('some error')],
     );
 
     blocTest<TicketsCubit, TicketsState>(
@@ -113,7 +113,7 @@ void main() {
       build: () {
         when(repo.getUserTickets()).thenAnswer((_) async => const Right([]));
         when(repo.useTicket(any)).thenAnswer(
-          (_) async => Left(RequestHttpFailure('ERROR_MESSAGE', 0)),
+          (_) async => const Left(ServerFailure('some error')),
         );
         return cubit;
       },
@@ -125,7 +125,7 @@ void main() {
       skip: 2,
       expect: () => [
         const TicketUsing([]),
-        const TicketsUseError('ERROR_MESSAGE'),
+        const TicketsUseError('some error'),
         const TicketsLoaded([]),
       ],
     );

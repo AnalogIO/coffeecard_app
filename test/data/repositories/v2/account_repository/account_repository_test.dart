@@ -30,16 +30,23 @@ void main() {
     );
   });
 
-  test('should call executor', () async {
-    // arrange
-    when(executor.call<MessageResponseDto?>(any)).thenAnswer(
-      (_) => Future.value(),
-    );
+  group('register', () {
+    test('should call executor', () async {
+      // arrange
+      when(executor.call<MessageResponseDto>(any)).thenAnswer(
+        (_) async => Right(MessageResponseDto()),
+      );
 
-    // act
-    final actual = await repository.register('name', 'email', 'passcode', 0);
+      // act
+      final actual = await repository.register(
+        'name',
+        'email',
+        'passcode',
+        0,
+      );
 
-    // assert
-    expect(actual, const Right(null));
+      // assert
+      expect(actual, const Right(null));
+    });
   });
 }

@@ -1,6 +1,7 @@
 import 'package:coffeecard/core/network/executor.dart';
 import 'package:coffeecard/features/opening_hours/opening_hours.dart';
 import 'package:coffeecard/generated/api/shiftplanning_api.swagger.dart';
+import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -22,15 +23,15 @@ void main() {
   group('isOpen', () {
     test('should call executor', () async {
       // arrange
-      when(executor(any)).thenAnswer(
-        (_) async => IsOpenDTO(open: true),
+      when(executor<IsOpenDTO>(any)).thenAnswer(
+        (_) async => Right(IsOpenDTO(open: true)),
       );
 
       // act
       final actual = await dataSource.isOpen();
 
       // assert
-      expect(actual, true);
+      expect(actual, const Right(true));
     });
   });
 
@@ -39,15 +40,15 @@ void main() {
       // arrange
       final List<OpeningHoursDTO> tOpeningHours = [];
 
-      when(executor(any)).thenAnswer(
-        (_) async => tOpeningHours,
+      when(executor<List<OpeningHoursDTO>>(any)).thenAnswer(
+        (_) async => Right(tOpeningHours),
       );
 
       // act
       final actual = await dataSource.getOpeningHours();
 
       // assert
-      expect(actual, tOpeningHours);
+      expect(actual, Right(tOpeningHours));
     });
   });
 }
