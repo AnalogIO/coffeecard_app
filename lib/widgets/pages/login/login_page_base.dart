@@ -1,4 +1,5 @@
 import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/core/widgets/upgrade_alert.dart';
 import 'package:coffeecard/utils/responsive.dart';
 import 'package:coffeecard/widgets/components/images/analog_logo.dart';
 import 'package:coffeecard/widgets/components/login/login_input_hint.dart';
@@ -27,35 +28,37 @@ class LoginPageBase extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppScaffold.withoutTitle(
-      resizeToAvoidBottomInset: resizeToAvoidBottomInset,
-      body: Column(
-        children: [
-          Expanded(
-            child: Column(
-              children: [
-                Gap(deviceIsSmall(context) ? 12 : 64),
-                const AnalogLogo(),
-                const Gap(16),
-                Text(
-                  title,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
-                  style: AppTextStyle.pageTitle,
-                ),
-                const Gap(16),
-                inputWidget,
-                const Gap(16),
-                LoginInputHint(defaultHint: defaultHint, error: error),
-                const Gap(12),
-                ...ctaChildren,
-                const Gap(12),
-              ],
+    return UpgradeAlert(
+      child: AppScaffold.withoutTitle(
+        resizeToAvoidBottomInset: resizeToAvoidBottomInset,
+        body: Column(
+          children: [
+            Expanded(
+              child: Column(
+                children: [
+                  Gap(deviceIsSmall(context) ? 12 : 64),
+                  const AnalogLogo(),
+                  const Gap(16),
+                  Text(
+                    title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                    style: AppTextStyle.pageTitle,
+                  ),
+                  const Gap(16),
+                  inputWidget,
+                  const Gap(16),
+                  LoginInputHint(defaultHint: defaultHint, error: error),
+                  const Gap(12),
+                  ...ctaChildren,
+                  const Gap(12),
+                ],
+              ),
             ),
-          ),
-          if (bottomWidget != null) bottomWidget!,
-        ],
+            if (bottomWidget != null) bottomWidget!,
+          ],
+        ),
       ),
     );
   }
