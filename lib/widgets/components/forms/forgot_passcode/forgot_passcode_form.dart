@@ -64,22 +64,24 @@ class ForgotPasscodeForm extends StatelessWidget {
       (r) => null,
     );
 
-    appDialog(
-      context: context,
-      title: title,
-      dismissible: false,
-      children: [Text(body)],
-      actions: [
-        TextButton(
-          onPressed: () {
-            closeAppDialog(context);
-            hideLoadingOverlay(context);
-            // Exits the forgot passcode flow
-            Navigator.pop(context);
-          },
-          child: const Text(Strings.buttonOK),
-        ),
-      ],
-    );
+    if (context.mounted) {
+      appDialog(
+        context: context,
+        title: title,
+        dismissible: false,
+        children: [Text(body)],
+        actions: [
+          TextButton(
+            onPressed: () {
+              closeAppDialog(context);
+              hideLoadingOverlay(context);
+              // Exits the forgot passcode flow
+              Navigator.pop(context);
+            },
+            child: const Text(Strings.buttonOK),
+          ),
+        ],
+      );
+    }
   }
 }

@@ -69,8 +69,9 @@ class MobilePayService implements PaymentHandler {
       } else {
         throw UnsupportedError('Unsupported platform');
       }
-
-      launchUrlExternalApplication(url, _context);
+      if (_context.mounted) {
+        launchUrlExternalApplication(url, _context);
+      }
     }
   }
 
