@@ -3,17 +3,16 @@ import 'dart:math';
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
-import 'package:coffeecard/cubits/opening_hours/opening_hours_cubit.dart';
 import 'package:coffeecard/cubits/receipt/receipt_cubit.dart';
 import 'package:coffeecard/cubits/statistics/statistics_cubit.dart';
 import 'package:coffeecard/cubits/tickets/tickets_cubit.dart';
 import 'package:coffeecard/cubits/user/user_cubit.dart';
 import 'package:coffeecard/data/repositories/shared/account_repository.dart';
-import 'package:coffeecard/data/repositories/shiftplanning/opening_hours_repository.dart';
-import 'package:coffeecard/data/repositories/v1/programme_repository.dart';
+import 'package:coffeecard/data/repositories/v1/occupation_repository.dart';
 import 'package:coffeecard/data/repositories/v1/receipt_repository.dart';
 import 'package:coffeecard/data/repositories/v1/ticket_repository.dart';
 import 'package:coffeecard/data/repositories/v2/leaderboard_repository.dart';
+import 'package:coffeecard/features/opening_hours/opening_hours.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/widgets/components/helpers/lazy_indexed_stack.dart';
 import 'package:coffeecard/widgets/pages/receipts/receipts_page.dart';
@@ -128,7 +127,7 @@ class _HomePageState extends State<HomePage> {
         BlocProvider(
           create: (_) => UserCubit(
             sl.get<AccountRepository>(),
-            sl.get<ProgrammeRepository>(),
+            sl.get<OccupationRepository>(),
           )..fetchUserDetails(),
         ),
         BlocProvider(
@@ -147,9 +146,7 @@ class _HomePageState extends State<HomePage> {
           )..fetch(),
         ),
         BlocProvider(
-          create: (_) => OpeningHoursCubit(
-            sl<OpeningHoursRepository>(),
-          )..getOpeninghours(),
+          create: (_) => sl<OpeningHoursCubit>()..getOpeninghours(),
         )
       ],
       child: WillPopScope(

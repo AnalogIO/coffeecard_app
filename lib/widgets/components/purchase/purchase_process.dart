@@ -78,10 +78,7 @@ class _PurchaseProcessState extends State<PurchaseProcess>
                   content: Text(state.message),
                 );
               } else {
-                // TODO: message
-                throw MatchCaseIncompleteException(
-                  'Unmatched state for PurchaseState',
-                );
+                throw MatchCaseIncompleteException(this);
               }
             },
           ),

@@ -9,8 +9,7 @@ import 'package:gap/gap.dart';
 import 'package:screen_brightness/screen_brightness.dart';
 
 class ReceiptOverlay {
-  // TODO: see if a more generic version can be made
-  //  that supports both the loading overlay and this one
+  // TODO(marfavi): see if a more generic version can be made that supports both the loading overlay and this one, https://github.com/AnalogIO/coffeecard_app/issues/386
   BuildContext _context;
 
   void hide() {
@@ -23,35 +22,37 @@ class ReceiptOverlay {
     String? optionalText,
   }) async {
     await ScreenBrightness().setScreenBrightness(1);
-    await showDialog(
-      context: _context,
-      barrierColor: AppColor.scrim,
-      builder: (context) {
-        return Padding(
-          padding: EdgeInsets.all(deviceIsSmall(context) ? 24 : 48),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ReceiptCard(
-                  productName: receipt.productName,
-                  time: receipt.timeUsed,
-                  isPurchase:
-                      receipt.transactionType == TransactionType.purchase,
-                  isInOverlay: true,
-                  isTestEnvironment: isTestEnvironment,
-                ),
-                const Gap(12),
-                Text(
-                  Strings.receiptTapAnywhereToDismiss,
-                  style: AppTextStyle.explainerBright,
-                )
-              ],
+    if (_context.mounted) {
+      await showDialog(
+        context: _context,
+        barrierColor: AppColor.scrim,
+        builder: (context) {
+          return Padding(
+            padding: EdgeInsets.all(deviceIsSmall(context) ? 24 : 48),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ReceiptCard(
+                    productName: receipt.productName,
+                    time: receipt.timeUsed,
+                    isPurchase:
+                        receipt.transactionType == TransactionType.purchase,
+                    isInOverlay: true,
+                    isTestEnvironment: isTestEnvironment,
+                  ),
+                  const Gap(12),
+                  Text(
+                    Strings.receiptTapAnywhereToDismiss,
+                    style: AppTextStyle.explainerBright,
+                  )
+                ],
+              ),
             ),
-          ),
-        );
-      },
-    );
+          );
+        },
+      );
+    }
     await ScreenBrightness().resetScreenBrightness();
   }
 

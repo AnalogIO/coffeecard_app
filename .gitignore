@@ -57,6 +57,7 @@ unlinked_spec.ds
 .fvm/
 
 # Generated files
+*.g.dart
 *.mocks.dart
 /lib/generated/
 
@@ -107,6 +108,7 @@ coverage/
 # Submodules
 !pubspec.lock
 packages/**/pubspec.lock
+/test/widgets/**/failures/
 
 # Web related
 lib/generated_plugin_registrant.dart

@@ -3,13 +3,11 @@ import 'package:flutter/material.dart';
 
 final ThemeData analogTheme = ThemeData(
   appBarTheme: const AppBarTheme(centerTitle: false, elevation: 0),
-  primarySwatch: AppColor.createMaterialColor(AppColor.primary),
   primaryColor: AppColor.primary,
   brightness: Brightness.light,
-  backgroundColor: AppColor.background,
   visualDensity: VisualDensity.adaptivePlatformDensity,
   primaryTextTheme:
-      const TextTheme(headline6: TextStyle(color: AppColor.white)),
+      const TextTheme(titleLarge: TextStyle(color: AppColor.white)),
   primaryIconTheme: const IconThemeData(color: AppColor.primary),
   canvasColor: AppColor.background,
   textSelectionTheme:
@@ -21,4 +19,7 @@ final ThemeData analogTheme = ThemeData(
       TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
     },
   ),
+  colorScheme: ColorScheme.fromSwatch(
+    primarySwatch: AppColor.createMaterialColor(AppColor.primary),
+  ).copyWith(background: AppColor.background),
 );

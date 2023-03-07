@@ -1,11 +1,11 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/data/repositories/shared/account_repository.dart';
 import 'package:coffeecard/service_locator.dart';
-import 'package:coffeecard/utils/either.dart';
 import 'package:coffeecard/utils/input_validator.dart';
 import 'package:coffeecard/widgets/components/dialog.dart';
 import 'package:coffeecard/widgets/components/forms/form.dart';
 import 'package:coffeecard/widgets/components/loading_overlay.dart';
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 
 class ForgotPasscodeForm extends StatelessWidget {
@@ -28,13 +28,13 @@ class ForgotPasscodeForm extends StatelessWidget {
           forceErrorMessage: true,
           validate: (text) async {
             final either = await sl<AccountRepository>().emailExists(text);
-            if (either.isRight) {
-              return (either.right == false)
+
+            return either.fold(
+              (l) => const Left(Strings.emailValidationError),
+              (r) => r
                   ? const Left(Strings.forgotPasscodeNoAccountExists)
-                  : const Right(null);
-            } else {
-              return const Left(Strings.emailValidationError);
-            }
+                  : const Right(null),
+            );
           },
         ),
       ],
@@ -53,29 +53,35 @@ class ForgotPasscodeForm extends StatelessWidget {
 
     final either = await sl<AccountRepository>().requestPasscodeReset(email);
 
-    final title = (either.isRight)
-        ? Strings.forgotPasscodeLinkSent
-        : Strings.forgotPasscodeError;
-    final body = (either.isRight)
-        ? Strings.forgotPasscodeSentRequestTo(email)
-        : either.left.message;
+    var title = Strings.forgotPasscodeLinkSent;
+    var body = Strings.forgotPasscodeSentRequestTo(email);
 
-    appDialog(
-      context: context,
-      title: title,
-      dismissible: false,
-      children: [Text(body)],
-      actions: [
-        TextButton(
-          onPressed: () {
-            closeAppDialog(context);
-            hideLoadingOverlay(context);
-            // Exits the forgot passcode flow
-            Navigator.pop(context);
-          },
-          child: const Text(Strings.buttonOK),
-        ),
-      ],
+    either.fold(
+      (l) {
+        title = Strings.forgotPasscodeError;
+        body = l.message;
+      },
+      (r) => null,
     );
+
+    if (context.mounted) {
+      appDialog(
+        context: context,
+        title: title,
+        dismissible: false,
+        children: [Text(body)],
+        actions: [
+          TextButton(
+            onPressed: () {
+              closeAppDialog(context);
+              hideLoadingOverlay(context);
+              // Exits the forgot passcode flow
+              Navigator.pop(context);
+            },
+            child: const Text(Strings.buttonOK),
+          ),
+        ],
+      );
+    }
   }
 }

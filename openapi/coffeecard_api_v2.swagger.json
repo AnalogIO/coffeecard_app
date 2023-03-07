@@ -22,6 +22,48 @@
   ],
   "paths": {
     "/api/v2/account": {
+      "post": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "Register data request. An account is required to verify its email before logging in",
+        "operationId": "Account_Register",
+        "requestBody": {
+          "x-name": "registerRequest",
+          "description": "Register data object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterAccountRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "201": {
+            "description": "Successful account creation. Verification request email sent to provided email",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageResponseDto"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Email already registered",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageResponseDto"
+                }
+              }
+            }
+          }
+        }
+      },
       "delete": {
         "tags": [
           "Account"
@@ -122,7 +164,7 @@
           {
             "name": "preset",
             "in": "query",
-            "description": "Leaderboard preset for date filtering",
+            "description": "Leaderboard preset for date filtering. See LeaderboardPreset for possible values",
             "schema": {
               "default": "Semester",
               "oneOf": [
@@ -173,7 +215,7 @@
           {
             "name": "preset",
             "in": "query",
-            "description": "Leaderboard preset for date filtering",
+            "description": "Leaderboard preset for date filtering. See LeaderboardPreset for possible values",
             "schema": {
               "default": "Semester",
               "oneOf": [
@@ -328,6 +370,9 @@
           },
           "401": {
             "description": "Invalid credentials"
+          },
+          "403": {
+            "description": "User not allowed to purchase given product"
           }
         },
         "security": [
@@ -435,6 +480,65 @@
   },
   "components": {
     "schemas": {
+      "MessageResponseDto": {
+        "type": "object",
+        "description": "Simple response class with a string message",
+        "example": {
+          "message": "Successful completion"
+        },
+        "additionalProperties": false,
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Message with API response",
+            "example": "Successful completion"
+          }
+        }
+      },
+      "RegisterAccountRequest": {
+        "type": "object",
+        "description": "Register a new user",
+        "example": {
+          "name": "John Doe",
+          "email": "john@doe.com",
+          "password": "[no example provided]",
+          "programme": 1
+        },
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "email",
+          "password",
+          "programmeId"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Full Name of user",
+            "minLength": 1,
+            "example": "John Doe"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email Address of user",
+            "format": "email",
+            "minLength": 1,
+            "example": "john@doe.com"
+          },
+          "password": {
+            "type": "string",
+            "description": "Pin Code as first UTF8 encoded, then SHA256 hashed, and then Base64 encoded string",
+            "minLength": 1,
+            "example": "[no example provided]"
+          },
+          "programmeId": {
+            "type": "integer",
+            "description": "Programme of user",
+            "format": "int32",
+            "example": 1
+          }
+        }
+      },
       "ApiException": {
         "allOf": [
           {
@@ -841,10 +945,12 @@
         "type": "string",
         "description": "PaymentType represents the type of Payment which is used to fulfill a purchase",
         "x-enumNames": [
-          "MobilePay"
+          "MobilePay",
+          "FreePurchase"
         ],
         "enum": [
-          "MobilePay"
+          "MobilePay",
+          "FreePurchase"
         ]
       },
       "MobilePayPaymentDetails": {
@@ -890,20 +996,32 @@
           }
         ]
       },
-      "MessageResponseDto": {
-        "type": "object",
-        "description": "Simple response class with a string message",
-        "example": {
-          "message": "Successful completion"
-        },
-        "additionalProperties": false,
-        "properties": {
-          "message": {
-            "type": "string",
-            "description": "Message with API response",
-            "example": "Successful completion"
+      "FreePurchasePaymentDetails": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/PaymentDetails"
+          },
+          {
+            "type": "object",
+            "discriminator": {
+              "propertyName": "discriminator"
+            },
+            "description": "Payment details for a free purchase",
+            "example": {
+              "paymentType": "FreeProduct",
+              "orderId": "f5cb3e0f-3b9b-4f50-8c4f-a7450f300a5c"
+            },
+            "additionalProperties": false,
+            "required": [
+              "discriminator"
+            ],
+            "properties": {
+              "discriminator": {
+                "type": "string"
+              }
+            }
           }
-        }
+        ]
       },
       "InitiatePurchaseResponse": {
         "type": "object",
@@ -1040,7 +1158,7 @@
             "nullable": true,
             "description": "Used date time for ticket in Utc format",
             "format": "date-time",
-            "minLength": 1,
+            "nullable": true,
             "example": "2022-01-09T21:03:52.2283208Z"
           },
           "productId": {

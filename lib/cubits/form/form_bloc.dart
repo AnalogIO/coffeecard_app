@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:coffeecard/utils/debouncing.dart';
-import 'package:coffeecard/utils/either.dart';
 import 'package:coffeecard/utils/input_validator.dart';
+import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
 part 'form_event.dart';
@@ -18,13 +18,14 @@ class FormBloc extends Bloc<FormEvent, FormState> {
       (event, emit) async {
         final text = event.input.trim();
         for (final validator in validators) {
-          final result = await validator.validate(text);
-          if (result.isLeft) {
+          final either = await validator.validate(text);
+
+          if (either.isLeft()) {
             emit(
               state.copyWith(
                 loading: false,
                 canSubmit: false,
-                error: Left(result.left),
+                error: either,
                 shouldDisplayError: validator.forceErrorMessage ? true : null,
               ),
             );

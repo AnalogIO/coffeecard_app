@@ -19,52 +19,51 @@ class LeaderboardCubit extends Cubit<StatisticsState> {
   Future<void> fetch() async {
     final filter = state.filter;
 
-    final maybeLeaderboard = await _repo.getLeaderboard(filter);
     final maybeUser = await _repo.getLeaderboardUser(filter);
 
-    if (maybeUser.isLeft) {
-      emit(StatisticsError(maybeUser.left.message, filter: filter));
-      return;
-    }
+    maybeUser.fold(
+      (l) => emit(StatisticsError(l.message, filter: filter)),
+      (user) async {
+        final maybeLeaderboard = await _repo.getLeaderboard(filter);
 
-    if (maybeLeaderboard.isLeft) {
-      emit(StatisticsError(maybeLeaderboard.left.message, filter: filter));
-      return;
-    }
+        maybeLeaderboard.fold(
+          (l) => emit(StatisticsError(l.message, filter: filter)),
+          (leaderboard) {
+            var userInLeaderboard = false;
+            final List<LeaderboardUser> users =
+                leaderboard.map((leaderboardUser) {
+              final isCurrentUser = leaderboardUser.id == user.id;
 
-    final user = maybeUser.right;
+              // set the 'found' flag if this is the current user
+              if (!userInLeaderboard && isCurrentUser) {
+                userInLeaderboard = true;
+              }
 
-    var userInLeaderboard = false;
-    final List<LeaderboardUser> leaderboard =
-        maybeLeaderboard.right.map((leaderboardUser) {
-      final isCurrentUser = leaderboardUser.id == user.id;
+              return LeaderboardUser(
+                id: leaderboardUser.id,
+                name: leaderboardUser.name,
+                score: leaderboardUser.score,
+                highlight: isCurrentUser,
+                rank: leaderboardUser.rank,
+              );
+            }).toList();
 
-      // set the 'found' flag if this is the current user
-      if (!userInLeaderboard && isCurrentUser) {
-        userInLeaderboard = true;
-      }
+            if (!userInLeaderboard) {
+              users.add(
+                LeaderboardUser(
+                  id: user.id,
+                  name: user.name,
+                  highlight: true,
+                  score: user.score,
+                  rank: user.rank,
+                ),
+              );
+            }
 
-      return LeaderboardUser(
-        id: leaderboardUser.id,
-        name: leaderboardUser.name,
-        score: leaderboardUser.score,
-        highlight: isCurrentUser,
-        rank: leaderboardUser.rank,
-      );
-    }).toList();
-
-    if (!userInLeaderboard) {
-      leaderboard.add(
-        LeaderboardUser(
-          id: user.id,
-          name: user.name,
-          highlight: true,
-          score: user.score,
-          rank: user.rank,
-        ),
-      );
-    }
-
-    emit(StatisticsLoaded(leaderboard, filter: filter));
+            emit(StatisticsLoaded(users, filter: filter));
+          },
+        );
+      },
+    );
   }
 }
