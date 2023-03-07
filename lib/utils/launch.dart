@@ -8,14 +8,16 @@ Future<void> launchUrlExternalApplication(Uri url, BuildContext context) async {
     return;
   }
 
-  showDialog(
-    context: context,
-    barrierDismissible: true,
-    builder: (BuildContext context) {
-      return const AlertDialog(
-        title: Text(Strings.error),
-        content: Text(Strings.cantLaunchUrl),
-      );
-    },
-  );
+  if (context.mounted) {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return const AlertDialog(
+          title: Text(Strings.error),
+          content: Text(Strings.cantLaunchUrl),
+        );
+      },
+    );
+  }
 }

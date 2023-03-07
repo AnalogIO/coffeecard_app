@@ -7,7 +7,6 @@ include: package:lint/analysis_options.yaml
 linter:
   rules:
     avoid_classes_with_only_static_members: false
-    argument_type_not_assignable: false # Consider if it should be included or not
     prefer_single_quotes: true
     avoid_relative_lib_imports: true
     sort_pub_dependencies: false

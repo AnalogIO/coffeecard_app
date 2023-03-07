@@ -41,9 +41,9 @@ class MobilePayService implements PaymentHandler {
         return Right(
           Payment(
             id: response.id,
-            paymentId: paymentDetails.paymentId!,
+            paymentId: paymentDetails.paymentId,
             status: PaymentStatus.awaitingPayment,
-            deeplink: paymentDetails.mobilePayAppRedirectUri!,
+            deeplink: paymentDetails.mobilePayAppRedirectUri,
             purchaseTime: response.dateCreated,
             price: response.totalAmount,
             productId: response.productId,
@@ -69,8 +69,9 @@ class MobilePayService implements PaymentHandler {
       } else {
         throw UnsupportedError('Unsupported platform');
       }
-
-      launchUrlExternalApplication(url, _context);
+      if (_context.mounted) {
+        launchUrlExternalApplication(url, _context);
+      }
     }
   }
 
