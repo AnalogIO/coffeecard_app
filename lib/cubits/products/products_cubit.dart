@@ -15,7 +15,7 @@ class ProductsCubit extends Cubit<ProductsState> {
     final either = await _repository.getProducts();
 
     either.fold(
-      (error) => emit(ProductsError(error.message)),
+      (error) => emit(ProductsError(error.reason)),
       (products) {
         final ticketProducts = products.where((p) => p.amount > 1);
         final singleDrinkProducts = products.where((p) => p.amount == 1);

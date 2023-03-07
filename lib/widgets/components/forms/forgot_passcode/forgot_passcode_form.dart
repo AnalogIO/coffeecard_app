@@ -57,11 +57,11 @@ class ForgotPasscodeForm extends StatelessWidget {
     var body = Strings.forgotPasscodeSentRequestTo(email);
 
     either.fold(
-      (l) {
+      (error) {
         title = Strings.forgotPasscodeError;
-        body = l.message;
+        body = error.reason;
       },
-      (r) => null,
+      (_) => null,
     );
 
     appDialog(

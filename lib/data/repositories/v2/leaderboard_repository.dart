@@ -1,7 +1,6 @@
-import 'package:coffeecard/core/errors/exceptions.dart';
+import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/core/network/executor.dart';
 import 'package:coffeecard/cubits/statistics/statistics_cubit.dart';
-import 'package:coffeecard/data/repositories/utils/request_types.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
 import 'package:coffeecard/models/leaderboard/leaderboard_user.dart';
 import 'package:dartz/dartz.dart';
@@ -28,31 +27,24 @@ class LeaderboardRepository {
   final CoffeecardApiV2 apiV2;
   final Executor executor;
 
-  Future<Either<RequestFailure, List<LeaderboardUser>>> getLeaderboard(
+  Future<Either<ServerFailure, List<LeaderboardUser>>> getLeaderboard(
     LeaderboardFilter category,
   ) async {
-    try {
-      final result = await executor(
-        () => apiV2.apiV2LeaderboardTopGet(preset: category.label, top: 10),
-      );
+    final result = await executor(
+      () => apiV2.apiV2LeaderboardTopGet(preset: category.label, top: 10),
+    );
 
-      return Right(result!.map(LeaderboardUser.fromDTO).toList());
-    } on ServerException catch (e) {
-      return Left(RequestFailure(e.error));
-    }
+    return result
+        .bind((result) => Right(result.map(LeaderboardUser.fromDTO).toList()));
   }
 
-  Future<Either<RequestFailure, LeaderboardUser>> getLeaderboardUser(
+  Future<Either<ServerFailure, LeaderboardUser>> getLeaderboardUser(
     LeaderboardFilter category,
   ) async {
-    try {
-      final result = await executor(
-        () => apiV2.apiV2LeaderboardGet(preset: category.label),
-      );
+    final result = await executor(
+      () => apiV2.apiV2LeaderboardGet(preset: category.label),
+    );
 
-      return Right(LeaderboardUser.fromDTO(result!));
-    } on ServerException catch (e) {
-      return Left(RequestFailure(e.error));
-    }
+    return result.bind((result) => Right(LeaderboardUser.fromDTO(result)));
   }
 }

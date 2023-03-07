@@ -1,6 +1,5 @@
-import 'package:coffeecard/core/errors/exceptions.dart';
+import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/core/network/executor.dart';
-import 'package:coffeecard/data/repositories/utils/request_types.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
 import 'package:coffeecard/models/environment.dart';
 import 'package:dartz/dartz.dart';
@@ -27,15 +26,11 @@ class AppConfigRepository {
     }
   }
 
-  Future<Either<RequestFailure, Environment>> getEnvironmentType() async {
-    try {
-      final result = await executor(
-        apiV2.apiV2AppconfigGet,
-      );
+  Future<Either<ServerFailure, Environment>> getEnvironmentType() async {
+    final result = await executor(
+      apiV2.apiV2AppconfigGet,
+    );
 
-      return Right(_onSuccessfulRequest(result!));
-    } on ServerException catch (e) {
-      return Left(RequestFailure(e.error));
-    }
+    return result.bind((result) => Right(_onSuccessfulRequest(result)));
   }
 }

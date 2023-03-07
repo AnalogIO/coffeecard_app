@@ -1,12 +1,14 @@
+import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/core/network/executor.dart';
 import 'package:coffeecard/generated/api/shiftplanning_api.swagger.dart';
+import 'package:dartz/dartz.dart';
 
 abstract class OpeningHoursRemoteDataSource {
   /// Check if the cafe is open.
-  Future<bool> isOpen();
+  Future<Either<Failure, bool>> isOpen();
 
   /// Get the opening hours of the cafe.
-  Future<List<OpeningHoursDTO>> getOpeningHours();
+  Future<Either<Failure, List<OpeningHoursDTO>>> getOpeningHours();
 }
 
 class OpeningHoursRemoteDataSourceImpl implements OpeningHoursRemoteDataSource {
@@ -21,20 +23,20 @@ class OpeningHoursRemoteDataSourceImpl implements OpeningHoursRemoteDataSource {
   final shortkey = 'analog';
 
   @override
-  Future<bool> isOpen() async {
+  Future<Either<Failure, bool>> isOpen() async {
     final result = await executor(
       () async => api.apiOpenShortKeyGet(shortKey: shortkey),
     );
 
-    return result!.open;
+    return result.bind((result) => Right(result.open));
   }
 
   @override
-  Future<List<OpeningHoursDTO>> getOpeningHours() async {
+  Future<Either<Failure, List<OpeningHoursDTO>>> getOpeningHours() async {
     final result = await executor(
       () => api.apiShiftsShortKeyGet(shortKey: shortkey),
     );
 
-    return result!;
+    return result.bind((result) => Right(result));
   }
 }

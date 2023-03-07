@@ -1,6 +1,5 @@
-import 'package:coffeecard/core/errors/exceptions.dart';
+import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/core/network/executor.dart';
-import 'package:coffeecard/data/repositories/utils/request_types.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/models/receipts/receipt.dart';
 import 'package:dartz/dartz.dart';
@@ -16,32 +15,25 @@ class ReceiptRepository {
 
   /// Retrieves all of the users receipts
   /// This includes both their used tickets and purchased tickets
-  Future<Either<RequestFailure, List<Receipt>>> getUserReceipts() async {
-    Iterable<Receipt> usedTickets;
-    Iterable<Receipt> purchasedTickets;
+  Future<Either<ServerFailure, List<Receipt>>> getUserReceipts() async {
+    final usedTicketsEither = await executor(
+      () => apiV1.apiV1TicketsGet(used: true),
+    );
 
-    try {
-      final result = await executor(
-        () => apiV1.apiV1TicketsGet(used: true),
-      );
+    final purchasedTicketsEither = await executor(
+      apiV1.apiV1PurchasesGet,
+    );
 
-      usedTickets = result!.map(Receipt.fromTicketDTO);
-    } on ServerException catch (e) {
-      return Left(RequestFailure(e.error));
-    }
+    return usedTicketsEither.fold((l) => Left(l), (r) {
+      final usedTickets = r.map(Receipt.fromTicketDTO);
 
-    try {
-      final result = await executor(
-        apiV1.apiV1PurchasesGet,
-      );
+      return purchasedTicketsEither.fold((l) => Left(l), (r) {
+        final purchasedTickets = r.map(Receipt.fromPurchaseDTO);
 
-      purchasedTickets = result!.map(Receipt.fromPurchaseDTO);
-    } on ServerException catch (e) {
-      return Left(RequestFailure(e.error));
-    }
-
-    final allTickets = [...usedTickets, ...purchasedTickets];
-    allTickets.sort((a, b) => b.timeUsed.compareTo(a.timeUsed));
-    return Right(allTickets);
+        final allTickets = [...usedTickets, ...purchasedTickets];
+        allTickets.sort((a, b) => b.timeUsed.compareTo(a.timeUsed));
+        return Right(allTickets);
+      });
+    });
   }
 }

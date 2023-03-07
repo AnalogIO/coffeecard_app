@@ -1,6 +1,6 @@
-import 'package:coffeecard/core/errors/exceptions.dart';
+import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/core/network/executor.dart';
-import 'package:coffeecard/data/repositories/utils/request_types.dart';
+
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
 import 'package:coffeecard/models/receipts/receipt.dart';
@@ -19,14 +19,14 @@ class TicketRepository {
   final CoffeecardApiV2 apiV2;
   final Executor executor;
 
-  Future<Either<RequestFailure, List<TicketCount>>> getUserTickets() async {
-    try {
-      final result = await executor(
-        () => apiV2.apiV2TicketsGet(includeUsed: false),
-      );
+  Future<Either<ServerFailure, List<TicketCount>>> getUserTickets() async {
+    final result = await executor(
+      () => apiV2.apiV2TicketsGet(includeUsed: false),
+    );
 
-      return Right(
-        result!
+    return result.bind(
+      (result) => Right(
+        result
             .groupListsBy((t) => t.productName)
             .entries
             .map(
@@ -38,23 +38,21 @@ class TicketRepository {
             )
             .sortedBy<num>((t) => t.productId)
             .toList(),
-      );
-    } on ServerException catch (e) {
-      return Left(RequestFailure(e.error));
-    }
+      ),
+    );
   }
 
-  Future<Either<RequestFailure, Receipt>> useTicket(int productId) async {
-    try {
-      final result = await executor(
-        () => apiV1.apiV1TicketsUsePost(
-          body: UseTicketDTO(productId: productId),
-        ),
-      );
+  Future<Either<ServerFailure, Receipt>> useTicket(int productId) async {
+    final result = await executor(
+      () => apiV1.apiV1TicketsUsePost(
+        body: UseTicketDTO(productId: productId),
+      ),
+    );
 
-      return Right(
+    return result.bind(
+      (result) => Right(
         Receipt(
-          productName: result!.productName,
+          productName: result.productName,
           id: result.id,
           transactionType: TransactionType.ticketSwipe,
           timeUsed: result.dateUsed,
@@ -62,9 +60,7 @@ class TicketRepository {
           amountPurchased: -1,
           price: -1,
         ),
-      );
-    } on ServerException catch (e) {
-      return Left(RequestFailure(e.error));
-    }
+      ),
+    );
   }
 }

@@ -14,7 +14,7 @@ class EnvironmentCubit extends Cubit<EnvironmentState> {
     final either = await _configRepository.getEnvironmentType();
 
     either.fold(
-      (error) => emit(EnvironmentError(error.message)),
+      (error) => emit(EnvironmentError(error.reason)),
       (env) => emit(EnvironmentLoaded(env: env)),
     );
   }

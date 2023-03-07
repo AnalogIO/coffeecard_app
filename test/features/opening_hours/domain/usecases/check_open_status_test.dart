@@ -14,7 +14,7 @@ void main() {
 
   setUp(() {
     repository = MockOpeningHoursRepository();
-    getIsOpen = CheckOpenStatus(repository: repository);
+    getIsOpen = CheckOpenStatus(dataSource: repository);
   });
 
   test('should call repository', () async {

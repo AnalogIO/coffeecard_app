@@ -15,7 +15,7 @@ class ContributorCubit extends Cubit<ContributorState> {
     final either = await _repository.getContributors();
 
     either.fold(
-      (error) => emit(ContributorError(error.message)),
+      (error) => emit(ContributorError(error.reason)),
       (contributors) => emit(ContributorLoaded(contributors)),
     );
   }

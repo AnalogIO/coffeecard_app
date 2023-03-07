@@ -1,4 +1,4 @@
-import 'package:coffeecard/data/repositories/utils/request_types.dart';
+import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/data/repositories/v2/purchase_repository.dart';
 import 'package:coffeecard/models/purchase/payment.dart';
 import 'package:coffeecard/models/purchase/payment_status.dart';
@@ -21,9 +21,9 @@ abstract class PaymentHandler {
     }
   }
 
-  Future<Either<RequestFailure, Payment>> initPurchase(int productId);
+  Future<Either<Failure, Payment>> initPurchase(int productId);
 
-  Future<Either<RequestFailure, PaymentStatus>> verifyPurchase(int purchaseId);
+  Future<Either<Failure, PaymentStatus>> verifyPurchase(int purchaseId);
 
   Future<void> invokePaymentMethod(Uri uri);
 }

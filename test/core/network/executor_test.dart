@@ -1,4 +1,4 @@
-import 'package:coffeecard/core/errors/exceptions.dart';
+import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/core/network/executor.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logger/logger.dart';
@@ -17,18 +17,15 @@ void main() {
     executor = Executor(logger);
   });
 
-  test('should throw [ServerException] if api call fails', () async {
+  test('should return [ServerFailure] if api call fails', () async {
     // arrange
-    final tResponse = Response.fromStatusCode(500);
+    final tResponse = Response.fromStatusCode(500, body: 'some error');
 
     // act
-    final call = executor;
+    final actual = executor(() async => tResponse);
 
     // assert
-    expect(
-      () async => call(() async => tResponse),
-      throwsA(const TypeMatcher<ServerException>()),
-    );
+    expect(actual, const ServerFailure('some error'));
   });
 
   test('should return response body if api call succeeds', () async {

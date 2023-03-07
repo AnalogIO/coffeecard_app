@@ -1,9 +1,9 @@
-import 'package:coffeecard/data/repositories/utils/request_types.dart';
+import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/models/contributor.dart';
 import 'package:dartz/dartz.dart';
 
 class ContributorRepository {
-  Future<Either<RequestFailure, List<Contributor>>> getContributors() async {
+  Future<Either<ServerFailure, List<Contributor>>> getContributors() async {
     return Future.value(
       const Right([
         Contributor(

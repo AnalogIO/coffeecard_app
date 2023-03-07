@@ -1,5 +1,4 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/core/errors/exceptions.dart';
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/features/opening_hours/domain/entities/opening_hours.dart';
 import 'package:coffeecard/features/opening_hours/opening_hours.dart';
@@ -13,21 +12,10 @@ class OpeningHoursRepositoryImpl implements OpeningHoursRepository {
   OpeningHoursRepositoryImpl({required this.dataSource});
 
   @override
-  Future<Either<Failure, bool>> getIsOpen() async {
-    try {
-      final isOpen = await dataSource.isOpen();
-
-      return Right(isOpen);
-    } on ServerException catch (e) {
-      return Left(ServerFailure(e.error));
-    }
-  }
-
-  @override
   Future<Either<Failure, OpeningHours>> getOpeningHours(int weekday) async {
-    try {
-      final openingHours = await dataSource.getOpeningHours();
+    final openingHours = await dataSource.getOpeningHours();
 
+    return openingHours.bind((openingHours) {
       final openingHoursMap = transformOpeningHours(openingHours);
 
       return Right(
@@ -39,9 +27,7 @@ class OpeningHoursRepositoryImpl implements OpeningHoursRepository {
           ),
         ),
       );
-    } on ServerException catch (e) {
-      return Left(ServerFailure(e.error));
-    }
+    });
   }
 
   // An [OpeningHoursDTO] actually represents a barista shift, so "dto.start"

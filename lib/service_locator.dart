@@ -174,7 +174,7 @@ void initOpeningHours() {
 
   // use case
   sl.registerFactory(() => GetOpeningHours(repository: sl()));
-  sl.registerFactory(() => CheckOpenStatus(repository: sl()));
+  sl.registerFactory(() => CheckOpenStatus(dataSource: sl()));
 
   // repository
   sl.registerLazySingleton<OpeningHoursRepository>(
