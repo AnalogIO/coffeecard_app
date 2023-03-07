@@ -83,7 +83,7 @@ dependencies:
 
   # Upgrade notifier
   upgrader: 4.11.1
-  
+
   # env
   envied: 0.3.0
 
