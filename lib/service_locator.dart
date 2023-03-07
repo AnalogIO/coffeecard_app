@@ -53,7 +53,7 @@ void configureServices() {
 
   // Rest Client, Chopper client
   final coffeCardChopper = ChopperClient(
-    baseUrl: Env.coffeeCardUrl,
+    baseUrl: Uri.parse(Env.coffeeCardUrl),
     interceptors: [AuthenticationInterceptor(sl<SecureStorage>())],
     converter: $JsonSerializableConverter(),
     services: [

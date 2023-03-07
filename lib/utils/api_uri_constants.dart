@@ -1,5 +1,5 @@
 class ApiUriConstants {
-  static const String shiftyUrl = 'https://analogio.dk/shiftplanning';
+  static Uri shiftyUrl = Uri.parse('https://analogio.dk/shiftplanning');
   static const String apiVersion = '1';
   static const String minAppVersion = '2.1.0';
   static Uri analogIOGitHub = Uri.parse('https://github.com/AnalogIO/');

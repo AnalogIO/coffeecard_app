@@ -20,7 +20,7 @@ void main() {
         .thenAnswer((_) => Future<String>.value(token));
 
     final interceptor = AuthenticationInterceptor(mockSecureStorage);
-    const request = Request('POST', 'url', 'baseurl');
+    final request = Request('POST', Uri.parse('url'), Uri.parse('baseurl'));
 
     final result = await interceptor.onRequest(request);
 
@@ -35,7 +35,7 @@ void main() {
     when(mockSecureStorage.readToken()).thenAnswer((_) async => null);
 
     final interceptor = AuthenticationInterceptor(mockSecureStorage);
-    const request = Request('POST', 'url', 'baseurl');
+    final request = Request('POST', Uri.parse('url'), Uri.parse('baseurl'));
 
     final result = await interceptor.onRequest(request);
 
