@@ -12,13 +12,18 @@ class Executor {
   Future<Either<ServerFailure, Result>> call<Result>(
     Future<Response<Result>> Function() request,
   ) async {
-    final response = await request();
+    try {
+      final response = await request();
 
-    if (!response.isSuccessful) {
-      logger.e(response.toString());
-      return Left(ServerFailure.fromResponse(response));
+      if (!response.isSuccessful) {
+        logger.e(response.toString());
+        return Left(ServerFailure.fromResponse(response));
+      }
+
+      return Right(response.body as Result);
+    } on Exception {
+      // could not connect to backend for whatever reason
+      return const Left(ServerFailure('connection refused'));
     }
-
-    return Right(response.body as Result);
   }
 }

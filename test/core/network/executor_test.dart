@@ -39,4 +39,15 @@ void main() {
     // assert
     expect(actual, const Right('some string'));
   });
+
+  test('should return [ServerFailure] if call throws [Exception]', () async {
+    // arrange
+    final tException = Exception('some error');
+
+    // act
+    final actual = await executor(() async => throw tException);
+
+    // assert
+    expect(actual, const Left(ServerFailure('connection refused')));
+  });
 }
