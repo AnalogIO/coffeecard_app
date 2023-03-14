@@ -12,8 +12,8 @@
         <string>Y5U9T77F2K</string>
     <key>provisioningProfiles</key>
     <dict>
-        <key>DK.AnalogIO.DigitalCoffeeCard</key>
-        <string>githubactions-dev</string>
+        <key>dk.analogio.analog.dev</key>
+        <string>development</string>
     </dict>
 </dict>
 </plist>

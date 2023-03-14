@@ -1,21 +1,10 @@
 name: coffeecard
 description: Cafe Analog Coffee card
 
-# The following line prevents the package from being accidentally published to
-# pub.dev using `pub publish`. This is preferred for private packages.
-publish_to: "none" # Remove this line if you wish to publish to pub.dev
+publish_to: "none"
 
-# The following defines the version and build number for your application.
-# A version number is three numbers separated by dots, like 1.2.43
-# followed by an optional build number separated by a +.
-# Both the version and the builder number may be overridden in flutter
-# build by specifying --build-name and --build-number, respectively.
-# In Android, build-name is used as versionName while build-number used as versionCode.
-# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
-# In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
-# Read more about iOS versioning at
-# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+1
+# Build pipeline will overwrite this
+version: 0.0.0+1
 
 environment:
   sdk: ">=2.18.0 <3.0.0"
@@ -62,10 +51,6 @@ dependencies:
   # crypto
   crypto: 3.0.2
 
-  # icon and name
-  flutter_launcher_icons: 0.11.0
-  flutter_app_name: 0.1.1
-
   # rest
   http: 0.13.5
 
@@ -93,6 +78,9 @@ dev_dependencies:
 
   build_runner: 2.3.3
 
+  flutter_launcher_icons: 0.10.0
+  flutter_native_splash: 2.2.16
+
   # unit testing
   mockito: 5.3.2
   bloc_test: 9.1.1
@@ -108,16 +96,27 @@ dev_dependencies:
   # env
   envied_generator: 0.3.0
 
-flutter_app_name: #remember to update: flutter pub run flutter_app_name
-  name: "Analog"
+# update splash screen:
+# flutter pub run flutter_native_splash:create
+# OR
+# make splash
+flutter_native_splash:
+  color: "#362619"
+  android_12:
+    color: "#E5E2D7"
 
-flutter_icons: #remember to update: flutter pub run flutter_launcher_icons:main
-  android: true
-  ios: true
-  remove_alpha_ios: true
-  image_path: "assets/icon/Icon.png"
-  adaptive_icon_background: "assets/icon/Background.png"
-  adaptive_icon_foreground: "assets/icon/Foreground.png"
+# update launcher icon:
+# flutter pub run flutter_launcher_icons:main
+# OR
+# make icon
+# WARNING! Don't run this command unless you are sure what you are doing.
+# flutter_icons:
+#   android: true
+#   ios: true
+#   remove_alpha_ios: true
+#   image_path: "assets/icon/Icon.png"
+#   adaptive_icon_background: "assets/icon/Background.png"
+#   adaptive_icon_foreground: "assets/icon/Foreground.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>707418028743-fnktdlvjrcmu3n8af3v83dhr7v7lfpvh.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.707418028743-fnktdlvjrcmu3n8af3v83dhr7v7lfpvh</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCxfE-Rz0lTiFp7IrGxfph0_-aWHAlmqMY</string>
+	<key>GCM_SENDER_ID</key>
+	<string>707418028743</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>dk.analogio.analog.dev</string>
+	<key>PROJECT_ID</key>
+	<string>analogio-development</string>
+	<key>STORAGE_BUCKET</key>
+	<string>analogio-development.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:707418028743:ios:4a7aa2156c4e0f150e1ce2</string>
+</dict>
+</plist>

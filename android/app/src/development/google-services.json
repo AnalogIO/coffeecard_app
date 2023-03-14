@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "707418028743",
+    "project_id": "analogio-development",
+    "storage_bucket": "analogio-development.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:707418028743:android:79864852bd8c91f90e1ce2",
+        "android_client_info": {
+          "package_name": "dk.analogio.analog.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "707418028743-0vk697j74il3st969btk2ggvmd12anam.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfpHZomC2_5Dw4xlXyg0U77KZDtPEGZlM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "707418028743-0vk697j74il3st969btk2ggvmd12anam.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "897975858437-5mtqt6dn8qarvrb8ebfujvvkb5nldcoi.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "dk.analogio.analog.dev",
+                "app_store_id": "1148152818"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

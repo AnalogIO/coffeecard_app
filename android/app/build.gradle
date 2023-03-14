@@ -46,8 +46,6 @@ android {
 
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "dk.analog.digitalclipcard"
         minSdkVersion 21
         targetSdkVersion 31
         versionCode flutterVersionCode.toInteger()
@@ -65,6 +63,30 @@ android {
         disable 'InvalidPackage'
     }
     namespace 'dk.analog.digitalclipcard'
+
+    flavorDimensions "app"
+
+    productFlavors {
+        development {
+            dimension "app"
+            applicationId "dk.analogio.analog.dev"
+            versionNameSuffix "-dev"
+            resValue "string", "app_name", "[DEV] Analog"
+        }
+        production {
+            dimension "app"
+            applicationId "dk.analog.digitalclipcard"
+            applicationIdSuffix ""
+            versionNameSuffix "-prod"
+            resValue "string", "app_name", "Analog"
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+        }
+    }
 }
 
 flutter {
