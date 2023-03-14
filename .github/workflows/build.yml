@@ -10,7 +10,7 @@ on:
     inputs:
       storeArtifacts:
         type: boolean
-        required: true
+        required: false
     outputs:
       version_tag:
         description: "Version used for Git tag"
