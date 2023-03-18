@@ -22,7 +22,9 @@ class FreeProductService extends PaymentHandler {
     final response =
         await _repository.initiatePurchase(productId, PaymentType.freepurchase);
 
-    return response.fold((l) => Left(l), (r) => Right(
+    return response.fold(
+      (l) => Left(l),
+      (r) => Right(
         Payment(
           id: r.id,
           status: PaymentStatus.completed,

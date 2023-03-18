@@ -23,12 +23,15 @@ class ReceiptRepository {
     final productsEither = await productRepository.getProducts();
 
     var productMap = <int, Product>{};
-    productsEither.map((products) =>
-        productMap = {for (var product in products) product.id: product});
+    productsEither.map(
+      (products) =>
+          productMap = {for (var product in products) product.id: product},
+    );
 
     if (productsEither.isLeft()) {
       return Left(
-          (productsEither as Left<RequestFailure, List<Product>>).value);
+        (productsEither as Left<RequestFailure, List<Product>>).value,
+      );
     }
 
     final usedTicketsFutureEither = executor.execute(
@@ -48,8 +51,8 @@ class ReceiptRepository {
                   amount: 0,
                   name: 'Unknown product',
                   id: 0,
-                  description:
-                      'We could not find this product in our database'), // Fixme better default
+                  description: 'We could not find this product in our database',
+                ), // Fixme better default
         ),
       ),
     );

@@ -32,8 +32,10 @@ class Receipt {
         id = dto.id;
 
   /// Creates a receipt from a purchase DTO
-  Receipt.fromSimplePurchaseResponse(SimplePurchaseResponse dto, Product product)
-      : productName = product.name,
+  Receipt.fromSimplePurchaseResponse(
+    SimplePurchaseResponse dto,
+    Product product,
+  )   : productName = product.name,
         transactionType = TransactionType.purchase,
         timeUsed = dto.dateCreated,
         price = product.price,
