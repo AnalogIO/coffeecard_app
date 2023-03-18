@@ -5,10 +5,10 @@ packages:
     dependency: transitive
     description:
       name: _fe_analyzer_shared
-      sha256: "98d1d33ed129b372846e862de23a0fc365745f4d7b5e786ce667fcbbb7ac5c07"
+      sha256: "4897882604d919befd350648c7f91926a9d5de99e67b455bf0917cc2362f4bb8"
       url: "https://pub.dev"
     source: hosted
-    version: "55.0.0"
+    version: "47.0.0"
   _flutterfire_internals:
     dependency: transitive
     description:
@@ -21,10 +21,10 @@ packages:
     dependency: transitive
     description:
       name: analyzer
-      sha256: "881348aed9b0b425882c97732629a6a31093c8ff20fc4b3b03fb9d3d50a3a126"
+      sha256: "690e335554a8385bc9d787117d9eb52c0c03ee207a607e593de3c9d71b1cfe80"
       url: "https://pub.dev"
     source: hosted
-    version: "5.7.1"
+    version: "4.7.0"
   animations:
     dependency: "direct main"
     description:
@@ -109,10 +109,10 @@ packages:
     dependency: transitive
     description:
       name: build_resolvers
-      sha256: db49b8609ef8c81cca2b310618c3017c00f03a92af44c04d310b907b2d692d95
+      sha256: "687cf90a3951affac1bd5f9ecb5e3e90b60487f3d9cdc359bb310f8876bb02a6"
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.0"
+    version: "2.0.10"
   build_runner:
     dependency: "direct dev"
     description:
@@ -177,6 +177,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.1"
+  charcode:
+    dependency: transitive
+    description:
+      name: charcode
+      sha256: fb98c0f6d12c920a02ee2d998da788bca066ca5f148492b7085ee23372b12306
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.3.1"
   checked_yaml:
     dependency: transitive
     description:
@@ -189,18 +197,18 @@ packages:
     dependency: "direct main"
     description:
       name: chopper
-      sha256: b2645618fa760df06d7609c96b092d7b3e7a8f23639d34269f62f45a5edabc7d
+      sha256: "813cabd029ad8c020874429a671f2c15f45cfc3ced66b566bfa181a9b61b89b8"
       url: "https://pub.dev"
     source: hosted
-    version: "6.1.1"
+    version: "4.0.6"
   chopper_generator:
     dependency: "direct dev"
     description:
       name: chopper_generator
-      sha256: "62360a1a3536645aaee030dd7719089838a478682867d46dbcf30a3c0e5305b4"
+      sha256: b090e4926b2ad3a0277fa65fa6590a1f2087b55afd0dd53341b4ade669fabdb5
       url: "https://pub.dev"
     source: hosted
-    version: "6.0.0"
+    version: "4.0.6"
   cli_util:
     dependency: transitive
     description:
@@ -269,10 +277,10 @@ packages:
     dependency: transitive
     description:
       name: dart_style
-      sha256: "5be16bf1707658e4c03078d4a9b90208ded217fb02c163e207d334082412f2fb"
+      sha256: "7a03456c3490394c8e7665890333e91ae8a49be43542b616e414449ac358acd4"
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.5"
+    version: "2.2.4"
   dartz:
     dependency: "direct main"
     description:
@@ -337,6 +345,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.4.1"
+  dotenv:
+    dependency: transitive
+    description:
+      name: dotenv
+      sha256: e169b516bc7b88801919e1c508772bcb8e3d0d1776a43f74ab692c57e741cd8a
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.1.0"
   dotted_border:
     dependency: "direct main"
     description:
@@ -349,18 +365,18 @@ packages:
     dependency: "direct main"
     description:
       name: envied
-      sha256: d5d978fbd578b5c00123003609c39185e0b1ddf9d2ac460d710dd0eb2fc223d7
+      sha256: f0c9f0fb041ea8f6239d1cf15f36e2e1b04e366746453c532fe5c8a96325b090
       url: "https://pub.dev"
     source: hosted
-    version: "0.3.0"
+    version: "0.2.0"
   envied_generator:
     dependency: "direct dev"
     description:
       name: envied_generator
-      sha256: "6c5a98c27c5eae925807692eb252ccac2b8e81f09bace1f07207c47dfb6a4eb0"
+      sha256: cbfbfb26e2e16a3867b9a21248ed08a1acd6e87b4c3a568b2c3b371e0959dab3
       url: "https://pub.dev"
     source: hosted
-    version: "0.3.0"
+    version: "0.2.0"
   equatable:
     dependency: "direct main"
     description:
@@ -708,18 +724,18 @@ packages:
     dependency: transitive
     description:
       name: json_annotation
-      sha256: c33da08e136c3df0190bd5bbe51ae1df4a7d96e7954d1d7249fea2968a72d317
+      sha256: cb314f00b2488de7bc575207e54402cd2f92363f333a7933fd1b0631af226baa
       url: "https://pub.dev"
     source: hosted
-    version: "4.8.0"
+    version: "4.6.0"
   json_serializable:
     dependency: "direct dev"
     description:
       name: json_serializable
-      sha256: dadc08bd61f72559f938dd08ec20dbfec6c709bba83515085ea943d2078d187a
+      sha256: "0cec7060459254cf1ff980c08dedca6fa50917724a3c3ec8c5026cb88dee8238"
       url: "https://pub.dev"
     source: hosted
-    version: "6.6.1"
+    version: "6.3.1"
   lint:
     dependency: "direct dev"
     description:
@@ -748,10 +764,10 @@ packages:
     dependency: transitive
     description:
       name: markdown
-      sha256: b3c60dee8c2af50ad0e6e90cceba98e47718a6ee0a7a6772c77846a0cc21f78b
+      sha256: "39caf989ccc72c63e87b961851a74257141938599ed2db45fbd9403fee0db423"
       url: "https://pub.dev"
     source: hosted
-    version: "7.0.1"
+    version: "5.0.0"
   matcher:
     dependency: transitive
     description:
@@ -1036,10 +1052,10 @@ packages:
     dependency: transitive
     description:
       name: pubspec_parse
-      sha256: ec85d7d55339d85f44ec2b682a82fea340071e8978257e5a43e69f79e98ef50c
+      sha256: "75f6614d6dde2dc68948dffbaa4fe5dae32cd700eb9fb763fe11dfb45a3c4d0a"
       url: "https://pub.dev"
     source: hosted
-    version: "1.2.2"
+    version: "1.2.1"
   quiver:
     dependency: transitive
     description:
@@ -1217,10 +1233,10 @@ packages:
     dependency: transitive
     description:
       name: source_gen
-      sha256: c2bea18c95cfa0276a366270afaa2850b09b4a76db95d546f3d003dcc7011298
+      sha256: "2d79738b6bbf38a43920e2b8d189e9a3ce6cc201f4b8fc76be5e4fe377b1c38d"
       url: "https://pub.dev"
     source: hosted
-    version: "1.2.7"
+    version: "1.2.6"
   source_helper:
     dependency: transitive
     description:
@@ -1305,10 +1321,10 @@ packages:
     dependency: "direct dev"
     description:
       name: swagger_dart_code_generator
-      sha256: cd2efc34dbc3f63cb81ba49048fa56c6307a580376104eb756496e08604e27bc
+      sha256: "39aa603bf1c9044fcd64b75cdf04d941ac14425fd4fb715be226802221203d96"
       url: "https://pub.dev"
     source: hosted
-    version: "2.10.2"
+    version: "2.6.0"
   synchronized:
     dependency: transitive
     description:

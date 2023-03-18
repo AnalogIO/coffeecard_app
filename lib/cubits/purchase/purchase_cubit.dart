@@ -29,7 +29,7 @@ class PurchaseCubit extends Cubit<PurchaseState> {
           if (payment.status != PaymentStatus.error) {
             emit(PurchaseProcessing(payment));
             await paymentHandler
-                .invokePaymentMethod(Uri.parse(payment.deeplink));
+                .invokePaymentMethod(Uri.parse(payment.deeplink!));
           } else {
             emit(PurchasePaymentRejected(payment));
           }

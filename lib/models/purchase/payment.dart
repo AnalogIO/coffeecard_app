@@ -2,9 +2,9 @@ import 'package:coffeecard/models/purchase/payment_status.dart';
 
 class Payment {
   final int id;
-  final String paymentId;
+  final String? paymentId;
   final PaymentStatus status;
-  final String deeplink;
+  final String? deeplink;
   final int price;
   final DateTime purchaseTime;
   final int productId;

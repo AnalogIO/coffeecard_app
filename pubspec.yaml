@@ -24,7 +24,7 @@ dependencies:
 
   # Chopper api and rest client
   logger: 1.2.2
-  chopper: 6.1.1
+  chopper: 4.0.6
 
   # storage
   flutter_secure_storage: 8.0.0
@@ -70,7 +70,7 @@ dependencies:
   upgrader: 4.11.1
 
   # env
-  envied: 0.3.0
+  envied: 0.2.0
 
 dev_dependencies:
   flutter_test:
@@ -86,15 +86,15 @@ dev_dependencies:
   bloc_test: 9.1.1
 
   # Chopper api and rest client
-  chopper_generator: 6.0.0
-  json_serializable: 6.6.1
-  swagger_dart_code_generator: 2.10.2
+  chopper_generator: 4.0.6
+  json_serializable: 6.3.1
+  swagger_dart_code_generator: 2.6.0
 
   # linter
   lint: 2.0.1
 
   # env
-  envied_generator: 0.3.0
+  envied_generator: 0.2.0
 
 # update splash screen:
 # flutter pub run flutter_native_splash:create
