@@ -15,8 +15,8 @@ class VoucherCubit extends Cubit<VoucherState> {
     final either = await _voucherRepository.redeemVoucher(voucher);
 
     either.fold(
-      (l) => emit(VoucherError(l.reason)),
-      (r) => emit(VoucherSuccess(r)),
+      (error) => emit(VoucherError(error.reason)),
+      (redeemedVoucher) => emit(VoucherSuccess(redeemedVoucher)),
     );
   }
 }
