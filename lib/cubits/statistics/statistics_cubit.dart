@@ -22,12 +22,12 @@ class LeaderboardCubit extends Cubit<StatisticsState> {
     final maybeUser = await _repo.getLeaderboardUser(filter);
 
     maybeUser.fold(
-      (l) => emit(StatisticsError(l.reason, filter: filter)),
+      (error) => emit(StatisticsError(error.reason, filter: filter)),
       (user) async {
         final maybeLeaderboard = await _repo.getLeaderboard(filter);
 
         maybeLeaderboard.fold(
-          (l) => emit(StatisticsError(l.reason, filter: filter)),
+          (error) => emit(StatisticsError(error.reason, filter: filter)),
           (leaderboard) {
             var userInLeaderboard = false;
             final List<LeaderboardUser> users =
