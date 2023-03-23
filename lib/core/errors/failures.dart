@@ -12,7 +12,6 @@ abstract class Failure extends Equatable {
   List<Object?> get props => [reason];
 }
 
-// General failures
 class ServerFailure extends Failure {
   const ServerFailure(super.reason);
 

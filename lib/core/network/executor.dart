@@ -8,7 +8,10 @@ class Executor {
 
   const Executor(this.logger);
 
-  /// Executes a network request.
+  /// Execute a network request.
+  ///
+  /// Returns [Right] if the response code is >= 200 && <300.
+  /// Returns [Left] otherwise, or if the network call failed for any other reason.
   Future<Either<ServerFailure, Result>> call<Result>(
     Future<Response<Result>> Function() request,
   ) async {

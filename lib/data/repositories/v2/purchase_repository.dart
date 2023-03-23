@@ -29,7 +29,7 @@ class PurchaseRepository {
       ),
     );
 
-    return result.bind((result) => Right(InitiatePurchase.fromDto(result)));
+    return result.map(InitiatePurchase.fromDto);
   }
 
   /// Get a purchase by its purchase id
@@ -40,6 +40,6 @@ class PurchaseRepository {
       () => apiV2.apiV2PurchasesIdGet(id: purchaseId),
     );
 
-    return result.bind((result) => Right(SinglePurchase.fromDto(result)));
+    return result.map(SinglePurchase.fromDto);
   }
 }

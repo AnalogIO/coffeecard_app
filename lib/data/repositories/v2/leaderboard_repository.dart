@@ -44,6 +44,6 @@ class LeaderboardRepository {
       () => apiV2.apiV2LeaderboardGet(preset: category.label),
     );
 
-    return result.map((result) => LeaderboardUser.fromDTO(result));
+    return result.map(LeaderboardUser.fromDTO);
   }
 }
