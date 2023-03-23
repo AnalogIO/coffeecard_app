@@ -31,6 +31,6 @@ class AppConfigRepository {
       apiV2.apiV2AppconfigGet,
     );
 
-    return result.bind((result) => Right(_onSuccessfulRequest(result)));
+    return result.map(_onSuccessfulRequest);
   }
 }

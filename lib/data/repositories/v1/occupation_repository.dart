@@ -18,7 +18,6 @@ class OccupationRepository {
       apiV1.apiV1ProgrammesGet,
     );
 
-    return result
-        .bind((result) => Right(result.map(Occupation.fromDTO).toList()));
+    return result.map((result) => result.map(Occupation.fromDTO).toList());
   }
 }

@@ -34,8 +34,7 @@ class LeaderboardRepository {
       () => apiV2.apiV2LeaderboardTopGet(preset: category.label, top: 10),
     );
 
-    return result
-        .bind((result) => Right(result.map(LeaderboardUser.fromDTO).toList()));
+    return result.map((result) => result.map(LeaderboardUser.fromDTO).toList());
   }
 
   Future<Either<ServerFailure, LeaderboardUser>> getLeaderboardUser(
@@ -45,6 +44,6 @@ class LeaderboardRepository {
       () => apiV2.apiV2LeaderboardGet(preset: category.label),
     );
 
-    return result.bind((result) => Right(LeaderboardUser.fromDTO(result)));
+    return result.map((result) => LeaderboardUser.fromDTO(result));
   }
 }

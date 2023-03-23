@@ -24,16 +24,17 @@ class ReceiptRepository {
       apiV1.apiV1PurchasesGet,
     );
 
-    return usedTicketsEither.fold((l) => Left(l), (r) {
-      final usedTickets = r.map(Receipt.fromTicketDTO);
-
-      return purchasedTicketsEither.fold((l) => Left(l), (r) {
-        final purchasedTickets = r.map(Receipt.fromPurchaseDTO);
-
-        final allTickets = [...usedTickets, ...purchasedTickets];
-        allTickets.sort((a, b) => b.timeUsed.compareTo(a.timeUsed));
-        return Right(allTickets);
-      });
-    });
+    return usedTicketsEither.bind(
+      (usedTickets) => purchasedTicketsEither.map(
+        (purchasedTickets) {
+          final allTickets = [
+            ...usedTickets.map(Receipt.fromTicketDTO),
+            ...purchasedTickets.map(Receipt.fromPurchaseDTO)
+          ];
+          allTickets.sort((a, b) => b.timeUsed.compareTo(a.timeUsed));
+          return allTickets;
+        },
+      ),
+    );
   }
 }

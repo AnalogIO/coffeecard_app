@@ -47,13 +47,13 @@ void main() {
         const Right(
           OpeningHours(
             allOpeningHours: {
-              1: 'Closed',
-              2: 'Closed',
-              3: 'Closed',
-              4: 'Closed',
-              5: 'Closed',
-              6: 'Closed',
-              7: 'Closed',
+              DateTime.monday: 'Closed',
+              DateTime.tuesday: 'Closed',
+              DateTime.wednesday: 'Closed',
+              DateTime.thursday: 'Closed',
+              DateTime.friday: 'Closed',
+              DateTime.saturday: 'Closed',
+              DateTime.sunday: 'Closed',
             },
             todaysOpeningHours: 'Mondays: Closed',
           ),

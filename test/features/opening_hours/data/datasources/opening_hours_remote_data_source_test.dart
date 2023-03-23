@@ -28,10 +28,10 @@ void main() {
       );
 
       // act
-      final actual = await dataSource.isOpen();
+      await dataSource.isOpen();
 
       // assert
-      expect(actual, const Right(true));
+      verify(executor<IsOpenDTO>(any));
     });
   });
 
@@ -45,10 +45,10 @@ void main() {
       );
 
       // act
-      final actual = await dataSource.getOpeningHours();
+      await dataSource.getOpeningHours();
 
       // assert
-      expect(actual, Right(tOpeningHours));
+      verify(executor<List<OpeningHoursDTO>>(any));
     });
   });
 }

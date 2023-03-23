@@ -28,15 +28,13 @@ class OpeningHoursRemoteDataSourceImpl implements OpeningHoursRemoteDataSource {
       () async => api.apiOpenShortKeyGet(shortKey: shortkey),
     );
 
-    return result.bind((result) => Right(result.open));
+    return result.map((result) => result.open);
   }
 
   @override
   Future<Either<Failure, List<OpeningHoursDTO>>> getOpeningHours() async {
-    final result = await executor(
+    return executor(
       () => api.apiShiftsShortKeyGet(shortKey: shortkey),
     );
-
-    return result.bind((result) => Right(result));
   }
 }

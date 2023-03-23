@@ -20,7 +20,7 @@ void main() {
 
   test('should return [ServerFailure] if api call fails', () async {
     // arrange
-    final tResponse = Response.fromStatusCode(500);
+    final tResponse = Response.fromStatusCode(500, body: '');
 
     // act
     final actual = await executor(() async => tResponse);

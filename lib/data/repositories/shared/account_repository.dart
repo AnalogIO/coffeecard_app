@@ -55,12 +55,10 @@ class AccountRepository {
       ),
     );
 
-    return result.bind(
-      (result) => Right(
-        AuthenticatedUser(
-          email: email,
-          token: result.token!,
-        ),
+    return result.map(
+      (result) => AuthenticatedUser(
+        email: email,
+        token: result.token!,
       ),
     );
   }
@@ -70,7 +68,7 @@ class AccountRepository {
       apiV1.apiV1AccountGet,
     );
 
-    return result.bind((result) => Right(User.fromDTO(result)));
+    return result.map((result) => User.fromDTO(result));
   }
 
   /// Update user information
@@ -87,7 +85,7 @@ class AccountRepository {
       ),
     );
 
-    return result.bind((result) => Right(User.fromDTO(result)));
+    return result.map(User.fromDTO);
   }
 
   Future<Either<ServerFailure, void>> requestPasscodeReset(
@@ -115,6 +113,6 @@ class AccountRepository {
       ),
     );
 
-    return result.bind((result) => Right(result.emailExists));
+    return result.map((result) => result.emailExists);
   }
 }

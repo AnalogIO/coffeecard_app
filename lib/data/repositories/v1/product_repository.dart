@@ -18,7 +18,6 @@ class ProductRepository {
       apiV1.apiV1ProductsGet,
     );
 
-    return result
-        .bind((result) => Right(result.map((e) => Product.fromDTO(e))));
+    return result.map((result) => result.map((e) => Product.fromDTO(e)));
   }
 }

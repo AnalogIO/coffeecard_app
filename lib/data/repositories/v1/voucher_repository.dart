@@ -20,6 +20,6 @@ class VoucherRepository {
       () => apiV1.apiV1PurchasesRedeemvoucherPost(voucherCode: voucher),
     );
 
-    return result.bind((result) => Right(RedeemedVoucher.fromDTO(result)));
+    return result.map(RedeemedVoucher.fromDTO);
   }
 }

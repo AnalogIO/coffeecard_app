@@ -15,16 +15,14 @@ class OpeningHoursRepositoryImpl implements OpeningHoursRepository {
   Future<Either<Failure, OpeningHours>> getOpeningHours(int weekday) async {
     final openingHours = await dataSource.getOpeningHours();
 
-    return openingHours.bind((openingHours) {
+    return openingHours.map((openingHours) {
       final openingHoursMap = transformOpeningHours(openingHours);
 
-      return Right(
-        OpeningHours(
-          allOpeningHours: openingHoursMap,
-          todaysOpeningHours: calculateTodaysOpeningHours(
-            weekday,
-            openingHoursMap,
-          ),
+      return OpeningHours(
+        allOpeningHours: openingHoursMap,
+        todaysOpeningHours: calculateTodaysOpeningHours(
+          weekday,
+          openingHoursMap,
         ),
       );
     });
