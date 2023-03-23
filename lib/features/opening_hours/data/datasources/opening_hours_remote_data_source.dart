@@ -20,6 +20,7 @@ class OpeningHoursRemoteDataSourceImpl implements OpeningHoursRemoteDataSource {
     required this.executor,
   });
 
+  // Hard-coded value required by API
   final shortkey = 'analog';
 
   @override
