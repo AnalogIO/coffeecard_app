@@ -6,17 +6,12 @@ import 'package:equatable/equatable.dart';
 part 'contributor_state.dart';
 
 class ContributorCubit extends Cubit<ContributorState> {
-  ContributorCubit(this._repository) : super(const ContributorLoading());
+  ContributorCubit(this._repository) : super(const ContributorLoaded([]));
   final ContributorRepository _repository;
 
   Future<void> getContributors() async {
-    emit(const ContributorLoading());
+    final contributors = _repository.getContributors();
 
-    final either = await _repository.getContributors();
-
-    either.fold(
-      (error) => emit(ContributorError(error.reason)),
-      (contributors) => emit(ContributorLoaded(contributors)),
-    );
+    emit(ContributorLoaded(contributors));
   }
 }
