@@ -34,7 +34,12 @@ void configureServices() {
   sl.registerSingleton(Logger());
 
   // Executor
-  sl.registerSingleton(Executor(sl<Logger>()));
+  sl.registerSingleton(
+    Executor(
+      logger: sl<Logger>(),
+      firebaseLogger: sl(),
+    ),
+  );
 
   // Storage
   sl.registerSingleton(SecureStorage(sl<Logger>()));

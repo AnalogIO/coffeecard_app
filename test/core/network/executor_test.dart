@@ -1,5 +1,6 @@
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/core/network/executor.dart';
+import 'package:coffeecard/utils/firebase_analytics_event_logging.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logger/logger.dart';
@@ -8,14 +9,19 @@ import 'package:mockito/annotations.dart';
 import '../../response.dart';
 import 'executor_test.mocks.dart';
 
-@GenerateMocks([Logger])
+@GenerateMocks([Logger, FirebaseAnalyticsEventLogging])
 void main() {
   late MockLogger logger;
+  late MockFirebaseAnalyticsEventLogging firebaseLogger;
   late Executor executor;
 
   setUp(() {
     logger = MockLogger();
-    executor = Executor(logger);
+    firebaseLogger = MockFirebaseAnalyticsEventLogging();
+    executor = Executor(
+      logger: logger,
+      firebaseLogger: firebaseLogger,
+    );
   });
 
   test('should return [ServerFailure] if api call fails', () async {

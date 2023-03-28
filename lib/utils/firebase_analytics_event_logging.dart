@@ -10,6 +10,10 @@ class FirebaseAnalyticsEventLogging {
 
   FirebaseAnalyticsEventLogging(this._firebaseAnalytics);
 
+  void errorEvent(String error) {
+    _firebaseAnalytics.logEvent(name: 'error', parameters: {'reason': error});
+  }
+
   void selectProductFromListEvent(
     Product product,
     String listId,

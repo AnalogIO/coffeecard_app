@@ -22,7 +22,11 @@ class ServerFailure extends Failure {
 
       final message = jsonString['message'] as String?;
 
-      return ServerFailure(message ?? response.bodyString);
+      if (message == null) {
+        return const ServerFailure('an unknown error occured');
+      }
+
+      return ServerFailure(message);
     } on Exception {
       return ServerFailure(response.bodyString);
     }
