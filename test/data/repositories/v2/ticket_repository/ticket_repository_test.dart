@@ -1,4 +1,4 @@
-import 'package:coffeecard/core/network/executor.dart';
+import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/data/repositories/v1/ticket_repository.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
@@ -19,7 +19,7 @@ void main() {
   late MockCoffeecardApiV2 apiV2;
   late MockLogger logger;
 
-  late Executor executor;
+  late NetworkRequestExecutor executor;
   late TicketRepository repo;
   late MockFirebaseAnalyticsEventLogging firebaseLogger;
 
@@ -29,7 +29,7 @@ void main() {
     logger = MockLogger();
     firebaseLogger = MockFirebaseAnalyticsEventLogging();
 
-    executor = Executor(
+    executor = NetworkRequestExecutor(
       logger: logger,
       firebaseLogger: firebaseLogger,
     );
@@ -40,7 +40,7 @@ void main() {
     // arrange
     when(apiV2.apiV2TicketsGet(includeUsed: anyNamed('includeUsed')))
         .thenAnswer(
-      (_) async => Response.fromStatusCode(200, body: []),
+      (_) async => responseFromStatusCode(200, body: []),
     );
 
     // act
@@ -55,7 +55,7 @@ void main() {
     // arrange
     when(apiV2.apiV2TicketsGet(includeUsed: anyNamed('includeUsed')))
         .thenAnswer(
-      (_) async => Response.fromStatusCode(500, body: []),
+      (_) async => responseFromStatusCode(500, body: []),
     );
     when(firebaseLogger.errorEvent(any)).thenReturn(null);
 

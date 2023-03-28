@@ -1,5 +1,5 @@
 import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/core/network/executor.dart';
+import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/cubits/statistics/statistics_cubit.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
 import 'package:coffeecard/models/leaderboard/leaderboard_user.dart';
@@ -25,9 +25,9 @@ class LeaderboardRepository {
   });
 
   final CoffeecardApiV2 apiV2;
-  final Executor executor;
+  final NetworkRequestExecutor executor;
 
-  Future<Either<ServerFailure, List<LeaderboardUser>>> getLeaderboard(
+  Future<Either<NetworkFailure, List<LeaderboardUser>>> getLeaderboard(
     LeaderboardFilter category,
   ) async {
     final result = await executor(
@@ -37,7 +37,7 @@ class LeaderboardRepository {
     return result.map((result) => result.map(LeaderboardUser.fromDTO).toList());
   }
 
-  Future<Either<ServerFailure, LeaderboardUser>> getLeaderboardUser(
+  Future<Either<NetworkFailure, LeaderboardUser>> getLeaderboardUser(
     LeaderboardFilter category,
   ) async {
     final result = await executor(

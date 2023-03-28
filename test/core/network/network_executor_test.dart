@@ -1,5 +1,5 @@
 import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/core/network/executor.dart';
+import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/utils/firebase_analytics_event_logging.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -7,18 +7,18 @@ import 'package:logger/logger.dart';
 import 'package:mockito/annotations.dart';
 
 import '../../response.dart';
-import 'executor_test.mocks.dart';
+import 'network_executor_test.mocks.dart';
 
 @GenerateMocks([Logger, FirebaseAnalyticsEventLogging])
 void main() {
   late MockLogger logger;
   late MockFirebaseAnalyticsEventLogging firebaseLogger;
-  late Executor executor;
+  late NetworkRequestExecutor executor;
 
   setUp(() {
     logger = MockLogger();
     firebaseLogger = MockFirebaseAnalyticsEventLogging();
-    executor = Executor(
+    executor = NetworkRequestExecutor(
       logger: logger,
       firebaseLogger: firebaseLogger,
     );
@@ -26,7 +26,7 @@ void main() {
 
   test('should return [ServerFailure] if api call fails', () async {
     // arrange
-    final tResponse = Response.fromStatusCode(500, body: '');
+    final tResponse = responseFromStatusCode(500, body: '');
 
     // act
     final actual = await executor(() async => tResponse);
@@ -37,7 +37,7 @@ void main() {
 
   test('should return response body if api call succeeds', () async {
     // arrange
-    final tResponse = Response.fromStatusCode(200, body: 'some string');
+    final tResponse = responseFromStatusCode(200, body: 'some string');
 
     // act
     final actual = await executor(() async => tResponse);
@@ -54,6 +54,6 @@ void main() {
     final actual = await executor(() async => throw tException);
 
     // assert
-    expect(actual, const Left(ServerFailure('connection refused')));
+    expect(actual, const Left(ConnectionFailure()));
   });
 }

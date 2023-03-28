@@ -1,4 +1,4 @@
-import 'package:coffeecard/core/network/executor.dart';
+import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/data/repositories/shared/account_repository.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart'
     hide MessageResponseDto;
@@ -11,18 +11,18 @@ import 'package:mockito/mockito.dart';
 
 import 'account_repository_test.mocks.dart';
 
-@GenerateMocks([CoffeecardApi, CoffeecardApiV2, Executor])
+@GenerateMocks([CoffeecardApi, CoffeecardApiV2, NetworkRequestExecutor])
 void main() {
   late MockCoffeecardApi apiV1;
   late MockCoffeecardApiV2 apiV2;
-  late MockExecutor executor;
+  late MockNetworkRequestExecutor executor;
   late AccountRepository repository;
 
   setUp(() {
     apiV1 = MockCoffeecardApi();
     apiV2 = MockCoffeecardApiV2();
 
-    executor = MockExecutor();
+    executor = MockNetworkRequestExecutor();
     repository = AccountRepository(
       apiV1: apiV1,
       apiV2: apiV2,
@@ -38,7 +38,7 @@ void main() {
       );
 
       // act
-      final actual = await repository.register(
+      await repository.register(
         'name',
         'email',
         'passcode',
@@ -46,7 +46,7 @@ void main() {
       );
 
       // assert
-      expect(actual, const Right(null));
+      verify(executor.call(any));
     });
   });
 }

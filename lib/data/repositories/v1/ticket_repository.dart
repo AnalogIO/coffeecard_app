@@ -1,5 +1,5 @@
 import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/core/network/executor.dart';
+import 'package:coffeecard/core/network/network_request_executor.dart';
 
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
@@ -17,9 +17,9 @@ class TicketRepository {
 
   final CoffeecardApi apiV1;
   final CoffeecardApiV2 apiV2;
-  final Executor executor;
+  final NetworkRequestExecutor executor;
 
-  Future<Either<ServerFailure, List<TicketCount>>> getUserTickets() async {
+  Future<Either<NetworkFailure, List<TicketCount>>> getUserTickets() async {
     final result = await executor(
       () => apiV2.apiV2TicketsGet(includeUsed: false),
     );
@@ -40,7 +40,7 @@ class TicketRepository {
     );
   }
 
-  Future<Either<ServerFailure, Receipt>> useTicket(int productId) async {
+  Future<Either<NetworkFailure, Receipt>> useTicket(int productId) async {
     final result = await executor(
       () => apiV1.apiV1TicketsUsePost(
         body: UseTicketDTO(productId: productId),

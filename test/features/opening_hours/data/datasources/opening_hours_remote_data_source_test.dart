@@ -1,4 +1,4 @@
-import 'package:coffeecard/core/network/executor.dart';
+import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/features/opening_hours/opening_hours.dart';
 import 'package:coffeecard/generated/api/shiftplanning_api.swagger.dart';
 import 'package:dartz/dartz.dart';
@@ -8,16 +8,16 @@ import 'package:mockito/mockito.dart';
 
 import 'opening_hours_remote_data_source_test.mocks.dart';
 
-@GenerateMocks([ShiftplanningApi, Executor])
+@GenerateMocks([ShiftplanningApi, NetworkRequestExecutor])
 void main() {
   late MockShiftplanningApi api;
-  late MockExecutor executor;
+  late MockNetworkRequestExecutor executor;
   late OpeningHoursRemoteDataSource dataSource;
 
   setUp(() {
     api = MockShiftplanningApi();
-    executor = MockExecutor();
-    dataSource = OpeningHoursRemoteDataSourceImpl(api: api, executor: executor);
+    executor = MockNetworkRequestExecutor();
+    dataSource = OpeningHoursRemoteDataSource(api: api, executor: executor);
   });
 
   group('isOpen', () {

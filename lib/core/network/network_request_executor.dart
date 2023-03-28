@@ -4,32 +4,43 @@ import 'package:coffeecard/utils/firebase_analytics_event_logging.dart';
 import 'package:dartz/dartz.dart';
 import 'package:logger/logger.dart';
 
-class Executor {
+class NetworkRequestExecutor {
   final Logger logger;
   final FirebaseAnalyticsEventLogging firebaseLogger;
 
-  const Executor({required this.logger, required this.firebaseLogger});
+  const NetworkRequestExecutor({
+    required this.logger,
+    required this.firebaseLogger,
+  });
 
-  /// Execute a network request.
-  ///
-  /// Returns [Right] if the response code is >= 200 && <300.
-  /// Returns [Left] otherwise, or if the network call failed for any other reason.
-  Future<Either<ServerFailure, Result>> call<Result>(
+  Future<Either<NetworkFailure, Result>> call<Result>(
     Future<Response<Result>> Function() request,
   ) async {
     try {
       final response = await request();
 
+      // request is successful if response code is >= 200 && <300
       if (!response.isSuccessful) {
-        logger.e(response.toString());
-        firebaseLogger.errorEvent(response.toString());
+        logResponse(response);
         return Left(ServerFailure.fromResponse(response));
       }
 
       return Right(response.body as Result);
     } on Exception {
       // could not connect to backend for whatever reason
-      return const Left(ServerFailure('connection refused'));
+      return const Left(ConnectionFailure());
     }
+  }
+
+  void logResponse(Response response) {
+    logger.e(response.toString());
+
+    final ignore = [401];
+
+    if (ignore.contains(response.statusCode)) {
+      return;
+    }
+
+    firebaseLogger.errorEvent(response.toString());
   }
 }

@@ -67,7 +67,7 @@ class MobilePayService implements PaymentHandler {
   }
 
   @override
-  Future<Either<ServerFailure, PaymentStatus>> verifyPurchase(
+  Future<Either<NetworkFailure, PaymentStatus>> verifyPurchase(
     int purchaseId,
   ) async {
     // Call API endpoint, receive PaymentStatus

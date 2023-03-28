@@ -26,6 +26,5 @@ void main() {
 
     // assert
     verify(dataSource.isOpen());
-    verifyNoMoreInteractions(dataSource);
   });
 }

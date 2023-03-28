@@ -1,5 +1,5 @@
 import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/core/network/executor.dart';
+import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart'
     hide MessageResponseDto;
@@ -18,9 +18,9 @@ class AccountRepository {
 
   final CoffeecardApi apiV1;
   final CoffeecardApiV2 apiV2;
-  final Executor executor;
+  final NetworkRequestExecutor executor;
 
-  Future<Either<ServerFailure, void>> register(
+  Future<Either<NetworkFailure, void>> register(
     String name,
     String email,
     String encodedPasscode,
@@ -37,11 +37,11 @@ class AccountRepository {
       ),
     );
 
-    return result.bind((_) => const Right(null));
+    return result.map((_) => const Right(null));
   }
 
   /// Returns the user token or throws an error.
-  Future<Either<ServerFailure, AuthenticatedUser>> login(
+  Future<Either<NetworkFailure, AuthenticatedUser>> login(
     String email,
     String encodedPasscode,
   ) async {
@@ -63,7 +63,7 @@ class AccountRepository {
     );
   }
 
-  Future<Either<ServerFailure, User>> getUser() async {
+  Future<Either<NetworkFailure, User>> getUser() async {
     final result = await executor(
       apiV1.apiV1AccountGet,
     );
@@ -72,7 +72,7 @@ class AccountRepository {
   }
 
   /// Update user information
-  Future<Either<ServerFailure, User>> updateUser(UpdateUser user) async {
+  Future<Either<NetworkFailure, User>> updateUser(UpdateUser user) async {
     final result = await executor(
       () => apiV1.apiV1AccountPut(
         body: UpdateUserDto(
@@ -88,7 +88,7 @@ class AccountRepository {
     return result.map(User.fromDTO);
   }
 
-  Future<Either<ServerFailure, void>> requestPasscodeReset(
+  Future<Either<NetworkFailure, void>> requestPasscodeReset(
     String email,
   ) async {
     final result = await executor(
@@ -98,7 +98,7 @@ class AccountRepository {
     return result.bind((_) => const Right(null));
   }
 
-  Future<Either<ServerFailure, void>> requestAccountDeletion() async {
+  Future<Either<NetworkFailure, void>> requestAccountDeletion() async {
     final result = await executor(
       apiV2.apiV2AccountDelete,
     );
@@ -106,7 +106,7 @@ class AccountRepository {
     return result.bind((_) => const Right(null));
   }
 
-  Future<Either<ServerFailure, bool>> emailExists(String email) async {
+  Future<Either<NetworkFailure, bool>> emailExists(String email) async {
     final result = await executor(
       () => apiV2.apiV2AccountEmailExistsPost(
         body: EmailExistsRequest(email: email),
