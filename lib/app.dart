@@ -2,6 +2,9 @@ import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/theme.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
 import 'package:coffeecard/cubits/environment/environment_cubit.dart';
+import 'package:coffeecard/cubits/user/user_cubit.dart';
+import 'package:coffeecard/data/repositories/shared/account_repository.dart';
+import 'package:coffeecard/data/repositories/v1/occupation_repository.dart';
 import 'package:coffeecard/data/repositories/v2/app_config_repository.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/widgets/pages/splash/splash_error_page.dart';
@@ -19,6 +22,12 @@ class App extends StatelessWidget {
     return EnvironmentCubit(repo)..getConfig();
   }
 
+  UserCubit _createUserCubit(BuildContext _) {
+    final accountRepo = sl.get<AccountRepository>();
+    final occupationRepo = sl.get<OccupationRepository>();
+    return UserCubit(accountRepo, occupationRepo);
+  }
+
   @override
   Widget build(BuildContext context) {
     // Force screen orientation to portrait
@@ -28,6 +37,7 @@ class App extends StatelessWidget {
       providers: [
         BlocProvider.value(value: sl<AuthenticationCubit>()..appStarted()),
         BlocProvider(create: _createEnvironmentCubit),
+        BlocProvider(create: _createUserCubit),
       ],
       child: SplashRouter(
         navigatorKey: _navigatorKey,

@@ -1,3 +1,5 @@
+const _baristaProductIds = [9, 11, 12, 13];
+
 class TicketCount {
   final int productId;
   final int count;
@@ -8,6 +10,10 @@ class TicketCount {
     required this.productName,
     required this.productId,
   });
+
+  bool isBaristaTicket() {
+    return _baristaProductIds.contains(productId);
+  }
 
   @override
   String toString() {

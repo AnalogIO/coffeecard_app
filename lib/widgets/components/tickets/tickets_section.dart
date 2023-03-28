@@ -5,6 +5,7 @@ import 'package:coffeecard/cubits/tickets/tickets_cubit.dart';
 import 'package:coffeecard/cubits/user/user_cubit.dart';
 import 'package:coffeecard/errors/match_case_incomplete_exception.dart';
 import 'package:coffeecard/models/environment.dart';
+import 'package:coffeecard/models/ticket/ticket_count.dart';
 import 'package:coffeecard/widgets/components/dialog.dart';
 import 'package:coffeecard/widgets/components/error_section.dart';
 import 'package:coffeecard/widgets/components/helpers/shimmer_builder.dart';
@@ -15,9 +16,27 @@ import 'package:coffeecard/widgets/components/tickets/coffee_card_placeholder.da
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+class BaristaTicketSection extends StatelessWidget {
+  const BaristaTicketSection();
+
+  @override
+  Widget build(BuildContext context) {
+    return _TicketSection(filter: (ticket) => ticket.isBaristaTicket());
+  }
+}
+
 class TicketSection extends StatelessWidget {
   const TicketSection();
 
+  @override
+  Widget build(BuildContext context) {
+    return _TicketSection(filter: (_) => true);
+  }
+}
+
+class _TicketSection extends StatelessWidget {
+  const _TicketSection({required this.filter});
+  final bool Function(TicketCount) filter;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -83,6 +102,7 @@ class TicketSection extends StatelessWidget {
               }
               return Column(
                 children: state.tickets
+                    .where(filter)
                     .map(
                       (p) => Padding(
                         padding: const EdgeInsets.only(bottom: 12.0),

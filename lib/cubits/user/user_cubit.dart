@@ -16,6 +16,14 @@ class UserCubit extends Cubit<UserState> {
   UserCubit(this._accountRepository, this._occupationRepository)
       : super(UserLoading());
 
+  Future<void> init() async {
+    await refreshUserDetails();
+    final st = state;
+    if (st is UserLoaded) {
+      emit(UserInitiallyLoaded(st));
+    }
+  }
+
   Future<void> fetchUserDetails() async {
     emit(UserLoading());
     refreshUserDetails();

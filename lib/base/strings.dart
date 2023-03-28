@@ -2,6 +2,7 @@ abstract class Strings {
   static const appTitle = 'Cafe Analog';
 
   // Titles for the app bar.
+  static const baristaPageTitle = 'Barista hub';
   static const ticketsPageTitle = 'Tickets';
   static const statsPageTitle = 'Statistics';
   static const buyOneDrinkPageTitle = 'Buy one drink';
@@ -9,6 +10,7 @@ abstract class Strings {
   static const redeemVoucherPageTitle = 'Redeem voucher';
 
   // Titles for the navigation bar.
+  static const baristaNavTitle = 'Barista';
   static const ticketsNavTitle = ticketsPageTitle;
   static const receiptsNavTitle = receiptsPageTitle;
   static const statsNavTitle = 'Stats';
@@ -29,6 +31,12 @@ abstract class Strings {
 
   static const loginForgotYourPasscode = 'Forgot your passcode?';
   static const loginForgot = 'Forgot?';
+
+  // Barista hub
+  static const baristaTickets = 'Barista tickets';
+  static const baristaPerks = 'Barista perks';
+  static const baristaClaimOnShiftDrink = 'Claim on-shift drink';
+  static const baristaClaimFreeFilter = 'Claim free filter/tea';
 
   // Tickets
   static const ticketsMyTickets = 'My tickets';
@@ -126,7 +134,6 @@ abstract class Strings {
       'Tickets that you buy will show up here.';
   static const emptyCoffeeCardTextBottom =
       'Use the section below to shop tickets.';
-  static const cofeeCardTicketsLeft = 'Tickets left:';
   static const useTicket = 'Use ticket';
 
   // "Buy ticket" card

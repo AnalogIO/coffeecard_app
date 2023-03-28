@@ -13,8 +13,11 @@ import 'package:coffeecard/data/repositories/v1/receipt_repository.dart';
 import 'package:coffeecard/data/repositories/v1/ticket_repository.dart';
 import 'package:coffeecard/data/repositories/v2/leaderboard_repository.dart';
 import 'package:coffeecard/features/opening_hours/opening_hours.dart';
+import 'package:coffeecard/models/account/user.dart';
 import 'package:coffeecard/service_locator.dart';
+import 'package:coffeecard/utils/user_group_permissions.dart';
 import 'package:coffeecard/widgets/components/helpers/lazy_indexed_stack.dart';
+import 'package:coffeecard/widgets/pages/barista_page.dart';
 import 'package:coffeecard/widgets/pages/receipts/receipts_page.dart';
 import 'package:coffeecard/widgets/pages/settings/settings_page.dart';
 import 'package:coffeecard/widgets/pages/stats_page.dart';
@@ -24,7 +27,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomePage extends StatefulWidget {
-  static Route get route => MaterialPageRoute(builder: (_) => HomePage());
+  const HomePage({super.key, required this.user});
+
+  static Route routeWith({required User user}) =>
+      MaterialPageRoute(builder: (_) => HomePage(user: user));
+  final User user;
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -33,6 +40,11 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _currentPageIndex = 0;
   List<int> _navFlowsStack = [0];
+  List<PageSettings> get pages =>
+      hasBaristaPerks(widget.user) ? _baristaPages : _pages;
+  List<AppFlow> get bottomNavAppFlow => hasBaristaPerks(widget.user)
+      ? _baristaBottomNavAppFlows
+      : _bottomNavAppFlows;
 
   void onNavFlowChange(int newFlowIndex) {
     setState(() => _currentPageIndex = newFlowIndex);
@@ -50,7 +62,7 @@ class _HomePageState extends State<HomePage> {
     // If back arrow is present on page, go back in the current flow
     {
       final currentFlow = _navFlowsStack.last;
-      final currentNavigator = _pages[currentFlow].navigatorKey.currentState!;
+      final currentNavigator = pages[currentFlow].navigatorKey.currentState!;
       if (currentNavigator.canPop()) {
         return true;
       }
@@ -71,13 +83,13 @@ class _HomePageState extends State<HomePage> {
 
     // Reset navigation stack
     {
-      final navigatorKey = _pages[index].navigatorKey;
+      final navigatorKey = pages[index].navigatorKey;
       navigatorKey.currentState!.popUntil((route) => route.isFirst);
     }
 
     // Scroll to the top of the page
     {
-      final scrollController = _pages[index].scrollController;
+      final scrollController = pages[index].scrollController;
       final ms = () {
         // We divide by d in the next line, so make sure it cannot be zero
         final d = max(1, scrollController.position.pixels);
@@ -92,33 +104,6 @@ class _HomePageState extends State<HomePage> {
       );
     }
   }
-
-  final _bottomNavAppFlows = <AppFlow>[
-    AppFlow(
-      navigatorKey: _pages[0].navigatorKey,
-      initialRoute: TicketsPage.routeWith(
-        scrollController: _pages[0].scrollController,
-      ),
-    ),
-    AppFlow(
-      navigatorKey: _pages[1].navigatorKey,
-      initialRoute: ReceiptsPage.routeWith(
-        scrollController: _pages[1].scrollController,
-      ),
-    ),
-    AppFlow(
-      navigatorKey: _pages[2].navigatorKey,
-      initialRoute: StatsPage.routeWith(
-        scrollController: _pages[2].scrollController,
-      ),
-    ),
-    AppFlow(
-      navigatorKey: _pages[3].navigatorKey,
-      initialRoute: SettingsPage.routeWith(
-        scrollController: _pages[3].scrollController,
-      ),
-    ),
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -155,10 +140,10 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: AppColor.background,
           body: LazyIndexedStack(
             index: _currentPageIndex,
-            children: _bottomNavAppFlows,
+            children: bottomNavAppFlow,
           ),
           bottomNavigationBar: BottomNavigationBar(
-            items: _pages.map((p) => p.bottomNavigationBarItem).toList(),
+            items: pages.map((p) => p.bottomNavigationBarItem).toList(),
             currentIndex: _currentPageIndex,
             onTap: onBottomNavTap,
             type: BottomNavigationBarType.fixed,
@@ -186,6 +171,43 @@ class PageSettings {
         navigatorKey = GlobalKey<NavigatorState>();
 }
 
+final _bottomNavAppFlows = <AppFlow>[
+  AppFlow(
+    navigatorKey: _pages[0].navigatorKey,
+    initialRoute: TicketsPage.routeWith(
+      scrollController: _pages[0].scrollController,
+    ),
+  ),
+  AppFlow(
+    navigatorKey: _pages[1].navigatorKey,
+    initialRoute: ReceiptsPage.routeWith(
+      scrollController: _pages[1].scrollController,
+    ),
+  ),
+  AppFlow(
+    navigatorKey: _pages[2].navigatorKey,
+    initialRoute: StatsPage.routeWith(
+      scrollController: _pages[2].scrollController,
+    ),
+  ),
+  AppFlow(
+    navigatorKey: _pages[3].navigatorKey,
+    initialRoute: SettingsPage.routeWith(
+      scrollController: _pages[3].scrollController,
+    ),
+  ),
+];
+
+final _baristaBottomNavAppFlows = [
+  AppFlow(
+    navigatorKey: _baristaPages[0].navigatorKey,
+    initialRoute: BaristaPage.routeWith(
+      scrollController: _baristaPages[0].scrollController,
+    ),
+  ),
+  ..._bottomNavAppFlows,
+];
+
 final _pages = <PageSettings>[
   PageSettings(
     bottomNavigationBarItem: const BottomNavigationBarItem(
@@ -211,4 +233,14 @@ final _pages = <PageSettings>[
       label: Strings.settingsNavTitle,
     ),
   ),
+];
+
+final _baristaPages = <PageSettings>[
+  PageSettings(
+    bottomNavigationBarItem: const BottomNavigationBarItem(
+      icon: Icon(Icons.person),
+      label: Strings.baristaNavTitle,
+    ),
+  ),
+  ..._pages
 ];
