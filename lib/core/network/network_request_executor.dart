@@ -26,8 +26,9 @@ class NetworkRequestExecutor {
       }
 
       return Right(response.body as Result);
-    } on Exception {
+    } on Exception catch (e) {
       // could not connect to backend for whatever reason
+      logger.e(e.toString());
       return const Left(ConnectionFailure());
     }
   }

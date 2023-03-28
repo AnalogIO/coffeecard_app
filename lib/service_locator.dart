@@ -34,9 +34,9 @@ void configureServices() {
   sl.registerSingleton(Logger());
 
   // Executor
-  sl.registerSingleton(
-    NetworkRequestExecutor(
-      logger: sl<Logger>(),
+  sl.registerLazySingleton(
+    () => NetworkRequestExecutor(
+      logger: sl(),
       firebaseLogger: sl(),
     ),
   );

@@ -7,7 +7,7 @@ import 'package:logger/logger.dart';
 import 'package:mockito/annotations.dart';
 
 import '../../response.dart';
-import 'network_executor_test.mocks.dart';
+import 'network_request_executor_test.mocks.dart';
 
 @GenerateMocks([Logger, FirebaseAnalyticsEventLogging])
 void main() {

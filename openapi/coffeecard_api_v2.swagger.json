@@ -1,5 +1,5 @@
 {
-  "x-generator": "NSwag v13.15.5.0 (NJsonSchema v10.6.6.0 (Newtonsoft.Json v12.0.0.0))",
+  "x-generator": "NSwag v13.15.5.0 (NJsonSchema v10.6.6.0 (Newtonsoft.Json v13.0.0.0))",
   "openapi": "3.0.0",
   "info": {
     "title": "Cafe Analog CoffeeCard API",
@@ -17,7 +17,7 @@
   },
   "servers": [
     {
-      "url": "https://analogio.dk/clippy"
+      "url": "https://beta.analogio.dk/api/clippy"
     }
   ],
   "paths": {
@@ -476,6 +476,125 @@
           }
         ]
       }
+    },
+    "/api/v2/vouchers/issue-vouchers": {
+      "post": {
+        "tags": [
+          "Vouchers"
+        ],
+        "summary": "Issue voucher codes, that can later be redeemed",
+        "operationId": "Vouchers_IssueVouchers",
+        "requestBody": {
+          "x-name": "request",
+          "description": "Use ticket request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IssueVoucherRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "Successful request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/IssueVoucherResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request. See explanation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid credentials"
+          },
+          "403": {
+            "description": "Invalid role in credentials"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/api/v2/vouchers/{voucher-code}/redeem": {
+      "post": {
+        "tags": [
+          "Vouchers"
+        ],
+        "summary": "Redeems the voucher supplied as parameter in the path",
+        "operationId": "Vouchers_RedeemVoucher",
+        "parameters": [
+          {
+            "name": "voucher-code",
+            "x-originalName": "voucherCode",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimplePurchaseResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Voucher code already used",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid credentials"
+          },
+          "404": {
+            "description": "Voucher code not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
     }
   },
   "components": {
@@ -908,10 +1027,7 @@
       "PaymentDetails": {
         "type": "object",
         "discriminator": {
-          "propertyName": "discriminator",
-          "mapping": {
-            "MobilePayPaymentDetails": "#/components/schemas/MobilePayPaymentDetails"
-          }
+          "propertyName": "discriminator"
         },
         "x-abstract": true,
         "additionalProperties": false,
@@ -960,6 +1076,9 @@
           },
           {
             "type": "object",
+            "discriminator": {
+              "propertyName": "discriminator"
+            },
             "description": "MobilePay Payment details",
             "example": {
               "paymentType": "MobilePay",
@@ -971,7 +1090,8 @@
             "required": [
               "mobilePayAppRedirectUri",
               "paymentId",
-              "state"
+              "state",
+              "discriminator"
             ],
             "properties": {
               "mobilePayAppRedirectUri": {
@@ -989,8 +1109,11 @@
               "state": {
                 "type": "string",
                 "description": "MobilePay state",
-                "minLength": 1,
+                "nullable": true,
                 "example": "Initiated"
+              },
+              "discriminator": {
+                "type": "string"
               }
             }
           }
@@ -1155,7 +1278,6 @@
           },
           "dateUsed": {
             "type": "string",
-            "nullable": true,
             "description": "Used date time for ticket in Utc format",
             "format": "date-time",
             "nullable": true,
@@ -1172,6 +1294,107 @@
             "description": "Name of product a ticket is for",
             "minLength": 1,
             "example": "Coffee"
+          }
+        }
+      },
+      "IssueVoucherResponse": {
+        "type": "object",
+        "description": "Response object for creating voucher codes",
+        "example": {
+          "VoucherCode": "ABC-12345678",
+          "ProductId": 6,
+          "ProductName": "Coffee",
+          "IssuedAt": "2023-02-07T12:00:00"
+        },
+        "additionalProperties": false,
+        "required": [
+          "voucherCode",
+          "productId",
+          "productName",
+          "issuedAt"
+        ],
+        "properties": {
+          "voucherCode": {
+            "type": "string",
+            "description": "Voucher code to be redeemed in the app",
+            "minLength": 1
+          },
+          "productId": {
+            "type": "integer",
+            "description": "The id of the product the voucher code is for",
+            "format": "int32"
+          },
+          "productName": {
+            "type": "string",
+            "description": "The name of the product the voucher code is for",
+            "minLength": 1
+          },
+          "issuedAt": {
+            "type": "string",
+            "description": "The date the voucher code was created",
+            "format": "date-time",
+            "minLength": 1
+          }
+        }
+      },
+      "ApiError": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "IssueVoucherRequest": {
+        "type": "object",
+        "description": "Request object for creating voucher codes",
+        "example": {
+          "ProductId": 6,
+          "Amount": 10,
+          "VoucherPrefix": "ABC",
+          "Description": "Voucher codes for intro week",
+          "Requester": "John Doe"
+        },
+        "additionalProperties": false,
+        "required": [
+          "productId",
+          "amount",
+          "voucherPrefix",
+          "description",
+          "requester"
+        ],
+        "properties": {
+          "productId": {
+            "type": "integer",
+            "description": "Id of the product to create voucher codes for",
+            "format": "int32",
+            "example": 6
+          },
+          "amount": {
+            "type": "integer",
+            "description": "The amount of vouchers to be issued",
+            "format": "int32",
+            "example": 10
+          },
+          "voucherPrefix": {
+            "type": "string",
+            "description": "A 3 character long user defined prefix for every voucher code",
+            "maxLength": 3,
+            "minLength": 3,
+            "example": "ABC"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the purpose for the creation of vouchers",
+            "minLength": 1,
+            "example": "Voucher codes for intro week   "
+          },
+          "requester": {
+            "type": "string",
+            "description": "The requester of the voucher codes",
+            "minLength": 1,
+            "example": "John Doe"
           }
         }
       }
