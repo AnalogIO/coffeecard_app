@@ -12,6 +12,7 @@ class User extends Equatable {
   final int rankMonth;
   final int rankSemester;
   final int rankTotal;
+  final UserGroup userGroup;
 
   const User({
     required this.id,
@@ -23,6 +24,7 @@ class User extends Equatable {
     required this.rankMonth,
     required this.rankSemester,
     required this.rankTotal,
+    required this.userGroup,
   });
 
   User.fromDTO(UserDto dto)
@@ -34,7 +36,8 @@ class User extends Equatable {
         occupation = const Occupation.empty(),
         rankMonth = dto.rankMonth,
         rankSemester = dto.rankSemester,
-        rankTotal = dto.rankAllTime;
+        rankTotal = dto.rankAllTime,
+        userGroup = userGroupFromJson(dto.role);
 
   User copyWith({
     int? id,
@@ -46,6 +49,7 @@ class User extends Equatable {
     int? rankMonth,
     int? rankSemester,
     int? rankTotal,
+    UserGroup? userGroup,
   }) {
     return User(
       id: id ?? this.id,
@@ -57,6 +61,7 @@ class User extends Equatable {
       rankMonth: rankMonth ?? this.rankMonth,
       rankSemester: rankSemester ?? this.rankSemester,
       rankTotal: rankTotal ?? this.rankTotal,
+      userGroup: userGroup ?? this.userGroup,
     );
   }
 
