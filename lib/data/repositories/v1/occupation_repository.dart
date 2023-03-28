@@ -1,5 +1,5 @@
-import 'package:coffeecard/data/repositories/utils/executor.dart';
-import 'package:coffeecard/data/repositories/utils/request_types.dart';
+import 'package:coffeecard/core/errors/failures.dart';
+import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/models/occupation.dart';
 import 'package:dartz/dartz.dart';
@@ -11,12 +11,13 @@ class OccupationRepository {
   });
 
   final CoffeecardApi apiV1;
-  final Executor executor;
+  final NetworkRequestExecutor executor;
 
-  Future<Either<RequestFailure, List<Occupation>>> getOccupations() async {
-    return executor.execute(
+  Future<Either<Failure, List<Occupation>>> getOccupations() async {
+    final result = await executor(
       apiV1.apiV1ProgrammesGet,
-      (dto) => dto.map(Occupation.fromDTO).toList(),
     );
+
+    return result.map((result) => result.map(Occupation.fromDTO).toList());
   }
 }

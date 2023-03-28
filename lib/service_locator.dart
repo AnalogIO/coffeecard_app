@@ -1,9 +1,9 @@
 import 'package:chopper/chopper.dart';
+import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
 import 'package:coffeecard/data/api/interceptors/authentication_interceptor.dart';
 import 'package:coffeecard/data/repositories/external/contributor_repository.dart';
 import 'package:coffeecard/data/repositories/shared/account_repository.dart';
-import 'package:coffeecard/data/repositories/utils/executor.dart';
 import 'package:coffeecard/data/repositories/v1/occupation_repository.dart';
 import 'package:coffeecard/data/repositories/v1/product_repository.dart';
 import 'package:coffeecard/data/repositories/v1/receipt_repository.dart';
@@ -34,7 +34,12 @@ void configureServices() {
   sl.registerSingleton(Logger());
 
   // Executor
-  sl.registerSingleton(Executor(sl<Logger>()));
+  sl.registerLazySingleton(
+    () => NetworkRequestExecutor(
+      logger: sl(),
+      firebaseLogger: sl(),
+    ),
+  );
 
   // Storage
   sl.registerSingleton(SecureStorage(sl<Logger>()));
@@ -85,28 +90,28 @@ void configureServices() {
   sl.registerFactory<OccupationRepository>(
     () => OccupationRepository(
       apiV1: sl<CoffeecardApi>(),
-      executor: sl<Executor>(),
+      executor: sl<NetworkRequestExecutor>(),
     ),
   );
 
   sl.registerFactory<ReceiptRepository>(
     () => ReceiptRepository(
       apiV1: sl<CoffeecardApi>(),
-      executor: sl<Executor>(),
+      executor: sl<NetworkRequestExecutor>(),
     ),
   );
 
   sl.registerFactory<ProductRepository>(
     () => ProductRepository(
       apiV1: sl<CoffeecardApi>(),
-      executor: sl<Executor>(),
+      executor: sl<NetworkRequestExecutor>(),
     ),
   );
 
   sl.registerFactory<VoucherRepository>(
     () => VoucherRepository(
       apiV1: sl<CoffeecardApi>(),
-      executor: sl<Executor>(),
+      executor: sl<NetworkRequestExecutor>(),
     ),
   );
 
@@ -115,7 +120,7 @@ void configureServices() {
     () => TicketRepository(
       apiV1: sl<CoffeecardApi>(),
       apiV2: sl<CoffeecardApiV2>(),
-      executor: sl<Executor>(),
+      executor: sl<NetworkRequestExecutor>(),
     ),
   );
 
@@ -123,7 +128,7 @@ void configureServices() {
     () => AccountRepository(
       apiV1: sl<CoffeecardApi>(),
       apiV2: sl<CoffeecardApiV2>(),
-      executor: sl<Executor>(),
+      executor: sl<NetworkRequestExecutor>(),
     ),
   );
 
@@ -131,21 +136,21 @@ void configureServices() {
   sl.registerFactory<LeaderboardRepository>(
     () => LeaderboardRepository(
       apiV2: sl<CoffeecardApiV2>(),
-      executor: sl<Executor>(),
+      executor: sl<NetworkRequestExecutor>(),
     ),
   );
 
   sl.registerFactory<PurchaseRepository>(
     () => PurchaseRepository(
       apiV2: sl<CoffeecardApiV2>(),
-      executor: sl<Executor>(),
+      executor: sl<NetworkRequestExecutor>(),
     ),
   );
 
   sl.registerFactory<AppConfigRepository>(
     () => AppConfigRepository(
       apiV2: sl<CoffeecardApiV2>(),
-      executor: sl<Executor>(),
+      executor: sl<NetworkRequestExecutor>(),
     ),
   );
 
@@ -174,7 +179,7 @@ void initOpeningHours() {
 
   // use case
   sl.registerFactory(() => GetOpeningHours(repository: sl()));
-  sl.registerFactory(() => CheckOpenStatus(repository: sl()));
+  sl.registerFactory(() => CheckOpenStatus(dataSource: sl()));
 
   // repository
   sl.registerLazySingleton<OpeningHoursRepository>(
@@ -183,6 +188,6 @@ void initOpeningHours() {
 
   // data source
   sl.registerLazySingleton<OpeningHoursRemoteDataSource>(
-    () => OpeningHoursRemoteDataSourceImpl(api: sl()),
+    () => OpeningHoursRemoteDataSource(api: sl(), executor: sl()),
   );
 }

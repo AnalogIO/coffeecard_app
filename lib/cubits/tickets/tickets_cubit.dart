@@ -24,7 +24,7 @@ class TicketsCubit extends Cubit<TicketsState> {
     final either = await _ticketRepository.useTicket(productId);
 
     either.fold(
-      (error) => emit(TicketsUseError(error.message)),
+      (error) => emit(TicketsUseError(error.reason)),
       (receipt) => emit(TicketUsed(receipt, st.tickets)),
     );
     refreshTickets();
@@ -34,7 +34,7 @@ class TicketsCubit extends Cubit<TicketsState> {
     final either = await _ticketRepository.getUserTickets();
 
     either.fold(
-      (error) => emit(TicketsLoadError(error.message)),
+      (error) => emit(TicketsLoadError(error.reason)),
       (tickets) => emit(TicketsLoaded(tickets)),
     );
   }

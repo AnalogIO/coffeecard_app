@@ -1,5 +1,5 @@
-import 'package:coffeecard/data/repositories/utils/executor.dart';
-import 'package:coffeecard/data/repositories/utils/request_types.dart';
+import 'package:coffeecard/core/errors/failures.dart';
+import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart'
     hide MessageResponseDto;
@@ -18,15 +18,15 @@ class AccountRepository {
 
   final CoffeecardApi apiV1;
   final CoffeecardApiV2 apiV2;
-  final Executor executor;
+  final NetworkRequestExecutor executor;
 
-  Future<Either<RequestFailure, RequestSuccess>> register(
+  Future<Either<NetworkFailure, void>> register(
     String name,
     String email,
     String encodedPasscode,
     int occupationId,
   ) async {
-    return executor.execute(
+    final result = await executor(
       () => apiV2.apiV2AccountPost(
         body: RegisterAccountRequest(
           name: name,
@@ -35,16 +35,17 @@ class AccountRepository {
           programmeId: occupationId,
         ),
       ),
-      (_) => RequestSuccess(),
     );
+
+    return result.map((_) => const Right(null));
   }
 
   /// Returns the user token or throws an error.
-  Future<Either<RequestFailure, AuthenticatedUser>> login(
+  Future<Either<NetworkFailure, AuthenticatedUser>> login(
     String email,
     String encodedPasscode,
   ) async {
-    return executor.execute(
+    final result = await executor(
       () => apiV1.apiV1AccountLoginPost(
         body: LoginDto(
           email: email,
@@ -52,56 +53,66 @@ class AccountRepository {
           version: ApiUriConstants.minAppVersion,
         ),
       ),
-      (dto) => AuthenticatedUser(email: email, token: dto.token!),
+    );
+
+    return result.map(
+      (result) => AuthenticatedUser(
+        email: email,
+        token: result.token!,
+      ),
     );
   }
 
-  Future<Either<RequestFailure, User>> getUser() async {
-    return executor.execute(
+  Future<Either<NetworkFailure, User>> getUser() async {
+    final result = await executor(
       apiV1.apiV1AccountGet,
-      User.fromDTO,
     );
+
+    return result.map((result) => User.fromDTO(result));
   }
 
   /// Update user information
-  Future<Either<RequestFailure, User>> updateUser(UpdateUser user) async {
-    final userDTO = UpdateUserDto(
-      name: user.name,
-      programmeId: user.occupationId,
-      email: user.email,
-      privacyActivated: user.privacyActivated,
-      password: user.encodedPasscode,
+  Future<Either<NetworkFailure, User>> updateUser(UpdateUser user) async {
+    final result = await executor(
+      () => apiV1.apiV1AccountPut(
+        body: UpdateUserDto(
+          name: user.name,
+          programmeId: user.occupationId,
+          email: user.email,
+          privacyActivated: user.privacyActivated,
+          password: user.encodedPasscode,
+        ),
+      ),
     );
 
-    return executor.execute(
-      () => apiV1.apiV1AccountPut(body: userDTO),
-      User.fromDTO,
-    );
+    return result.map(User.fromDTO);
   }
 
-  Future<Either<RequestFailure, RequestSuccess>> requestPasscodeReset(
+  Future<Either<NetworkFailure, void>> requestPasscodeReset(
     String email,
   ) async {
-    return executor.execute(
+    final result = await executor(
       () => apiV1.apiV1AccountForgotpasswordPost(body: EmailDto(email: email)),
-      (_) => RequestSuccess(),
     );
+
+    return result.bind((_) => const Right(null));
   }
 
-  Future<Either<RequestFailure, RequestSuccess>>
-      requestAccountDeletion() async {
-    return executor.execute(
+  Future<Either<NetworkFailure, void>> requestAccountDeletion() async {
+    final result = await executor(
       apiV2.apiV2AccountDelete,
-      (_) => RequestSuccess(),
     );
+
+    return result.bind((_) => const Right(null));
   }
 
-  Future<Either<RequestFailure, bool>> emailExists(String email) async {
-    return executor.execute(
+  Future<Either<NetworkFailure, bool>> emailExists(String email) async {
+    final result = await executor(
       () => apiV2.apiV2AccountEmailExistsPost(
         body: EmailExistsRequest(email: email),
       ),
-      (dto) => dto.emailExists,
     );
+
+    return result.map((result) => result.emailExists);
   }
 }

@@ -25,7 +25,7 @@ class UserCubit extends Cubit<UserState> {
     final either = await _accountRepository.getUser();
 
     either.fold(
-      (l) => emit(UserError(l.message)),
+      (error) => emit(UserError(error.reason)),
       (r) {
         _enrichUserWithOccupations(r);
       },
@@ -47,7 +47,7 @@ class UserCubit extends Cubit<UserState> {
     final either = await _accountRepository.updateUser(user);
 
     either.fold(
-      (l) => emit(UserError(l.message)),
+      (error) => emit(UserError(error.reason)),
       (user) async {
         // Refreshes twice as a work-around for
         // a backend bug that returns a user object with all ranks set to 0.
@@ -69,7 +69,10 @@ class UserCubit extends Cubit<UserState> {
       // Fetches the programme info, if we have not cached it beforehand
       final either = await _occupationRepository.getOccupations();
 
-      either.fold((l) => emit(UserError(l.message)), (r) => occupations = r);
+      either.fold(
+        (error) => emit(UserError(error.reason)),
+        (r) => occupations = r,
+      );
 
       if (either.isLeft()) {
         return;

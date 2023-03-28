@@ -18,7 +18,7 @@ class ReceiptCubit extends Cubit<ReceiptState> {
       (error) => emit(
         state.copyWith(
           status: ReceiptStatus.failure,
-          error: error.message,
+          error: error.reason,
         ),
       ),
       (receipts) => emit(

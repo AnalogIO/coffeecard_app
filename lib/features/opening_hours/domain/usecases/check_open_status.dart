@@ -4,12 +4,12 @@ import 'package:coffeecard/features/opening_hours/opening_hours.dart';
 import 'package:dartz/dartz.dart';
 
 class CheckOpenStatus implements UseCase<bool, NoParams> {
-  final OpeningHoursRepository repository;
+  final OpeningHoursRemoteDataSource dataSource;
 
-  CheckOpenStatus({required this.repository});
+  CheckOpenStatus({required this.dataSource});
 
   @override
   Future<Either<Failure, bool>> call(NoParams params) async {
-    return repository.getIsOpen();
+    return dataSource.isOpen();
   }
 }
