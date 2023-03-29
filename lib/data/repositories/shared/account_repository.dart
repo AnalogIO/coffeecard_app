@@ -1,5 +1,7 @@
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
+import 'package:coffeecard/features/user/data/models/user_model.dart';
+import 'package:coffeecard/features/user/domain/entities/user.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart'
     hide MessageResponseDto;
@@ -67,7 +69,7 @@ class AccountRepository {
       apiV1.apiV1AccountGet,
     );
 
-    return result.map((result) => User.fromDTO(result));
+    return result.map(UserModel.fromDto);
   }
 
   /// Update user information
@@ -84,7 +86,7 @@ class AccountRepository {
       ),
     );
 
-    return result.map(User.fromDTO);
+    return result.map(UserModel.fromDto);
   }
 
   Future<Either<NetworkFailure, void>> requestPasscodeReset(

@@ -1,24 +1,23 @@
-import 'package:coffeecard/core/errors/exceptions.dart';
+import 'package:coffeecard/core/errors/failures.dart';
+import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/features/occupation/data/models/occupation_model.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
+import 'package:dartz/dartz.dart';
 
-abstract class OccupationRemoteDataSource {
-  Future<List<OccupationModel>> getOccupations();
-}
-
-class OccupationRemoteDataSourceImpl implements OccupationRemoteDataSource {
+class OccupationRemoteDataSource {
   final CoffeecardApi api;
+  final NetworkRequestExecutor executor;
 
-  OccupationRemoteDataSourceImpl({required this.api});
+  OccupationRemoteDataSource({
+    required this.api,
+    required this.executor,
+  });
 
-  @override
-  Future<List<OccupationModel>> getOccupations() async {
-    final response = await api.apiV1ProgrammesGet();
-
-    if (!response.isSuccessful) {
-      throw ServerException.fromResponse(response);
-    }
-
-    return response.body!.map(OccupationModel.fromDTOV1).toList();
+  Future<Either<NetworkFailure, List<OccupationModel>>> getOccupations() async {
+    final result = await executor(
+      () => api.apiV1ProgrammesGet(),
+    );
+    return result
+        .map((result) => result.map(OccupationModel.fromDTOV1).toList());
   }
 }

@@ -1,73 +1,54 @@
-import 'package:coffeecard/core/errors/exceptions.dart';
+import 'package:coffeecard/core/errors/failures.dart';
+import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/features/user/data/models/user_model.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart'
     hide MessageResponseDto;
 import 'package:coffeecard/models/account/update_user.dart';
+import 'package:dartz/dartz.dart';
 
-abstract class UserRemoteDataSource {
+class UserRemoteDataSource {
+  final CoffeecardApi apiV1;
+  final CoffeecardApiV2 apiV2;
+  final NetworkRequestExecutor executor;
+
+  UserRemoteDataSource({
+    required this.apiV1,
+    required this.apiV2,
+    required this.executor,
+  });
+
   /// Get the currently logged in user.
-  ///
-  /// Throws a [ServerException] if the api call failed.
-  Future<UserModel> getUser();
+  Future<Either<NetworkFailure, UserModel>> getUser() async {
+    final result = await executor(() => apiV2.apiV2AccountGet());
 
-  /// Request account deletion for the currently logged in user.
-  ///
-  /// Throws a [ServerException] if the api call failed.
-  Future<void> requestAccountDeletion();
+    return result.map(UserModel.fromResponse);
+  }
 
   /// Updates the details of the currently logged in user based on
   /// the non-null details in [user]
-  ///
-  /// Throws a [ServerException] if the api call failed.
-  Future<UserModel> updateUserDetails(UpdateUser user);
-}
-
-class UserRemoteDataSourceImpl implements UserRemoteDataSource {
-  UserRemoteDataSourceImpl({
-    required this.apiV1,
-    required this.apiV2,
-  });
-
-  final CoffeecardApi apiV1;
-  final CoffeecardApiV2 apiV2;
-
-  @override
-  Future<UserModel> getUser() async {
-    final response = await apiV2.apiV2AccountGet();
-
-    if (!response.isSuccessful) {
-      throw ServerException.fromResponse(response);
-    }
-
-    return UserModel.fromResponse(response.body!);
-  }
-
-  @override
-  Future<UserModel> updateUserDetails(UpdateUser user) async {
-    final response = await apiV2.apiV2AccountPut(
-      body: UpdateUserRequest(
-        name: user.name,
-        programmeId: user.occupationId,
-        email: user.email,
-        privacyActivated: user.privacyActivated,
-        password: user.encodedPasscode,
+  Future<Either<NetworkFailure, UserModel>> updateUserDetails(
+    UpdateUser user,
+  ) async {
+    final result = await executor(
+      () => apiV2.apiV2AccountPut(
+        body: UpdateUserRequest(
+          name: user.name,
+          programmeId: user.occupationId,
+          email: user.email,
+          privacyActivated: user.privacyActivated,
+          password: user.encodedPasscode,
+        ),
       ),
     );
 
-    if (!response.isSuccessful) {
-      throw ServerException.fromResponse(response);
-    }
-
-    return UserModel.fromResponse(response.body!);
+    return result.map(UserModel.fromResponse);
   }
 
-  @override
-  Future<void> requestAccountDeletion() async {
-    final response = await apiV2.apiV2AccountDelete();
+  /// Request account deletion for the currently logged in user.
+  Future<Either<NetworkFailure, void>> requestAccountDeletion() async {
+    final result = await executor(() => apiV2.apiV2AccountDelete());
 
-    if (!response.isSuccessful) {
-      throw ServerException.fromResponse(response);
-    }
+    return result.bind((_) => const Right(null));
   }
 }

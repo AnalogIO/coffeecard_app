@@ -1,6 +1,6 @@
 import 'package:coffeecard/features/occupation/domain/entities/occupation.dart';
-import 'package:coffeecard/features/user/domain/entities/user.dart';
-import 'package:coffeecard/features/user/domain/repositories/user_repository.dart';
+import 'package:coffeecard/features/user/data/datasources/user_remote_data_source.dart';
+import 'package:coffeecard/features/user/data/models/user_model.dart';
 import 'package:coffeecard/features/user/domain/usecases/update_user_details.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -9,21 +9,21 @@ import 'package:mockito/mockito.dart';
 
 import 'update_user_details_test.mocks.dart';
 
-@GenerateMocks([UserRepository])
+@GenerateMocks([UserRemoteDataSource])
 void main() {
-  late MockUserRepository repository;
+  late MockUserRemoteDataSource dataSource;
   late UpdateUserDetails usecase;
 
   setUp(() {
-    repository = MockUserRepository();
-    usecase = UpdateUserDetails(repository: repository);
+    dataSource = MockUserRemoteDataSource();
+    usecase = UpdateUserDetails(dataSource: dataSource);
   });
 
   test('should call repository', () async {
     // arrange
-    when(repository.updateUserDetails(any)).thenAnswer(
+    when(dataSource.updateUserDetails(any)).thenAnswer(
       (_) async => const Right(
-        User(
+        UserModel(
           id: 0,
           name: 'name',
           email: 'email',
@@ -48,6 +48,6 @@ void main() {
     );
 
     // assert
-    verify(repository.updateUserDetails(any));
+    verify(dataSource.updateUserDetails(any));
   });
 }

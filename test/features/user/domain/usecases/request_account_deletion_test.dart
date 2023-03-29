@@ -1,5 +1,5 @@
 import 'package:coffeecard/core/usecases/usecase.dart';
-import 'package:coffeecard/features/user/domain/repositories/user_repository.dart';
+import 'package:coffeecard/features/user/data/datasources/user_remote_data_source.dart';
 import 'package:coffeecard/features/user/domain/usecases/request_account_deletion.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -8,19 +8,19 @@ import 'package:mockito/mockito.dart';
 
 import 'request_account_deletion_test.mocks.dart';
 
-@GenerateMocks([UserRepository])
+@GenerateMocks([UserRemoteDataSource])
 void main() {
-  late MockUserRepository repository;
+  late MockUserRemoteDataSource dataSource;
   late RequestAccountDeletion usecase;
 
   setUp(() {
-    repository = MockUserRepository();
-    usecase = RequestAccountDeletion(repository: repository);
+    dataSource = MockUserRemoteDataSource();
+    usecase = RequestAccountDeletion(dataSource: dataSource);
   });
 
   test('should call repository', () async {
     // arrange
-    when(repository.requestAccountDeletion()).thenAnswer(
+    when(dataSource.requestAccountDeletion()).thenAnswer(
       (_) async => const Right(null),
     );
 
@@ -28,6 +28,6 @@ void main() {
     await usecase(NoParams());
 
     // assert
-    verify(repository.requestAccountDeletion());
+    verify(dataSource.requestAccountDeletion());
   });
 }

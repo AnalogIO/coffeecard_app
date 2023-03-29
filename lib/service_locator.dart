@@ -1,4 +1,3 @@
-
 import 'package:chopper/chopper.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
@@ -15,14 +14,10 @@ import 'package:coffeecard/data/repositories/v2/purchase_repository.dart';
 import 'package:coffeecard/data/storage/secure_storage.dart';
 import 'package:coffeecard/env/env.dart';
 import 'package:coffeecard/features/occupation/data/datasources/occupation_remote_data_source.dart';
-import 'package:coffeecard/features/occupation/data/repositories/occupation_repository_impl.dart';
-import 'package:coffeecard/features/occupation/domain/repositories/occupation_repository.dart';
 import 'package:coffeecard/features/occupation/domain/usecases/get_occupations.dart';
 import 'package:coffeecard/features/occupation/presentation/cubit/occupation_cubit.dart';
 import 'package:coffeecard/features/opening_hours/opening_hours.dart';
 import 'package:coffeecard/features/user/data/datasources/user_remote_data_source.dart';
-import 'package:coffeecard/features/user/data/repositories/user_repository_impl.dart';
-import 'package:coffeecard/features/user/domain/repositories/user_repository.dart';
 import 'package:coffeecard/features/user/domain/usecases/get_user.dart';
 import 'package:coffeecard/features/user/domain/usecases/request_account_deletion.dart';
 import 'package:coffeecard/features/user/domain/usecases/update_user_details.dart';
@@ -99,13 +94,6 @@ void configureServices() {
 
   // Repositories
   // v1
-  sl.registerFactory<OccupationRepository>(
-    () => OccupationRepository(
-      apiV1: sl<CoffeecardApi>(),
-      executor: sl<NetworkRequestExecutor>(),
-    ),
-  );
-
   sl.registerFactory<ReceiptRepository>(
     () => ReceiptRepository(
       apiV1: sl<CoffeecardApi>(),
@@ -213,16 +201,14 @@ void initOccupation() {
   );
 
   // use case
-  sl.registerFactory(() => GetOccupations(repository: sl()));
-
-  // repository
-  sl.registerFactory<OccupationRepository>(
-    () => OccupationRepositoryImpl(remoteDataSource: sl()),
-  );
+  sl.registerFactory(() => GetOccupations(dataSource: sl()));
 
   // data source
   sl.registerLazySingleton<OccupationRemoteDataSource>(
-    () => OccupationRemoteDataSourceImpl(api: sl()),
+    () => OccupationRemoteDataSource(
+      api: sl(),
+      executor: sl(),
+    ),
   );
 }
 
@@ -237,20 +223,16 @@ void initUser() {
   );
 
   // use case
-  sl.registerFactory(() => GetUser(repository: sl()));
-  sl.registerFactory(() => RequestAccountDeletion(repository: sl()));
-  sl.registerFactory(() => UpdateUserDetails(repository: sl()));
-
-  // repository
-  sl.registerFactory<UserRepository>(
-    () => UserRepositoryImpl(remoteDataSource: sl()),
-  );
+  sl.registerFactory(() => GetUser(dataSource: sl()));
+  sl.registerFactory(() => RequestAccountDeletion(dataSource: sl()));
+  sl.registerFactory(() => UpdateUserDetails(dataSource: sl()));
 
   // data source
-  sl.registerLazySingleton<UserRemoteDataSource>(
-    () => UserRemoteDataSourceImpl(
+  sl.registerLazySingleton(
+    () => UserRemoteDataSource(
       apiV1: sl(),
       apiV2: sl(),
+      executor: sl(),
     ),
   );
 }

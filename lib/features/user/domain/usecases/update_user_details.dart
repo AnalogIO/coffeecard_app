@@ -1,19 +1,19 @@
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/core/usecases/usecase.dart';
+import 'package:coffeecard/features/user/data/datasources/user_remote_data_source.dart';
 import 'package:coffeecard/features/user/domain/entities/user.dart';
-import 'package:coffeecard/features/user/domain/repositories/user_repository.dart';
 import 'package:coffeecard/models/account/update_user.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
 class UpdateUserDetails implements UseCase<User, Params> {
-  final UserRepository repository;
+  final UserRemoteDataSource dataSource;
 
-  UpdateUserDetails({required this.repository});
+  UpdateUserDetails({required this.dataSource});
 
   @override
   Future<Either<Failure, User>> call(Params params) async {
-    return repository.updateUserDetails(
+    return dataSource.updateUserDetails(
       UpdateUser(
         name: params.name,
         email: params.email,
