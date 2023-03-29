@@ -16,6 +16,8 @@ enum InternalPaymentType {
 
 abstract class PaymentHandler {
   final PurchaseRepository _repository;
+  // Certain implementations of the payment handler require access to the build context, even if it does not do so itself.
+  // ignore: unused_field
   final BuildContext _context;
 
   const PaymentHandler({
@@ -42,15 +44,14 @@ abstract class PaymentHandler {
 
   Future<Either<Failure, Payment>> initPurchase(int productId);
 
-  Future<Either<RequestFailure, PaymentStatus>> verifyPurchase(
+  Future<Either<Failure, PaymentStatus>> verifyPurchase(
     int purchaseId,
   ) async {
     // Call API endpoint, receive PaymentStatus
     final either = await _repository.getPurchase(purchaseId);
 
-    return either.fold(
-      (error) => Left(error),
-      (purchase) => Right(purchase.status),
+    return either.map(
+      (purchase) => purchase.status,
     );
   }
 }

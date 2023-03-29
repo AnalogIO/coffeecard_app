@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:coffeecard/core/errors/failures.dart';
@@ -25,16 +24,12 @@ class MobilePayService extends PaymentHandler {
         _context = context;
 
   @override
-  Future<Either<RequestFailure, Payment>> initPurchase(int productId) async {
-    final Either<RequestFailure, InitiatePurchase> response;
-    try {
-      response = await _repository.initiatePurchase(
-        productId,
-        PaymentType.mobilepay,
-      );
-    } catch (e) {
-      return Left(RequestFailure(e.toString()));
-    }
+  Future<Either<Failure, Payment>> initPurchase(int productId) async {
+    final Either<Failure, InitiatePurchase> response;
+    response = await _repository.initiatePurchase(
+      productId,
+      PaymentType.mobilepay,
+    );
 
     return response.map(
       (response) {
@@ -44,7 +39,6 @@ class MobilePayService extends PaymentHandler {
 
         return Payment(
           id: response.id,
-          paymentId: paymentDetails.paymentId,
           status: PaymentStatus.awaitingPayment,
           deeplink: paymentDetails.mobilePayAppRedirectUri,
           purchaseTime: response.dateCreated,

@@ -7,7 +7,6 @@ import 'package:coffeecard/payment/mobilepay_service.dart';
 import 'package:coffeecard/payment/payment_handler.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/utils/firebase_analytics_event_logging.dart';
-import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
 part 'purchase_state.dart';
@@ -19,16 +18,11 @@ class PurchaseCubit extends Cubit<PurchaseState> {
   PurchaseCubit({required this.paymentHandler, required this.product})
       : super(const PurchaseInitial());
 
-  Future<void> _payWithApplePay() async {
-    // TODO: implement me
-    throw UnimplementedError();
-  }
-
   Future<void> _payWithMobilePay(MobilePayService service) async {
     final either = await service.initPurchase(product.id);
 
     either.fold(
-      (error) => emit(PurchaseError(error.message)),
+      (error) => emit(PurchaseError(error.reason)),
       (payment) async {
         if (payment.status != PaymentStatus.error) {
           emit(PurchaseProcessing(payment));
@@ -42,7 +36,7 @@ class PurchaseCubit extends Cubit<PurchaseState> {
 
   Future<void> _payWithFreeProduct(FreeProductService service) async {
     final either = await service.initPurchase(product.id);
-    either.fold((error) => emit(PurchaseError(error.message)), (payment) {
+    either.fold((error) => emit(PurchaseError(error.reason)), (payment) {
       if (payment.status != PaymentStatus.error) {
         emit(PurchaseCompleted(payment));
         //verifyPurchase();

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/cubits/receipt/receipt_cubit.dart';
 import 'package:coffeecard/cubits/tickets/tickets_cubit.dart';
 import 'package:coffeecard/widgets/components/card.dart';
 import 'package:coffeecard/widgets/components/tickets/bottom_modal_sheet_helper.dart';
@@ -133,6 +134,7 @@ class _ModalContentState extends State<_ModalContent>
                         widget.context
                             .read<TicketsCubit>()
                             .useTicket(widget.productId);
+                        widget.context.read<ReceiptCubit>().fetchReceipts();
                       },
                     ),
                   ),
