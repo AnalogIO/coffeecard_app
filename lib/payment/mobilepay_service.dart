@@ -1,9 +1,8 @@
 import 'dart:io';
 
-import 'package:coffeecard/data/repositories/utils/request_types.dart';
+import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/data/repositories/v2/purchase_repository.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
-import 'package:coffeecard/models/purchase/initiate_purchase.dart';
 import 'package:coffeecard/models/purchase/payment.dart';
 import 'package:coffeecard/models/purchase/payment_status.dart';
 import 'package:coffeecard/payment/payment_handler.dart';
@@ -20,35 +19,27 @@ class MobilePayService implements PaymentHandler {
   MobilePayService(this._repository, this._context);
 
   @override
-  Future<Either<RequestFailure, Payment>> initPurchase(int productId) async {
-    final Either<RequestFailure, InitiatePurchase> response;
-    try {
-      response = await _repository.initiatePurchase(
-        productId,
-        PaymentType.mobilepay,
-      );
-    } catch (e) {
-      return Left(RequestFailure(e.toString()));
-    }
+  Future<Either<Failure, Payment>> initPurchase(int productId) async {
+    final response = await _repository.initiatePurchase(
+      productId,
+      PaymentType.mobilepay,
+    );
 
-    return response.fold(
-      (error) => Left(error),
+    return response.map(
       (response) {
         final paymentDetails = MobilePayPaymentDetails.fromJsonFactory(
           response.paymentDetails,
         );
 
-        return Right(
-          Payment(
-            id: response.id,
-            paymentId: paymentDetails.paymentId,
-            status: PaymentStatus.awaitingPayment,
-            deeplink: paymentDetails.mobilePayAppRedirectUri,
-            purchaseTime: response.dateCreated,
-            price: response.totalAmount,
-            productId: response.productId,
-            productName: response.productName,
-          ),
+        return Payment(
+          id: response.id,
+          paymentId: paymentDetails.paymentId,
+          status: PaymentStatus.awaitingPayment,
+          deeplink: paymentDetails.mobilePayAppRedirectUri,
+          purchaseTime: response.dateCreated,
+          price: response.totalAmount,
+          productId: response.productId,
+          productName: response.productName,
         );
       },
     );
@@ -76,25 +67,23 @@ class MobilePayService implements PaymentHandler {
   }
 
   @override
-  Future<Either<RequestFailure, PaymentStatus>> verifyPurchase(
+  Future<Either<NetworkFailure, PaymentStatus>> verifyPurchase(
     int purchaseId,
   ) async {
     // Call API endpoint, receive PaymentStatus
     final either = await _repository.getPurchase(purchaseId);
 
-    return either.fold((error) {
-      return Left(error);
-    }, (purchase) {
+    return either.map((purchase) {
       final paymentDetails =
           MobilePayPaymentDetails.fromJsonFactory(purchase.paymentDetails);
 
       final status = _mapPaymentStateToStatus(paymentDetails.state);
       if (status == PaymentStatus.completed) {
-        return const Right(PaymentStatus.completed);
+        return PaymentStatus.completed;
       }
 
       // TODO(marfavi): Cover more cases for PaymentStatus, https://github.com/AnalogIO/coffeecard_app/issues/385
-      return const Right(PaymentStatus.error);
+      return PaymentStatus.error;
     });
   }
 

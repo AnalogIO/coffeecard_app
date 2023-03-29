@@ -359,4 +359,5 @@ abstract class Strings {
   static String noInternet =
       "Can't connect to Analog. Are you connected to the internet?";
   static String retry = 'Retry';
+  static String unknownErrorOccured = 'an unknown error occured';
 }

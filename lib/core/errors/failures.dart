@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:chopper/chopper.dart';
+import 'package:coffeecard/base/strings.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class Failure extends Equatable {
@@ -9,9 +13,33 @@ abstract class Failure extends Equatable {
   List<Object?> get props => [reason];
 }
 
-// General failures
-class ServerFailure extends Failure {
+abstract class NetworkFailure extends Failure {
+  const NetworkFailure(super.reason);
+}
+
+class ServerFailure extends NetworkFailure {
   const ServerFailure(super.reason);
+
+  factory ServerFailure.fromResponse(Response response) {
+    try {
+      final jsonString =
+          json.decode(response.bodyString) as Map<String, dynamic>;
+
+      final message = jsonString['message'] as String?;
+
+      if (message == null) {
+        return ServerFailure(Strings.unknownErrorOccured);
+      }
+
+      return ServerFailure(message);
+    } on Exception {
+      return ServerFailure(response.bodyString);
+    }
+  }
+}
+
+class ConnectionFailure extends NetworkFailure {
+  const ConnectionFailure() : super('connection refused');
 }
 
 class LocalStorageFailure extends Failure {

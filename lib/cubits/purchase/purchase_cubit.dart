@@ -24,7 +24,7 @@ class PurchaseCubit extends Cubit<PurchaseState> {
       final either = await paymentHandler.initPurchase(product.id);
 
       either.fold(
-        (error) => emit(PurchaseError(error.message)),
+        (error) => emit(PurchaseError(error.reason)),
         (payment) async {
           if (payment.status != PaymentStatus.error) {
             emit(PurchaseProcessing(payment));
@@ -47,7 +47,7 @@ class PurchaseCubit extends Cubit<PurchaseState> {
       final either = await paymentHandler.verifyPurchase(payment.id);
 
       either.fold(
-        (error) => emit(PurchaseError(error.message)),
+        (error) => emit(PurchaseError(error.reason)),
         (status) {
           if (status == PaymentStatus.completed) {
             sl<FirebaseAnalyticsEventLogging>().purchaseCompletedEvent(payment);

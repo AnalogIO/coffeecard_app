@@ -7,25 +7,24 @@ import 'package:mockito/mockito.dart';
 
 import 'check_open_status_test.mocks.dart';
 
-@GenerateMocks([OpeningHoursRepository])
+@GenerateMocks([OpeningHoursRemoteDataSource])
 void main() {
-  late MockOpeningHoursRepository repository;
+  late MockOpeningHoursRemoteDataSource dataSource;
   late CheckOpenStatus getIsOpen;
 
   setUp(() {
-    repository = MockOpeningHoursRepository();
-    getIsOpen = CheckOpenStatus(repository: repository);
+    dataSource = MockOpeningHoursRemoteDataSource();
+    getIsOpen = CheckOpenStatus(dataSource: dataSource);
   });
 
-  test('should call repository', () async {
+  test('should call data source', () async {
     // arrange
-    when(repository.getIsOpen()).thenAnswer((_) async => const Right(true));
+    when(dataSource.isOpen()).thenAnswer((_) async => const Right(true));
 
     // act
     await getIsOpen(NoParams());
 
     // assert
-    verify(repository.getIsOpen());
-    verifyNoMoreInteractions(repository);
+    verify(dataSource.isOpen());
   });
 }

@@ -53,15 +53,13 @@ class ForgotPasscodeForm extends StatelessWidget {
 
     final either = await sl<AccountRepository>().requestPasscodeReset(email);
 
-    var title = Strings.forgotPasscodeLinkSent;
-    var body = Strings.forgotPasscodeSentRequestTo(email);
-
-    either.fold(
-      (l) {
-        title = Strings.forgotPasscodeError;
-        body = l.message;
-      },
-      (r) => null,
+    final title = either.fold(
+      (_) => Strings.forgotPasscodeError,
+      (_) => Strings.forgotPasscodeLinkSent,
+    );
+    final body = either.fold(
+      (error) => error.reason,
+      (_) => Strings.forgotPasscodeSentRequestTo(email),
     );
 
     if (context.mounted) {
