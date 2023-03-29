@@ -25,13 +25,13 @@ class ReactivationAuthenticator extends Authenticator {
     logger = serviceLocator.get<Logger>();
   }
 
-  bool _canRefreshToken() =>
+  bool canRefreshToken() =>
       tokenRefreshedAt == null ||
       DateTime.now().difference(tokenRefreshedAt!) > debounce;
 
-  Future<void> _evict() => authenticationCubit.unauthenticated();
+  Future<void> evict() => authenticationCubit.unauthenticated();
 
-  Map<String, String> _updateHeadersWithToken(
+  Map<String, String> updateHeadersWithToken(
     Map<String, String> headers,
     String token,
   ) {
@@ -44,22 +44,24 @@ class ReactivationAuthenticator extends Authenticator {
     return headers;
   }
 
+  void log(Request request, Response response) {
+    logger.d(
+      '${request.method} ${request.url} ${response.statusCode}\n${response.bodyString}',
+    );
+  }
+
   @override
   FutureOr<Request?> authenticate(
     Request request,
     Response response, [
     Request? originalRequest,
   ]) async {
-    if (response.statusCode != 401) {
-      logger.d(
-        '${request.method} ${request.url} ${response.statusCode}',
-      );
+    log(request, response);
 
+    if (response.statusCode != 401) {
       return null;
     }
-    logger.d(
-      '${request.method} ${request.url} ${response.statusCode}\n${response.bodyString}',
-    );
+
     if (mutex.isLocked()) {
       // someone is updating the token, wait until they are done and read it
       await mutex.wait();
@@ -71,12 +73,12 @@ class ReactivationAuthenticator extends Authenticator {
       }
 
       return request.copyWith(
-        headers: _updateHeadersWithToken(request.headers, refreshedToken),
+        headers: updateHeadersWithToken(request.headers, refreshedToken),
       );
     }
 
     // avoid refreshing the token multiple times if requests happen at the same time
-    if (_canRefreshToken()) {
+    if (canRefreshToken()) {
       return await refreshToken(request);
     }
 
@@ -93,7 +95,9 @@ class ReactivationAuthenticator extends Authenticator {
       //User is not logged in
       return null;
     }
+
     mutex.lock();
+
     try {
       final accountRepository = serviceLocator.get<AccountRepository>();
 
@@ -101,22 +105,22 @@ class ReactivationAuthenticator extends Authenticator {
       final either = await accountRepository.login(email, encodedPasscode);
 
       return either.fold(
-        (l) {
+        (_) {
           // refresh failed, sign the user out
-          _evict();
+          evict();
 
           return null;
         },
-        (r) async {
+        (user) async {
           // refresh succeeded, update the token in secure storage
           tokenRefreshedAt = DateTime.now();
 
-          final token = r.token;
-          final bearerToken = 'Bearer ${r.token}';
+          final token = user.token;
+          final bearerToken = 'Bearer ${user.token}';
           await secureStorage.updateToken(token);
 
           return request.copyWith(
-            headers: _updateHeadersWithToken(request.headers, bearerToken),
+            headers: updateHeadersWithToken(request.headers, bearerToken),
           );
         },
       );
