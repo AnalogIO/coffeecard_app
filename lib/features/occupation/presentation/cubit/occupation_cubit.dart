@@ -15,8 +15,6 @@ class OccupationCubit extends Cubit<OccupationState> {
   Future<void> fetchOccupations() async {
     emit(const OccupationLoading());
 
-    await Future.delayed(const Duration(seconds: 2));
-
     final either = await getOccupations(NoParams());
 
     either.fold(
