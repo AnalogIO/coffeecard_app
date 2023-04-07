@@ -48,7 +48,7 @@ void main() {
       'addPasscodeInput emits TypingPasscode, Loading when passcode length is 4, then emits LoginError when login fails',
       build: () {
         when(accountRepository.login(any, any)).thenAnswer(
-          (_) async => const Left(ServerFailure('{"message": "some error"}')),
+          (_) async => const Left(ServerFailure('some error')),
         );
         return loginCubit
           ..addPasscodeInput('1')
