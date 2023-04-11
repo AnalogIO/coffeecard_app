@@ -17,6 +17,7 @@ analyzer:
   exclude:
     - lib/generated/**
     - test/**.mocks.dart
+    - test/**
   errors:
     invalid_assignment: warning
     missing_return: error
@@ -24,3 +25,35 @@ analyzer:
     argument_type_not_assignable: warning
     todo: info
     fixme: warning
+  plugins:
+    - dart_code_metrics
+
+dart_code_metrics:
+  extends:
+    - package:dart_code_metrics_presets/all.yaml
+  metrics:
+    cyclomatic-complexity: 20
+    number-of-parameters: 6
+    maximum-nesting-level: 4
+  rules:
+    - list-all-equatable-fields
+
+    - arguments-ordering: false
+    - format-comment: false
+    - member-ordering: false
+    - no-magic-number: false
+    - avoid-non-null-assertion: false
+    - prefer-extracting-callbacks: false
+    - prefer-static-class: false
+    - prefer-correct-identifier-length: false
+    - binary-expression-operand-order: false
+    - double-literal-format: false
+    - newline-before-return: false 
+    - avoid-returning-widgets: false
+    - avoid-late-keyword: false
+    - prefer-single-widget-per-file: false
+    - avoid-passing-async-when-sync-expected: false
+    - avoid-redundant-async: false
+    # - avoid-ignoring-return-values
+    # - prefer-match-file-name
+    # - avoid-unused-parameters
