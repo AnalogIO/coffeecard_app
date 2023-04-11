@@ -31,7 +31,7 @@ class MobilePayService extends PaymentHandler {
       PaymentType.mobilepay,
     );
 
-    return response.map(
+    final either = response.map(
       (response) {
         final paymentDetails = MobilePayPaymentDetails.fromJsonFactory(
           response.paymentDetails,
@@ -48,25 +48,42 @@ class MobilePayService extends PaymentHandler {
         );
       },
     );
+
+    await _invokeMobilePayApp(either); // Sideeffect
+
+    return either;
   }
 
-  Future<void> invokePaymentMethod(Uri uri) async {
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri, mode: LaunchMode.externalApplication);
-    } else {
-      final Uri url;
+  Future<void> _invokeMobilePayApp(
+    Either<Failure, Payment> paymentEither,
+  ) async {
+    paymentEither.map(
+      (payment) async {
+        final Uri mobilepayLink = Uri.parse(payment.deeplink);
 
-      // MobilePay not installed, send user to appstore
-      if (Platform.isAndroid) {
-        url = ApiUriConstants.mobilepayAndroid;
-      } else if (Platform.isIOS) {
-        url = ApiUriConstants.mobilepayIOS;
-      } else {
-        throw UnsupportedError('Unsupported platform');
-      }
-      if (_context.mounted) {
-        launchUrlExternalApplication(url, _context);
-      }
+        if (await canLaunchUrl(mobilepayLink)) {
+          await launchUrl(mobilepayLink, mode: LaunchMode.externalApplication);
+
+          return;
+        } else {
+          final Uri url = _getAppStoreUri();
+
+          // MobilePay not installed, send user to appstore
+          if (_context.mounted) {
+            await launchUrlExternalApplication(url, _context);
+          }
+        }
+      },
+    );
+  }
+
+  Uri _getAppStoreUri() {
+    if (Platform.isAndroid) {
+      return ApiUriConstants.mobilepayAndroid;
+    } else if (Platform.isIOS) {
+      return ApiUriConstants.mobilepayIOS;
+    } else {
+      throw UnsupportedError('Unsupported platform');
     }
   }
 }

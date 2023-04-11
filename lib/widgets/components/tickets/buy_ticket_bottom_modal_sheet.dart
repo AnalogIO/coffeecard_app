@@ -66,8 +66,8 @@ class _ModalContent extends StatelessWidget {
               const Gap(4),
               Text(
                 product.price != 0
-                    ? Strings.paymentConfirmationBottom(product.price)
-                    : 'Get your free product',
+                    ? Strings.paymentConfirmationBottomPurchase(product.price)
+                    : Strings.paymentConfirmationButtonRedeem,
                 style: AppTextStyle.price,
               ),
               const Gap(12),

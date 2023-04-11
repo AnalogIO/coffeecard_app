@@ -10,7 +10,6 @@ import 'package:flutter/widgets.dart';
 
 enum InternalPaymentType {
   mobilePay,
-  applePay,
   free,
 }
 

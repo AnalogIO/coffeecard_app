@@ -17,7 +17,7 @@
   },
   "servers": [
     {
-      "url": "https://localhost:5001"
+      "url": "https://beta.analogio.dk/api/clippy"
     }
   ],
   "paths": {
