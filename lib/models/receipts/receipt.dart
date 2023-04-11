@@ -24,7 +24,7 @@ class Receipt {
   Receipt.fromTicketDTO(TicketDto dto)
       : productName = dto.productName,
         transactionType = TransactionType.ticketSwipe,
-        timeUsed = dto.dateUsed,
+        timeUsed = dto.dateUsed!,
         price = 1,
         amountPurchased = 1,
         id = dto.id;

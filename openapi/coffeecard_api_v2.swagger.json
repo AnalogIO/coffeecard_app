@@ -1112,6 +1112,7 @@
           "id": 22,
           "dateCreated": "2022-01-09T21:03:52.2283208Z",
           "productId": 1,
+          "productName": "Filter coffee",
           "totalAmount": 300,
           "purchaseStatus": "Completed"
         },
@@ -1120,6 +1121,8 @@
           "id",
           "dateCreated",
           "productId",
+          "productName",
+          "numberOfTickets",
           "totalAmount",
           "purchaseStatus"
         ],
@@ -1142,6 +1145,18 @@
             "description": "Id of purchased product",
             "format": "int32",
             "example": 1
+          },
+          "productName": {
+            "type": "string",
+            "description": "Name of purchased product",
+            "minLength": 1,
+            "example": 1
+          },
+          "numberOfTickets": {
+            "type": "integer",
+            "description": "Number of tickets issued in purchase",
+            "format": "int32",
+            "example": 10
           },
           "totalAmount": {
             "type": "integer",
