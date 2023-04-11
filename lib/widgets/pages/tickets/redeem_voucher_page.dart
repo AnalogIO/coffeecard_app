@@ -58,7 +58,7 @@ class RedeemVoucherPage extends StatelessWidget {
         Text(
           '${Strings.youRedeemed} ${state.redeemedVoucher.numberOfTickets} ${state.redeemedVoucher.productName}!',
           style: AppTextStyle.settingKey,
-        )
+        ),
       ],
       dismissible: true,
     );

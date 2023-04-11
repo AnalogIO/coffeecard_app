@@ -107,7 +107,7 @@ class _PurchaseProcessState extends State<PurchaseProcess>
               child: CircularProgressIndicator(color: AppColor.primary),
             ),
           ],
-        )
+        ),
       ],
     );
   }

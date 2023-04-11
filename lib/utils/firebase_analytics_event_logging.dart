@@ -29,7 +29,7 @@ class FirebaseAnalyticsEventLogging {
           itemName: product.name,
           price: product.price,
           currency: _currency,
-        )
+        ),
       ],
     );
   }
@@ -69,7 +69,7 @@ class FirebaseAnalyticsEventLogging {
           itemName: product.name,
           price: product.price,
           currency: _currency,
-        )
+        ),
       ],
     );
   }
@@ -84,7 +84,7 @@ class FirebaseAnalyticsEventLogging {
           itemName: product.name,
           price: product.price.toDouble(),
           currency: _currency,
-        )
+        ),
       ],
     );
   }
@@ -99,7 +99,7 @@ class FirebaseAnalyticsEventLogging {
           itemName: payment.productName,
           price: payment.price.toDouble(),
           currency: _currency,
-        )
+        ),
       ],
       transactionId: payment.id.toString(),
     );

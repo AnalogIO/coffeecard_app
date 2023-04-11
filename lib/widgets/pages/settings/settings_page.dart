@@ -26,13 +26,13 @@ import 'package:gap/gap.dart';
 class SettingsPage extends StatelessWidget {
   const SettingsPage({required this.scrollController});
 
-  final ScrollController scrollController;
-
   static Route routeWith({required ScrollController scrollController}) {
     return MaterialPageRoute(
       builder: (_) => SettingsPage(scrollController: scrollController),
     );
   }
+
+  final ScrollController scrollController;
 
   /// Tappable only if user data has been loaded.
   void Function()? _ifUserStateLoaded(

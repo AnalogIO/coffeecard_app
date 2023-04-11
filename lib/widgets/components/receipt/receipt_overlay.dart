@@ -45,7 +45,7 @@ class ReceiptOverlay {
                   Text(
                     Strings.receiptTapAnywhereToDismiss,
                     style: AppTextStyle.explainerBright,
-                  )
+                  ),
                 ],
               ),
             ),

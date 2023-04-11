@@ -221,6 +221,8 @@ abstract class Strings {
   static const voucherEmpty = 'Enter a voucher code';
   static const voucherUsed = 'That voucher is already used';
   static const youRedeemed = 'You redeemed';
+  // Needed on th UI
+  //ignore: avoid-non-ascii-symbols
   static const voucherRedeemed = 'Voucher redeemed 🎉';
 
   // Settings
@@ -278,6 +280,8 @@ abstract class Strings {
   static const yourProfileDescription =
       'These settings affect your appearance on the leaderboards.';
 
+  // Needed on th UI
+  //ignore: avoid-non-ascii-symbols
   static const madeBy = 'Made with ❤ by AnalogIO\nIT University of Copenhagen';
   static const userID = 'User ID';
 
@@ -296,7 +300,7 @@ abstract class Strings {
     "Something doesn't seem to work.":
         "If you find something that doesn't seem right, please report it by filling out of the feedback form found under 'Settings > Report a bug or send feedback'.",
     'I have an idea for the app!':
-        "We will happily take suggestions! Fill out the feedback form under 'Settings > Report a bug or send feedback' or send an email to feedback@analogio.dk."
+        "We will happily take suggestions! Fill out the feedback form under 'Settings > Report a bug or send feedback' or send an email to feedback@analogio.dk.",
   };
 
   // Credits
@@ -357,8 +361,8 @@ abstract class Strings {
     return 'The voucher "$voucher" is invalid';
   }
 
-  static String noInternet =
+  static const String noInternet =
       "Can't connect to Analog. Are you connected to the internet?";
-  static String retry = 'Retry';
-  static String unknownErrorOccured = 'an unknown error occured';
+  static const String retry = 'Retry';
+  static const String unknownErrorOccured = 'an unknown error occured';
 }

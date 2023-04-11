@@ -142,7 +142,7 @@ class _HomePageState extends State<HomePage> {
         ),
         BlocProvider(
           create: (_) => sl<OpeningHoursCubit>()..getOpeninghours(),
-        )
+        ),
       ],
       child: WillPopScope(
         onWillPop: onWillPop,

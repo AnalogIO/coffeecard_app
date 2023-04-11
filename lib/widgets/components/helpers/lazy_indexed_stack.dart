@@ -62,7 +62,7 @@ class _LazyIndexedStackState extends State<LazyIndexedStack> {
     if (result == null) {
       return false;
     }
-    return result == true;
+    return result;
   }
 
   List<Widget> _buildChildren(BuildContext context) {
