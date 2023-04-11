@@ -46,10 +46,8 @@ void main() {
       final actual = await dataSource.getOccupations();
 
       // assert
-      actual.fold(
-        (_) => expect(true, false),
-        (response) => expect(response, []),
-      );
+      expect(actual.isRight(), true);
+      actual.map((response) => expect(response, []));
     });
   });
 }
