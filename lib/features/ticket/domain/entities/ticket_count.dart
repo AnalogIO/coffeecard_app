@@ -1,9 +1,11 @@
-class TicketCount {
+import 'package:equatable/equatable.dart';
+
+class TicketCount extends Equatable {
   final int productId;
   final int count;
   final String productName;
 
-  TicketCount({
+  const TicketCount({
     required this.count,
     required this.productName,
     required this.productId,
@@ -13,4 +15,7 @@ class TicketCount {
   String toString() {
     return 'ProductCount{count: $count, productName: $productName}';
   }
+
+  @override
+  List<Object?> get props => [productId, count, productName];
 }

@@ -1,8 +1,8 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
-import 'package:coffeecard/cubits/tickets/tickets_cubit.dart';
 import 'package:coffeecard/cubits/voucher/voucher_cubit.dart';
 import 'package:coffeecard/data/repositories/v1/voucher_repository.dart';
+import 'package:coffeecard/features/ticket/presentation/cubit/tickets_cubit.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/widgets/components/dialog.dart';
 import 'package:coffeecard/widgets/components/forms/voucher/voucher_form.dart';

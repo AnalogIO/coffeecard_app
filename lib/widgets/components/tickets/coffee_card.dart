@@ -1,7 +1,7 @@
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/features/ticket/presentation/widgets/swipe_ticket_confirm.dart';
 import 'package:coffeecard/widgets/components/card.dart';
-import 'package:coffeecard/widgets/components/tickets/swipe_ticket_confirm.dart';
 import 'package:flutter/material.dart';
 
 class CoffeeCard extends StatelessWidget {

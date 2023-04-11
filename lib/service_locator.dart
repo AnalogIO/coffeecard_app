@@ -7,7 +7,6 @@ import 'package:coffeecard/data/repositories/shared/account_repository.dart';
 import 'package:coffeecard/data/repositories/v1/occupation_repository.dart';
 import 'package:coffeecard/data/repositories/v1/product_repository.dart';
 import 'package:coffeecard/data/repositories/v1/receipt_repository.dart';
-import 'package:coffeecard/data/repositories/v1/ticket_repository.dart';
 import 'package:coffeecard/data/repositories/v1/voucher_repository.dart';
 import 'package:coffeecard/data/repositories/v2/app_config_repository.dart';
 import 'package:coffeecard/data/repositories/v2/leaderboard_repository.dart';
@@ -15,6 +14,10 @@ import 'package:coffeecard/data/repositories/v2/purchase_repository.dart';
 import 'package:coffeecard/data/storage/secure_storage.dart';
 import 'package:coffeecard/env/env.dart';
 import 'package:coffeecard/features/opening_hours/opening_hours.dart';
+import 'package:coffeecard/features/ticket/data/datasources/ticket_remote_data_source.dart';
+import 'package:coffeecard/features/ticket/domain/usecases/consume_ticket.dart';
+import 'package:coffeecard/features/ticket/domain/usecases/load_tickets.dart';
+import 'package:coffeecard/features/ticket/presentation/cubit/tickets_cubit.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart'
     hide $JsonSerializableConverter;
@@ -116,14 +119,6 @@ void configureServices() {
   );
 
   // v1 and v2
-  sl.registerFactory<TicketRepository>(
-    () => TicketRepository(
-      apiV1: sl<CoffeecardApi>(),
-      apiV2: sl<CoffeecardApiV2>(),
-      executor: sl<NetworkRequestExecutor>(),
-    ),
-  );
-
   sl.registerFactory<AccountRepository>(
     () => AccountRepository(
       apiV1: sl<CoffeecardApi>(),
@@ -166,6 +161,7 @@ void configureServices() {
 
 void initFeatures() {
   initOpeningHours();
+  initTicket();
 }
 
 void initOpeningHours() {
@@ -189,5 +185,24 @@ void initOpeningHours() {
   // data source
   sl.registerLazySingleton<OpeningHoursRemoteDataSource>(
     () => OpeningHoursRemoteDataSource(api: sl(), executor: sl()),
+  );
+}
+
+void initTicket() {
+  // bloc
+  sl.registerLazySingleton(
+    () => TicketsCubit(
+      loadTickets: sl(),
+      consumeTicket: sl(),
+    ),
+  );
+
+  // use case
+  sl.registerFactory(() => LoadTickets(ticketRemoteDataSource: sl()));
+  sl.registerFactory(() => ConsumeTicket(ticketRemoteDataSource: sl()));
+
+  // data source
+  sl.registerLazySingleton(
+    () => TicketRemoteDataSource(apiV1: sl(), apiV2: sl(), executor: sl()),
   );
 }

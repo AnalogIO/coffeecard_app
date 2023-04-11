@@ -1,15 +1,21 @@
-import 'package:coffeecard/data/repositories/v1/ticket_repository.dart';
+import 'package:coffeecard/core/usecases/usecase.dart';
+import 'package:coffeecard/features/ticket/domain/entities/ticket_count.dart';
+import 'package:coffeecard/features/ticket/domain/usecases/consume_ticket.dart';
+import 'package:coffeecard/features/ticket/domain/usecases/load_tickets.dart';
 import 'package:coffeecard/models/receipts/receipt.dart';
-import 'package:coffeecard/models/ticket/ticket_count.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'tickets_state.dart';
 
 class TicketsCubit extends Cubit<TicketsState> {
-  TicketsCubit(this.ticketRepository) : super(const TicketsLoading());
+  final LoadTickets loadTickets;
+  final ConsumeTicket consumeTicket;
 
-  final TicketRepository ticketRepository;
+  TicketsCubit({
+    required this.loadTickets,
+    required this.consumeTicket,
+  }) : super(const TicketsLoading());
 
   Future<void> getTickets() async {
     emit(const TicketsLoading());
@@ -24,7 +30,7 @@ class TicketsCubit extends Cubit<TicketsState> {
 
     emit(TicketUsing(st.tickets));
 
-    final either = await ticketRepository.useTicket(productId);
+    final either = await consumeTicket(Params(productId: productId));
 
     either.fold(
       (error) => emit(TicketsUseError(error.reason)),
@@ -35,7 +41,7 @@ class TicketsCubit extends Cubit<TicketsState> {
   }
 
   Future<void> refreshTickets() async {
-    final either = await ticketRepository.getUserTickets();
+    final either = await loadTickets(NoParams());
 
     either.fold(
       (error) => emit(TicketsLoadError(error.reason)),
