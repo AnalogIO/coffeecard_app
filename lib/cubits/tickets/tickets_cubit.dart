@@ -7,31 +7,35 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 part 'tickets_state.dart';
 
 class TicketsCubit extends Cubit<TicketsState> {
-  TicketsCubit(this._ticketRepository) : super(const TicketsLoading());
+  TicketsCubit(this.ticketRepository) : super(const TicketsLoading());
 
-  final TicketRepository _ticketRepository;
+  final TicketRepository ticketRepository;
 
   Future<void> getTickets() async {
     emit(const TicketsLoading());
+
     refreshTickets();
   }
 
   Future<void> useTicket(int productId) async {
-    final st = state;
-    if (st is! TicketsLoaded) return;
+    if (state is! TicketsLoaded) return;
+
+    final st = state as TicketsLoaded;
 
     emit(TicketUsing(st.tickets));
-    final either = await _ticketRepository.useTicket(productId);
+
+    final either = await ticketRepository.useTicket(productId);
 
     either.fold(
       (error) => emit(TicketsUseError(error.reason)),
       (receipt) => emit(TicketUsed(receipt, st.tickets)),
     );
+
     refreshTickets();
   }
 
   Future<void> refreshTickets() async {
-    final either = await _ticketRepository.getUserTickets();
+    final either = await ticketRepository.getUserTickets();
 
     either.fold(
       (error) => emit(TicketsLoadError(error.reason)),

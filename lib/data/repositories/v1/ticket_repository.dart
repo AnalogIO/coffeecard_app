@@ -1,6 +1,6 @@
 import 'package:coffeecard/core/errors/failures.dart';
+import 'package:coffeecard/core/extensions/either_extensions.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
-
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
 import 'package:coffeecard/models/receipts/receipt.dart';
@@ -20,11 +20,9 @@ class TicketRepository {
   final NetworkRequestExecutor executor;
 
   Future<Either<NetworkFailure, List<TicketCount>>> getUserTickets() async {
-    final result = await executor(
+    return executor(
       () => apiV2.apiV2TicketsGet(includeUsed: false),
-    );
-
-    return result.map(
+    ).bindFuture(
       (result) => result
           .groupListsBy((t) => t.productName)
           .entries
@@ -41,13 +39,11 @@ class TicketRepository {
   }
 
   Future<Either<NetworkFailure, Receipt>> useTicket(int productId) async {
-    final result = await executor(
+    return executor(
       () => apiV1.apiV1TicketsUsePost(
         body: UseTicketDTO(productId: productId),
       ),
-    );
-
-    return result.map(
+    ).bindFuture(
       (result) => Receipt(
         productName: result.productName,
         id: result.id,
