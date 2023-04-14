@@ -1,4 +1,6 @@
 coverage:
+  ignore:
+    - "**/widgets/**/*"
   status:
     project:
       default: false # disable the default status that measures entire project
@@ -6,5 +8,3 @@ coverage:
         target: 80%
         paths:
           - lib/
-        ignore:
-          - "**/widgets/**/*"
