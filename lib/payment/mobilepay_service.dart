@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/data/repositories/v2/purchase_repository.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
 import 'package:coffeecard/models/purchase/initiate_purchase.dart';
 import 'package:coffeecard/models/purchase/payment.dart';
@@ -10,23 +9,17 @@ import 'package:coffeecard/payment/payment_handler.dart';
 import 'package:coffeecard/utils/api_uri_constants.dart';
 import 'package:coffeecard/utils/launch.dart';
 import 'package:dartz/dartz.dart';
-import 'package:flutter/widgets.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MobilePayService extends PaymentHandler {
-  final PurchaseRepository _repository;
-  final BuildContext _context;
-
   MobilePayService({
-    required super.repository,
+    required super.purchaseRepository,
     required super.context,
-  })  : _repository = repository,
-        _context = context;
-
+  });
   @override
   Future<Either<Failure, Payment>> initPurchase(int productId) async {
     final Either<Failure, InitiatePurchase> response;
-    response = await _repository.initiatePurchase(
+    response = await purchaseRepository.initiatePurchase(
       productId,
       PaymentType.mobilepay,
     );
@@ -69,8 +62,8 @@ class MobilePayService extends PaymentHandler {
           final Uri url = _getAppStoreUri();
 
           // MobilePay not installed, send user to appstore
-          if (_context.mounted) {
-            await launchUrlExternalApplication(url, _context);
+          if (context.mounted) {
+            await launchUrlExternalApplication(url, context);
           }
         }
       },

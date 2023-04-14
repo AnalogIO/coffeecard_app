@@ -14,16 +14,15 @@ enum InternalPaymentType {
 }
 
 abstract class PaymentHandler {
-  final PurchaseRepository _repository;
+  final PurchaseRepository purchaseRepository;
   // Certain implementations of the payment handler require access to the build context, even if it does not do so itself.
   // ignore: unused_field
-  final BuildContext _context;
+  final BuildContext context;
 
   const PaymentHandler({
-    required PurchaseRepository repository,
-    required BuildContext context,
-  })  : _repository = repository,
-        _context = context;
+    required this.purchaseRepository,
+    required this.context,
+  });
 
   static PaymentHandler createPaymentHandler(
     InternalPaymentType paymentType,
@@ -33,9 +32,15 @@ abstract class PaymentHandler {
 
     switch (paymentType) {
       case InternalPaymentType.mobilePay:
-        return MobilePayService(repository: repository, context: context);
+        return MobilePayService(
+          purchaseRepository: repository,
+          context: context,
+        );
       case InternalPaymentType.free:
-        return FreeProductService(repository: repository, context: context);
+        return FreeProductService(
+          purchaseRepository: repository,
+          context: context,
+        );
       default:
         throw UnimplementedError();
     }
@@ -47,7 +52,7 @@ abstract class PaymentHandler {
     int purchaseId,
   ) async {
     // Call API endpoint, receive PaymentStatus
-    final either = await _repository.getPurchase(purchaseId);
+    final either = await purchaseRepository.getPurchase(purchaseId);
 
     return either.map(
       (purchase) => purchase.status,

@@ -24,15 +24,18 @@ class PurchaseCubit extends Cubit<PurchaseState> {
 
       final either = await paymentHandler.initPurchase(product.id);
 
-      either.fold((error) => emit(PurchaseError(error.reason)), (payment) {
-        if (payment.status == PaymentStatus.completed) {
-          emit(PurchaseCompleted(payment));
-        } else if (payment.status == PaymentStatus.awaitingPayment) {
-          emit(PurchaseProcessing(payment));
-        } else {
-          emit(PurchasePaymentRejected(payment));
-        }
-      });
+      either.fold(
+        (error) => emit(PurchaseError(error.reason)),
+        (payment) {
+          if (payment.status == PaymentStatus.completed) {
+            emit(PurchaseCompleted(payment));
+          } else if (payment.status == PaymentStatus.awaitingPayment) {
+            emit(PurchaseProcessing(payment));
+          } else {
+            emit(PurchasePaymentRejected(payment));
+          }
+        },
+      );
     }
   }
 

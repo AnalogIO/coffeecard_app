@@ -94,7 +94,8 @@ class _BottomModalSheetButtonBarState
     extends State<_BottomModalSheetButtonBar> {
   @override
   Widget build(BuildContext context) {
-    if (widget.product.price == 0) {
+    final isFreeProduct = widget.product.price == 0;
+    if (isFreeProduct) {
       return Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
