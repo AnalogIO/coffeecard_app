@@ -1,6 +1,8 @@
 coverage:
   ignore:
-    - "**/widgets/**/*"
+    - "lib/base"
+    - "lib/widgets"
+    - "lib/features/*/presentation/widgets"
   status:
     project:
       default: false # disable the default status that measures entire project
