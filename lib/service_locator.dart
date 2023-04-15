@@ -93,13 +93,6 @@ void configureServices() {
   );
 
   // Repositories
-  sl.registerFactory<OccupationRepository>(
-    () => OccupationRepository(
-      apiV1: sl<CoffeecardApi>(),
-      executor: sl<NetworkRequestExecutor>(),
-    ),
-  );
-
   sl.registerFactory<ReceiptRepository>(
     () => ReceiptRepository(
       productRepository: sl<ProductRepository>(),
