@@ -38,15 +38,13 @@ class ReceiptRepository {
 
     return usedTicketsEither.fold(
       (l) => Left(l),
-      (usedTickets) {
-        return purchasedTicketsEither.map(
-          (purchasedTickets) {
-            final allTickets = [...usedTickets, ...purchasedTickets];
-            allTickets.sort((a, b) => b.timeUsed.compareTo(a.timeUsed));
-            return allTickets;
-          },
-        );
-      },
+      (usedTickets) => purchasedTicketsEither.map(
+        (purchasedTickets) {
+          final allTickets = [...usedTickets, ...purchasedTickets];
+          allTickets.sort((a, b) => b.timeUsed.compareTo(a.timeUsed));
+          return allTickets;
+        },
+      ),
     );
   }
 }
