@@ -2,9 +2,9 @@ import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
-import 'package:coffeecard/cubits/user/user_cubit.dart';
 import 'package:coffeecard/features/opening_hours/opening_hours.dart';
 import 'package:coffeecard/features/opening_hours/presentation/pages/opening_hours_page.dart';
+import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
 import 'package:coffeecard/utils/api_uri_constants.dart';
 import 'package:coffeecard/utils/launch.dart';
 import 'package:coffeecard/widgets/components/dialog.dart';
@@ -208,7 +208,7 @@ void _showDeleteAccountDialog(BuildContext context, String email) {
           style: TextStyle(color: AppColor.errorOnBright),
         ),
         onPressed: () {
-          context.read<UserCubit>().requestAccountDeletion();
+          context.read<UserCubit>().requestUserAccountDeletion();
 
           closeAppDialog(context);
           appDialog(

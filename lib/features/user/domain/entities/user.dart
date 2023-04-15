@@ -1,5 +1,4 @@
-import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
-import 'package:coffeecard/models/occupation.dart';
+import 'package:coffeecard/features/occupation/domain/entities/occupation.dart';
 import 'package:equatable/equatable.dart';
 
 class User extends Equatable {
@@ -7,7 +6,6 @@ class User extends Equatable {
   final String name;
   final String email;
   final bool privacyActivated;
-  final int occupationId;
   final Occupation occupation;
   final int rankMonth;
   final int rankSemester;
@@ -18,23 +16,11 @@ class User extends Equatable {
     required this.name,
     required this.email,
     required this.privacyActivated,
-    required this.occupationId,
-    this.occupation = const Occupation.empty(),
+    required this.occupation,
     required this.rankMonth,
     required this.rankSemester,
     required this.rankTotal,
   });
-
-  User.fromDTO(UserDto dto)
-      : id = dto.id,
-        name = dto.name,
-        email = dto.email,
-        privacyActivated = dto.privacyActivated,
-        occupationId = dto.programmeId,
-        occupation = const Occupation.empty(),
-        rankMonth = dto.rankMonth,
-        rankSemester = dto.rankSemester,
-        rankTotal = dto.rankAllTime;
 
   User copyWith({
     int? id,
@@ -52,7 +38,6 @@ class User extends Equatable {
       name: name ?? this.name,
       email: email ?? this.email,
       privacyActivated: privacyActivated ?? this.privacyActivated,
-      occupationId: occupationId ?? this.occupationId,
       occupation: occupation ?? this.occupation,
       rankMonth: rankMonth ?? this.rankMonth,
       rankSemester: rankSemester ?? this.rankSemester,
@@ -67,7 +52,7 @@ class User extends Equatable {
       name,
       email,
       privacyActivated,
-      occupationId,
+      occupation,
       rankMonth,
       rankSemester,
       rankTotal,
