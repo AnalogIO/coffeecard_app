@@ -4,6 +4,7 @@ coverage:
     - "lib/widgets"
     - "lib/features/*/presentation/widgets"
     - "lib/service_locator.dart"
+    - "lib/generated"
   status:
     project:
       default: false # disable the default status that measures entire project
