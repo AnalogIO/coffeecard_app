@@ -5,7 +5,6 @@ import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/features/occupation/data/models/occupation_model.dart';
 import 'package:coffeecard/features/user/data/datasources/user_remote_data_source.dart';
 import 'package:coffeecard/features/user/data/models/user_model.dart';
-import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
 import 'package:coffeecard/models/account/update_user.dart';
 import 'package:dartz/dartz.dart';
@@ -15,19 +14,16 @@ import 'package:mockito/mockito.dart';
 
 import 'user_remote_data_source_test.mocks.dart';
 
-@GenerateMocks([CoffeecardApi, CoffeecardApiV2, NetworkRequestExecutor])
+@GenerateMocks([CoffeecardApiV2, NetworkRequestExecutor])
 void main() {
-  late MockCoffeecardApi apiV1;
   late MockCoffeecardApiV2 apiV2;
   late MockNetworkRequestExecutor executor;
   late UserRemoteDataSource dataSource;
 
   setUp(() {
-    apiV1 = MockCoffeecardApi();
     apiV2 = MockCoffeecardApiV2();
     executor = MockNetworkRequestExecutor();
     dataSource = UserRemoteDataSource(
-      apiV1: apiV1,
       apiV2: apiV2,
       executor: executor,
     );

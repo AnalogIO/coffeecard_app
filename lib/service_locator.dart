@@ -230,7 +230,6 @@ void initUser() {
   // data source
   sl.registerLazySingleton(
     () => UserRemoteDataSource(
-      apiV1: sl(),
       apiV2: sl(),
       executor: sl(),
     ),

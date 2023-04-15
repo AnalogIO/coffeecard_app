@@ -56,7 +56,7 @@ class _RegisterPageOccupationState extends State<RegisterPageOccupation> {
           if (state is OccupationError) {
             return Center(
               child: ErrorSection(
-                error: state.error,
+                error: state.message,
                 retry: context.read<OccupationCubit>().fetchOccupations,
               ),
             );

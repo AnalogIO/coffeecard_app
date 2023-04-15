@@ -18,7 +18,7 @@ class OccupationCubit extends Cubit<OccupationState> {
     final either = await getOccupations(NoParams());
 
     either.fold(
-      (error) => emit(OccupationError(error: error.reason)),
+      (error) => emit(OccupationError(message: error.reason)),
       (occupations) => emit(OccupationLoaded(occupations: occupations)),
     );
   }

@@ -33,7 +33,7 @@ void main() {
       act: (_) async => cubit.fetchOccupations(),
       expect: () => [
         const OccupationLoading(),
-        const OccupationError(error: 'some error'),
+        const OccupationError(message: 'some error'),
       ],
     );
 

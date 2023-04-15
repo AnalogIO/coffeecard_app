@@ -17,7 +17,7 @@
   },
   "servers": [
     {
-      "url": "https://beta.analogio.dk/api/clippy"
+      "url": "https://analogio.dk/clippy"
     }
   ],
   "paths": {
