@@ -4,7 +4,6 @@ import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
 import 'package:coffeecard/data/api/interceptors/authentication_interceptor.dart';
 import 'package:coffeecard/data/repositories/external/contributor_repository.dart';
 import 'package:coffeecard/data/repositories/shared/account_repository.dart';
-import 'package:coffeecard/data/repositories/v1/occupation_repository.dart';
 import 'package:coffeecard/data/repositories/v1/product_repository.dart';
 import 'package:coffeecard/data/repositories/v1/receipt_repository.dart';
 import 'package:coffeecard/data/repositories/v1/ticket_repository.dart';
@@ -14,7 +13,15 @@ import 'package:coffeecard/data/repositories/v2/leaderboard_repository.dart';
 import 'package:coffeecard/data/repositories/v2/purchase_repository.dart';
 import 'package:coffeecard/data/storage/secure_storage.dart';
 import 'package:coffeecard/env/env.dart';
+import 'package:coffeecard/features/occupation/data/datasources/occupation_remote_data_source.dart';
+import 'package:coffeecard/features/occupation/domain/usecases/get_occupations.dart';
+import 'package:coffeecard/features/occupation/presentation/cubit/occupation_cubit.dart';
 import 'package:coffeecard/features/opening_hours/opening_hours.dart';
+import 'package:coffeecard/features/user/data/datasources/user_remote_data_source.dart';
+import 'package:coffeecard/features/user/domain/usecases/get_user.dart';
+import 'package:coffeecard/features/user/domain/usecases/request_account_deletion.dart';
+import 'package:coffeecard/features/user/domain/usecases/update_user_details.dart';
+import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart'
     hide $JsonSerializableConverter;
@@ -87,13 +94,6 @@ void configureServices() {
 
   // Repositories
   // v1
-  sl.registerFactory<OccupationRepository>(
-    () => OccupationRepository(
-      apiV1: sl<CoffeecardApi>(),
-      executor: sl<NetworkRequestExecutor>(),
-    ),
-  );
-
   sl.registerFactory<ReceiptRepository>(
     () => ReceiptRepository(
       apiV1: sl<CoffeecardApi>(),
@@ -166,6 +166,8 @@ void configureServices() {
 
 void initFeatures() {
   initOpeningHours();
+  initOccupation();
+  initUser();
 }
 
 void initOpeningHours() {
@@ -189,5 +191,47 @@ void initOpeningHours() {
   // data source
   sl.registerLazySingleton<OpeningHoursRemoteDataSource>(
     () => OpeningHoursRemoteDataSource(api: sl(), executor: sl()),
+  );
+}
+
+void initOccupation() {
+  // bloc
+  sl.registerFactory(
+    () => OccupationCubit(getOccupations: sl()),
+  );
+
+  // use case
+  sl.registerFactory(() => GetOccupations(dataSource: sl()));
+
+  // data source
+  sl.registerLazySingleton<OccupationRemoteDataSource>(
+    () => OccupationRemoteDataSource(
+      api: sl(),
+      executor: sl(),
+    ),
+  );
+}
+
+void initUser() {
+  // bloc
+  sl.registerFactory(
+    () => UserCubit(
+      getUser: sl(),
+      requestAccountDeletion: sl(),
+      updateUserDetails: sl(),
+    ),
+  );
+
+  // use case
+  sl.registerFactory(() => GetUser(dataSource: sl()));
+  sl.registerFactory(() => RequestAccountDeletion(dataSource: sl()));
+  sl.registerFactory(() => UpdateUserDetails(dataSource: sl()));
+
+  // data source
+  sl.registerLazySingleton(
+    () => UserRemoteDataSource(
+      apiV2: sl(),
+      executor: sl(),
+    ),
   );
 }

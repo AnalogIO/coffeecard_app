@@ -47,16 +47,6 @@ class TicketRepository {
       ),
     );
 
-    return result.map(
-      (result) => Receipt(
-        productName: result.productName,
-        id: result.id,
-        transactionType: TransactionType.ticketSwipe,
-        timeUsed: result.dateUsed!,
-        // TODO(fremartini): Find a better alternative to these default values They are unused on the receipt overlay, https://github.com/AnalogIO/coffeecard_app/issues/384
-        amountPurchased: -1,
-        price: -1,
-      ),
-    );
+    return result.map(Receipt.fromTicketDTO);
   }
 }
