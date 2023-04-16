@@ -2,7 +2,6 @@ import 'package:coffeecard/models/purchase/payment_status.dart';
 
 class Payment {
   final int id;
-  final String paymentId;
   final PaymentStatus status;
   final String deeplink;
   final int price;
@@ -14,7 +13,6 @@ class Payment {
     required this.id,
     required this.price,
     required this.purchaseTime,
-    required this.paymentId,
     required this.status,
     required this.deeplink,
     required this.productId,
@@ -33,7 +31,6 @@ class Payment {
   }) {
     return Payment(
       id: id ?? this.id,
-      paymentId: paymentId ?? this.paymentId,
       status: status ?? this.status,
       deeplink: deeplink ?? this.deeplink,
       price: price ?? this.price,
