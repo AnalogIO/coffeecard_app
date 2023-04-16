@@ -818,7 +818,6 @@
           "message": {
             "type": "string",
             "description": "Message with API response",
-            "nullable": true,
             "example": "Successful completion"
           }
         }
@@ -870,7 +869,6 @@
           "token": {
             "type": "string",
             "description": "Bearer JWT token used for authentication",
-            "nullable": true,
             "example": "[no example provided]"
           }
         }
@@ -896,6 +894,10 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
+          "StackTrace": {
+            "type": "string",
+            "nullable": true
+          },
           "Message": {
             "type": "string"
           },
@@ -908,10 +910,6 @@
             ]
           },
           "Source": {
-            "type": "string",
-            "nullable": true
-          },
-          "StackTrace": {
             "type": "string",
             "nullable": true
           }
@@ -966,8 +964,7 @@
           "requiredExp": 12,
           "rankAllTime": 15,
           "rankSemester": 4,
-          "rankMonth": 5,
-          "role": "Barista"
+          "rankMonth": 5
         },
         "additionalProperties": false,
         "required": [
@@ -980,8 +977,7 @@
           "requiredExp",
           "rankAllTime",
           "rankSemester",
-          "rankMonth",
-          "role"
+          "rankMonth"
         ],
         "properties": {
           "id": {
@@ -1042,33 +1038,8 @@
             "description": "User's rank current month",
             "format": "int32",
             "example": 5
-          },
-          "role": {
-            "description": "User's role",
-            "example": "Barista",
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/UserGroup"
-              }
-            ]
           }
         }
-      },
-      "UserGroup": {
-        "type": "string",
-        "description": "",
-        "x-enumNames": [
-          "Customer",
-          "Barista",
-          "Manager",
-          "Board"
-        ],
-        "enum": [
-          "Customer",
-          "Barista",
-          "Manager",
-          "Board"
-        ]
       },
       "UpdateUserDto": {
         "type": "object",
@@ -1085,14 +1056,12 @@
           "name": {
             "type": "string",
             "description": "Full Name of user",
-            "nullable": true,
             "example": "John Doe"
           },
           "email": {
             "type": "string",
             "description": "Email of user",
             "format": "email",
-            "nullable": true,
             "example": "john@doe.com"
           },
           "privacyActivated": {
@@ -1111,7 +1080,6 @@
           "password": {
             "type": "string",
             "description": "Pin Code as first UTF8 encoded, then SHA256 hashed, and then Base64 encoded string",
-            "nullable": true,
             "example": "[no example provided]"
           }
         }
@@ -1243,7 +1211,6 @@
           "name": {
             "type": "string",
             "description": "Account name",
-            "nullable": true,
             "example": "John Doe"
           },
           "score": {
