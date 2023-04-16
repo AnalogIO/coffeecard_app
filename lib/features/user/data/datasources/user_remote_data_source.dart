@@ -18,7 +18,7 @@ class UserRemoteDataSource {
   Future<Either<NetworkFailure, UserModel>> getUser() async {
     final result = await executor(() => apiV2.apiV2AccountGet());
 
-    return result.map(UserModel.fromResponseV2);
+    return result.map(UserModel.fromDtoV2);
   }
 
   /// Updates the details of the currently logged in user based on
@@ -38,7 +38,7 @@ class UserRemoteDataSource {
       ),
     );
 
-    return result.map(UserModel.fromResponseV2);
+    return result.map(UserModel.fromDtoV2);
   }
 
   /// Request account deletion for the currently logged in user.

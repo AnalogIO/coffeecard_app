@@ -4,7 +4,7 @@ import 'package:coffeecard/generated/api/coffeecard_api_v2.enums.swagger.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.models.swagger.dart';
 
 class RoleModel extends Role {
-  const RoleModel(super.userGroup);
+  const RoleModel(super.role);
 
   factory RoleModel.fromJson(dynamic json) {
     final role = userRoleFromJson(json);
