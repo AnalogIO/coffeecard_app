@@ -1,6 +1,8 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/features/occupation/domain/entities/occupation.dart';
+import 'package:coffeecard/features/user/domain/entities/role.dart';
+import 'package:coffeecard/features/user/domain/entities/roles.dart';
 import 'package:coffeecard/features/user/domain/entities/user.dart';
 import 'package:coffeecard/features/user/domain/usecases/get_user.dart';
 import 'package:coffeecard/features/user/domain/usecases/request_account_deletion.dart';
@@ -41,6 +43,7 @@ void main() {
     rankMonth: 0,
     rankSemester: 0,
     rankTotal: 0,
+    role: Role(Roles.customer),
   );
 
   group('fetchUserDetails', () {

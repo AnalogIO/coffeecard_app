@@ -69,7 +69,7 @@ class AccountRepository {
       apiV1.apiV1AccountGet,
     );
 
-    return result.map(UserModel.fromDto);
+    return result.map(UserModel.fromDtoV1);
   }
 
   /// Update user information
@@ -86,7 +86,7 @@ class AccountRepository {
       ),
     );
 
-    return result.map(UserModel.fromDto);
+    return result.map(UserModel.fromDtoV1);
   }
 
   Future<Either<NetworkFailure, void>> requestPasscodeReset(
