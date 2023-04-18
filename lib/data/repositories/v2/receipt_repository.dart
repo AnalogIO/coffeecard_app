@@ -22,18 +22,22 @@ class ReceiptRepository {
     final usedTicketsFutureEither = executor(
       () => apiV2.apiV2TicketsGet(includeUsed: true),
     );
-    final purchasedTicketsFutureEither = executor(
+    // The API CAN return null if the user has no tickets,
+    // but the generator doesn't pick up on this, hence the type parameter
+    final purchasedTicketsFutureEither =
+        executor<List<SimplePurchaseResponse>?>(
       apiV2.apiV2PurchasesGet,
     );
 
     final usedTicketsEither = (await usedTicketsFutureEither)
         .map((dto) => dto.map(Receipt.fromTicketResponse));
     final purchasedTicketsEither = (await purchasedTicketsFutureEither).map(
-      (r) => r.map(
-        (purchase) => Receipt.fromSimplePurchaseResponse(
-          purchase,
-        ),
-      ),
+      (simplePurchases) {
+        // If the user has no purchases, the API returns 204 No Content (body is
+        // null). The generator is bad and doesn't handle this case
+        if (simplePurchases == null) return List<Receipt>.empty();
+        return simplePurchases.map(Receipt.fromSimplePurchaseResponse);
+      },
     );
 
     return usedTicketsEither.fold(
