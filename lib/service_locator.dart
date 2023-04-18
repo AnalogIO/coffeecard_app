@@ -1,6 +1,7 @@
 import 'package:chopper/chopper.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
 import 'package:coffeecard/data/api/interceptors/authentication_interceptor.dart';
+import 'package:coffeecard/data/repositories/barista_product/barista_product_repository.dart';
 import 'package:coffeecard/data/repositories/external/contributor_repository.dart';
 import 'package:coffeecard/data/repositories/shared/account_repository.dart';
 import 'package:coffeecard/data/repositories/utils/executor.dart';
@@ -116,8 +117,11 @@ void configureServices() {
       apiV1: sl<CoffeecardApi>(),
       apiV2: sl<CoffeecardApiV2>(),
       executor: sl<Executor>(),
+      baristaProductsRepository: sl(),
     ),
   );
+
+  sl.registerFactory(() => BaristaProductsRepository());
 
   sl.registerFactory<AccountRepository>(
     () => AccountRepository(

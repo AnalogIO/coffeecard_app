@@ -1,4 +1,5 @@
 import 'package:chopper/chopper.dart' as chopper;
+import 'package:coffeecard/data/repositories/barista_product/barista_product_repository.dart';
 import 'package:coffeecard/data/repositories/utils/executor.dart';
 import 'package:coffeecard/data/repositories/v1/ticket_repository.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
@@ -19,6 +20,7 @@ void main() {
 
   late Executor executor;
   late TicketRepository repo;
+  late BaristaProductsRepository baristaProductsRepository;
 
   setUp(() {
     apiV1 = MockCoffeecardApi();
@@ -26,7 +28,13 @@ void main() {
     logger = MockLogger();
 
     executor = Executor(logger);
-    repo = TicketRepository(apiV1: apiV1, apiV2: apiV2, executor: executor);
+    baristaProductsRepository = BaristaProductsRepository();
+    repo = TicketRepository(
+      apiV1: apiV1,
+      apiV2: apiV2,
+      executor: executor,
+      baristaProductsRepository: baristaProductsRepository,
+    );
   });
 
   test('getUserTickets given successfull api response returns right', () async {

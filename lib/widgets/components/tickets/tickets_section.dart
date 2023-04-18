@@ -21,7 +21,7 @@ class BaristaTicketSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _TicketSection(filter: (ticket) => ticket.isBaristaTicket());
+    return _TicketSection(filter: (ticket) => ticket.isBaristaTicket);
   }
 }
 

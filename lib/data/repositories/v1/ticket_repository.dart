@@ -1,3 +1,4 @@
+import 'package:coffeecard/data/repositories/barista_product/barista_product_repository.dart';
 import 'package:coffeecard/data/repositories/utils/executor.dart';
 import 'package:coffeecard/data/repositories/utils/request_types.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
@@ -12,13 +13,16 @@ class TicketRepository {
     required this.apiV1,
     required this.apiV2,
     required this.executor,
+    required this.baristaProductsRepository,
   });
 
   final CoffeecardApi apiV1;
   final CoffeecardApiV2 apiV2;
+  final BaristaProductsRepository baristaProductsRepository;
   final Executor executor;
 
   Future<Either<RequestFailure, List<TicketCount>>> getUserTickets() async {
+    final baristaProductIds = baristaProductsRepository.getBaristaProductIds();
     return executor.execute(
       () => apiV2.apiV2TicketsGet(includeUsed: false),
       (dtoList) {
@@ -30,6 +34,8 @@ class TicketRepository {
                 count: t.value.length,
                 productName: t.key,
                 productId: t.value.first.productId,
+                isBaristaTicket:
+                    baristaProductIds.contains(t.value.first.productId),
               ),
             )
             .sortedBy<num>((t) => t.productId)
