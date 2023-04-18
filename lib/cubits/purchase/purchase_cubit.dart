@@ -16,20 +16,21 @@ class PurchaseCubit extends Cubit<PurchaseState> {
   PurchaseCubit({required this.paymentHandler, required this.product})
       : super(const PurchaseInitial());
 
-  Future<void> payWithMobilePay() async {
+  Future<void> pay() async {
+    sl<FirebaseAnalyticsEventLogging>().beginCheckoutEvent(product);
+
     if (state is PurchaseInitial) {
-      sl<FirebaseAnalyticsEventLogging>().beginCheckoutEvent(product);
       emit(const PurchaseStarted());
 
       final either = await paymentHandler.initPurchase(product.id);
 
       either.fold(
-        (error) => emit(PurchaseError(error.message)),
-        (payment) async {
-          if (payment.status != PaymentStatus.error) {
+        (error) => emit(PurchaseError(error.reason)),
+        (payment) {
+          if (payment.status == PaymentStatus.completed) {
+            emit(PurchaseCompleted(payment));
+          } else if (payment.status == PaymentStatus.awaitingPayment) {
             emit(PurchaseProcessing(payment));
-            await paymentHandler
-                .invokePaymentMethod(Uri.parse(payment.deeplink));
           } else {
             emit(PurchasePaymentRejected(payment));
           }
@@ -47,7 +48,7 @@ class PurchaseCubit extends Cubit<PurchaseState> {
       final either = await paymentHandler.verifyPurchase(payment.id);
 
       either.fold(
-        (error) => emit(PurchaseError(error.message)),
+        (error) => emit(PurchaseError(error.reason)),
         (status) {
           if (status == PaymentStatus.completed) {
             sl<FirebaseAnalyticsEventLogging>().purchaseCompletedEvent(payment);

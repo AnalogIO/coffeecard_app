@@ -1,4 +1,3 @@
-import 'package:coffeecard/core/errors/exceptions.dart';
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/features/opening_hours/domain/entities/opening_hours.dart';
 import 'package:coffeecard/features/opening_hours/opening_hours.dart';
@@ -20,34 +19,10 @@ void main() {
   });
 
   group('getOpeningHours', () {
-    test('should return ServerFailure if data source call fails', () async {
+    test('should propagate error if data source call fails', () async {
       // arrange
-      when(dataSource.isOpen()).thenThrow(ServerException(error: 'some error'));
-
-      // act
-      final actual = await repository.getIsOpen();
-
-      // assert
-      expect(actual, const Left(ServerFailure('some error')));
-    });
-
-    test('should return bool if data source call succeeds', () async {
-      // arrange
-      when(dataSource.isOpen()).thenAnswer((_) async => true);
-
-      // act
-      final actual = await repository.getIsOpen();
-
-      // assert
-      expect(actual, const Right(true));
-    });
-  });
-
-  group('getIsOpen', () {
-    test('should return ServerFailure if data source call fails', () async {
-      // arrange
-      when(dataSource.getOpeningHours()).thenThrow(
-        ServerException(error: 'some error'),
+      when(dataSource.getOpeningHours()).thenAnswer(
+        (_) async => const Left(ServerFailure('some error')),
       );
 
       // act
@@ -59,7 +34,9 @@ void main() {
 
     test('should return map if data source call succeeds', () async {
       // arrange
-      when(dataSource.getOpeningHours()).thenAnswer((_) async => []);
+      when(dataSource.getOpeningHours()).thenAnswer(
+        (_) async => const Right([]),
+      );
 
       // act
       final actual = await repository.getOpeningHours(DateTime.monday);
@@ -70,10 +47,15 @@ void main() {
         const Right(
           OpeningHours(
             allOpeningHours: {
-              6: 'Closed',
-              7: 'Closed',
+              DateTime.monday: 'Closed',
+              DateTime.tuesday: 'Closed',
+              DateTime.wednesday: 'Closed',
+              DateTime.thursday: 'Closed',
+              DateTime.friday: 'Closed',
+              DateTime.saturday: 'Closed',
+              DateTime.sunday: 'Closed',
             },
-            todaysOpeningHours: 'Mondays: null',
+            todaysOpeningHours: 'Mondays: Closed',
           ),
         ),
       );

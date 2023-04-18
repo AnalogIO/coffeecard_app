@@ -145,6 +145,7 @@ abstract class Strings {
   static const confirmSwipe = 'Confirm use of ticket';
   static const confirmPurchase = 'Confirm purchase';
   static const tapHereToCancel = 'Tap here to cancel';
+  static const String paymentConfirmationButtonRedeem = 'Get your free product';
 
   static String paymentConfirmationTopTickets(int amount, String title) {
     return "You're buying $amount $title tickets";
@@ -154,7 +155,7 @@ abstract class Strings {
     return "You're buying and swiping $amount $title";
   }
 
-  static String paymentConfirmationBottom(int price) {
+  static String paymentConfirmationBottomPurchase(int price) {
     return 'Pay $price,- with...';
   }
 
@@ -366,4 +367,5 @@ abstract class Strings {
   static String noInternet =
       "Can't connect to Analog. Are you connected to the internet?";
   static String retry = 'Retry';
+  static String unknownErrorOccured = 'an unknown error occured';
 }

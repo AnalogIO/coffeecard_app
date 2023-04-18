@@ -48,7 +48,7 @@ class _PurchaseProcessState extends State<PurchaseProcess>
               }
               if (state is PurchaseInitial) {
                 // Not related to previous check, hence a separate if statement
-                cubit.payWithMobilePay();
+                cubit.pay();
                 return makeLoadingDialog(
                   title: Strings.purchaseTalking,
                 );

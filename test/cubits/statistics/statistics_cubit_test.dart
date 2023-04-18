@@ -1,6 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
+import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/cubits/statistics/statistics_cubit.dart';
-import 'package:coffeecard/data/repositories/utils/request_types.dart';
 import 'package:coffeecard/data/repositories/v2/leaderboard_repository.dart';
 import 'package:coffeecard/models/leaderboard/leaderboard_user.dart';
 import 'package:dartz/dartz.dart';
@@ -50,13 +50,13 @@ void main() {
       'fetch emits StatisticsError after failed fetch',
       build: () {
         when(leaderboardRepository.getLeaderboard(any)).thenAnswer(
-          (_) async => Left(RequestHttpFailure('ERROR_MESSAGE', 0)),
+          (_) async => const Left(ServerFailure('some error')),
         );
         return statisticsCubit;
       },
       act: (cubit) => cubit.fetch(),
       expect: () => [
-        const StatisticsError('ERROR_MESSAGE', filter: LeaderboardFilter.month),
+        const StatisticsError('some error', filter: LeaderboardFilter.month),
       ],
     );
 
@@ -83,14 +83,14 @@ void main() {
       'setFilter emits StatisticsLoading with correct filter and then emits StatisticsError after failed fetch',
       build: () {
         when(leaderboardRepository.getLeaderboard(any)).thenAnswer(
-          (_) async => Left(RequestHttpFailure('ERROR_MESSAGE', 0)),
+          (_) async => const Left(ServerFailure('some error')),
         );
         return statisticsCubit;
       },
       act: (cubit) => cubit.setFilter(LeaderboardFilter.total),
       expect: () => [
         const StatisticsLoading(filter: LeaderboardFilter.total),
-        const StatisticsError('ERROR_MESSAGE', filter: LeaderboardFilter.total),
+        const StatisticsError('some error', filter: LeaderboardFilter.total),
       ],
     );
 

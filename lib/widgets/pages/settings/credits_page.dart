@@ -8,7 +8,6 @@ import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/utils/api_uri_constants.dart';
 import 'package:coffeecard/utils/launch.dart';
 import 'package:coffeecard/widgets/components/contributor_card.dart';
-import 'package:coffeecard/widgets/components/error_section.dart';
 import 'package:coffeecard/widgets/components/images/analogio_logo.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:coffeecard/widgets/components/section_title.dart';
@@ -32,9 +31,7 @@ class CreditsPage extends StatelessWidget {
           children: [
             BlocBuilder<ContributorCubit, ContributorState>(
               builder: (context, state) {
-                if (state is ContributorLoading) {
-                  return const LinearProgressIndicator();
-                } else if (state is ContributorLoaded) {
+                if (state is ContributorLoaded) {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -45,12 +42,6 @@ class CreditsPage extends StatelessWidget {
                       ),
                       ...state.contributors.map((e) => ContributorCard(e))
                     ],
-                  );
-                } else if (state is ContributorError) {
-                  return ErrorSection(
-                    center: true,
-                    error: state.error,
-                    retry: context.read<ContributorCubit>().getContributors,
                   );
                 }
 

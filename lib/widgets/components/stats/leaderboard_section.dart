@@ -1,6 +1,6 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/cubits/statistics/statistics_cubit.dart';
-import 'package:coffeecard/cubits/user/user_cubit.dart';
+import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
 import 'package:coffeecard/widgets/components/receipt/filter_bar.dart';
 import 'package:coffeecard/widgets/components/section_title.dart';
 import 'package:coffeecard/widgets/components/stats/leaderboard_list_view.dart';

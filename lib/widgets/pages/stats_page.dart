@@ -1,6 +1,6 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/cubits/statistics/statistics_cubit.dart';
-import 'package:coffeecard/cubits/user/user_cubit.dart';
+import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
 import 'package:coffeecard/widgets/components/error_section.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:coffeecard/widgets/components/stats/leaderboard_section.dart';
@@ -21,12 +21,7 @@ class StatsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<void> refresh({required bool loadUserData}) async {
-      await Future.wait([
-        if (loadUserData) context.read<UserCubit>().refreshUserDetails(),
-        context.read<LeaderboardCubit>().fetch(),
-      ]);
-    }
+    Future<void> refresh() async => context.read<LeaderboardCubit>().fetch();
 
     final userState = context.watch<UserCubit>().state;
     final statsState = context.watch<LeaderboardCubit>().state;
@@ -50,12 +45,12 @@ class StatsPage extends StatelessWidget {
 
     return BlocListener<UserCubit, UserState>(
       listenWhen: (_, current) => current is UserLoaded,
-      listener: (context, state) => refresh(loadUserData: false),
+      listener: (context, state) => refresh(),
       child: AppScaffold.withTitle(
         title: Strings.statsPageTitle,
         body: RefreshIndicator(
           displacement: 24,
-          onRefresh: () => refresh(loadUserData: true),
+          onRefresh: () => refresh(),
           child: ListView(
             controller: scrollController,
             physics: loading ? const NeverScrollableScrollPhysics() : null,
