@@ -1,16 +1,30 @@
-import 'package:coffeecard/features/user/domain/entities/roles.dart';
-import 'package:equatable/equatable.dart';
+import 'package:coffeecard/generated/api/coffeecard_api_v2.enums.swagger.dart';
+import 'package:coffeecard/generated/api/coffeecard_api_v2.models.swagger.dart';
 
-class Role extends Equatable {
-  final Roles role;
+enum Role {
+  customer,
+  barista,
+  manager,
+  board,
+}
 
-  const Role(this.role);
+extension RoleExtension on Role {
+  static Role fromJson(dynamic json) {
+    final role = userRoleFromJson(json);
 
-  bool get isBarista => role == Roles.barista;
-  bool get isManager => role == Roles.manager;
-  bool get isBoard => role == Roles.board;
-  bool get isCustomer => role == Roles.customer;
+    switch (role) {
+      case UserRole.customer:
+        return Role.customer;
+      case UserRole.barista:
+        return Role.barista;
+      case UserRole.manager:
+        return Role.manager;
+      case UserRole.board:
+        return Role.board;
+      case UserRole.swaggerGeneratedUnknown:
+        break;
+    }
 
-  @override
-  List<Object?> get props => [role];
+    throw Exception(message: 'unknown role $role');
+  }
 }

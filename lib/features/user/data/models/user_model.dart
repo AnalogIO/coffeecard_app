@@ -1,8 +1,6 @@
 import 'package:coffeecard/features/occupation/data/models/occupation_model.dart';
 import 'package:coffeecard/features/occupation/domain/entities/occupation.dart';
-import 'package:coffeecard/features/user/data/models/role_model.dart';
 import 'package:coffeecard/features/user/domain/entities/role.dart';
-import 'package:coffeecard/features/user/domain/entities/roles.dart';
 import 'package:coffeecard/features/user/domain/entities/user.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
@@ -33,7 +31,7 @@ class UserModel extends User {
       rankMonth: response.rankMonth,
       rankSemester: response.rankSemester,
       rankTotal: response.rankAllTime,
-      role: RoleModel.fromJson(response.role),
+      role: RoleExtension.fromJson(response.role),
     );
   }
 
@@ -47,7 +45,7 @@ class UserModel extends User {
       rankMonth: dto.rankMonth,
       rankSemester: dto.rankSemester,
       rankTotal: dto.rankAllTime,
-      role: const Role(Roles.customer),
+      role: Role.customer,
     );
   }
 }
