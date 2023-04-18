@@ -22,18 +22,19 @@ class ReceiptRepository {
     final usedTicketsFutureEither = executor(
       () => apiV2.apiV2TicketsGet(includeUsed: true),
     );
-    final purchasedTicketsFutureEither = executor(
+    final purchasedTicketsFutureEither =
+        executor<List<SimplePurchaseResponse>?>(
       apiV2.apiV2PurchasesGet,
     );
 
     final usedTicketsEither = (await usedTicketsFutureEither)
         .map((dto) => dto.map(Receipt.fromTicketResponse));
     final purchasedTicketsEither = (await purchasedTicketsFutureEither).map(
-      (r) => r.map(
-        (purchase) => Receipt.fromSimplePurchaseResponse(
-          purchase,
-        ),
-      ),
+      (simplePurchases) {
+        // If the user has no purchases, the API returns 204 No Content (null)
+        if (simplePurchases == null) return List<Receipt>.empty();
+        return simplePurchases.map(Receipt.fromSimplePurchaseResponse);
+      },
     );
 
     return usedTicketsEither.fold(
