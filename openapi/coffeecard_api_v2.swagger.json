@@ -17,7 +17,7 @@
   },
   "servers": [
     {
-      "url": "https://beta.analogio.dk/api/clippy"
+      "url": "https://analogio.dk/clippy"
     }
   ],
   "paths": {
@@ -778,7 +778,8 @@
           "programme": 1,
           "rankAllTime": 15,
           "rankSemester": 4,
-          "rankMonth": 5
+          "rankMonth": 5,
+          "role": "Barista"
         },
         "additionalProperties": false,
         "required": [
@@ -786,6 +787,7 @@
           "name",
           "email",
           "privacyActivated",
+          "role",
           "programme",
           "rankAllTime",
           "rankSemester",
@@ -815,6 +817,15 @@
             "description": "Privacy Activated",
             "example": true
           },
+          "role": {
+            "description": "User's role",
+            "example": "Barista",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/UserRole"
+              }
+            ]
+          },
           "programme": {
             "description": "Study Programme Id of user",
             "example": 1,
@@ -843,6 +854,22 @@
             "example": 5
           }
         }
+      },
+      "UserRole": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "Customer",
+          "Barista",
+          "Manager",
+          "Board"
+        ],
+        "enum": [
+          "Customer",
+          "Barista",
+          "Manager",
+          "Board"
+        ]
       },
       "ProgrammeResponse": {
         "type": "object",

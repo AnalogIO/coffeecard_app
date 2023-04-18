@@ -1,4 +1,5 @@
 import 'package:coffeecard/features/occupation/domain/entities/occupation.dart';
+import 'package:coffeecard/features/user/domain/entities/role.dart';
 import 'package:equatable/equatable.dart';
 
 class User extends Equatable {
@@ -10,6 +11,7 @@ class User extends Equatable {
   final int rankMonth;
   final int rankSemester;
   final int rankTotal;
+  final Role role;
 
   const User({
     required this.id,
@@ -20,6 +22,7 @@ class User extends Equatable {
     required this.rankMonth,
     required this.rankSemester,
     required this.rankTotal,
+    required this.role,
   });
 
   User copyWith({
@@ -32,6 +35,7 @@ class User extends Equatable {
     int? rankMonth,
     int? rankSemester,
     int? rankTotal,
+    Role? role,
   }) {
     return User(
       id: id ?? this.id,
@@ -42,6 +46,7 @@ class User extends Equatable {
       rankMonth: rankMonth ?? this.rankMonth,
       rankSemester: rankSemester ?? this.rankSemester,
       rankTotal: rankTotal ?? this.rankTotal,
+      role: role ?? this.role,
     );
   }
 
