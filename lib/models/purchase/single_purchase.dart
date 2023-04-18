@@ -1,17 +1,18 @@
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
+import 'package:coffeecard/models/purchase/payment_status.dart';
 
 class SinglePurchase {
   final int id;
   final int totalAmount;
   final Map<String, dynamic> paymentDetails;
-  final String purchaseStatus;
+  final PaymentStatus status;
   final DateTime dateCreated;
 
   const SinglePurchase({
     required this.id,
     required this.totalAmount,
     required this.paymentDetails,
-    required this.purchaseStatus,
+    required this.status,
     required this.dateCreated,
   });
 
@@ -19,6 +20,8 @@ class SinglePurchase {
       : id = dto.id,
         totalAmount = dto.totalAmount,
         paymentDetails = dto.paymentDetails as Map<String, dynamic>,
-        purchaseStatus = dto.purchaseStatus as String,
+        status = PaymentStatus.fromPurchaseStatus(
+          purchaseStatusFromJson(dto.purchaseStatus),
+        ),
         dateCreated = dto.dateCreated;
 }

@@ -47,6 +47,6 @@ class TicketRepository {
       ),
     );
 
-    return result.map(Receipt.fromTicketDTO);
+    return result.map(Receipt.fromTicketDto);
   }
 }
