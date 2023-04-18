@@ -1,8 +1,6 @@
 import 'package:coffeecard/features/occupation/data/models/occupation_model.dart';
-import 'package:coffeecard/features/occupation/domain/entities/occupation.dart';
 import 'package:coffeecard/features/user/domain/entities/role.dart';
 import 'package:coffeecard/features/user/domain/entities/user.dart';
-import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
 
 class UserModel extends User {
@@ -18,7 +16,7 @@ class UserModel extends User {
     required super.role,
   });
 
-  factory UserModel.fromDtoV2(UserResponse response) {
+  factory UserModel.fromDto(UserResponse response) {
     final programmeDto =
         ProgrammeResponse.fromJson(response.programme as Map<String, dynamic>);
 
@@ -32,20 +30,6 @@ class UserModel extends User {
       rankSemester: response.rankSemester,
       rankTotal: response.rankAllTime,
       role: RoleExtension.fromJson(response.role),
-    );
-  }
-
-  factory UserModel.fromDtoV1(UserDto dto) {
-    return UserModel(
-      id: dto.id,
-      name: dto.name,
-      email: dto.email,
-      privacyActivated: dto.privacyActivated,
-      occupation: const Occupation.empty(),
-      rankMonth: dto.rankMonth,
-      rankSemester: dto.rankSemester,
-      rankTotal: dto.rankAllTime,
-      role: Role.customer,
     );
   }
 }

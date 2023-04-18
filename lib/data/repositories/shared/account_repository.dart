@@ -66,17 +66,17 @@ class AccountRepository {
 
   Future<Either<NetworkFailure, User>> getUser() async {
     final result = await executor(
-      apiV1.apiV1AccountGet,
+      apiV2.apiV2AccountGet,
     );
 
-    return result.map(UserModel.fromDtoV1);
+    return result.map(UserModel.fromDto);
   }
 
   /// Update user information
   Future<Either<NetworkFailure, User>> updateUser(UpdateUser user) async {
     final result = await executor(
-      () => apiV1.apiV1AccountPut(
-        body: UpdateUserDto(
+      () => apiV2.apiV2AccountPut(
+        body: UpdateUserRequest(
           name: user.name,
           programmeId: user.occupationId,
           email: user.email,
@@ -86,7 +86,7 @@ class AccountRepository {
       ),
     );
 
-    return result.map(UserModel.fromDtoV1);
+    return result.map(UserModel.fromDto);
   }
 
   Future<Either<NetworkFailure, void>> requestPasscodeReset(
