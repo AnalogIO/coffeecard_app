@@ -65,7 +65,9 @@ class _ModalContent extends StatelessWidget {
               ),
               const Gap(4),
               Text(
-                Strings.paymentConfirmationBottom(product.price),
+                product.price != 0
+                    ? Strings.paymentConfirmationBottomPurchase(product.price)
+                    : Strings.paymentConfirmationButtonRedeem,
                 style: AppTextStyle.price,
               ),
               const Gap(12),
@@ -92,6 +94,33 @@ class _BottomModalSheetButtonBarState
     extends State<_BottomModalSheetButtonBar> {
   @override
   Widget build(BuildContext context) {
+    final isFreeProduct = widget.product.price == 0;
+    if (isFreeProduct) {
+      return Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _BottomModalSheetButton(
+            text: 'Redeem product',
+            productId: widget.product.id,
+            price: widget.product.price,
+            onTap: () async {
+              final payment = await showPurchaseOverlay(
+                paymentType: InternalPaymentType.free,
+                product: widget.product,
+                context: context,
+              );
+
+              if (!mounted) return;
+              // Remove this bottom modal sheet.
+              Navigator.pop<Payment>(
+                context,
+                payment,
+              );
+            },
+          ),
+        ],
+      );
+    }
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

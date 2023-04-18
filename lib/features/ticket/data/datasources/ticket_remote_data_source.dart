@@ -44,16 +44,6 @@ class TicketRemoteDataSource {
       () => apiV1.apiV1TicketsUsePost(
         body: UseTicketDTO(productId: productId),
       ),
-    ).bindFuture(
-      (result) => Receipt(
-        productName: result.productName,
-        id: result.id,
-        transactionType: TransactionType.ticketSwipe,
-        timeUsed: result.dateUsed,
-        //FIXME: remove
-        amountPurchased: -1,
-        price: -1,
-      ),
-    );
+    ).bindFuture(Receipt.fromTicketDto);
   }
 }

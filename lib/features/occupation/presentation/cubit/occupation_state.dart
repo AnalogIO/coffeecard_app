@@ -23,7 +23,7 @@ class OccupationLoaded extends OccupationState {
 class OccupationError extends OccupationState {
   final String message;
 
-  const OccupationError(this.message);
+  const OccupationError({required this.message});
 
   @override
   List<Object> get props => [message];

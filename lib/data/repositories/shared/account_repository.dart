@@ -1,11 +1,12 @@
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
+import 'package:coffeecard/features/user/data/models/user_model.dart';
+import 'package:coffeecard/features/user/domain/entities/user.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart'
     hide MessageResponseDto;
 import 'package:coffeecard/models/account/authenticated_user.dart';
 import 'package:coffeecard/models/account/update_user.dart';
-import 'package:coffeecard/models/account/user.dart';
 import 'package:coffeecard/utils/api_uri_constants.dart';
 import 'package:dartz/dartz.dart';
 
@@ -65,17 +66,17 @@ class AccountRepository {
 
   Future<Either<NetworkFailure, User>> getUser() async {
     final result = await executor(
-      apiV1.apiV1AccountGet,
+      apiV2.apiV2AccountGet,
     );
 
-    return result.map((result) => User.fromDTO(result));
+    return result.map(UserModel.fromResponse);
   }
 
   /// Update user information
   Future<Either<NetworkFailure, User>> updateUser(UpdateUser user) async {
     final result = await executor(
-      () => apiV1.apiV1AccountPut(
-        body: UpdateUserDto(
+      () => apiV2.apiV2AccountPut(
+        body: UpdateUserRequest(
           name: user.name,
           programmeId: user.occupationId,
           email: user.email,
@@ -85,7 +86,7 @@ class AccountRepository {
       ),
     );
 
-    return result.map(User.fromDTO);
+    return result.map(UserModel.fromResponse);
   }
 
   Future<Either<NetworkFailure, void>> requestPasscodeReset(

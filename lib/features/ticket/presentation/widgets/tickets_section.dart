@@ -1,9 +1,9 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/environment/environment_cubit.dart';
-import 'package:coffeecard/cubits/user/user_cubit.dart';
 import 'package:coffeecard/errors/match_case_incomplete_exception.dart';
 import 'package:coffeecard/features/ticket/presentation/cubit/tickets_cubit.dart';
+import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
 import 'package:coffeecard/models/environment.dart';
 import 'package:coffeecard/widgets/components/dialog.dart';
 import 'package:coffeecard/widgets/components/error_section.dart';

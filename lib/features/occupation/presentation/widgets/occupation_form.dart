@@ -1,5 +1,5 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/models/occupation.dart';
+import 'package:coffeecard/features/occupation/domain/entities/occupation.dart';
 import 'package:coffeecard/widgets/components/list_entry.dart';
 import 'package:coffeecard/widgets/components/section_title.dart';
 import 'package:coffeecard/widgets/components/settings_list_entry.dart';

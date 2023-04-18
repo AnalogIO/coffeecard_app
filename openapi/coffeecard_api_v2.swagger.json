@@ -17,7 +17,7 @@
   },
   "servers": [
     {
-      "url": "https://beta.analogio.dk/api/clippy"
+      "url": "https://analogio.dk/clippy"
     }
   ],
   "paths": {
@@ -86,6 +86,73 @@
                 }
               }
             }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "Returns basic data about the account",
+        "operationId": "Account_Get",
+        "responses": {
+          "200": {
+            "description": "Successful request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid credentials"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "Updates the account and returns the updated values.\nOnly properties which are present in the UpdateUserRequest will be updated",
+        "operationId": "Account_Update",
+        "requestBody": {
+          "x-name": "updateUserRequest",
+          "description": "Update account information request. All properties are optional as the server only\n            updates the values of the properties which are present",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "Successful request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid credentials"
           }
         },
         "security": [
@@ -700,6 +767,188 @@
           }
         }
       },
+      "UserResponse": {
+        "type": "object",
+        "description": "User information",
+        "example": {
+          "id": 123,
+          "name": "John Doe",
+          "email": "john@doe.com",
+          "privacyActivated": true,
+          "programme": 1,
+          "rankAllTime": 15,
+          "rankSemester": 4,
+          "rankMonth": 5,
+          "role": "Barista"
+        },
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "name",
+          "email",
+          "privacyActivated",
+          "role",
+          "programme",
+          "rankAllTime",
+          "rankSemester",
+          "rankMonth"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "User Id",
+            "format": "int32",
+            "example": 123
+          },
+          "name": {
+            "type": "string",
+            "description": "Full Name of user",
+            "minLength": 1,
+            "example": "John Doe"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email of user",
+            "minLength": 1,
+            "example": "john@doe.com"
+          },
+          "privacyActivated": {
+            "type": "boolean",
+            "description": "Privacy Activated",
+            "example": true
+          },
+          "role": {
+            "description": "User's role",
+            "example": "Barista",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/UserRole"
+              }
+            ]
+          },
+          "programme": {
+            "description": "Study Programme Id of user",
+            "example": 1,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProgrammeResponse"
+              }
+            ]
+          },
+          "rankAllTime": {
+            "type": "integer",
+            "description": "User's Rank all time",
+            "format": "int32",
+            "example": 15
+          },
+          "rankSemester": {
+            "type": "integer",
+            "description": "User's rank current semester",
+            "format": "int32",
+            "example": 4
+          },
+          "rankMonth": {
+            "type": "integer",
+            "description": "User's rank current month",
+            "format": "int32",
+            "example": 5
+          }
+        }
+      },
+      "UserRole": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "Customer",
+          "Barista",
+          "Manager",
+          "Board"
+        ],
+        "enum": [
+          "Customer",
+          "Barista",
+          "Manager",
+          "Board"
+        ]
+      },
+      "ProgrammeResponse": {
+        "type": "object",
+        "description": "Represents a study programme",
+        "example": {
+          "id": 1,
+          "shortName": "SWU",
+          "fullName": "Software Development"
+        },
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "shortName",
+          "fullName"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Id of study programme",
+            "format": "int32",
+            "example": 1
+          },
+          "shortName": {
+            "type": "string",
+            "description": "Short name of study programme",
+            "minLength": 1,
+            "example": "SWU"
+          },
+          "fullName": {
+            "type": "string",
+            "description": "Full name of study programme",
+            "minLength": 1,
+            "example": "Software development"
+          }
+        }
+      },
+      "UpdateUserRequest": {
+        "type": "object",
+        "description": "Update User information request object. All properties are optional as the server only updates the values of the properties which are present",
+        "example": {
+          "name": "John Doe",
+          "email": "john@doe.com",
+          "privacyActivated": true,
+          "programmeId": 1,
+          "password": "[no example provided]"
+        },
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Full Name of user",
+            "example": "John Doe"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email of user",
+            "format": "email",
+            "example": "john@doe.com"
+          },
+          "privacyActivated": {
+            "type": "boolean",
+            "description": "Privacy Activated",
+            "nullable": true,
+            "example": true
+          },
+          "programmeId": {
+            "type": "integer",
+            "description": "Study Programme Id of user",
+            "format": "int32",
+            "nullable": true,
+            "example": 1
+          },
+          "password": {
+            "type": "string",
+            "description": "Pin Code as first UTF8 encoded, then SHA256 hashed, and then Base64 encoded string",
+            "example": "[no example provided]"
+          }
+        }
+      },
       "EmailExistsResponse": {
         "type": "object",
         "description": "Contains information about an email being in use",
@@ -890,6 +1139,7 @@
           "id": 22,
           "dateCreated": "2022-01-09T21:03:52.2283208Z",
           "productId": 1,
+          "productName": "Filter coffee",
           "totalAmount": 300,
           "purchaseStatus": "Completed"
         },
@@ -898,6 +1148,8 @@
           "id",
           "dateCreated",
           "productId",
+          "productName",
+          "numberOfTickets",
           "totalAmount",
           "purchaseStatus"
         ],
@@ -920,6 +1172,18 @@
             "description": "Id of purchased product",
             "format": "int32",
             "example": 1
+          },
+          "productName": {
+            "type": "string",
+            "description": "Name of purchased product",
+            "minLength": 1,
+            "example": 1
+          },
+          "numberOfTickets": {
+            "type": "integer",
+            "description": "Number of tickets issued in purchase",
+            "format": "int32",
+            "example": 10
           },
           "totalAmount": {
             "type": "integer",

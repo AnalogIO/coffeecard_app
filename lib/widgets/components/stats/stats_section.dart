@@ -1,7 +1,7 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
-import 'package:coffeecard/cubits/user/user_cubit.dart';
-import 'package:coffeecard/models/account/user.dart';
+import 'package:coffeecard/features/user/domain/entities/user.dart';
+import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
 import 'package:coffeecard/widgets/components/helpers/grid.dart';
 import 'package:coffeecard/widgets/components/stats/stat_card.dart';
 import 'package:flutter/material.dart';

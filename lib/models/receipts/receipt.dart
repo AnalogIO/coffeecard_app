@@ -1,4 +1,5 @@
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
+import 'package:coffeecard/generated/api/coffeecard_api_v2.models.swagger.dart';
 
 enum TransactionType { purchase, ticketSwipe, placeholder }
 
@@ -21,20 +22,32 @@ class Receipt {
   });
 
   /// Creates a receipt from a used ticket DTO
-  Receipt.fromTicketDTO(TicketDto dto)
+  Receipt.fromTicketDto(TicketDto dto)
       : productName = dto.productName,
         transactionType = TransactionType.ticketSwipe,
-        timeUsed = dto.dateUsed,
+        timeUsed = dto
+            .dateUsed!, // will not be null as the dto is a ticket that has been used at some point
+        price = 1,
+        amountPurchased = 1,
+        id = dto.id;
+
+  /// Creates a receipt from a used ticket DTO
+  Receipt.fromTicketResponse(TicketResponse dto)
+      : productName = dto.productName,
+        transactionType = TransactionType.ticketSwipe,
+        timeUsed = dto
+            .dateUsed!, // will not be null as the dto is a ticket that has been used at some point
         price = 1,
         amountPurchased = 1,
         id = dto.id;
 
   /// Creates a receipt from a purchase DTO
-  Receipt.fromPurchaseDTO(PurchaseDto dto)
-      : productName = dto.productName,
+  Receipt.fromSimplePurchaseResponse(
+    SimplePurchaseResponse dto,
+  )   : productName = dto.productName,
         transactionType = TransactionType.purchase,
         timeUsed = dto.dateCreated,
-        price = dto.price,
+        price = dto.totalAmount,
         amountPurchased = dto.numberOfTickets,
         id = dto.id;
 }

@@ -15,7 +15,7 @@ update_icon:
 update_name:
 	flutter pub run flutter_app_name
 cov:
-	flutter test --coverage && lcov --remove coverage/lcov.info '*/base/*' '*/service_locator.dart' 'lib/generated/*' -o coverage/lcov.info && genhtml coverage/lcov.info -o coverage/html
+	flutter test --coverage && lcov --remove coverage/lcov.info 'lib/base/*' 'lib/widgets/*' 'lib/features/*/presentation/widgets/*' 'lib/service_locator.dart' 'lib/generated/*' -o coverage/lcov.info && genhtml coverage/lcov.info -o coverage/html
 clean:
 	flutter clean && flutter pub get && flutter pub run build_runner build --delete-conflicting-outputs
 upgrade:
