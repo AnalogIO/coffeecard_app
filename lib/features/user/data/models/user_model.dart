@@ -16,7 +16,7 @@ class UserModel extends User {
     required super.role,
   });
 
-  factory UserModel.fromDto(UserResponse response) {
+  factory UserModel.fromResponse(UserResponse response) {
     final programmeDto =
         ProgrammeResponse.fromJson(response.programme as Map<String, dynamic>);
 
