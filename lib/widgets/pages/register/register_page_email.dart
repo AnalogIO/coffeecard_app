@@ -16,7 +16,9 @@ class RegisterPageEmail extends StatelessWidget {
       child: RegisterEmailForm(
         onSubmit: (email) {
           final _ = Navigator.push(
-              context, RegisterPagePasscode.routeWith(email: email));
+            context,
+            RegisterPagePasscode.routeWith(email: email),
+          );
         },
       ),
     );

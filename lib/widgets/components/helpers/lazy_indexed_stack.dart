@@ -52,9 +52,7 @@ class _LazyIndexedStackState extends State<LazyIndexedStack> {
     if (value == index) {
       return;
     }
-    setState(() {
-      index = value;
-    });
+    index = value;
   }
 
   bool _hasInit(int index) {
@@ -65,7 +63,7 @@ class _LazyIndexedStackState extends State<LazyIndexedStack> {
     return result;
   }
 
-  List<Widget> _buildChildren(BuildContext context) {
+  List<Widget> _buildChildren() {
     final List<Widget> list = <Widget>[];
     for (int i = 0; i < widget.children.length; i++) {
       if (_hasInit(i)) {
@@ -85,7 +83,7 @@ class _LazyIndexedStackState extends State<LazyIndexedStack> {
       alignment: widget.alignment,
       sizing: widget.sizing,
       textDirection: widget.textDirection,
-      children: _buildChildren(context),
+      children: _buildChildren(),
     );
   }
 }

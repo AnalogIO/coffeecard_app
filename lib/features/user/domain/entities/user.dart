@@ -55,6 +55,7 @@ class User extends Equatable {
       id,
       name,
       email,
+      role,
       privacyActivated,
       occupation,
       rankMonth,

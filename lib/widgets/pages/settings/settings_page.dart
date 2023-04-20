@@ -1,3 +1,5 @@
+//TODO(tta777): Refactor file, so rule does not need to be disabled
+//ignore_for_file: prefer-moving-to-variable
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';

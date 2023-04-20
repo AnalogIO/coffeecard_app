@@ -55,8 +55,10 @@ class MobilePayService extends PaymentHandler {
         final Uri mobilepayLink = Uri.parse(payment.deeplink);
 
         if (await canLaunchUrl(mobilepayLink)) {
-          final _ = await launchUrl(mobilepayLink,
-              mode: LaunchMode.externalApplication);
+          final _ = await launchUrl(
+            mobilepayLink,
+            mode: LaunchMode.externalApplication,
+          );
 
           return;
         } else {

@@ -19,7 +19,6 @@ class ReceiptOverlay {
   Future<void> show({
     required Receipt receipt,
     required bool isTestEnvironment,
-    String? optionalText,
   }) async {
     await ScreenBrightness().setScreenBrightness(1);
     if (_context.mounted) {

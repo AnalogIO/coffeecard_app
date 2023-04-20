@@ -57,8 +57,6 @@ class FirebaseAnalyticsEventLogging {
 
   void viewProductEvent(
     Product product,
-    String listId,
-    String listName,
   ) {
     _firebaseAnalytics.logViewItem(
       currency: _currency,
