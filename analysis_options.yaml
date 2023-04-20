@@ -54,6 +54,10 @@ dart_code_metrics:
     - prefer-single-widget-per-file: false
     - avoid-passing-async-when-sync-expected: false
     - avoid-redundant-async: false
+    - avoid-non-ascii-symbols: false
+    - prefer-match-file-name: false
+    - avoid-shrink-wrap-in-lists: false
+    - no-equal-arguments: false
     # - avoid-ignoring-return-values
     # - prefer-match-file-name
     # - avoid-unused-parameters

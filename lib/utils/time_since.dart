@@ -1,5 +1,7 @@
 import 'package:coffeecard/base/strings.dart';
 
+// Invocations are only called once for each return statement and does not affect readability
+//ignore_for_file: prefer-moving-to-variable
 String timeSince(DateTime time, {DateTime? now}) {
   // Set `now` if not provided
   now ??= DateTime.now();

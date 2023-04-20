@@ -23,7 +23,7 @@ class ReceiptOverlay {
   }) async {
     await ScreenBrightness().setScreenBrightness(1);
     if (_context.mounted) {
-      await showDialog(
+      final _ = await showDialog(
         context: _context,
         barrierColor: AppColor.scrim,
         builder: (context) {

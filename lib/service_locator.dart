@@ -1,3 +1,5 @@
+// Simplifies usage of service locator greatly.
+//ignore_for_file: no-equal-arguments
 import 'package:chopper/chopper.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
@@ -79,7 +81,6 @@ void configureServices() {
     baseUrl: ApiUriConstants.shiftyUrl,
     converter: $JsonSerializableConverter(),
     services: [ShiftplanningApi.create()],
-    authenticator: sl.get<ReactivationAuthenticator>(),
   );
 
   sl.registerSingleton<CoffeecardApi>(

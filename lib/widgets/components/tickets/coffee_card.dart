@@ -28,7 +28,7 @@ class CoffeeCard extends StatelessWidget {
       ),
       gap: 36,
       onTap: (context) {
-        showSwipeTicketConfirm(
+        final _ = showSwipeTicketConfirm(
           context: context,
           productName: title,
           amountOwned: amountOwned,
@@ -65,8 +65,10 @@ class _TicketDots extends StatelessWidget {
                   color: (amountOwned > index)
                       ? AppColor.secondary
                       : Colors.transparent,
-                  borderRadius: BorderRadius.circular(14),
-                  border: Border.all(color: AppColor.primary, width: 2),
+                  borderRadius: const BorderRadius.all(Radius.circular(14)),
+                  border: const Border.fromBorderSide(
+                    BorderSide(color: AppColor.primary, width: 2),
+                  ),
                 ),
               );
             }),

@@ -46,7 +46,7 @@ class _SplashErrorPageState extends State<SplashErrorPage> {
               showLoadingOverlay(context);
               // Delay since it is otherwise not obvious
               // a load is happening with no internet
-              await Future.delayed(const Duration(milliseconds: 200));
+              final _ = await Future.delayed(const Duration(milliseconds: 200));
               await environmentLoaded;
               if (mounted) hideLoadingOverlay(context);
             },

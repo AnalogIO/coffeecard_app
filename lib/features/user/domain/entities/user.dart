@@ -30,7 +30,6 @@ class User extends Equatable {
     String? name,
     String? email,
     bool? privacyActivated,
-    int? occupationId,
     Occupation? occupation,
     int? rankMonth,
     int? rankSemester,

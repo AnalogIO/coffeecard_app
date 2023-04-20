@@ -30,7 +30,7 @@ class _PurchaseProcessState extends State<PurchaseProcess>
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
+    final _ = WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
@@ -89,8 +89,8 @@ class _PurchaseProcessState extends State<PurchaseProcess>
 
   StatelessWidget _getTitleWidget(String title) => Text(title);
 
-  RoundedRectangleBorder _getShape() => RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
+  RoundedRectangleBorder _getShape() => const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(16)),
       );
 
   StatelessWidget makeLoadingDialog({

@@ -55,6 +55,7 @@ class _EditProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final occupationShotName = user.occupation.shortName;
     return Column(
       children: [
         const Gap(24),
@@ -67,7 +68,7 @@ class _EditProfile extends StatelessWidget {
         ),
         const Gap(8),
         Text(
-          '${user.occupation.fullName} (${user.occupation.shortName})',
+          '${user.occupation.fullName} ($occupationShotName)',
           style: AppTextStyle.explainer,
         ),
         const Gap(24),
@@ -88,7 +89,7 @@ class _EditProfile extends StatelessWidget {
             SettingListEntry(
               name: Strings.occupation,
               valueWidget: SettingDescription(
-                text: user.occupation.shortName,
+                text: occupationShotName,
               ),
               onTap: () => Navigator.push(context, ChangeOccupationPage.route),
             ),
@@ -101,6 +102,8 @@ class _EditProfile extends StatelessWidget {
                   .setUserPrivacy(privacyActivated: !user.privacyActivated),
               valueWidget: Switch(
                 value: user.privacyActivated,
+                //No action needed on change, only tap
+                //ignore: no-empty-block
                 onChanged: (_) {},
               ),
             ),

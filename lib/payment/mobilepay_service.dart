@@ -50,12 +50,13 @@ class MobilePayService extends PaymentHandler {
   Future<void> _invokeMobilePayApp(
     Either<Failure, Payment> paymentEither,
   ) async {
-    paymentEither.map(
+    final _ = paymentEither.map(
       (payment) async {
         final Uri mobilepayLink = Uri.parse(payment.deeplink);
 
         if (await canLaunchUrl(mobilepayLink)) {
-          await launchUrl(mobilepayLink, mode: LaunchMode.externalApplication);
+          final _ = await launchUrl(mobilepayLink,
+              mode: LaunchMode.externalApplication);
 
           return;
         } else {

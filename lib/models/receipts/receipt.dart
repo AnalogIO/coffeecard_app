@@ -1,8 +1,6 @@
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.models.swagger.dart';
 
-enum TransactionType { purchase, ticketSwipe, placeholder }
-
 /// A receipt for either a used ticket, or a purchase
 class Receipt {
   final String productName;
@@ -51,3 +49,5 @@ class Receipt {
         amountPurchased = dto.numberOfTickets,
         id = dto.id;
 }
+
+enum TransactionType { purchase, ticketSwipe, placeholder }

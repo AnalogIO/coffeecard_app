@@ -27,18 +27,17 @@ class _SplashRouterState extends State<SplashRouter> {
 
     if (authStatus.isUnknown || envState is! EnvironmentLoaded) return;
 
-    final Route route;
-    if (authStatus.isAuthenticated) {
-      route = HomePage.route;
-    } else {
-      route = firstNavigation
-          ? LoginPageEmail.routeFromSplash
-          : LoginPageEmail.routeFromLogout;
-    }
+    final firstNavigationRoute = firstNavigation
+        ? LoginPageEmail.routeFromSplash
+        : LoginPageEmail.routeFromLogout;
+
+    final Route route =
+        authStatus.isAuthenticated ? HomePage.route : firstNavigationRoute;
     firstNavigation = false;
 
     // Replaces the whole navigation stack with the approriate route.
-    widget.navigatorKey.currentState!.pushAndRemoveUntil(route, (_) => false);
+    final _ = widget.navigatorKey.currentState!
+        .pushAndRemoveUntil(route, (_) => false);
   }
 
   @override

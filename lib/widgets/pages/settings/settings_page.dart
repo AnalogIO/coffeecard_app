@@ -132,16 +132,20 @@ class SettingsPage extends StatelessWidget {
                     : null,
                 valueWidget: ShimmerBuilder(
                   showShimmer: openingHoursState is OpeningHoursLoading,
-                  builder: (context, colorIfShimmer) => ColoredBox(
-                    color: colorIfShimmer,
-                    child: SettingValueText(
-                      value: openingHoursState is OpeningHoursLoaded
-                          ? openingHoursState.todaysOpeningHours
-                          : openingHoursState is OpeningHoursLoading
-                              ? Strings.openingHoursShimmerText
-                              : '',
-                    ),
-                  ),
+                  builder: (context, colorIfShimmer) {
+                    final loadingText = openingHoursState is OpeningHoursLoading
+                        ? Strings.openingHoursShimmerText
+                        : '';
+
+                    return ColoredBox(
+                      color: colorIfShimmer,
+                      child: SettingValueText(
+                        value: openingHoursState is OpeningHoursLoaded
+                            ? openingHoursState.todaysOpeningHours
+                            : loadingText,
+                      ),
+                    );
+                  },
                 ),
               ),
               SettingListEntry(

@@ -222,7 +222,6 @@ abstract class Strings {
   static const voucherUsed = 'That voucher is already used';
   static const youRedeemed = 'You redeemed';
   // Needed on th UI
-  //ignore: avoid-non-ascii-symbols
   static const voucherRedeemed = 'Voucher redeemed 🎉';
 
   // Settings
@@ -281,7 +280,6 @@ abstract class Strings {
       'These settings affect your appearance on the leaderboards.';
 
   // Needed on th UI
-  //ignore: avoid-non-ascii-symbols
   static const madeBy = 'Made with ❤ by AnalogIO\nIT University of Copenhagen';
   static const userID = 'User ID';
 

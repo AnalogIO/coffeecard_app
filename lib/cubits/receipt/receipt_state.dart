@@ -33,7 +33,8 @@ class ReceiptState extends Equatable {
         filteredReceipts = filteredReceipts ?? [];
 
   @override
-  List<Object> get props => [status, filterBy, receipts, filteredReceipts];
+  List<Object?> get props =>
+      [status, filterBy, receipts, filteredReceipts, error];
 
   ReceiptState copyWith({
     ReceiptStatus? status,

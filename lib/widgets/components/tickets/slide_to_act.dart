@@ -112,6 +112,7 @@ class SlideActionState extends State<SlideAction>
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
       key: _containerKey,
       height: widget.height,
@@ -121,7 +122,7 @@ class SlideActionState extends State<SlideAction>
           : BoxConstraints.expand(height: widget.height),
       child: Material(
         elevation: widget.elevation,
-        color: widget.outerColor ?? Theme.of(context).colorScheme.secondary,
+        color: widget.outerColor ?? theme.colorScheme.secondary,
         borderRadius: BorderRadius.circular(widget.borderRadius),
         child: Stack(
           alignment: Alignment.center,
@@ -135,8 +136,8 @@ class SlideActionState extends State<SlideAction>
                     textAlign: TextAlign.center,
                     style: widget.textStyle ??
                         TextStyle(
-                          color: widget.innerColor ??
-                              Theme.of(context).primaryIconTheme.color,
+                          color:
+                              widget.innerColor ?? theme.primaryIconTheme.color,
                           fontSize: 24,
                         ),
                   ),
@@ -152,7 +153,7 @@ class SlideActionState extends State<SlideAction>
                     onHorizontalDragEnd: (details) async {
                       _endDx = _dx;
                       if (_progress <= 0.8 || widget.onSubmit == null) {
-                        _cancelAnimation();
+                        final _ = _cancelAnimation();
                       } else {
                         widget.onSubmit!();
                       }
@@ -196,7 +197,7 @@ class SlideActionState extends State<SlideAction>
 
   /// Call this method to revert the animations
   Future reset() async {
-    await _cancelAnimation();
+    final _ = await _cancelAnimation();
   }
 
   Future _cancelAnimation() async {

@@ -1,13 +1,5 @@
 part of 'authentication_cubit.dart';
 
-enum AuthenticationStatus { unknown, authenticated, unauthenticated }
-
-extension AuthenticationStatusIs on AuthenticationStatus {
-  bool get isUnknown => this == AuthenticationStatus.unknown;
-  bool get isAuthenticated => this == AuthenticationStatus.authenticated;
-  bool get isUnauthenticated => this == AuthenticationStatus.unauthenticated;
-}
-
 class AuthenticationState extends Equatable {
   final AuthenticationStatus status;
   final AuthenticatedUser? authenticatedUser;
@@ -29,11 +21,21 @@ class AuthenticationState extends Equatable {
       : this._(status: AuthenticationStatus.unauthenticated);
 
   @override
-  List<Object?> get props =>
-      [status, authenticatedUser?.email, authenticatedUser?.token];
+  List<Object?> get props => [
+        status,
+        authenticatedUser,
+      ];
 
   @override
   String toString() {
     return 'AuthenticationState{status: $status, user: $authenticatedUser}';
   }
+}
+
+enum AuthenticationStatus { unknown, authenticated, unauthenticated }
+
+extension AuthenticationStatusIs on AuthenticationStatus {
+  bool get isUnknown => this == AuthenticationStatus.unknown;
+  bool get isAuthenticated => this == AuthenticationStatus.authenticated;
+  bool get isUnauthenticated => this == AuthenticationStatus.unauthenticated;
 }

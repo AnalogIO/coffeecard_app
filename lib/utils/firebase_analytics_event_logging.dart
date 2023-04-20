@@ -75,14 +75,15 @@ class FirebaseAnalyticsEventLogging {
   }
 
   void beginCheckoutEvent(Product product) {
+    final price = product.price.toDouble();
     _firebaseAnalytics.logBeginCheckout(
-      value: product.price.toDouble(),
+      value: price,
       currency: _currency,
       items: [
         AnalyticsEventItem(
           itemId: product.id.toString(),
           itemName: product.name,
-          price: product.price.toDouble(),
+          price: price,
           currency: _currency,
         ),
       ],
@@ -90,14 +91,15 @@ class FirebaseAnalyticsEventLogging {
   }
 
   void purchaseCompletedEvent(Payment payment) {
+    final price = payment.price.toDouble();
     _firebaseAnalytics.logPurchase(
       currency: _currency,
-      value: payment.price.toDouble(),
+      value: price,
       items: [
         AnalyticsEventItem(
           itemId: payment.productId.toString(),
           itemName: payment.productName,
-          price: payment.price.toDouble(),
+          price: price,
           currency: _currency,
         ),
       ],

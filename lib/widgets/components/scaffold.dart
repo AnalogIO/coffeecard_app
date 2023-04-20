@@ -119,7 +119,7 @@ class _EnvironmentButton extends StatelessWidget {
               title: TestEnvironmentStrings.title,
               children: [
                 Text(
-                  TestEnvironmentStrings.description[0],
+                  TestEnvironmentStrings.description.first,
                   style: AppTextStyle.settingKey,
                 ),
                 const Gap(8),
