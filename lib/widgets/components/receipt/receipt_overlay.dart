@@ -19,11 +19,10 @@ class ReceiptOverlay {
   Future<void> show({
     required Receipt receipt,
     required bool isTestEnvironment,
-    String? optionalText,
   }) async {
     await ScreenBrightness().setScreenBrightness(1);
     if (_context.mounted) {
-      await showDialog(
+      final _ = await showDialog(
         context: _context,
         barrierColor: AppColor.scrim,
         builder: (context) {
@@ -45,7 +44,7 @@ class ReceiptOverlay {
                   Text(
                     Strings.receiptTapAnywhereToDismiss,
                     style: AppTextStyle.explainerBright,
-                  )
+                  ),
                 ],
               ),
             ),

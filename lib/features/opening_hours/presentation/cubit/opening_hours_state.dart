@@ -24,7 +24,7 @@ class OpeningHoursLoaded extends OpeningHoursState {
   });
 
   @override
-  List<Object?> get props => [isOpen, openingHours];
+  List<Object?> get props => [isOpen, openingHours, todaysOpeningHours];
 }
 
 class OpeningHoursError extends OpeningHoursState {

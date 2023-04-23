@@ -80,7 +80,7 @@ class _ModalContentState extends State<_ModalContent>
 
   @override
   Widget build(BuildContext context) {
-    _controller.forward();
+    final _ = _controller.forward();
 
     return SafeArea(
       child: Padding(

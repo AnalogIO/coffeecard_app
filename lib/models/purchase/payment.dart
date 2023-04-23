@@ -21,7 +21,6 @@ class Payment {
 
   Payment copyWith({
     int? id,
-    String? paymentId,
     PaymentStatus? status,
     String? deeplink,
     int? price,

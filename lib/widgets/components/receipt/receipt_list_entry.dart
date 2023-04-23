@@ -64,7 +64,7 @@ class ReceiptListEntry extends StatelessWidget {
                       _formatter.format(receipt.timeUsed),
                       style: AppTextStyle.recieptItemDate,
                     ),
-                  )
+                  ),
                 ],
               ),
               rightWidget: ColoredBox(

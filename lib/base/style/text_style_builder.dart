@@ -147,29 +147,28 @@ class TextStyleBuilder {
     final isBody = _fontFamily == _AnalogFontFamily.body;
     final isMono = _fontFamily == _AnalogFontFamily.mono;
 
-    if (isMono) {
-      return TextStyle(
-        fontFamily: 'RobotoMono',
-        fontSize: _fontSize,
-        fontWeight: _fontWeights[_fontWeight],
-        color: _color,
-        decoration: _decoration,
-      );
-    } else {
-      return TextStyle(
-        fontFamily: 'RobotoFlex',
-        fontSize: _fontSize,
-        color: _color,
-        decoration: _decoration,
-        letterSpacing: _fontFamily == _AnalogFontFamily.body ? 0.25 : null,
-        fontVariations: [
-          FontVariation('wght', _fontWeight),
-          if (_fontSize != null) FontVariation('opsz', _fontSize!),
-          if (isHeading) ..._headingParametricAxes,
-          if (isBody) ..._bodyParametricAxes,
-        ],
-      );
-    }
+    final letterSpacing = _fontFamily == _AnalogFontFamily.body ? 0.25 : null;
+    return isMono
+        ? TextStyle(
+            fontFamily: 'RobotoMono',
+            fontSize: _fontSize,
+            fontWeight: _fontWeights[_fontWeight],
+            color: _color,
+            decoration: _decoration,
+          )
+        : TextStyle(
+            fontFamily: 'RobotoFlex',
+            fontSize: _fontSize,
+            color: _color,
+            decoration: _decoration,
+            letterSpacing: letterSpacing,
+            fontVariations: [
+              FontVariation('wght', _fontWeight),
+              if (_fontSize != null) FontVariation('opsz', _fontSize!),
+              if (isHeading) ..._headingParametricAxes,
+              if (isBody) ..._bodyParametricAxes,
+            ],
+          );
   }
 }
 
@@ -222,7 +221,7 @@ const _headingParametricAxes = [
 ];
 
 // Map font weights to FontWeight enum values.
-const Map<int, FontWeight> _fontWeights = {
+const Map<num, FontWeight> _fontWeights = {
   100: FontWeight.w100,
   200: FontWeight.w200,
   300: FontWeight.w300,

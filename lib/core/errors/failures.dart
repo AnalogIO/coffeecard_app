@@ -28,7 +28,7 @@ class ServerFailure extends NetworkFailure {
       final message = jsonString['message'] as String?;
 
       if (message == null) {
-        return ServerFailure(Strings.unknownErrorOccured);
+        return const ServerFailure(Strings.unknownErrorOccured);
       }
 
       return ServerFailure(message);

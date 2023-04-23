@@ -59,7 +59,7 @@ class CardBase extends StatelessWidget {
       elevation: onTap == null ? 0 : 1,
       padding: EdgeInsets.all(dense ? 16 : 24),
       color: color,
-      borderRadius: BorderRadius.circular(24),
+      borderRadius: const BorderRadius.all(Radius.circular(24)),
       borderColor: borderColor,
       onTap: onTap != null ? () => onTap!(context) : null,
       child: _cardContent,

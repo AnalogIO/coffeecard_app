@@ -19,7 +19,7 @@ class StatisticsLoaded extends StatisticsState {
   final List<LeaderboardUser> leaderboard;
 
   @override
-  List<Object?> get props => [filter, ...leaderboard];
+  List<Object?> get props => [filter, leaderboard];
 }
 
 class StatisticsError extends StatisticsState {

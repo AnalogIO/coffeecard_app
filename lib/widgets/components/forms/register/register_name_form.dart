@@ -42,7 +42,7 @@ class _RegisterNameFormState extends State<RegisterNameForm> {
   Future<void> _showTerms(BuildContext context, String name) async {
     showLoadingOverlay(context);
     // Allow keyboard to disappear before showing dialog
-    await Future.delayed(const Duration(milliseconds: 350));
+    final _ = await Future.delayed(const Duration(milliseconds: 350));
     if (!mounted) return;
 
     // Shows the terms to the user before proceeding with the registration.

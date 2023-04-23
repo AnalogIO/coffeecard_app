@@ -28,6 +28,8 @@ class ReceiptCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localTime = time.toLocal();
+
     return IgnorePointer(
       child: CardBase(
         color: isTestEnvironment
@@ -46,11 +48,11 @@ class ReceiptCard extends StatelessWidget {
             Text(productName, style: AppTextStyle.ownedTicket),
             const Gap(12),
             Text(
-              timeSince(time.toLocal()),
+              timeSince(localTime),
               style: AppTextStyle.textFieldBold,
             ),
             Text(
-              _formatter.format(time.toLocal()),
+              _formatter.format(localTime),
               style: AppTextStyle.textField,
             ),
           ],

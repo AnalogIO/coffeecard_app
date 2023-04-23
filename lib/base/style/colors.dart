@@ -36,7 +36,7 @@ abstract class AppColor {
       shimmerBackground,
       shimmerHighlight,
       shimmerBackground,
-      shimmerBackground
+      shimmerBackground,
     ],
   );
 
