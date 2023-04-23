@@ -106,7 +106,7 @@ jobs:
 
       - name: Set URI (prod)
         if: github.ref_name == 'production'
-        run: sed -i 's/.env.develop/.env.production/' lib/env/env.dart
+        run: sed -i '' 's/.env.develop/.env.production/' lib/env/env.dart
 
       - name: Generate code
         run: flutter pub run build_runner build

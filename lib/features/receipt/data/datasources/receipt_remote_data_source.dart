@@ -27,11 +27,17 @@ class ReceiptRemoteDataSource {
 
   /// Retrieves all of the users purchases
   Future<Either<Failure, List<Receipt>>> getUserPurchases() async {
-    return executor(
+    // The API CAN return null if the user has no tickets,
+    // but the generator doesn't pick up on this, hence the type parameter
+    return executor<List<SimplePurchaseResponse>?>(
       apiV2.apiV2PurchasesGet,
-    ).bindFuture(
-      (result) =>
-          result.map(PurchaseReceiptModel.fromSimplePurchaseResponse).toList(),
-    );
+    ).bindFuture((result) {
+      // If the user has no purchases, the API returns 204 No Content (body is
+      // null). The generator is bad and doesn't handle this case
+      if (result == null) return List<Receipt>.empty();
+      return result
+          .map(PurchaseReceiptModel.fromSimplePurchaseResponse)
+          .toList();
+    });
   }
 }
