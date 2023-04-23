@@ -1,8 +1,8 @@
-import 'package:coffeecard/data/repositories/utils/executor.dart';
-import 'package:coffeecard/data/repositories/utils/request_types.dart';
+import 'package:coffeecard/core/errors/failures.dart';
+import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/models/voucher/redeemed_voucher.dart';
-import 'package:coffeecard/utils/either.dart';
+import 'package:dartz/dartz.dart';
 
 class VoucherRepository {
   VoucherRepository({
@@ -11,14 +11,15 @@ class VoucherRepository {
   });
 
   final CoffeecardApi apiV1;
-  final Executor executor;
+  final NetworkRequestExecutor executor;
 
-  Future<Either<RequestFailure, RedeemedVoucher>> redeemVoucher(
+  Future<Either<NetworkFailure, RedeemedVoucher>> redeemVoucher(
     String voucher,
   ) async {
-    return executor.execute(
+    final result = await executor(
       () => apiV1.apiV1PurchasesRedeemvoucherPost(voucherCode: voucher),
-      RedeemedVoucher.fromDTO,
     );
+
+    return result.map(RedeemedVoucher.fromDTO);
   }
 }

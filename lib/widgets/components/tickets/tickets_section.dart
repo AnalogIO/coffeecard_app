@@ -2,8 +2,8 @@ import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/environment/environment_cubit.dart';
 import 'package:coffeecard/cubits/tickets/tickets_cubit.dart';
-import 'package:coffeecard/cubits/user/user_cubit.dart';
 import 'package:coffeecard/errors/match_case_incomplete_exception.dart';
+import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
 import 'package:coffeecard/models/environment.dart';
 import 'package:coffeecard/widgets/components/dialog.dart';
 import 'package:coffeecard/widgets/components/error_section.dart';
@@ -30,13 +30,13 @@ class TicketSection extends StatelessWidget {
           listener: (context, state) {
             if (state is TicketUsing) {
               if (Navigator.of(context, rootNavigator: true).canPop()) {
-                // If a ticket was used from the puy
+                // If a ticket was used from the buy
                 // single drink flow, there is no swipe overlay
 
                 // Remove the swipe overlay
                 Navigator.of(context, rootNavigator: true).pop();
               }
-              // TODO: consider using a nicer loading indicator
+
               showLoadingOverlay(context);
             }
             if (state is TicketUsed) {

@@ -1,5 +1,5 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/data/repositories/v1/receipt_repository.dart';
+import 'package:coffeecard/data/repositories/v2/receipt_repository.dart';
 import 'package:coffeecard/models/receipts/receipt.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,11 +14,11 @@ class ReceiptCubit extends Cubit<ReceiptState> {
   Future<void> fetchReceipts() async {
     final either = await _repository.getUserReceipts();
 
-    either.caseOf(
+    either.fold(
       (error) => emit(
         state.copyWith(
           status: ReceiptStatus.failure,
-          error: error.message,
+          error: error.reason,
         ),
       ),
       (receipts) => emit(

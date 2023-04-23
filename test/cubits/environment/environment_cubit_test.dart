@@ -1,9 +1,9 @@
 import 'package:bloc_test/bloc_test.dart';
+import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/cubits/environment/environment_cubit.dart';
-import 'package:coffeecard/data/repositories/utils/request_types.dart';
 import 'package:coffeecard/data/repositories/v2/app_config_repository.dart';
 import 'package:coffeecard/models/environment.dart';
-import 'package:coffeecard/utils/either.dart';
+import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -39,12 +39,12 @@ void main() {
       'getConfig emits Error when the repo returns an error',
       build: () {
         when(repo.getEnvironmentType()).thenAnswer(
-          (_) async => Left(RequestHttpFailure('ERROR_MESSAGE', 0)),
+          (_) async => const Left(ServerFailure('some error')),
         );
         return environmentCubit;
       },
       act: (cubit) => cubit.getConfig(),
-      expect: () => [const EnvironmentError('ERROR_MESSAGE')],
+      expect: () => [const EnvironmentError('some error')],
     );
 
     tearDown(() {

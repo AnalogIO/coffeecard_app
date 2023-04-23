@@ -2,7 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:coffeecard/models/purchase/payment.dart';
 import 'package:coffeecard/models/purchase/payment_status.dart';
 import 'package:coffeecard/models/ticket/product.dart';
-import 'package:coffeecard/payment/mobilepay_service.dart';
 import 'package:coffeecard/payment/payment_handler.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/utils/firebase_analytics_event_logging.dart';
@@ -17,31 +16,26 @@ class PurchaseCubit extends Cubit<PurchaseState> {
   PurchaseCubit({required this.paymentHandler, required this.product})
       : super(const PurchaseInitial());
 
-  Future<void> payWithApplePay() async {
-    // TODO: implement me
-    throw UnimplementedError();
-  }
+  Future<void> pay() async {
+    sl<FirebaseAnalyticsEventLogging>().beginCheckoutEvent(product);
 
-  Future<void> payWithMobilePay() async {
     if (state is PurchaseInitial) {
-      sl<FirebaseAnalyticsEventLogging>().beginCheckoutEvent(product);
       emit(const PurchaseStarted());
-      // TODO: Consider if cast can be removed/ abstracted away
-      final MobilePayService service = paymentHandler as MobilePayService;
 
-      final either = await service.initPurchase(product.id);
-      if (either.isRight) {
-        final Payment payment = either.right;
+      final either = await paymentHandler.initPurchase(product.id);
 
-        if (payment.status != PaymentStatus.error) {
-          emit(PurchaseProcessing(payment));
-          await service.invokeMobilePay(Uri.parse(payment.deeplink));
-        } else {
-          emit(PurchasePaymentRejected(payment));
-        }
-      } else {
-        emit(PurchaseError(either.left.message));
-      }
+      either.fold(
+        (error) => emit(PurchaseError(error.reason)),
+        (payment) {
+          if (payment.status == PaymentStatus.completed) {
+            emit(PurchaseCompleted(payment));
+          } else if (payment.status == PaymentStatus.awaitingPayment) {
+            emit(PurchaseProcessing(payment));
+          } else {
+            emit(PurchasePaymentRejected(payment));
+          }
+        },
+      );
     }
   }
 
@@ -53,31 +47,29 @@ class PurchaseCubit extends Cubit<PurchaseState> {
       emit(PurchaseVerifying(payment));
       final either = await paymentHandler.verifyPurchase(payment.id);
 
-      if (either.isRight) {
-        final status = either.right;
+      either.fold(
+        (error) => emit(PurchaseError(error.reason)),
+        (status) {
+          if (status == PaymentStatus.completed) {
+            sl<FirebaseAnalyticsEventLogging>().purchaseCompletedEvent(payment);
+            emit(PurchaseCompleted(payment.copyWith(status: status)));
+          } else if (status == PaymentStatus.reserved) {
+            // NOTE, recursive call, potentially infinite.
+            // If payment has been reserved, i.e. approved by user
+            // we will keep checking the backend to verify payment has been captured
 
-        if (status == PaymentStatus.completed) {
-          sl<FirebaseAnalyticsEventLogging>().purchaseCompletedEvent(payment);
-          emit(PurchaseCompleted(payment.copyWith(status: status)));
-        } else if (status == PaymentStatus.reserved) {
-          // NOTE, recursive call, potentially infinite.
-          // If payment has been reserved, i.e. approved by user
-          // we will keep checking the backend to verify payment has been captured
-
-          // Emit processing state to allow the verifyPurchase process again
-          emit(
-            PurchaseProcessing(
-              payment.copyWith(status: status),
-            ),
-          );
-          verifyPurchase();
-        } else {
-          emit(PurchasePaymentRejected(payment.copyWith(status: status)));
-          // TODO: Consider if more error handling is needed
-        }
-      } else {
-        emit(PurchaseError(either.left.message));
-      }
+            // Emit processing state to allow the verifyPurchase process again
+            emit(
+              PurchaseProcessing(
+                payment.copyWith(status: status),
+              ),
+            );
+            verifyPurchase();
+          } else {
+            emit(PurchasePaymentRejected(payment.copyWith(status: status)));
+          }
+        },
+      );
     }
   }
 }

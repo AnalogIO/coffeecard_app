@@ -23,8 +23,8 @@ class TicketsCubit extends Cubit<TicketsState> {
     emit(TicketUsing(st.tickets));
     final either = await _ticketRepository.useTicket(productId);
 
-    either.caseOf(
-      (error) => emit(TicketsUseError(error.message)),
+    either.fold(
+      (error) => emit(TicketsUseError(error.reason)),
       (receipt) => emit(TicketUsed(receipt, st.tickets)),
     );
     refreshTickets();
@@ -32,8 +32,9 @@ class TicketsCubit extends Cubit<TicketsState> {
 
   Future<void> refreshTickets() async {
     final either = await _ticketRepository.getUserTickets();
-    either.caseOf(
-      (error) => emit(TicketsLoadError(error.message)),
+
+    either.fold(
+      (error) => emit(TicketsLoadError(error.reason)),
       (tickets) => emit(TicketsLoaded(tickets)),
     );
   }

@@ -1,6 +1,7 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/cubits/register/register_cubit.dart';
 import 'package:coffeecard/data/repositories/shared/account_repository.dart';
+import 'package:coffeecard/features/occupation/presentation/cubit/occupation_cubit.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:coffeecard/widgets/pages/register/register_page_email.dart';
@@ -16,11 +17,18 @@ class RegisterFlow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => RegisterCubit(repository: sl<AccountRepository>()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => RegisterCubit(repository: sl<AccountRepository>()),
+        ),
+        BlocProvider(
+          lazy: false,
+          create: (_) => sl<OccupationCubit>()..fetchOccupations(),
+        ),
+      ],
       child: AppScaffold.withTitle(
         title: Strings.registerAppBarTitle,
-        applyPadding: true,
         body: AppFlow(initialRoute: RegisterPageEmail.route),
       ),
     );

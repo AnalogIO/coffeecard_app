@@ -1,9 +1,9 @@
+import 'package:coffeecard/core/errors/failures.dart';
+import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/cubits/statistics/statistics_cubit.dart';
-import 'package:coffeecard/data/repositories/utils/executor.dart';
-import 'package:coffeecard/data/repositories/utils/request_types.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
 import 'package:coffeecard/models/leaderboard/leaderboard_user.dart';
-import 'package:coffeecard/utils/either.dart';
+import 'package:dartz/dartz.dart';
 
 extension _FilterCategoryToPresetString on LeaderboardFilter {
   String get label {
@@ -25,23 +25,25 @@ class LeaderboardRepository {
   });
 
   final CoffeecardApiV2 apiV2;
-  final Executor executor;
+  final NetworkRequestExecutor executor;
 
-  Future<Either<RequestFailure, List<LeaderboardUser>>> getLeaderboard(
+  Future<Either<NetworkFailure, List<LeaderboardUser>>> getLeaderboard(
     LeaderboardFilter category,
   ) async {
-    return executor.execute(
+    final result = await executor(
       () => apiV2.apiV2LeaderboardTopGet(preset: category.label, top: 10),
-      (dtoList) => dtoList.map(LeaderboardUser.fromDTO).toList(),
     );
+
+    return result.map((result) => result.map(LeaderboardUser.fromDTO).toList());
   }
 
-  Future<Either<RequestFailure, LeaderboardUser>> getLeaderboardUser(
+  Future<Either<NetworkFailure, LeaderboardUser>> getLeaderboardUser(
     LeaderboardFilter category,
   ) async {
-    return executor.execute(
+    final result = await executor(
       () => apiV2.apiV2LeaderboardGet(preset: category.label),
-      LeaderboardUser.fromDTO,
     );
+
+    return result.map(LeaderboardUser.fromDTO);
   }
 }

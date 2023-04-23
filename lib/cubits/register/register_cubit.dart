@@ -11,19 +11,25 @@ class RegisterCubit extends Cubit<RegisterState> {
 
   RegisterCubit({required this.repository}) : super(RegisterInitial());
 
-  Future<void> register(String name, String email, String passcode) async {
+  Future<void> register(
+    String name,
+    String email,
+    String passcode,
+    int occupationId,
+  ) async {
     final either = await repository.register(
       name,
       email,
       encodePasscode(passcode),
+      occupationId,
     );
 
-    if (either.isRight) {
-      emit(RegisterSuccess());
-    } else {
-      emit(RegisterError(either.left.message));
-    }
-
-    sl<FirebaseAnalyticsEventLogging>().signUpEvent();
+    either.fold(
+      (error) => emit(RegisterError(error.reason)),
+      (_) {
+        emit(RegisterSuccess());
+        sl<FirebaseAnalyticsEventLogging>().signUpEvent();
+      },
+    );
   }
 }

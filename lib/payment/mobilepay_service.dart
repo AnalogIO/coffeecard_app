@@ -1,117 +1,82 @@
 import 'dart:io';
 
-import 'package:coffeecard/data/repositories/utils/request_types.dart';
-import 'package:coffeecard/data/repositories/v2/purchase_repository.dart';
+import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
+import 'package:coffeecard/models/purchase/initiate_purchase.dart';
 import 'package:coffeecard/models/purchase/payment.dart';
 import 'package:coffeecard/models/purchase/payment_status.dart';
 import 'package:coffeecard/payment/payment_handler.dart';
 import 'package:coffeecard/utils/api_uri_constants.dart';
-import 'package:coffeecard/utils/either.dart';
 import 'package:coffeecard/utils/launch.dart';
-import 'package:flutter/widgets.dart';
+import 'package:dartz/dartz.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class MobilePayService implements PaymentHandler {
-  final PurchaseRepository _repository;
-  final BuildContext _context;
-
-  MobilePayService(this._repository, this._context);
-
+class MobilePayService extends PaymentHandler {
+  MobilePayService({
+    required super.purchaseRepository,
+    required super.context,
+  });
   @override
-  Future<Either<RequestFailure, Payment>> initPurchase(int productId) async {
-    final Either<RequestFailure, InitiatePurchaseResponse> response;
-    try {
-      response = await _repository.initiatePurchase(
-        productId,
-        PaymentType.mobilepay,
-      );
-    } catch (e) {
-      return Left(RequestFailure(e.toString()));
-    }
+  Future<Either<Failure, Payment>> initPurchase(int productId) async {
+    final Either<Failure, InitiatePurchase> response;
+    response = await purchaseRepository.initiatePurchase(
+      productId,
+      PaymentType.mobilepay,
+    );
 
-    if (response is Right) {
-      final purchaseResponse = response.right;
-      final paymentDetails = MobilePayPaymentDetails.fromJsonFactory(
-        purchaseResponse.paymentDetails as Map<String, dynamic>,
-      );
+    final either = response.map(
+      (response) {
+        final paymentDetails = MobilePayPaymentDetails.fromJsonFactory(
+          response.paymentDetails,
+        );
 
-      return Right(
-        Payment(
-          id: purchaseResponse.id,
-          paymentId: paymentDetails.paymentId!,
+        return Payment(
+          id: response.id,
           status: PaymentStatus.awaitingPayment,
-          deeplink: paymentDetails.mobilePayAppRedirectUri!,
-          purchaseTime: purchaseResponse.dateCreated,
-          price: purchaseResponse.totalAmount,
-          productId: purchaseResponse.productId,
-          productName: purchaseResponse.productName,
-        ),
-      );
-    }
-    return Left(response.left);
+          deeplink: paymentDetails.mobilePayAppRedirectUri,
+          purchaseTime: response.dateCreated,
+          price: response.totalAmount,
+          productId: response.productId,
+          productName: response.productName,
+        );
+      },
+    );
+
+    await _invokeMobilePayApp(either); // Sideeffect
+
+    return either;
   }
 
-  Future<void> invokeMobilePay(Uri mobilePayDeeplink) async {
-    if (await canLaunchUrl(mobilePayDeeplink)) {
-      await launchUrl(mobilePayDeeplink, mode: LaunchMode.externalApplication);
-    } else {
-      final Uri url;
-
-      // MobilePay not installed, send user to appstore
-      if (Platform.isAndroid) {
-        url = ApiUriConstants.mobilepayAndroid;
-      } else if (Platform.isIOS) {
-        url = ApiUriConstants.mobilepayIOS;
-      } else {
-        // Should never happen
-        throw UnsupportedError('Unsupported platform');
-      }
-
-      launchUrlExternalApplication(url, _context);
-    }
-  }
-
-  @override
-  Future<Either<RequestFailure, PaymentStatus>> verifyPurchase(
-    int purchaseId,
+  Future<void> _invokeMobilePayApp(
+    Either<Failure, Payment> paymentEither,
   ) async {
-    // Call API endpoint, receive PaymentStatus
-    final either = await _repository.getPurchase(purchaseId);
+    paymentEither.map(
+      (payment) async {
+        final Uri mobilepayLink = Uri.parse(payment.deeplink);
 
-    if (either.isRight) {
-      final paymentDetails = MobilePayPaymentDetails.fromJsonFactory(
-        either.right.paymentDetails as Map<String, dynamic>,
-      );
+        if (await canLaunchUrl(mobilepayLink)) {
+          await launchUrl(mobilepayLink, mode: LaunchMode.externalApplication);
 
-      final status = _mapPaymentStateToStatus(paymentDetails.state);
-      if (status == PaymentStatus.completed) {
-        return const Right(PaymentStatus.completed);
-      }
-      // TODO: Cover more cases for PaymentStatus
-      return const Right(PaymentStatus.error);
-    }
+          return;
+        } else {
+          final Uri url = _getAppStoreUri();
 
-    return Left(either.left);
+          // MobilePay not installed, send user to appstore
+          if (context.mounted) {
+            await launchUrlExternalApplication(url, context);
+          }
+        }
+      },
+    );
   }
 
-  PaymentStatus _mapPaymentStateToStatus(String? state) {
-    PaymentStatus status;
-    switch (state) {
-      case 'Initiated':
-        status = PaymentStatus.awaitingPayment;
-        break;
-      case 'Reserved':
-        status = PaymentStatus.reserved;
-        break;
-      case 'Captured':
-        status = PaymentStatus.completed;
-        break;
-      // Cases (cancelledByMerchant, cancelledBySystem, cancelledByUser)
-      default:
-        status = PaymentStatus.rejectedPayment;
-        break;
+  Uri _getAppStoreUri() {
+    if (Platform.isAndroid) {
+      return ApiUriConstants.mobilepayAndroid;
+    } else if (Platform.isIOS) {
+      return ApiUriConstants.mobilepayIOS;
+    } else {
+      throw UnsupportedError('Unsupported platform');
     }
-    return status;
   }
 }
