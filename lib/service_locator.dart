@@ -16,6 +16,10 @@ import 'package:coffeecard/features/occupation/domain/usecases/get_occupations.d
 import 'package:coffeecard/features/occupation/presentation/cubit/occupation_cubit.dart';
 import 'package:coffeecard/features/opening_hours/opening_hours.dart';
 import 'package:coffeecard/features/receipt/data/datasources/receipt_remote_data_source.dart';
+import 'package:coffeecard/features/receipt/data/repositories/receipt_repository_impl.dart';
+import 'package:coffeecard/features/receipt/domain/repositories/receipt_repository.dart';
+import 'package:coffeecard/features/receipt/domain/usecases/get_receipts.dart';
+import 'package:coffeecard/features/receipt/presentation/cubit/receipt_cubit.dart';
 import 'package:coffeecard/features/ticket/data/datasources/ticket_remote_data_source.dart';
 import 'package:coffeecard/features/ticket/domain/usecases/consume_ticket.dart';
 import 'package:coffeecard/features/ticket/domain/usecases/load_tickets.dart';
@@ -96,13 +100,6 @@ void configureServices() {
   );
 
   // Repositories
-  sl.registerFactory<ReceiptRemoteDataSource>(
-    () => ReceiptRemoteDataSource(
-      apiV2: sl<CoffeecardApiV2>(),
-      executor: sl<NetworkRequestExecutor>(),
-    ),
-  );
-
   sl.registerFactory<ProductRepository>(
     () => ProductRepository(
       apiV1: sl<CoffeecardApi>(),
@@ -163,6 +160,7 @@ void initFeatures() {
   initTicket();
   initOccupation();
   initUser();
+  initReceipt();
 }
 
 void initOpeningHours() {
@@ -243,5 +241,25 @@ void initUser() {
       apiV2: sl(),
       executor: sl(),
     ),
+  );
+}
+
+void initReceipt() {
+  // bloc
+  sl.registerLazySingleton(() => ReceiptCubit(getReceipts: sl()));
+
+  // use case
+  sl.registerFactory(() => GetReceipts(repository: sl()));
+
+  // repository
+  sl.registerLazySingleton<ReceiptRepository>(
+    () => ReceiptRepositoryImpl(
+      remoteDataSource: sl(),
+    ),
+  );
+
+  // data source
+  sl.registerLazySingleton(
+    () => ReceiptRemoteDataSource(apiV2: sl(), executor: sl()),
   );
 }
