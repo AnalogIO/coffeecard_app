@@ -9,13 +9,13 @@ import 'package:coffeecard/data/repositories/v1/voucher_repository.dart';
 import 'package:coffeecard/data/repositories/v2/app_config_repository.dart';
 import 'package:coffeecard/data/repositories/v2/leaderboard_repository.dart';
 import 'package:coffeecard/data/repositories/v2/purchase_repository.dart';
-import 'package:coffeecard/data/repositories/v2/receipt_repository.dart';
 import 'package:coffeecard/data/storage/secure_storage.dart';
 import 'package:coffeecard/env/env.dart';
 import 'package:coffeecard/features/occupation/data/datasources/occupation_remote_data_source.dart';
 import 'package:coffeecard/features/occupation/domain/usecases/get_occupations.dart';
 import 'package:coffeecard/features/occupation/presentation/cubit/occupation_cubit.dart';
 import 'package:coffeecard/features/opening_hours/opening_hours.dart';
+import 'package:coffeecard/features/receipt/data/datasources/receipt_remote_data_source.dart';
 import 'package:coffeecard/features/ticket/data/datasources/ticket_remote_data_source.dart';
 import 'package:coffeecard/features/ticket/domain/usecases/consume_ticket.dart';
 import 'package:coffeecard/features/ticket/domain/usecases/load_tickets.dart';
@@ -96,8 +96,8 @@ void configureServices() {
   );
 
   // Repositories
-  sl.registerFactory<ReceiptRepository>(
-    () => ReceiptRepository(
+  sl.registerFactory<ReceiptRemoteDataSource>(
+    () => ReceiptRemoteDataSource(
       productRepository: sl<ProductRepository>(),
       apiV2: sl<CoffeecardApiV2>(),
       executor: sl<NetworkRequestExecutor>(),

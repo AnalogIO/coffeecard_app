@@ -112,8 +112,6 @@ class _ReceiptsPlaceholder extends StatelessWidget {
         timeUsed: DateTime.now(),
         productName: Strings.receiptPlaceholderName,
         transactionType: TransactionType.placeholder,
-        price: -1,
-        amountPurchased: 1,
         id: -1,
       ),
     ),

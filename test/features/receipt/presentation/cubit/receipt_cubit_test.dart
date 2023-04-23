@@ -1,7 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/data/repositories/v2/receipt_repository.dart';
+import 'package:coffeecard/features/receipt/data/datasources/receipt_remote_data_source.dart';
 import 'package:coffeecard/features/receipt/domain/entities/receipt.dart';
 import 'package:coffeecard/features/receipt/presentation/cubit/receipt_cubit.dart';
 import 'package:dartz/dartz.dart';
@@ -16,21 +16,17 @@ final dummyReceipts = [
     id: 1,
     productName: 'Coffee',
     transactionType: TransactionType.purchase,
-    price: 1,
-    amountPurchased: 1,
     timeUsed: DateTime.now(),
   ),
   Receipt(
     id: 2,
     productName: 'Coffee',
     transactionType: TransactionType.ticketSwipe,
-    price: 1,
-    amountPurchased: 1,
     timeUsed: DateTime.now(),
   ),
 ];
 
-@GenerateMocks([ReceiptRepository])
+@GenerateMocks([ReceiptRemoteDataSource])
 void main() {
   group('receipt cubit tests', () {
     late ReceiptCubit receiptCubit;

@@ -1,5 +1,5 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/data/repositories/v2/receipt_repository.dart';
+import 'package:coffeecard/features/receipt/data/datasources/receipt_remote_data_source.dart';
 import 'package:coffeecard/features/receipt/domain/entities/receipt.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 part 'receipt_state.dart';
 
 class ReceiptCubit extends Cubit<ReceiptState> {
-  final ReceiptRepository _repository;
+  final ReceiptRemoteDataSource _repository;
 
   ReceiptCubit(this._repository) : super(ReceiptState());
 

@@ -1,13 +1,14 @@
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/data/repositories/v1/product_repository.dart';
-import 'package:coffeecard/features/receipt/data/models/receipt_model.dart';
+import 'package:coffeecard/features/receipt/data/models/purchase_receipt_model.dart';
+import 'package:coffeecard/features/receipt/data/models/swipe_receipt_model.dart';
 import 'package:coffeecard/features/receipt/domain/entities/receipt.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
 import 'package:dartz/dartz.dart';
 
-class ReceiptRepository {
-  ReceiptRepository({
+class ReceiptRemoteDataSource {
+  ReceiptRemoteDataSource({
     required this.productRepository,
     required this.apiV2,
     required this.executor,
@@ -28,10 +29,10 @@ class ReceiptRepository {
     );
 
     final usedTicketsEither = (await usedTicketsFutureEither)
-        .map((dto) => dto.map(ReceiptModel.fromTicketResponse));
+        .map((dto) => dto.map(SwipeReceiptModel.fromTicketResponse));
     final purchasedTicketsEither = (await purchasedTicketsFutureEither).map(
       (r) => r.map(
-        (purchase) => ReceiptModel.fromSimplePurchaseResponse(
+        (purchase) => PurchaseReceiptModel.fromSimplePurchaseResponse(
           purchase,
         ),
       ),

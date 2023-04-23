@@ -57,8 +57,6 @@ void main() {
       productName: 'productName',
       transactionType: TransactionType.placeholder,
       timeUsed: DateTime.now(),
-      price: 0,
-      amountPurchased: 1,
       id: 0,
     );
 
