@@ -62,7 +62,7 @@ class ContributorCard extends StatelessWidget {
                   ),
                   const Gap(3),
                   Text(
-                    contributor.githubUrl,
+                    contributor.githubUrl.replaceAll('https://', ''),
                     style: AppTextStyle.explainer,
                   ),
                 ],
