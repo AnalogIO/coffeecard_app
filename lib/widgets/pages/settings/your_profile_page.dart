@@ -55,7 +55,7 @@ class _EditProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final occupationShotName = user.occupation.shortName;
+    final occupationShortName = user.occupation.shortName;
     return Column(
       children: [
         const Gap(24),
@@ -68,7 +68,7 @@ class _EditProfile extends StatelessWidget {
         ),
         const Gap(8),
         Text(
-          '${user.occupation.fullName} ($occupationShotName)',
+          '${user.occupation.fullName} ($occupationShortName)',
           style: AppTextStyle.explainer,
         ),
         const Gap(24),
@@ -89,7 +89,7 @@ class _EditProfile extends StatelessWidget {
             SettingListEntry(
               name: Strings.occupation,
               valueWidget: SettingDescription(
-                text: occupationShotName,
+                text: occupationShortName,
               ),
               onTap: () => Navigator.push(context, ChangeOccupationPage.route),
             ),
