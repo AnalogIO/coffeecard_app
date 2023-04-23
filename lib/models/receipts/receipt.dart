@@ -21,6 +21,8 @@ class Receipt {
     required this.id,
   });
 
+  bool get isPurchase => transactionType == TransactionType.purchase;
+
   /// Creates a receipt from a used ticket DTO
   Receipt.fromTicketDto(TicketDto dto)
       : productName = dto.productName,

@@ -47,9 +47,11 @@ class TicketSection extends StatelessWidget {
               final envState = context.read<EnvironmentCubit>().state;
               hideLoadingOverlay(context);
               ReceiptOverlay.of(context).show(
-                receipt: state.receipt,
                 isTestEnvironment:
                     envState is EnvironmentLoaded && envState.env.isTest,
+                isPurchase: state.receipt.isPurchase,
+                productName: state.receipt.productName,
+                timeUsed: state.receipt.timeUsed,
               );
             }
             if (state is TicketsUseError) {

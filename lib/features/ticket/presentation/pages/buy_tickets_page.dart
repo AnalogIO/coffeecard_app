@@ -9,7 +9,6 @@ import 'package:coffeecard/features/ticket/presentation/cubit/tickets_cubit.dart
 import 'package:coffeecard/models/environment.dart';
 import 'package:coffeecard/models/purchase/payment.dart';
 import 'package:coffeecard/models/purchase/payment_status.dart';
-import 'package:coffeecard/models/receipts/receipt.dart';
 import 'package:coffeecard/models/ticket/product.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/utils/firebase_analytics_event_logging.dart';
@@ -123,16 +122,11 @@ class BuyTicketsPage extends StatelessWidget {
             context.read<ReceiptCubit>().fetchReceipts();
 
         ReceiptOverlay.of(context).show(
-          receipt: Receipt(
-            timeUsed: payment.purchaseTime,
-            amountPurchased: product.amount,
-            transactionType: TransactionType.purchase,
-            productName: payment.productName,
-            price: payment.price,
-            id: product.id,
-          ),
           isTestEnvironment:
               envState is EnvironmentLoaded && envState.env.isTest,
+          isPurchase: true,
+          productName: payment.productName,
+          timeUsed: payment.purchaseTime,
         );
         await updateTicketsRequest;
         await updateReceiptsRequest;

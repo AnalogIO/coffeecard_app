@@ -1,7 +1,6 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
-import 'package:coffeecard/models/receipts/receipt.dart';
 import 'package:coffeecard/utils/responsive.dart';
 import 'package:coffeecard/widgets/components/receipt/receipt_card.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +16,9 @@ class ReceiptOverlay {
   }
 
   Future<void> show({
-    required Receipt receipt,
+    required String productName,
+    required DateTime timeUsed,
+    required bool isPurchase,
     required bool isTestEnvironment,
     String? optionalText,
   }) async {
@@ -34,10 +35,9 @@ class ReceiptOverlay {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ReceiptCard(
-                    productName: receipt.productName,
-                    time: receipt.timeUsed,
-                    isPurchase:
-                        receipt.transactionType == TransactionType.purchase,
+                    productName: productName,
+                    time: timeUsed,
+                    isPurchase: isPurchase,
                     isInOverlay: true,
                     isTestEnvironment: isTestEnvironment,
                   ),
