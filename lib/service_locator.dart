@@ -86,7 +86,6 @@ void configureServices() {
     baseUrl: ApiUriConstants.shiftyUrl,
     converter: $JsonSerializableConverter(),
     services: [ShiftplanningApi.create()],
-    authenticator: sl.get<ReactivationAuthenticator>(),
   );
 
   sl.registerSingleton<CoffeecardApi>(

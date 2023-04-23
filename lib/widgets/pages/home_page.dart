@@ -91,9 +91,9 @@ class _HomePageState extends State<HomePage> {
 
   final _bottomNavAppFlows = <AppFlow>[
     AppFlow(
-      navigatorKey: _pages[0].navigatorKey,
+      navigatorKey: _pages.first.navigatorKey,
       initialRoute: TicketsPage.routeWith(
-        scrollController: _pages[0].scrollController,
+        scrollController: _pages.first.scrollController,
       ),
     ),
     AppFlow(
@@ -136,7 +136,7 @@ class _HomePageState extends State<HomePage> {
         ),
         BlocProvider(
           create: (_) => sl<OpeningHoursCubit>()..getOpeninghours(),
-        )
+        ),
       ],
       child: WillPopScope(
         onWillPop: onWillPop,

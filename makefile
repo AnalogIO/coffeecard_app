@@ -9,7 +9,8 @@ icon:
 splash:
 	flutter pub run flutter_native_splash:create
 analyze:
-	flutter analyze
+	flutter analyze && \
+	flutter pub run dart_code_metrics:metrics analyze lib
 update_icon:
 	flutter pub run flutter_launcher_icons:main
 update_name:

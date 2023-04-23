@@ -29,9 +29,9 @@ class OpeningHoursPage extends StatelessWidget {
           Container(
             margin: const EdgeInsets.all(16),
             padding: const EdgeInsets.all(24),
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: AppColor.white,
-              borderRadius: BorderRadius.circular(24),
+              borderRadius: BorderRadius.all(Radius.circular(24)),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,

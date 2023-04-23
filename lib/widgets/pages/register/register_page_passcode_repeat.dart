@@ -25,7 +25,7 @@ class RegisterPagePasscodeRepeat extends StatelessWidget {
       child: RegisterPasscodeRepeatForm(
         passcode: passcode,
         onSubmit: (_) {
-          Navigator.push(
+          final _ = Navigator.push(
             context,
             RegisterPageOccupation.routeWith(email: email, passcode: passcode),
           );

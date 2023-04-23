@@ -39,7 +39,7 @@ class _BottomModalSheetHelperState extends State<BottomModalSheetHelper>
 
   @override
   Widget build(BuildContext context) {
-    _controller.forward();
+    final _ = _controller.forward();
     return FadeTransition(
       opacity: _animation,
       child: GestureDetector(

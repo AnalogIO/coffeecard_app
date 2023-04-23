@@ -1,3 +1,5 @@
+// Uri.parse does not return a const, so all globals can't be made const
+// ignore_for_file: avoid-global-state
 class ApiUriConstants {
   static Uri shiftyUrl = Uri.parse('https://analogio.dk/shiftplanning');
   static const String apiVersion = '1';

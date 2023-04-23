@@ -12,7 +12,7 @@ class ChangePasscodeForm extends StatelessWidget {
       FastSlideTransition(child: const ChangePasscodeForm());
 
   void _onSubmit(BuildContext context, String passcode) {
-    Navigator.push(
+    final _ = Navigator.push(
       context,
       ChangePasscodeRepeatForm.routeWith(passcode: passcode),
     );

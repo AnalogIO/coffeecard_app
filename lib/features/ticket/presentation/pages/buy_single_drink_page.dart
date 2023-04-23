@@ -89,8 +89,6 @@ class BuySingleDrinkPage extends StatelessWidget {
       );
       sl<FirebaseAnalyticsEventLogging>().viewProductEvent(
         product,
-        _fbAnalyticsListId,
-        _fbAnalyticsListName,
       );
 
       final payment = await showModalBottomSheet<Payment>(

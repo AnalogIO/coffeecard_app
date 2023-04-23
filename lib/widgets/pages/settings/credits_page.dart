@@ -40,7 +40,7 @@ class CreditsPage extends StatelessWidget {
                         padding: EdgeInsets.symmetric(horizontal: 16),
                         child: SectionTitle(Strings.developmentTeam),
                       ),
-                      ...state.contributors.map((e) => ContributorCard(e))
+                      ...state.contributors.map((e) => ContributorCard(e)),
                     ],
                   );
                 }

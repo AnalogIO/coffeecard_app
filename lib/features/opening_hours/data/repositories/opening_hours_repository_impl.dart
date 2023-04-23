@@ -48,6 +48,8 @@ class OpeningHoursRepositoryImpl implements OpeningHoursRepository {
 
     // capitalize the closed string
     final closedString =
+        // Closed string is const, and does not contain an emoji
+        //ignore: avoid-substring
         Strings.closed[0].toUpperCase() + Strings.closed.substring(1);
 
     return shiftsByWeekday.map(

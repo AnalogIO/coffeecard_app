@@ -2,7 +2,7 @@ import 'package:coffeecard/base/style/colors.dart';
 import 'package:flutter/material.dart';
 
 void showLoadingOverlay(BuildContext context) {
-  showDialog(
+  final _ = showDialog(
     context: context,
     barrierColor: AppColor.scrim,
     barrierDismissible: false,
