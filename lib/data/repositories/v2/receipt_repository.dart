@@ -1,8 +1,9 @@
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/data/repositories/v1/product_repository.dart';
+import 'package:coffeecard/features/receipt/data/models/receipt_model.dart';
+import 'package:coffeecard/features/receipt/domain/entities/receipt.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
-import 'package:coffeecard/models/receipts/receipt.dart';
 import 'package:dartz/dartz.dart';
 
 class ReceiptRepository {
@@ -27,10 +28,10 @@ class ReceiptRepository {
     );
 
     final usedTicketsEither = (await usedTicketsFutureEither)
-        .map((dto) => dto.map(Receipt.fromTicketResponse));
+        .map((dto) => dto.map(ReceiptModel.fromTicketResponse));
     final purchasedTicketsEither = (await purchasedTicketsFutureEither).map(
       (r) => r.map(
-        (purchase) => Receipt.fromSimplePurchaseResponse(
+        (purchase) => ReceiptModel.fromSimplePurchaseResponse(
           purchase,
         ),
       ),

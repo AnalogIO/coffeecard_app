@@ -1,8 +1,8 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/features/receipt/presentation/widgets/receipt_card.dart';
 import 'package:coffeecard/utils/responsive.dart';
-import 'package:coffeecard/widgets/components/receipt/receipt_card.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:screen_brightness/screen_brightness.dart';

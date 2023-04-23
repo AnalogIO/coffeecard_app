@@ -1,8 +1,8 @@
 import 'package:coffeecard/core/usecases/usecase.dart';
+import 'package:coffeecard/features/receipt/domain/entities/receipt.dart';
 import 'package:coffeecard/features/ticket/domain/entities/ticket_count.dart';
 import 'package:coffeecard/features/ticket/domain/usecases/consume_ticket.dart';
 import 'package:coffeecard/features/ticket/domain/usecases/load_tickets.dart';
-import 'package:coffeecard/models/receipts/receipt.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

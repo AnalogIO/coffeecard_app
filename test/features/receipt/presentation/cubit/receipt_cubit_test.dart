@@ -1,9 +1,9 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/cubits/receipt/receipt_cubit.dart';
 import 'package:coffeecard/data/repositories/v2/receipt_repository.dart';
-import 'package:coffeecard/models/receipts/receipt.dart';
+import 'package:coffeecard/features/receipt/domain/entities/receipt.dart';
+import 'package:coffeecard/features/receipt/presentation/cubit/receipt_cubit.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';

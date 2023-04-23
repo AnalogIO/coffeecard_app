@@ -1,7 +1,7 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/widgets/components/receipt/filter_bar.dart';
-import 'package:coffeecard/widgets/components/receipt/receipt_dropdown.dart';
-import 'package:coffeecard/widgets/components/receipt/receipts_list_view.dart';
+import 'package:coffeecard/features/receipt/presentation/widgets/filter_bar.dart';
+import 'package:coffeecard/features/receipt/presentation/widgets/receipt_dropdown.dart';
+import 'package:coffeecard/features/receipt/presentation/widgets/receipts_list_view.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:flutter/material.dart';
 

@@ -1,8 +1,8 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/cubits/environment/environment_cubit.dart';
+import 'package:coffeecard/features/receipt/presentation/widgets/receipt_card.dart';
 import 'package:coffeecard/models/environment.dart';
 import 'package:coffeecard/utils/responsive.dart';
-import 'package:coffeecard/widgets/components/receipt/receipt_card.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
