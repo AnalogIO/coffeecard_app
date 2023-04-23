@@ -10,8 +10,7 @@ on:
       - lib/**
       - openapi/**
       - .metadata
-      - build.yml
-      - release.yml
+      - .github/workflows/**
       - pubspec.lock
       - pubspec.yml
 
