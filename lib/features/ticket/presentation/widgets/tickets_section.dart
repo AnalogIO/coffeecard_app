@@ -2,6 +2,7 @@ import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/environment/environment_cubit.dart';
 import 'package:coffeecard/errors/match_case_incomplete_exception.dart';
+import 'package:coffeecard/features/receipt/domain/entities/purchase_receipt.dart';
 import 'package:coffeecard/features/receipt/presentation/widgets/receipt_overlay.dart';
 import 'package:coffeecard/features/ticket/presentation/cubit/tickets_cubit.dart';
 import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
@@ -49,7 +50,7 @@ class TicketSection extends StatelessWidget {
               ReceiptOverlay.of(context).show(
                 isTestEnvironment:
                     envState is EnvironmentLoaded && envState.env.isTest,
-                isPurchase: state.receipt.isPurchase,
+                isPurchase: state.receipt is PurchaseReceipt,
                 productName: state.receipt.productName,
                 timeUsed: state.receipt.timeUsed,
               );

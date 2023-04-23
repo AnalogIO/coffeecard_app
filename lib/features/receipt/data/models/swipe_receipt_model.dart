@@ -1,4 +1,3 @@
-import 'package:coffeecard/features/receipt/domain/entities/receipt.dart';
 import 'package:coffeecard/features/receipt/domain/entities/swipe_receipt.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.models.swagger.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.models.swagger.dart';
@@ -6,7 +5,6 @@ import 'package:coffeecard/generated/api/coffeecard_api_v2.models.swagger.dart';
 class SwipeReceiptModel extends SwipeReceipt {
   const SwipeReceiptModel({
     required super.productName,
-    required super.transactionType,
     required super.timeUsed,
     required super.id,
   });
@@ -15,7 +13,6 @@ class SwipeReceiptModel extends SwipeReceipt {
   factory SwipeReceiptModel.fromTicketDto(TicketDto dto) {
     return SwipeReceiptModel(
       productName: dto.productName,
-      transactionType: TransactionType.ticketSwipe,
       timeUsed: dto
           .dateUsed!, // will not be null as the dto is a ticket that has been used at some point
       id: dto.id,
@@ -26,7 +23,6 @@ class SwipeReceiptModel extends SwipeReceipt {
   factory SwipeReceiptModel.fromTicketResponse(TicketResponse dto) {
     return SwipeReceiptModel(
       productName: dto.productName,
-      transactionType: TransactionType.ticketSwipe,
       timeUsed: dto
           .dateUsed!, // will not be null as the dto is a ticket that has been used at some point
       id: dto.id,

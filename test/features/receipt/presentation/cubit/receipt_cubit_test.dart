@@ -2,7 +2,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/features/receipt/data/datasources/receipt_remote_data_source.dart';
-import 'package:coffeecard/features/receipt/domain/entities/receipt.dart';
+import 'package:coffeecard/features/receipt/domain/entities/swipe_receipt.dart';
 import 'package:coffeecard/features/receipt/presentation/cubit/receipt_cubit.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -12,16 +12,14 @@ import 'package:mockito/mockito.dart';
 import 'receipt_cubit_test.mocks.dart';
 
 final dummyReceipts = [
-  Receipt(
+  SwipeReceipt(
     id: 1,
     productName: 'Coffee',
-    transactionType: TransactionType.purchase,
     timeUsed: DateTime.now(),
   ),
-  Receipt(
+  SwipeReceipt(
     id: 2,
     productName: 'Coffee',
-    transactionType: TransactionType.ticketSwipe,
     timeUsed: DateTime.now(),
   ),
 ];
@@ -30,7 +28,7 @@ final dummyReceipts = [
 void main() {
   group('receipt cubit tests', () {
     late ReceiptCubit receiptCubit;
-    final repo = MockReceiptRepository();
+    final repo = MockReceiptRemoteDataSource();
 
     setUp(() {
       receiptCubit = ReceiptCubit(repo);

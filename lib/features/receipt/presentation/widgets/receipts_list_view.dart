@@ -1,8 +1,8 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
-import 'package:coffeecard/features/receipt/domain/entities/receipt.dart';
+import 'package:coffeecard/features/receipt/domain/entities/placeholder_receipt.dart';
 import 'package:coffeecard/features/receipt/presentation/cubit/receipt_cubit.dart';
-import 'package:coffeecard/features/receipt/presentation/widgets/receipt_list_entry.dart';
+import 'package:coffeecard/features/receipt/presentation/widgets/receipt_list_entry_factory.dart';
 import 'package:coffeecard/widgets/components/error_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,8 +33,8 @@ class ReceiptsListView extends StatelessWidget {
                         controller: scrollController,
                         itemCount: state.filteredReceipts.length,
                         itemBuilder: (_, index) {
-                          final r = state.filteredReceipts[index];
-                          return ReceiptListEntry(receipt: r);
+                          final receipt = state.filteredReceipts[index];
+                          return ReceiptListEntryFactory.create(receipt);
                         },
                       ),
               );
@@ -107,14 +107,7 @@ class _ReceiptsEmptyIndicator extends StatelessWidget {
 class _ReceiptsPlaceholder extends StatelessWidget {
   final placeholderListEntries = List.generate(
     20,
-    (_) => ReceiptListEntry(
-      receipt: Receipt(
-        timeUsed: DateTime.now(),
-        productName: Strings.receiptPlaceholderName,
-        transactionType: TransactionType.placeholder,
-        id: -1,
-      ),
-    ),
+    (_) => ReceiptListEntryFactory.create(PlaceholderReceipt()),
   );
 
   @override

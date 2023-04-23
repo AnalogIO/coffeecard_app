@@ -1,6 +1,8 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/features/receipt/data/datasources/receipt_remote_data_source.dart';
+import 'package:coffeecard/features/receipt/domain/entities/purchase_receipt.dart';
 import 'package:coffeecard/features/receipt/domain/entities/receipt.dart';
+import 'package:coffeecard/features/receipt/domain/entities/swipe_receipt.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -49,13 +51,9 @@ class ReceiptCubit extends Cubit<ReceiptState> {
       case ReceiptFilterCategory.all:
         return receipts;
       case ReceiptFilterCategory.swipes:
-        return receipts
-            .where((r) => r.transactionType == TransactionType.ticketSwipe)
-            .toList();
+        return receipts.whereType<SwipeReceipt>().toList();
       case ReceiptFilterCategory.purchases:
-        return receipts
-            .where((r) => r.transactionType == TransactionType.purchase)
-            .toList();
+        return receipts.whereType<PurchaseReceipt>().toList();
     }
   }
 }

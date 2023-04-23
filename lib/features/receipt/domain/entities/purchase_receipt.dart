@@ -6,7 +6,6 @@ class PurchaseReceipt extends Receipt {
 
   const PurchaseReceipt({
     required super.productName,
-    required super.transactionType,
     required super.timeUsed,
     required super.id,
     required this.price,

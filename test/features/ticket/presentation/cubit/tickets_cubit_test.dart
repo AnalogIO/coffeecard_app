@@ -1,6 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/features/receipt/domain/entities/receipt.dart';
+import 'package:coffeecard/features/receipt/domain/entities/placeholder_receipt.dart';
 import 'package:coffeecard/features/ticket/domain/usecases/consume_ticket.dart';
 import 'package:coffeecard/features/ticket/domain/usecases/load_tickets.dart';
 import 'package:coffeecard/features/ticket/presentation/cubit/tickets_cubit.dart';
@@ -53,12 +53,7 @@ void main() {
     );
   });
   group('useTicket', () {
-    final tReceipt = Receipt(
-      productName: 'productName',
-      transactionType: TransactionType.placeholder,
-      timeUsed: DateTime.now(),
-      id: 0,
-    );
+    final tReceipt = PlaceholderReceipt();
 
     blocTest<TicketsCubit, TicketsState>(
       'should not emit new state when state is not [Loaded]',
