@@ -87,7 +87,7 @@ void main() {
     );
 
     blocTest<TicketsCubit, TicketsState>(
-      'should emit [Using, Error Loaded] when state is Loaded',
+      'should emit [Using, Error, Loaded] when state is Loaded',
       build: () => cubit,
       setUp: () {
         when(loadTickets(any)).thenAnswer((_) async => const Right([]));

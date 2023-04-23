@@ -23,14 +23,14 @@ void main() {
         ReceiptRemoteDataSource(apiV2: apiV2, executor: executor);
   });
 
-  group('getUserReceipts', () {
+  group('getUsersUsedTicketsReceipts', () {
     test('should return [Left] if executor fails', () async {
       // arrange
       when(executor<List<TicketResponse>>(any))
           .thenAnswer((_) async => const Left(ServerFailure('some error')));
 
       // act
-      final actual = await remoteDataSource.getUserReceipts();
+      final actual = await remoteDataSource.getUsersUsedTicketsReceipts();
 
       // assert
       expect(actual, const Left(ServerFailure('some error')));
@@ -42,7 +42,7 @@ void main() {
           .thenAnswer((_) async => const Right([]));
 
       // act
-      final actual = await remoteDataSource.getUserReceipts();
+      final actual = await remoteDataSource.getUsersUsedTicketsReceipts();
 
       // assert
       expect(actual.isRight(), true);
@@ -50,14 +50,14 @@ void main() {
     });
   });
 
-  group('getUserPurchases', () {
+  group('getUserPurchasesReceipts', () {
     test('should return [Left] if executor fails', () async {
       // arrange
       when(executor<List<SimplePurchaseResponse>>(any))
           .thenAnswer((_) async => const Left(ServerFailure('some error')));
 
       // act
-      final actual = await remoteDataSource.getUserPurchases();
+      final actual = await remoteDataSource.getUserPurchasesReceipts();
 
       // assert
       expect(actual, const Left(ServerFailure('some error')));
@@ -69,7 +69,7 @@ void main() {
           .thenAnswer((_) async => const Right([]));
 
       // act
-      final actual = await remoteDataSource.getUserPurchases();
+      final actual = await remoteDataSource.getUserPurchasesReceipts();
 
       // assert
       expect(actual.isRight(), true);

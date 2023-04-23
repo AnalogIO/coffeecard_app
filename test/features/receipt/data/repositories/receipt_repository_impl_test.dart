@@ -24,7 +24,7 @@ void main() {
   group('getUserReceipts', () {
     test('should return [Left] if get user receipts fails', () async {
       // arrange
-      when(remoteDataSource.getUserReceipts())
+      when(remoteDataSource.getUsersUsedTicketsReceipts())
           .thenAnswer((_) async => const Left(ServerFailure('some error')));
 
       // act
@@ -36,9 +36,9 @@ void main() {
 
     test('should return [Left] if get user purchases fails', () async {
       // arrange
-      when(remoteDataSource.getUserReceipts())
+      when(remoteDataSource.getUsersUsedTicketsReceipts())
           .thenAnswer((_) async => const Right([]));
-      when(remoteDataSource.getUserReceipts())
+      when(remoteDataSource.getUserPurchasesReceipts())
           .thenAnswer((_) async => const Left(ServerFailure('some error')));
 
       // act
@@ -64,12 +64,12 @@ void main() {
         amountPurchased: 0,
       );
 
-      when(remoteDataSource.getUserReceipts()).thenAnswer(
+      when(remoteDataSource.getUsersUsedTicketsReceipts()).thenAnswer(
         (_) async => Right([
           tSwipedReceipt,
         ]),
       );
-      when(remoteDataSource.getUserPurchases()).thenAnswer(
+      when(remoteDataSource.getUserPurchasesReceipts()).thenAnswer(
         (_) async => Right([
           tPurchasedReceipt,
         ]),

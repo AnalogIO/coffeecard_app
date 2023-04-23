@@ -28,7 +28,7 @@ class ReceiptCubit extends Cubit<ReceiptState> {
         state.copyWith(
           status: ReceiptStatus.success,
           receipts: receipts,
-          filteredReceipts: filter(receipts, state.filterBy),
+          filteredReceipts: _filter(receipts, state.filterBy),
         ),
       ),
     );
@@ -39,13 +39,12 @@ class ReceiptCubit extends Cubit<ReceiptState> {
     emit(
       state.copyWith(
         filterBy: filterBy,
-        filteredReceipts: filter(state.receipts, filterBy),
+        filteredReceipts: _filter(state.receipts, filterBy),
       ),
     );
   }
 
-  // Should only have side effects, move to use case or repository layer
-  List<Receipt> filter(
+  List<Receipt> _filter(
     List<Receipt> receipts,
     ReceiptFilterCategory filterBy,
   ) {

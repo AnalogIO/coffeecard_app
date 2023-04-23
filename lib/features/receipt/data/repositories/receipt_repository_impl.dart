@@ -11,12 +11,14 @@ class ReceiptRepositoryImpl implements ReceiptRepository {
 
   @override
   Future<Either<Failure, List<Receipt>>> getUserReceipts() async {
-    final userReceiptsEither = await remoteDataSource.getUserReceipts();
+    final userReceiptsEither =
+        await remoteDataSource.getUsersUsedTicketsReceipts();
 
     return userReceiptsEither.fold(
       (l) => Left(l),
       (userReceipts) async {
-        final userPurchasesEither = await remoteDataSource.getUserPurchases();
+        final userPurchasesEither =
+            await remoteDataSource.getUserPurchasesReceipts();
 
         return userPurchasesEither.fold(
           (l) => Left(l),

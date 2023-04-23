@@ -16,8 +16,8 @@ class ReceiptRemoteDataSource {
     required this.executor,
   });
 
-  /// Retrieves all of the users receipts
-  Future<Either<Failure, List<Receipt>>> getUserReceipts() async {
+  /// Retrieves all of the users used receipts
+  Future<Either<Failure, List<Receipt>>> getUsersUsedTicketsReceipts() async {
     return executor(
       () => apiV2.apiV2TicketsGet(includeUsed: true),
     ).bindFuture(
@@ -25,8 +25,8 @@ class ReceiptRemoteDataSource {
     );
   }
 
-  /// Retrieves all of the users purchases
-  Future<Either<Failure, List<Receipt>>> getUserPurchases() async {
+  /// Retrieves all of the users purchase receipts
+  Future<Either<Failure, List<Receipt>>> getUserPurchasesReceipts() async {
     // The API CAN return null if the user has no tickets,
     // but the generator doesn't pick up on this, hence the type parameter
     return executor<List<SimplePurchaseResponse>?>(
