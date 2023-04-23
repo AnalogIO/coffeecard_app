@@ -27,10 +27,12 @@ class _SplashRouterState extends State<SplashRouter> {
 
     if (authStatus.isUnknown || envState is! EnvironmentLoaded) return;
 
+    // Where to go if the user is not authenticated.
     final firstNavigationRoute = firstNavigation
         ? LoginPageEmail.routeFromSplash
         : LoginPageEmail.routeFromLogout;
 
+    // If the user is authenticated, go to the home page.
     final Route route =
         authStatus.isAuthenticated ? HomePage.route : firstNavigationRoute;
     firstNavigation = false;
