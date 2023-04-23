@@ -1,20 +1,21 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/features/receipt/data/datasources/receipt_remote_data_source.dart';
+import 'package:coffeecard/core/usecases/usecase.dart';
 import 'package:coffeecard/features/receipt/domain/entities/purchase_receipt.dart';
 import 'package:coffeecard/features/receipt/domain/entities/receipt.dart';
 import 'package:coffeecard/features/receipt/domain/entities/swipe_receipt.dart';
+import 'package:coffeecard/features/receipt/domain/usecases/get_receipts.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'receipt_state.dart';
 
 class ReceiptCubit extends Cubit<ReceiptState> {
-  final ReceiptRemoteDataSource _repository;
+  final GetReceipts getReceipts;
 
-  ReceiptCubit(this._repository) : super(ReceiptState());
+  ReceiptCubit({required this.getReceipts}) : super(ReceiptState());
 
   Future<void> fetchReceipts() async {
-    final either = await _repository.getUserReceipts();
+    final either = await getReceipts(NoParams());
 
     either.fold(
       (error) => emit(
@@ -27,7 +28,7 @@ class ReceiptCubit extends Cubit<ReceiptState> {
         state.copyWith(
           status: ReceiptStatus.success,
           receipts: receipts,
-          filteredReceipts: _filter(receipts, state.filterBy),
+          filteredReceipts: filter(receipts, state.filterBy),
         ),
       ),
     );
@@ -38,12 +39,13 @@ class ReceiptCubit extends Cubit<ReceiptState> {
     emit(
       state.copyWith(
         filterBy: filterBy,
-        filteredReceipts: _filter(state.receipts, filterBy),
+        filteredReceipts: filter(state.receipts, filterBy),
       ),
     );
   }
 
-  List<Receipt> _filter(
+  // Should only have side effects, move to use case or repository layer
+  List<Receipt> filter(
     List<Receipt> receipts,
     ReceiptFilterCategory filterBy,
   ) {

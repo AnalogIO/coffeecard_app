@@ -6,7 +6,6 @@ import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/statistics/statistics_cubit.dart';
 import 'package:coffeecard/data/repositories/v2/leaderboard_repository.dart';
 import 'package:coffeecard/features/opening_hours/opening_hours.dart';
-import 'package:coffeecard/features/receipt/data/datasources/receipt_remote_data_source.dart';
 import 'package:coffeecard/features/receipt/presentation/cubit/receipt_cubit.dart';
 import 'package:coffeecard/features/receipt/presentation/pages/receipts_page.dart';
 import 'package:coffeecard/features/ticket/presentation/cubit/tickets_cubit.dart';
@@ -128,9 +127,7 @@ class _HomePageState extends State<HomePage> {
           create: (_) => sl<TicketsCubit>()..getTickets(),
         ),
         BlocProvider(
-          create: (_) => ReceiptCubit(
-            sl.get<ReceiptRemoteDataSource>(),
-          )..fetchReceipts(),
+          create: (_) => sl<ReceiptCubit>()..fetchReceipts(),
         ),
         BlocProvider(
           create: (_) => LeaderboardCubit(

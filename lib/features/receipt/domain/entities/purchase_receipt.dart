@@ -11,4 +11,8 @@ class PurchaseReceipt extends Receipt {
     required this.price,
     required this.amountPurchased,
   });
+
+  @override
+  List<Object?> get props =>
+      [productName, timeUsed, id, price, amountPurchased];
 }

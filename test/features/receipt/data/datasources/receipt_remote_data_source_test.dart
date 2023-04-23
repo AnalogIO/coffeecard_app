@@ -1,0 +1,79 @@
+import 'package:coffeecard/core/errors/failures.dart';
+import 'package:coffeecard/core/network/network_request_executor.dart';
+import 'package:coffeecard/data/repositories/v1/product_repository.dart';
+import 'package:coffeecard/features/receipt/data/datasources/receipt_remote_data_source.dart';
+import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
+import 'package:dartz/dartz.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
+
+import 'receipt_remote_data_source_test.mocks.dart';
+
+@GenerateMocks([CoffeecardApiV2, ProductRepository, NetworkRequestExecutor])
+void main() {
+  late ReceiptRemoteDataSource remoteDataSource;
+  late MockCoffeecardApiV2 apiV2;
+  late MockNetworkRequestExecutor executor;
+
+  setUp(() {
+    apiV2 = MockCoffeecardApiV2();
+    executor = MockNetworkRequestExecutor();
+    remoteDataSource =
+        ReceiptRemoteDataSource(apiV2: apiV2, executor: executor);
+  });
+
+  group('getUserReceipts', () {
+    test('should return [Left] if executor fails', () async {
+      // arrange
+      when(executor<List<TicketResponse>>(any))
+          .thenAnswer((_) async => const Left(ServerFailure('some error')));
+
+      // act
+      final actual = await remoteDataSource.getUserReceipts();
+
+      // assert
+      expect(actual, const Left(ServerFailure('some error')));
+    });
+
+    test('should return [Right] if executor succeeds', () async {
+      // arrange
+      when(executor<List<TicketResponse>>(any))
+          .thenAnswer((_) async => const Right([]));
+
+      // act
+      final actual = await remoteDataSource.getUserReceipts();
+
+      // assert
+      expect(actual.isRight(), true);
+      actual.map((response) => expect(response, []));
+    });
+  });
+
+  group('getUserPurchases', () {
+    test('should return [Left] if executor fails', () async {
+      // arrange
+      when(executor<List<SimplePurchaseResponse>>(any))
+          .thenAnswer((_) async => const Left(ServerFailure('some error')));
+
+      // act
+      final actual = await remoteDataSource.getUserPurchases();
+
+      // assert
+      expect(actual, const Left(ServerFailure('some error')));
+    });
+
+    test('should return [Right] if executor succeeds', () async {
+      // arrange
+      when(executor<List<SimplePurchaseResponse>>(any))
+          .thenAnswer((_) async => const Right([]));
+
+      // act
+      final actual = await remoteDataSource.getUserPurchases();
+
+      // assert
+      expect(actual.isRight(), true);
+      actual.map((response) => expect(response, []));
+    });
+  });
+}

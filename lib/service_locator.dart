@@ -98,7 +98,6 @@ void configureServices() {
   // Repositories
   sl.registerFactory<ReceiptRemoteDataSource>(
     () => ReceiptRemoteDataSource(
-      productRepository: sl<ProductRepository>(),
       apiV2: sl<CoffeecardApiV2>(),
       executor: sl<NetworkRequestExecutor>(),
     ),
