@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
-import 'package:coffeecard/models/contributor.dart';
+import 'package:coffeecard/features/contributor/domain/entities/contributor.dart';
 import 'package:coffeecard/utils/launch.dart';
 import 'package:coffeecard/widgets/components/helpers/tappable.dart';
 import 'package:flutter/material.dart';

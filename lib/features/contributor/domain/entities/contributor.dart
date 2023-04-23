@@ -1,4 +1,6 @@
-class Contributor {
+import 'package:equatable/equatable.dart';
+
+class Contributor extends Equatable {
   final String name;
   final String avatarUrl;
   final String githubUrl;
@@ -8,4 +10,7 @@ class Contributor {
     required this.avatarUrl,
     required this.githubUrl,
   });
+
+  @override
+  List<Object?> get props => [name, avatarUrl, githubUrl];
 }

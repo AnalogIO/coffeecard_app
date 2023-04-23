@@ -2,7 +2,6 @@ import 'package:chopper/chopper.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
 import 'package:coffeecard/data/api/interceptors/authentication_interceptor.dart';
-import 'package:coffeecard/data/repositories/external/contributor_repository.dart';
 import 'package:coffeecard/data/repositories/shared/account_repository.dart';
 import 'package:coffeecard/data/repositories/v1/product_repository.dart';
 import 'package:coffeecard/data/repositories/v1/ticket_repository.dart';
@@ -13,6 +12,8 @@ import 'package:coffeecard/data/repositories/v2/purchase_repository.dart';
 import 'package:coffeecard/data/repositories/v2/receipt_repository.dart';
 import 'package:coffeecard/data/storage/secure_storage.dart';
 import 'package:coffeecard/env/env.dart';
+import 'package:coffeecard/features/contributor/data/datasources/contributor_repository.dart';
+import 'package:coffeecard/features/contributor/presentation/cubit/contributor_cubit.dart';
 import 'package:coffeecard/features/occupation/data/datasources/occupation_remote_data_source.dart';
 import 'package:coffeecard/features/occupation/domain/usecases/get_occupations.dart';
 import 'package:coffeecard/features/occupation/presentation/cubit/occupation_cubit.dart';
@@ -155,10 +156,6 @@ void configureServices() {
   );
 
   // external
-  sl.registerFactory<ContributorRepository>(
-    ContributorRepository.new,
-  );
-
   sl.registerSingleton<FirebaseAnalyticsEventLogging>(
     FirebaseAnalyticsEventLogging(FirebaseAnalytics.instance),
   );
@@ -168,6 +165,7 @@ void initFeatures() {
   initOpeningHours();
   initOccupation();
   initUser();
+  initContributor();
 }
 
 void initOpeningHours() {
@@ -234,4 +232,12 @@ void initUser() {
       executor: sl(),
     ),
   );
+}
+
+void initContributor() {
+  // bloc
+  sl.registerFactory(() => ContributorCubit(repository: sl()));
+
+  // repository
+  sl.registerLazySingleton(() => ContributorRepository());
 }

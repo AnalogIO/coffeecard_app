@@ -1,7 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
-import 'package:coffeecard/cubits/contributor/contributor_cubit.dart';
-import 'package:coffeecard/data/repositories/external/contributor_repository.dart';
-import 'package:coffeecard/models/contributor.dart';
+import 'package:coffeecard/features/contributor/data/datasources/contributor_repository.dart';
+import 'package:coffeecard/features/contributor/domain/entities/contributor.dart';
+import 'package:coffeecard/features/contributor/presentation/cubit/contributor_cubit.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -23,7 +23,7 @@ void main() {
     final repo = MockContributorRepository();
 
     setUp(() {
-      contributorCubit = ContributorCubit(repo);
+      contributorCubit = ContributorCubit(repository: repo);
     });
 
     test('initial state is ContributorLoaded', () {
