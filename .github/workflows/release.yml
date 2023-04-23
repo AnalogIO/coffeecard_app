@@ -11,6 +11,7 @@ on:
       - openapi/**
       - .metadata
       - build.yml
+      - release.yml
       - pubspec.lock
       - pubspec.yml
 
