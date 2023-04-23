@@ -38,7 +38,7 @@ class _LazyIndexedStackState extends State<LazyIndexedStack> {
   void didUpdateWidget(LazyIndexedStack oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.index != widget.index) {
-      _changeIndex(widget.index);
+      index = widget.index;
     }
   }
 
@@ -46,13 +46,6 @@ class _LazyIndexedStackState extends State<LazyIndexedStack> {
     if (_innerWidgetMap[index] != true) {
       _innerWidgetMap[index] = true;
     }
-  }
-
-  void _changeIndex(int value) {
-    if (value == index) {
-      return;
-    }
-    index = value;
   }
 
   bool _hasInit(int index) {

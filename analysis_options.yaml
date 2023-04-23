@@ -58,6 +58,3 @@ dart_code_metrics:
     - prefer-match-file-name: false
     - avoid-shrink-wrap-in-lists: false
     - no-equal-arguments: false
-    # - avoid-ignoring-return-values
-    # - prefer-match-file-name
-    # - avoid-unused-parameters
