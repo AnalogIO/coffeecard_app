@@ -109,8 +109,10 @@ class BuySingleDrinkPage extends StatelessWidget {
         // Send the user back to the home-screen
         Navigator.pop(context);
 
-        context.read<TicketsCubit>().useTicket(product.id);
-        context.read<ReceiptCubit>().fetchReceipts();
+        final ticketCubit = context.read<TicketsCubit>();
+        final receiptCubit = context.read<ReceiptCubit>();
+        await ticketCubit.useTicket(product.id);
+        await receiptCubit.fetchReceipts();
       }
     }
   }
