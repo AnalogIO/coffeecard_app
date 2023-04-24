@@ -18,7 +18,7 @@ class RegisterPagePasscode extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       child: RegisterPasscodeForm(
         onSubmit: (passcode) {
-          Navigator.push(
+          final _ = Navigator.push(
             context,
             RegisterPagePasscodeRepeat.routeWith(
               email: email,

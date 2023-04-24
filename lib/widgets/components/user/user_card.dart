@@ -29,14 +29,14 @@ class UserCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(24.0),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(24.0)),
       ),
       child: Tappable(
         onTap: isPlaceholder
             ? null
             : () => Navigator.push(context, YourProfilePage.route),
-        borderRadius: BorderRadius.circular(24.0),
+        borderRadius: const BorderRadius.all(Radius.circular(24.0)),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
           child: ShimmerBuilder(

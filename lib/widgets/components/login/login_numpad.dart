@@ -43,7 +43,7 @@ class _NumpadState extends State<Numpad> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    _controller.forward();
+    final _ = _controller.forward();
 
     const borderInside = BorderSide(color: AppColor.lightGray, width: 2);
 

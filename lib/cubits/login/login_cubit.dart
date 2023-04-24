@@ -24,11 +24,7 @@ class LoginCubit extends Cubit<LoginState> {
     final st = state;
 
     final String newPasscode;
-    if (st is LoginTypingPasscode) {
-      newPasscode = st.passcode + input;
-    } else {
-      newPasscode = input;
-    }
+    newPasscode = st is LoginTypingPasscode ? st.passcode + input : input;
 
     emit(LoginTypingPasscode(newPasscode));
 

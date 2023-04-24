@@ -14,6 +14,8 @@ final ThemeData analogTheme = ThemeData(
       const TextSelectionThemeData(cursorColor: AppColor.secondary),
   disabledColor: AppColor.lightGray,
   pageTransitionsTheme: const PageTransitionsTheme(
+    // No intent of supporting aditional platforms
+    // ignore: avoid-missing-enum-constant-in-map
     builders: {
       TargetPlatform.android: CupertinoPageTransitionsBuilder(),
       TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),

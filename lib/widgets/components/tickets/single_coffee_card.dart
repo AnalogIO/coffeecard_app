@@ -26,8 +26,8 @@ class SingleCoffeeCard extends StatelessWidget {
       onTap: onTap,
       child: Card(
         color: AppColor.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(25),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(25)),
         ),
         child: Padding(
           padding: const EdgeInsets.all(16),

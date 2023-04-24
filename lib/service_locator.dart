@@ -4,12 +4,10 @@ import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
 import 'package:coffeecard/data/api/interceptors/authentication_interceptor.dart';
 import 'package:coffeecard/data/repositories/shared/account_repository.dart';
 import 'package:coffeecard/data/repositories/v1/product_repository.dart';
-import 'package:coffeecard/data/repositories/v1/ticket_repository.dart';
 import 'package:coffeecard/data/repositories/v1/voucher_repository.dart';
 import 'package:coffeecard/data/repositories/v2/app_config_repository.dart';
 import 'package:coffeecard/data/repositories/v2/leaderboard_repository.dart';
 import 'package:coffeecard/data/repositories/v2/purchase_repository.dart';
-import 'package:coffeecard/data/repositories/v2/receipt_repository.dart';
 import 'package:coffeecard/data/storage/secure_storage.dart';
 import 'package:coffeecard/env/env.dart';
 import 'package:coffeecard/features/contributor/data/datasources/contributor_repository.dart';
@@ -18,6 +16,15 @@ import 'package:coffeecard/features/occupation/data/datasources/occupation_remot
 import 'package:coffeecard/features/occupation/domain/usecases/get_occupations.dart';
 import 'package:coffeecard/features/occupation/presentation/cubit/occupation_cubit.dart';
 import 'package:coffeecard/features/opening_hours/opening_hours.dart';
+import 'package:coffeecard/features/receipt/data/datasources/receipt_remote_data_source.dart';
+import 'package:coffeecard/features/receipt/data/repositories/receipt_repository_impl.dart';
+import 'package:coffeecard/features/receipt/domain/repositories/receipt_repository.dart';
+import 'package:coffeecard/features/receipt/domain/usecases/get_receipts.dart';
+import 'package:coffeecard/features/receipt/presentation/cubit/receipt_cubit.dart';
+import 'package:coffeecard/features/ticket/data/datasources/ticket_remote_data_source.dart';
+import 'package:coffeecard/features/ticket/domain/usecases/consume_ticket.dart';
+import 'package:coffeecard/features/ticket/domain/usecases/load_tickets.dart';
+import 'package:coffeecard/features/ticket/presentation/cubit/tickets_cubit.dart';
 import 'package:coffeecard/features/user/data/datasources/user_remote_data_source.dart';
 import 'package:coffeecard/features/user/domain/usecases/get_user.dart';
 import 'package:coffeecard/features/user/domain/usecases/request_account_deletion.dart';
@@ -80,7 +87,6 @@ void configureServices() {
     baseUrl: ApiUriConstants.shiftyUrl,
     converter: $JsonSerializableConverter(),
     services: [ShiftplanningApi.create()],
-    authenticator: sl.get<ReactivationAuthenticator>(),
   );
 
   sl.registerSingleton<CoffeecardApi>(
@@ -94,14 +100,6 @@ void configureServices() {
   );
 
   // Repositories
-  sl.registerFactory<ReceiptRepository>(
-    () => ReceiptRepository(
-      productRepository: sl<ProductRepository>(),
-      apiV2: sl<CoffeecardApiV2>(),
-      executor: sl<NetworkRequestExecutor>(),
-    ),
-  );
-
   sl.registerFactory<ProductRepository>(
     () => ProductRepository(
       apiV1: sl<CoffeecardApi>(),
@@ -117,14 +115,6 @@ void configureServices() {
   );
 
   // v1 and v2
-  sl.registerFactory<TicketRepository>(
-    () => TicketRepository(
-      apiV1: sl<CoffeecardApi>(),
-      apiV2: sl<CoffeecardApiV2>(),
-      executor: sl<NetworkRequestExecutor>(),
-    ),
-  );
-
   sl.registerFactory<AccountRepository>(
     () => AccountRepository(
       apiV1: sl<CoffeecardApi>(),
@@ -163,8 +153,10 @@ void configureServices() {
 
 void initFeatures() {
   initOpeningHours();
+  initTicket();
   initOccupation();
   initUser();
+  initReceipt();
   initContributor();
 }
 
@@ -189,6 +181,13 @@ void initOpeningHours() {
   // data source
   sl.registerLazySingleton<OpeningHoursRemoteDataSource>(
     () => OpeningHoursRemoteDataSource(api: sl(), executor: sl()),
+  );
+}
+
+void initTicket() {
+  // bloc
+  sl.registerLazySingleton(
+    () => TicketsCubit(loadTickets: sl(), consumeTicket: sl()),
   );
 }
 
@@ -221,6 +220,14 @@ void initUser() {
   );
 
   // use case
+  sl.registerFactory(() => LoadTickets(ticketRemoteDataSource: sl()));
+  sl.registerFactory(() => ConsumeTicket(ticketRemoteDataSource: sl()));
+
+  // data source
+  sl.registerLazySingleton(
+    () => TicketRemoteDataSource(apiV1: sl(), apiV2: sl(), executor: sl()),
+  );
+
   sl.registerFactory(() => GetUser(dataSource: sl()));
   sl.registerFactory(() => RequestAccountDeletion(dataSource: sl()));
   sl.registerFactory(() => UpdateUserDetails(dataSource: sl()));
@@ -231,6 +238,26 @@ void initUser() {
       apiV2: sl(),
       executor: sl(),
     ),
+  );
+}
+
+void initReceipt() {
+  // bloc
+  sl.registerLazySingleton(() => ReceiptCubit(getReceipts: sl()));
+
+  // use case
+  sl.registerFactory(() => GetReceipts(repository: sl()));
+
+  // repository
+  sl.registerLazySingleton<ReceiptRepository>(
+    () => ReceiptRepositoryImpl(
+      remoteDataSource: sl(),
+    ),
+  );
+
+  // data source
+  sl.registerLazySingleton(
+    () => ReceiptRemoteDataSource(apiV2: sl(), executor: sl()),
   );
 }
 

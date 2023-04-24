@@ -8,11 +8,6 @@ import 'package:coffeecard/service_locator.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/widgets.dart';
 
-enum InternalPaymentType {
-  mobilePay,
-  free,
-}
-
 abstract class PaymentHandler {
   final PurchaseRepository purchaseRepository;
   // Certain implementations of the payment handler require access to the build context, even if it does not do so itself.
@@ -58,4 +53,9 @@ abstract class PaymentHandler {
       (purchase) => purchase.status,
     );
   }
+}
+
+enum InternalPaymentType {
+  mobilePay,
+  free,
 }

@@ -85,7 +85,7 @@ class RegisterPageName extends StatelessWidget {
             Navigator.of(context, rootNavigator: true).pop();
           },
           child: const Text(Strings.buttonOK),
-        )
+        ),
       ],
     );
   }
@@ -108,7 +108,7 @@ class RegisterPageName extends StatelessWidget {
             hideLoadingOverlay(context);
           },
           child: const Text(Strings.buttonClose),
-        )
+        ),
       ],
     );
   }

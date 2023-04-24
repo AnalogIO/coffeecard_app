@@ -42,7 +42,7 @@ class _LoginPageEmailState extends State<LoginPageEmail>
 
   void _register(BuildContext context) {
     error = null;
-    Navigator.push(context, RegisterFlow.route);
+    final _ = Navigator.push(context, RegisterFlow.route);
   }
 
   void _resetError() => error = null;
@@ -53,7 +53,8 @@ class _LoginPageEmailState extends State<LoginPageEmail>
     } else if (!emailIsValid(email)) {
       error = Strings.loginInvalidEmailError;
     } else {
-      Navigator.push(context, LoginPagePasscode.routeWith(email: email));
+      final _ =
+          Navigator.push(context, LoginPagePasscode.routeWith(email: email));
     }
   }
 
@@ -81,7 +82,7 @@ class _LoginPageEmailState extends State<LoginPageEmail>
 
   @override
   Widget build(BuildContext context) {
-    _controller.forward();
+    final _ = _controller.forward();
 
     return FadeTransition(
       opacity: _animation,
