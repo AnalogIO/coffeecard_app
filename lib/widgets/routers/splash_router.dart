@@ -38,7 +38,7 @@ class _SplashRouterState extends State<SplashRouter> {
     final authStatus = context.read<AuthenticationCubit>().state.status;
 
     if (authStatus.isAuthenticated) {
-      sl<UserCubit>().fetchUserDetails();
+      context.read<UserCubit>().init();
       return;
     }
 

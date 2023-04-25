@@ -105,9 +105,6 @@ class _HomePageState extends State<HomePage> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) => sl<UserCubit>()..fetchUserDetails(),
-        ),
-        BlocProvider(
           create: (_) => sl<TicketsCubit>()..getTickets(),
         ),
         BlocProvider(
