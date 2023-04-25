@@ -10,7 +10,8 @@ import 'package:coffeecard/data/repositories/v2/leaderboard_repository.dart';
 import 'package:coffeecard/data/repositories/v2/purchase_repository.dart';
 import 'package:coffeecard/data/storage/secure_storage.dart';
 import 'package:coffeecard/env/env.dart';
-import 'package:coffeecard/features/contributor/data/datasources/contributor_repository.dart';
+import 'package:coffeecard/features/contributor/data/datasources/contributor_local_data_source.dart';
+import 'package:coffeecard/features/contributor/domain/usecases/fetch_contributors.dart';
 import 'package:coffeecard/features/contributor/presentation/cubit/contributor_cubit.dart';
 import 'package:coffeecard/features/occupation/data/datasources/occupation_remote_data_source.dart';
 import 'package:coffeecard/features/occupation/domain/usecases/get_occupations.dart';
@@ -263,8 +264,11 @@ void initReceipt() {
 
 void initContributor() {
   // bloc
-  sl.registerFactory(() => ContributorCubit(repository: sl()));
+  sl.registerFactory(() => ContributorCubit(fetchContributors: sl()));
 
-  // repository
-  sl.registerLazySingleton(() => ContributorRepository());
+  // use case
+  sl.registerFactory(() => FetchContributors(dataSource: sl()));
+
+  // data source
+  sl.registerLazySingleton(() => ContributorLocalDataSource());
 }

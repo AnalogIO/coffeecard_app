@@ -1,19 +1,23 @@
 import 'package:bloc/bloc.dart';
-import 'package:coffeecard/features/contributor/data/datasources/contributor_repository.dart';
+import 'package:coffeecard/core/usecases/usecase.dart';
 import 'package:coffeecard/features/contributor/domain/entities/contributor.dart';
+import 'package:coffeecard/features/contributor/domain/usecases/fetch_contributors.dart';
 import 'package:equatable/equatable.dart';
 
 part 'contributor_state.dart';
 
 class ContributorCubit extends Cubit<ContributorState> {
-  final ContributorRepository repository;
+  final FetchContributors fetchContributors;
 
-  ContributorCubit({required this.repository})
-      : super(const ContributorLoaded([]));
+  ContributorCubit({required this.fetchContributors})
+      : super(const ContributorInitial());
 
   Future<void> getContributors() async {
-    final contributors = repository.getContributors();
+    final contributors = await fetchContributors(NoParams());
 
-    emit(ContributorLoaded(contributors));
+    contributors.fold(
+      (error) => emit(const ContributorLoaded([])),
+      (contributors) => emit(ContributorLoaded(contributors)),
+    );
   }
 }

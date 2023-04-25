@@ -1,49 +1,50 @@
-import 'package:bloc_test/bloc_test.dart';
-import 'package:coffeecard/features/contributor/data/datasources/contributor_repository.dart';
-import 'package:coffeecard/features/contributor/domain/entities/contributor.dart';
-import 'package:coffeecard/features/contributor/presentation/cubit/contributor_cubit.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
-
 import 'contributor_cubit_test.mocks.dart';
 
-const dummyContributors = [
-  Contributor(
-    name: 'name',
-    avatarUrl: 'avatarUrl',
-    githubUrl: 'githubUrl',
-  ),
-];
-
-@GenerateMocks([ContributorRepository])
+@GenerateMocks([FetchContributors])
 void main() {
-  group('contributor cubit tests', () {
-    late ContributorCubit contributorCubit;
-    final repo = MockContributorRepository();
+  late ContributorCubit cubit;
+  late MockFetchContributors fetchContributors;
 
-    setUp(() {
-      contributorCubit = ContributorCubit(repository: repo);
-    });
-
-    test('initial state is ContributorLoaded', () {
-      expect(contributorCubit.state, const ContributorLoaded([]));
-    });
-
-    blocTest<ContributorCubit, ContributorState>(
-      'getContributors emits [Loaded] when the repo returns a list of contributors',
-      build: () {
-        when(repo.getContributors()).thenAnswer((_) => dummyContributors);
-        return contributorCubit;
-      },
-      act: (cubit) => cubit.getContributors(),
-      expect: () => [
-        const ContributorLoaded(dummyContributors),
-      ],
-    );
-
-    tearDown(() {
-      contributorCubit.close();
-    });
+  setUp(() {
+    fetchContributors = MockFetchContributors();
+    contributorCubit = ContributorCubit(fetchContributors: fetchContributors);
   });
+
+  test('initial state is ContributorLoaded', () {
+    expect(contributorCubit.state, const ContributorLoaded([]));
+  });
+
+  group(
+    'getContributors',
+    () {
+      const tContributors = [
+        Contributor(
+          name: 'name',
+          avatarUrl: 'avatarUrl',
+          githubUrl: 'githubUrl',
+        ),
+      ];
+      blocTest(
+        'should emit [Loaded] with data when use case succeeds',
+        build: () => cubit,
+        setUp: () => when(fetchContributors(any))
+            .thenAnswer((_) async => Right(tContributors)),
+        act: (_) => cubit.getContributors(),
+        expect: () => [
+          const ContributorLoaded(tContributors),
+        ],
+      );
+
+      blocTest(
+        'should emit [Loaded] with empty list when use case fails',
+        build: () => cubit,
+        setUp: () => when(fetchContributors(any))
+            .thenAnswer((_) async => Left(ServerFailure('some error'))),
+        act: (_) => cubit.getContributors(),
+        expect: () => [
+          const ContributorLoaded([]),
+        ],
+      );
+    },
+  );
 }

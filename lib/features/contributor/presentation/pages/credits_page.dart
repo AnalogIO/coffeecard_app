@@ -29,6 +29,10 @@ class CreditsPage extends StatelessWidget {
           children: [
             BlocBuilder<ContributorCubit, ContributorState>(
               builder: (context, state) {
+                if (state is ContributorInitial) {
+                  return const SizedBox.shrink();
+                }
+
                 if (state is ContributorLoaded) {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
