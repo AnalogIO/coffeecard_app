@@ -19,5 +19,5 @@ class TicketCount extends Equatable {
   }
 
   @override
-  List<Object?> get props => [productId, count, productName];
+  List<Object?> get props => [productId, count, productName, isBaristaTicket];
 }
