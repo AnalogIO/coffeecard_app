@@ -23,8 +23,9 @@ class UserCubit extends Cubit<UserState> {
 
   Future<void> init() async {
     await fetchUserDetails();
-    if (state is UserLoaded) {
-      emit(UserInitiallyLoaded(state as UserLoaded));
+    final st = state;
+    if (st is UserLoaded) {
+      emit(UserInitiallyLoaded(st));
     }
   }
 

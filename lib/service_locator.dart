@@ -1,6 +1,7 @@
 import 'package:chopper/chopper.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
+import 'package:coffeecard/cubits/environment/environment_cubit.dart';
 import 'package:coffeecard/data/api/interceptors/authentication_interceptor.dart';
 import 'package:coffeecard/data/repositories/barista_product/barista_product_repository.dart';
 import 'package:coffeecard/data/repositories/external/contributor_repository.dart';
@@ -146,6 +147,11 @@ void configureServices() {
       apiV2: sl<CoffeecardApiV2>(),
       executor: sl<NetworkRequestExecutor>(),
     ),
+  );
+
+  // Environment
+  sl.registerFactory<EnvironmentCubit>(
+    () => EnvironmentCubit(sl()),
   );
 
   // external

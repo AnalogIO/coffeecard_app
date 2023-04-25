@@ -19,7 +19,7 @@ abstract class UserWithData extends UserState {
   UserWithData({required this.user});
 }
 
-class UserInitiallyLoaded extends UserWithData {
+class UserInitiallyLoaded extends UserLoaded {
   UserInitiallyLoaded(UserWithData u) : super(user: u.user);
 }
 
