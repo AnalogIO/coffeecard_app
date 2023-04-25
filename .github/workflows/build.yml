@@ -106,7 +106,7 @@ jobs:
 
       - name: Set URI (prod)
         if: github.ref_name == 'production'
-        run: sed -i 's/.env.develop/.env.production/' lib/env/env.dart
+        run: sed -i '' 's/.env.develop/.env.production/' lib/env/env.dart
 
       - name: Generate code
         run: flutter pub run build_runner build
@@ -119,10 +119,10 @@ jobs:
         run: flutter build ios --flavor production --release --no-codesign --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_version }} --target lib/main_production.dart
       - name: Build resolve Swift dependencies (dev)
         if: github.ref_name != 'production'
-        run: xcodebuild -resolvePackageDependencies -workspace ios/Runner.xcworkspace -scheme production -configuration Release-production
-      - name: Build resolve Swift dependencies (prod)
-        if: github.ref_name == 'production'
         run: xcodebuild -resolvePackageDependencies -workspace ios/Runner.xcworkspace -scheme development -configuration Release-development
+      - name: Build resolve Swift dependencies (prod)
+        run: xcodebuild -resolvePackageDependencies -workspace ios/Runner.xcworkspace -scheme production -configuration Release-production
+        if: github.ref_name == 'production'
       - name: Build xArchive (dev)
         if: github.ref_name != 'production'
         run: |
@@ -218,6 +218,9 @@ jobs:
 
       - name: Static Analysis
         run: flutter analyze
+
+      - name: Run Code Metrics
+        run: flutter pub run dart_code_metrics:metrics --reporter=github lib
 
       - name: Run tests
         run: flutter test --coverage

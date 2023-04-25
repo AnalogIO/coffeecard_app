@@ -50,13 +50,15 @@ class _SplashRouterState extends State<SplashRouter> {
     firstNavigation = false;
 
     // Replaces the whole navigation stack with the approriate route.
-    widget.navigatorKey.currentState!.pushAndRemoveUntil(route, (_) => false);
+    final _ = widget.navigatorKey.currentState!
+        .pushAndRemoveUntil(route, (_) => false);
   }
 
   void navigateToHome(UserWithData userState) {
     final Route route = HomePage.routeWith(user: userState.user);
 
-    widget.navigatorKey.currentState!.pushAndRemoveUntil(route, (_) => false);
+    final _ = widget.navigatorKey.currentState!
+        .pushAndRemoveUntil(route, (_) => false);
   }
 
   @override

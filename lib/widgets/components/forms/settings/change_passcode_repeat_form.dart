@@ -21,7 +21,7 @@ class ChangePasscodeRepeatForm extends StatelessWidget {
     context.read<UserCubit>().setUserPasscode(passcode);
     // Go to the start of the nested flow and exit it
     Navigator.of(context).popUntil((route) => route.isFirst);
-    Navigator.of(context, rootNavigator: true).maybePop(context);
+    final _ = Navigator.of(context, rootNavigator: true).maybePop(context);
   }
 
   @override

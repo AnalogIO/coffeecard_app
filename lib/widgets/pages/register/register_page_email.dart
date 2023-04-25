@@ -15,7 +15,10 @@ class RegisterPageEmail extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       child: RegisterEmailForm(
         onSubmit: (email) {
-          Navigator.push(context, RegisterPagePasscode.routeWith(email: email));
+          final _ = Navigator.push(
+            context,
+            RegisterPagePasscode.routeWith(email: email),
+          );
         },
       ),
     );

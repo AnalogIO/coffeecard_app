@@ -27,7 +27,7 @@ class _LoginEmailTextFieldState extends State<LoginEmailTextField> {
   void initState() {
     // Focus the text field after animations have completed
     () async {
-      await Future.delayed(widget.autoFocusDelay);
+      final _ = await Future.delayed(widget.autoFocusDelay);
       if (mounted) _focusNode.requestFocus();
     }();
 
@@ -48,7 +48,7 @@ class _LoginEmailTextFieldState extends State<LoginEmailTextField> {
 
     InputDecoration getInputDecoration() {
       final border = OutlineInputBorder(
-        borderRadius: BorderRadius.circular(32),
+        borderRadius: const BorderRadius.all(Radius.circular(32)),
         borderSide: widget.hasError
             ? const BorderSide(color: AppColor.errorOnDark, width: 2)
             : const BorderSide(color: Colors.transparent, width: 0),

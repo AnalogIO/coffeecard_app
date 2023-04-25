@@ -32,7 +32,7 @@ class _RegisterPageOccupationState extends State<RegisterPageOccupation> {
   Occupation? selectedOccupation;
 
   void _onSubmit(Occupation occupation) {
-    Navigator.of(context).push(
+    final _ = Navigator.of(context).push(
       RegisterPageName.routeWith(
         email: widget.email,
         passcode: widget.passcode,

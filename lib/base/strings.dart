@@ -303,7 +303,7 @@ abstract class Strings {
     "Something doesn't seem to work.":
         "If you find something that doesn't seem right, please report it by filling out of the feedback form found under 'Settings > Report a bug or send feedback'.",
     'I have an idea for the app!':
-        "We will happily take suggestions! Fill out the feedback form under 'Settings > Report a bug or send feedback' or send an email to feedback@analogio.dk."
+        "We will happily take suggestions! Fill out the feedback form under 'Settings > Report a bug or send feedback' or send an email to feedback@analogio.dk.",
   };
 
   // Credits
@@ -364,8 +364,8 @@ abstract class Strings {
     return 'The voucher "$voucher" is invalid';
   }
 
-  static String noInternet =
+  static const String noInternet =
       "Can't connect to Analog. Are you connected to the internet?";
-  static String retry = 'Retry';
-  static String unknownErrorOccured = 'an unknown error occured';
+  static const String retry = 'Retry';
+  static const String unknownErrorOccured = 'an unknown error occured';
 }

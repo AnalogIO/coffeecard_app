@@ -40,7 +40,7 @@ class OccupationForm extends StatelessWidget {
               const SectionTitle(Strings.registerOccupationTitle),
               const Gap(16),
               ClipRRect(
-                borderRadius: BorderRadius.circular(24),
+                borderRadius: const BorderRadius.all(Radius.circular(24)),
                 child: Column(
                   children: occupations
                       .map(
@@ -87,7 +87,7 @@ class OccupationSelection extends StatelessWidget {
     occupations.sort((a, b) => a.fullName.compareTo(b.fullName));
 
     return ClipRRect(
-      borderRadius: BorderRadius.circular(24),
+      borderRadius: const BorderRadius.all(Radius.circular(24)),
       child: Column(
         children: occupations
             .map(
@@ -123,6 +123,7 @@ class OccupationListEntry extends StatelessWidget {
         value: occupation,
         groupValue: selected,
         // On tap handler is set on the whole list entry; ignore the tap here
+        // ignore: no-empty-block
         onChanged: (_) {},
       ),
       onTap: () => onTap(occupation),

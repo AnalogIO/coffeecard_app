@@ -94,15 +94,18 @@ class _BottomModalSheetButtonBarState
     extends State<_BottomModalSheetButtonBar> {
   @override
   Widget build(BuildContext context) {
-    final isFreeProduct = widget.product.price == 0;
+    final productPrice = widget.product.price;
+    final productId = widget.product.id;
+    final isFreeProduct = productPrice == 0;
+
     if (isFreeProduct) {
       return Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _BottomModalSheetButton(
             text: 'Redeem product',
-            productId: widget.product.id,
-            price: widget.product.price,
+            productId: productId,
+            price: productPrice,
             onTap: () async {
               final payment = await showPurchaseOverlay(
                 paymentType: InternalPaymentType.free,
@@ -126,16 +129,16 @@ class _BottomModalSheetButtonBarState
       children: [
         _BottomModalSheetButton(
           text: Strings.paymentOptionOther,
-          productId: widget.product.id,
-          price: widget.product.price,
+          productId: productId,
+          price: productPrice,
           disabled: true,
           disabledText: Strings.paymentOptionOtherComingSoon,
         ),
         const Gap(8),
         _BottomModalSheetButton(
           text: Strings.paymentOptionMobilePay,
-          productId: widget.product.id,
-          price: widget.product.price,
+          productId: productId,
+          price: productPrice,
           onTap: () async {
             final payment = await showPurchaseOverlay(
               paymentType: InternalPaymentType.mobilePay,

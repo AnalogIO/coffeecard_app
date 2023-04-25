@@ -86,7 +86,7 @@ class _FormTextFieldState extends State<_FormTextField> {
 
     return <TextInputFormatter>[
       FilteringTextInputFormatter.digitsOnly,
-      LengthLimitingTextInputFormatter(4)
+      LengthLimitingTextInputFormatter(4),
     ];
   }
 
