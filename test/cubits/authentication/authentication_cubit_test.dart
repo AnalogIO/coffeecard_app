@@ -8,10 +8,10 @@ import 'package:mockito/mockito.dart';
 
 import 'authentication_cubit_test.mocks.dart';
 
-const dummyUser = AuthenticatedUser(email: 'email', token: 'token');
-
 @GenerateMocks([SecureStorage])
 void main() {
+  const dummyUser = AuthenticatedUser(email: 'email', token: 'token');
+
   group('authentication cubit tests', () {
     late AuthenticationCubit authenticationCubit;
     final secureStorage = MockSecureStorage();

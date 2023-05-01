@@ -42,7 +42,7 @@ void main() {
           status: ReceiptStatus.success,
           receipts: const [],
           filteredReceipts: const [],
-        )
+        ),
       ],
     );
   });
@@ -78,7 +78,7 @@ void main() {
           receipts: tReceipts,
           filteredReceipts: const [],
           filterBy: ReceiptFilterCategory.purchases,
-        )
+        ),
       ],
     );
   });

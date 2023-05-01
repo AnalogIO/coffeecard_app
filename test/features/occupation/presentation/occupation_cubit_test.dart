@@ -28,7 +28,7 @@ void main() {
       setUp: () => {
         when(getOccupations(any)).thenAnswer(
           (_) => Future.value(const Left(ServerFailure('some error'))),
-        )
+        ),
       },
       act: (_) async => cubit.fetchOccupations(),
       expect: () => [

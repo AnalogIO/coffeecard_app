@@ -36,7 +36,7 @@ void main() {
       setUp: () => {
         when(checkOpenStatus(any)).thenAnswer(
           (_) => Future.value(const Left(ServerFailure('some error'))),
-        )
+        ),
       },
       act: (_) async => cubit.getOpeninghours(),
       expect: () => [
@@ -81,7 +81,7 @@ void main() {
           isOpen: true,
           openingHours: {},
           todaysOpeningHours: '',
-        )
+        ),
       ],
     );
   });

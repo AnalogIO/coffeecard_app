@@ -35,19 +35,23 @@ void main() {
       expect(actual, const Left(ServerFailure('some error')));
     });
 
-    test('should return [Right<List<OccupationModel>>] executor succeeds',
-        () async {
-      // arrange
-      when(executor.call<List<ProgrammeDto>>(any)).thenAnswer(
-        (_) async => const Right([]),
-      );
+    test(
+      'should return [Right<List<OccupationModel>>] executor succeeds',
+      () async {
+        // arrange
+        when(executor.call<List<ProgrammeDto>>(any)).thenAnswer(
+          (_) async => const Right([]),
+        );
 
-      // act
-      final actual = await dataSource.getOccupations();
+        // act
+        final actual = await dataSource.getOccupations();
 
-      // assert
-      expect(actual.isRight(), true);
-      actual.map((response) => expect(response, []));
-    });
+        // assert
+        expect(actual.isRight(), true);
+        actual.map(
+          (response) => expect(response, []),
+        );
+      },
+    );
   });
 }
