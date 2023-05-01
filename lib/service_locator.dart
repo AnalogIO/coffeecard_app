@@ -187,7 +187,7 @@ void initOpeningHours() {
 
 void initTicket() {
   // bloc
-  sl.registerLazySingleton(
+  sl.registerFactory(
     () => TicketsCubit(loadTickets: sl(), consumeTicket: sl()),
   );
 }
@@ -244,7 +244,7 @@ void initUser() {
 
 void initReceipt() {
   // bloc
-  sl.registerLazySingleton(() => ReceiptCubit(getReceipts: sl()));
+  sl.registerFactory(() => ReceiptCubit(getReceipts: sl()));
 
   // use case
   sl.registerFactory(() => GetReceipts(repository: sl()));
