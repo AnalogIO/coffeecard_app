@@ -1,4 +1,4 @@
-import 'package:coffeecard/cubits/statistics/statistics_cubit.dart';
+import 'package:coffeecard/features/statistics/presentation/cubit/statistics_cubit.dart';
 import 'package:coffeecard/widgets/components/dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

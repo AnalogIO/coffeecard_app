@@ -1,4 +1,4 @@
-import 'package:coffeecard/data/repositories/v2/leaderboard_repository.dart';
+import 'package:coffeecard/features/statistics/data/datasources/leaderboard_repository.dart';
 import 'package:coffeecard/models/leaderboard/leaderboard_user.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

@@ -1,6 +1,6 @@
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
-import 'package:coffeecard/cubits/statistics/statistics_cubit.dart';
+import 'package:coffeecard/features/statistics/presentation/cubit/statistics_cubit.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
 import 'package:coffeecard/models/leaderboard/leaderboard_user.dart';
 import 'package:dartz/dartz.dart';

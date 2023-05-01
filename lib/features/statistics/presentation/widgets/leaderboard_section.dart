@@ -1,11 +1,11 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/cubits/statistics/statistics_cubit.dart';
 import 'package:coffeecard/features/receipt/presentation/widgets/filter_bar.dart';
+import 'package:coffeecard/features/statistics/presentation/cubit/statistics_cubit.dart';
+import 'package:coffeecard/features/statistics/presentation/widgets/leaderboard_list_view.dart';
+import 'package:coffeecard/features/statistics/presentation/widgets/leaderboard_list_view_placeholder.dart';
+import 'package:coffeecard/features/statistics/presentation/widgets/statistics_dropdown.dart';
 import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
 import 'package:coffeecard/widgets/components/section_title.dart';
-import 'package:coffeecard/widgets/components/stats/leaderboard_list_view.dart';
-import 'package:coffeecard/widgets/components/stats/leaderboard_list_view_placeholder.dart';
-import 'package:coffeecard/widgets/components/stats/statistics_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
