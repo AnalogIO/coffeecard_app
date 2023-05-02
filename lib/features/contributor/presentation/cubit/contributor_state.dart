@@ -4,9 +4,17 @@ abstract class ContributorState extends Equatable {
   const ContributorState();
 }
 
+class ContributorInitial extends ContributorState {
+  const ContributorInitial();
+
+  @override
+  List<Object?> get props => [];
+}
+
 class ContributorLoaded extends ContributorState {
-  const ContributorLoaded(this.contributors);
   final List<Contributor> contributors;
+
+  const ContributorLoaded(this.contributors);
 
   @override
   List<Object> get props => [contributors];

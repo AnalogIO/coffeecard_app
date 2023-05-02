@@ -1,6 +1,6 @@
-import 'package:coffeecard/models/contributor.dart';
+import 'package:coffeecard/features/contributor/domain/entities/contributor.dart';
 
-class ContributorRepository {
+class ContributorLocalDataSource {
   List<Contributor> getContributors() {
     return const [
       Contributor(

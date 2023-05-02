@@ -2,7 +2,6 @@ import 'package:chopper/chopper.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
 import 'package:coffeecard/data/api/interceptors/authentication_interceptor.dart';
-import 'package:coffeecard/data/repositories/external/contributor_repository.dart';
 import 'package:coffeecard/data/repositories/shared/account_repository.dart';
 import 'package:coffeecard/data/repositories/v1/product_repository.dart';
 import 'package:coffeecard/data/repositories/v1/voucher_repository.dart';
@@ -11,6 +10,9 @@ import 'package:coffeecard/data/repositories/v2/leaderboard_repository.dart';
 import 'package:coffeecard/data/repositories/v2/purchase_repository.dart';
 import 'package:coffeecard/data/storage/secure_storage.dart';
 import 'package:coffeecard/env/env.dart';
+import 'package:coffeecard/features/contributor/data/datasources/contributor_local_data_source.dart';
+import 'package:coffeecard/features/contributor/domain/usecases/fetch_contributors.dart';
+import 'package:coffeecard/features/contributor/presentation/cubit/contributor_cubit.dart';
 import 'package:coffeecard/features/occupation/data/datasources/occupation_remote_data_source.dart';
 import 'package:coffeecard/features/occupation/domain/usecases/get_occupations.dart';
 import 'package:coffeecard/features/occupation/presentation/cubit/occupation_cubit.dart';
@@ -145,10 +147,6 @@ void configureServices() {
   );
 
   // external
-  sl.registerFactory<ContributorRepository>(
-    ContributorRepository.new,
-  );
-
   sl.registerSingleton<FirebaseAnalyticsEventLogging>(
     FirebaseAnalyticsEventLogging(FirebaseAnalytics.instance),
   );
@@ -160,6 +158,7 @@ void initFeatures() {
   initOccupation();
   initUser();
   initReceipt();
+  initContributor();
 }
 
 void initOpeningHours() {
@@ -261,4 +260,15 @@ void initReceipt() {
   sl.registerLazySingleton(
     () => ReceiptRemoteDataSource(apiV2: sl(), executor: sl()),
   );
+}
+
+void initContributor() {
+  // bloc
+  sl.registerFactory(() => ContributorCubit(fetchContributors: sl()));
+
+  // use case
+  sl.registerFactory(() => FetchContributors(dataSource: sl()));
+
+  // data source
+  sl.registerLazySingleton(() => ContributorLocalDataSource());
 }
