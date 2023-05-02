@@ -11,6 +11,7 @@ import 'package:mockito/mockito.dart';
 
 import 'reactivation_authenticator_test.mocks.dart';
 
+// FIXME: How do mock GetIt properly?
 class MockGetIt extends Mock implements GetIt {}
 
 @GenerateMocks([SecureStorage, AuthenticationCubit, Logger, AccountRepository])
