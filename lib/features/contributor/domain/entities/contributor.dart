@@ -11,6 +11,8 @@ class Contributor extends Equatable {
     required this.githubUrl,
   });
 
+  String get urlWithoutScheme => githubUrl.replaceAll('https://', '');
+
   @override
   List<Object?> get props => [name, avatarUrl, githubUrl];
 }
