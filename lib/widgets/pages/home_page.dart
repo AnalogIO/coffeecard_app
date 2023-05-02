@@ -53,6 +53,43 @@ class _HomePageState extends State<HomePage> {
       ..add(newFlowIndex);
   }
 
+  List<AppFlow> get _bottomNavAppFlows => <AppFlow>[
+        AppFlow(
+          navigatorKey: _pages.first.navigatorKey,
+          initialRoute: TicketsPage.routeWith(
+            scrollController: _pages.first.scrollController,
+          ),
+        ),
+        AppFlow(
+          navigatorKey: _pages[1].navigatorKey,
+          initialRoute: ReceiptsPage.routeWith(
+            scrollController: _pages[1].scrollController,
+          ),
+        ),
+        AppFlow(
+          navigatorKey: _pages[2].navigatorKey,
+          initialRoute: StatsPage.routeWith(
+            scrollController: _pages[2].scrollController,
+          ),
+        ),
+        AppFlow(
+          navigatorKey: _pages[3].navigatorKey,
+          initialRoute: SettingsPage.routeWith(
+            scrollController: _pages[3].scrollController,
+          ),
+        ),
+      ];
+
+  List<AppFlow> get _baristaBottomNavAppFlows => [
+        AppFlow(
+          navigatorKey: _baristaPages.first.navigatorKey,
+          initialRoute: BaristaPage.routeWith(
+            scrollController: _baristaPages.first.scrollController,
+          ),
+        ),
+        ..._bottomNavAppFlows,
+      ];
+
   Future<bool> onWillPop() async {
     // If back arrow is present on page, go back in the current flow
     {
@@ -155,43 +192,6 @@ class PageSettings {
   })  : scrollController = ScrollController(),
         navigatorKey = GlobalKey<NavigatorState>();
 }
-
-final _bottomNavAppFlows = <AppFlow>[
-  AppFlow(
-    navigatorKey: _pages.first.navigatorKey,
-    initialRoute: TicketsPage.routeWith(
-      scrollController: _pages.first.scrollController,
-    ),
-  ),
-  AppFlow(
-    navigatorKey: _pages[1].navigatorKey,
-    initialRoute: ReceiptsPage.routeWith(
-      scrollController: _pages[1].scrollController,
-    ),
-  ),
-  AppFlow(
-    navigatorKey: _pages[2].navigatorKey,
-    initialRoute: StatsPage.routeWith(
-      scrollController: _pages[2].scrollController,
-    ),
-  ),
-  AppFlow(
-    navigatorKey: _pages[3].navigatorKey,
-    initialRoute: SettingsPage.routeWith(
-      scrollController: _pages[3].scrollController,
-    ),
-  ),
-];
-
-final _baristaBottomNavAppFlows = [
-  AppFlow(
-    navigatorKey: _baristaPages.first.navigatorKey,
-    initialRoute: BaristaPage.routeWith(
-      scrollController: _baristaPages.first.scrollController,
-    ),
-  ),
-  ..._bottomNavAppFlows,
-];
 
 final _pages = <PageSettings>[
   PageSettings(

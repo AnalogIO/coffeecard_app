@@ -2,7 +2,6 @@ import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
 import 'package:coffeecard/cubits/environment/environment_cubit.dart';
 import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
-import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/widgets/pages/home_page.dart';
 import 'package:coffeecard/widgets/pages/login/login_page_email.dart';
 import 'package:flutter/material.dart';
