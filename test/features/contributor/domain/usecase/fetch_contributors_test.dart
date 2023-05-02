@@ -24,7 +24,7 @@ void main() {
     usecase = FetchContributors(dataSource: dataSource);
   });
 
-  test('should call repository', () async {
+  test('should call data source', () async {
     // arrange
     when(dataSource.getContributors()).thenReturn(const []);
 
