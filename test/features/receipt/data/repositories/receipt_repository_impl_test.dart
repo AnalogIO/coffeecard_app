@@ -48,46 +48,49 @@ void main() {
       expect(actual, const Left(ServerFailure('some error')));
     });
 
-    test('should return [Right<List<Receipt>>] if api calls succeed', () async {
-      // arrange
-      final tSwipedReceipt = SwipeReceipt(
-        productName: 'productName',
-        timeUsed: DateTime.parse('2023-04-23'),
-        id: 0,
-      );
+    test(
+      'should return [Right<List<Receipt>>] if api calls succeed',
+      () async {
+        // arrange
+        final tSwipedReceipt = SwipeReceipt(
+          productName: 'productName',
+          timeUsed: DateTime.parse('2023-04-23'),
+          id: 0,
+        );
 
-      final tPurchasedReceipt = PurchaseReceipt(
-        productName: 'productName',
-        timeUsed: DateTime.parse('2023-04-24'), // note this is a day later
-        id: 0,
-        price: 0,
-        amountPurchased: 0,
-      );
+        final tPurchasedReceipt = PurchaseReceipt(
+          productName: 'productName',
+          timeUsed: DateTime.parse('2023-04-24'), // note this is a day later
+          id: 0,
+          price: 0,
+          amountPurchased: 0,
+        );
 
-      when(remoteDataSource.getUsersUsedTicketsReceipts()).thenAnswer(
-        (_) async => Right([
-          tSwipedReceipt,
-        ]),
-      );
-      when(remoteDataSource.getUserPurchasesReceipts()).thenAnswer(
-        (_) async => Right([
-          tPurchasedReceipt,
-        ]),
-      );
-
-      // act
-      final actual = await repository.getUserReceipts();
-
-      // assert
-      actual.map(
-        (response) => expect(
-          response,
-          [
+        when(remoteDataSource.getUsersUsedTicketsReceipts()).thenAnswer(
+          (_) async => Right([
+            tSwipedReceipt,
+          ]),
+        );
+        when(remoteDataSource.getUserPurchasesReceipts()).thenAnswer(
+          (_) async => Right([
             tPurchasedReceipt,
-            tSwipedReceipt
-          ], // note that it is sorted from oldest --> newest
-        ),
-      );
-    });
+          ]),
+        );
+
+        // act
+        final actual = await repository.getUserReceipts();
+
+        // assert
+        actual.map(
+          (response) => expect(
+            response,
+            [
+              tPurchasedReceipt,
+              tSwipedReceipt,
+            ], // note that it is sorted from oldest --> newest
+          ),
+        );
+      },
+    );
   });
 }
