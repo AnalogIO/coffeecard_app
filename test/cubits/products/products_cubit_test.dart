@@ -10,25 +10,24 @@ import 'package:mockito/mockito.dart';
 
 import 'products_cubit_test.mocks.dart';
 
-const dummyProducts = [
-  Product(
-    id: 1,
-    name: 'test (bundle of 10)',
-    amount: 10,
-    price: 1,
-    description: 'test',
-  ),
-  Product(
-    id: 2,
-    name: 'test (single)',
-    amount: 1,
-    price: 1,
-    description: 'test',
-  ),
-];
-
 @GenerateMocks([ProductRepository])
 void main() {
+  const dummyProducts = [
+    Product(
+      id: 1,
+      name: 'test (bundle of 10)',
+      amount: 10,
+      price: 1,
+      description: 'test',
+    ),
+    Product(
+      id: 2,
+      name: 'test (single)',
+      amount: 1,
+      price: 1,
+      description: 'test',
+    ),
+  ];
   group('products cubit tests', () {
     late ProductsCubit productsCubit;
     final repo = MockProductRepository();
@@ -47,7 +46,7 @@ void main() {
       act: (cubit) => cubit.getProducts(),
       expect: () => [
         const ProductsLoading(),
-        ProductsLoaded([dummyProducts[0]], [dummyProducts[1]]),
+        ProductsLoaded([dummyProducts.first], [dummyProducts[1]]),
       ],
     );
 

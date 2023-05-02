@@ -1,13 +1,12 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
-import 'package:coffeecard/cubits/contributor/contributor_cubit.dart';
-import 'package:coffeecard/data/repositories/external/contributor_repository.dart';
 import 'package:coffeecard/errors/match_case_incomplete_exception.dart';
+import 'package:coffeecard/features/contributor/presentation/cubit/contributor_cubit.dart';
+import 'package:coffeecard/features/contributor/presentation/widgets/contributor_card.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/utils/api_uri_constants.dart';
 import 'package:coffeecard/utils/launch.dart';
-import 'package:coffeecard/widgets/components/contributor_card.dart';
 import 'package:coffeecard/widgets/components/images/analogio_logo.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:coffeecard/widgets/components/section_title.dart';
@@ -25,12 +24,15 @@ class CreditsPage extends StatelessWidget {
     return AppScaffold.withTitle(
       title: Strings.credits,
       body: BlocProvider(
-        create: (context) => ContributorCubit(sl.get<ContributorRepository>())
-          ..getContributors(),
+        create: (_) => sl<ContributorCubit>()..getContributors(),
         child: ListView(
           children: [
             BlocBuilder<ContributorCubit, ContributorState>(
               builder: (context, state) {
+                if (state is ContributorInitial) {
+                  return const SizedBox.shrink();
+                }
+
                 if (state is ContributorLoaded) {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

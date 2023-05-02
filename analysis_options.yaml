@@ -17,7 +17,6 @@ analyzer:
   exclude:
     - lib/generated/**
     - test/**.mocks.dart
-    - test/**
   errors:
     invalid_assignment: warning
     missing_return: error
@@ -36,6 +35,14 @@ dart_code_metrics:
     number-of-parameters: 6
     maximum-nesting-level: 4
   rules:
+    - avoid-ignoring-return-values:
+        exclude:
+          - test/**
+
+    - no-empty-block:
+        exclude:
+          - test/**
+
     - list-all-equatable-fields
 
     - arguments-ordering: false
