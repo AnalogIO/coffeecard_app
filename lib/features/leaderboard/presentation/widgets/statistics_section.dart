@@ -1,6 +1,6 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
-import 'package:coffeecard/features/statistics/presentation/widgets/statistics_card.dart';
+import 'package:coffeecard/features/leaderboard/presentation/widgets/statistics_card.dart';
 import 'package:coffeecard/features/user/domain/entities/user.dart';
 import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
 import 'package:coffeecard/widgets/components/helpers/grid.dart';

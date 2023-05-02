@@ -1,4 +1,4 @@
-import 'package:coffeecard/features/statistics/presentation/widgets/statistics_card.dart';
+import 'package:coffeecard/features/leaderboard/presentation/widgets/statistics_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

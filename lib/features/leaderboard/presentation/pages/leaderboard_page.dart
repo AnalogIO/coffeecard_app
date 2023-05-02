@@ -1,7 +1,7 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/features/statistics/presentation/cubit/statistics_cubit.dart';
-import 'package:coffeecard/features/statistics/presentation/widgets/leaderboard_section.dart';
-import 'package:coffeecard/features/statistics/presentation/widgets/statistics_section.dart';
+import 'package:coffeecard/features/leaderboard/presentation/cubit/leaderboard_cubit.dart';
+import 'package:coffeecard/features/leaderboard/presentation/widgets/leaderboard_section.dart';
+import 'package:coffeecard/features/leaderboard/presentation/widgets/statistics_section.dart';
 import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
 import 'package:coffeecard/widgets/components/error_section.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
@@ -21,11 +21,13 @@ class StatisticsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<void> refresh() async => context.read<LeaderboardCubit>().fetch();
+    Future<void> refresh() async =>
+        context.read<LeaderboardCubit>().loadLeaderboard();
 
     final userState = context.watch<UserCubit>().state;
     final statsState = context.watch<LeaderboardCubit>().state;
-    final loading = userState is! UserLoaded || statsState is! StatisticsLoaded;
+    final loading =
+        userState is! UserLoaded || statsState is! LeaderboardLoaded;
 
     if (userState is UserError) {
       return ErrorSection(
@@ -35,11 +37,11 @@ class StatisticsPage extends StatelessWidget {
       );
     }
 
-    if (statsState is StatisticsError) {
+    if (statsState is LeaderboardError) {
       return ErrorSection(
         center: true,
         error: statsState.errorMessage,
-        retry: () => context.read<LeaderboardCubit>().fetch(),
+        retry: () => context.read<LeaderboardCubit>().loadLeaderboard(),
       );
     }
 

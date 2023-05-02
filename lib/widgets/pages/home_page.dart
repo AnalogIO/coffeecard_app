@@ -3,11 +3,11 @@ import 'dart:math';
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/features/leaderboard/presentation/cubit/leaderboard_cubit.dart';
+import 'package:coffeecard/features/leaderboard/presentation/pages/leaderboard_page.dart';
 import 'package:coffeecard/features/opening_hours/opening_hours.dart';
 import 'package:coffeecard/features/receipt/presentation/cubit/receipt_cubit.dart';
 import 'package:coffeecard/features/receipt/presentation/pages/receipts_page.dart';
-import 'package:coffeecard/features/statistics/presentation/cubit/statistics_cubit.dart';
-import 'package:coffeecard/features/statistics/presentation/pages/statistics_page.dart';
 import 'package:coffeecard/features/ticket/presentation/cubit/tickets_cubit.dart';
 import 'package:coffeecard/features/ticket/presentation/pages/tickets_page.dart';
 import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
@@ -129,7 +129,7 @@ class _HomePageState extends State<HomePage> {
           create: (_) => sl<ReceiptCubit>()..fetchReceipts(),
         ),
         BlocProvider(
-          create: (_) => sl.get<LeaderboardCubit>()..fetch(),
+          create: (_) => sl<LeaderboardCubit>()..loadLeaderboard(),
         ),
         BlocProvider(
           create: (_) => sl<OpeningHoursCubit>()..getOpeninghours(),

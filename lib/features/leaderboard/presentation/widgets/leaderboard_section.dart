@@ -1,9 +1,9 @@
 import 'package:coffeecard/base/strings.dart';
+import 'package:coffeecard/features/leaderboard/presentation/cubit/leaderboard_cubit.dart';
+import 'package:coffeecard/features/leaderboard/presentation/widgets/leaderboard_list_view.dart';
+import 'package:coffeecard/features/leaderboard/presentation/widgets/leaderboard_list_view_placeholder.dart';
+import 'package:coffeecard/features/leaderboard/presentation/widgets/statistics_dropdown.dart';
 import 'package:coffeecard/features/receipt/presentation/widgets/filter_bar.dart';
-import 'package:coffeecard/features/statistics/presentation/cubit/statistics_cubit.dart';
-import 'package:coffeecard/features/statistics/presentation/widgets/leaderboard_list_view.dart';
-import 'package:coffeecard/features/statistics/presentation/widgets/leaderboard_list_view_placeholder.dart';
-import 'package:coffeecard/features/statistics/presentation/widgets/statistics_dropdown.dart';
 import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
 import 'package:coffeecard/widgets/components/section_title.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +17,7 @@ class LeaderboardSection extends StatelessWidget {
   });
 
   final bool loading;
-  final StatisticsState statsState;
+  final LeaderboardState statsState;
   final UserState userState;
 
   @override
@@ -39,7 +39,7 @@ class LeaderboardSection extends StatelessWidget {
         else
           LeaderboardListView(
             // if not loading, then these states must be loaded
-            statsState: statsState as StatisticsLoaded,
+            statsState: statsState as LeaderboardLoaded,
             userState: userState as UserLoaded,
           ),
       ],
