@@ -10,16 +10,15 @@ import 'package:mockito/mockito.dart';
 
 import 'statistics_cubit_test.mocks.dart';
 
-const dummyLeaderboardUser = LeaderboardUser(
-  id: 0,
-  name: 'name',
-  score: 0,
-  rank: 0,
-  highlight: true,
-);
-
 @GenerateMocks([LeaderboardRepository])
 void main() {
+  const dummyLeaderboardUser = LeaderboardUser(
+    id: 0,
+    name: 'name',
+    score: 0,
+    rank: 0,
+    highlight: true,
+  );
   group('statistics cubit tests', () {
     late LeaderboardCubit statisticsCubit;
     final leaderboardRepository = MockLeaderboardRepository();

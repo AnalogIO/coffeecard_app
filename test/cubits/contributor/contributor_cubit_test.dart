@@ -8,16 +8,15 @@ import 'package:mockito/mockito.dart';
 
 import 'contributor_cubit_test.mocks.dart';
 
-const dummyContributors = [
-  Contributor(
-    name: 'name',
-    avatarUrl: 'avatarUrl',
-    githubUrl: 'githubUrl',
-  ),
-];
-
 @GenerateMocks([ContributorRepository])
 void main() {
+  const dummyContributors = [
+    Contributor(
+      name: 'name',
+      avatarUrl: 'avatarUrl',
+      githubUrl: 'githubUrl',
+    ),
+  ];
   group('contributor cubit tests', () {
     late ContributorCubit contributorCubit;
     final repo = MockContributorRepository();
