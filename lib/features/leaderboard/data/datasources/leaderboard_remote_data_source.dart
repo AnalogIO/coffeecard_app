@@ -2,6 +2,7 @@ import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/core/extensions/either_extensions.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/features/leaderboard/data/models/leaderboard_user_model.dart';
+import 'package:coffeecard/features/leaderboard/domain/entities/leaderboard_user.dart';
 import 'package:coffeecard/features/leaderboard/presentation/cubit/leaderboard_cubit.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
 import 'package:dartz/dartz.dart';
@@ -28,7 +29,7 @@ class LeaderboardRemoteDataSource {
     required this.executor,
   });
 
-  Future<Either<NetworkFailure, List<LeaderboardUserModel>>> getLeaderboard(
+  Future<Either<NetworkFailure, List<LeaderboardUser>>> getLeaderboard(
     LeaderboardFilter category,
     int top,
   ) async {
@@ -39,7 +40,7 @@ class LeaderboardRemoteDataSource {
     );
   }
 
-  Future<Either<NetworkFailure, LeaderboardUserModel>> getLeaderboardUser(
+  Future<Either<NetworkFailure, LeaderboardUser>> getLeaderboardUser(
     LeaderboardFilter category,
   ) async {
     return executor(

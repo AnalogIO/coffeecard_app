@@ -17,15 +17,18 @@ class GetLeaderboard
   ) async {
     final userleaderboard = await remoteDataSource.getLeaderboardUser(filter);
 
-    return userleaderboard.fold((error) => Left(error), (user) async {
-      final leaderboardEither =
-          await remoteDataSource.getLeaderboard(filter, 10);
+    return userleaderboard.fold(
+      (error) => Left(error),
+      (user) async {
+        final leaderboardEither =
+            await remoteDataSource.getLeaderboard(filter, 10);
 
-      return leaderboardEither.fold(
-        (l) => Left(l),
-        (leaderboard) => Right(buildLeaderboard(leaderboard, user)),
-      );
-    });
+        return leaderboardEither.fold(
+          (error) => Left(error),
+          (leaderboard) => Right(buildLeaderboard(leaderboard, user)),
+        );
+      },
+    );
   }
 
   List<LeaderboardUser> buildLeaderboard(
