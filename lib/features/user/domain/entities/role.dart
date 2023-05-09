@@ -27,6 +27,6 @@ extension RoleExtension on Role {
         break;
     }
 
-    throw Exception(message: 'unknown role $role');
+    throw ArgumentError('unknown role $role');
   }
 }

@@ -21,6 +21,6 @@ abstract class ReceiptListEntryFactory {
       return SwipeReceiptListEntry(receipt: receipt);
     }
 
-    throw Exception('unknown receipt type $receipt');
+    throw ArgumentError('unknown receipt type $receipt');
   }
 }

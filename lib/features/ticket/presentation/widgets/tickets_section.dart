@@ -1,7 +1,6 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/environment/environment_cubit.dart';
-import 'package:coffeecard/errors/match_case_incomplete_exception.dart';
 import 'package:coffeecard/features/receipt/domain/entities/purchase_receipt.dart';
 import 'package:coffeecard/features/receipt/presentation/widgets/receipt_overlay.dart';
 import 'package:coffeecard/features/ticket/domain/entities/ticket_count.dart';
@@ -129,7 +128,7 @@ class _TicketSection extends StatelessWidget {
               );
             }
 
-            throw MatchCaseIncompleteException(this);
+            throw ArgumentError(this);
           },
         ),
       ],

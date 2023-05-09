@@ -1,7 +1,6 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
-import 'package:coffeecard/errors/match_case_incomplete_exception.dart';
 import 'package:coffeecard/features/contributor/presentation/cubit/contributor_cubit.dart';
 import 'package:coffeecard/features/contributor/presentation/widgets/contributor_card.dart';
 import 'package:coffeecard/service_locator.dart';
@@ -47,7 +46,7 @@ class CreditsPage extends StatelessWidget {
                   );
                 }
 
-                throw MatchCaseIncompleteException(this);
+                throw ArgumentError(this);
               },
             ),
             SettingsGroup(
