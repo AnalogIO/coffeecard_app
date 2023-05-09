@@ -3,7 +3,6 @@ import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/cubits/environment/environment_cubit.dart';
 import 'package:coffeecard/cubits/products/products_cubit.dart';
 import 'package:coffeecard/data/repositories/v1/product_repository.dart';
-import 'package:coffeecard/errors/match_case_incomplete_exception.dart';
 import 'package:coffeecard/features/receipt/presentation/cubit/receipt_cubit.dart';
 import 'package:coffeecard/features/receipt/presentation/widgets/receipt_overlay.dart';
 import 'package:coffeecard/features/ticket/presentation/cubit/tickets_cubit.dart';
@@ -73,7 +72,7 @@ class BuyTicketsPage extends StatelessWidget {
               );
             }
 
-            throw MatchCaseIncompleteException(this);
+            throw ArgumentError(this);
           },
         ),
       ),
