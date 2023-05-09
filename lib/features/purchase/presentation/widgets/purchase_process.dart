@@ -1,6 +1,7 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/base/style/colors.dart';
-import 'package:coffeecard/cubits/purchase/purchase_cubit.dart';
+import 'package:coffeecard/features/purchase/presentation/cubit/purchase_cubit.dart';
+import 'package:coffeecard/features/purchase/presentation/widgets/error_dialog.dart';
+import 'package:coffeecard/features/purchase/presentation/widgets/loading_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -48,33 +49,33 @@ class _PurchaseProcessState extends State<PurchaseProcess>
               if (state is PurchaseInitial) {
                 // Not related to previous check, hence a separate if statement
                 cubit.pay();
-                return makeLoadingDialog(
+                return const LoadingDialog(
                   title: Strings.purchaseTalking,
                 );
               } else if (state is PurchaseProcessing ||
                   state is PurchaseStarted) {
-                return makeLoadingDialog(
+                return const LoadingDialog(
                   title: Strings.purchaseTalking,
                 );
               } else if (state is PurchaseVerifying) {
-                return makeLoadingDialog(
+                return const LoadingDialog(
                   title: Strings.purchaseCompleting,
                 );
               } else if (state is PurchaseCompleted) {
-                return makeLoadingDialog(
+                return const LoadingDialog(
                   title: Strings.purchaseSuccess,
                 );
               } else if (state is PurchasePaymentRejected) {
-                return makeErrorDialog(
+                return const ErrorDialog(
                   title: Strings.purchaseRejectedOrCanceled,
-                  content: const Text(
+                  child: Text(
                     Strings.purchaseRejectedOrCanceledMessage,
                   ),
                 );
               } else if (state is PurchaseError) {
-                return makeErrorDialog(
+                return ErrorDialog(
                   title: Strings.purchaseError,
-                  content: Text(state.message),
+                  child: Text(state.message),
                 );
               }
 
@@ -83,50 +84,6 @@ class _PurchaseProcessState extends State<PurchaseProcess>
           ),
         ],
       ),
-    );
-  }
-
-  StatelessWidget _getTitleWidget(String title) => Text(title);
-
-  RoundedRectangleBorder _getShape() => const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(16)),
-      );
-
-  StatelessWidget makeLoadingDialog({
-    required String title,
-  }) {
-    return SimpleDialog(
-      shape: _getShape(),
-      title: _getTitleWidget(title),
-      children: [
-        Column(
-          children: const [
-            Padding(
-              padding: EdgeInsets.all(16),
-              child: CircularProgressIndicator(color: AppColor.primary),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-
-  StatelessWidget makeErrorDialog({
-    required String title,
-    required Widget content,
-  }) {
-    return AlertDialog(
-      shape: _getShape(),
-      title: _getTitleWidget(title),
-      content: content,
-      actions: <Widget>[
-        TextButton(
-          child: const Text(Strings.purchaseErrorOk),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-      ],
     );
   }
 }

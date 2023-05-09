@@ -7,7 +7,6 @@ import 'package:coffeecard/data/repositories/v1/product_repository.dart';
 import 'package:coffeecard/data/repositories/v1/voucher_repository.dart';
 import 'package:coffeecard/data/repositories/v2/app_config_repository.dart';
 import 'package:coffeecard/data/repositories/v2/leaderboard_repository.dart';
-import 'package:coffeecard/data/repositories/v2/purchase_repository.dart';
 import 'package:coffeecard/data/storage/secure_storage.dart';
 import 'package:coffeecard/env/env.dart';
 import 'package:coffeecard/features/contributor/data/datasources/contributor_local_data_source.dart';
@@ -17,6 +16,7 @@ import 'package:coffeecard/features/occupation/data/datasources/occupation_remot
 import 'package:coffeecard/features/occupation/domain/usecases/get_occupations.dart';
 import 'package:coffeecard/features/occupation/presentation/cubit/occupation_cubit.dart';
 import 'package:coffeecard/features/opening_hours/opening_hours.dart';
+import 'package:coffeecard/features/purchase/data/datasources/purchase_remote_data_source.dart';
 import 'package:coffeecard/features/receipt/data/datasources/receipt_remote_data_source.dart';
 import 'package:coffeecard/features/receipt/data/repositories/receipt_repository_impl.dart';
 import 'package:coffeecard/features/receipt/domain/repositories/receipt_repository.dart';
@@ -132,13 +132,6 @@ void configureServices() {
     ),
   );
 
-  sl.registerFactory<PurchaseRepository>(
-    () => PurchaseRepository(
-      apiV2: sl<CoffeecardApiV2>(),
-      executor: sl<NetworkRequestExecutor>(),
-    ),
-  );
-
   sl.registerFactory<AppConfigRepository>(
     () => AppConfigRepository(
       apiV2: sl<CoffeecardApiV2>(),
@@ -159,6 +152,7 @@ void initFeatures() {
   initUser();
   initReceipt();
   initContributor();
+  initPayment();
 }
 
 void initOpeningHours() {
@@ -271,4 +265,16 @@ void initContributor() {
 
   // data source
   sl.registerLazySingleton(() => ContributorLocalDataSource());
+}
+
+void initPayment() {
+  // bloc
+
+  // data source
+  sl.registerFactory(
+    () => PurchaseRemoteDataSource(
+      apiV2: sl<CoffeecardApiV2>(),
+      executor: sl<NetworkRequestExecutor>(),
+    ),
+  );
 }

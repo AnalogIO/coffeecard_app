@@ -29,7 +29,7 @@ class UserModel extends User {
       rankMonth: response.rankMonth,
       rankSemester: response.rankSemester,
       rankTotal: response.rankAllTime,
-      role: RoleExtension.fromJson(response.role),
+      role: Role.fromJson(response.role),
     );
   }
 }

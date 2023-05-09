@@ -1,4 +1,4 @@
-import 'package:coffeecard/models/purchase/payment_status.dart';
+import 'package:coffeecard/features/purchase/domain/entities/payment_status.dart';
 
 class Payment {
   final int id;

@@ -1,11 +1,11 @@
 import 'dart:io';
 
 import 'package:coffeecard/core/errors/failures.dart';
+import 'package:coffeecard/core/extensions/either_extensions.dart';
+import 'package:coffeecard/features/purchase/data/repositories/payment_handler.dart';
+import 'package:coffeecard/features/purchase/domain/entities/payment.dart';
+import 'package:coffeecard/features/purchase/domain/entities/payment_status.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
-import 'package:coffeecard/models/purchase/initiate_purchase.dart';
-import 'package:coffeecard/models/purchase/payment.dart';
-import 'package:coffeecard/models/purchase/payment_status.dart';
-import 'package:coffeecard/payment/payment_handler.dart';
 import 'package:coffeecard/utils/api_uri_constants.dart';
 import 'package:coffeecard/utils/launch.dart';
 import 'package:dartz/dartz.dart';
@@ -13,18 +13,14 @@ import 'package:url_launcher/url_launcher.dart';
 
 class MobilePayService extends PaymentHandler {
   MobilePayService({
-    required super.purchaseRepository,
+    required super.purchaseRemoteDataSource,
     required super.context,
   });
   @override
   Future<Either<Failure, Payment>> initPurchase(int productId) async {
-    final Either<Failure, InitiatePurchase> response;
-    response = await purchaseRepository.initiatePurchase(
-      productId,
-      PaymentType.mobilepay,
-    );
-
-    final either = response.map(
+    final either = await purchaseRemoteDataSource
+        .initiatePurchase(productId, PaymentType.mobilepay)
+        .bindFuture(
       (response) {
         final paymentDetails = MobilePayPaymentDetails.fromJsonFactory(
           response.paymentDetails,
@@ -59,8 +55,6 @@ class MobilePayService extends PaymentHandler {
             mobilepayLink,
             mode: LaunchMode.externalApplication,
           );
-
-          return;
         } else {
           final Uri url = _getAppStoreUri();
 

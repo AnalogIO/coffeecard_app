@@ -1,5 +1,3 @@
-import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
-
 class InitiatePurchase {
   final int id;
   final int totalAmount;
@@ -18,13 +16,4 @@ class InitiatePurchase {
     required this.purchaseStatus,
     required this.dateCreated,
   });
-
-  InitiatePurchase.fromDto(InitiatePurchaseResponse dto)
-      : id = dto.id,
-        totalAmount = dto.totalAmount,
-        paymentDetails = dto.paymentDetails as Map<String, dynamic>,
-        productId = dto.productId,
-        productName = dto.productName,
-        purchaseStatus = dto.purchaseStatus as String,
-        dateCreated = dto.dateCreated;
 }
