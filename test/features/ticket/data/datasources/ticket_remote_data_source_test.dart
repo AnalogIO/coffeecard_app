@@ -1,7 +1,7 @@
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
-import 'package:coffeecard/features/ticket/data/datasources/ticket_remote_data_source.dart';
 import 'package:coffeecard/data/repositories/barista_product/barista_product_repository.dart';
+import 'package:coffeecard/features/ticket/data/datasources/ticket_remote_data_source.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
 import 'package:dartz/dartz.dart';
@@ -32,10 +32,11 @@ void main() {
     executor = MockNetworkRequestExecutor();
     baristaProductsRepository = MockBaristaProductsRepository();
     dataSource = TicketRemoteDataSource(
-        apiV1: apiV1,
-        apiV2: apiV2,
-        executor: executor,
-        baristaProductsRepository: baristaProductsRepository);
+      apiV1: apiV1,
+      apiV2: apiV2,
+      executor: executor,
+      baristaProductsRepository: baristaProductsRepository,
+    );
   });
 
   group('getUserTickets', () {

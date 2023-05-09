@@ -15,12 +15,17 @@ class TicketsCubit extends Cubit<TicketsState> {
   TicketsCubit({
     required this.loadTickets,
     required this.consumeTicket,
-  }) : super(const TicketsLoading());
+    required bool isBarista,
+  }) : super(TicketsLoading(isBarista: isBarista));
 
   Future<void> getTickets() async {
-    emit(const TicketsLoading());
+    emit(TicketsLoading(isBarista: state.isBarista));
 
     refreshTickets();
+  }
+
+  void setBaristaMode({required bool baristaMode}) {
+    emit(state.copyWith(isBarista: baristaMode));
   }
 
   Future<void> useTicket(int productId) async {
@@ -28,13 +33,24 @@ class TicketsCubit extends Cubit<TicketsState> {
 
     final st = state as TicketsLoaded;
 
-    emit(TicketUsing(st.tickets));
+    emit(TicketUsing(tickets: st.tickets, isBarista: state.isBarista));
 
     final either = await consumeTicket(Params(productId: productId));
 
     either.fold(
-      (error) => emit(TicketsUseError(error.reason)),
-      (receipt) => emit(TicketUsed(receipt, st.tickets)),
+      (error) => emit(
+        TicketsUseError(
+          message: error.reason,
+          isBarista: state.isBarista,
+        ),
+      ),
+      (receipt) => emit(
+        TicketUsed(
+          receipt: receipt,
+          tickets: st.tickets,
+          isBarista: state.isBarista,
+        ),
+      ),
     );
 
     refreshTickets();
@@ -44,8 +60,14 @@ class TicketsCubit extends Cubit<TicketsState> {
     final either = await loadTickets(NoParams());
 
     either.fold(
-      (error) => emit(TicketsLoadError(error.reason)),
-      (tickets) => emit(TicketsLoaded(tickets)),
+      (error) => emit(
+        TicketsLoadError(
+          message: error.reason,
+          isBarista: state.isBarista,
+        ),
+      ),
+      (tickets) =>
+          emit(TicketsLoaded(tickets: tickets, isBarista: state.isBarista)),
     );
   }
 }

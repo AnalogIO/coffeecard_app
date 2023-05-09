@@ -27,7 +27,6 @@ import 'package:coffeecard/features/receipt/presentation/cubit/receipt_cubit.dar
 import 'package:coffeecard/features/ticket/data/datasources/ticket_remote_data_source.dart';
 import 'package:coffeecard/features/ticket/domain/usecases/consume_ticket.dart';
 import 'package:coffeecard/features/ticket/domain/usecases/load_tickets.dart';
-import 'package:coffeecard/features/ticket/presentation/cubit/tickets_cubit.dart';
 import 'package:coffeecard/features/user/data/datasources/user_remote_data_source.dart';
 import 'package:coffeecard/features/user/domain/usecases/get_user.dart';
 import 'package:coffeecard/features/user/domain/usecases/request_account_deletion.dart';
@@ -164,7 +163,6 @@ void configureServices() {
 
 void initFeatures() {
   initOpeningHours();
-  initTicket();
   initOccupation();
   initUser();
   initReceipt();
@@ -192,13 +190,6 @@ void initOpeningHours() {
   // data source
   sl.registerLazySingleton<OpeningHoursRemoteDataSource>(
     () => OpeningHoursRemoteDataSource(api: sl(), executor: sl()),
-  );
-}
-
-void initTicket() {
-  // bloc
-  sl.registerFactory(
-    () => TicketsCubit(loadTickets: sl(), consumeTicket: sl()),
   );
 }
 
