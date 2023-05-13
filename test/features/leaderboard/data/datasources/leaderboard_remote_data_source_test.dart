@@ -96,7 +96,6 @@ void main() {
 
     test('should return [Left] when executor fails', () async {
       // arrange
-
       when(executor.call<LeaderboardEntry>(any)).thenAnswer(
         (_) async => const Left(ServerFailure('some error')),
       );
