@@ -12,8 +12,6 @@ linter:
     sort_pub_dependencies: false
 
 analyzer:
-  strong-mode:
-    implicit-casts: false
   exclude:
     - lib/generated/**
     - test/**.mocks.dart
@@ -26,6 +24,8 @@ analyzer:
     fixme: warning
   plugins:
     - dart_code_metrics
+  language:
+    strict-casts: true
 
 dart_code_metrics:
   extends:

@@ -38,6 +38,7 @@ import 'package:coffeecard/generated/api/shiftplanning_api.swagger.dart'
     hide $JsonSerializableConverter;
 import 'package:coffeecard/utils/api_uri_constants.dart';
 import 'package:coffeecard/utils/firebase_analytics_event_logging.dart';
+import 'package:coffeecard/utils/ignore_value.dart';
 import 'package:coffeecard/utils/reactivation_authenticator.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:get_it/get_it.dart';
@@ -47,7 +48,9 @@ final GetIt sl = GetIt.instance;
 
 void configureServices() {
   // Logger
-  sl.registerSingleton(Logger());
+  ignoreValue(
+    sl.registerSingleton(Logger()),
+  );
 
   // Executor
   sl.registerLazySingleton(
@@ -58,11 +61,15 @@ void configureServices() {
   );
 
   // Storage
-  sl.registerSingleton(SecureStorage(sl<Logger>()));
+  ignoreValue(
+    sl.registerSingleton(SecureStorage(sl<Logger>())),
+  );
 
   // Authentication
-  sl.registerSingleton<AuthenticationCubit>(
-    AuthenticationCubit(sl.get<SecureStorage>()),
+  ignoreValue(
+    sl.registerSingleton<AuthenticationCubit>(
+      AuthenticationCubit(sl<SecureStorage>()),
+    ),
   );
 
   sl.registerFactory<ReactivationAuthenticator>(
@@ -90,14 +97,20 @@ void configureServices() {
     services: [ShiftplanningApi.create()],
   );
 
-  sl.registerSingleton<CoffeecardApi>(
-    coffeCardChopper.getService<CoffeecardApi>(),
+  ignoreValue(
+    sl.registerSingleton<CoffeecardApi>(
+      coffeCardChopper.getService<CoffeecardApi>(),
+    ),
   );
-  sl.registerSingleton<CoffeecardApiV2>(
-    coffeCardChopper.getService<CoffeecardApiV2>(),
+  ignoreValue(
+    sl.registerSingleton<CoffeecardApiV2>(
+      coffeCardChopper.getService<CoffeecardApiV2>(),
+    ),
   );
-  sl.registerSingleton<ShiftplanningApi>(
-    shiftplanningChopper.getService<ShiftplanningApi>(),
+  ignoreValue(
+    sl.registerSingleton<ShiftplanningApi>(
+      shiftplanningChopper.getService<ShiftplanningApi>(),
+    ),
   );
 
   // Repositories
@@ -147,8 +160,10 @@ void configureServices() {
   );
 
   // external
-  sl.registerSingleton<FirebaseAnalyticsEventLogging>(
-    FirebaseAnalyticsEventLogging(FirebaseAnalytics.instance),
+  ignoreValue(
+    sl.registerSingleton<FirebaseAnalyticsEventLogging>(
+      FirebaseAnalyticsEventLogging(FirebaseAnalytics.instance),
+    ),
   );
 }
 
