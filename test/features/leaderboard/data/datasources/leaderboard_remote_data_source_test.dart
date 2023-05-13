@@ -45,7 +45,6 @@ void main() {
 
     test('should return [Left] when executor fails', () async {
       // arrange
-
       when(executor.call<List<LeaderboardEntry>>(any)).thenAnswer(
         (_) async => const Left(ServerFailure('some error')),
       );
