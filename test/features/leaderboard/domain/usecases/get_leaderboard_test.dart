@@ -21,7 +21,7 @@ void main() {
   });
 
   group('call', () {
-    const tUserLeaderboard = LeaderboardUser(
+    const testUserLeaderboard = LeaderboardUser(
       id: 0,
       rank: 0,
       score: 0,
@@ -44,7 +44,7 @@ void main() {
       // arrange
       when(remoteDataSource.getLeaderboardUser(any)).thenAnswer(
         (_) async => const Right(
-          tUserLeaderboard,
+          testUserLeaderboard,
         ),
       );
       when(remoteDataSource.getLeaderboard(any, any))
@@ -59,7 +59,7 @@ void main() {
     test('should return [Right] if api calls succeed', () async {
       // arrange
       when(remoteDataSource.getLeaderboardUser(any)).thenAnswer(
-        (_) async => const Right(tUserLeaderboard),
+        (_) async => const Right(testUserLeaderboard),
       );
       when(remoteDataSource.getLeaderboard(any, any))
           .thenAnswer((_) async => const Right([]));
@@ -72,7 +72,7 @@ void main() {
       actual.map(
         (response) => expect(
           response,
-          [tUserLeaderboard],
+          [testUserLeaderboard],
         ),
       );
     });
@@ -81,7 +81,7 @@ void main() {
   group('buildLeaderboard', () {
     test('should highlight user if present in leaderboard', () {
       // arrange
-      const tUser = LeaderboardUser(
+      const testUser = LeaderboardUser(
         id: 0,
         rank: 0,
         score: 0,
@@ -89,10 +89,10 @@ void main() {
         highlight: false,
       );
 
-      final tLeaderboard = [tUser];
+      final testLeaderboard = [testUser];
 
       // act
-      final actual = usecase.buildLeaderboard(tLeaderboard, tUser);
+      final actual = usecase.buildLeaderboard(testLeaderboard, testUser);
 
       // assert
       expect(actual, [
@@ -108,7 +108,7 @@ void main() {
 
     test('should append user if not present in leaderboard', () {
       // arrange
-      const tUser = LeaderboardUser(
+      const testUser = LeaderboardUser(
         id: 0,
         rank: 0,
         score: 0,
@@ -116,10 +116,10 @@ void main() {
         highlight: false,
       );
 
-      final List<LeaderboardUser> tLeaderboard = [];
+      final List<LeaderboardUser> testLeaderboard = [];
 
       // act
-      final actual = usecase.buildLeaderboard(tLeaderboard, tUser);
+      final actual = usecase.buildLeaderboard(testLeaderboard, testUser);
 
       // assert
       expect(actual, [

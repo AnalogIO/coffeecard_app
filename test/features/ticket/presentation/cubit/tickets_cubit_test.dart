@@ -53,14 +53,14 @@ void main() {
     );
   });
   group('useTicket', () {
-    final tReceipt = PlaceholderReceipt();
+    final testReceipt = PlaceholderReceipt();
 
     blocTest<TicketsCubit, TicketsState>(
       'should not emit new state when state is not [Loaded]',
       build: () => cubit,
       setUp: () {
         when(loadTickets(any)).thenAnswer((_) async => const Right([]));
-        when(consumeTicket(any)).thenAnswer((_) async => Right(tReceipt));
+        when(consumeTicket(any)).thenAnswer((_) async => Right(testReceipt));
       },
       act: (cubit) => cubit.useTicket(0),
       expect: () => [],
@@ -71,7 +71,7 @@ void main() {
       build: () => cubit,
       setUp: () {
         when(loadTickets(any)).thenAnswer((_) async => const Right([]));
-        when(consumeTicket(any)).thenAnswer((_) async => Right(tReceipt));
+        when(consumeTicket(any)).thenAnswer((_) async => Right(testReceipt));
       },
       act: (_) async {
         await cubit.getTickets();
@@ -81,7 +81,7 @@ void main() {
       skip: 2,
       expect: () => [
         const TicketUsing([]),
-        TicketUsed(tReceipt, const []),
+        TicketUsed(testReceipt, const []),
         const TicketsLoaded([]),
       ],
     );

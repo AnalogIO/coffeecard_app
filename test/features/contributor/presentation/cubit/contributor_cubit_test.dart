@@ -27,7 +27,7 @@ void main() {
   group(
     'getContributors',
     () {
-      const tContributors = [
+      const testContributors = [
         Contributor(
           name: 'name',
           avatarUrl: 'avatarUrl',
@@ -38,10 +38,10 @@ void main() {
         'should emit [Loaded] with data when use case succeeds',
         build: () => cubit,
         setUp: () => when(fetchContributors(any))
-            .thenAnswer((_) async => const Right(tContributors)),
+            .thenAnswer((_) async => const Right(testContributors)),
         act: (_) => cubit.getContributors(),
         expect: () => [
-          const ContributorLoaded(tContributors),
+          const ContributorLoaded(testContributors),
         ],
       );
 

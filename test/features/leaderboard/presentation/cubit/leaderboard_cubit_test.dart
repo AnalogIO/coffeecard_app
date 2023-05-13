@@ -20,7 +20,7 @@ void main() {
     cubit = LeaderboardCubit(getLeaderboard: getLeaderboard);
   });
 
-  const tLeaderboard = [
+  const testLeaderboard = [
     LeaderboardUserModel(
       id: 0,
       name: 'name',
@@ -34,13 +34,13 @@ void main() {
     blocTest(
       'should emit [LeaderboardLoading, LeaderboardLoaded] with correct filter',
       setUp: () => when(getLeaderboard(any))
-          .thenAnswer((_) async => const Right(tLeaderboard)),
+          .thenAnswer((_) async => const Right(testLeaderboard)),
       build: () => cubit,
       act: (_) => cubit.setFilter(LeaderboardFilter.semester),
       expect: () => [
         const LeaderboardLoading(filter: LeaderboardFilter.semester),
         const LeaderboardLoaded(
-          tLeaderboard,
+          testLeaderboard,
           filter: LeaderboardFilter.semester,
         ),
       ],
@@ -64,12 +64,12 @@ void main() {
     blocTest(
       'should emit [LeaderboardLoaded] when usecase succeeds',
       setUp: () => when(getLeaderboard(any))
-          .thenAnswer((_) async => const Right(tLeaderboard)),
+          .thenAnswer((_) async => const Right(testLeaderboard)),
       build: () => cubit,
       act: (_) => cubit.loadLeaderboard(),
       expect: () => [
         const LeaderboardLoaded(
-          tLeaderboard,
+          testLeaderboard,
           filter: LeaderboardFilter.month,
         ),
       ],

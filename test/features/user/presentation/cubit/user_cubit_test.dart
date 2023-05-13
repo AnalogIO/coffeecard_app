@@ -33,7 +33,7 @@ void main() {
     );
   });
 
-  const tUser = User(
+  const testUser = User(
     id: 0,
     name: 'name',
     email: 'email',
@@ -65,12 +65,12 @@ void main() {
       'should emit [Loading, Loaded] when use case succeeds',
       build: () => cubit,
       setUp: () => when(getUser(any)).thenAnswer(
-        (_) async => const Right(tUser),
+        (_) async => const Right(testUser),
       ),
       act: (_) => cubit.fetchUserDetails(),
       expect: () => [
         UserLoading(),
-        UserLoaded(user: tUser),
+        UserLoaded(user: testUser),
       ],
     );
   });
@@ -96,7 +96,7 @@ void main() {
       'should not update state if state is [Updating]',
       build: () => cubit,
       act: (_) => cubit.updateUser(const UpdateUser()),
-      seed: () => UserUpdating(user: tUser),
+      seed: () => UserUpdating(user: testUser),
       expect: () => [],
     );
 
@@ -109,9 +109,9 @@ void main() {
         ),
       ),
       act: (_) => cubit.updateUser(const UpdateUser()),
-      seed: () => UserLoaded(user: tUser),
+      seed: () => UserLoaded(user: testUser),
       expect: () => [
-        UserUpdating(user: tUser),
+        UserUpdating(user: testUser),
         UserError('some error'),
       ],
     );
@@ -120,13 +120,13 @@ void main() {
       'should emit [Updating, Loaded] if use case succeeds',
       build: () => cubit,
       setUp: () => when(updateUserDetails(any)).thenAnswer(
-        (_) async => const Right(tUser),
+        (_) async => const Right(testUser),
       ),
       act: (_) => cubit.updateUser(const UpdateUser()),
-      seed: () => UserLoaded(user: tUser),
+      seed: () => UserLoaded(user: testUser),
       expect: () => [
-        UserUpdating(user: tUser),
-        UserLoaded(user: tUser),
+        UserUpdating(user: testUser),
+        UserLoaded(user: testUser),
       ],
     );
   });
