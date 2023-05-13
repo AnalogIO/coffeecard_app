@@ -16,7 +16,7 @@ class AnalogLogo extends StatelessWidget {
   }
 }
 
-class AnalogRecieptLogo extends StatelessWidget {
+class AnalogReceiptLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(height: 26, child: Image.asset('assets/logo-dark.png'));

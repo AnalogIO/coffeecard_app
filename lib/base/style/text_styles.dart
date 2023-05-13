@@ -43,10 +43,10 @@ abstract class AppTextStyle {
 
   static final settingValue = settingKey.copyWith(color: AppColor.secondary);
 
-  static final recieptItemKey =
+  static final receiptItemKey =
       _body.size(14).color(AppColor.primary).bold().style;
 
-  static final recieptItemValue = settingKey;
+  static final receiptItemValue = settingKey;
 
   static final loginExplainer = settingKey.copyWith(color: AppColor.white);
 
@@ -105,7 +105,7 @@ abstract class AppTextStyle {
 
   static final leaderboardScore = _mono.size(14).color(AppColor.primary).style;
 
-  static final recieptItemDate = _mono.size(12).color(AppColor.secondary).style;
+  static final receiptItemDate = _mono.size(12).color(AppColor.secondary).style;
 
   static final rankingNumber =
       _mono.size(12).color(AppColor.primary).bold().style;
