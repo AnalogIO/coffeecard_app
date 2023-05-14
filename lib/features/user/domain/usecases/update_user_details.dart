@@ -3,8 +3,8 @@ import 'package:coffeecard/core/usecases/usecase.dart';
 import 'package:coffeecard/features/user/data/datasources/user_remote_data_source.dart';
 import 'package:coffeecard/features/user/domain/entities/user.dart';
 import 'package:coffeecard/models/account/update_user.dart';
-import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
+import 'package:fpdart/fpdart.dart';
 
 class UpdateUserDetails implements UseCase<User, Params> {
   final UserRemoteDataSource dataSource;

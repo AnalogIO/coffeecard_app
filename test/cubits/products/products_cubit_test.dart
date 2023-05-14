@@ -3,8 +3,8 @@ import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/cubits/products/products_cubit.dart';
 import 'package:coffeecard/data/repositories/v1/product_repository.dart';
 import 'package:coffeecard/models/ticket/product.dart';
-import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
