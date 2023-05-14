@@ -78,6 +78,6 @@ class UserCubit extends Cubit<UserState> {
   }
 
   void requestUserAccountDeletion() {
-    requestAccountDeletion(NoParams());
+    final _ = requestAccountDeletion(NoParams());
   }
 }

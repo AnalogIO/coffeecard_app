@@ -1,7 +1,10 @@
+//TODO(tta777): Refactor file, so rule does not need to be disabled
+//ignore_for_file: prefer-moving-to-variable
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
+import 'package:coffeecard/features/contributor/presentation/pages/credits_page.dart';
 import 'package:coffeecard/features/opening_hours/opening_hours.dart';
 import 'package:coffeecard/features/opening_hours/presentation/pages/opening_hours_page.dart';
 import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
@@ -16,7 +19,6 @@ import 'package:coffeecard/widgets/components/settings_list_entry.dart';
 import 'package:coffeecard/widgets/components/user/user_card.dart';
 import 'package:coffeecard/widgets/pages/settings/change_email_page.dart';
 import 'package:coffeecard/widgets/pages/settings/change_passcode_flow.dart';
-import 'package:coffeecard/widgets/pages/settings/credits_page.dart';
 import 'package:coffeecard/widgets/pages/settings/faq_page.dart';
 import 'package:coffeecard/widgets/pages/settings/setting_value_text.dart';
 import 'package:flutter/material.dart';
@@ -26,13 +28,13 @@ import 'package:gap/gap.dart';
 class SettingsPage extends StatelessWidget {
   const SettingsPage({required this.scrollController});
 
-  final ScrollController scrollController;
-
   static Route routeWith({required ScrollController scrollController}) {
     return MaterialPageRoute(
       builder: (_) => SettingsPage(scrollController: scrollController),
     );
   }
+
+  final ScrollController scrollController;
 
   /// Tappable only if user data has been loaded.
   void Function()? _ifUserStateLoaded(
@@ -132,16 +134,20 @@ class SettingsPage extends StatelessWidget {
                     : null,
                 valueWidget: ShimmerBuilder(
                   showShimmer: openingHoursState is OpeningHoursLoading,
-                  builder: (context, colorIfShimmer) => ColoredBox(
-                    color: colorIfShimmer,
-                    child: SettingValueText(
-                      value: openingHoursState is OpeningHoursLoaded
-                          ? openingHoursState.todaysOpeningHours
-                          : openingHoursState is OpeningHoursLoading
-                              ? Strings.openingHoursShimmerText
-                              : '',
-                    ),
-                  ),
+                  builder: (context, colorIfShimmer) {
+                    final loadingText = openingHoursState is OpeningHoursLoading
+                        ? Strings.openingHoursShimmerText
+                        : '';
+
+                    return ColoredBox(
+                      color: colorIfShimmer,
+                      child: SettingValueText(
+                        value: openingHoursState is OpeningHoursLoaded
+                            ? openingHoursState.todaysOpeningHours
+                            : loadingText,
+                      ),
+                    );
+                  },
                 ),
               ),
               SettingListEntry(

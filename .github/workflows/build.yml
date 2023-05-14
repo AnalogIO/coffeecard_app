@@ -219,6 +219,9 @@ jobs:
       - name: Static Analysis
         run: flutter analyze
 
+      - name: Run Code Metrics
+        run: flutter pub run dart_code_metrics:metrics --reporter=github lib
+
       - name: Run tests
         run: flutter test --coverage
 

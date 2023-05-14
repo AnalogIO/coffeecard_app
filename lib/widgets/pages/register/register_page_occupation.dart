@@ -1,5 +1,4 @@
 import 'package:coffeecard/base/style/colors.dart';
-import 'package:coffeecard/errors/match_case_incomplete_exception.dart';
 import 'package:coffeecard/features/occupation/domain/entities/occupation.dart';
 import 'package:coffeecard/features/occupation/presentation/cubit/occupation_cubit.dart';
 import 'package:coffeecard/features/occupation/presentation/widgets/occupation_form.dart';
@@ -32,7 +31,7 @@ class _RegisterPageOccupationState extends State<RegisterPageOccupation> {
   Occupation? selectedOccupation;
 
   void _onSubmit(Occupation occupation) {
-    Navigator.of(context).push(
+    final _ = Navigator.of(context).push(
       RegisterPageName.routeWith(
         email: widget.email,
         passcode: widget.passcode,
@@ -62,18 +61,18 @@ class _RegisterPageOccupationState extends State<RegisterPageOccupation> {
             );
           }
 
-          if (state is! OccupationLoaded) {
-            throw MatchCaseIncompleteException(this);
+          if (state is OccupationLoaded) {
+            return OccupationForm(
+              selectedOccupation: selectedOccupation,
+              occupations: state.occupations,
+              onChange: (occupation) => setState(() {
+                selectedOccupation = occupation;
+              }),
+              onContinue: (occupation) => _onSubmit(occupation),
+            );
           }
 
-          return OccupationForm(
-            selectedOccupation: selectedOccupation,
-            occupations: state.occupations,
-            onChange: (occupation) => setState(() {
-              selectedOccupation = occupation;
-            }),
-            onContinue: (occupation) => _onSubmit(occupation),
-          );
+          throw ArgumentError(this);
         },
       ),
     );

@@ -27,7 +27,7 @@ class LoginPagePasscode extends StatefulWidget {
 
 class _LoginPagePasscodeState extends State<LoginPagePasscode> {
   void _forgotPasscode(BuildContext context) {
-    Navigator.push(
+    final _ = Navigator.push(
       context,
       ForgotPasscodePage.routeWith(initialValue: widget.email),
     );

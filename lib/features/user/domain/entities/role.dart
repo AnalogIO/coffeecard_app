@@ -9,6 +9,8 @@ enum Role {
 }
 
 extension RoleExtension on Role {
+  // json is a dynamic object by its very nature
+  //ignore: avoid-dynamic
   static Role fromJson(dynamic json) {
     final role = userRoleFromJson(json);
 
@@ -25,6 +27,6 @@ extension RoleExtension on Role {
         break;
     }
 
-    throw Exception(message: 'unknown role $role');
+    throw ArgumentError('unknown role $role');
   }
 }

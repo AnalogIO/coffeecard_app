@@ -4,12 +4,12 @@ import 'package:url_launcher/url_launcher.dart';
 
 Future<void> launchUrlExternalApplication(Uri url, BuildContext context) async {
   if (await canLaunchUrl(url)) {
-    launchUrl(url, mode: LaunchMode.externalApplication);
+    final _ = launchUrl(url, mode: LaunchMode.externalApplication);
     return;
   }
 
   if (context.mounted) {
-    showDialog(
+    final _ = showDialog(
       context: context,
       barrierDismissible: true,
       builder: (BuildContext context) {

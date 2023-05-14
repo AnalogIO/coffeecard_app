@@ -1,7 +1,6 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/cubits/purchase/purchase_cubit.dart';
-import 'package:coffeecard/errors/match_case_incomplete_exception.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -30,7 +29,7 @@ class _PurchaseProcessState extends State<PurchaseProcess>
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
+    final _ = WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
@@ -77,9 +76,9 @@ class _PurchaseProcessState extends State<PurchaseProcess>
                   title: Strings.purchaseError,
                   content: Text(state.message),
                 );
-              } else {
-                throw MatchCaseIncompleteException(this);
               }
+
+              throw ArgumentError(this);
             },
           ),
         ],
@@ -89,8 +88,8 @@ class _PurchaseProcessState extends State<PurchaseProcess>
 
   StatelessWidget _getTitleWidget(String title) => Text(title);
 
-  RoundedRectangleBorder _getShape() => RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
+  RoundedRectangleBorder _getShape() => const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(16)),
       );
 
   StatelessWidget makeLoadingDialog({
@@ -107,7 +106,7 @@ class _PurchaseProcessState extends State<PurchaseProcess>
               child: CircularProgressIndicator(color: AppColor.primary),
             ),
           ],
-        )
+        ),
       ],
     );
   }
