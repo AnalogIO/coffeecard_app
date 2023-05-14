@@ -1,6 +1,5 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/core/widgets/upgrade_alert.dart';
-import 'package:coffeecard/features/opening_hours/opening_hours.dart';
 import 'package:coffeecard/features/ticket/presentation/widgets/shop_section.dart';
 import 'package:coffeecard/features/ticket/presentation/widgets/tickets_section.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
