@@ -124,30 +124,11 @@ class SettingsPage extends StatelessWidget {
                 name: Strings.frequentlyAskedQuestions,
                 onTap: () => Navigator.push(context, FAQPage.route),
               ),
-              SettingListEntry(
+              const SettingListEntry(
                 name: Strings.openingHours,
-                onTap: openingHoursState is OpeningHoursLoaded
-                    ? () => Navigator.push(
-                          context,
-                          OpeningHoursPage.routeWith(state: openingHoursState),
-                        )
-                    : null,
-                valueWidget: ShimmerBuilder(
-                  showShimmer: openingHoursState is OpeningHoursLoading,
-                  builder: (context, colorIfShimmer) {
-                    final loadingText = openingHoursState is OpeningHoursLoading
-                        ? Strings.openingHoursShimmerText
-                        : '';
-
-                    return ColoredBox(
-                      color: colorIfShimmer,
-                      child: SettingValueText(
-                        value: openingHoursState is OpeningHoursLoaded
-                            ? openingHoursState.todaysOpeningHours
-                            : loadingText,
-                      ),
-                    );
-                  },
+                onTap: null,
+                valueWidget: SettingValueText(
+                  value: 'Not available',
                 ),
               ),
               SettingListEntry(

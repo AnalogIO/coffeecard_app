@@ -38,7 +38,6 @@ class TicketsPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: const [
                       SectionTitle(Strings.ticketsMyTickets),
-                      OpeningHoursIndicator(),
                     ],
                   ),
                   const TicketSection(),
