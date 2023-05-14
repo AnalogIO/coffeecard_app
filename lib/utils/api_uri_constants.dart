@@ -14,7 +14,7 @@ class ApiUriConstants {
 
   // Settings
   static Uri privacyPolicyUri =
-      Uri.parse('https://analogio.dk/policies/privacypolicy.pdf');
+      Uri.parse('https://cafeanalog.dk/privacy-policy/');
 
   static Uri feedbackFormUri =
       Uri.parse('https://www.cognitoforms.com/CafeAnalog1/BugReport');
