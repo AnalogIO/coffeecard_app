@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 
 abstract class ReceiptListEntryFactory {
   static Widget create(Receipt receipt) => switch (receipt) {
-        PlaceholderReceipt _ => const PlaceholderReceiptListEntry(),
-        PurchaseReceipt _ => PurchaseReceiptListEntry(receipt: receipt),
-        SwipeReceipt _ => SwipeReceiptListEntry(receipt: receipt),
+        PlaceholderReceipt() => const PlaceholderReceiptListEntry(),
+        PurchaseReceipt() => PurchaseReceiptListEntry(receipt: receipt),
+        SwipeReceipt() => SwipeReceiptListEntry(receipt: receipt),
       };
 }
