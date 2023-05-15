@@ -4,7 +4,7 @@ import 'package:chopper/chopper.dart';
 import 'package:coffeecard/base/strings.dart';
 import 'package:equatable/equatable.dart';
 
-abstract class Failure extends Equatable {
+sealed class Failure extends Equatable {
   final String reason;
 
   const Failure(this.reason);
@@ -13,7 +13,11 @@ abstract class Failure extends Equatable {
   List<Object?> get props => [reason];
 }
 
-abstract class NetworkFailure extends Failure {
+class LocalStorageFailure extends Failure {
+  const LocalStorageFailure(super.reason);
+}
+
+sealed class NetworkFailure extends Failure {
   const NetworkFailure(super.reason);
 }
 
@@ -40,8 +44,4 @@ class ServerFailure extends NetworkFailure {
 
 class ConnectionFailure extends NetworkFailure {
   const ConnectionFailure() : super('connection refused');
-}
-
-class LocalStorageFailure extends Failure {
-  const LocalStorageFailure(super.reason);
 }
