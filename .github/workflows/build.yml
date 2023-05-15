@@ -102,7 +102,7 @@ jobs:
           channel: "stable"
 
       - name: Download dependencies
-        run: dart pub get
+        run: flutter pub get
 
       - name: Set URI (prod)
         if: github.ref_name == 'production'
@@ -169,7 +169,7 @@ jobs:
           channel: "stable"
 
       - name: Download dependencies
-        run: dart pub get
+        run: flutter pub get
 
       - name: Set URI (prod)
         if: github.ref_name == 'production'
@@ -208,7 +208,7 @@ jobs:
           channel: "stable"
 
       - name: Download dependencies
-        run: dart pub get
+        run: flutter pub get
 
       - name: Generate code
         run: dart run build_runner build
@@ -217,13 +217,13 @@ jobs:
         run: dart format --set-exit-if-changed .
 
       - name: Static Analysis
-        run: dart analyze
+        run: flutter analyze
 
       - name: Run Code Metrics
         run: dart run dart_code_metrics:metrics --reporter=github lib
 
       - name: Run tests
-        run: dart test --coverage
+        run: flutter test --coverage
 
       - name: Upload test report to Codecov
         uses: codecov/codecov-action@v2.1.0
