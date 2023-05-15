@@ -1,6 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/features/receipt/domain/entities/swipe_receipt.dart';
+import 'package:coffeecard/features/receipt/domain/entities/receipt.dart';
 import 'package:coffeecard/features/receipt/domain/usecases/get_receipts.dart';
 import 'package:coffeecard/features/receipt/presentation/cubit/receipt_cubit.dart';
 import 'package:dartz/dartz.dart';
