@@ -102,14 +102,14 @@ jobs:
           channel: "stable"
 
       - name: Download dependencies
-        run: flutter pub get
+        run: dart pub get
 
       - name: Set URI (prod)
         if: github.ref_name == 'production'
         run: sed -i '' 's/.env.develop/.env.production/' lib/env/env.dart
 
       - name: Generate code
-        run: flutter pub run build_runner build
+        run: dart run build_runner build
 
       - name: Build iOS (dev)
         if: github.ref_name != 'production'
@@ -169,14 +169,14 @@ jobs:
           channel: "stable"
 
       - name: Download dependencies
-        run: flutter pub get
+        run: dart pub get
 
       - name: Set URI (prod)
         if: github.ref_name == 'production'
         run: sed -i 's/.env.develop/.env.production/' lib/env/env.dart
 
       - name: Generate code
-        run: flutter pub run build_runner build
+        run: dart run build_runner build
 
       - name: Build appbundle (dev)
         if: github.ref_name != 'production'
@@ -208,22 +208,22 @@ jobs:
           channel: "stable"
 
       - name: Download dependencies
-        run: flutter pub get
+        run: dart pub get
 
       - name: Generate code
-        run: flutter pub run build_runner build
+        run: dart run build_runner build
 
       - name: Check formatting
-        run: flutter format --set-exit-if-changed .
+        run: dart format --set-exit-if-changed .
 
       - name: Static Analysis
-        run: flutter analyze
+        run: dart analyze
 
       - name: Run Code Metrics
-        run: flutter pub run dart_code_metrics:metrics --reporter=github lib
+        run: dart run dart_code_metrics:metrics --reporter=github lib
 
       - name: Run tests
-        run: flutter test --coverage
+        run: dart test --coverage
 
       - name: Upload test report to Codecov
         uses: codecov/codecov-action@v2.1.0
