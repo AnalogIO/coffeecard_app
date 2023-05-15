@@ -12,12 +12,12 @@ import 'package:gap/gap.dart';
 class LeaderboardSection extends StatelessWidget {
   const LeaderboardSection({
     required this.loading,
-    required this.statsState,
+    required this.leaderboardState,
     required this.userState,
   });
 
   final bool loading;
-  final LeaderboardState statsState;
+  final LeaderboardState leaderboardState;
   final UserState userState;
 
   @override
@@ -39,7 +39,7 @@ class LeaderboardSection extends StatelessWidget {
         else
           LeaderboardListView(
             // if not loading, then these states must be loaded
-            statsState: statsState as LeaderboardLoaded,
+            statsState: leaderboardState as LeaderboardLoaded,
             userState: userState as UserLoaded,
           ),
       ],

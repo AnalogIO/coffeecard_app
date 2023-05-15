@@ -25,9 +25,9 @@ class StatisticsPage extends StatelessWidget {
         context.read<LeaderboardCubit>().loadLeaderboard();
 
     final userState = context.watch<UserCubit>().state;
-    final statsState = context.watch<LeaderboardCubit>().state;
+    final leaderboardState = context.watch<LeaderboardCubit>().state;
     final loading =
-        userState is! UserLoaded || statsState is! LeaderboardLoaded;
+        userState is! UserLoaded || leaderboardState is! LeaderboardLoaded;
 
     if (userState is UserError) {
       return ErrorSection(
@@ -37,10 +37,10 @@ class StatisticsPage extends StatelessWidget {
       );
     }
 
-    if (statsState is LeaderboardError) {
+    if (leaderboardState is LeaderboardError) {
       return ErrorSection(
         center: true,
-        error: statsState.errorMessage,
+        error: leaderboardState.errorMessage,
         retry: () => context.read<LeaderboardCubit>().loadLeaderboard(),
       );
     }
@@ -61,7 +61,7 @@ class StatisticsPage extends StatelessWidget {
               LeaderboardSection(
                 loading: loading,
                 userState: userState,
-                statsState: statsState,
+                leaderboardState: leaderboardState,
               ),
             ],
           ),

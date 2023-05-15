@@ -15,9 +15,9 @@ class GetLeaderboard
   Future<Either<Failure, List<LeaderboardUser>>> call(
     LeaderboardFilter filter,
   ) async {
-    final userleaderboard = await remoteDataSource.getLeaderboardUser(filter);
+    final leaderboardUser = await remoteDataSource.getLeaderboardUser(filter);
 
-    return userleaderboard.fold(
+    return leaderboardUser.fold(
       (error) => Left(error),
       (user) async {
         final leaderboardEither =
@@ -35,25 +35,20 @@ class GetLeaderboard
     List<LeaderboardUser> leaderboard,
     LeaderboardUser user,
   ) {
-    var userInLeaderboard = false;
-    final List<LeaderboardUser> users = leaderboard.map((leaderboardUser) {
-      final isCurrentUser = leaderboardUser.id == user.id;
+    final users = leaderboard
+        .map(
+          (leaderboardUser) => LeaderboardUser(
+            id: leaderboardUser.id,
+            name: leaderboardUser.name,
+            score: leaderboardUser.score,
+            highlight: leaderboardUser.id == user.id, // is current user
+            rank: leaderboardUser.rank,
+          ),
+        )
+        .toList();
 
-      // set the 'found' flag if this is the current user
-      if (!userInLeaderboard && isCurrentUser) {
-        userInLeaderboard = true;
-      }
-
-      return LeaderboardUser(
-        id: leaderboardUser.id,
-        name: leaderboardUser.name,
-        score: leaderboardUser.score,
-        highlight: isCurrentUser,
-        rank: leaderboardUser.rank,
-      );
-    }).toList();
-
-    if (!userInLeaderboard) {
+    // user is not in the leaderboard, highlight them at the bottom
+    if (!users.contains(user)) {
       users.add(
         LeaderboardUser(
           id: user.id,

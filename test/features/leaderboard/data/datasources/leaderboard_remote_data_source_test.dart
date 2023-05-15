@@ -23,6 +23,8 @@ void main() {
     dataSource = LeaderboardRemoteDataSource(apiV2: apiV2, executor: executor);
   });
 
+  const tErrorMessage = 'some error';
+
   group('getLeaderboard', () {
     test('should return [Right] when executor succeeds', () async {
       // arrange
@@ -46,7 +48,7 @@ void main() {
     test('should return [Left] when executor fails', () async {
       // arrange
       when(executor.call<List<LeaderboardEntry>>(any)).thenAnswer(
-        (_) async => const Left(ServerFailure('some error')),
+        (_) async => const Left(ServerFailure(tErrorMessage)),
       );
 
       // act
@@ -56,7 +58,7 @@ void main() {
       );
 
       // assert
-      expect(actual, const Left(ServerFailure('some error')));
+      expect(actual, const Left(ServerFailure(tErrorMessage)));
     });
   });
 
@@ -97,7 +99,7 @@ void main() {
     test('should return [Left] when executor fails', () async {
       // arrange
       when(executor.call<LeaderboardEntry>(any)).thenAnswer(
-        (_) async => const Left(ServerFailure('some error')),
+        (_) async => const Left(ServerFailure(tErrorMessage)),
       );
 
       // act
@@ -105,7 +107,7 @@ void main() {
           await dataSource.getLeaderboardUser(LeaderboardFilter.total);
 
       // assert
-      expect(actual, const Left(ServerFailure('some error')));
+      expect(actual, const Left(ServerFailure(tErrorMessage)));
     });
   });
 }
