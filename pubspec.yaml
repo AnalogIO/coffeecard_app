@@ -24,7 +24,7 @@ dependencies:
 
   # Chopper api and rest client
   logger: 1.3.0
-  chopper: 6.1.1
+  chopper: 6.1.2
 
   # storage
   flutter_secure_storage: 8.0.0
@@ -86,7 +86,7 @@ dev_dependencies:
   bloc_test: 9.1.1
 
   # Chopper api and rest client
-  chopper_generator: 6.0.0
+  chopper_generator: 6.0.1
   json_serializable: 6.6.2
   swagger_dart_code_generator: 2.11.0
 
