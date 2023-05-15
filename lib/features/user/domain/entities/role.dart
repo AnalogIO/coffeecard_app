@@ -5,7 +5,7 @@ enum Role { customer, barista, manager, board }
 
 extension RoleExtension on Role {
   // json is a dynamic object by its very nature
-  //ignore: avoid-dynamic
+  // ignore: avoid-dynamic
   static Role fromJson(dynamic json) {
     final role = userRoleFromJson(json);
     return switch (role) {

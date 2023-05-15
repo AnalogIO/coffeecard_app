@@ -11,7 +11,6 @@ import 'package:flutter/widgets.dart';
 abstract class PaymentHandler {
   final PurchaseRepository purchaseRepository;
   // Certain implementations of the payment handler require access to the build context, even if it does not do so itself.
-  // ignore: unused_field
   final BuildContext context;
 
   const PaymentHandler({

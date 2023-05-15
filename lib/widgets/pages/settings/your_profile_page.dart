@@ -102,8 +102,8 @@ class _EditProfile extends StatelessWidget {
                   .setUserPrivacy(privacyActivated: !user.privacyActivated),
               valueWidget: Switch(
                 value: user.privacyActivated,
-                //No action needed on change, only tap
-                //ignore: no-empty-block
+                // No action needed on change, only tap
+                // ignore: no-empty-block
                 onChanged: (_) {},
               ),
             ),
