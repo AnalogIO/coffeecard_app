@@ -1,4 +1,4 @@
-abstract class Strings {
+abstract final class Strings {
   static const appTitle = 'Cafe Analog';
 
   // Titles for the app bar.

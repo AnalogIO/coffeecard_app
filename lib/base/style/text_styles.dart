@@ -2,7 +2,7 @@ import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_style_builder.dart';
 import 'package:flutter/material.dart';
 
-abstract class AppTextStyle {
+abstract final class AppTextStyle {
   static final _heading = TextStyleBuilder.heading;
   static final _body = TextStyleBuilder.body;
   static final _mono = TextStyleBuilder.mono;
