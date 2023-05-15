@@ -6,16 +6,11 @@ import 'package:coffeecard/models/leaderboard/leaderboard_user.dart';
 import 'package:dartz/dartz.dart';
 
 extension _FilterCategoryToPresetString on LeaderboardFilter {
-  String get label {
-    switch (this) {
-      case LeaderboardFilter.semester:
-        return 'Semester';
-      case LeaderboardFilter.month:
-        return 'Month';
-      case LeaderboardFilter.total:
-        return 'Total';
-    }
-  }
+  String get label => switch (this) {
+        LeaderboardFilter.semester => 'Semester',
+        LeaderboardFilter.month => 'Month',
+        LeaderboardFilter.total => 'Total',
+      };
 }
 
 class LeaderboardRepository {

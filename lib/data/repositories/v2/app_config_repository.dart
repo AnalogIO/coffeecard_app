@@ -14,16 +14,13 @@ class AppConfigRepository {
   final NetworkRequestExecutor executor;
 
   Environment _onSuccessfulRequest(AppConfig dto) {
-    switch (environmentTypeFromJson(dto.environmentType as String)) {
-      case EnvironmentType.production:
-        return Environment.production;
-      // both test and localdevelopment are treated as test
-      case EnvironmentType.test:
-      case EnvironmentType.localdevelopment:
-        return Environment.test;
-      case EnvironmentType.swaggerGeneratedUnknown:
-        return Environment.unknown;
-    }
+    return switch (environmentTypeFromJson(dto.environmentType as String)) {
+      EnvironmentType.production => Environment.production,
+      EnvironmentType.test ||
+      EnvironmentType.localdevelopment =>
+        Environment.test,
+      EnvironmentType.swaggerGeneratedUnknown => Environment.unknown,
+    };
   }
 
   Future<Either<NetworkFailure, Environment>> getEnvironmentType() async {

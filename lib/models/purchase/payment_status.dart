@@ -20,17 +20,12 @@ enum PaymentStatus {
   refunded;
 
   static PaymentStatus fromPurchaseStatus(PurchaseStatus status) {
-    switch (status) {
-      case PurchaseStatus.swaggerGeneratedUnknown:
-        return PaymentStatus.error;
-      case PurchaseStatus.completed:
-        return PaymentStatus.completed;
-      case PurchaseStatus.cancelled:
-        return PaymentStatus.rejectedPayment;
-      case PurchaseStatus.pendingpayment:
-        return PaymentStatus.awaitingPayment;
-      case PurchaseStatus.refunded:
-        return PaymentStatus.refunded;
-    }
+    return switch (status) {
+      PurchaseStatus.completed => PaymentStatus.completed,
+      PurchaseStatus.cancelled => PaymentStatus.rejectedPayment,
+      PurchaseStatus.pendingpayment => PaymentStatus.awaitingPayment,
+      PurchaseStatus.refunded => PaymentStatus.refunded,
+      PurchaseStatus.swaggerGeneratedUnknown => PaymentStatus.error,
+    };
   }
 }
