@@ -4,7 +4,7 @@ import 'package:coffeecard/features/receipt/presentation/widgets/list_entry/purc
 import 'package:coffeecard/features/receipt/presentation/widgets/list_entry/swipe_receipt_list_entry.dart';
 import 'package:flutter/material.dart';
 
-abstract class ReceiptListEntryFactory {
+abstract final class ReceiptListEntryFactory {
   static Widget create(Receipt receipt) => switch (receipt) {
         PlaceholderReceipt() => const PlaceholderReceiptListEntry(),
         PurchaseReceipt() => PurchaseReceiptListEntry(receipt: receipt),
