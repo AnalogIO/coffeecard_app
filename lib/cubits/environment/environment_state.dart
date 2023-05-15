@@ -1,6 +1,6 @@
 part of 'environment_cubit.dart';
 
-abstract class EnvironmentState extends Equatable {
+sealed class EnvironmentState extends Equatable {
   const EnvironmentState();
 }
 

@@ -1,6 +1,6 @@
 part of 'voucher_cubit.dart';
 
-abstract class VoucherState extends Equatable {
+sealed class VoucherState extends Equatable {
   const VoucherState();
 
   @override

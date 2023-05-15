@@ -2,7 +2,7 @@ part of 'statistics_cubit.dart';
 
 enum LeaderboardFilter { semester, month, total }
 
-abstract class StatisticsState extends Equatable {
+sealed class StatisticsState extends Equatable {
   const StatisticsState({required this.filter});
   final LeaderboardFilter filter;
 

@@ -1,6 +1,6 @@
 part of 'login_cubit.dart';
 
-abstract class LoginState extends Equatable {
+sealed class LoginState extends Equatable {
   const LoginState();
 
   @override
