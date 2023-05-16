@@ -8,7 +8,7 @@ import 'package:coffeecard/features/purchase/domain/entities/payment_status.dart
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
 import 'package:coffeecard/utils/api_uri_constants.dart';
 import 'package:coffeecard/utils/launch.dart';
-import 'package:dartz/dartz.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MobilePayService extends PaymentHandler {

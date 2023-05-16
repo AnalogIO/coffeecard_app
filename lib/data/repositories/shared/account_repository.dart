@@ -8,7 +8,7 @@ import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart'
 import 'package:coffeecard/models/account/authenticated_user.dart';
 import 'package:coffeecard/models/account/update_user.dart';
 import 'package:coffeecard/utils/api_uri_constants.dart';
-import 'package:dartz/dartz.dart';
+import 'package:fpdart/fpdart.dart';
 
 class AccountRepository {
   AccountRepository({

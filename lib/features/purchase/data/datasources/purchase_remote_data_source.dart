@@ -6,7 +6,7 @@ import 'package:coffeecard/features/purchase/data/models/single_purchase_model.d
 import 'package:coffeecard/features/purchase/domain/entities/initiate_purchase.dart';
 import 'package:coffeecard/features/purchase/domain/entities/single_purchase.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
-import 'package:dartz/dartz.dart';
+import 'package:fpdart/fpdart.dart';
 
 class PurchaseRemoteDataSource {
   PurchaseRemoteDataSource({

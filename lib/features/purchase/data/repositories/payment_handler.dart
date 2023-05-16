@@ -7,8 +7,8 @@ import 'package:coffeecard/features/purchase/domain/entities/internal_payment_ty
 import 'package:coffeecard/features/purchase/domain/entities/payment.dart';
 import 'package:coffeecard/features/purchase/domain/entities/payment_status.dart';
 import 'package:coffeecard/service_locator.dart';
-import 'package:dartz/dartz.dart';
 import 'package:flutter/widgets.dart';
+import 'package:fpdart/fpdart.dart';
 
 abstract class PaymentHandler {
   final PurchaseRemoteDataSource purchaseRemoteDataSource;

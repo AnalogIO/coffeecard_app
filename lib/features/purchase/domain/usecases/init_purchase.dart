@@ -2,7 +2,7 @@ import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/core/usecases/usecase.dart';
 import 'package:coffeecard/features/purchase/data/repositories/payment_handler.dart';
 import 'package:coffeecard/features/purchase/domain/entities/payment.dart';
-import 'package:dartz/dartz.dart';
+import 'package:fpdart/fpdart.dart';
 
 class InitPurchase implements UseCase<Payment, int> {
   final PaymentHandler paymentHandler;

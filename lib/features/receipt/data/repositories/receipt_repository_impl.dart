@@ -2,7 +2,7 @@ import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/features/receipt/data/datasources/receipt_remote_data_source.dart';
 import 'package:coffeecard/features/receipt/domain/entities/receipt.dart';
 import 'package:coffeecard/features/receipt/domain/repositories/receipt_repository.dart';
-import 'package:dartz/dartz.dart';
+import 'package:fpdart/fpdart.dart';
 
 class ReceiptRepositoryImpl implements ReceiptRepository {
   final ReceiptRemoteDataSource remoteDataSource;
