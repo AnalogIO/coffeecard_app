@@ -46,6 +46,38 @@ class PurchaseCubit extends Cubit<PurchaseState> {
     );
   }
 
+  Future<void> handleVerifyPurchase(
+    Payment payment,
+    Future<void> Function() onSuccess,
+  ) async {
+    final either = await verifyPurchaseStatus(payment.id);
+
+    either.fold(
+      (error) => emit(PurchaseError(error.reason)),
+      (status) async {
+        switch (status) {
+          case PaymentStatus.completed:
+            sl<FirebaseAnalyticsEventLogging>().purchaseCompletedEvent(payment);
+            emit(PurchaseCompleted(payment.copyWith(status: status)));
+            break;
+          case PaymentStatus.error:
+            emit(PurchasePaymentRejected(payment.copyWith(status: status)));
+            break;
+          case PaymentStatus.reserved:
+          case PaymentStatus.awaitingPayment:
+            await onSuccess();
+            break;
+          case PaymentStatus.rejectedPayment:
+            emit(PurchasePaymentRejected(payment));
+            break;
+          case PaymentStatus.refunded:
+            emit(PurchasePaymentRejected(payment));
+            break;
+        }
+      },
+    );
+  }
+
   /// Verifies the status of the current purchase
   /// Only checks the status of the purchase if the state is PurchaseProcessing
   Future<void> verifyPurchase() async {
@@ -57,54 +89,31 @@ class PurchaseCubit extends Cubit<PurchaseState> {
 
     emit(PurchaseVerifying(payment));
 
-    final either = await verifyPurchaseStatus(payment.id);
+    handleVerifyPurchase(
+      payment,
+      () => recurse(payment),
+    );
+  }
 
-    either.fold(
-      (error) => emit(PurchaseError(error.reason)),
-      (status) {
-        switch (status) {
-          case PaymentStatus.completed:
-            sl<FirebaseAnalyticsEventLogging>().purchaseCompletedEvent(payment);
-            emit(PurchaseCompleted(payment.copyWith(status: status)));
-            break;
-          case PaymentStatus.error:
-            emit(PurchasePaymentRejected(payment.copyWith(status: status)));
-            break;
-          case PaymentStatus.reserved:
-            // NOTE, recursive call, potentially infinite.
-            // If payment has been reserved, i.e. approved by user
-            // we will keep checking the backend to verify payment has been captured
+  Future<void> recurse(
+    Payment payment, {
+    int iteration = 0,
+  }) async {
+    const maxIterations = 3;
+    const secondsDelay = 1;
 
-            // Emit processing state to allow the verifyPurchase process again
-            emit(
-              PurchaseProcessing(
-                payment.copyWith(status: status),
-              ),
-            );
-            verifyPurchase();
-            break;
-          case PaymentStatus.awaitingPayment:
-            // TODO: move to method
-            // NOTE, recursive call, potentially infinite.
-            // If payment has been reserved, i.e. approved by user
-            // we will keep checking the backend to verify payment has been captured
+    if (iteration >= maxIterations) {
+      emit(PurchasePaymentRejected(payment));
+      return;
+    }
 
-            // Emit processing state to allow the verifyPurchase process again
-            emit(
-              PurchaseProcessing(
-                payment.copyWith(status: status),
-              ),
-            );
-            verifyPurchase();
-            break;
-          case PaymentStatus.rejectedPayment:
-            emit(PurchasePaymentRejected(payment));
-            break;
-          case PaymentStatus.refunded:
-            emit(PurchasePaymentRejected(payment));
-            break;
-        }
-      },
+    final _ = await Future.delayed(const Duration(seconds: secondsDelay));
+
+    // If payment has been reserved, i.e. approved by user
+    // we will keep checking the backend to verify payment has been captured
+    handleVerifyPurchase(
+      payment,
+      () => recurse(payment, iteration: iteration + 1),
     );
   }
 }
