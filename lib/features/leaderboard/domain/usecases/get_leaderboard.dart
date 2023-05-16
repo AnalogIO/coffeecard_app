@@ -47,8 +47,8 @@ class GetLeaderboard
         )
         .toList();
 
-    // user is not in the leaderboard, highlight them at the bottom
-    if (!users.contains(user)) {
+    if (!users.any((leaderboardUser) => leaderboardUser.id == user.id)) {
+      // user is not in the leaderboard, highlight them at the bottom
       users.add(
         LeaderboardUser(
           id: user.id,
