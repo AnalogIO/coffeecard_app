@@ -23,7 +23,7 @@ void main() {
     dataSource = LeaderboardRemoteDataSource(apiV2: apiV2, executor: executor);
   });
 
-  const tErrorMessage = 'some error';
+  const testErrorMessage = 'some error';
 
   group('getLeaderboard', () {
     test('should return [Right] when executor succeeds', () async {
