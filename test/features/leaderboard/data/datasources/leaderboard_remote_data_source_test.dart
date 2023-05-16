@@ -4,8 +4,8 @@ import 'package:coffeecard/features/leaderboard/data/datasources/leaderboard_rem
 import 'package:coffeecard/features/leaderboard/data/models/leaderboard_user_model.dart';
 import 'package:coffeecard/features/leaderboard/presentation/cubit/leaderboard_cubit.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
-import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 

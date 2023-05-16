@@ -3,8 +3,8 @@ import 'package:coffeecard/features/leaderboard/data/datasources/leaderboard_rem
 import 'package:coffeecard/features/leaderboard/domain/entities/leaderboard_user.dart';
 import 'package:coffeecard/features/leaderboard/domain/usecases/get_leaderboard.dart';
 import 'package:coffeecard/features/leaderboard/presentation/cubit/leaderboard_cubit.dart';
-import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
