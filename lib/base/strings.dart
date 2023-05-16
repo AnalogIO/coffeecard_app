@@ -169,6 +169,9 @@ abstract class Strings {
   static const purchaseRejectedOrCanceledMessage =
       'The payment was rejected or cancelled. No tickets have been added to your account';
   static const purchaseError = "Uh oh, we couldn't complete that purchase";
+  static const purchaseTimeout = 'Purchase timed out';
+  static const purchaseTimeoutMessage =
+      'The purchase timed out. No tickets have been added to your account';
 
   // Receipts
   static const receiptsPageTitle = 'Receipts';

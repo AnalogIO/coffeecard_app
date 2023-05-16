@@ -46,8 +46,8 @@ class _PurchaseProcessState extends State<PurchaseProcess>
               if (_notification == AppLifecycleState.resumed) {
                 cubit.verifyPurchase();
               }
+
               if (state is PurchaseInitial) {
-                // Not related to previous check, hence a separate if statement
                 cubit.pay();
                 return const LoadingDialog(
                   title: Strings.purchaseTalking,
@@ -76,6 +76,11 @@ class _PurchaseProcessState extends State<PurchaseProcess>
                 return ErrorDialog(
                   title: Strings.purchaseError,
                   child: Text(state.message),
+                );
+              } else if (state is PurchaseTimeout) {
+                return const ErrorDialog(
+                  title: Strings.purchaseTimeout,
+                  child: Text(Strings.purchaseTimeoutMessage),
                 );
               }
 

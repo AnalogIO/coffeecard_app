@@ -103,7 +103,7 @@ class PurchaseCubit extends Cubit<PurchaseState> {
     const secondsDelay = 1;
 
     if (iteration >= maxIterations) {
-      emit(PurchasePaymentRejected(payment));
+      emit(PurchaseTimeout(payment));
       return;
     }
 
