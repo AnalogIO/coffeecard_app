@@ -48,7 +48,7 @@ void main() {
     test('should return [Left] when executor fails', () async {
       // arrange
       when(executor.call<List<LeaderboardEntry>>(any)).thenAnswer(
-        (_) async => const Left(ServerFailure(tErrorMessage)),
+        (_) async => const Left(ServerFailure(testErrorMessage)),
       );
 
       // act
@@ -58,7 +58,7 @@ void main() {
       );
 
       // assert
-      expect(actual, const Left(ServerFailure(tErrorMessage)));
+      expect(actual, const Left(ServerFailure(testErrorMessage)));
     });
   });
 
@@ -99,7 +99,7 @@ void main() {
     test('should return [Left] when executor fails', () async {
       // arrange
       when(executor.call<LeaderboardEntry>(any)).thenAnswer(
-        (_) async => const Left(ServerFailure(tErrorMessage)),
+        (_) async => const Left(ServerFailure(testErrorMessage)),
       );
 
       // act
@@ -107,7 +107,7 @@ void main() {
           await dataSource.getLeaderboardUser(LeaderboardFilter.total);
 
       // assert
-      expect(actual, const Left(ServerFailure(tErrorMessage)));
+      expect(actual, const Left(ServerFailure(testErrorMessage)));
     });
   });
 }
