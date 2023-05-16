@@ -13,6 +13,8 @@ on:
       - .github/workflows/**
       - pubspec.lock
       - pubspec.yml
+      - .env.develop
+      - .env.production
 
 jobs:
   build_and_test:

@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:coffeecard/utils/debouncing.dart';
 import 'package:coffeecard/utils/input_validator.dart';
-import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
+import 'package:fpdart/fpdart.dart';
 
 part 'form_event.dart';
 part 'form_state.dart';

@@ -5,8 +5,6 @@ import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
 import 'package:coffeecard/features/contributor/presentation/pages/credits_page.dart';
-import 'package:coffeecard/features/opening_hours/opening_hours.dart';
-import 'package:coffeecard/features/opening_hours/presentation/pages/opening_hours_page.dart';
 import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
 import 'package:coffeecard/utils/api_uri_constants.dart';
 import 'package:coffeecard/utils/launch.dart';
@@ -46,7 +44,6 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final openingHoursState = context.watch<OpeningHoursCubit>().state;
     final userState = context.watch<UserCubit>().state;
 
     return AppScaffold.withTitle(
@@ -124,30 +121,10 @@ class SettingsPage extends StatelessWidget {
                 name: Strings.frequentlyAskedQuestions,
                 onTap: () => Navigator.push(context, FAQPage.route),
               ),
-              SettingListEntry(
+              const SettingListEntry(
                 name: Strings.openingHours,
-                onTap: openingHoursState is OpeningHoursLoaded
-                    ? () => Navigator.push(
-                          context,
-                          OpeningHoursPage.routeWith(state: openingHoursState),
-                        )
-                    : null,
-                valueWidget: ShimmerBuilder(
-                  showShimmer: openingHoursState is OpeningHoursLoading,
-                  builder: (context, colorIfShimmer) {
-                    final loadingText = openingHoursState is OpeningHoursLoading
-                        ? Strings.openingHoursShimmerText
-                        : '';
-
-                    return ColoredBox(
-                      color: colorIfShimmer,
-                      child: SettingValueText(
-                        value: openingHoursState is OpeningHoursLoaded
-                            ? openingHoursState.todaysOpeningHours
-                            : loadingText,
-                      ),
-                    );
-                  },
+                valueWidget: SettingValueText(
+                  value: 'Not available',
                 ),
               ),
               SettingListEntry(

@@ -5,8 +5,8 @@ import 'package:coffeecard/models/purchase/payment_status.dart';
 import 'package:coffeecard/payment/free_product_service.dart';
 import 'package:coffeecard/payment/mobilepay_service.dart';
 import 'package:coffeecard/service_locator.dart';
-import 'package:dartz/dartz.dart';
 import 'package:flutter/widgets.dart';
+import 'package:fpdart/fpdart.dart';
 
 abstract class PaymentHandler {
   final PurchaseRepository purchaseRepository;

@@ -7,7 +7,7 @@ import 'package:coffeecard/features/ticket/data/models/ticket_count_model.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
 import 'package:collection/collection.dart';
-import 'package:dartz/dartz.dart';
+import 'package:fpdart/fpdart.dart';
 
 class TicketRemoteDataSource {
   TicketRemoteDataSource({

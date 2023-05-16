@@ -5,7 +5,7 @@ import 'package:coffeecard/features/receipt/data/models/purchase_receipt_model.d
 import 'package:coffeecard/features/receipt/data/models/swipe_receipt_model.dart';
 import 'package:coffeecard/features/receipt/domain/entities/receipt.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
-import 'package:dartz/dartz.dart';
+import 'package:fpdart/fpdart.dart';
 
 class ReceiptRemoteDataSource {
   final CoffeecardApiV2 apiV2;
