@@ -5,8 +5,8 @@ import 'package:coffeecard/utils/input_validator.dart';
 import 'package:coffeecard/widgets/components/dialog.dart';
 import 'package:coffeecard/widgets/components/forms/form.dart';
 import 'package:coffeecard/widgets/components/loading_overlay.dart';
-import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
+import 'package:fpdart/fpdart.dart';
 
 class ForgotPasscodeForm extends StatelessWidget {
   const ForgotPasscodeForm({required this.initialValue});

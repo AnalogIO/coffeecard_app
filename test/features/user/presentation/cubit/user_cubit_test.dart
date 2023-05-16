@@ -8,8 +8,8 @@ import 'package:coffeecard/features/user/domain/usecases/request_account_deletio
 import 'package:coffeecard/features/user/domain/usecases/update_user_details.dart';
 import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
 import 'package:coffeecard/models/account/update_user.dart';
-import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 

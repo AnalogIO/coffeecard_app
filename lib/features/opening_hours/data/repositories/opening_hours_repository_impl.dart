@@ -4,7 +4,7 @@ import 'package:coffeecard/features/opening_hours/domain/entities/opening_hours.
 import 'package:coffeecard/features/opening_hours/opening_hours.dart';
 import 'package:coffeecard/generated/api/shiftplanning_api.swagger.dart';
 import 'package:coffeecard/models/opening_hours_day.dart';
-import 'package:dartz/dartz.dart';
+import 'package:fpdart/fpdart.dart';
 
 class OpeningHoursRepositoryImpl implements OpeningHoursRepository {
   final OpeningHoursRemoteDataSource dataSource;

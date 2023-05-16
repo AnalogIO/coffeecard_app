@@ -3,7 +3,7 @@ import 'package:coffeecard/generated/api/coffeecard_api_v2.enums.swagger.dart';
 import 'package:coffeecard/models/purchase/payment.dart';
 import 'package:coffeecard/models/purchase/payment_status.dart';
 import 'package:coffeecard/payment/payment_handler.dart';
-import 'package:dartz/dartz.dart';
+import 'package:fpdart/fpdart.dart';
 
 class FreeProductService extends PaymentHandler {
   const FreeProductService({

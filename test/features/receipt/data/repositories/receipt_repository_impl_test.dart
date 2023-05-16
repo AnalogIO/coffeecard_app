@@ -4,8 +4,8 @@ import 'package:coffeecard/features/receipt/data/repositories/receipt_repository
 import 'package:coffeecard/features/receipt/domain/entities/purchase_receipt.dart';
 import 'package:coffeecard/features/receipt/domain/entities/swipe_receipt.dart';
 import 'package:coffeecard/features/receipt/domain/repositories/receipt_repository.dart';
-import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
