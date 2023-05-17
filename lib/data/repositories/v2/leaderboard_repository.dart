@@ -3,7 +3,7 @@ import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/cubits/statistics/statistics_cubit.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
 import 'package:coffeecard/models/leaderboard/leaderboard_user.dart';
-import 'package:dartz/dartz.dart';
+import 'package:fpdart/fpdart.dart';
 
 extension _FilterCategoryToPresetString on LeaderboardFilter {
   String get label => switch (this) {

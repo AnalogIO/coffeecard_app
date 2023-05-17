@@ -37,7 +37,7 @@ class ServerFailure extends NetworkFailure {
 
       return ServerFailure(message);
     } on Exception {
-      return ServerFailure(response.bodyString);
+      return const ServerFailure(Strings.unknownErrorOccured);
     }
   }
 }

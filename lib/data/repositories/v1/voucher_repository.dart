@@ -2,7 +2,7 @@ import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/models/voucher/redeemed_voucher.dart';
-import 'package:dartz/dartz.dart';
+import 'package:fpdart/fpdart.dart';
 
 class VoucherRepository {
   VoucherRepository({
