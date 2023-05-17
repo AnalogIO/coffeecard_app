@@ -30,7 +30,7 @@ void main() {
     );
   });
 
-  const tUserModel = UserModel(
+  const testUserModel = UserModel(
     id: 0,
     name: 'name',
     email: 'email',
@@ -84,7 +84,7 @@ void main() {
       final actual = await dataSource.getUser();
 
       // assert
-      expect(actual, const Right(tUserModel));
+      expect(actual, const Right(testUserModel));
     });
   });
 
@@ -126,7 +126,7 @@ void main() {
       final actual = await dataSource.updateUserDetails(const UpdateUser());
 
       // assert
-      expect(actual, const Right(tUserModel));
+      expect(actual, const Right(testUserModel));
     });
   });
 

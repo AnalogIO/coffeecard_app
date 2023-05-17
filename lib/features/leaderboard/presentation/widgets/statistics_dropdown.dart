@@ -1,4 +1,4 @@
-import 'package:coffeecard/cubits/statistics/statistics_cubit.dart';
+import 'package:coffeecard/features/leaderboard/presentation/cubit/leaderboard_cubit.dart';
 import 'package:coffeecard/widgets/components/dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,12 +9,12 @@ class StatisticsDropdown extends StatelessWidget {
     void onChanged(LeaderboardFilter? filter) =>
         context.read<LeaderboardCubit>().setFilter(filter!);
 
-    return BlocBuilder<LeaderboardCubit, StatisticsState>(
+    return BlocBuilder<LeaderboardCubit, LeaderboardState>(
       buildWhen: (previous, current) =>
-          current is StatisticsLoaded || current is StatisticsLoading,
+          current is LeaderboardLoaded || current is LeaderboardLoading,
       builder: (_, state) {
         return Dropdown<LeaderboardFilter>(
-          loading: state is StatisticsLoading,
+          loading: state is LeaderboardLoading,
           onChanged: onChanged,
           value: state.filter,
           items: _menuItems,

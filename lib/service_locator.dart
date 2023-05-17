@@ -6,13 +6,15 @@ import 'package:coffeecard/data/repositories/shared/account_repository.dart';
 import 'package:coffeecard/data/repositories/v1/product_repository.dart';
 import 'package:coffeecard/data/repositories/v1/voucher_repository.dart';
 import 'package:coffeecard/data/repositories/v2/app_config_repository.dart';
-import 'package:coffeecard/data/repositories/v2/leaderboard_repository.dart';
 import 'package:coffeecard/data/repositories/v2/purchase_repository.dart';
 import 'package:coffeecard/data/storage/secure_storage.dart';
 import 'package:coffeecard/env/env.dart';
 import 'package:coffeecard/features/contributor/data/datasources/contributor_local_data_source.dart';
 import 'package:coffeecard/features/contributor/domain/usecases/fetch_contributors.dart';
 import 'package:coffeecard/features/contributor/presentation/cubit/contributor_cubit.dart';
+import 'package:coffeecard/features/leaderboard/data/datasources/leaderboard_remote_data_source.dart';
+import 'package:coffeecard/features/leaderboard/domain/usecases/get_leaderboard.dart';
+import 'package:coffeecard/features/leaderboard/presentation/cubit/leaderboard_cubit.dart';
 import 'package:coffeecard/features/occupation/data/datasources/occupation_remote_data_source.dart';
 import 'package:coffeecard/features/occupation/domain/usecases/get_occupations.dart';
 import 'package:coffeecard/features/occupation/presentation/cubit/occupation_cubit.dart';
@@ -125,13 +127,6 @@ void configureServices() {
   );
 
   // v2
-  sl.registerFactory<LeaderboardRepository>(
-    () => LeaderboardRepository(
-      apiV2: sl<CoffeecardApiV2>(),
-      executor: sl<NetworkRequestExecutor>(),
-    ),
-  );
-
   sl.registerFactory<PurchaseRepository>(
     () => PurchaseRepository(
       apiV2: sl<CoffeecardApiV2>(),
@@ -159,6 +154,7 @@ void initFeatures() {
   initUser();
   initReceipt();
   initContributor();
+  initLeaderboard();
 }
 
 void initOpeningHours() {
@@ -271,4 +267,19 @@ void initContributor() {
 
   // data source
   sl.registerLazySingleton(() => ContributorLocalDataSource());
+}
+
+void initLeaderboard() {
+  // bloc
+  sl.registerFactory(
+    () => LeaderboardCubit(getLeaderboard: sl()),
+  );
+
+  // use case
+  sl.registerFactory(() => GetLeaderboard(remoteDataSource: sl()));
+
+  // data source
+  sl.registerLazySingleton(
+    () => LeaderboardRemoteDataSource(apiV2: sl(), executor: sl()),
+  );
 }
