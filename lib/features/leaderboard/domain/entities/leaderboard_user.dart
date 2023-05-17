@@ -1,4 +1,3 @@
-import 'package:coffeecard/generated/api/coffeecard_api_v2.models.swagger.dart';
 import 'package:equatable/equatable.dart';
 
 class LeaderboardUser extends Equatable {
@@ -16,15 +15,6 @@ class LeaderboardUser extends Equatable {
     required this.highlight,
   });
 
-  LeaderboardUser.fromDTO(LeaderboardEntry dto)
-      : id = dto.id!,
-        name = dto.name!,
-        rank = dto.rank!,
-        score = dto.score!,
-        highlight = false;
-
   @override
-  List<Object?> get props {
-    return [id, rank, score, name, highlight];
-  }
+  List<Object?> get props => [id, rank, score, name, highlight];
 }

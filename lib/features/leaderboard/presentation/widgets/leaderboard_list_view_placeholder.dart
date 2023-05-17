@@ -1,4 +1,4 @@
-import 'package:coffeecard/widgets/components/stats/leaderboard_list_entry.dart';
+import 'package:coffeecard/features/leaderboard/presentation/widgets/leaderboard_list_entry.dart';
 import 'package:flutter/material.dart';
 
 final _placeholderListEntries =

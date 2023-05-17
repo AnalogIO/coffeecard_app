@@ -1,8 +1,10 @@
 import 'package:coffeecard/core/errors/failures.dart';
+import 'package:coffeecard/core/extensions/either_extensions.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
-import 'package:coffeecard/cubits/statistics/statistics_cubit.dart';
+import 'package:coffeecard/features/leaderboard/data/models/leaderboard_user_model.dart';
+import 'package:coffeecard/features/leaderboard/domain/entities/leaderboard_user.dart';
+import 'package:coffeecard/features/leaderboard/presentation/cubit/leaderboard_cubit.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
-import 'package:coffeecard/models/leaderboard/leaderboard_user.dart';
 import 'package:fpdart/fpdart.dart';
 
 extension _FilterCategoryToPresetString on LeaderboardFilter {
@@ -13,32 +15,31 @@ extension _FilterCategoryToPresetString on LeaderboardFilter {
       };
 }
 
-class LeaderboardRepository {
-  LeaderboardRepository({
+class LeaderboardRemoteDataSource {
+  final CoffeecardApiV2 apiV2;
+  final NetworkRequestExecutor executor;
+
+  LeaderboardRemoteDataSource({
     required this.apiV2,
     required this.executor,
   });
 
-  final CoffeecardApiV2 apiV2;
-  final NetworkRequestExecutor executor;
-
   Future<Either<NetworkFailure, List<LeaderboardUser>>> getLeaderboard(
     LeaderboardFilter category,
+    int top,
   ) async {
-    final result = await executor(
-      () => apiV2.apiV2LeaderboardTopGet(preset: category.label, top: 10),
+    return executor(
+      () => apiV2.apiV2LeaderboardTopGet(preset: category.label, top: top),
+    ).bindFuture(
+      (result) => result.map(LeaderboardUserModel.fromDTO).toList(),
     );
-
-    return result.map((result) => result.map(LeaderboardUser.fromDTO).toList());
   }
 
   Future<Either<NetworkFailure, LeaderboardUser>> getLeaderboardUser(
     LeaderboardFilter category,
   ) async {
-    final result = await executor(
+    return executor(
       () => apiV2.apiV2LeaderboardGet(preset: category.label),
-    );
-
-    return result.map(LeaderboardUser.fromDTO);
+    ).bindFuture(LeaderboardUserModel.fromDTO);
   }
 }

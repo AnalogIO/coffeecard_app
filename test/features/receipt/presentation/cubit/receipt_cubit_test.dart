@@ -48,7 +48,7 @@ void main() {
   });
 
   group('filterReceipts', () {
-    final tReceipts = [
+    final testReceipts = [
       SwipeReceipt(
         id: 1,
         productName: 'Coffee',
@@ -71,11 +71,11 @@ void main() {
     blocTest<ReceiptCubit, ReceiptState>(
       'should emit new state with filter applied',
       build: () => cubit,
-      seed: () => ReceiptState(receipts: tReceipts),
+      seed: () => ReceiptState(receipts: testReceipts),
       act: (_) => cubit.filterReceipts(ReceiptFilterCategory.purchases),
       expect: () => [
         ReceiptState(
-          receipts: tReceipts,
+          receipts: testReceipts,
           filteredReceipts: const [],
           filterBy: ReceiptFilterCategory.purchases,
         ),
