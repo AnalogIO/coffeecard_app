@@ -35,6 +35,7 @@ dart_code_metrics:
     number-of-parameters: 6
     maximum-nesting-level: 4
   rules:
+    - list-all-equatable-fields: true
     - avoid-ignoring-return-values:
         exclude:
           - test/**
