@@ -1,7 +1,9 @@
+import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
+
 class InitiatePurchase {
   final int id;
   final int totalAmount;
-  final Map<String, dynamic> paymentDetails;
+  final MobilePayPaymentDetails paymentDetails;
   final int productId;
   final String productName;
   final String purchaseStatus;

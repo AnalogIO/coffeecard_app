@@ -22,14 +22,10 @@ class MobilePayService extends PaymentHandler {
         .initiatePurchase(productId, PaymentType.mobilepay)
         .bindFuture(
       (response) {
-        final paymentDetails = MobilePayPaymentDetails.fromJsonFactory(
-          response.paymentDetails,
-        );
-
         return Payment(
           id: response.id,
           status: PaymentStatus.awaitingPayment,
-          deeplink: paymentDetails.mobilePayAppRedirectUri,
+          deeplink: response.paymentDetails.mobilePayAppRedirectUri,
           purchaseTime: response.dateCreated,
           price: response.totalAmount,
           productId: response.productId,
