@@ -57,7 +57,7 @@ class UserCard extends StatelessWidget {
                             name,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: AppTextStyle.recieptItemKey,
+                            style: AppTextStyle.receiptItemKey,
                           ),
                         ),
                         const Gap(3),

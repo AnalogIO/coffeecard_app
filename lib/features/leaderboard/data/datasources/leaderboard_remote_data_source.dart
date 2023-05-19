@@ -8,16 +8,11 @@ import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
 import 'package:fpdart/fpdart.dart';
 
 extension _FilterCategoryToPresetString on LeaderboardFilter {
-  String get label {
-    switch (this) {
-      case LeaderboardFilter.semester:
-        return 'Semester';
-      case LeaderboardFilter.month:
-        return 'Month';
-      case LeaderboardFilter.total:
-        return 'Total';
-    }
-  }
+  String get label => switch (this) {
+        LeaderboardFilter.semester => 'Semester',
+        LeaderboardFilter.month => 'Month',
+        LeaderboardFilter.total => 'Total',
+      };
 }
 
 class LeaderboardRemoteDataSource {

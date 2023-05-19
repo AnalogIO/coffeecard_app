@@ -1,4 +1,4 @@
-import 'package:coffeecard/features/receipt/domain/entities/receipt.dart';
+part of 'receipt.dart';
 
 class SwipeReceipt extends Receipt {
   const SwipeReceipt({

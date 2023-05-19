@@ -1,6 +1,6 @@
 part of 'products_cubit.dart';
 
-abstract class ProductsState extends Equatable {
+sealed class ProductsState extends Equatable {
   const ProductsState();
 }
 

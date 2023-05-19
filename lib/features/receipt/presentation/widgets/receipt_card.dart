@@ -63,7 +63,7 @@ class ReceiptCard extends StatelessWidget {
           left: isInOverlay
               ? Text(Strings.receiptCardNote, style: AppTextStyle.explainer)
               : const SizedBox.shrink(),
-          right: AnalogRecieptLogo(),
+          right: AnalogReceiptLogo(),
         ),
       ),
     );

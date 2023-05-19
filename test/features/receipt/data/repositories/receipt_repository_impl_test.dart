@@ -1,8 +1,7 @@
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/features/receipt/data/datasources/receipt_remote_data_source.dart';
 import 'package:coffeecard/features/receipt/data/repositories/receipt_repository_impl.dart';
-import 'package:coffeecard/features/receipt/domain/entities/purchase_receipt.dart';
-import 'package:coffeecard/features/receipt/domain/entities/swipe_receipt.dart';
+import 'package:coffeecard/features/receipt/domain/entities/receipt.dart';
 import 'package:coffeecard/features/receipt/domain/repositories/receipt_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';

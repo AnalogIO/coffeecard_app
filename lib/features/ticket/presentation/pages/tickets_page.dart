@@ -31,18 +31,18 @@ class TicketsPage extends StatelessWidget {
                 controller: scrollController,
                 shrinkWrap: true,
                 padding: const EdgeInsets.all(16.0),
-                children: [
+                children: const [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       SectionTitle(Strings.ticketsMyTickets),
                     ],
                   ),
-                  const TicketSection(),
-                  const Gap(24),
-                  const SectionTitle(Strings.shopText),
-                  const ShopSection(),
+                  TicketSection(),
+                  Gap(24),
+                  SectionTitle(Strings.shopText),
+                  ShopSection(),
                 ],
               ),
             ),

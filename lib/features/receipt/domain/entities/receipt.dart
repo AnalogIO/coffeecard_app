@@ -1,7 +1,12 @@
+import 'package:coffeecard/base/strings.dart';
 import 'package:equatable/equatable.dart';
 
+part 'placeholder_receipt.dart';
+part 'purchase_receipt.dart';
+part 'swipe_receipt.dart';
+
 /// A receipt for either a used ticket, or a purchase
-abstract class Receipt extends Equatable {
+sealed class Receipt extends Equatable {
   final String productName;
   final DateTime timeUsed;
   final int id;

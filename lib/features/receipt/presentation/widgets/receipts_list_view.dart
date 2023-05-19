@@ -1,6 +1,6 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
-import 'package:coffeecard/features/receipt/domain/entities/placeholder_receipt.dart';
+import 'package:coffeecard/features/receipt/domain/entities/receipt.dart';
 import 'package:coffeecard/features/receipt/presentation/cubit/receipt_cubit.dart';
 import 'package:coffeecard/features/receipt/presentation/widgets/receipt_list_entry_factory.dart';
 import 'package:coffeecard/widgets/components/error_section.dart';
@@ -17,36 +17,57 @@ class ReceiptsListView extends StatelessWidget {
     return Expanded(
       child: BlocBuilder<ReceiptCubit, ReceiptState>(
         builder: (context, state) {
-          switch (state.status) {
-            case ReceiptStatus.initial:
-              return _ReceiptsPlaceholder();
-            case ReceiptStatus.success:
-              return RefreshIndicator(
-                displacement: 24,
-                onRefresh: context.read<ReceiptCubit>().fetchReceipts,
-                child: state.filteredReceipts.isEmpty
-                    ? _ReceiptsEmptyIndicator(
-                        hasNoReceipts: state.receipts.isEmpty,
-                        filterCategory: state.filterBy,
-                      )
-                    : ListView.builder(
-                        controller: scrollController,
-                        itemCount: state.filteredReceipts.length,
-                        itemBuilder: (_, index) {
-                          final receipt = state.filteredReceipts[index];
-                          return ReceiptListEntryFactory.create(receipt);
-                        },
-                      ),
-              );
-            case ReceiptStatus.failure:
-              return ErrorSection(
-                center: true,
-                error: state.error!,
-                retry: context.read<ReceiptCubit>().fetchReceipts,
-              );
-          }
+          return switch (state.status) {
+            ReceiptStatus.initial => const _ReceiptsPlaceholder(),
+            ReceiptStatus.success => _ReceiptsLoadedView(scrollController),
+            ReceiptStatus.failure => const _ReceiptsErrorView(),
+          };
         },
       ),
+    );
+  }
+}
+
+class _ReceiptsErrorView extends StatelessWidget {
+  const _ReceiptsErrorView();
+
+  @override
+  Widget build(BuildContext context) {
+    final cubit = context.read<ReceiptCubit>();
+    return ErrorSection(
+      center: true,
+      error: cubit.state.error!,
+      retry: cubit.fetchReceipts,
+    );
+  }
+}
+
+class _ReceiptsLoadedView extends StatelessWidget {
+  const _ReceiptsLoadedView(this.scrollController);
+
+  final ScrollController scrollController;
+
+  @override
+  Widget build(BuildContext context) {
+    final cubit = context.read<ReceiptCubit>();
+    final state = cubit.state;
+
+    return RefreshIndicator(
+      displacement: 24,
+      onRefresh: cubit.fetchReceipts,
+      child: state.filteredReceipts.isEmpty
+          ? _ReceiptsEmptyIndicator(
+              hasNoReceipts: state.receipts.isEmpty,
+              filterCategory: state.filterBy,
+            )
+          : ListView.builder(
+              controller: scrollController,
+              itemCount: state.filteredReceipts.length,
+              itemBuilder: (_, index) {
+                final receipt = state.filteredReceipts[index];
+                return ReceiptListEntryFactory.create(receipt);
+              },
+            ),
     );
   }
 }
@@ -105,10 +126,12 @@ class _ReceiptsEmptyIndicator extends StatelessWidget {
 }
 
 class _ReceiptsPlaceholder extends StatelessWidget {
-  final placeholderListEntries = List.generate(
-    20,
-    (_) => ReceiptListEntryFactory.create(PlaceholderReceipt()),
-  );
+  const _ReceiptsPlaceholder();
+
+  List<Widget> get placeholderListEntries => List.generate(
+        20,
+        (_) => ReceiptListEntryFactory.create(PlaceholderReceipt()),
+      );
 
   @override
   Widget build(BuildContext context) {

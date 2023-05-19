@@ -1,6 +1,6 @@
 part of 'user_cubit.dart';
 
-abstract class UserState extends Equatable {
+sealed class UserState extends Equatable {
   @override
   List<Object?> get props => [];
 }
@@ -13,7 +13,7 @@ class UserError extends UserState {
 
 class UserLoading extends UserState {}
 
-abstract class UserWithData extends UserState {
+sealed class UserWithData extends UserState {
   final User user;
 
   UserWithData({required this.user});

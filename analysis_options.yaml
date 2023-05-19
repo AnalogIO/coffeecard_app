@@ -12,8 +12,6 @@ linter:
     sort_pub_dependencies: false
 
 analyzer:
-  strong-mode:
-    implicit-casts: false
   exclude:
     - lib/generated/**
     - test/**.mocks.dart
@@ -26,25 +24,24 @@ analyzer:
     fixme: warning
   plugins:
     - dart_code_metrics
+  language:
+    strict-casts: true
 
 dart_code_metrics:
   extends:
     - package:dart_code_metrics_presets/all.yaml
   metrics:
-    cyclomatic-complexity: 20
+    cyclomatic-complexity: 15
     number-of-parameters: 6
     maximum-nesting-level: 4
   rules:
+    - list-all-equatable-fields: true
     - avoid-ignoring-return-values:
         exclude:
           - test/**
-
     - no-empty-block:
         exclude:
           - test/**
-
-    - list-all-equatable-fields
-
     - arguments-ordering: false
     - format-comment: false
     - member-ordering: false

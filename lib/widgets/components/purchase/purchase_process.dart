@@ -98,9 +98,9 @@ class _PurchaseProcessState extends State<PurchaseProcess>
     return SimpleDialog(
       shape: _getShape(),
       title: _getTitleWidget(title),
-      children: [
+      children: const [
         Column(
-          children: const [
+          children: [
             Padding(
               padding: EdgeInsets.all(16),
               child: CircularProgressIndicator(color: AppColor.primary),

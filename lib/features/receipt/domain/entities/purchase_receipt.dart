@@ -1,4 +1,4 @@
-import 'package:coffeecard/features/receipt/domain/entities/receipt.dart';
+part of 'receipt.dart';
 
 class PurchaseReceipt extends Receipt {
   final int price;

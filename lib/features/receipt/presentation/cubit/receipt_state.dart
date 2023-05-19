@@ -5,16 +5,11 @@ enum ReceiptFilterCategory { all, swipes, purchases }
 enum ReceiptStatus { initial, success, failure }
 
 extension DropdownName on ReceiptFilterCategory {
-  String get name {
-    switch (this) {
-      case ReceiptFilterCategory.all:
-        return Strings.receiptFilterAll;
-      case ReceiptFilterCategory.swipes:
-        return Strings.receiptFilterSwipes;
-      case ReceiptFilterCategory.purchases:
-        return Strings.receiptFilterPurchases;
-    }
-  }
+  String get name => switch (this) {
+        ReceiptFilterCategory.all => Strings.receiptFilterAll,
+        ReceiptFilterCategory.swipes => Strings.receiptFilterSwipes,
+        ReceiptFilterCategory.purchases => Strings.receiptFilterPurchases
+      };
 }
 
 class ReceiptState extends Equatable {
