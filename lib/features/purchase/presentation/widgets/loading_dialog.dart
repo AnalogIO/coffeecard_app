@@ -13,9 +13,9 @@ class LoadingDialog extends StatelessWidget {
         borderRadius: BorderRadius.all(Radius.circular(16)),
       ),
       title: Text(title),
-      children: [
+      children: const [
         Column(
-          children: const [
+          children: [
             Padding(
               padding: EdgeInsets.all(16),
               child: CircularProgressIndicator(color: AppColor.primary),
