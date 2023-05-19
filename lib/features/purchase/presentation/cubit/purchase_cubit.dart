@@ -59,20 +59,15 @@ class PurchaseCubit extends Cubit<PurchaseState> {
           case PaymentStatus.completed:
             sl<FirebaseAnalyticsEventLogging>().purchaseCompletedEvent(payment);
             emit(PurchaseCompleted(payment.copyWith(status: status)));
-            break;
           case PaymentStatus.error:
             emit(PurchasePaymentRejected(payment.copyWith(status: status)));
-            break;
           case PaymentStatus.reserved:
           case PaymentStatus.awaitingPayment:
             await onSuccess();
-            break;
           case PaymentStatus.rejectedPayment:
             emit(PurchasePaymentRejected(payment));
-            break;
           case PaymentStatus.refunded:
             emit(PurchasePaymentRejected(payment));
-            break;
         }
       },
     );

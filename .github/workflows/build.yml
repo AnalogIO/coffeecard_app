@@ -17,7 +17,7 @@ on:
         value: ${{ jobs.version.outputs.version_tag }}
 
 env:
-  FLUTTER_VERSION: 3.7.8
+  FLUTTER_VERSION: 3.10.0
   JAVA_VERSION: 11.x
 
 jobs:
@@ -109,7 +109,7 @@ jobs:
         run: sed -i '' 's/.env.develop/.env.production/' lib/env/env.dart
 
       - name: Generate code
-        run: flutter pub run build_runner build
+        run: dart run build_runner build
 
       - name: Build iOS (dev)
         if: github.ref_name != 'production'
@@ -176,7 +176,7 @@ jobs:
         run: sed -i 's/.env.develop/.env.production/' lib/env/env.dart
 
       - name: Generate code
-        run: flutter pub run build_runner build
+        run: dart run build_runner build
 
       - name: Build appbundle (dev)
         if: github.ref_name != 'production'
@@ -211,16 +211,16 @@ jobs:
         run: flutter pub get
 
       - name: Generate code
-        run: flutter pub run build_runner build
+        run: dart run build_runner build
 
       - name: Check formatting
-        run: flutter format --set-exit-if-changed .
+        run: dart format --set-exit-if-changed .
 
       - name: Static Analysis
         run: flutter analyze
 
       - name: Run Code Metrics
-        run: flutter pub run dart_code_metrics:metrics --reporter=github lib
+        run: dart run dart_code_metrics:metrics --reporter=github lib
 
       - name: Run tests
         run: flutter test --coverage

@@ -1,31 +1,33 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/cubits/statistics/statistics_cubit.dart';
+import 'package:coffeecard/features/leaderboard/presentation/cubit/leaderboard_cubit.dart';
+import 'package:coffeecard/features/leaderboard/presentation/widgets/leaderboard_section.dart';
+import 'package:coffeecard/features/leaderboard/presentation/widgets/statistics_section.dart';
 import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
 import 'package:coffeecard/widgets/components/error_section.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
-import 'package:coffeecard/widgets/components/stats/leaderboard_section.dart';
-import 'package:coffeecard/widgets/components/stats/stats_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class StatsPage extends StatelessWidget {
-  const StatsPage({required this.scrollController});
+class StatisticsPage extends StatelessWidget {
+  const StatisticsPage({required this.scrollController});
 
   final ScrollController scrollController;
 
   static Route routeWith({required ScrollController scrollController}) {
     return MaterialPageRoute(
-      builder: (_) => StatsPage(scrollController: scrollController),
+      builder: (_) => StatisticsPage(scrollController: scrollController),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    Future<void> refresh() async => context.read<LeaderboardCubit>().fetch();
+    Future<void> refresh() async =>
+        context.read<LeaderboardCubit>().loadLeaderboard();
 
     final userState = context.watch<UserCubit>().state;
-    final statsState = context.watch<LeaderboardCubit>().state;
-    final loading = userState is! UserLoaded || statsState is! StatisticsLoaded;
+    final leaderboardState = context.watch<LeaderboardCubit>().state;
+    final loading =
+        userState is! UserLoaded || leaderboardState is! LeaderboardLoaded;
 
     if (userState is UserError) {
       return ErrorSection(
@@ -35,11 +37,11 @@ class StatsPage extends StatelessWidget {
       );
     }
 
-    if (statsState is StatisticsError) {
+    if (leaderboardState is LeaderboardError) {
       return ErrorSection(
         center: true,
-        error: statsState.errorMessage,
-        retry: () => context.read<LeaderboardCubit>().fetch(),
+        error: leaderboardState.errorMessage,
+        retry: () => context.read<LeaderboardCubit>().loadLeaderboard(),
       );
     }
 
@@ -55,11 +57,11 @@ class StatsPage extends StatelessWidget {
             controller: scrollController,
             physics: loading ? const NeverScrollableScrollPhysics() : null,
             children: [
-              const StatsSection(),
+              const StatisticsSection(),
               LeaderboardSection(
                 loading: loading,
                 userState: userState,
-                statsState: statsState,
+                leaderboardState: leaderboardState,
               ),
             ],
           ),

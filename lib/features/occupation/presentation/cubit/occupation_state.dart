@@ -1,6 +1,6 @@
 part of 'occupation_cubit.dart';
 
-abstract class OccupationState extends Equatable {
+sealed class OccupationState extends Equatable {
   const OccupationState();
 }
 

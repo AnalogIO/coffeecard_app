@@ -1,6 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/features/receipt/domain/entities/swipe_receipt.dart';
+import 'package:coffeecard/features/receipt/domain/entities/receipt.dart';
 import 'package:coffeecard/features/receipt/domain/usecases/get_receipts.dart';
 import 'package:coffeecard/features/receipt/presentation/cubit/receipt_cubit.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -48,7 +48,7 @@ void main() {
   });
 
   group('filterReceipts', () {
-    final tReceipts = [
+    final testReceipts = [
       SwipeReceipt(
         id: 1,
         productName: 'Coffee',
@@ -71,11 +71,11 @@ void main() {
     blocTest<ReceiptCubit, ReceiptState>(
       'should emit new state with filter applied',
       build: () => cubit,
-      seed: () => ReceiptState(receipts: tReceipts),
+      seed: () => ReceiptState(receipts: testReceipts),
       act: (_) => cubit.filterReceipts(ReceiptFilterCategory.purchases),
       expect: () => [
         ReceiptState(
-          receipts: tReceipts,
+          receipts: testReceipts,
           filteredReceipts: const [],
           filterBy: ReceiptFilterCategory.purchases,
         ),

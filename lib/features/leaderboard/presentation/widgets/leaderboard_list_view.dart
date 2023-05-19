@@ -1,10 +1,10 @@
-import 'package:coffeecard/cubits/statistics/statistics_cubit.dart';
+import 'package:coffeecard/features/leaderboard/presentation/cubit/leaderboard_cubit.dart';
+import 'package:coffeecard/features/leaderboard/presentation/widgets/leaderboard_list_entry.dart';
 import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
-import 'package:coffeecard/widgets/components/stats/leaderboard_list_entry.dart';
 import 'package:flutter/material.dart';
 
 class LeaderboardListView extends StatelessWidget {
-  final StatisticsLoaded statsState;
+  final LeaderboardLoaded statsState;
   final UserLoaded userState;
 
   const LeaderboardListView({

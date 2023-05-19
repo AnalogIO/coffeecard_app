@@ -1,4 +1,4 @@
-abstract class TestEnvironmentStrings {
+abstract final class TestEnvironmentStrings {
   static const title = 'Connected to test environment';
   static const description = [
     'The functionality of this app is for testing purposes only.',

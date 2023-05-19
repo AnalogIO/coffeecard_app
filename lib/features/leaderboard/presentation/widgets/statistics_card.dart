@@ -60,14 +60,10 @@ String formatLeaderboardPostfix(int rank) {
 
   if (rank > 10 && rank < 20) return def;
 
-  switch (rank % 10) {
-    case 1:
-      return 'st';
-    case 2:
-      return 'nd';
-    case 3:
-      return 'rd';
-    default:
-      return def;
-  }
+  return switch (rank % 10) {
+    1 => 'st',
+    2 => 'nd',
+    3 => 'rd',
+    _ => def,
+  };
 }

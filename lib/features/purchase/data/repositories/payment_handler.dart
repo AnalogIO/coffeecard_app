@@ -12,8 +12,6 @@ import 'package:fpdart/fpdart.dart';
 
 abstract class PaymentHandler {
   final PurchaseRemoteDataSource purchaseRemoteDataSource;
-  // Certain implementations of the payment handler require access to the build context, even if it does not do so itself.
-  // ignore: unused_field
   final BuildContext context;
 
   const PaymentHandler({
@@ -29,20 +27,16 @@ abstract class PaymentHandler {
   ) {
     final repository = sl.get<PurchaseRemoteDataSource>();
 
-    switch (paymentType) {
-      case InternalPaymentType.mobilePay:
-        return MobilePayService(
+    return switch (paymentType) {
+      InternalPaymentType.mobilePay => MobilePayService(
           purchaseRemoteDataSource: repository,
           context: context,
-        );
-      case InternalPaymentType.free:
-        return FreeProductService(
+        ),
+      InternalPaymentType.free => FreeProductService(
           purchaseRemoteDataSource: repository,
           context: context,
-        );
-      default:
-        throw UnimplementedError();
-    }
+        ),
+    };
   }
 
   Future<Either<Failure, PaymentStatus>> verifyPurchase(
