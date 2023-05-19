@@ -4,7 +4,6 @@ import 'package:coffeecard/features/purchase/domain/entities/payment_status.dart
 import 'package:coffeecard/features/purchase/domain/usecases/init_purchase.dart';
 import 'package:coffeecard/features/purchase/domain/usecases/verify_purchase_status.dart';
 import 'package:coffeecard/models/ticket/product.dart';
-import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/utils/firebase_analytics_event_logging.dart';
 import 'package:equatable/equatable.dart';
 
@@ -14,16 +13,18 @@ class PurchaseCubit extends Cubit<PurchaseState> {
   final Product product;
   final InitPurchase initPurchase;
   final VerifyPurchaseStatus verifyPurchaseStatus;
+  final FirebaseAnalyticsEventLogging firebaseAnalyticsEventLogging;
 
   PurchaseCubit({
     required this.product,
     required this.initPurchase,
     required this.verifyPurchaseStatus,
+    required this.firebaseAnalyticsEventLogging,
   }) : super(const PurchaseInitial());
 
   /// Initialise a purchase of [product]
   Future<void> pay() async {
-    sl<FirebaseAnalyticsEventLogging>().beginCheckoutEvent(product);
+    firebaseAnalyticsEventLogging.beginCheckoutEvent(product);
 
     if (state is! PurchaseInitial) {
       return;
@@ -68,10 +69,9 @@ class PurchaseCubit extends Cubit<PurchaseState> {
   Future<void> validatePurchaseStatusAtInterval(
     Payment payment, {
     int iteration = 0,
+    int maxIterations = 3,
+    Duration delay = const Duration(seconds: 1),
   }) async {
-    const maxIterations = 3;
-    const delay = Duration(seconds: 1);
-
     if (iteration >= maxIterations) {
       emit(PurchaseTimeout(payment));
       return;
@@ -83,7 +83,12 @@ class PurchaseCubit extends Cubit<PurchaseState> {
     // we will keep checking the backend to verify payment has been captured
     checkPurchaseStatus(
       payment,
-      () => validatePurchaseStatusAtInterval(payment, iteration: iteration + 1),
+      () => validatePurchaseStatusAtInterval(
+        payment,
+        iteration: iteration + 1,
+        maxIterations: maxIterations,
+        delay: delay,
+      ),
     );
   }
 
@@ -100,7 +105,7 @@ class PurchaseCubit extends Cubit<PurchaseState> {
       (status) async {
         switch (status) {
           case PaymentStatus.completed:
-            sl<FirebaseAnalyticsEventLogging>().purchaseCompletedEvent(payment);
+            firebaseAnalyticsEventLogging.purchaseCompletedEvent(payment);
             emit(PurchaseCompleted(payment.copyWith(status: status)));
           case PaymentStatus.error:
             emit(PurchasePaymentRejected(payment.copyWith(status: status)));
@@ -108,7 +113,6 @@ class PurchaseCubit extends Cubit<PurchaseState> {
           case PaymentStatus.awaitingPayment:
             await onPending();
           case PaymentStatus.rejectedPayment:
-            emit(PurchasePaymentRejected(payment));
           case PaymentStatus.refunded:
             emit(PurchasePaymentRejected(payment));
         }
