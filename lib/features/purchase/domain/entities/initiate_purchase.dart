@@ -1,6 +1,7 @@
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
+import 'package:equatable/equatable.dart';
 
-class InitiatePurchase {
+class InitiatePurchase extends Equatable {
   final int id;
   final int totalAmount;
   final MobilePayPaymentDetails paymentDetails;
@@ -18,4 +19,15 @@ class InitiatePurchase {
     required this.purchaseStatus,
     required this.dateCreated,
   });
+
+  @override
+  List<Object?> get props => [
+        id,
+        totalAmount,
+        paymentDetails,
+        productId,
+        productName,
+        purchaseStatus,
+        dateCreated,
+      ];
 }

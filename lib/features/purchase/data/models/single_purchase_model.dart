@@ -3,10 +3,9 @@ import 'package:coffeecard/features/purchase/domain/entities/single_purchase.dar
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
 
 class SinglePurchaseModel extends SinglePurchase {
-  SinglePurchaseModel({
+  const SinglePurchaseModel({
     required super.id,
     required super.totalAmount,
-    required super.paymentDetails,
     required super.status,
     required super.dateCreated,
   });
@@ -15,7 +14,6 @@ class SinglePurchaseModel extends SinglePurchase {
     return SinglePurchaseModel(
       id: dto.id,
       totalAmount: dto.totalAmount,
-      paymentDetails: dto.paymentDetails as Map<String, dynamic>,
       status: PaymentStatus.fromPurchaseStatus(
         purchaseStatusFromJson(dto.purchaseStatus),
       ),

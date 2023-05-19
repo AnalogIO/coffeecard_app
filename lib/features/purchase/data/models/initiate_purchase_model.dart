@@ -2,7 +2,7 @@ import 'package:coffeecard/features/purchase/domain/entities/initiate_purchase.d
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
 
 class InitiatePurchaseModel extends InitiatePurchase {
-  InitiatePurchaseModel({
+  const InitiatePurchaseModel({
     required super.id,
     required super.totalAmount,
     required super.paymentDetails,
