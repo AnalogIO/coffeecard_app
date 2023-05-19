@@ -21,6 +21,7 @@ class PurchaseCubit extends Cubit<PurchaseState> {
     required this.verifyPurchaseStatus,
   }) : super(const PurchaseInitial());
 
+  /// Initialise a purchase of [product]
   Future<void> pay() async {
     sl<FirebaseAnalyticsEventLogging>().beginCheckoutEvent(product);
 
@@ -46,9 +47,51 @@ class PurchaseCubit extends Cubit<PurchaseState> {
     );
   }
 
-  Future<void> handleVerifyPurchase(
+  /// Verify the status of the current purchase
+  Future<void> verifyPurchase() async {
+    if (state is! PurchaseProcessing) {
+      return;
+    }
+
+    final payment = (state as PurchaseProcessing).payment;
+
+    emit(PurchaseVerifying(payment));
+
+    checkPurchaseStatus(
+      payment,
+      () => validatePurchaseStatusAtInterval(payment),
+    );
+  }
+
+  /// Check the status of the current purchase at an interval and aborts
+  /// with a timeout if too long has passed
+  Future<void> validatePurchaseStatusAtInterval(
+    Payment payment, {
+    int iteration = 0,
+  }) async {
+    const maxIterations = 3;
+    const delay = Duration(seconds: 1);
+
+    if (iteration >= maxIterations) {
+      emit(PurchaseTimeout(payment));
+      return;
+    }
+
+    final _ = await Future.delayed(delay);
+
+    // If payment has been reserved, i.e. approved by user
+    // we will keep checking the backend to verify payment has been captured
+    checkPurchaseStatus(
+      payment,
+      () => validatePurchaseStatusAtInterval(payment, iteration: iteration + 1),
+    );
+  }
+
+  /// Check the status of [payment] and invoke [onPending]
+  /// if the payment is still pending
+  Future<void> checkPurchaseStatus(
     Payment payment,
-    Future<void> Function() onSuccess,
+    Future<void> Function() onPending,
   ) async {
     final either = await verifyPurchaseStatus(payment.id);
 
@@ -63,52 +106,13 @@ class PurchaseCubit extends Cubit<PurchaseState> {
             emit(PurchasePaymentRejected(payment.copyWith(status: status)));
           case PaymentStatus.reserved:
           case PaymentStatus.awaitingPayment:
-            await onSuccess();
+            await onPending();
           case PaymentStatus.rejectedPayment:
             emit(PurchasePaymentRejected(payment));
           case PaymentStatus.refunded:
             emit(PurchasePaymentRejected(payment));
         }
       },
-    );
-  }
-
-  /// Verifies the status of the current purchase
-  /// Only checks the status of the purchase if the state is PurchaseProcessing
-  Future<void> verifyPurchase() async {
-    if (state is! PurchaseProcessing) {
-      return;
-    }
-
-    final payment = (state as PurchaseProcessing).payment;
-
-    emit(PurchaseVerifying(payment));
-
-    handleVerifyPurchase(
-      payment,
-      () => recurse(payment),
-    );
-  }
-
-  Future<void> recurse(
-    Payment payment, {
-    int iteration = 0,
-  }) async {
-    const maxIterations = 3;
-    const secondsDelay = 1;
-
-    if (iteration >= maxIterations) {
-      emit(PurchaseTimeout(payment));
-      return;
-    }
-
-    final _ = await Future.delayed(const Duration(seconds: secondsDelay));
-
-    // If payment has been reserved, i.e. approved by user
-    // we will keep checking the backend to verify payment has been captured
-    handleVerifyPurchase(
-      payment,
-      () => recurse(payment, iteration: iteration + 1),
     );
   }
 }
