@@ -2,65 +2,68 @@ import 'dart:io';
 
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/core/extensions/either_extensions.dart';
+import 'package:coffeecard/core/external/external_url_launcher.dart';
 import 'package:coffeecard/features/purchase/data/repositories/payment_handler.dart';
 import 'package:coffeecard/features/purchase/domain/entities/payment.dart';
 import 'package:coffeecard/features/purchase/domain/entities/payment_status.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
 import 'package:coffeecard/utils/api_uri_constants.dart';
-import 'package:coffeecard/utils/launch.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class MobilePayService extends PaymentHandler {
+  final ExternalUrlLauncher externalUrlLauncher;
+
   MobilePayService({
-    required super.purchaseRemoteDataSource,
-    required super.context,
+    required this.externalUrlLauncher,
+    required super.remoteDataSource,
+    required super.buildContext,
   });
   @override
   Future<Either<Failure, Payment>> initPurchase(int productId) async {
-    final either = await purchaseRemoteDataSource
+    final either = await remoteDataSource
         .initiatePurchase(productId, PaymentType.mobilepay)
         .bindFuture(
-      (response) {
-        return Payment(
-          id: response.id,
-          status: PaymentStatus.awaitingPayment,
-          deeplink: response.paymentDetails.mobilePayAppRedirectUri,
-          purchaseTime: response.dateCreated,
-          price: response.totalAmount,
-          productId: response.productId,
-          productName: response.productName,
+          (purchase) => Payment(
+            id: purchase.id,
+            status: PaymentStatus.awaitingPayment,
+            deeplink: purchase.paymentDetails.mobilePayAppRedirectUri,
+            purchaseTime: purchase.dateCreated,
+            price: purchase.totalAmount,
+            productId: purchase.productId,
+            productName: purchase.productName,
+          ),
         );
+
+    return either.fold(
+      (error) => Left(error),
+      (payment) async {
+        await launchMobilePay(payment);
+
+        return Right(payment);
       },
     );
-
-    await _invokeMobilePayApp(either); // Sideeffect
-
-    return either;
   }
 
-  Future<void> _invokeMobilePayApp(
-    Either<Failure, Payment> paymentEither,
-  ) async {
-    final _ = paymentEither.map(
-      (payment) async {
-        final Uri mobilepayLink = Uri.parse(payment.deeplink);
+  Future<void> launchMobilePay(Payment payment) async {
+    final Uri mobilepayLink = Uri.parse(payment.deeplink);
 
-        if (await canLaunchUrl(mobilepayLink)) {
-          final _ = await launchUrl(
-            mobilepayLink,
-            mode: LaunchMode.externalApplication,
-          );
-        } else {
-          final Uri url = _getAppStoreUri();
+    final canLaunch = await externalUrlLauncher.canLaunch(mobilepayLink);
 
-          // MobilePay not installed, send user to appstore
-          if (context.mounted) {
-            await launchUrlExternalApplication(url, context);
-          }
-        }
-      },
-    );
+    if (!canLaunch) {
+      final Uri url = _getAppStoreUri();
+
+      // MobilePay not installed, send user to appstore
+      if (buildContext.mounted) {
+        await externalUrlLauncher.launchUrlExternalApplication(
+          url,
+          buildContext,
+        );
+      }
+
+      return;
+    }
+
+    await externalUrlLauncher.launch(mobilepayLink);
   }
 
   Uri _getAppStoreUri() {

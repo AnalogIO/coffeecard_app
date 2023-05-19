@@ -8,13 +8,13 @@ import 'package:fpdart/fpdart.dart';
 
 class FreeProductService extends PaymentHandler {
   const FreeProductService({
-    required super.purchaseRemoteDataSource,
-    required super.context,
+    required super.remoteDataSource,
+    required super.buildContext,
   });
 
   @override
   Future<Either<Failure, Payment>> initPurchase(int productId) async {
-    return purchaseRemoteDataSource
+    return remoteDataSource
         .initiatePurchase(
           productId,
           PaymentType.freepurchase,

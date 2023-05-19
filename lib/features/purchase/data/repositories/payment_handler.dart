@@ -11,30 +11,31 @@ import 'package:flutter/widgets.dart';
 import 'package:fpdart/fpdart.dart';
 
 abstract class PaymentHandler {
-  final PurchaseRemoteDataSource purchaseRemoteDataSource;
-  final BuildContext context;
+  final PurchaseRemoteDataSource remoteDataSource;
+  final BuildContext buildContext;
 
   const PaymentHandler({
-    required this.purchaseRemoteDataSource,
-    required this.context,
+    required this.remoteDataSource,
+    required this.buildContext,
   });
 
   Future<Either<Failure, Payment>> initPurchase(int productId);
 
   static PaymentHandler createPaymentHandler(
     InternalPaymentType paymentType,
-    BuildContext context,
+    BuildContext buildContext,
   ) {
     final repository = sl.get<PurchaseRemoteDataSource>();
 
     return switch (paymentType) {
       InternalPaymentType.mobilePay => MobilePayService(
-          purchaseRemoteDataSource: repository,
-          context: context,
+          externalUrlLauncher: sl(),
+          remoteDataSource: repository,
+          buildContext: buildContext,
         ),
       InternalPaymentType.free => FreeProductService(
-          purchaseRemoteDataSource: repository,
-          context: context,
+          remoteDataSource: repository,
+          buildContext: buildContext,
         ),
     };
   }
@@ -43,7 +44,7 @@ abstract class PaymentHandler {
     int purchaseId,
   ) async {
     // Call API endpoint, receive PaymentStatus
-    return purchaseRemoteDataSource
+    return remoteDataSource
         .getPurchase(purchaseId)
         .bindFuture((purchase) => purchase.status);
   }
