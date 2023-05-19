@@ -1,4 +1,4 @@
-import 'package:coffeecard/features/receipt/domain/entities/swipe_receipt.dart';
+import 'package:coffeecard/features/receipt/domain/entities/receipt.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.models.swagger.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.models.swagger.dart';
 

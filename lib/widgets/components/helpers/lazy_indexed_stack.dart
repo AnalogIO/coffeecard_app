@@ -1,5 +1,7 @@
 /// [Author] Alex (https://github.com/AlexV525)
 /// [Date] 2020-12-26 14:08
+library;
+
 import 'package:flutter/material.dart';
 
 typedef LazyWidgetBuilder = Widget Function(BuildContext context);

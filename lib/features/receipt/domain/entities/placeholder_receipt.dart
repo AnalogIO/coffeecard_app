@@ -1,5 +1,4 @@
-import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/features/receipt/domain/entities/receipt.dart';
+part of 'receipt.dart';
 
 class PlaceholderReceipt extends Receipt {
   PlaceholderReceipt()

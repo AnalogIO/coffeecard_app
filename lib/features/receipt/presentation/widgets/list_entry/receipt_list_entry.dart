@@ -53,14 +53,14 @@ class ReceiptListEntry extends StatelessWidget {
                     color: colorIfShimmer,
                     child: Text(
                       topText,
-                      style: AppTextStyle.recieptItemKey,
+                      style: AppTextStyle.receiptItemKey,
                     ),
                   ),
                   ColoredBox(
                     color: colorIfShimmer,
                     child: Text(
                       _formatter.format(time),
-                      style: AppTextStyle.recieptItemDate,
+                      style: AppTextStyle.receiptItemDate,
                     ),
                   ),
                 ],
@@ -69,7 +69,7 @@ class ReceiptListEntry extends StatelessWidget {
                 color: colorIfShimmer,
                 child: Text(
                   rightText,
-                  style: AppTextStyle.recieptItemValue,
+                  style: AppTextStyle.receiptItemValue,
                 ),
               ),
               backgroundColor: backgroundColor,

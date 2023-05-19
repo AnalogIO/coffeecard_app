@@ -1,4 +1,4 @@
-abstract class Strings {
+abstract final class Strings {
   static const appTitle = 'Cafe Analog';
 
   // Titles for the app bar.
@@ -363,5 +363,5 @@ abstract class Strings {
   static const String noInternet =
       "Can't connect to Analog. Are you connected to the internet?";
   static const String retry = 'Retry';
-  static const String unknownErrorOccured = 'an unknown error occured';
+  static const String unknownErrorOccured = 'An unknown error occured';
 }

@@ -128,13 +128,14 @@ class _ModalContentState extends State<_ModalContent>
                       sliderButtonIconPadding: 0,
                       innerColor: AppColor.white,
                       outerColor: AppColor.primary,
-                      onSubmit: () {
+                      onSubmit: () async {
                         // Disable hero animation in the reverse direction
                         setState(() => _heroTag = -1);
-                        widget.context
-                            .read<TicketsCubit>()
-                            .useTicket(widget.productId);
-                        widget.context.read<ReceiptCubit>().fetchReceipts();
+                        final ticketCubit = widget.context.read<TicketsCubit>();
+                        final receiptCubit =
+                            widget.context.read<ReceiptCubit>();
+                        await ticketCubit.useTicket(widget.productId);
+                        await receiptCubit.fetchReceipts();
                       },
                     ),
                   ),

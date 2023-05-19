@@ -1,8 +1,8 @@
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
-    show defaultTargetPlatform, kIsWeb, TargetPlatform;
+    show TargetPlatform, defaultTargetPlatform, kIsWeb;
 
-abstract class DefaultFirebaseOptions {
+abstract final class DefaultFirebaseOptions {
   static FirebaseOptions get production {
     if (kIsWeb) throw UnsupportedError('Web is not supported');
     switch (defaultTargetPlatform) {

@@ -6,12 +6,14 @@ import 'package:coffeecard/data/repositories/shared/account_repository.dart';
 import 'package:coffeecard/data/repositories/v1/product_repository.dart';
 import 'package:coffeecard/data/repositories/v1/voucher_repository.dart';
 import 'package:coffeecard/data/repositories/v2/app_config_repository.dart';
-import 'package:coffeecard/data/repositories/v2/leaderboard_repository.dart';
 import 'package:coffeecard/data/storage/secure_storage.dart';
 import 'package:coffeecard/env/env.dart';
 import 'package:coffeecard/features/contributor/data/datasources/contributor_local_data_source.dart';
 import 'package:coffeecard/features/contributor/domain/usecases/fetch_contributors.dart';
 import 'package:coffeecard/features/contributor/presentation/cubit/contributor_cubit.dart';
+import 'package:coffeecard/features/leaderboard/data/datasources/leaderboard_remote_data_source.dart';
+import 'package:coffeecard/features/leaderboard/domain/usecases/get_leaderboard.dart';
+import 'package:coffeecard/features/leaderboard/presentation/cubit/leaderboard_cubit.dart';
 import 'package:coffeecard/features/occupation/data/datasources/occupation_remote_data_source.dart';
 import 'package:coffeecard/features/occupation/domain/usecases/get_occupations.dart';
 import 'package:coffeecard/features/occupation/presentation/cubit/occupation_cubit.dart';
@@ -38,6 +40,7 @@ import 'package:coffeecard/generated/api/shiftplanning_api.swagger.dart'
     hide $JsonSerializableConverter;
 import 'package:coffeecard/utils/api_uri_constants.dart';
 import 'package:coffeecard/utils/firebase_analytics_event_logging.dart';
+import 'package:coffeecard/utils/ignore_value.dart';
 import 'package:coffeecard/utils/reactivation_authenticator.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:get_it/get_it.dart';
@@ -47,7 +50,9 @@ final GetIt sl = GetIt.instance;
 
 void configureServices() {
   // Logger
-  sl.registerSingleton(Logger());
+  ignoreValue(
+    sl.registerSingleton(Logger()),
+  );
 
   // Executor
   sl.registerLazySingleton(
@@ -58,11 +63,15 @@ void configureServices() {
   );
 
   // Storage
-  sl.registerSingleton(SecureStorage(sl<Logger>()));
+  ignoreValue(
+    sl.registerSingleton(SecureStorage(sl<Logger>())),
+  );
 
   // Authentication
-  sl.registerSingleton<AuthenticationCubit>(
-    AuthenticationCubit(sl.get<SecureStorage>()),
+  ignoreValue(
+    sl.registerSingleton<AuthenticationCubit>(
+      AuthenticationCubit(sl<SecureStorage>()),
+    ),
   );
 
   sl.registerFactory<ReactivationAuthenticator>(
@@ -90,14 +99,20 @@ void configureServices() {
     services: [ShiftplanningApi.create()],
   );
 
-  sl.registerSingleton<CoffeecardApi>(
-    coffeCardChopper.getService<CoffeecardApi>(),
+  ignoreValue(
+    sl.registerSingleton<CoffeecardApi>(
+      coffeCardChopper.getService<CoffeecardApi>(),
+    ),
   );
-  sl.registerSingleton<CoffeecardApiV2>(
-    coffeCardChopper.getService<CoffeecardApiV2>(),
+  ignoreValue(
+    sl.registerSingleton<CoffeecardApiV2>(
+      coffeCardChopper.getService<CoffeecardApiV2>(),
+    ),
   );
-  sl.registerSingleton<ShiftplanningApi>(
-    shiftplanningChopper.getService<ShiftplanningApi>(),
+  ignoreValue(
+    sl.registerSingleton<ShiftplanningApi>(
+      shiftplanningChopper.getService<ShiftplanningApi>(),
+    ),
   );
 
   // Repositories
@@ -125,13 +140,6 @@ void configureServices() {
   );
 
   // v2
-  sl.registerFactory<LeaderboardRepository>(
-    () => LeaderboardRepository(
-      apiV2: sl<CoffeecardApiV2>(),
-      executor: sl<NetworkRequestExecutor>(),
-    ),
-  );
-
   sl.registerFactory<AppConfigRepository>(
     () => AppConfigRepository(
       apiV2: sl<CoffeecardApiV2>(),
@@ -140,8 +148,10 @@ void configureServices() {
   );
 
   // external
-  sl.registerSingleton<FirebaseAnalyticsEventLogging>(
-    FirebaseAnalyticsEventLogging(FirebaseAnalytics.instance),
+  ignoreValue(
+    sl.registerSingleton<FirebaseAnalyticsEventLogging>(
+      FirebaseAnalyticsEventLogging(FirebaseAnalytics.instance),
+    ),
   );
 }
 
@@ -153,6 +163,7 @@ void initFeatures() {
   initReceipt();
   initContributor();
   initPayment();
+  initLeaderboard();
 }
 
 void initOpeningHours() {
@@ -276,5 +287,20 @@ void initPayment() {
       apiV2: sl<CoffeecardApiV2>(),
       executor: sl<NetworkRequestExecutor>(),
     ),
+  );
+}
+
+void initLeaderboard() {
+  // bloc
+  sl.registerFactory(
+    () => LeaderboardCubit(getLeaderboard: sl()),
+  );
+
+  // use case
+  sl.registerFactory(() => GetLeaderboard(remoteDataSource: sl()));
+
+  // data source
+  sl.registerLazySingleton(
+    () => LeaderboardRemoteDataSource(apiV2: sl(), executor: sl()),
   );
 }

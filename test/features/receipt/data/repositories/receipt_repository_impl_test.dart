@@ -1,8 +1,7 @@
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/features/receipt/data/datasources/receipt_remote_data_source.dart';
 import 'package:coffeecard/features/receipt/data/repositories/receipt_repository_impl.dart';
-import 'package:coffeecard/features/receipt/domain/entities/purchase_receipt.dart';
-import 'package:coffeecard/features/receipt/domain/entities/swipe_receipt.dart';
+import 'package:coffeecard/features/receipt/domain/entities/receipt.dart';
 import 'package:coffeecard/features/receipt/domain/repositories/receipt_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
@@ -52,13 +51,13 @@ void main() {
       'should return [Right<List<Receipt>>] if api calls succeed',
       () async {
         // arrange
-        final tSwipedReceipt = SwipeReceipt(
+        final testSwipedReceipt = SwipeReceipt(
           productName: 'productName',
           timeUsed: DateTime.parse('2023-04-23'),
           id: 0,
         );
 
-        final tPurchasedReceipt = PurchaseReceipt(
+        final testPurchasedReceipt = PurchaseReceipt(
           productName: 'productName',
           timeUsed: DateTime.parse('2023-04-24'), // note this is a day later
           id: 0,
@@ -68,12 +67,12 @@ void main() {
 
         when(remoteDataSource.getUsersUsedTicketsReceipts()).thenAnswer(
           (_) async => Right([
-            tSwipedReceipt,
+            testSwipedReceipt,
           ]),
         );
         when(remoteDataSource.getUserPurchasesReceipts()).thenAnswer(
           (_) async => Right([
-            tPurchasedReceipt,
+            testPurchasedReceipt,
           ]),
         );
 
@@ -85,8 +84,8 @@ void main() {
           (response) => expect(
             response,
             [
-              tPurchasedReceipt,
-              tSwipedReceipt,
+              testPurchasedReceipt,
+              testSwipedReceipt,
             ], // note that it is sorted from oldest --> newest
           ),
         );

@@ -38,10 +38,10 @@ void main() {
   group('getOpeningHours', () {
     test('should call executor', () async {
       // arrange
-      final List<OpeningHoursDTO> tOpeningHours = [];
+      final List<OpeningHoursDTO> testOpeningHours = [];
 
       when(executor<List<OpeningHoursDTO>>(any)).thenAnswer(
-        (_) async => Right(tOpeningHours),
+        (_) async => Right(testOpeningHours),
       );
 
       // act

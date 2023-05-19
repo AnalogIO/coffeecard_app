@@ -10,9 +10,8 @@
 ///    - family:  AnalogIcons
 ///      fonts:
 ///       - asset: fonts/AnalogIcons.ttf
-///
-///
-///
+library;
+
 import 'package:flutter/widgets.dart';
 
 class AnalogIcons {

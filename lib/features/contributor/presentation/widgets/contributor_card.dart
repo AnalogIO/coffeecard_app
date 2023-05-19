@@ -58,7 +58,7 @@ class ContributorCard extends StatelessWidget {
                     contributor.name,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: AppTextStyle.recieptItemKey,
+                    style: AppTextStyle.receiptItemKey,
                   ),
                   const Gap(3),
                   Text(
