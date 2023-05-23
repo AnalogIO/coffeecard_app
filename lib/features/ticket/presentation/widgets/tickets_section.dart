@@ -1,11 +1,11 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
-import 'package:coffeecard/cubits/environment/environment_cubit.dart';
+import 'package:coffeecard/features/environment/domain/entities/environment.dart';
+import 'package:coffeecard/features/environment/presentation/cubit/environment_cubit.dart';
 import 'package:coffeecard/features/receipt/domain/entities/receipt.dart';
 import 'package:coffeecard/features/receipt/presentation/widgets/receipt_overlay.dart';
 import 'package:coffeecard/features/ticket/presentation/cubit/tickets_cubit.dart';
 import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
-import 'package:coffeecard/models/environment.dart';
 import 'package:coffeecard/widgets/components/dialog.dart';
 import 'package:coffeecard/widgets/components/error_section.dart';
 import 'package:coffeecard/widgets/components/helpers/shimmer_builder.dart';
