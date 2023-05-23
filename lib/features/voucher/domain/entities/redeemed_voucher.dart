@@ -1,4 +1,3 @@
-import 'package:coffeecard/generated/api/coffeecard_api.models.swagger.dart';
 import 'package:equatable/equatable.dart';
 
 class RedeemedVoucher extends Equatable {
@@ -9,10 +8,6 @@ class RedeemedVoucher extends Equatable {
     required this.numberOfTickets,
     required this.productName,
   });
-
-  RedeemedVoucher.fromDTO(PurchaseDto dto)
-      : numberOfTickets = dto.numberOfTickets,
-        productName = dto.productName;
 
   @override
   List<Object?> get props => [numberOfTickets, productName];

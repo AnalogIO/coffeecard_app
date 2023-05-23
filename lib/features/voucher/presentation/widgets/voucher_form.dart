@@ -1,5 +1,5 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/cubits/voucher/voucher_cubit.dart';
+import 'package:coffeecard/features/voucher/presentation/cubit/voucher_cubit.dart';
 import 'package:coffeecard/utils/input_validator.dart';
 import 'package:coffeecard/widgets/components/forms/form.dart';
 import 'package:flutter/material.dart';
