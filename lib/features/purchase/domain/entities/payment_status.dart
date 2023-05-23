@@ -28,4 +28,16 @@ enum PaymentStatus {
       PurchaseStatus.swaggerGeneratedUnknown => PaymentStatus.error,
     };
   }
+
+  @override
+  String toString() {
+    return switch (this) {
+      PaymentStatus.completed => 'Completed',
+      PaymentStatus.rejectedPayment => 'Rejected',
+      PaymentStatus.awaitingPayment => 'Pending',
+      PaymentStatus.refunded => 'Refunded',
+      PaymentStatus.error => 'Error',
+      PaymentStatus.reserved => 'Reserved',
+    };
+  }
 }

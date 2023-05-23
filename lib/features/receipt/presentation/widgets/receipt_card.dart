@@ -14,16 +14,16 @@ DateFormat get _formatter => DateFormat('EEEE d/M/y HH:mm');
 class ReceiptCard extends StatelessWidget {
   final String productName;
   final DateTime time;
-  final bool isPurchase;
   final bool isInOverlay;
   final bool isTestEnvironment;
+  final String paymentStatus;
 
   const ReceiptCard({
     required this.productName,
     required this.time,
-    required this.isPurchase,
     required this.isInOverlay,
     required this.isTestEnvironment,
+    required this.paymentStatus,
   });
 
   @override
@@ -39,9 +39,7 @@ class ReceiptCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              isPurchase
-                  ? Strings.receiptCardPurchased
-                  : Strings.receiptCardSwiped,
+              paymentStatus,
               style: AppTextStyle.textField,
             ),
             const Gap(16),
