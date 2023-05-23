@@ -1,6 +1,7 @@
-import 'package:coffeecard/models/purchase/payment_status.dart';
+import 'package:coffeecard/features/purchase/domain/entities/payment_status.dart';
+import 'package:equatable/equatable.dart';
 
-class Payment {
+class Payment extends Equatable {
   final int id;
   final PaymentStatus status;
   final String deeplink;
@@ -9,7 +10,7 @@ class Payment {
   final int productId;
   final String productName;
 
-  Payment({
+  const Payment({
     required this.id,
     required this.price,
     required this.purchaseTime,
@@ -38,4 +39,15 @@ class Payment {
       productName: productName ?? this.productName,
     );
   }
+
+  @override
+  List<Object?> get props => [
+        id,
+        status,
+        deeplink,
+        price,
+        purchaseTime,
+        productId,
+        productName,
+      ];
 }

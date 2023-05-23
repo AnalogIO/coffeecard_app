@@ -54,6 +54,15 @@ class PurchasePaymentRejected extends PurchaseState {
   List<Object> get props => [payment];
 }
 
+class PurchaseTimeout extends PurchaseState {
+  final Payment payment;
+
+  const PurchaseTimeout(this.payment);
+
+  @override
+  List<Object> get props => [payment];
+}
+
 class PurchaseError extends PurchaseState {
   final String message;
 

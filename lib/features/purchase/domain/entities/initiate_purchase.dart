@@ -1,9 +1,10 @@
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
+import 'package:equatable/equatable.dart';
 
-class InitiatePurchase {
+class InitiatePurchase extends Equatable {
   final int id;
   final int totalAmount;
-  final Map<String, dynamic> paymentDetails;
+  final MobilePayPaymentDetails paymentDetails;
   final int productId;
   final String productName;
   final String purchaseStatus;
@@ -19,12 +20,14 @@ class InitiatePurchase {
     required this.dateCreated,
   });
 
-  InitiatePurchase.fromDto(InitiatePurchaseResponse dto)
-      : id = dto.id,
-        totalAmount = dto.totalAmount,
-        paymentDetails = dto.paymentDetails as Map<String, dynamic>,
-        productId = dto.productId,
-        productName = dto.productName,
-        purchaseStatus = dto.purchaseStatus as String,
-        dateCreated = dto.dateCreated;
+  @override
+  List<Object?> get props => [
+        id,
+        totalAmount,
+        paymentDetails,
+        productId,
+        productName,
+        purchaseStatus,
+        dateCreated,
+      ];
 }
