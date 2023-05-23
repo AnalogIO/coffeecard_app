@@ -53,24 +53,22 @@ class ReactivationAuthenticator extends Authenticator {
     if (response.statusCode != 401) {
       return null;
     }
-    if (!_mutex.isLocked) {
-      // No one is updating the token, so we do it
-      // (throttle the call to avoid refreshing the token multiple times if
-      // requests happen at the same time)
-      return _throttler.run(() => _mutex.run(() => refreshToken(request)));
-    } else {
-      // Someone else is updating the token, so we wait for it to finish
-      // and read the new token from secure storage
-      return _mutex.runWithoutLock(() async {
-        final refreshedToken = await _secureStorage.readToken();
-        if (refreshedToken == null) {
-          return null;
-        }
-        return request.copyWith(
-          headers: _updateHeadersWithToken(request.headers, refreshedToken),
-        );
-      });
-    }
+    return !_mutex.isLocked
+        // No one is updating the token, so we do it
+        // (throttle the call to avoid refreshing the token multiple times if
+        // requests happen at the same time)
+        ? _throttler.run(() => _mutex.run(() => refreshToken(request)))
+        // Someone else is updating the token, so we wait for it to finish
+        // and read the new token from secure storage
+        : _mutex.runWithoutLock(() async {
+            final refreshedToken = await _secureStorage.readToken();
+            if (refreshedToken == null) {
+              return null;
+            }
+            return request.copyWith(
+              headers: _updateHeadersWithToken(request.headers, refreshedToken),
+            );
+          });
   }
 
   Future<Request?> refreshToken(Request request) async {
