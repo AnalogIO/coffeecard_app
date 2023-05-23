@@ -28,62 +28,124 @@ void main() {
   });
 
   group('getUserTickets', () {
-    test('should return [Right] when executor returns [Right]', () async {
-      // arrange
-      when(executor.call<List<TicketResponse>>(any))
-          .thenAnswer((_) async => const Right([]));
+    test(
+      'Test that getUserTickets '
+      'returns a [Right] value '
+      'when the executor returns a [Right] value',
+      () async {
+        // arrange
+        when(executor.call<List<TicketResponse>>(any))
+            .thenAnswer((_) async => const Right([]));
 
-      // act
-      final actual = await dataSource.getUserTickets();
+        // act
+        final actual = await dataSource.getUserTickets();
 
-      // assert
-      expect(actual.isRight(), isTrue);
-    });
+        // assert
+        expect(actual.isRight(), isTrue);
+      },
+    );
 
-    test('should return [Left] if executor returns [Left]', () async {
-      // arrange
-      when(executor.call<List<TicketResponse>>(any))
-          .thenAnswer((_) async => const Left(ServerFailure('some error')));
+    test(
+      'Test that getUserTickets '
+      'returns a [Left] value '
+      'when the executor returns a [Left] value',
+      () async {
+        // arrange
+        when(executor.call<List<TicketResponse>>(any))
+            .thenAnswer((_) async => const Left(ServerFailure('some error')));
 
-      // act
-      final actual = await dataSource.getUserTickets();
+        // act
+        final actual = await dataSource.getUserTickets();
 
-      // assert
-      expect(actual, const Left(ServerFailure('some error')));
-    });
+        // assert
+        expect(actual, const Left(ServerFailure('some error')));
+      },
+    );
+
+    test(
+      'Test that getUserTickets '
+      'returns a [TicketCountModel] with the count of tickets and joined ticket names '
+      'when the executor returns two [TicketResponse] with the same product id '
+      'but different product names',
+      () async {
+        // arrange
+        when(executor.call<List<TicketResponse>>(any)).thenAnswer(
+          (_) async => Right([
+            TicketResponse(
+              id: 0,
+              dateCreated: DateTime.parse('2023-05-23'),
+              dateUsed: null,
+              productId: 0,
+              productName: 'A',
+            ),
+            TicketResponse(
+              id: 0,
+              dateCreated: DateTime.parse('2023-05-23'),
+              dateUsed: null,
+              productId: 0,
+              productName: 'B',
+            ),
+          ]),
+        );
+
+        // act
+        final actual = await dataSource.getUserTickets();
+
+        // assert
+        expect(actual.isRight(), isTrue);
+        final right = actual.getOrElse((_) => []);
+        expect(right, hasLength(1));
+        expect(right.first.productId, equals(0));
+        expect(right.first.count, equals(2));
+        expect(right.first.productName, anyOf(['A/B', 'B/A']));
+      },
+    );
   });
 
-  group('useTicket', () {
-    test('should return [Right] when executor returns [Right]', () async {
-      // arrange
-      when(executor.call<TicketDto>(any)).thenAnswer(
-        (_) async => Right(
-          TicketDto(
-            id: 0,
-            dateCreated: DateTime.parse('2023-04-11'),
-            dateUsed: DateTime.parse('2023-04-11'),
-            productName: 'productName',
-          ),
-        ),
+  group(
+    'useTicket',
+    () {
+      test(
+        'Test that useTicket '
+        'returns a [Right] value '
+        'when the executor returns a [Right] value',
+        () async {
+          // arrange
+          when(executor.call<TicketDto>(any)).thenAnswer(
+            (_) async => Right(
+              TicketDto(
+                id: 0,
+                dateCreated: DateTime.parse('2023-04-11'),
+                dateUsed: DateTime.parse('2023-04-11'),
+                productName: 'productName',
+              ),
+            ),
+          );
+
+          // act
+          final actual = await dataSource.useTicket(0);
+
+          // assert
+          expect(actual.isRight(), isTrue);
+        },
       );
 
-      // act
-      final actual = await dataSource.useTicket(0);
+      test(
+        'Test that useTicket '
+        'returns a [Left] value '
+        'when the executor returns a [Left] value',
+        () async {
+          // arrange
+          when(executor.call<TicketDto>(any))
+              .thenAnswer((_) async => const Left(ServerFailure('some error')));
 
-      // assert
-      expect(actual.isRight(), isTrue);
-    });
+          // act
+          final actual = await dataSource.useTicket(0);
 
-    test('should return [Left] if executor returns [Left]', () async {
-      // arrange
-      when(executor.call<TicketDto>(any))
-          .thenAnswer((_) async => const Left(ServerFailure('some error')));
-
-      // act
-      final actual = await dataSource.useTicket(0);
-
-      // assert
-      expect(actual, const Left(ServerFailure('some error')));
-    });
-  });
+          // assert
+          expect(actual, const Left(ServerFailure('some error')));
+        },
+      );
+    },
+  );
 }
