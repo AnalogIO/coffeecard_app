@@ -17,9 +17,10 @@ class SwipeReceiptListEntry extends StatelessWidget {
       time: receipt.timeUsed,
       isPurchase: false,
       showShimmer: false,
-      topText: '${Strings.swiped} ${receipt.productName}',
+      topText: receipt.productName,
       rightText: Strings.oneTicket,
       backgroundColor: AppColor.white,
+      purchaseStatus: Strings.swiped,
     );
   }
 }

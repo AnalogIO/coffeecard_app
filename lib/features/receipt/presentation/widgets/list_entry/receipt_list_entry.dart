@@ -17,6 +17,7 @@ class ReceiptListEntry extends StatelessWidget {
   final String topText;
   final String rightText;
   final Color backgroundColor;
+  final String purchaseStatus;
 
   const ReceiptListEntry({
     required this.tappable,
@@ -27,6 +28,7 @@ class ReceiptListEntry extends StatelessWidget {
     required this.topText,
     required this.rightText,
     required this.backgroundColor,
+    required this.purchaseStatus,
   });
 
   @override
@@ -37,7 +39,7 @@ class ReceiptListEntry extends StatelessWidget {
         return ViewReceiptPage(
           name: name,
           time: time,
-          isPurchase: isPurchase,
+          paymentStatus: purchaseStatus,
         );
       },
       closedBuilder: (context, openContainer) {
@@ -59,7 +61,7 @@ class ReceiptListEntry extends StatelessWidget {
                   ColoredBox(
                     color: colorIfShimmer,
                     child: Text(
-                      _formatter.format(time),
+                      '$purchaseStatus ${_formatter.format(time)}',
                       style: AppTextStyle.receiptItemDate,
                     ),
                   ),

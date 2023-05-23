@@ -1,4 +1,5 @@
 import 'package:coffeecard/base/strings.dart';
+import 'package:coffeecard/features/purchase/domain/entities/payment_status.dart';
 import 'package:equatable/equatable.dart';
 
 part 'placeholder_receipt.dart';
