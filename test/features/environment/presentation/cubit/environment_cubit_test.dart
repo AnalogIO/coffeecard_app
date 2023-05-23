@@ -1,8 +1,8 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/cubits/environment/environment_cubit.dart';
-import 'package:coffeecard/data/repositories/v2/app_config_repository.dart';
-import 'package:coffeecard/models/environment.dart';
+import 'package:coffeecard/features/environment/domain/entities/environment.dart';
+import 'package:coffeecard/features/environment/domain/usecases/get_environment_type.dart';
+import 'package:coffeecard/features/environment/presentation/cubit/environment_cubit.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:mockito/annotations.dart';
@@ -10,26 +10,27 @@ import 'package:mockito/mockito.dart';
 
 import 'environment_cubit_test.mocks.dart';
 
-@GenerateMocks([AppConfigRepository])
+@GenerateMocks([GetEnvironmentType])
 void main() {
   group('environment cubit tests', () {
-    late EnvironmentCubit environmentCubit;
-    final repo = MockAppConfigRepository();
+    late EnvironmentCubit cubit;
+    late MockGetEnvironmentType getEnvironmentType;
 
     setUp(() {
-      environmentCubit = EnvironmentCubit(repo);
+      getEnvironmentType = MockGetEnvironmentType();
+      cubit = EnvironmentCubit(getEnvironmentType: getEnvironmentType);
     });
 
     test('initial state is EnvironmentInitial', () {
-      expect(environmentCubit.state, const EnvironmentInitial());
+      expect(cubit.state, const EnvironmentInitial());
     });
 
     blocTest<EnvironmentCubit, EnvironmentState>(
       'getConfig emits Loaded when the repo returns a valid environment',
       build: () {
-        when(repo.getEnvironmentType())
+        when(getEnvironmentType(any))
             .thenAnswer((_) async => const Right(Environment.production));
-        return environmentCubit;
+        return cubit;
       },
       act: (cubit) => cubit.getConfig(),
       expect: () => [const EnvironmentLoaded(env: Environment.production)],
@@ -38,17 +39,13 @@ void main() {
     blocTest<EnvironmentCubit, EnvironmentState>(
       'getConfig emits Error when the repo returns an error',
       build: () {
-        when(repo.getEnvironmentType()).thenAnswer(
+        when(getEnvironmentType(any)).thenAnswer(
           (_) async => const Left(ServerFailure('some error')),
         );
-        return environmentCubit;
+        return cubit;
       },
       act: (cubit) => cubit.getConfig(),
       expect: () => [const EnvironmentError('some error')],
     );
-
-    tearDown(() {
-      environmentCubit.close();
-    });
   });
 }

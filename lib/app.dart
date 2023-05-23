@@ -1,8 +1,7 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/theme.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
-import 'package:coffeecard/cubits/environment/environment_cubit.dart';
-import 'package:coffeecard/data/repositories/v2/app_config_repository.dart';
+import 'package:coffeecard/features/environment/presentation/cubit/environment_cubit.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/widgets/pages/splash/splash_error_page.dart';
 import 'package:coffeecard/widgets/pages/splash/splash_loading_page.dart';
@@ -14,11 +13,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class App extends StatelessWidget {
   final _navigatorKey = GlobalKey<NavigatorState>();
 
-  EnvironmentCubit _createEnvironmentCubit(BuildContext _) {
-    final repo = sl.get<AppConfigRepository>();
-    return EnvironmentCubit(repo)..getConfig();
-  }
-
   @override
   Widget build(BuildContext context) {
     // Force screen orientation to portrait
@@ -27,7 +21,9 @@ class App extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider.value(value: sl<AuthenticationCubit>()..appStarted()),
-        BlocProvider(create: _createEnvironmentCubit),
+        BlocProvider.value(
+          value: sl<EnvironmentCubit>()..getConfig(),
+        ), //TODO: consider value vs create
       ],
       child: SplashRouter(
         navigatorKey: _navigatorKey,

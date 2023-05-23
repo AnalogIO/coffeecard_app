@@ -6,12 +6,12 @@ import 'package:coffeecard/data/api/interceptors/authentication_interceptor.dart
 import 'package:coffeecard/data/repositories/shared/account_repository.dart';
 import 'package:coffeecard/data/repositories/v1/product_repository.dart';
 import 'package:coffeecard/data/repositories/v1/voucher_repository.dart';
-import 'package:coffeecard/data/repositories/v2/app_config_repository.dart';
 import 'package:coffeecard/data/storage/secure_storage.dart';
 import 'package:coffeecard/env/env.dart';
 import 'package:coffeecard/features/contributor/data/datasources/contributor_local_data_source.dart';
 import 'package:coffeecard/features/contributor/domain/usecases/fetch_contributors.dart';
 import 'package:coffeecard/features/contributor/presentation/cubit/contributor_cubit.dart';
+import 'package:coffeecard/features/environment/data/datasources/environment_remote_data_source.dart';
 import 'package:coffeecard/features/leaderboard/data/datasources/leaderboard_remote_data_source.dart';
 import 'package:coffeecard/features/leaderboard/domain/usecases/get_leaderboard.dart';
 import 'package:coffeecard/features/leaderboard/presentation/cubit/leaderboard_cubit.dart';
@@ -141,8 +141,8 @@ void configureServices() {
   );
 
   // v2
-  sl.registerFactory<AppConfigRepository>(
-    () => AppConfigRepository(
+  sl.registerFactory<EnvironmentRemoteDataSource>(
+    () => EnvironmentRemoteDataSource(
       apiV2: sl<CoffeecardApiV2>(),
       executor: sl<NetworkRequestExecutor>(),
     ),

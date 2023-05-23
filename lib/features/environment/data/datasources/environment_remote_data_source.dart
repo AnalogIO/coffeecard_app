@@ -1,11 +1,11 @@
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
+import 'package:coffeecard/features/environment/domain/entities/environment.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
-import 'package:coffeecard/models/environment.dart';
 import 'package:fpdart/fpdart.dart';
 
-class AppConfigRepository {
-  AppConfigRepository({
+class EnvironmentRemoteDataSource {
+  EnvironmentRemoteDataSource({
     required this.apiV2,
     required this.executor,
   });
