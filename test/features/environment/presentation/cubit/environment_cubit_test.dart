@@ -21,31 +21,33 @@ void main() {
       cubit = EnvironmentCubit(getEnvironmentType: getEnvironmentType);
     });
 
-    test('initial state is EnvironmentInitial', () {
+    test('initial state is [Initial]', () {
       expect(cubit.state, const EnvironmentInitial());
     });
 
-    blocTest<EnvironmentCubit, EnvironmentState>(
-      'getConfig emits Loaded when the repo returns a valid environment',
-      build: () {
-        when(getEnvironmentType(any))
-            .thenAnswer((_) async => const Right(Environment.production));
-        return cubit;
-      },
-      act: (cubit) => cubit.getConfig(),
-      expect: () => [const EnvironmentLoaded(env: Environment.production)],
-    );
+    group('getConfig', () {
+      blocTest(
+        'should emit [Loaded] when usecase suceeds',
+        build: () => cubit,
+        setUp: () {
+          when(getEnvironmentType(any))
+              .thenAnswer((_) async => const Right(Environment.production));
+        },
+        act: (_) => cubit.getConfig(),
+        expect: () => [const EnvironmentLoaded(env: Environment.production)],
+      );
 
-    blocTest<EnvironmentCubit, EnvironmentState>(
-      'getConfig emits Error when the repo returns an error',
-      build: () {
-        when(getEnvironmentType(any)).thenAnswer(
-          (_) async => const Left(ServerFailure('some error')),
-        );
-        return cubit;
-      },
-      act: (cubit) => cubit.getConfig(),
-      expect: () => [const EnvironmentError('some error')],
-    );
+      blocTest(
+        'should emit [Error] when usecase fails',
+        build: () => cubit,
+        setUp: () {
+          when(getEnvironmentType(any)).thenAnswer(
+            (_) async => const Left(ServerFailure('some error')),
+          );
+        },
+        act: (cubit) => cubit.getConfig(),
+        expect: () => [const EnvironmentError('some error')],
+      );
+    });
   });
 }

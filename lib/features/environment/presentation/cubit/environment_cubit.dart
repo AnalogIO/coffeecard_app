@@ -17,7 +17,7 @@ class EnvironmentCubit extends Cubit<EnvironmentState> {
 
     either.fold(
       (error) => emit(EnvironmentError(error.reason)),
-      (env) => emit(EnvironmentLoaded(env: env)),
+      (environment) => emit(EnvironmentLoaded(env: environment)),
     );
   }
 }
