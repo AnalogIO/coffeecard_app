@@ -21,9 +21,7 @@ class App extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider.value(value: sl<AuthenticationCubit>()..appStarted()),
-        BlocProvider.value(
-          value: sl<EnvironmentCubit>()..getConfig(),
-        ), //TODO: consider value vs create
+        BlocProvider.value(value: sl<EnvironmentCubit>()..getConfig()),
       ],
       child: SplashRouter(
         navigatorKey: _navigatorKey,
