@@ -15,13 +15,13 @@ class ReceiptRepositoryImpl implements ReceiptRepository {
         await remoteDataSource.getUsersUsedTicketsReceipts();
 
     return userReceiptsEither.fold(
-      (l) => Left(l),
+      (error) => Left(error),
       (userReceipts) async {
         final userPurchasesEither =
             await remoteDataSource.getUserPurchasesReceipts();
 
         return userPurchasesEither.fold(
-          (l) => Left(l),
+          (error) => Left(error),
           (userPurchases) async {
             final allTickets = [...userReceipts, ...userPurchases];
             allTickets.sort((a, b) => b.timeUsed.compareTo(a.timeUsed));

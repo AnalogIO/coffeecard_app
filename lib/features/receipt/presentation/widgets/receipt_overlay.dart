@@ -18,8 +18,8 @@ class ReceiptOverlay {
   Future<void> show({
     required String productName,
     required DateTime timeUsed,
-    required bool isPurchase,
     required bool isTestEnvironment,
+    required String paymentStatus,
   }) async {
     await ScreenBrightness().setScreenBrightness(1);
     if (_context.mounted) {
@@ -36,9 +36,9 @@ class ReceiptOverlay {
                   ReceiptCard(
                     productName: productName,
                     time: timeUsed,
-                    isPurchase: isPurchase,
                     isInOverlay: true,
                     isTestEnvironment: isTestEnvironment,
+                    paymentStatus: paymentStatus,
                   ),
                   const Gap(12),
                   Text(

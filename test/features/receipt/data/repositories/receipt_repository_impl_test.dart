@@ -1,4 +1,5 @@
 import 'package:coffeecard/core/errors/failures.dart';
+import 'package:coffeecard/features/purchase/domain/entities/payment_status.dart';
 import 'package:coffeecard/features/receipt/data/datasources/receipt_remote_data_source.dart';
 import 'package:coffeecard/features/receipt/data/repositories/receipt_repository_impl.dart';
 import 'package:coffeecard/features/receipt/domain/entities/receipt.dart';
@@ -63,6 +64,7 @@ void main() {
           id: 0,
           price: 0,
           amountPurchased: 0,
+          paymentStatus: PaymentStatus.completed,
         );
 
         when(remoteDataSource.getUsersUsedTicketsReceipts()).thenAnswer(

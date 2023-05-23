@@ -10,12 +10,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class ViewReceiptPage extends StatelessWidget {
   final String name;
   final DateTime time;
-  final bool isPurchase;
+  final String paymentStatus;
 
   const ViewReceiptPage({
     required this.name,
     required this.time,
-    required this.isPurchase,
+    required this.paymentStatus,
   });
 
   @override
@@ -31,10 +31,10 @@ class ViewReceiptPage extends StatelessWidget {
                 ReceiptCard(
                   productName: name,
                   time: time,
-                  isPurchase: isPurchase,
                   isInOverlay: false,
                   isTestEnvironment:
                       state is EnvironmentLoaded && state.env.isTest,
+                  paymentStatus: paymentStatus,
                 ),
               ],
             ),
