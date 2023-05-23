@@ -171,7 +171,7 @@ abstract final class Strings {
   static const purchaseError = "Uh oh, we couldn't complete that purchase";
   static const purchaseTimeout = 'Purchase timed out';
   static const purchaseTimeoutMessage =
-      'The payment confirmation was not received in time. If you have completed the purchase, please wait a few minutes';
+      'The payment confirmation was not received in time. If you have completed the purchase in MobilePay, please wait a few minutes';
 
   // Receipts
   static const receiptsPageTitle = 'Receipts';

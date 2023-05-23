@@ -77,7 +77,10 @@ class PurchaseCubit extends Cubit<PurchaseState> {
       return;
     }
 
-    final _ = await Future.delayed(delay);
+    // don't wait on the first iteration
+    if (iteration != 0) {
+      final _ = await Future.delayed(delay);
+    }
 
     // If payment has been reserved, i.e. approved by user
     // we will keep checking the backend to verify payment has been captured
