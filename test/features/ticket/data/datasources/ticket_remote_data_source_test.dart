@@ -29,7 +29,6 @@ void main() {
 
   group('getUserTickets', () {
     test(
-      'Test that getUserTickets '
       'returns a [Right] value '
       'when the executor returns a [Right] value',
       () async {
@@ -46,7 +45,6 @@ void main() {
     );
 
     test(
-      'Test that getUserTickets '
       'returns a [Left] value '
       'when the executor returns a [Left] value',
       () async {
@@ -63,7 +61,6 @@ void main() {
     );
 
     test(
-      'Test that getUserTickets '
       'returns a [TicketCountModel] with the count of tickets and joined ticket names '
       'when the executor returns two [TicketResponse] with the same product id '
       'but different product names',
@@ -106,7 +103,6 @@ void main() {
     'useTicket',
     () {
       test(
-        'Test that useTicket '
         'returns a [Right] value '
         'when the executor returns a [Right] value',
         () async {
@@ -131,9 +127,8 @@ void main() {
       );
 
       test(
-        'Test that useTicket '
         'returns a [Left] value '
-        'when the executor returns a [Left] value',
+        'when the executor fails',
         () async {
           // arrange
           when(executor.call<TicketDto>(any))
