@@ -16,7 +16,7 @@ void main() {
 
       test(
         'should not capitalize the first letter of a string if it is an emoji',
-        () => expect('🌎hello'.capitalize(), equals('🌎hello')),
+        () => expect('🌍hello'.capitalize(), equals('🌍hello')),
       );
     });
   });
