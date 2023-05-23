@@ -50,7 +50,9 @@ class TicketSection extends StatelessWidget {
                 isTestEnvironment:
                     envState is EnvironmentLoaded && envState.env.isTest,
                 paymentStatus: state.receipt is PurchaseReceipt
-                    ? state.receipt.toString()
+                    ? (state.receipt as PurchaseReceipt)
+                        .paymentStatus
+                        .toString()
                     : Strings.swiped,
                 productName: state.receipt.productName,
                 timeUsed: state.receipt.timeUsed,
