@@ -49,7 +49,7 @@ class TicketSection extends StatelessWidget {
               ReceiptOverlay.of(context).show(
                 isTestEnvironment:
                     envState is EnvironmentLoaded && envState.env.isTest,
-                paymentStatus: state.receipt is PurchaseReceipt
+                status: state.receipt is PurchaseReceipt
                     ? (state.receipt as PurchaseReceipt)
                         .paymentStatus
                         .toString()
