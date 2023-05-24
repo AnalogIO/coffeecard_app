@@ -33,8 +33,8 @@ dependencies:
   get_it: 7.6.0
 
   # State management
-  flutter_bloc: 8.1.2
-  bloc: 8.1.1
+  flutter_bloc: 8.1.3
+  bloc: 8.1.2
   stream_transform: 2.1.0
 
   # Utility
@@ -83,7 +83,7 @@ dev_dependencies:
 
   # unit testing
   mockito: 5.4.0
-  bloc_test: 9.1.1
+  bloc_test: 9.1.2
 
   # Chopper api and rest client
   chopper_generator: 6.0.1
