@@ -38,7 +38,7 @@ class ReceiptOverlay {
                     time: timeUsed,
                     isInOverlay: true,
                     isTestEnvironment: isTestEnvironment,
-                    paymentStatus: paymentStatus,
+                    status: paymentStatus,
                   ),
                   const Gap(12),
                   Text(

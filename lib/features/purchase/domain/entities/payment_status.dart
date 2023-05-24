@@ -32,12 +32,12 @@ enum PaymentStatus {
   @override
   String toString() {
     return switch (this) {
-      PaymentStatus.completed => 'Completed',
-      PaymentStatus.rejectedPayment => 'Rejected',
-      PaymentStatus.awaitingPayment => 'Pending',
-      PaymentStatus.refunded => 'Refunded',
-      PaymentStatus.error => 'Error',
-      PaymentStatus.reserved => 'Reserved',
+      PaymentStatus.completed => 'Purchased',
+      PaymentStatus.refunded => 'Purchase refunded',
+      PaymentStatus.rejectedPayment => 'Payment rejected',
+      PaymentStatus.awaitingPayment => 'Payment pending',
+      PaymentStatus.error => 'Payment error',
+      PaymentStatus.reserved => 'Payment reserved',
     };
   }
 }

@@ -6,7 +6,7 @@ import 'package:coffeecard/widgets/components/list_entry.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-final _formatter = DateFormat('dd.MM.yyyy');
+final _formatDate = DateFormat('dd.MM.yyyy').format;
 
 class ReceiptListEntry extends StatelessWidget {
   final bool tappable;
@@ -17,7 +17,7 @@ class ReceiptListEntry extends StatelessWidget {
   final String topText;
   final String rightText;
   final Color backgroundColor;
-  final String purchaseStatus;
+  final String status;
 
   const ReceiptListEntry({
     required this.tappable,
@@ -28,18 +28,20 @@ class ReceiptListEntry extends StatelessWidget {
     required this.topText,
     required this.rightText,
     required this.backgroundColor,
-    required this.purchaseStatus,
+    required this.status,
   });
 
   @override
   Widget build(BuildContext context) {
     return OpenContainer(
       tappable: tappable,
+      // Remove rounded edges
+      closedShape: const RoundedRectangleBorder(),
       openBuilder: (context, _) {
         return ViewReceiptPage(
           name: name,
           time: time,
-          paymentStatus: purchaseStatus,
+          paymentStatus: status,
         );
       },
       closedBuilder: (context, openContainer) {
@@ -61,7 +63,7 @@ class ReceiptListEntry extends StatelessWidget {
                   ColoredBox(
                     color: colorIfShimmer,
                     child: Text(
-                      '$purchaseStatus ${_formatter.format(time)}',
+                      '$status ${_formatDate(time)}',
                       style: AppTextStyle.receiptItemDate,
                     ),
                   ),
