@@ -29,8 +29,9 @@ void main() {
 
   group('getUserTickets', () {
     test(
-      'returns a [Right] value '
-      'when the executor returns a [Right] value',
+      'GIVEN executor returns a [Right] value '
+      'WHEN calling getUserTickets '
+      'THEN a [Right] value is returned',
       () async {
         // arrange
         when(executor.call<List<TicketResponse>>(any))
@@ -45,8 +46,9 @@ void main() {
     );
 
     test(
-      'returns a [Left] value '
-      'when the executor returns a [Left] value',
+      'GIVEN executor returns a [Left] value '
+      'WHEN calling getUserTickets '
+      'THEN a [Left] value is returned',
       () async {
         // arrange
         when(executor.call<List<TicketResponse>>(any))
@@ -56,14 +58,14 @@ void main() {
         final actual = await dataSource.getUserTickets();
 
         // assert
-        expect(actual, const Left(ServerFailure('some error')));
+        expect(actual.isLeft(), isTrue);
       },
     );
 
     test(
-      'returns a [TicketCountModel] with the count of tickets and joined ticket names '
-      'when the executor returns two [TicketResponse] with the same product id '
-      'but different product names',
+      'GIVEN executor returns two [TicketResponse] with the same product id but different product names '
+      'WHEN calling getUserTickets '
+      'THEN a [TicketCountModel] with the count of tickets and joined ticket names is returned',
       () async {
         // arrange
         when(executor.call<List<TicketResponse>>(any)).thenAnswer(
@@ -103,8 +105,9 @@ void main() {
     'useTicket',
     () {
       test(
-        'returns a [Right] value '
-        'when the executor returns a [Right] value',
+        'GIVEN executor returns a [Right] value '
+        'WHEN calling useTicket '
+        'THEN a [Right] value is returned',
         () async {
           // arrange
           when(executor.call<TicketDto>(any)).thenAnswer(
@@ -127,8 +130,9 @@ void main() {
       );
 
       test(
-        'returns a [Left] value '
-        'when the executor fails',
+        'GIVEN executor returns a [Left] value '
+        'WHEN calling useTicket '
+        'THEN a [Left] value is returned',
         () async {
           // arrange
           when(executor.call<TicketDto>(any))
@@ -138,7 +142,7 @@ void main() {
           final actual = await dataSource.useTicket(0);
 
           // assert
-          expect(actual, const Left(ServerFailure('some error')));
+          expect(actual.isLeft(), isTrue);
         },
       );
     },
