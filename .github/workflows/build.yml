@@ -17,7 +17,7 @@ on:
         value: ${{ jobs.version.outputs.version_tag }}
 
 env:
-  FLUTTER_VERSION: 3.10.1
+  FLUTTER_VERSION: 3.10.2
   JAVA_VERSION: 11.x
 
 jobs:
