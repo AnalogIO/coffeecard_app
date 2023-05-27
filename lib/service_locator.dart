@@ -327,7 +327,7 @@ void initVoucher() {
   sl.registerFactory(() => VoucherCubit(redeemVoucherCode: sl()));
 
   // use case
-  sl.registerFactory(() => RedeemVoucherCode(remoteDataSource: sl()));
+  sl.registerFactory(() => RedeemVoucherCode(dataSource: sl()));
 
   // data source
   sl.registerLazySingleton(

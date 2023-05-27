@@ -5,12 +5,12 @@ import 'package:coffeecard/features/voucher/domain/entities/redeemed_voucher.dar
 import 'package:fpdart/fpdart.dart';
 
 class RedeemVoucherCode implements UseCase<RedeemedVoucher, String> {
-  final VoucherRemoteDataSource remoteDataSource;
+  final VoucherRemoteDataSource dataSource;
 
-  RedeemVoucherCode({required this.remoteDataSource});
+  RedeemVoucherCode({required this.dataSource});
 
   @override
   Future<Either<Failure, RedeemedVoucher>> call(String voucher) {
-    return remoteDataSource.redeemVoucher(voucher);
+    return dataSource.redeemVoucher(voucher);
   }
 }
