@@ -9,21 +9,21 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 
-DateFormat get _formatter => DateFormat('EEEE d/M/y HH:mm');
+final _formatDate = DateFormat('EEEE d/M/y HH:mm').format;
 
 class ReceiptCard extends StatelessWidget {
   final String productName;
   final DateTime time;
   final bool isInOverlay;
   final bool isTestEnvironment;
-  final String paymentStatus;
+  final String status;
 
   const ReceiptCard({
     required this.productName,
     required this.time,
     required this.isInOverlay,
     required this.isTestEnvironment,
-    required this.paymentStatus,
+    required this.status,
   });
 
   @override
@@ -39,7 +39,7 @@ class ReceiptCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              paymentStatus,
+              status,
               style: AppTextStyle.textField,
             ),
             const Gap(16),
@@ -50,7 +50,7 @@ class ReceiptCard extends StatelessWidget {
               style: AppTextStyle.textFieldBold,
             ),
             Text(
-              _formatter.format(localTime),
+              _formatDate(localTime),
               style: AppTextStyle.textField,
             ),
           ],
