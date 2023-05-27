@@ -279,10 +279,12 @@ abstract final class Strings {
   static const frequentlyAskedQuestions = 'Frequently Asked Questions';
   static const faq = 'FAQ';
   static const openingHours = 'Opening hours';
+  static const notAvailable = 'Not available';
   static const today = 'Today';
 
   static const name = 'Name';
   static const occupation = 'Occupation';
+  static const occupationPlaceholder = 'Occupation name fullname';
   static const appearAnonymous = 'Appear anonymous on leaderboard';
   static const appearAnonymousSmall = 'Appear anonymous';
   static const yourProfileDescription =
@@ -371,4 +373,5 @@ abstract final class Strings {
       "Can't connect to Analog. Are you connected to the internet?";
   static const String retry = 'Retry';
   static const String unknownErrorOccured = 'An unknown error occured';
+  static const String loading = 'Loading';
 }

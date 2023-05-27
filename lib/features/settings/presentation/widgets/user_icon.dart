@@ -1,4 +1,4 @@
-import 'package:coffeecard/widgets/components/images/coffee_image.dart';
+import 'package:coffeecard/core/widgets/images/coffee_image.dart';
 import 'package:flutter/material.dart';
 
 class UserIcon extends StatelessWidget {
