@@ -1,6 +1,6 @@
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
-import 'package:coffeecard/features/settings/presentation/widgets/list_entry.dart';
+import 'package:coffeecard/core/widgets/list_entry.dart';
 import 'package:flutter/material.dart';
 
 class SettingListEntry extends StatelessWidget {

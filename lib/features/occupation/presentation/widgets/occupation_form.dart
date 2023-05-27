@@ -1,6 +1,6 @@
 import 'package:coffeecard/base/strings.dart';
+import 'package:coffeecard/core/widgets/list_entry.dart';
 import 'package:coffeecard/features/occupation/domain/entities/occupation.dart';
-import 'package:coffeecard/features/settings/presentation/widgets/list_entry.dart';
 import 'package:coffeecard/features/settings/presentation/widgets/settings_list_entry.dart';
 import 'package:coffeecard/widgets/components/section_title.dart';
 import 'package:coffeecard/widgets/components/tickets/rounded_button.dart';
