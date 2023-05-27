@@ -53,7 +53,7 @@ class _ModalContentState extends State<_ModalContent>
   late AnimationController _controller;
   late Animation<double> _animation;
 
-  late int _heroTag;
+  late (String, int)? _heroTag;
 
   @override
   void initState() {
@@ -68,7 +68,7 @@ class _ModalContentState extends State<_ModalContent>
       ),
     );
 
-    _heroTag = widget.productId;
+    _heroTag = (widget.productName, widget.productId);
     super.initState();
   }
 
@@ -101,7 +101,7 @@ class _ModalContentState extends State<_ModalContent>
               ],
             ),
             Hero(
-              tag: _heroTag,
+              tag: _heroTag ?? -1,
               // SingleChildScrollView to avoid the temporary overflow
               // error during the hero animation.
               child: SingleChildScrollView(
@@ -130,7 +130,7 @@ class _ModalContentState extends State<_ModalContent>
                       outerColor: AppColor.primary,
                       onSubmit: () async {
                         // Disable hero animation in the reverse direction
-                        setState(() => _heroTag = -1);
+                        setState(() => _heroTag = null);
                         final ticketCubit = widget.context.read<TicketsCubit>();
                         final receiptCubit =
                             widget.context.read<ReceiptCubit>();
