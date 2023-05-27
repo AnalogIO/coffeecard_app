@@ -12,12 +12,12 @@ class GetAllProducts
   GetAllProducts({required this.remoteDataSource});
 
   @override
-  Future<Either<Failure, (Iterable<Product>, Iterable<Product>)>> call(
+  Future<Either<Failure, (List<Product>, List<Product>)>> call(
     NoParams params,
   ) async {
     return remoteDataSource.getProducts().bindFuture((products) {
-      final ticketProducts = products.where((p) => p.amount > 1);
-      final singleDrinkProducts = products.where((p) => p.amount == 1);
+      final ticketProducts = products.where((p) => p.amount > 1).toList();
+      final singleDrinkProducts = products.where((p) => p.amount == 1).toList();
 
       return (ticketProducts, singleDrinkProducts);
     });

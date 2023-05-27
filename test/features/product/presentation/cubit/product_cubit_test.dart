@@ -20,7 +20,7 @@ void main() {
     cubit = ProductCubit(getAllProducts: getAllProducts);
   });
 
-  const testProducts = [
+  const tickets = [
     Product(
       id: 1,
       name: 'test (bundle of 10)',
@@ -28,6 +28,8 @@ void main() {
       price: 1,
       description: 'test',
     ),
+  ];
+  const singleDrinks = [
     Product(
       id: 2,
       name: 'test (single)',
@@ -44,11 +46,11 @@ void main() {
       'should emit [Loading, Loaded] use case succeeds',
       build: () => cubit,
       setUp: () => when(getAllProducts(any))
-          .thenAnswer((_) async => const Right(testProducts)),
+          .thenAnswer((_) async => const Right((tickets, singleDrinks))),
       act: (cubit) => cubit.getProducts(),
       expect: () => [
         const ProductsLoading(),
-        ProductsLoaded([testProducts.first], [testProducts[1]]),
+        const ProductsLoaded(tickets, singleDrinks),
       ],
     );
 

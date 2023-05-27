@@ -2,7 +2,7 @@ import 'package:coffeecard/features/product/domain/entities/product.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.models.swagger.dart';
 
 class ProductModel extends Product {
-  ProductModel({
+  const ProductModel({
     required super.price,
     required super.amount,
     required super.name,
