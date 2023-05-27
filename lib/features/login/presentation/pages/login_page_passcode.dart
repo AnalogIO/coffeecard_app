@@ -1,14 +1,15 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
-import 'package:coffeecard/cubits/login/login_cubit.dart';
-import 'package:coffeecard/data/repositories/shared/account_repository.dart';
+import 'package:coffeecard/features/login/domain/usecases/login_user.dart';
+import 'package:coffeecard/features/login/presentation/cubit/login_cubit.dart';
+import 'package:coffeecard/features/login/presentation/pages/forgot_passcode_page.dart';
+import 'package:coffeecard/features/login/presentation/pages/login_page_base.dart';
+import 'package:coffeecard/features/login/presentation/widgets/login_passcode_dots.dart';
+import 'package:coffeecard/features/login/presentation/widgets/numpad/numpad.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/utils/fast_slide_transition.dart';
+import 'package:coffeecard/utils/firebase_analytics_event_logging.dart';
 import 'package:coffeecard/widgets/components/loading_overlay.dart';
-import 'package:coffeecard/widgets/components/login/login_numpad.dart';
-import 'package:coffeecard/widgets/components/login/login_passcode_dots.dart';
-import 'package:coffeecard/widgets/pages/login/forgot_passcode_page.dart';
-import 'package:coffeecard/widgets/pages/login/login_page_base.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -38,8 +39,9 @@ class _LoginPagePasscodeState extends State<LoginPagePasscode> {
     return BlocProvider(
       create: (_) => LoginCubit(
         email: widget.email,
-        accountRepository: sl<AccountRepository>(),
+        loginUser: sl<LoginUser>(),
         authenticationCubit: sl<AuthenticationCubit>(),
+        firebaseAnalyticsEventLogging: sl<FirebaseAnalyticsEventLogging>(),
       ),
       child: BlocConsumer<LoginCubit, LoginState>(
         listenWhen: (previous, current) =>
