@@ -93,7 +93,7 @@ class TicketSection extends StatelessWidget {
                       (p) => Padding(
                         padding: const EdgeInsets.only(bottom: 12.0),
                         child: Hero(
-                          tag: p.productId,
+                          tag: (p.productName, p.productId),
                           child: CoffeeCard(
                             title: p.productName,
                             amountOwned: p.count,

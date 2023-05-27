@@ -26,14 +26,20 @@ class TicketRemoteDataSource {
       () => apiV2.apiV2TicketsGet(includeUsed: false),
     ).bindFuture(
       (result) => result
-          .groupListsBy((t) => t.productName)
+          .groupListsBy((t) => t.productId)
           .entries
           .map(
-            (t) => TicketCountModel(
-              count: t.value.length,
-              productName: t.key,
-              productId: t.value.first.productId,
-            ),
+            (entry) {
+              final MapEntry(key: id, value: tickets) = entry;
+              // Join ticket names if they share the same product id
+              final ticketName =
+                  tickets.map((t) => t.productName).toSet().join('/');
+              return TicketCountModel(
+                count: tickets.length,
+                productName: ticketName,
+                productId: id,
+              );
+            },
           )
           .sortedBy<num>((t) => t.productId)
           .toList(),
