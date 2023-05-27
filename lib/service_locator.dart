@@ -128,13 +128,6 @@ void configureServices() {
     ),
   );
 
-  sl.registerFactory<VoucherRemoteDataSource>(
-    () => VoucherRemoteDataSource(
-      apiV1: sl<CoffeecardApi>(),
-      executor: sl<NetworkRequestExecutor>(),
-    ),
-  );
-
   // v1 and v2
   sl.registerFactory<AccountRepository>(
     () => AccountRepository(
