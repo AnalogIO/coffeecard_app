@@ -1,4 +1,5 @@
 import 'package:animations/animations.dart';
+import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/features/receipt/presentation/pages/view_receipt_page.dart';
 import 'package:coffeecard/widgets/components/helpers/shimmer_builder.dart';
@@ -6,7 +7,7 @@ import 'package:coffeecard/widgets/components/list_entry.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-final _formatDate = DateFormat('dd.MM.yyyy').format;
+final _formatDateTime = DateFormat('dd/MM/y HH:mm').format;
 
 class ReceiptListEntry extends StatelessWidget {
   final bool tappable;
@@ -31,8 +32,16 @@ class ReceiptListEntry extends StatelessWidget {
     required this.status,
   });
 
+  TextStyle get statusTextStyle {
+    return tappable
+        ? AppTextStyle.receiptItemDate
+        : AppTextStyle.receiptItemDate.copyWith(color: AppColor.gray);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final time = this.time.toLocal();
+
     return OpenContainer(
       tappable: tappable,
       // Remove rounded edges
@@ -63,8 +72,15 @@ class ReceiptListEntry extends StatelessWidget {
                   ColoredBox(
                     color: colorIfShimmer,
                     child: Text(
-                      '$status ${_formatDate(time)}',
-                      style: AppTextStyle.receiptItemDate,
+                      status,
+                      style: statusTextStyle,
+                    ),
+                  ),
+                  ColoredBox(
+                    color: colorIfShimmer,
+                    child: Text(
+                      _formatDateTime(time),
+                      style: statusTextStyle,
                     ),
                   ),
                 ],
