@@ -1,9 +1,9 @@
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/features/settings/presentation/pages/your_profile_page.dart';
+import 'package:coffeecard/features/settings/presentation/widgets/user_icon.dart';
 import 'package:coffeecard/widgets/components/helpers/shimmer_builder.dart';
 import 'package:coffeecard/widgets/components/helpers/tappable.dart';
-import 'package:coffeecard/widgets/components/user/user_icon.dart';
-import 'package:coffeecard/widgets/pages/settings/your_profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
