@@ -1,8 +1,8 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/core/widgets/images/analogio_logo.dart';
 import 'package:coffeecard/features/contributor/presentation/pages/credits_page.dart';
 import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
-import 'package:coffeecard/widgets/components/images/analogio_logo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
