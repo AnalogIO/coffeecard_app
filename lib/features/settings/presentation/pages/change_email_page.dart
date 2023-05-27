@@ -1,8 +1,8 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
+import 'package:coffeecard/features/settings/presentation/widgets/forms/change_email_form.dart';
 import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
 import 'package:coffeecard/widgets/components/dialog.dart';
-import 'package:coffeecard/widgets/components/forms/settings/change_email_form.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
