@@ -202,6 +202,13 @@ abstract final class Strings {
   static String noReceiptsOfTypeMessage(String buyOrSwipe) =>
       'When you $buyOrSwipe tickets, they will show up here.\nGo to the Tickets tab to $buyOrSwipe tickets.';
 
+  // PaymentStatus enum
+  static const paymentStatusCompleted = 'Purchased';
+  static const paymentStatusRefunded = 'Purchase refunded';
+  static const paymentStatusAwaitingPayment = 'Payment pending';
+  static const paymentStatusReserved = 'Payment reserved';
+  static const paymentStatusFailed = 'Payment failed';
+
   // Statistics page
   static const statsYourStats = 'Your stats';
   static const statsLeaderboards = 'Leaderboards';

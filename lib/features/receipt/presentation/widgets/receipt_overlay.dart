@@ -19,7 +19,7 @@ class ReceiptOverlay {
     required String productName,
     required DateTime timeUsed,
     required bool isTestEnvironment,
-    required String paymentStatus,
+    required String status,
   }) async {
     await ScreenBrightness().setScreenBrightness(1);
     if (_context.mounted) {
@@ -38,7 +38,7 @@ class ReceiptOverlay {
                     time: timeUsed,
                     isInOverlay: true,
                     isTestEnvironment: isTestEnvironment,
-                    paymentStatus: paymentStatus,
+                    status: status,
                   ),
                   const Gap(12),
                   Text(
