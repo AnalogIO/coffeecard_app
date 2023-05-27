@@ -1,3 +1,4 @@
+import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/features/purchase/domain/entities/payment_status.dart';
 import 'package:coffeecard/features/receipt/domain/entities/receipt.dart';
@@ -12,13 +13,13 @@ class PurchaseReceiptListEntry extends StatelessWidget {
   });
 
   String get priceText {
-    final price = receipt.price;
+    final price = Strings.price(receipt.price);
     return switch (receipt.paymentStatus) {
-      PaymentStatus.completed => '$price,-',
+      PaymentStatus.completed => price,
       PaymentStatus.awaitingPayment ||
       PaymentStatus.reserved ||
       PaymentStatus.refunded =>
-        '($price,-)',
+        '($price)',
       PaymentStatus.error || PaymentStatus.rejectedPayment => '',
     };
   }

@@ -1,3 +1,4 @@
+import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.enums.swagger.dart';
 
 enum PaymentStatus {
@@ -32,12 +33,13 @@ enum PaymentStatus {
   @override
   String toString() {
     return switch (this) {
-      PaymentStatus.completed => 'Purchased',
-      PaymentStatus.refunded => 'Purchase refunded',
-      PaymentStatus.rejectedPayment => 'Payment rejected',
-      PaymentStatus.awaitingPayment => 'Payment pending',
-      PaymentStatus.error => 'Payment error',
-      PaymentStatus.reserved => 'Payment reserved',
+      PaymentStatus.completed => Strings.paymentStatusCompleted,
+      PaymentStatus.refunded => Strings.paymentStatusRefunded,
+      PaymentStatus.awaitingPayment => Strings.paymentStatusAwaitingPayment,
+      PaymentStatus.reserved => Strings.paymentStatusReserved,
+      PaymentStatus.rejectedPayment ||
+      PaymentStatus.error =>
+        Strings.paymentStatusFailed,
     };
   }
 }
