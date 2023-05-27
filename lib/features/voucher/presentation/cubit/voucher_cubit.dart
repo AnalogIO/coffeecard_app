@@ -12,6 +12,7 @@ class VoucherCubit extends Cubit<VoucherState> {
 
   Future<void> redeemVoucher(String voucher) async {
     emit(VoucherLoading());
+
     final either = await redeemVoucherCode(voucher);
 
     either.fold(
