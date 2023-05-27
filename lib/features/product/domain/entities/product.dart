@@ -1,5 +1,3 @@
-import 'package:coffeecard/generated/api/coffeecard_api.models.swagger.dart';
-
 class Product {
   final int id;
   final int amount;
@@ -14,13 +12,6 @@ class Product {
     required this.id,
     required this.description,
   });
-
-  Product.fromDTO(ProductDto dto)
-      : id = dto.id,
-        name = dto.name,
-        price = dto.price,
-        amount = dto.numberOfTickets,
-        description = dto.description;
 
   @override
   String toString() {
