@@ -42,7 +42,7 @@ class AboutSection extends StatelessWidget {
         const SettingListEntry(
           name: Strings.openingHours,
           valueWidget: SettingValueText(
-            value: 'Not available', //TODO: strings
+            value: Strings.notAvailable,
           ),
         ),
         SettingListEntry(
