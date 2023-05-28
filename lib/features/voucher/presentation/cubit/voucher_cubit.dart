@@ -1,18 +1,19 @@
 import 'package:bloc/bloc.dart';
-import 'package:coffeecard/data/repositories/v1/voucher_repository.dart';
-import 'package:coffeecard/models/voucher/redeemed_voucher.dart';
+import 'package:coffeecard/features/voucher/domain/entities/redeemed_voucher.dart';
+import 'package:coffeecard/features/voucher/domain/usecases/redeem_voucher_code.dart';
 import 'package:equatable/equatable.dart';
 
 part 'voucher_state.dart';
 
 class VoucherCubit extends Cubit<VoucherState> {
-  VoucherCubit(this._voucherRepository) : super(VoucherInitial());
+  final RedeemVoucherCode redeemVoucherCode;
 
-  final VoucherRepository _voucherRepository;
+  VoucherCubit({required this.redeemVoucherCode}) : super(VoucherInitial());
 
   Future<void> redeemVoucher(String voucher) async {
     emit(VoucherLoading());
-    final either = await _voucherRepository.redeemVoucher(voucher);
+
+    final either = await redeemVoucherCode(voucher);
 
     either.fold(
       (error) => emit(VoucherError(error.reason)),

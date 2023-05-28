@@ -13,13 +13,16 @@ class VoucherLoading extends VoucherState {}
 
 class VoucherError extends VoucherState {
   final String error;
+
   const VoucherError(this.error);
+
   @override
   List<Object> get props => [error];
 }
 
 class VoucherSuccess extends VoucherState {
   final RedeemedVoucher redeemedVoucher;
+
   const VoucherSuccess(this.redeemedVoucher);
 
   @override

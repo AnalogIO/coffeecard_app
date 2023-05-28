@@ -1,7 +1,7 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/features/purchase/presentation/pages/buy_single_drink_page.dart';
 import 'package:coffeecard/features/purchase/presentation/pages/buy_tickets_page.dart';
-import 'package:coffeecard/features/ticket/presentation/pages/redeem_voucher_page.dart';
+import 'package:coffeecard/features/voucher/presentation/pages/redeem_voucher_page.dart';
 import 'package:coffeecard/widgets/components/helpers/grid.dart';
 import 'package:coffeecard/widgets/components/tickets/shop_card.dart';
 import 'package:flutter/material.dart';
