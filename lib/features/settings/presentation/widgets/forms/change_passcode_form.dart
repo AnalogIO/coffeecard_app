@@ -1,8 +1,8 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/core/widgets/form/form.dart';
+import 'package:coffeecard/features/settings/presentation/widgets/forms/change_passcode_repeat_form.dart';
 import 'package:coffeecard/utils/fast_slide_transition.dart';
 import 'package:coffeecard/utils/input_validator.dart';
-import 'package:coffeecard/widgets/components/forms/settings/change_passcode_repeat_form.dart';
 import 'package:flutter/material.dart';
 
 class ChangePasscodeForm extends StatelessWidget {

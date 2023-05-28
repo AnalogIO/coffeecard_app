@@ -121,7 +121,7 @@ class BuyTicketsPage extends StatelessWidget {
         ReceiptOverlay.of(context).show(
           isTestEnvironment:
               envState is EnvironmentLoaded && envState.env.isTest,
-          paymentStatus: Strings.purchased,
+          status: Strings.purchased,
           productName: payment.productName,
           timeUsed: payment.purchaseTime,
         );
