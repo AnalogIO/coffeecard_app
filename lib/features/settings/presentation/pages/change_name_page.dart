@@ -1,5 +1,5 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/widgets/components/forms/settings/change_name_form.dart';
+import 'package:coffeecard/features/settings/presentation/widgets/forms/change_name_form.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:flutter/material.dart';
 

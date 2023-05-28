@@ -89,54 +89,56 @@ void main() {
       expect(actual, const Left(ServerFailure(testError)));
     });
 
-    test('should return [Right<UserModel>] when executor returns user response',
-        () async {
-      // arrange
-      when(executor.call<v2.UserResponse>(any)).thenAnswer(
-        (_) async => Right(
-          v2.UserResponse(
-            email: 'email',
-            id: 0,
-            name: 'name',
-            privacyActivated: true,
-            programme: {
-              'id': 0,
-              'shortName': 'shortName',
-              'fullName': 'fullName',
-            },
-            rankAllTime: 0,
-            rankMonth: 0,
-            rankSemester: 0,
-            role: 'Barista',
-          ),
-        ),
-      );
-
-      // act
-      final actual = await dataSource.getUser();
-
-      // assert
-      expect(
-        actual,
-        const Right(
-          UserModel(
-            id: 0,
-            name: 'name',
-            email: 'email',
-            privacyActivated: true,
-            occupation: OccupationModel(
+    test(
+      'should return [Right<UserModel>] when executor returns user response',
+      () async {
+        // arrange
+        when(executor.call<v2.UserResponse>(any)).thenAnswer(
+          (_) async => Right(
+            v2.UserResponse(
+              email: 'email',
               id: 0,
-              shortName: 'shortName',
-              fullName: 'fullName',
+              name: 'name',
+              privacyActivated: true,
+              programme: {
+                'id': 0,
+                'shortName': 'shortName',
+                'fullName': 'fullName',
+              },
+              rankAllTime: 0,
+              rankMonth: 0,
+              rankSemester: 0,
+              role: 'Barista',
             ),
-            rankMonth: 0,
-            rankSemester: 0,
-            rankTotal: 0,
-            role: Role.barista,
           ),
-        ),
-      );
-    });
+        );
+
+        // act
+        final actual = await dataSource.getUser();
+
+        // assert
+        expect(
+          actual,
+          const Right(
+            UserModel(
+              id: 0,
+              name: 'name',
+              email: 'email',
+              privacyActivated: true,
+              occupation: OccupationModel(
+                id: 0,
+                shortName: 'shortName',
+                fullName: 'fullName',
+              ),
+              rankMonth: 0,
+              rankSemester: 0,
+              rankTotal: 0,
+              role: Role.barista,
+            ),
+          ),
+        );
+      },
+    );
   });
 
   group('requestPasscodeReset', () {

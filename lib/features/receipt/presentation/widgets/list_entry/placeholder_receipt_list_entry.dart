@@ -16,7 +16,7 @@ class PlaceholderReceiptListEntry extends StatelessWidget {
       topText: Strings.receiptPlaceholderName,
       rightText: Strings.oneTicket,
       backgroundColor: Colors.transparent,
-      purchaseStatus: '',
+      status: '',
     );
   }
 }
