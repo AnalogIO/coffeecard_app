@@ -1,35 +1,10 @@
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:flutter/material.dart';
 
-class LoginPasscodeDots extends StatelessWidget {
-  const LoginPasscodeDots({
-    required this.passcodeLength,
-    required this.hasError,
-  });
-
-  final int passcodeLength;
-  final bool hasError;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: List.generate(
-        4,
-        (index) => _PasscodeDot(
-          isLit: index < passcodeLength,
-          isError: hasError,
-        ),
-        growable: false,
-      ),
-    );
-  }
-}
-
-class _PasscodeDot extends StatelessWidget {
+class PasscodeDot extends StatelessWidget {
   final bool isLit;
   final bool isError;
-  const _PasscodeDot({
+  const PasscodeDot({
     required this.isLit,
     required this.isError,
   });

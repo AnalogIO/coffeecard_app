@@ -1,6 +1,5 @@
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
-import 'package:coffeecard/data/repositories/shared/account_repository.dart';
-import 'package:coffeecard/service_locator.dart';
+import 'package:coffeecard/features/login/domain/usecases/login_user.dart';
 import 'package:coffeecard/utils/encode_passcode.dart';
 import 'package:coffeecard/utils/firebase_analytics_event_logging.dart';
 import 'package:equatable/equatable.dart';
@@ -9,18 +8,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 part 'login_state.dart';
 
 class LoginCubit extends Cubit<LoginState> {
+  final String email;
+  final AuthenticationCubit authenticationCubit;
+  final LoginUser loginUser;
+  final FirebaseAnalyticsEventLogging firebaseAnalyticsEventLogging;
+
   LoginCubit({
     required this.email,
     required this.authenticationCubit,
-    required this.accountRepository,
+    required this.loginUser,
+    required this.firebaseAnalyticsEventLogging,
   }) : super(const LoginTypingPasscode(''));
 
-  final String email;
-  final AuthenticationCubit authenticationCubit;
-  final AccountRepository accountRepository;
-
   void addPasscodeInput(String input) {
-    // used for type promotion
     final st = state;
 
     final String newPasscode;
@@ -41,12 +41,14 @@ class LoginCubit extends Cubit<LoginState> {
 
     emit(const LoginLoading());
 
-    final either = await accountRepository.login(email, encodedPasscode);
+    final either = await loginUser(
+      Params(email: email, encodedPasscode: encodedPasscode),
+    );
 
     either.fold(
       (error) => emit(LoginError(error.reason)),
       (user) {
-        sl<FirebaseAnalyticsEventLogging>().loginEvent();
+        firebaseAnalyticsEventLogging.loginEvent();
 
         authenticationCubit.authenticated(
           user.email,

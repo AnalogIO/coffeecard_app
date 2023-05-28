@@ -1,8 +1,8 @@
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/core/widgets/images/analog_logo.dart';
 import 'package:coffeecard/core/widgets/upgrade_alert.dart';
+import 'package:coffeecard/features/login/presentation/widgets/login_input_hint.dart';
 import 'package:coffeecard/utils/responsive.dart';
-import 'package:coffeecard/widgets/components/login/login_input_hint.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';

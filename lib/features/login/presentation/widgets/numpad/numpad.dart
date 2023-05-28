@@ -1,10 +1,10 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
-import 'package:coffeecard/cubits/login/login_cubit.dart';
-import 'package:coffeecard/utils/responsive.dart';
+import 'package:coffeecard/features/login/presentation/cubit/login_cubit.dart';
+import 'package:coffeecard/features/login/presentation/widgets/numpad/numpad_button.dart';
+import 'package:coffeecard/features/login/presentation/widgets/numpad/numpad_digit_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show HapticFeedback;
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Numpad extends StatefulWidget {
@@ -63,30 +63,30 @@ class _NumpadState extends State<Numpad> with SingleTickerProviderStateMixin {
                 children: [
                   const TableRow(
                     children: [
-                      _NumpadDigitButton('1'),
-                      _NumpadDigitButton('2'),
-                      _NumpadDigitButton('3'),
+                      NumpadDigitButton('1'),
+                      NumpadDigitButton('2'),
+                      NumpadDigitButton('3'),
                     ],
                   ),
                   const TableRow(
                     children: [
-                      _NumpadDigitButton('4'),
-                      _NumpadDigitButton('5'),
-                      _NumpadDigitButton('6'),
+                      NumpadDigitButton('4'),
+                      NumpadDigitButton('5'),
+                      NumpadDigitButton('6'),
                     ],
                   ),
                   const TableRow(
                     children: [
-                      _NumpadDigitButton('7'),
-                      _NumpadDigitButton('8'),
-                      _NumpadDigitButton('9'),
+                      NumpadDigitButton('7'),
+                      NumpadDigitButton('8'),
+                      NumpadDigitButton('9'),
                     ],
                   ),
                   TableRow(
                     children: [
                       TableCell(
                         verticalAlignment: TableCellVerticalAlignment.fill,
-                        child: _NumpadButton(
+                        child: NumpadButton(
                           onPressed: widget.forgotPasscodeAction,
                           child: Text(
                             Strings.loginForgot,
@@ -94,10 +94,10 @@ class _NumpadState extends State<Numpad> with SingleTickerProviderStateMixin {
                           ),
                         ),
                       ),
-                      const _NumpadDigitButton('0'),
+                      const NumpadDigitButton('0'),
                       TableCell(
                         verticalAlignment: TableCellVerticalAlignment.fill,
-                        child: _NumpadButton(
+                        child: NumpadButton(
                           onPressed: (context) {
                             context.read<LoginCubit>().clearPasscode();
                           },
@@ -111,47 +111,6 @@ class _NumpadState extends State<Numpad> with SingleTickerProviderStateMixin {
             ),
           );
         },
-      ),
-    );
-  }
-}
-
-class _NumpadButton extends StatelessWidget {
-  final void Function(BuildContext) onPressed;
-  final Widget child;
-
-  const _NumpadButton({
-    required this.child,
-    required this.onPressed,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: () {
-        HapticFeedback.lightImpact();
-        onPressed(context);
-      },
-      child: child,
-    );
-  }
-}
-
-class _NumpadDigitButton extends StatelessWidget {
-  const _NumpadDigitButton(this.digit);
-  final String digit;
-
-  @override
-  Widget build(BuildContext context) {
-    return _NumpadButton(
-      onPressed: (BuildContext context) {
-        context.read<LoginCubit>().addPasscodeInput(digit);
-      },
-      child: Text(
-        digit,
-        style: deviceIsSmall(context)
-            ? AppTextStyle.ticketsCount
-            : AppTextStyle.numpadDigit,
       ),
     );
   }

@@ -1,6 +1,6 @@
 import 'package:coffeecard/base/strings.dart';
+import 'package:coffeecard/core/data/datasources/account_remote_data_source.dart';
 import 'package:coffeecard/core/widgets/form/form.dart';
-import 'package:coffeecard/data/repositories/shared/account_repository.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/utils/input_validator.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +23,8 @@ class RegisterEmailForm extends StatelessWidget {
         InputValidator(
           forceErrorMessage: true,
           validate: (text) async {
-            final either = await sl<AccountRepository>().emailExists(text);
+            final either =
+                await sl<AccountRemoteDataSource>().emailExists(text);
 
             return either.fold(
               (l) => const Left(Strings.emailValidationError),

@@ -1,8 +1,8 @@
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
 import 'package:coffeecard/features/environment/presentation/cubit/environment_cubit.dart';
+import 'package:coffeecard/features/login/presentation/pages/login_page_email.dart';
 import 'package:coffeecard/widgets/pages/home_page.dart';
-import 'package:coffeecard/widgets/pages/login/login_page_email.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
