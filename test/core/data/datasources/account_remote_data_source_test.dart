@@ -1,4 +1,5 @@
 import 'package:coffeecard/core/data/datasources/account_remote_data_source.dart';
+import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/features/occupation/data/models/occupation_model.dart';
 import 'package:coffeecard/features/user/data/models/user_model.dart';
@@ -18,19 +19,21 @@ void main() {
   late MockCoffeecardApi apiV1;
   late MockCoffeecardApiV2 apiV2;
   late MockNetworkRequestExecutor executor;
-  late AccountRemoteDataSource repository;
+  late AccountRemoteDataSource dataSource;
 
   setUp(() {
     apiV1 = MockCoffeecardApi();
     apiV2 = MockCoffeecardApiV2();
 
     executor = MockNetworkRequestExecutor();
-    repository = AccountRemoteDataSource(
+    dataSource = AccountRemoteDataSource(
       apiV1: apiV1,
       apiV2: apiV2,
       executor: executor,
     );
   });
+
+  const testError = 'some error';
 
   group('register', () {
     test('should call executor', () async {
@@ -40,7 +43,7 @@ void main() {
       );
 
       // act
-      await repository.register(
+      await dataSource.register(
         'name',
         'email',
         'passcode',
@@ -53,25 +56,41 @@ void main() {
   });
 
   group('login', () {
-    test('should call executor', () async {
-      // arrange
-      when(executor.call<v1.TokenDto>(any)).thenAnswer(
-        (_) async => Right(v1.TokenDto(token: 'token')),
-      );
+    test(
+      'should return [Right<AuthenticatedUser>] when executor returns token',
+      () async {
+        // arrange
+        when(executor.call<v1.TokenDto>(any)).thenAnswer(
+          (_) async => Right(v1.TokenDto(token: 'token')),
+        );
 
-      // act
-      final actual = await repository.login('email', 'encodedPasscode');
+        // act
+        final actual = await dataSource.login('email', 'encodedPasscode');
 
-      // assert
-      expect(
-        actual,
-        const Right(AuthenticatedUser(email: 'email', token: 'token')),
-      );
-    });
+        // assert
+        expect(
+          actual,
+          const Right(AuthenticatedUser(email: 'email', token: 'token')),
+        );
+      },
+    );
   });
 
   group('getUser', () {
-    test('should call executor', () async {
+    test('should return [Left] if executor fails', () async {
+      // arrange
+      when(executor.call<v2.UserResponse>(any))
+          .thenAnswer((_) async => const Left(ServerFailure(testError)));
+
+      // act
+      final actual = await dataSource.getUser();
+
+      // assert
+      expect(actual, const Left(ServerFailure(testError)));
+    });
+
+    test('should return [Right<UserModel>] when executor returns user response',
+        () async {
       // arrange
       when(executor.call<v2.UserResponse>(any)).thenAnswer(
         (_) async => Right(
@@ -94,7 +113,7 @@ void main() {
       );
 
       // act
-      final actual = await repository.getUser();
+      final actual = await dataSource.getUser();
 
       // assert
       expect(
@@ -121,14 +140,14 @@ void main() {
   });
 
   group('requestPasscodeReset', () {
-    test('should call executor', () async {
+    test('should return [Right] when executor succeeds', () async {
       // arrange
       when(executor.call<v1.MessageResponseDto>(any)).thenAnswer(
         (_) async => Right(v1.MessageResponseDto()),
       );
 
       // act
-      final actual = await repository.requestPasscodeReset('name');
+      final actual = await dataSource.requestPasscodeReset('name');
 
       // assert
       expect(actual, const Right(null));
@@ -136,14 +155,14 @@ void main() {
   });
 
   group('emailExists', () {
-    test('should call executor', () async {
+    test('should return [Right<bool>] if executor succeeds', () async {
       // arrange
       when(executor.call<v2.EmailExistsResponse>(any)).thenAnswer(
         (_) async => Right(v2.EmailExistsResponse(emailExists: true)),
       );
 
       // act
-      final actual = await repository.emailExists('name');
+      final actual = await dataSource.emailExists('name');
 
       // assert
       expect(actual, const Right(true));

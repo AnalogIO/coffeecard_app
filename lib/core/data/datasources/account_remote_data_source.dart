@@ -72,10 +72,7 @@ class AccountRemoteDataSource {
       () => apiV1.apiV1AccountForgotpasswordPost(body: EmailDto(email: email)),
     );
 
-    return result.fold(
-      (error) => Left(error),
-      (_) => const Right(null),
-    );
+    return result.pure(null);
   }
 
   Future<Either<NetworkFailure, bool>> emailExists(String email) async {
