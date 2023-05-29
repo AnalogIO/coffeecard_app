@@ -27,6 +27,8 @@ import 'package:coffeecard/features/receipt/data/repositories/receipt_repository
 import 'package:coffeecard/features/receipt/domain/repositories/receipt_repository.dart';
 import 'package:coffeecard/features/receipt/domain/usecases/get_receipts.dart';
 import 'package:coffeecard/features/receipt/presentation/cubit/receipt_cubit.dart';
+import 'package:coffeecard/features/register/domain/usecases/register_user.dart';
+import 'package:coffeecard/features/register/presentation/cubit/register_cubit.dart';
 import 'package:coffeecard/features/ticket/data/datasources/ticket_remote_data_source.dart';
 import 'package:coffeecard/features/ticket/domain/usecases/consume_ticket.dart';
 import 'package:coffeecard/features/ticket/domain/usecases/load_tickets.dart';
@@ -335,6 +337,21 @@ void initLogin() {
 
   // use case
   sl.registerFactory(() => LoginUser(remoteDataSource: sl()));
+
+  // data source
+}
+
+void initRegister() {
+  // bloc
+  sl.registerFactory(
+    () => RegisterCubit(
+      registerUser: sl(),
+      firebaseAnalyticsEventLogging: sl(),
+    ),
+  );
+
+  // use case
+  sl.registerFactory(() => RegisterUser(remoteDataSource: sl()));
 
   // data source
 }

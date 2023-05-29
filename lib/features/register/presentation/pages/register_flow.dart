@@ -1,10 +1,9 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/core/data/datasources/account_remote_data_source.dart';
-import 'package:coffeecard/cubits/register/register_cubit.dart';
 import 'package:coffeecard/features/occupation/presentation/cubit/occupation_cubit.dart';
+import 'package:coffeecard/features/register/presentation/cubit/register_cubit.dart';
+import 'package:coffeecard/features/register/presentation/pages/register_page_email.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
-import 'package:coffeecard/widgets/pages/register/register_page_email.dart';
 import 'package:coffeecard/widgets/routers/app_flow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,8 +19,7 @@ class RegisterFlow extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) =>
-              RegisterCubit(repository: sl<AccountRemoteDataSource>()),
+          create: (_) => sl<RegisterCubit>(),
         ),
         BlocProvider(
           lazy: false,
