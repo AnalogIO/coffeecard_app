@@ -1,4 +1,4 @@
-import 'package:coffeecard/core/data/datasources/account_remote_data_source.dart';
+import 'package:coffeecard/features/register/data/datasources/register_remote_data_source.dart';
 import 'package:coffeecard/features/register/domain/usecases/register_user.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
@@ -7,13 +7,13 @@ import 'package:mockito/mockito.dart';
 
 import 'register_user_test.mocks.dart';
 
-@GenerateMocks([AccountRemoteDataSource])
+@GenerateMocks([RegisterRemoteDataSource])
 void main() {
-  late MockAccountRemoteDataSource remoteDataSource;
+  late MockRegisterRemoteDataSource remoteDataSource;
   late RegisterUser usecase;
 
   setUp(() {
-    remoteDataSource = MockAccountRemoteDataSource();
+    remoteDataSource = MockRegisterRemoteDataSource();
     usecase = RegisterUser(remoteDataSource: remoteDataSource);
   });
 

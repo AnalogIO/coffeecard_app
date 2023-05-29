@@ -21,24 +21,6 @@ class AccountRemoteDataSource {
   final CoffeecardApiV2 apiV2;
   final NetworkRequestExecutor executor;
 
-  Future<Either<NetworkFailure, void>> register(
-    String name,
-    String email,
-    String encodedPasscode,
-    int occupationId,
-  ) async {
-    return executor(
-      () => apiV2.apiV2AccountPost(
-        body: RegisterAccountRequest(
-          name: name,
-          email: email,
-          password: encodedPasscode,
-          programmeId: occupationId,
-        ),
-      ),
-    ).bindFuture((_) => const Right(null));
-  }
-
   Future<Either<NetworkFailure, AuthenticatedUser>> login(
     String email,
     String encodedPasscode,

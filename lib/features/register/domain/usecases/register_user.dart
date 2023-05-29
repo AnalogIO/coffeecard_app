@@ -1,11 +1,11 @@
-import 'package:coffeecard/core/data/datasources/account_remote_data_source.dart';
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/core/usecases/usecase.dart';
+import 'package:coffeecard/features/register/data/datasources/register_remote_data_source.dart';
 import 'package:equatable/equatable.dart';
 import 'package:fpdart/fpdart.dart';
 
 class RegisterUser implements UseCase<void, Params> {
-  final AccountRemoteDataSource remoteDataSource;
+  final RegisterRemoteDataSource remoteDataSource;
 
   RegisterUser({required this.remoteDataSource});
 
