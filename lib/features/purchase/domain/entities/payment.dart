@@ -4,6 +4,9 @@ import 'package:equatable/equatable.dart';
 class Payment extends Equatable {
   final int id;
   final PaymentStatus status;
+  // TODO(marfavi): deeplink is not part of every payment, so it should be
+  //  either changed to an optional value or moved to a subclass.
+  // FIXME(marfavi): create a GitHub issue for this.
   final String deeplink;
   final int price;
   final DateTime purchaseTime;
@@ -12,10 +15,10 @@ class Payment extends Equatable {
 
   const Payment({
     required this.id,
-    required this.price,
-    required this.purchaseTime,
     required this.status,
     required this.deeplink,
+    required this.price,
+    required this.purchaseTime,
     required this.productId,
     required this.productName,
   });

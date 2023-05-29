@@ -1,9 +1,9 @@
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/core/extensions/either_extensions.dart';
 import 'package:coffeecard/features/purchase/data/datasources/purchase_remote_data_source.dart';
+import 'package:coffeecard/features/purchase/data/models/payment_type.dart';
 import 'package:coffeecard/features/purchase/data/repositories/free_product_service.dart';
 import 'package:coffeecard/features/purchase/data/repositories/mobilepay_service.dart';
-import 'package:coffeecard/features/purchase/domain/entities/internal_payment_type.dart';
 import 'package:coffeecard/features/purchase/domain/entities/payment.dart';
 import 'package:coffeecard/features/purchase/domain/entities/payment_status.dart';
 import 'package:coffeecard/service_locator.dart';
@@ -22,18 +22,18 @@ abstract class PaymentHandler {
   Future<Either<Failure, Payment>> initPurchase(int productId);
 
   static PaymentHandler createPaymentHandler(
-    InternalPaymentType paymentType,
+    PaymentType paymentType,
     BuildContext buildContext,
   ) {
     final repository = sl.get<PurchaseRemoteDataSource>();
 
     return switch (paymentType) {
-      InternalPaymentType.mobilePay => MobilePayService(
+      PaymentType.mobilepay => MobilePayService(
           externalUrlLauncher: sl(),
           remoteDataSource: repository,
           buildContext: buildContext,
         ),
-      InternalPaymentType.free => FreeProductService(
+      PaymentType.freepurchase => FreeProductService(
           remoteDataSource: repository,
           buildContext: buildContext,
         ),

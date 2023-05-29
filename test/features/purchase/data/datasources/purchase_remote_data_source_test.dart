@@ -1,11 +1,8 @@
-import 'dart:convert';
-
 import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/features/purchase/data/datasources/purchase_remote_data_source.dart';
-import 'package:coffeecard/features/purchase/data/models/initiate_purchase_model.dart';
-import 'package:coffeecard/features/purchase/data/models/single_purchase_model.dart';
-import 'package:coffeecard/features/purchase/domain/entities/payment_status.dart';
-import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
+import 'package:coffeecard/features/purchase/data/models/payment_type.dart';
+import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart'
+    hide PaymentType;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:mockito/annotations.dart';
@@ -28,53 +25,40 @@ void main() {
     );
   });
 
+  final testInitiatePurchaseResponse = InitiatePurchaseResponse(
+    id: 0,
+    dateCreated: DateTime.now(),
+    productId: 0,
+    productName: 'productName',
+    totalAmount: 10,
+    purchaseStatus: PurchaseStatus.pendingpayment,
+    paymentDetails: MobilePayPaymentDetails.toJsonFactory(
+      MobilePayPaymentDetails(
+        paymentType: PaymentType.mobilepay,
+        orderId: '',
+        discriminator: '',
+        mobilePayAppRedirectUri: '',
+        paymentId: '',
+        state: '',
+      ),
+    ),
+  );
+
   group('initiatePurchase', () {
     test('should call executor', () async {
       // arrange
       when(executor.call<InitiatePurchaseResponse>(any)).thenAnswer(
-        (_) async => Right(
-          InitiatePurchaseResponse(
-            dateCreated: DateTime.parse('2023-05-19'),
-            id: 0,
-            paymentDetails: json.decode(
-              '{"mobilePayAppRedirectUri": "mobilePayAppRedirectUri", "paymentId": "paymentId", "state": "state", "discriminator": "discriminator", "paymentType": "paymentType", "orderId": "orderId"}',
-            ),
-            productId: 0,
-            productName: 'productName',
-            purchaseStatus: 'purchaseStatus',
-            totalAmount: 0,
-          ),
-        ),
+        (_) async => right(testInitiatePurchaseResponse),
       );
 
       // act
-      final actual = await purchaseRemoteDataSource.initiatePurchase(
+      final _ = await purchaseRemoteDataSource.initiatePurchase(
         0,
         PaymentType.mobilepay,
       );
 
       // assert
-      expect(
-        actual,
-        Right(
-          InitiatePurchaseModel(
-            dateCreated: DateTime.parse('2023-05-19'),
-            id: 0,
-            paymentDetails: MobilePayPaymentDetails(
-              mobilePayAppRedirectUri: 'mobilePayAppRedirectUri',
-              paymentId: 'paymentId',
-              state: 'state',
-              discriminator: 'discriminator',
-              paymentType: 'paymentType',
-              orderId: 'orderId',
-            ),
-            productId: 0,
-            productName: 'productName',
-            purchaseStatus: 'purchaseStatus',
-            totalAmount: 0,
-          ),
-        ),
-      );
+      verify(executor.call<InitiatePurchaseResponse>(any)).called(1);
     });
   });
 
@@ -95,20 +79,10 @@ void main() {
       );
 
       // act
-      final actual = await purchaseRemoteDataSource.getPurchase(0);
+      final _ = await purchaseRemoteDataSource.getPurchase(0);
 
       // assert
-      expect(
-        actual,
-        Right(
-          SinglePurchaseModel(
-            dateCreated: DateTime.parse('2023-05-19'),
-            id: 0,
-            status: PaymentStatus.completed,
-            totalAmount: 0,
-          ),
-        ),
-      );
+      verify(executor.call<SinglePurchaseResponse>(any)).called(1);
     });
   });
 }

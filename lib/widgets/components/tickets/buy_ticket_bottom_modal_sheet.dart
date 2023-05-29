@@ -1,7 +1,7 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
-import 'package:coffeecard/features/purchase/domain/entities/internal_payment_type.dart';
+import 'package:coffeecard/features/purchase/data/models/payment_type.dart';
 import 'package:coffeecard/features/purchase/domain/entities/payment.dart';
 import 'package:coffeecard/features/purchase/presentation/widgets/purchase_overlay.dart';
 import 'package:coffeecard/models/ticket/product.dart';
@@ -108,7 +108,7 @@ class _BottomModalSheetButtonBarState
             price: productPrice,
             onTap: () async {
               final payment = await showPurchaseOverlay(
-                paymentType: InternalPaymentType.free,
+                paymentType: PaymentType.freepurchase,
                 product: widget.product,
                 context: context,
               );
@@ -141,7 +141,7 @@ class _BottomModalSheetButtonBarState
           price: productPrice,
           onTap: () async {
             final payment = await showPurchaseOverlay(
-              paymentType: InternalPaymentType.mobilePay,
+              paymentType: PaymentType.mobilepay,
               product: widget.product,
               context: context,
             );

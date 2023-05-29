@@ -20,6 +20,8 @@ enum PaymentStatus {
   /// Payment has been refunded
   refunded;
 
+  // TODO(marfavi): This should be moved into model?
+  // FIXME: Create a GitHub issue for this.
   static PaymentStatus fromPurchaseStatus(PurchaseStatus status) {
     return switch (status) {
       PurchaseStatus.completed => PaymentStatus.completed,

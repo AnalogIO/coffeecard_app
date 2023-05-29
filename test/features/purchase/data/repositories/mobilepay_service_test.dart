@@ -2,10 +2,8 @@ import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/core/external/external_url_launcher.dart';
 import 'package:coffeecard/features/purchase/data/datasources/purchase_remote_data_source.dart';
 import 'package:coffeecard/features/purchase/data/repositories/mobilepay_service.dart';
-import 'package:coffeecard/features/purchase/domain/entities/initiate_purchase.dart';
 import 'package:coffeecard/features/purchase/domain/entities/payment.dart';
 import 'package:coffeecard/features/purchase/domain/entities/payment_status.dart';
-import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
@@ -36,10 +34,10 @@ void main() {
 
   final testPayment = Payment(
     id: 0,
+    status: PaymentStatus.awaitingPayment,
+    deeplink: 'deeplink',
     price: 0,
     purchaseTime: DateTime.parse('2023-05-19'),
-    status: PaymentStatus.awaitingPayment,
-    deeplink: 'mobilePayAppRedirectUri',
     productId: 0,
     productName: 'productName',
   );
@@ -61,37 +59,14 @@ void main() {
       // arrange
       when(externalUrlLauncher.canLaunch(any)).thenAnswer((_) async => true);
       //when(externalUrlLauncher.launch(any)).thenAnswer((_) async {});
-      when(remoteDataSource.initiatePurchase(any, any)).thenAnswer(
-        (_) async => Right(
-          InitiatePurchase(
-            id: 0,
-            totalAmount: 0,
-            paymentDetails: MobilePayPaymentDetails(
-              mobilePayAppRedirectUri: 'mobilePayAppRedirectUri',
-              paymentId: 'paymentId',
-              state: 'state',
-              discriminator: 'discriminator',
-              paymentType: 'paymentType',
-              orderId: 'orderId',
-            ),
-            productId: 0,
-            productName: 'productName',
-            purchaseStatus: 'purchaseStatus',
-            dateCreated: DateTime.parse('2023-05-19'),
-          ),
-        ),
-      );
+      when(remoteDataSource.initiatePurchase(any, any))
+          .thenAnswer((_) async => Right(testPayment));
 
       // act
       final actual = await mobilePayService.initPurchase(0);
 
       // assert
-      expect(
-        actual,
-        Right(
-          testPayment,
-        ),
-      );
+      expect(actual, Right(testPayment));
     });
   });
 
@@ -106,7 +81,7 @@ void main() {
         await mobilePayService.launchMobilePay(testPayment);
 
         // assert
-        verify(externalUrlLauncher.launch(any));
+        verify(externalUrlLauncher.launch(any)).called(1);
       },
     );
   });

@@ -1,4 +1,0 @@
-enum InternalPaymentType {
-  mobilePay,
-  free,
-}
