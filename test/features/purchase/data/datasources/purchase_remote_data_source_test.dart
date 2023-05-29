@@ -2,7 +2,7 @@ import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/features/purchase/data/datasources/purchase_remote_data_source.dart';
 import 'package:coffeecard/features/purchase/data/models/payment_type.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart'
-    hide PaymentType;
+    as swagger;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:mockito/annotations.dart';
@@ -10,7 +10,7 @@ import 'package:mockito/mockito.dart';
 
 import 'purchase_remote_data_source_test.mocks.dart';
 
-@GenerateMocks([CoffeecardApiV2, NetworkRequestExecutor])
+@GenerateMocks([swagger.CoffeecardApiV2, NetworkRequestExecutor])
 void main() {
   late PurchaseRemoteDataSource purchaseRemoteDataSource;
   late MockCoffeecardApiV2 apiV2;
@@ -25,16 +25,16 @@ void main() {
     );
   });
 
-  final testInitiatePurchaseResponse = InitiatePurchaseResponse(
+  final testInitiatePurchaseResponse = swagger.InitiatePurchaseResponse(
     id: 0,
     dateCreated: DateTime.now(),
     productId: 0,
     productName: 'productName',
     totalAmount: 10,
-    purchaseStatus: PurchaseStatus.pendingpayment,
-    paymentDetails: MobilePayPaymentDetails.toJsonFactory(
-      MobilePayPaymentDetails(
-        paymentType: PaymentType.mobilepay,
+    purchaseStatus: swagger.PurchaseStatus.pendingpayment,
+    paymentDetails: swagger.MobilePayPaymentDetails.toJsonFactory(
+      swagger.MobilePayPaymentDetails(
+        paymentType: swagger.PaymentType.mobilepay,
         orderId: '',
         discriminator: '',
         mobilePayAppRedirectUri: '',
@@ -47,7 +47,7 @@ void main() {
   group('initiatePurchase', () {
     test('should call executor', () async {
       // arrange
-      when(executor.call<InitiatePurchaseResponse>(any)).thenAnswer(
+      when(executor.call<swagger.InitiatePurchaseResponse>(any)).thenAnswer(
         (_) async => right(testInitiatePurchaseResponse),
       );
 
@@ -58,16 +58,16 @@ void main() {
       );
 
       // assert
-      verify(executor.call<InitiatePurchaseResponse>(any)).called(1);
+      verify(executor.call<swagger.InitiatePurchaseResponse>(any)).called(1);
     });
   });
 
   group('getPurchase', () {
     test('should call executor', () async {
       // arrange
-      when(executor.call<SinglePurchaseResponse>(any)).thenAnswer(
+      when(executor.call<swagger.SinglePurchaseResponse>(any)).thenAnswer(
         (_) async => Right(
-          SinglePurchaseResponse(
+          swagger.SinglePurchaseResponse(
             dateCreated: DateTime.parse('2023-05-19'),
             id: 0,
             purchaseStatus: 'Completed',
@@ -82,7 +82,7 @@ void main() {
       final _ = await purchaseRemoteDataSource.getPurchase(0);
 
       // assert
-      verify(executor.call<SinglePurchaseResponse>(any)).called(1);
+      verify(executor.call<swagger.SinglePurchaseResponse>(any)).called(1);
     });
   });
 }
