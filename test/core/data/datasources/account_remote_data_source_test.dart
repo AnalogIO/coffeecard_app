@@ -35,26 +35,6 @@ void main() {
 
   const testError = 'some error';
 
-  group('register', () {
-    test('should call executor', () async {
-      // arrange
-      when(executor.call<v2.MessageResponseDto>(any)).thenAnswer(
-        (_) async => Right(v2.MessageResponseDto()),
-      );
-
-      // act
-      await dataSource.register(
-        'name',
-        'email',
-        'passcode',
-        0,
-      );
-
-      // assert
-      verify(executor.call(any));
-    });
-  });
-
   group('login', () {
     test(
       'should return [Right<AuthenticatedUser>] when executor returns token',

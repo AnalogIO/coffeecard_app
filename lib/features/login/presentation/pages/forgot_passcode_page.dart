@@ -1,5 +1,5 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/widgets/components/forms/forgot_passcode/forgot_passcode_form.dart';
+import 'package:coffeecard/features/login/presentation/widgets/forgot_passcode_form.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:flutter/material.dart';
 
