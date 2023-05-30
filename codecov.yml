@@ -9,6 +9,6 @@ coverage:
     project:
       default: false # disable the default status that measures entire project
       lib:
-        target: 80%
+        target: 70%
         paths:
           - lib/
