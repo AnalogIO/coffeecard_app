@@ -1,10 +1,9 @@
-import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
 import 'package:equatable/equatable.dart';
 
 class InitiatePurchase extends Equatable {
   final int id;
   final int totalAmount;
-  final MobilePayPaymentDetails paymentDetails;
+  final Map<String, dynamic> paymentDetails;
   final int productId;
   final String productName;
   final String purchaseStatus;
