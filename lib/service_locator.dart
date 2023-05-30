@@ -1,10 +1,9 @@
 import 'package:chopper/chopper.dart';
+import 'package:coffeecard/core/data/datasources/account_remote_data_source.dart';
 import 'package:coffeecard/core/external/external_url_launcher.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
 import 'package:coffeecard/data/api/interceptors/authentication_interceptor.dart';
-import 'package:coffeecard/data/repositories/shared/account_repository.dart';
-import 'package:coffeecard/data/repositories/v1/voucher_repository.dart';
 import 'package:coffeecard/data/storage/secure_storage.dart';
 import 'package:coffeecard/env/env.dart';
 import 'package:coffeecard/features/contributor/data/datasources/contributor_local_data_source.dart';
@@ -16,6 +15,7 @@ import 'package:coffeecard/features/environment/presentation/cubit/environment_c
 import 'package:coffeecard/features/leaderboard/data/datasources/leaderboard_remote_data_source.dart';
 import 'package:coffeecard/features/leaderboard/domain/usecases/get_leaderboard.dart';
 import 'package:coffeecard/features/leaderboard/presentation/cubit/leaderboard_cubit.dart';
+import 'package:coffeecard/features/login/domain/usecases/login_user.dart';
 import 'package:coffeecard/features/occupation/data/datasources/occupation_remote_data_source.dart';
 import 'package:coffeecard/features/occupation/domain/usecases/get_occupations.dart';
 import 'package:coffeecard/features/occupation/presentation/cubit/occupation_cubit.dart';
@@ -38,6 +38,9 @@ import 'package:coffeecard/features/user/domain/usecases/get_user.dart';
 import 'package:coffeecard/features/user/domain/usecases/request_account_deletion.dart';
 import 'package:coffeecard/features/user/domain/usecases/update_user_details.dart';
 import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
+import 'package:coffeecard/features/voucher/data/datasources/voucher_remote_data_source.dart';
+import 'package:coffeecard/features/voucher/domain/usecases/redeem_voucher_code.dart';
+import 'package:coffeecard/features/voucher/presentation/cubit/voucher_cubit.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart'
     hide $JsonSerializableConverter;
@@ -120,17 +123,9 @@ void configureServices() {
     ),
   );
 
-  // Repositories
-  sl.registerFactory<VoucherRepository>(
-    () => VoucherRepository(
-      apiV1: sl<CoffeecardApi>(),
-      executor: sl<NetworkRequestExecutor>(),
-    ),
-  );
-
   // v1 and v2
-  sl.registerFactory<AccountRepository>(
-    () => AccountRepository(
+  sl.registerFactory<AccountRemoteDataSource>(
+    () => AccountRemoteDataSource(
       apiV1: sl<CoffeecardApi>(),
       apiV2: sl<CoffeecardApiV2>(),
       executor: sl<NetworkRequestExecutor>(),
@@ -158,6 +153,8 @@ void initFeatures() {
   initLeaderboard();
   initEnvironment();
   initProduct();
+  initVoucher();
+  initLogin();
 }
 
 void initOpeningHours() {
@@ -326,4 +323,26 @@ void initProduct() {
   sl.registerLazySingleton(
     () => ProductRemoteDataSource(apiV1: sl(), executor: sl()),
   );
+}
+
+void initVoucher() {
+  // bloc
+  sl.registerFactory(() => VoucherCubit(redeemVoucherCode: sl()));
+
+  // use case
+  sl.registerFactory(() => RedeemVoucherCode(dataSource: sl()));
+
+  // data source
+  sl.registerLazySingleton(
+    () => VoucherRemoteDataSource(apiV1: sl(), executor: sl()),
+  );
+}
+
+void initLogin() {
+  // bloc
+
+  // use case
+  sl.registerFactory(() => LoginUser(remoteDataSource: sl()));
+
+  // data source
 }

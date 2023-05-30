@@ -1,6 +1,6 @@
 import 'package:coffeecard/base/strings.dart';
+import 'package:coffeecard/core/data/datasources/account_remote_data_source.dart';
 import 'package:coffeecard/cubits/register/register_cubit.dart';
-import 'package:coffeecard/data/repositories/shared/account_repository.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/utils/fast_slide_transition.dart';
 import 'package:coffeecard/widgets/components/dialog.dart';
@@ -40,7 +40,7 @@ class RegisterPageName extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: BlocProvider(
-        create: (_) => RegisterCubit(repository: sl<AccountRepository>()),
+        create: (_) => RegisterCubit(repository: sl<AccountRemoteDataSource>()),
         child: BlocListener<RegisterCubit, RegisterState>(
           listener: (context, state) {
             if (state is RegisterSuccess) return _showSuccessDialog(context);

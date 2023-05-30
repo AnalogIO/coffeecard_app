@@ -34,7 +34,7 @@ class ViewReceiptPage extends StatelessWidget {
                   isInOverlay: false,
                   isTestEnvironment:
                       state is EnvironmentLoaded && state.env.isTest,
-                  paymentStatus: paymentStatus,
+                  status: paymentStatus,
                 ),
               ],
             ),

@@ -1,6 +1,6 @@
 # Coffee card App [in development]
 
-![Flutter build and test](https://github.com/AnalogIO/coffeecard_app/workflows/Flutter%20build%20and%20test/badge.svg) [![codecov](https://codecov.io/gh/AnalogIO/coffeecard_app/branch/master/graph/badge.svg)](https://codecov.io/gh/AnalogIO/coffeecard_app)
+![Flutter build and test](https://github.com/AnalogIO/coffeecard_app/workflows/Flutter%20build%20and%20test/badge.svg) [![codecov](https://codecov.io/gh/AnalogIO/coffeecard_app/branch/develop/graph/badge.svg)](https://codecov.io/gh/AnalogIO/coffeecard_app)
 
 **Contact** AnalogIO at *support [at] analogio.dk*
 
