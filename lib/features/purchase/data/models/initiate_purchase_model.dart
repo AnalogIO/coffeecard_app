@@ -16,9 +16,7 @@ class InitiatePurchaseModel extends InitiatePurchase {
     return InitiatePurchaseModel(
       id: dto.id,
       totalAmount: dto.totalAmount,
-      paymentDetails: MobilePayPaymentDetails.fromJsonFactory(
-        dto.paymentDetails as Map<String, dynamic>,
-      ),
+      paymentDetails: dto.paymentDetails as Map<String, dynamic>,
       productId: dto.productId,
       productName: dto.productName,
       purchaseStatus: dto.purchaseStatus as String,
