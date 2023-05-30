@@ -73,7 +73,7 @@ void main() {
               discriminator: 'discriminator',
               paymentType: 'paymentType',
               orderId: 'orderId',
-            ),
+            ).toJson(),
             productId: 0,
             productName: 'productName',
             purchaseStatus: 'purchaseStatus',
