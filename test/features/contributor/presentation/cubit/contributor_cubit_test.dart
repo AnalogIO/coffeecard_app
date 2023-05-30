@@ -3,8 +3,8 @@ import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/features/contributor/domain/entities/contributor.dart';
 import 'package:coffeecard/features/contributor/domain/usecases/fetch_contributors.dart';
 import 'package:coffeecard/features/contributor/presentation/cubit/contributor_cubit.dart';
-import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
@@ -27,7 +27,7 @@ void main() {
   group(
     'getContributors',
     () {
-      const tContributors = [
+      const testContributors = [
         Contributor(
           name: 'name',
           avatarUrl: 'avatarUrl',
@@ -38,10 +38,10 @@ void main() {
         'should emit [Loaded] with data when use case succeeds',
         build: () => cubit,
         setUp: () => when(fetchContributors(any))
-            .thenAnswer((_) async => const Right(tContributors)),
+            .thenAnswer((_) async => const Right(testContributors)),
         act: (_) => cubit.getContributors(),
         expect: () => [
-          const ContributorLoaded(tContributors),
+          const ContributorLoaded(testContributors),
         ],
       );
 

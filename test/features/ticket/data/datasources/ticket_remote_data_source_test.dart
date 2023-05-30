@@ -3,8 +3,8 @@ import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/features/ticket/data/datasources/ticket_remote_data_source.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
-import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
@@ -28,62 +28,123 @@ void main() {
   });
 
   group('getUserTickets', () {
-    test('should return [Right] when executor returns [Right]', () async {
-      // arrange
-      when(executor.call<List<TicketResponse>>(any))
-          .thenAnswer((_) async => const Right([]));
+    test(
+      'GIVEN executor returns a [Right] value '
+      'WHEN calling getUserTickets '
+      'THEN a [Right] value is returned',
+      () async {
+        // arrange
+        when(executor.call<List<TicketResponse>>(any))
+            .thenAnswer((_) async => const Right([]));
 
-      // act
-      final actual = await dataSource.getUserTickets();
+        // act
+        final actual = await dataSource.getUserTickets();
 
-      // assert
-      expect(actual.isRight(), isTrue);
-    });
+        // assert
+        expect(actual.isRight(), isTrue);
+      },
+    );
 
-    test('should return [Left] if executor returns [Left]', () async {
-      // arrange
-      when(executor.call<List<TicketResponse>>(any))
-          .thenAnswer((_) async => const Left(ServerFailure('some error')));
+    test(
+      'GIVEN executor returns a [Left] value '
+      'WHEN calling getUserTickets '
+      'THEN a [Left] value is returned',
+      () async {
+        // arrange
+        when(executor.call<List<TicketResponse>>(any))
+            .thenAnswer((_) async => const Left(ServerFailure('some error')));
 
-      // act
-      final actual = await dataSource.getUserTickets();
+        // act
+        final actual = await dataSource.getUserTickets();
 
-      // assert
-      expect(actual, const Left(ServerFailure('some error')));
-    });
+        // assert
+        expect(actual.isLeft(), isTrue);
+      },
+    );
+
+    test(
+      'GIVEN executor returns two [TicketResponse] with the same product id but different product names '
+      'WHEN calling getUserTickets '
+      'THEN a [TicketCountModel] with the count of tickets and joined ticket names is returned',
+      () async {
+        // arrange
+        when(executor.call<List<TicketResponse>>(any)).thenAnswer(
+          (_) async => Right([
+            TicketResponse(
+              id: 0,
+              dateCreated: DateTime.parse('2023-05-23'),
+              dateUsed: null,
+              productId: 0,
+              productName: 'A',
+            ),
+            TicketResponse(
+              id: 0,
+              dateCreated: DateTime.parse('2023-05-23'),
+              dateUsed: null,
+              productId: 0,
+              productName: 'B',
+            ),
+          ]),
+        );
+
+        // act
+        final actual = await dataSource.getUserTickets();
+
+        // assert
+        expect(actual.isRight(), isTrue);
+        final right = actual.getOrElse((_) => []);
+        expect(right, hasLength(1));
+        expect(right.first.productId, equals(0));
+        expect(right.first.count, equals(2));
+        expect(right.first.productName, anyOf(['A/B', 'B/A']));
+      },
+    );
   });
 
-  group('useTicket', () {
-    test('should return [Right] when executor returns [Right]', () async {
-      // arrange
-      when(executor.call<TicketDto>(any)).thenAnswer(
-        (_) async => Right(
-          TicketDto(
-            id: 0,
-            dateCreated: DateTime.parse('2023-04-11'),
-            dateUsed: DateTime.parse('2023-04-11'),
-            productName: 'productName',
-          ),
-        ),
+  group(
+    'useTicket',
+    () {
+      test(
+        'GIVEN executor returns a [Right] value '
+        'WHEN calling useTicket '
+        'THEN a [Right] value is returned',
+        () async {
+          // arrange
+          when(executor.call<TicketDto>(any)).thenAnswer(
+            (_) async => Right(
+              TicketDto(
+                id: 0,
+                dateCreated: DateTime.parse('2023-04-11'),
+                dateUsed: DateTime.parse('2023-04-11'),
+                productName: 'productName',
+              ),
+            ),
+          );
+
+          // act
+          final actual = await dataSource.useTicket(0);
+
+          // assert
+          expect(actual.isRight(), isTrue);
+        },
       );
 
-      // act
-      final actual = await dataSource.useTicket(0);
+      test(
+        'GIVEN executor returns a [Left] value '
+        'WHEN calling useTicket '
+        'THEN a [Left] value is returned',
+        () async {
+          // arrange
+          when(executor.call<TicketDto>(any))
+              .thenAnswer((_) async => const Left(ServerFailure('some error')));
 
-      // assert
-      expect(actual.isRight(), isTrue);
-    });
+          // act
+          final actual = await dataSource.useTicket(0);
 
-    test('should return [Left] if executor returns [Left]', () async {
-      // arrange
-      when(executor.call<TicketDto>(any))
-          .thenAnswer((_) async => const Left(ServerFailure('some error')));
-
-      // act
-      final actual = await dataSource.useTicket(0);
-
-      // assert
-      expect(actual, const Left(ServerFailure('some error')));
-    });
-  });
+          // assert
+          expect(actual.isLeft(), isTrue);
+        },
+      );
+    },
+  );
 }

@@ -1,6 +1,6 @@
 # Coffee card App [in development]
 
-![Flutter build and test](https://github.com/AnalogIO/coffeecard_app/workflows/Flutter%20build%20and%20test/badge.svg) [![codecov](https://codecov.io/gh/AnalogIO/coffeecard_app/branch/master/graph/badge.svg)](https://codecov.io/gh/AnalogIO/coffeecard_app)
+![Flutter build and test](https://github.com/AnalogIO/coffeecard_app/workflows/Flutter%20build%20and%20test/badge.svg) [![codecov](https://codecov.io/gh/AnalogIO/coffeecard_app/branch/develop/graph/badge.svg)](https://codecov.io/gh/AnalogIO/coffeecard_app)
 
 **Contact** AnalogIO at *support [at] analogio.dk*
 
@@ -11,10 +11,10 @@ allows users to buy and use clip cards in Cafe Analog @ IT University of Copenha
 
 We are building the Flutter app with these SDK versions
 
-| SDK     | Version |
-| ------- | ------- |
-| Dart    | >=2.18.0 <3.0.0  |
-| Flutter | 3.7.8   |
+| SDK     | Version        |
+| ------- | -------------- |
+| Dart    | >=3.0.0 <4.0.0 |
+| Flutter | 3.10.2         |
 
 ## Relevant READMEs
 

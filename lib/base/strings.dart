@@ -1,4 +1,4 @@
-abstract class Strings {
+abstract final class Strings {
   static const appTitle = 'Cafe Analog';
 
   // Titles for the app bar.
@@ -169,6 +169,9 @@ abstract class Strings {
   static const purchaseRejectedOrCanceledMessage =
       'The payment was rejected or cancelled. No tickets have been added to your account';
   static const purchaseError = "Uh oh, we couldn't complete that purchase";
+  static const purchaseTimeout = 'Purchase timed out';
+  static const purchaseTimeoutMessage =
+      'The payment confirmation was not received in time. If you have completed the purchase in MobilePay, please wait a few minutes';
 
   // Receipts
   static const receiptsPageTitle = 'Receipts';
@@ -198,6 +201,13 @@ abstract class Strings {
   static const buyOrSwipe = '$buy or $swipe';
   static String noReceiptsOfTypeMessage(String buyOrSwipe) =>
       'When you $buyOrSwipe tickets, they will show up here.\nGo to the Tickets tab to $buyOrSwipe tickets.';
+
+  // PaymentStatus enum
+  static const paymentStatusCompleted = 'Purchased';
+  static const paymentStatusRefunded = 'Purchase refunded';
+  static const paymentStatusAwaitingPayment = 'Payment pending';
+  static const paymentStatusReserved = 'Payment reserved';
+  static const paymentStatusFailed = 'Payment failed';
 
   // Statistics page
   static const statsYourStats = 'Your stats';
@@ -269,10 +279,12 @@ abstract class Strings {
   static const frequentlyAskedQuestions = 'Frequently Asked Questions';
   static const faq = 'FAQ';
   static const openingHours = 'Opening hours';
+  static const notAvailable = 'Not available';
   static const today = 'Today';
 
   static const name = 'Name';
   static const occupation = 'Occupation';
+  static const occupationPlaceholder = 'Occupation name fullname';
   static const appearAnonymous = 'Appear anonymous on leaderboard';
   static const appearAnonymousSmall = 'Appear anonymous';
   static const yourProfileDescription =
@@ -360,5 +372,6 @@ abstract class Strings {
   static const String noInternet =
       "Can't connect to Analog. Are you connected to the internet?";
   static const String retry = 'Retry';
-  static const String unknownErrorOccured = 'an unknown error occured';
+  static const String unknownErrorOccured = 'An unknown error occured';
+  static const String loading = 'Loading';
 }

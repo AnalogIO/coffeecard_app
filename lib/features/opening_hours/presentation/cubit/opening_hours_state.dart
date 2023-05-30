@@ -1,6 +1,6 @@
 part of 'opening_hours_cubit.dart';
 
-abstract class OpeningHoursState extends Equatable {
+sealed class OpeningHoursState extends Equatable {
   const OpeningHoursState();
 }
 

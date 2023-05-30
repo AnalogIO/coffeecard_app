@@ -1,7 +1,7 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/cubits/environment/environment_cubit.dart';
+import 'package:coffeecard/features/environment/domain/entities/environment.dart';
+import 'package:coffeecard/features/environment/presentation/cubit/environment_cubit.dart';
 import 'package:coffeecard/features/receipt/presentation/widgets/receipt_card.dart';
-import 'package:coffeecard/models/environment.dart';
 import 'package:coffeecard/utils/responsive.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:flutter/material.dart';
@@ -10,12 +10,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class ViewReceiptPage extends StatelessWidget {
   final String name;
   final DateTime time;
-  final bool isPurchase;
+  final String paymentStatus;
 
   const ViewReceiptPage({
     required this.name,
     required this.time,
-    required this.isPurchase,
+    required this.paymentStatus,
   });
 
   @override
@@ -31,10 +31,10 @@ class ViewReceiptPage extends StatelessWidget {
                 ReceiptCard(
                   productName: name,
                   time: time,
-                  isPurchase: isPurchase,
                   isInOverlay: false,
                   isTestEnvironment:
                       state is EnvironmentLoaded && state.env.isTest,
+                  status: paymentStatus,
                 ),
               ],
             ),

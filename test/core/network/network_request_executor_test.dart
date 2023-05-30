@@ -1,9 +1,10 @@
 import 'package:chopper/chopper.dart' as chopper;
+import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/utils/firebase_analytics_event_logging.dart';
-import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
 import 'package:mockito/annotations.dart';
@@ -37,21 +38,21 @@ void main() {
 
   test('should return [ServerFailure] if api call fails', () async {
     // arrange
-    final tResponse = responseFromStatusCode(500, body: '');
+    final testResponse = responseFromStatusCode(500, body: '');
 
     // act
-    final actual = await executor(() async => tResponse);
+    final actual = await executor(() async => testResponse);
 
     // assert
-    expect(actual, const Left(ServerFailure('')));
+    expect(actual, const Left(ServerFailure(Strings.unknownErrorOccured)));
   });
 
   test('should return response body if api call succeeds', () async {
     // arrange
-    final tResponse = responseFromStatusCode(200, body: 'some string');
+    final testResponse = responseFromStatusCode(200, body: 'some string');
 
     // act
-    final actual = await executor(() async => tResponse);
+    final actual = await executor(() async => testResponse);
 
     // assert
     expect(actual, const Right('some string'));
@@ -59,10 +60,10 @@ void main() {
 
   test('should return [ServerFailure] if call throws [Exception]', () async {
     // arrange
-    final tException = Exception('some error');
+    final testException = Exception('some error');
 
     // act
-    final actual = await executor(() async => throw tException);
+    final actual = await executor(() async => throw testException);
 
     // assert
     expect(actual, const Left(ConnectionFailure()));

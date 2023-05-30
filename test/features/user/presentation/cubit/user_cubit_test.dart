@@ -8,8 +8,8 @@ import 'package:coffeecard/features/user/domain/usecases/request_account_deletio
 import 'package:coffeecard/features/user/domain/usecases/update_user_details.dart';
 import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
 import 'package:coffeecard/models/account/update_user.dart';
-import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
@@ -33,7 +33,7 @@ void main() {
     );
   });
 
-  const tUser = User(
+  const testUser = User(
     id: 0,
     name: 'name',
     email: 'email',
@@ -65,12 +65,12 @@ void main() {
       'should emit [Loading, Loaded] when use case succeeds',
       build: () => cubit,
       setUp: () => when(getUser(any)).thenAnswer(
-        (_) async => const Right(tUser),
+        (_) async => const Right(testUser),
       ),
       act: (_) => cubit.fetchUserDetails(),
       expect: () => [
         UserLoading(),
-        UserLoaded(user: tUser),
+        UserLoaded(user: testUser),
       ],
     );
   });
@@ -96,7 +96,7 @@ void main() {
       'should not update state if state is [Updating]',
       build: () => cubit,
       act: (_) => cubit.updateUser(const UpdateUser()),
-      seed: () => UserUpdating(user: tUser),
+      seed: () => UserUpdating(user: testUser),
       expect: () => [],
     );
 
@@ -109,9 +109,9 @@ void main() {
         ),
       ),
       act: (_) => cubit.updateUser(const UpdateUser()),
-      seed: () => UserLoaded(user: tUser),
+      seed: () => UserLoaded(user: testUser),
       expect: () => [
-        UserUpdating(user: tUser),
+        UserUpdating(user: testUser),
         UserError('some error'),
       ],
     );
@@ -120,19 +120,19 @@ void main() {
       'should emit [Updating, Loaded] if use case succeeds',
       build: () => cubit,
       setUp: () => when(updateUserDetails(any)).thenAnswer(
-        (_) async => const Right(tUser),
+        (_) async => const Right(testUser),
       ),
       act: (_) => cubit.updateUser(const UpdateUser()),
-      seed: () => UserLoaded(user: tUser),
+      seed: () => UserLoaded(user: testUser),
       expect: () => [
-        UserUpdating(user: tUser),
-        UserLoaded(user: tUser),
+        UserUpdating(user: testUser),
+        UserLoaded(user: testUser),
       ],
     );
   });
 
   group('requestUserAccountDeletion', () {
-    test('shoul call use case', () {
+    test('should call use case', () {
       // arrange
       when(requestAccountDeletion(any)).thenAnswer(
         (_) async => const Right(null),

@@ -1,0 +1,4 @@
+enum InternalPaymentType {
+  mobilePay,
+  free,
+}

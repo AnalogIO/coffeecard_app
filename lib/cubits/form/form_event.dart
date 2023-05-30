@@ -1,6 +1,6 @@
 part of 'form_bloc.dart';
 
-abstract class FormEvent extends Equatable {}
+sealed class FormEvent extends Equatable {}
 
 /// The form wants to validate itself and should show a loading indicator.
 class FormValidateRequested extends FormEvent {

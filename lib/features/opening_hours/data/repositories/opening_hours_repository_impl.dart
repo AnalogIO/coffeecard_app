@@ -1,10 +1,11 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/core/errors/failures.dart';
+import 'package:coffeecard/core/extensions/string_extensions.dart';
 import 'package:coffeecard/features/opening_hours/domain/entities/opening_hours.dart';
 import 'package:coffeecard/features/opening_hours/opening_hours.dart';
 import 'package:coffeecard/generated/api/shiftplanning_api.swagger.dart';
 import 'package:coffeecard/models/opening_hours_day.dart';
-import 'package:dartz/dartz.dart';
+import 'package:fpdart/fpdart.dart';
 
 class OpeningHoursRepositoryImpl implements OpeningHoursRepository {
   final OpeningHoursRemoteDataSource dataSource;
@@ -46,17 +47,11 @@ class OpeningHoursRepositoryImpl implements OpeningHoursRepository {
       shiftsByWeekday[weekday]!.add(shift);
     }
 
-    // capitalize the closed string
-    final closedString =
-        // Closed string is const, and does not contain an emoji
-        //ignore: avoid-substring
-        Strings.closed[0].toUpperCase() + Strings.closed.substring(1);
-
     return shiftsByWeekday.map(
       (day, shifts) => MapEntry(
         day,
         shifts.isEmpty
-            ? closedString
+            ? Strings.closed.capitalize()
             : OpeningHoursDay(shifts.first.start, shifts.last.end).toString(),
       ),
     );

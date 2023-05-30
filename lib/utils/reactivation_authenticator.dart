@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:chopper/chopper.dart';
+import 'package:coffeecard/core/data/datasources/account_remote_data_source.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
-import 'package:coffeecard/data/repositories/shared/account_repository.dart';
 import 'package:coffeecard/data/storage/secure_storage.dart';
 import 'package:coffeecard/utils/mutex.dart';
 import 'package:get_it/get_it.dart';
@@ -99,7 +99,7 @@ class ReactivationAuthenticator extends Authenticator {
     mutex.lock();
 
     try {
-      final accountRepository = serviceLocator.get<AccountRepository>();
+      final accountRepository = serviceLocator.get<AccountRemoteDataSource>();
 
       // this call may return 401 which triggers a recursive call, use a guard
       final either = await accountRepository.login(email, encodedPasscode);

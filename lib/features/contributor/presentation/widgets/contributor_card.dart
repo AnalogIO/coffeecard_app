@@ -1,8 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/core/external/external_url_launcher.dart';
 import 'package:coffeecard/features/contributor/domain/entities/contributor.dart';
-import 'package:coffeecard/utils/launch.dart';
+import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/widgets/components/helpers/tappable.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -15,7 +16,7 @@ class ContributorCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Tappable(
-      onTap: () => launchUrlExternalApplication(
+      onTap: () => sl<ExternalUrlLauncher>().launchUrlExternalApplication(
         Uri.parse(contributor.githubUrl),
         context,
       ),
@@ -58,7 +59,7 @@ class ContributorCard extends StatelessWidget {
                     contributor.name,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: AppTextStyle.recieptItemKey,
+                    style: AppTextStyle.receiptItemKey,
                   ),
                   const Gap(3),
                   Text(

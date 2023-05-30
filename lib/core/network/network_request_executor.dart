@@ -1,7 +1,7 @@
 import 'package:chopper/chopper.dart' show Response;
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/utils/firebase_analytics_event_logging.dart';
-import 'package:dartz/dartz.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:logger/logger.dart';
 
 class NetworkRequestExecutor {

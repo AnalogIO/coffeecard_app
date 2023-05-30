@@ -1,8 +1,6 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/core/usecases/usecase.dart';
-import 'package:coffeecard/features/receipt/domain/entities/purchase_receipt.dart';
 import 'package:coffeecard/features/receipt/domain/entities/receipt.dart';
-import 'package:coffeecard/features/receipt/domain/entities/swipe_receipt.dart';
 import 'package:coffeecard/features/receipt/domain/usecases/get_receipts.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -48,13 +46,12 @@ class ReceiptCubit extends Cubit<ReceiptState> {
     List<Receipt> receipts,
     ReceiptFilterCategory filterBy,
   ) {
-    switch (filterBy) {
-      case ReceiptFilterCategory.all:
-        return receipts;
-      case ReceiptFilterCategory.swipes:
-        return receipts.whereType<SwipeReceipt>().toList();
-      case ReceiptFilterCategory.purchases:
-        return receipts.whereType<PurchaseReceipt>().toList();
-    }
+    return switch (filterBy) {
+      ReceiptFilterCategory.all => receipts,
+      ReceiptFilterCategory.swipes =>
+        receipts.whereType<SwipeReceipt>().toList(),
+      ReceiptFilterCategory.purchases =>
+        receipts.whereType<PurchaseReceipt>().toList(),
+    };
   }
 }

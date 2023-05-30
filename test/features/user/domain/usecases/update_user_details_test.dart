@@ -3,8 +3,8 @@ import 'package:coffeecard/features/user/data/datasources/user_remote_data_sourc
 import 'package:coffeecard/features/user/data/models/user_model.dart';
 import 'package:coffeecard/features/user/domain/entities/role.dart';
 import 'package:coffeecard/features/user/domain/usecases/update_user_details.dart';
-import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 

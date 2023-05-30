@@ -1,6 +1,6 @@
 part of 'tickets_cubit.dart';
 
-abstract class TicketsState extends Equatable {
+sealed class TicketsState extends Equatable {
   const TicketsState();
 }
 

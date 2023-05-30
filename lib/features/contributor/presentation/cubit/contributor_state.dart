@@ -1,6 +1,6 @@
 part of 'contributor_cubit.dart';
 
-abstract class ContributorState extends Equatable {
+sealed class ContributorState extends Equatable {
   const ContributorState();
 }
 
