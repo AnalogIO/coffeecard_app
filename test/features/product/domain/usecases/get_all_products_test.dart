@@ -1,17 +1,9 @@
-import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/core/usecases/usecase.dart';
-import 'package:coffeecard/features/product/data/datasources/product_remote_data_source.dart';
-import 'package:coffeecard/features/product/data/models/product_model.dart';
-import 'package:coffeecard/features/product/domain/usecases/get_all_products.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:fpdart/fpdart.dart';
-import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
+// TODO(fremartini): uncomment when Mockito supports records, https://github.com/AnalogIO/coffeecard_app/issues/488
+//import 'get_all_products_test.mocks.dart';
 
-import 'get_all_products_test.mocks.dart';
-
-@GenerateMocks([ProductRemoteDataSource])
+//@GenerateMocks([ProductRemoteDataSource])
 void main() {
+  /*
   late GetAllProducts usecase;
   late MockProductRemoteDataSource remoteDataSource;
 
@@ -71,4 +63,5 @@ void main() {
       );
     },
   );
+  */
 }
