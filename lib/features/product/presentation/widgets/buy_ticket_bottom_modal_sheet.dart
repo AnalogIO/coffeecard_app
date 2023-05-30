@@ -1,10 +1,10 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/features/product/domain/entities/product.dart';
 import 'package:coffeecard/features/purchase/domain/entities/internal_payment_type.dart';
 import 'package:coffeecard/features/purchase/domain/entities/payment.dart';
 import 'package:coffeecard/features/purchase/presentation/widgets/purchase_overlay.dart';
-import 'package:coffeecard/models/ticket/product.dart';
 import 'package:coffeecard/widgets/components/tickets/bottom_modal_sheet_helper.dart';
 import 'package:coffeecard/widgets/components/tickets/rounded_button.dart';
 import 'package:flutter/material.dart';

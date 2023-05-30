@@ -1,6 +1,6 @@
-import 'package:coffeecard/generated/api/coffeecard_api.models.swagger.dart';
+import 'package:equatable/equatable.dart';
 
-class Product {
+class Product extends Equatable {
   final int id;
   final int amount;
   final int price;
@@ -15,15 +15,11 @@ class Product {
     required this.description,
   });
 
-  Product.fromDTO(ProductDto dto)
-      : id = dto.id,
-        name = dto.name,
-        price = dto.price,
-        amount = dto.numberOfTickets,
-        description = dto.description;
-
   @override
   String toString() {
     return 'Product{id: $id, amount: $amount, price: $price, productName: $name, description> $description}';
   }
+
+  @override
+  List<Object?> get props => [id, amount, price, name, description];
 }

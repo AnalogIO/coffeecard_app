@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
+import 'package:coffeecard/features/product/domain/entities/product.dart';
 import 'package:coffeecard/features/purchase/domain/entities/payment.dart';
 import 'package:coffeecard/features/purchase/domain/entities/payment_status.dart';
 import 'package:coffeecard/features/purchase/domain/usecases/init_purchase.dart';
 import 'package:coffeecard/features/purchase/domain/usecases/verify_purchase_status.dart';
-import 'package:coffeecard/models/ticket/product.dart';
 import 'package:coffeecard/utils/firebase_analytics_event_logging.dart';
 import 'package:equatable/equatable.dart';
 

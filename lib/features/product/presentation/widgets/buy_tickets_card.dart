@@ -1,6 +1,6 @@
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
-import 'package:coffeecard/models/ticket/product.dart';
+import 'package:coffeecard/features/product/domain/entities/product.dart';
 import 'package:coffeecard/utils/responsive.dart';
 import 'package:coffeecard/widgets/components/card.dart';
 import 'package:flutter/material.dart';
