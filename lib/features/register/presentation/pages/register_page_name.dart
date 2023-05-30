@@ -1,10 +1,9 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/core/data/datasources/account_remote_data_source.dart';
-import 'package:coffeecard/cubits/register/register_cubit.dart';
+import 'package:coffeecard/features/register/presentation/cubit/register_cubit.dart';
+import 'package:coffeecard/features/register/presentation/widgets/forms/register_name_form.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/utils/fast_slide_transition.dart';
 import 'package:coffeecard/widgets/components/dialog.dart';
-import 'package:coffeecard/widgets/components/forms/register/register_name_form.dart';
 import 'package:coffeecard/widgets/components/loading_overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,7 +39,7 @@ class RegisterPageName extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: BlocProvider(
-        create: (_) => RegisterCubit(repository: sl<AccountRemoteDataSource>()),
+        create: (_) => sl<RegisterCubit>(),
         child: BlocListener<RegisterCubit, RegisterState>(
           listener: (context, state) {
             if (state is RegisterSuccess) return _showSuccessDialog(context);
@@ -99,7 +98,7 @@ class RegisterPageName extends StatelessWidget {
       children: [
         const Text(Strings.registerFailureBody),
         const Gap(12),
-        Text(state.errorMessage),
+        Text(state.message),
       ],
       actions: [
         TextButton(
