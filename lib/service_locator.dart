@@ -78,7 +78,7 @@ void configureServices() {
   );
 
   sl.registerFactory<ReactivationAuthenticator>(
-    () => ReactivationAuthenticator(sl),
+    () => ReactivationAuthenticator(serviceLocator: sl),
   );
 
   // Features

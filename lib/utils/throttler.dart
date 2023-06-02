@@ -1,23 +1,37 @@
-import 'dart:async';
+import 'package:fpdart/fpdart.dart';
 
-/// Utility class to filter subsequent calls to
-/// a function within a given time period.
-class Throttler {
-  final Duration duration;
-  DateTime? _lastRunAt;
+/// Utility class to combine multiple invocations of some [Task]s into one
+/// if subsequent invocations happen before the first invocation has completed.
+class Throttler<T> {
+  /// Creates a new [Throttler] with the given [task].
+  Throttler();
 
-  Throttler({required this.duration});
-
-  bool get _shouldRun =>
-      _lastRunAt == null || DateTime.now().difference(_lastRunAt!) > duration;
-
-  /// Calls the given function if it the first call, or if the last call was
-  /// longer ago than the given [duration].
-  FutureOr<T> run<T>(FutureOr<T> Function() debounceFunction) {
-    if (_shouldRun) {
-      _lastRunAt = DateTime.now();
-      return debounceFunction();
-    }
-    return Future.value();
+  Task<T> _storeTask(Task<T> task) {
+    _throttledTask = some(task);
+    return task;
   }
+
+  Task<Unit> get _clearTask {
+    _throttledTask = none();
+    return Task.of(unit);
+  }
+
+  /// Stores the currently running task, if any.
+  late Option<Task<T>> _throttledTask = none();
+
+  /// If no task is currently running, starts the given [task] and stores it.
+  /// Otherwise, returns the currently running task.
+  Task<T> throttle(Task<T> task) {
+    return _throttledTask.getOrElse(
+      () => _storeTask(task).chainFirst((_) => _clearTask),
+    );
+  }
+}
+
+extension ThrottlerX<T> on Task<T> {
+  /// Throttles this task using the given [throttler].
+  ///
+  /// If no task is currently running through the [throttler], starts this task
+  /// and stores it. Otherwise, returns the currently running task.
+  Task<T> throttleWith(Throttler<T> throttler) => throttler.throttle(this);
 }
