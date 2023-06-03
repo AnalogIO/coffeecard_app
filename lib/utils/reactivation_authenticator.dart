@@ -76,7 +76,7 @@ class ReactivationAuthenticator extends Authenticator {
       // requests happen at the same time.)
       () => _refreshToken(request).protect(_mutex).runThrottled(_throttler),
       // Someone else is updating the token, so we wait for it to finish
-      // and read the new token from secure storage
+      // and read the new token from secure storage.
       () => _readToken(request).protect(_mutex).run(),
     );
   }
