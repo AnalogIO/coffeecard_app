@@ -1,5 +1,5 @@
-import 'package:coffeecard/models/ticket/product.dart';
-import 'package:coffeecard/widgets/components/tickets/buy_tickets_card.dart';
+import 'package:coffeecard/features/product/domain/entities/product.dart';
+import 'package:coffeecard/features/product/presentation/widgets/buy_tickets_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

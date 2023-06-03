@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:chopper/chopper.dart';
+import 'package:coffeecard/core/data/datasources/account_remote_data_source.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
-import 'package:coffeecard/data/repositories/shared/account_repository.dart';
 import 'package:coffeecard/data/storage/secure_storage.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.models.swagger.dart'
     show LoginDto;
@@ -15,7 +15,7 @@ import 'package:logger/logger.dart';
 class ReactivationAuthenticator extends Authenticator {
   /// Whether [initialize] has been called.
   bool _ready = false;
-  late final AccountRepository _accountRepository;
+  late final AccountRemoteDataSource _accountRemoteDataSource;
 
   final SecureStorage _secureStorage;
   final AuthenticationCubit _authenticationCubit;
@@ -33,12 +33,12 @@ class ReactivationAuthenticator extends Authenticator {
         _logger = serviceLocator<Logger>();
 
   /// Initializes the [ReactivationAuthenticator] by providing the
-  /// [AccountRepository] to use.
+  /// [AccountRemoteDataSource] to use.
   ///
   /// This method must be called before the [ReactivationAuthenticator] is used.
-  void initialize(AccountRepository repository) {
+  void initialize(AccountRemoteDataSource accountRemoteDataSource) {
     _ready = true;
-    _accountRepository = repository;
+    _accountRemoteDataSource = accountRemoteDataSource;
   }
 
   @override
@@ -59,7 +59,7 @@ class ReactivationAuthenticator extends Authenticator {
       return Future.value();
     }
 
-    // Log the request and response
+    // Log the request and response.
     _logUnauthorized(request, response);
 
     // If the request is a unauthorized login request (token refresh request),
@@ -71,9 +71,9 @@ class ReactivationAuthenticator extends Authenticator {
 
     // If the response is unauthorized, we try to refresh the token.
     return _mutex.isLocked.match(
-      // No one is updating the token, so we do it
-      // (throttle the call to avoid refreshing the token multiple times if
-      // requests happen at the same time)
+      // No one is updating the token, so we do it.
+      // (Throttle the call to avoid refreshing the token multiple times if
+      // requests happen at the same time.)
       () => _refreshToken(request).protect(_mutex).runThrottled(_throttler),
       // Someone else is updating the token, so we wait for it to finish
       // and read the new token from secure storage
@@ -102,7 +102,8 @@ class ReactivationAuthenticator extends Authenticator {
         // This login call may return 401 if the stored credentials are invalid;
         // recursive calls to [authenticate] are blocked by a check in the
         // [authenticate] method.
-        final either = await _accountRepository.login(email, encodedPasscode);
+        final either =
+            await _accountRemoteDataSource.login(email, encodedPasscode);
         return either.match(
           (_) => _evict(),
           (user) => _saveTokenAndUpdateRequestWithToken(request, user.token),

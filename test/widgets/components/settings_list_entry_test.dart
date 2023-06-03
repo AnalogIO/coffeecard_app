@@ -1,5 +1,5 @@
-import 'package:coffeecard/widgets/components/settings_list_entry.dart';
-import 'package:coffeecard/widgets/pages/settings/setting_value_text.dart';
+import 'package:coffeecard/features/settings/presentation/widgets/setting_value_text.dart';
+import 'package:coffeecard/features/settings/presentation/widgets/settings_list_entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

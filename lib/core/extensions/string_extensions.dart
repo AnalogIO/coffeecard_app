@@ -1,8 +1,9 @@
+import 'package:flutter/widgets.dart';
+
 extension StringExtensions on String {
-  /// capitalize the first letter of the string
-  String capitalize() {
-    // TODO: check for emojis
-    // ignore: avoid-substring
-    return this[0].toUpperCase() + substring(1);
-  }
+  /// Capitalize the first letter of the string.
+  ///
+  /// If the first letter is an emoji, the string will not be capitalized.
+  String capitalize() =>
+      (characters.take(1).toUpperCase() + characters.skip(1)).string;
 }

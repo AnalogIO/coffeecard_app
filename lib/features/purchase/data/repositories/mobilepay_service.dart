@@ -26,7 +26,8 @@ class MobilePayService extends PaymentHandler {
           (purchase) => Payment(
             id: purchase.id,
             status: PaymentStatus.awaitingPayment,
-            deeplink: purchase.paymentDetails.mobilePayAppRedirectUri,
+            deeplink: MobilePayPaymentDetails.fromJson(purchase.paymentDetails)
+                .mobilePayAppRedirectUri,
             purchaseTime: purchase.dateCreated,
             price: purchase.totalAmount,
             productId: purchase.productId,

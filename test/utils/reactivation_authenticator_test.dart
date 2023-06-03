@@ -1,7 +1,7 @@
 import 'package:chopper/chopper.dart' as chopper;
+import 'package:coffeecard/core/data/datasources/account_remote_data_source.dart';
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
-import 'package:coffeecard/data/repositories/shared/account_repository.dart';
 import 'package:coffeecard/data/storage/secure_storage.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/models/account/authenticated_user.dart';
@@ -34,13 +34,13 @@ chopper.Request _requestFromMethod(String method) {
 class _FakeGetIt extends Fake implements GetIt {
   _FakeGetIt.fromMockedObjects({
     required this.mockAuthenticationCubit,
-    required this.mockAccountRepository,
+    required this.mockAccountRemoteDataSource,
     required this.mockSecureStorage,
     required this.mockLogger,
   });
 
   final MockAuthenticationCubit mockAuthenticationCubit;
-  final MockAccountRepository mockAccountRepository;
+  final MockAccountRemoteDataSource mockAccountRemoteDataSource;
   final MockSecureStorage mockSecureStorage;
   final MockLogger mockLogger;
 
@@ -62,7 +62,7 @@ class _FakeGetIt extends Fake implements GetIt {
   T get<T extends Object>({String? instanceName, param1, param2, Type? type}) {
     return switch (T) {
       AuthenticationCubit => mockAuthenticationCubit,
-      AccountRepository => mockAccountRepository,
+      AccountRemoteDataSource => mockAccountRemoteDataSource,
       SecureStorage => mockSecureStorage,
       Logger => mockLogger,
       _ => throw UnimplementedError('Mock for $T not implemented.'),
@@ -73,7 +73,7 @@ class _FakeGetIt extends Fake implements GetIt {
   T getMock<T extends Mock>() {
     return switch (T) {
       MockAuthenticationCubit => mockAuthenticationCubit,
-      MockAccountRepository => mockAccountRepository,
+      MockAccountRemoteDataSource => mockAccountRemoteDataSource,
       MockSecureStorage => mockSecureStorage,
       MockLogger => mockLogger,
       _ => throw UnimplementedError('Mock for $T not implemented.'),
@@ -83,14 +83,14 @@ class _FakeGetIt extends Fake implements GetIt {
 
 @GenerateNiceMocks([
   MockSpec<AuthenticationCubit>(),
-  MockSpec<AccountRepository>(),
+  MockSpec<AccountRemoteDataSource>(),
   MockSpec<SecureStorage>(),
   MockSpec<Logger>(),
 ])
 void main() {
   late _FakeGetIt serviceLocator;
   late MockAuthenticationCubit authenticationCubit;
-  late MockAccountRepository accountRepository;
+  late MockAccountRemoteDataSource accountRemoteDataSource;
   late MockSecureStorage secureStorage;
 
   late ReactivationAuthenticator authenticator;
@@ -98,18 +98,19 @@ void main() {
   setUp(() {
     serviceLocator = _FakeGetIt.fromMockedObjects(
       mockAuthenticationCubit: MockAuthenticationCubit(),
-      mockAccountRepository: MockAccountRepository(),
+      mockAccountRemoteDataSource: MockAccountRemoteDataSource(),
       mockSecureStorage: MockSecureStorage(),
       mockLogger: MockLogger(),
     );
 
     authenticationCubit = serviceLocator.getMock<MockAuthenticationCubit>();
-    accountRepository = serviceLocator.getMock<MockAccountRepository>();
+    accountRemoteDataSource =
+        serviceLocator.getMock<MockAccountRemoteDataSource>();
     secureStorage = serviceLocator.getMock<MockSecureStorage>();
 
     authenticator =
         ReactivationAuthenticator.uninitialized(serviceLocator: serviceLocator);
-    authenticator.initialize(accountRepository);
+    authenticator.initialize(accountRemoteDataSource);
   });
 
   test(
@@ -156,7 +157,7 @@ void main() {
     'and 3) stored login credentials that are invalid '
     'WHEN authenticate is called '
     'THEN '
-    '1) AccountRepository.login should be called with the stored credentials, '
+    '1) AccountRemoteDataSource.login should be called with the stored credentials, '
     '2) AuthenticationCubit.unauthenticated should be called, '
     'and 3) it should return null',
     () async {
@@ -185,7 +186,7 @@ void main() {
       when(secureStorage.getAuthenticatedUser()).thenAnswer(
         (_) async => const AuthenticatedUser(email: email, token: token),
       );
-      when(accountRepository.login(email, encodedPasscode)).thenAnswer(
+      when(accountRemoteDataSource.login(email, encodedPasscode)).thenAnswer(
         (_) async {
           //  Simulate a failed login attempt through the NetworkRequestExecutor
           final _ = await authenticator.authenticate(
@@ -203,10 +204,10 @@ void main() {
       final result = await authenticator.authenticate(request, response);
 
       // Assert
-      verify(accountRepository.login(email, encodedPasscode)).called(1);
+      verify(accountRemoteDataSource.login(email, encodedPasscode)).called(1);
       verify(authenticationCubit.unauthenticated()).called(1);
       expect(result, isNull);
-      verifyNoMoreInteractions(accountRepository);
+      verifyNoMoreInteractions(accountRemoteDataSource);
       verifyNoMoreInteractions(authenticationCubit);
     },
   );
@@ -218,7 +219,7 @@ void main() {
     'and 3) valid stored login credentials '
     'WHEN authenticate is called '
     'THEN '
-    '1) AccountRepository.login should be called with the stored credentials, '
+    '1) AccountRemoteDataSource.login should be called with the stored credentials, '
     '2) SecureStorage.updateToken should be called, '
     'and 3) it should return a new request with the updated token',
     () async {
@@ -238,7 +239,7 @@ void main() {
         (_) async => oldToken,
       );
 
-      when(accountRepository.login(email, encodedPasscode)).thenAnswer(
+      when(accountRemoteDataSource.login(email, encodedPasscode)).thenAnswer(
         (_) async => right(
           const AuthenticatedUser(email: email, token: newToken),
         ),
@@ -251,8 +252,8 @@ void main() {
       final result = await authenticator.authenticate(request, response);
 
       // Assert
-      verify(accountRepository.login(email, encodedPasscode)).called(1);
-      verifyNoMoreInteractions(accountRepository);
+      verify(accountRemoteDataSource.login(email, encodedPasscode)).called(1);
+      verifyNoMoreInteractions(accountRemoteDataSource);
 
       verify(secureStorage.readEmail()).called(1);
       verify(secureStorage.readEncodedPasscode()).called(1);
