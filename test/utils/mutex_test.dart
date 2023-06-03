@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:coffeecard/utils/mutex.dart';
-import 'package:coffeecard/utils/throttler.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 
@@ -27,49 +26,30 @@ void main() {
   });
 
   test(
-    'GIVEN an unlocked mutex and a false boolean '
-    'WHEN protect is called with a task that changes the boolean to true '
-    'THEN it the boolean should be true after the task completes',
+    'GIVEN an unlocked mutex and a counter '
+    'WHEN protect is called with a task that increments the counter '
+    'THEN the counter should be incremented once after the task completes',
     () async {
-      var boolean = false;
-
-      // Create a task that will change the boolean to true.
-      final task = mutex.protect(
-        Task(() async => boolean = true).map((_) => unit),
-      );
-
-      // Start and await the task, which should change the boolean to true.
-      final _ = await task.run();
-
-      // The boolean should be true now.
-      expect(boolean, isTrue);
-    },
-  );
-
-  test(
-    'GIVEN an unlocked mutex and a false boolean '
-    'WHEN protect is called with a task that returns the inverse of a bool '
-    'THEN it should return true after the task completes',
-    () {
-      const boolean = false;
+      int counter = 0;
 
       // Create a task that will return the inverse of the boolean.
       final task = mutex.protect(
-        Task(() async => !boolean),
+        Task(() async => counter = counter + 1),
       );
 
       // Start the task.
-      final result = task.run();
+      final result = await task.run();
 
-      // The task should complete with true.
-      expect(result, completion(isTrue));
+      // The task should complete with 1, and the counter should be 1.
+      expect(result, 1);
+      expect(counter, 1);
     },
   );
 
   test(
     'GIVEN an unlocked mutex '
     'WHEN protect is called '
-    'THEN it should lock after running the task',
+    'THEN it should lock while the task is running',
     () {
       final completer = Completer<void>();
 
@@ -146,60 +126,4 @@ void main() {
       expect(secondStartedTask, completion(unit));
     },
   );
-
-  // test(
-  //   'GIVEN a mutex locked by one task '
-  //   'WHEN another task calls runWithoutLock '
-  //   'THEN it should wait until the lock is released, '
-  //   'then run the action without acquiring the lock',
-  //   () async {
-  //     final firstTaskCompleter = Completer<void>();
-  //     final secondTaskCompleter = Completer<void>();
-
-  //     final firstTask = mutex.protect(
-  //       Task(() => firstTaskCompleter.future).map((_) => unit),
-  //     );
-
-  //     final secondTask = mutex.runWithoutLock(
-  //       Task(() => secondTaskCompleter.future).map((_) => unit),
-  //     );
-
-  //     // Start the first task, which will hold
-  //     // the lock until firstTaskCompleter completes.
-  //     final firstStartedTask = firstTask.run();
-
-  //     // First task should be holding the lock.
-  //     expect(
-  //       mutex.isLocked,
-  //       isTrue,
-  //       reason: 'Mutex should be locked when task has started',
-  //     );
-
-  //     // Start the second task, which will wait until the lock is released.
-  //     secondTask.run();
-
-  //     // The second task shouldn't complete until we complete the first task.
-  //     expect(secondTaskCompleter.isCompleted, isFalse);
-
-  //     // Complete the first task, which should release the lock and allow the
-  //     // second task to run.
-  //     firstTaskCompleter.complete();
-  //     // Await the first task to ensure that it has released the lock.
-  //     await firstStartedTask;
-
-  //     // The second task should be running, but not holding the lock.
-  //     expect(
-  //       mutex.isLocked,
-  //       isFalse,
-  //       reason: 'Mutex should be unlocked when second task has started',
-  //     );
-
-  //     // Allow the second task to complete.
-  //     secondTaskCompleter.complete();
-
-  //     // Both tasks should complete with unit.
-  //     expect(firstTask, completion(unit));
-  //     expect(secondTask, completion(unit));
-  //   },
-  // );
 }

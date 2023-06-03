@@ -19,11 +19,8 @@ class ReactivationAuthenticator extends Authenticator {
   final _mutex = Mutex();
   final _throttler = Throttler<Request?>();
 
-  /// The [throttler] parameter is exposed for testing purposes. It defaults to
-  /// a new [Throttler] with a duration of [_defaultThrottleDuration].
-  ReactivationAuthenticator({
-    required GetIt serviceLocator,
-  })  : _secureStorage = serviceLocator<SecureStorage>(),
+  ReactivationAuthenticator({required GetIt serviceLocator})
+      : _secureStorage = serviceLocator<SecureStorage>(),
         _authenticationCubit = serviceLocator<AuthenticationCubit>(),
         _logger = serviceLocator<Logger>(),
         _accountRepository = serviceLocator<AccountRepository>();
@@ -43,18 +40,15 @@ class ReactivationAuthenticator extends Authenticator {
     _logUnauthorized(request, response);
 
     // If the response is unauthorized, we try to refresh the token.
-    final requestTask = _mutex.isLocked.match(
+    return _mutex.isLocked.match(
       // No one is updating the token, so we do it
       // (throttle the call to avoid refreshing the token multiple times if
       // requests happen at the same time)
-      () => _refreshToken(request).protectWith(_mutex).throttleWith(_throttler),
+      () => _refreshToken(request).protect(_mutex).runThrottled(_throttler),
       // Someone else is updating the token, so we wait for it to finish
       // and read the new token from secure storage
-      () => _readToken(request).protectWith(_mutex),
+      () => _readToken(request).protect(_mutex).run(),
     );
-
-    // Run the Task, unwrapping the Request? inside it.
-    return requestTask.run();
   }
 
   /// Refreshes the token and returns a new request with the updated token.
@@ -79,7 +73,7 @@ class ReactivationAuthenticator extends Authenticator {
         // recursive calls to this method are blocked by the mutex.
         final either = await _accountRepository.login(email, encodedPasscode);
         return either.match(
-          (_) => _evict() as Request,
+          (_) => _evict(),
           (user) => _saveTokenAndUpdateRequestWithToken(request, user.token),
         );
       },
@@ -99,9 +93,10 @@ class ReactivationAuthenticator extends Authenticator {
   }
 
   /// Signs out the user and returns null.
-  Future<void> _evict() async {
+  Future<Request?> _evict() async {
     _logRefreshTokenFailed();
     await _authenticationCubit.unauthenticated();
+    return null;
   }
 
   /// Saved the refreshed token in secure storage and returns a new [Request]

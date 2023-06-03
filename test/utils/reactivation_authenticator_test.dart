@@ -91,7 +91,6 @@ void main() {
   late MockAuthenticationCubit authenticationCubit;
   late MockAccountRepository accountRepository;
   late MockSecureStorage secureStorage;
-  late MockLogger logger;
 
   late ReactivationAuthenticator authenticator;
 
@@ -106,7 +105,6 @@ void main() {
     authenticationCubit = serviceLocator.getMock<MockAuthenticationCubit>();
     accountRepository = serviceLocator.getMock<MockAccountRepository>();
     secureStorage = serviceLocator.getMock<MockSecureStorage>();
-    logger = serviceLocator.getMock<MockLogger>();
 
     authenticator = ReactivationAuthenticator(serviceLocator: serviceLocator);
   });
@@ -137,7 +135,6 @@ void main() {
     'THEN it should return null',
     () async {
       // Arrange
-      // when(secureStorage.getAuthenticatedUser()).thenAnswer((_) async => null);
       final request = _requestFromMethod('GET');
       final response = _responseFromStatusCode(401);
 
@@ -195,6 +192,113 @@ void main() {
     },
   );
 
-  // Tests we should write:
-  // - authenticate should return
+  test(
+    'GIVEN '
+    '1) a response with status code 401, '
+    '2) no prior calls to authenticate, '
+    'and 3) valid stored login credentials '
+    'WHEN authenticate is called '
+    'THEN '
+    '1) AccountRepository.login should be called with the stored credentials, '
+    '2) SecureStorage.updateToken should be called, '
+    'and 3) it should return a new request with the updated token',
+    () async {
+      // Arrange
+      const email = 'email';
+      const encodedPasscode = 'encodedPasscode';
+      const oldToken = 'oldToken';
+      const newToken = 'newToken';
+
+      when(secureStorage.readEmail()).thenAnswer(
+        (_) async => email,
+      );
+      when(secureStorage.readEncodedPasscode()).thenAnswer(
+        (_) async => encodedPasscode,
+      );
+      when(secureStorage.readToken()).thenAnswer(
+        (_) async => oldToken,
+      );
+
+      when(accountRepository.login(email, encodedPasscode)).thenAnswer(
+        (_) async => right(
+          const AuthenticatedUser(email: email, token: newToken),
+        ),
+      );
+
+      final request = _requestFromMethod('GET');
+      final response = _responseFromStatusCode(401);
+
+      // Act
+      final result = await authenticator.authenticate(request, response);
+
+      // Assert
+      verify(accountRepository.login(email, encodedPasscode)).called(1);
+      verifyNoMoreInteractions(accountRepository);
+
+      verify(secureStorage.readEmail()).called(1);
+      verify(secureStorage.readEncodedPasscode()).called(1);
+      verify(secureStorage.updateToken(newToken)).called(1);
+      verifyNoMoreInteractions(secureStorage);
+
+      expect(result, isNotNull);
+      expect(result!.headers['Authorization'], 'Bearer $newToken');
+    },
+  );
+
+  test(
+    'GIVEN '
+    '1) a response with status code 401, '
+    '2) a prior call to authenticate is running, '
+    'and 3) and stored valid login credentials exist '
+    'WHEN authenticate is called '
+    'THEN it should return a new request with the updated token',
+    () async {
+      // Arrange
+      const token = 'token';
+
+      when(secureStorage.readToken()).thenAnswer(
+        (_) async => token,
+      );
+
+      final request = _requestFromMethod('GET');
+      final response = _responseFromStatusCode(401);
+
+      // Simulate a prior call to authenticate is running
+      authenticator.authenticate(request, response);
+
+      // Act
+      final result = await authenticator.authenticate(request, response);
+
+      // Assert
+      expect(result, isNotNull);
+      expect(result!.headers['Authorization'], token);
+    },
+  );
+
+  test(
+    'GIVEN '
+    '1) a response with status code 401, '
+    '2) a prior call to authenticate is running, '
+    'and 3) and no token exists in storage '
+    'WHEN authenticate is called '
+    'THEN it should return null',
+    () async {
+      // Arrange
+      when(secureStorage.readToken()).thenAnswer(
+        (_) async => null,
+      );
+
+      final request = _requestFromMethod('GET');
+      final response = _responseFromStatusCode(401);
+
+      // Simulate a prior call to authenticate is running
+      authenticator.authenticate(request, response);
+
+      // Act
+      final result = await authenticator.authenticate(request, response);
+
+      // Assert
+      expect(result, isNull);
+    },
+  );
 }
