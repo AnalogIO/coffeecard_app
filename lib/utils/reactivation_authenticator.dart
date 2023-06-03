@@ -102,7 +102,7 @@ class ReactivationAuthenticator extends Authenticator {
         // This login call may return 401 if the stored credentials are invalid;
         // recursive calls to [authenticate] are blocked by a check in the
         // [authenticate] method.
-        final either = await _accountRepository.login(email, 'encodedPasscode');
+        final either = await _accountRepository.login(email, encodedPasscode);
         return either.match(
           (_) => _evict(),
           (user) => _saveTokenAndUpdateRequestWithToken(request, user.token),
