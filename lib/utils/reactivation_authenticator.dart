@@ -11,19 +11,33 @@ import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 
 class ReactivationAuthenticator extends Authenticator {
+  /// Whether [initialize] has been called.
+  bool _ready = false;
+  late final AccountRepository _accountRepository;
+
   final SecureStorage _secureStorage;
   final AuthenticationCubit _authenticationCubit;
-  final AccountRepository _accountRepository;
   final Logger _logger;
 
   final _mutex = Mutex();
   final _throttler = Throttler<Request?>();
 
-  ReactivationAuthenticator({required GetIt serviceLocator})
+  /// Creates a new [ReactivationAuthenticator] instance.
+  ///
+  /// This instance is not ready to be used. Call [initialize] before using it.
+  ReactivationAuthenticator.uninitialized({required GetIt serviceLocator})
       : _secureStorage = serviceLocator<SecureStorage>(),
         _authenticationCubit = serviceLocator<AuthenticationCubit>(),
-        _logger = serviceLocator<Logger>(),
-        _accountRepository = serviceLocator<AccountRepository>();
+        _logger = serviceLocator<Logger>();
+
+  /// Initializes the [ReactivationAuthenticator] by providing the
+  /// [AccountRepository] to use.
+  ///
+  /// This method must be called before the [ReactivationAuthenticator] is used.
+  void initialize(AccountRepository repository) {
+    _ready = true;
+    _accountRepository = repository;
+  }
 
   @override
   Future<Request?> authenticate(
@@ -31,6 +45,13 @@ class ReactivationAuthenticator extends Authenticator {
     Response response, [
     Request? _,
   ]) {
+    // If the [ReactivationAuthenticator] is not ready, an error is thrown.
+    assert(
+      _ready,
+      'ReactivationAuthenticator is not ready. '
+      'Call initialize() before using it.',
+    );
+
     // If the response is not unauthorized, we don't need to do anything.
     if (response.statusCode != 401) {
       return Future.value();

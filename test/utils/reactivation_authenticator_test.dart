@@ -106,7 +106,9 @@ void main() {
     accountRepository = serviceLocator.getMock<MockAccountRepository>();
     secureStorage = serviceLocator.getMock<MockSecureStorage>();
 
-    authenticator = ReactivationAuthenticator(serviceLocator: serviceLocator);
+    authenticator =
+        ReactivationAuthenticator.uninitialized(serviceLocator: serviceLocator);
+    authenticator.initialize(accountRepository);
   });
 
   test(
