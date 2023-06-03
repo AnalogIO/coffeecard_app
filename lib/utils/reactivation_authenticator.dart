@@ -4,6 +4,8 @@ import 'package:chopper/chopper.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
 import 'package:coffeecard/data/repositories/shared/account_repository.dart';
 import 'package:coffeecard/data/storage/secure_storage.dart';
+import 'package:coffeecard/generated/api/coffeecard_api.models.swagger.dart'
+    show LoginDto;
 import 'package:coffeecard/utils/mutex.dart';
 import 'package:coffeecard/utils/throttler.dart';
 import 'package:fpdart/fpdart.dart';
@@ -60,6 +62,13 @@ class ReactivationAuthenticator extends Authenticator {
     // Log the request and response
     _logUnauthorized(request, response);
 
+    // If the request is a unauthorized login request (token refresh request),
+    // we should not try to refresh the token.
+    // Otherwise, we would end up in an infinite loop.
+    if (request.body is LoginDto) {
+      return Future.value();
+    }
+
     // If the response is unauthorized, we try to refresh the token.
     return _mutex.isLocked.match(
       // No one is updating the token, so we do it
@@ -91,8 +100,9 @@ class ReactivationAuthenticator extends Authenticator {
 
         // Attempt to log in with the stored credentials.
         // This login call may return 401 if the stored credentials are invalid;
-        // recursive calls to this method are blocked by the throttler.
-        final either = await _accountRepository.login(email, encodedPasscode);
+        // recursive calls to [authenticate] are blocked by a check in the
+        // [authenticate] method.
+        final either = await _accountRepository.login(email, 'encodedPasscode');
         return either.match(
           (_) => _evict(),
           (user) => _saveTokenAndUpdateRequestWithToken(request, user.token),

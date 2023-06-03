@@ -3,6 +3,7 @@ import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
 import 'package:coffeecard/data/repositories/shared/account_repository.dart';
 import 'package:coffeecard/data/storage/secure_storage.dart';
+import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/models/account/authenticated_user.dart';
 import 'package:coffeecard/utils/reactivation_authenticator.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -164,6 +165,16 @@ void main() {
       const encodedPasscode = 'encodedPasscode';
       const token = 'token';
       const reason = 'invalid credentials';
+      final loginRequest = chopper.Request(
+        'method',
+        Uri.parse('test'),
+        Uri.parse('basetest'),
+        body: LoginDto(
+          email: 'email',
+          password: 'encodedPasscode',
+          version: 'verison',
+        ),
+      );
 
       when(secureStorage.readEmail()).thenAnswer(
         (_) async => email,
@@ -174,9 +185,15 @@ void main() {
       when(secureStorage.getAuthenticatedUser()).thenAnswer(
         (_) async => const AuthenticatedUser(email: email, token: token),
       );
-
       when(accountRepository.login(email, encodedPasscode)).thenAnswer(
-        (_) async => left(const ServerFailure(reason)),
+        (_) async {
+          //  Simulate a failed login attempt through the NetworkRequestExecutor
+          final _ = await authenticator.authenticate(
+            loginRequest,
+            _responseFromStatusCode(401),
+          );
+          return left(const ServerFailure(reason));
+        },
       );
 
       final request = _requestFromMethod('GET');
