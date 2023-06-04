@@ -10,9 +10,11 @@ class SecureStorage {
   final FlutterSecureStorage _storage;
   final Logger _logger;
 
-  SecureStorage(this._logger) : _storage = const FlutterSecureStorage();
-
-  Future<bool> get hasToken async => await readToken() != null;
+  const SecureStorage({
+    required FlutterSecureStorage storage,
+    required Logger logger,
+  })  : _storage = storage,
+        _logger = logger;
 
   Future<void> saveAuthenticatedUser(
     String email,
