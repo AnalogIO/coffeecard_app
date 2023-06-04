@@ -6,7 +6,6 @@ import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
 import 'package:coffeecard/data/storage/secure_storage.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.models.swagger.dart'
     show LoginDto;
-import 'package:coffeecard/utils/mutex.dart';
 import 'package:coffeecard/utils/throttler.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:get_it/get_it.dart';
@@ -21,8 +20,7 @@ class ReactivationAuthenticator extends Authenticator {
   final AuthenticationCubit _authenticationCubit;
   final Logger _logger;
 
-  final _mutex = Mutex();
-  final _throttler = Throttler<Request?>();
+  final _throttler = Throttler<Option<String>>();
 
   /// Creates a new [ReactivationAuthenticator] instance.
   ///
@@ -59,9 +57,6 @@ class ReactivationAuthenticator extends Authenticator {
       return Future.value();
     }
 
-    // Log the request and response.
-    _logUnauthorized(request, response);
-
     // If the request is a unauthorized login request (token refresh request),
     // we should not try to refresh the token.
     // Otherwise, we would end up in an infinite loop.
@@ -69,24 +64,28 @@ class ReactivationAuthenticator extends Authenticator {
       return Future.value();
     }
 
-    // If the response is unauthorized, we try to refresh the token.
-    return _mutex.isLocked.match(
-      // No one is updating the token, so we do it.
-      // (Throttle the call to avoid refreshing the token multiple times if
-      // requests happen at the same time.)
-      () => _refreshToken(request).protect(_mutex).runThrottled(_throttler),
-      // Someone else is updating the token, so we wait for it to finish
-      // and read the new token from secure storage.
-      () => _readToken(request).protect(_mutex).run(),
+    // Try to refresh the token.
+    final maybeNewToken = Task(() async {
+      // Set a minimum duration for the token refresh to allow for throttling.
+      final minimumDuration = Future<void>.delayed(const Duration(seconds: 1));
+      final maybeToken = await _getNewToken(request).run();
+      await minimumDuration;
+      // Side effect: save the new token or evict the current token.
+      final _ = _saveOrEvict(maybeToken).run();
+      return maybeToken;
+    }).runThrottled(_throttler);
+
+    // Convert the [maybeNewToken] to a [Request] with the new token, or null.
+    final maybeNewRequest = TaskOption(() => maybeNewToken).match(
+      () => null,
+      (token) => request..headers['Authorization'] = 'Bearer $token',
     );
+
+    return maybeNewRequest.run();
   }
 
-  /// Refreshes the token and returns a new request with the updated token.
-  /// If the refresh fails, the user is signed out.
-  ///
-  /// Return null if the user is not logged in or could not be signed in with
-  /// the stored credentials.
-  Task<Request?> _refreshToken(Request request) {
+  /// Attempt to retrieve a new token by logging in with stored credentials.
+  Task<Option<String>> _getNewToken(Request request) {
     _logRefreshingToken(request);
 
     return Task(
@@ -95,7 +94,7 @@ class ReactivationAuthenticator extends Authenticator {
         final email = await _secureStorage.readEmail();
         final encodedPasscode = await _secureStorage.readEncodedPasscode();
         if (email == null || encodedPasscode == null) {
-          return null;
+          return none();
         }
 
         // Attempt to log in with the stored credentials.
@@ -104,70 +103,31 @@ class ReactivationAuthenticator extends Authenticator {
         // [authenticate] method.
         final either =
             await _accountRemoteDataSource.login(email, encodedPasscode);
-        return either.match(
-          (_) => _evict(),
-          (user) => _saveTokenAndUpdateRequestWithToken(request, user.token),
-        );
+
+        return Option.fromEither(either).map((user) => user.token);
       },
     );
   }
 
-  /// Attempts to read the token from [SecureStorage]. If it exists, returns a
-  /// new [Request] with the updated token.
-  Task<Request?> _readToken(Request request) {
-    return Task(() async {
-      final token = await _secureStorage.readToken();
-      return token.toOption().match(
-            () => null,
-            (token) => _updateRequestWithToken(request, token),
-          );
-    });
+  /// Saves the [token] in [SecureStorage]
+  /// or signs out the user if the [token] is [None].
+  Task<Unit> _saveOrEvict(Option<String> token) {
+    return token.match(
+      () {
+        _logRefreshTokenFailed();
+        return Task(_authenticationCubit.unauthenticated);
+      },
+      (token) {
+        _logRefreshTokenSucceeded();
+        return Task(() => _secureStorage.updateToken(token));
+      },
+    ).map((_) => unit);
   }
 
-  /// Signs out the user and returns null.
-  Future<Request?> _evict() async {
-    _logRefreshTokenFailed();
-    await _authenticationCubit.unauthenticated();
-    return null;
-  }
-
-  /// Saved the refreshed token in secure storage and returns a new [Request]
-  /// with the updated token.
-  ///
-  /// Used when the token is refreshed successfully.
-  Future<Request> _saveTokenAndUpdateRequestWithToken(
-    Request request,
-    String token,
-  ) async {
-    _logRefreshTokenSucceeded();
-
-    await _secureStorage.updateToken(token);
-    return _updateRequestWithToken(request, 'Bearer $token');
-  }
-
-  /// Returns a new [Request] with the updated token.
-  Request _updateRequestWithToken(Request request, String token) {
-    return request..headers['Authorization'] = token;
-  }
-
-  /// Logs the request and response at the warning level.
-  ///
-  /// This is used when the response is unauthorized.
-  void _logUnauthorized(Request request, Response response) {
-    _logger.w(
-      'Unauthorized request.\n'
-      '\t${request.method} ${request.url} ${response.statusCode}\n'
-      '\t${response.bodyString}',
-    );
-  }
-
-  /// Logs the request at the info level.
-  ///
-  /// This is used when the response is unauthorized and the token is being
-  /// refreshed.
+  /// Logs that a token refresh was triggered by a request.
   void _logRefreshingToken(Request request) {
-    _logger.i(
-      'Refreshing token for request:\n'
+    _logger.d(
+      'Token refresh triggered by request:\n'
       '\t${request.method} ${request.url}',
     );
   }
@@ -179,6 +139,6 @@ class ReactivationAuthenticator extends Authenticator {
 
   /// Logs that the refresh token call succeeded.
   void _logRefreshTokenSucceeded() {
-    _logger.i('Successfully refreshed token.');
+    _logger.d('Successfully refreshed token.');
   }
 }

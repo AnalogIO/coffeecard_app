@@ -27,7 +27,7 @@ void main() {
 
   test(
     'GIVEN an unlocked mutex and a counter '
-    'WHEN protect is called with a task that increments the counter '
+    'WHEN Mutex.protect is called with a task that increments the counter '
     'THEN the counter should be incremented once after the task completes',
     () async {
       int counter = 0;
@@ -36,6 +36,25 @@ void main() {
       final task = mutex.protect(
         Task(() async => counter = counter + 1),
       );
+
+      // Start the task.
+      final result = await task.run();
+
+      // The task should complete with 1, and the counter should be 1.
+      expect(result, 1);
+      expect(counter, 1);
+    },
+  );
+
+  test(
+    'GIVEN an unlocked mutex and a counter '
+    'WHEN protect is called on a task that increments the counter '
+    'THEN the counter should be incremented once after the task completes',
+    () async {
+      int counter = 0;
+
+      // Create a task that will return the inverse of the boolean.
+      final task = Task(() async => counter = counter + 1).protect(mutex);
 
       // Start the task.
       final result = await task.run();
