@@ -112,16 +112,20 @@ class ReactivationAuthenticator extends Authenticator {
   /// Saves the [token] in [SecureStorage]
   /// or signs out the user if the [token] is [None].
   Task<Unit> _saveOrEvict(Option<String> token) {
-    return token.match(
-      () {
-        _logRefreshTokenFailed();
-        return Task(_authenticationCubit.unauthenticated);
-      },
-      (token) {
-        _logRefreshTokenSucceeded();
-        return Task(() => _secureStorage.updateToken(token));
-      },
-    ).map((_) => unit);
+    return Task(() async {
+      return token.match(
+        () async {
+          _logRefreshTokenFailed();
+          await _authenticationCubit.unauthenticated();
+          return unit;
+        },
+        (token) async {
+          _logRefreshTokenSucceeded();
+          await _secureStorage.updateToken(token);
+          return unit;
+        },
+      );
+    });
   }
 
   /// Logs that a token refresh was triggered by a request.
