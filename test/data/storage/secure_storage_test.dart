@@ -181,5 +181,21 @@ void main() {
         expect(result, token);
       },
     );
+
+    test(
+      'GIVEN no token or email stored in secure storage '
+      'WHEN readToken and readEmail are called '
+      'THEN they should return null',
+      () async {
+        when(mockStorage.read(key: emailKey)).thenAnswer((_) async => null);
+        when(mockStorage.read(key: tokenKey)).thenAnswer((_) async => null);
+
+        final email = await secureStorage.readEmail();
+        final token = await secureStorage.readToken();
+
+        expect(email, isNull);
+        expect(token, isNull);
+      },
+    );
   });
 }
