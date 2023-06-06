@@ -67,7 +67,8 @@ class ReactivationAuthenticator extends Authenticator {
     // Try to refresh the token.
     final maybeNewToken = Task(() async {
       // Set a minimum duration for the token refresh to allow for throttling.
-      final minimumDuration = Future<void>.delayed(const Duration(seconds: 1));
+      final minimumDuration =
+          Future<void>.delayed(const Duration(milliseconds: 250));
       final maybeToken = await _getNewToken(request).run();
       await minimumDuration;
       // Side effect: save the new token or evict the current token.
