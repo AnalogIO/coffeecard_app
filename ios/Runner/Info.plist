@@ -31,7 +31,7 @@
 			<string>mobilepay_purchase</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>analogcoffeecard</string>
+				<string>$(APP_DEEP_LINK)</string>
 			</array>
 		</dict>
 	</array>
