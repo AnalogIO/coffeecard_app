@@ -85,46 +85,11 @@ void configureServices() {
     ),
   );
 
-  sl.registerFactory<ReactivationAuthenticator>(
-    () => ReactivationAuthenticator(sl),
-  );
+  // Reactivation authenticator (uninitalized), http client and interceptors
+  initHttp();
 
   // Features
   initFeatures();
-
-  // Rest Client, Chopper client
-  final coffeCardChopper = ChopperClient(
-    baseUrl: Uri.parse(Env.coffeeCardUrl),
-    interceptors: [AuthenticationInterceptor(sl<SecureStorage>())],
-    converter: $JsonSerializableConverter(),
-    services: [
-      CoffeecardApi.create(),
-      CoffeecardApiV2.create(),
-    ],
-    authenticator: sl.get<ReactivationAuthenticator>(),
-  );
-
-  final shiftplanningChopper = ChopperClient(
-    baseUrl: ApiUriConstants.shiftyUrl,
-    converter: $JsonSerializableConverter(),
-    services: [ShiftplanningApi.create()],
-  );
-
-  ignoreValue(
-    sl.registerSingleton<CoffeecardApi>(
-      coffeCardChopper.getService<CoffeecardApi>(),
-    ),
-  );
-  ignoreValue(
-    sl.registerSingleton<CoffeecardApiV2>(
-      coffeCardChopper.getService<CoffeecardApiV2>(),
-    ),
-  );
-  ignoreValue(
-    sl.registerSingleton<ShiftplanningApi>(
-      shiftplanningChopper.getService<ShiftplanningApi>(),
-    ),
-  );
 
   // v1 and v2
   sl.registerFactory<AccountRemoteDataSource>(
@@ -143,6 +108,9 @@ void configureServices() {
   );
 
   ignoreValue(sl.registerLazySingleton(() => ExternalUrlLauncher()));
+
+  // provide the account repository to the reactivation authenticator
+  sl<ReactivationAuthenticator>().initialize(sl<AccountRemoteDataSource>());
 }
 
 void initFeatures() {
@@ -366,5 +334,46 @@ void initRegister() {
   // data source
   sl.registerLazySingleton(
     () => RegisterRemoteDataSource(apiV2: sl(), executor: sl()),
+  );
+}
+
+void initHttp() {
+  ignoreValue(
+    sl.registerSingleton<ReactivationAuthenticator>(
+      ReactivationAuthenticator.uninitialized(serviceLocator: sl),
+    ),
+  );
+
+  final coffeCardChopper = ChopperClient(
+    baseUrl: Uri.parse(Env.coffeeCardUrl),
+    interceptors: [AuthenticationInterceptor(sl<SecureStorage>())],
+    converter: $JsonSerializableConverter(),
+    services: [
+      CoffeecardApi.create(),
+      CoffeecardApiV2.create(),
+    ],
+    authenticator: sl.get<ReactivationAuthenticator>(),
+  );
+
+  final shiftplanningChopper = ChopperClient(
+    baseUrl: ApiUriConstants.shiftyUrl,
+    converter: $JsonSerializableConverter(),
+    services: [ShiftplanningApi.create()],
+  );
+
+  ignoreValue(
+    sl.registerSingleton<CoffeecardApi>(
+      coffeCardChopper.getService<CoffeecardApi>(),
+    ),
+  );
+  ignoreValue(
+    sl.registerSingleton<CoffeecardApiV2>(
+      coffeCardChopper.getService<CoffeecardApiV2>(),
+    ),
+  );
+  ignoreValue(
+    sl.registerSingleton<ShiftplanningApi>(
+      shiftplanningChopper.getService<ShiftplanningApi>(),
+    ),
   );
 }
