@@ -21,8 +21,17 @@ void main() {
   setUp(() {
     apiV2 = MockCoffeecardApiV2();
     executor = MockNetworkRequestExecutor();
-    remoteDataSource =
-        ReceiptRemoteDataSource(apiV2: apiV2, executor: executor);
+    remoteDataSource = ReceiptRemoteDataSource(
+      apiV2: apiV2,
+      executor: executor,
+    );
+
+    provideDummy<Either<NetworkFailure, List<SimplePurchaseResponse>>>(
+      const Left(ConnectionFailure()),
+    );
+    provideDummy<Either<NetworkFailure, List<TicketResponse>>>(
+      const Left(ConnectionFailure()),
+    );
   });
 
   group('getUsersUsedTicketsReceipts', () {

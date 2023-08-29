@@ -28,6 +28,13 @@ void main() {
       apiV2: apiV2,
       executor: executor,
     );
+
+    provideDummy<Either<NetworkFailure, UserResponse>>(
+      const Left(ConnectionFailure()),
+    );
+    provideDummy<Either<NetworkFailure, dynamic>>(
+      const Left(ConnectionFailure()),
+    );
   });
 
   const testUserModel = UserModel(

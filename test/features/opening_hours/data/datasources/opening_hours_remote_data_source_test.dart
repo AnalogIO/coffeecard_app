@@ -1,3 +1,4 @@
+import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/features/opening_hours/opening_hours.dart';
 import 'package:coffeecard/generated/api/shiftplanning_api.swagger.dart';
@@ -18,6 +19,13 @@ void main() {
     api = MockShiftplanningApi();
     executor = MockNetworkRequestExecutor();
     dataSource = OpeningHoursRemoteDataSource(api: api, executor: executor);
+
+    provideDummy<Either<NetworkFailure, IsOpenDTO>>(
+      const Left(ConnectionFailure()),
+    );
+    provideDummy<Either<NetworkFailure, List<OpeningHoursDTO>>>(
+      const Left(ConnectionFailure()),
+    );
   });
 
   group('isOpen', () {

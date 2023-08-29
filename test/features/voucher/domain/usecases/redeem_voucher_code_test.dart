@@ -1,3 +1,4 @@
+import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/features/voucher/data/datasources/voucher_remote_data_source.dart';
 import 'package:coffeecard/features/voucher/domain/entities/redeemed_voucher.dart';
 import 'package:coffeecard/features/voucher/domain/usecases/redeem_voucher_code.dart';
@@ -16,6 +17,10 @@ void main() {
   setUp(() {
     dataSource = MockVoucherRemoteDataSource();
     usecase = RedeemVoucherCode(dataSource: dataSource);
+
+    provideDummy<Either<NetworkFailure, RedeemedVoucher>>(
+      const Left(ConnectionFailure()),
+    );
   });
 
   test('should call repository', () async {

@@ -1,6 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/features/leaderboard/data/models/leaderboard_user_model.dart';
+import 'package:coffeecard/features/leaderboard/domain/entities/leaderboard_user.dart';
 import 'package:coffeecard/features/leaderboard/domain/usecases/get_leaderboard.dart';
 import 'package:coffeecard/features/leaderboard/presentation/cubit/leaderboard_cubit.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -18,6 +19,10 @@ void main() {
   setUp(() {
     getLeaderboard = MockGetLeaderboard();
     cubit = LeaderboardCubit(getLeaderboard: getLeaderboard);
+
+    provideDummy<Either<Failure, List<LeaderboardUser>>>(
+      const Left(ConnectionFailure()),
+    );
   });
 
   const testLeaderboard = [

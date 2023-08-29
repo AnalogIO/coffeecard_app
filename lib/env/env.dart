@@ -5,5 +5,5 @@ part 'env.g.dart';
 @Envied(path: '.env.develop')
 abstract final class Env {
   @EnviedField(varName: 'coffeeCardUrl')
-  static const coffeeCardUrl = _Env.coffeeCardUrl;
+  static const String coffeeCardUrl = _Env.coffeeCardUrl;
 }

@@ -1,3 +1,4 @@
+import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/core/usecases/usecase.dart';
 import 'package:coffeecard/features/occupation/domain/entities/occupation.dart';
 import 'package:coffeecard/features/user/data/datasources/user_remote_data_source.dart';
@@ -19,6 +20,10 @@ void main() {
   setUp(() {
     dataSource = MockUserRemoteDataSource();
     usecase = GetUser(dataSource: dataSource);
+
+    provideDummy<Either<NetworkFailure, UserModel>>(
+      const Left(ConnectionFailure()),
+    );
   });
 
   test('should call repository', () async {

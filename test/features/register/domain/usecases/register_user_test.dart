@@ -1,3 +1,4 @@
+import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/features/register/data/datasources/register_remote_data_source.dart';
 import 'package:coffeecard/features/register/domain/usecases/register_user.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -15,6 +16,10 @@ void main() {
   setUp(() {
     remoteDataSource = MockRegisterRemoteDataSource();
     usecase = RegisterUser(remoteDataSource: remoteDataSource);
+
+    provideDummy<Either<NetworkFailure, void>>(
+      const Left(ConnectionFailure()),
+    );
   });
 
   test('should call data source', () async {

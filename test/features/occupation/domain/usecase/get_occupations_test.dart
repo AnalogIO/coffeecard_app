@@ -1,5 +1,7 @@
+import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/core/usecases/usecase.dart';
 import 'package:coffeecard/features/occupation/data/datasources/occupation_remote_data_source.dart';
+import 'package:coffeecard/features/occupation/data/models/occupation_model.dart';
 import 'package:coffeecard/features/occupation/domain/usecases/get_occupations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
@@ -16,6 +18,10 @@ void main() {
   setUp(() {
     dataSource = MockOccupationRemoteDataSource();
     usecase = GetOccupations(dataSource: dataSource);
+
+    provideDummy<Either<NetworkFailure, List<OccupationModel>>>(
+      const Left(ConnectionFailure()),
+    );
   });
 
   test('should call repository', () async {

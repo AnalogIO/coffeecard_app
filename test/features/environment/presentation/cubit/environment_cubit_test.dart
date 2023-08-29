@@ -12,42 +12,44 @@ import 'environment_cubit_test.mocks.dart';
 
 @GenerateMocks([GetEnvironmentType])
 void main() {
-  group('environment cubit tests', () {
-    late EnvironmentCubit cubit;
-    late MockGetEnvironmentType getEnvironmentType;
+  late EnvironmentCubit cubit;
+  late MockGetEnvironmentType getEnvironmentType;
 
-    setUp(() {
-      getEnvironmentType = MockGetEnvironmentType();
-      cubit = EnvironmentCubit(getEnvironmentType: getEnvironmentType);
-    });
+  setUp(() {
+    getEnvironmentType = MockGetEnvironmentType();
+    cubit = EnvironmentCubit(getEnvironmentType: getEnvironmentType);
 
-    test('initial state is [Initial]', () {
-      expect(cubit.state, const EnvironmentInitial());
-    });
+    provideDummy<Either<Failure, Environment>>(
+      const Left(ConnectionFailure()),
+    );
+  });
 
-    group('getConfig', () {
-      blocTest(
-        'should emit [Loaded] when usecase suceeds',
-        build: () => cubit,
-        setUp: () {
-          when(getEnvironmentType(any))
-              .thenAnswer((_) async => const Right(Environment.production));
-        },
-        act: (_) => cubit.getConfig(),
-        expect: () => [const EnvironmentLoaded(env: Environment.production)],
-      );
+  test('initial state is [Initial]', () {
+    expect(cubit.state, const EnvironmentInitial());
+  });
 
-      blocTest(
-        'should emit [Error] when usecase fails',
-        build: () => cubit,
-        setUp: () {
-          when(getEnvironmentType(any)).thenAnswer(
-            (_) async => const Left(ServerFailure('some error')),
-          );
-        },
-        act: (cubit) => cubit.getConfig(),
-        expect: () => [const EnvironmentError('some error')],
-      );
-    });
+  group('getConfig', () {
+    blocTest(
+      'should emit [Loaded] when usecase suceeds',
+      build: () => cubit,
+      setUp: () {
+        when(getEnvironmentType(any))
+            .thenAnswer((_) async => const Right(Environment.production));
+      },
+      act: (_) => cubit.getConfig(),
+      expect: () => [const EnvironmentLoaded(env: Environment.production)],
+    );
+
+    blocTest(
+      'should emit [Error] when usecase fails',
+      build: () => cubit,
+      setUp: () {
+        when(getEnvironmentType(any)).thenAnswer(
+          (_) async => const Left(ServerFailure('some error')),
+        );
+      },
+      act: (cubit) => cubit.getConfig(),
+      expect: () => [const EnvironmentError('some error')],
+    );
   });
 }

@@ -18,6 +18,13 @@ void main() {
   setUp(() {
     remoteDataSource = MockLeaderboardRemoteDataSource();
     usecase = GetLeaderboard(remoteDataSource: remoteDataSource);
+
+    provideDummy<Either<NetworkFailure, LeaderboardUser>>(
+      const Left(ConnectionFailure()),
+    );
+    provideDummy<Either<NetworkFailure, List<LeaderboardUser>>>(
+      const Left(ConnectionFailure()),
+    );
   });
 
   group('call', () {

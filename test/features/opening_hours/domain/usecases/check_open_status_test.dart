@@ -1,3 +1,4 @@
+import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/core/usecases/usecase.dart';
 import 'package:coffeecard/features/opening_hours/opening_hours.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -15,6 +16,10 @@ void main() {
   setUp(() {
     dataSource = MockOpeningHoursRemoteDataSource();
     getIsOpen = CheckOpenStatus(dataSource: dataSource);
+
+    provideDummy<Either<Failure, bool>>(
+      const Left(ConnectionFailure()),
+    );
   });
 
   test('should call data source', () async {

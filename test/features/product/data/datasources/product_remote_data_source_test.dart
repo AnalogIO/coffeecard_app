@@ -1,3 +1,4 @@
+import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/features/product/data/datasources/product_remote_data_source.dart';
 import 'package:coffeecard/features/product/data/models/product_model.dart';
@@ -21,6 +22,10 @@ void main() {
     remoteDataSource = ProductRemoteDataSource(
       apiV1: apiV1,
       executor: executor,
+    );
+
+    provideDummy<Either<NetworkFailure, List<ProductDto>>>(
+      const Left(ConnectionFailure()),
     );
   });
 
