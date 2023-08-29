@@ -340,10 +340,10 @@ class _FakeGetIt extends Fake implements GetIt {
   // ignore: type_annotate_public_apis
   T get<T extends Object>({String? instanceName, param1, param2, Type? type}) {
     return switch (T) {
-      AuthenticationCubit => mockAuthenticationCubit,
-      AccountRemoteDataSource => mockAccountRemoteDataSource,
-      SecureStorage => mockSecureStorage,
-      Logger => mockLogger,
+      const (AuthenticationCubit) => mockAuthenticationCubit,
+      const (AccountRemoteDataSource) => mockAccountRemoteDataSource,
+      const (SecureStorage) => mockSecureStorage,
+      const (Logger) => mockLogger,
       _ => throw UnimplementedError('Mock for $T not implemented.'),
     } as T;
   }
@@ -351,10 +351,10 @@ class _FakeGetIt extends Fake implements GetIt {
   /// Given a mocked type, get the mocked object for the given type.
   T getMock<T extends Mock>() {
     return switch (T) {
-      MockAuthenticationCubit => mockAuthenticationCubit,
-      MockAccountRemoteDataSource => mockAccountRemoteDataSource,
-      MockSecureStorage => mockSecureStorage,
-      MockLogger => mockLogger,
+      const (MockAuthenticationCubit) => mockAuthenticationCubit,
+      const (MockAccountRemoteDataSource) => mockAccountRemoteDataSource,
+      const (MockSecureStorage) => mockSecureStorage,
+      const (MockLogger) => mockLogger,
       _ => throw UnimplementedError('Mock for $T not implemented.'),
     } as T;
   }
