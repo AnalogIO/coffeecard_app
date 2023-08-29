@@ -25,6 +25,21 @@ class TicketsCubit extends Cubit<TicketsState> {
   }
 
   void setBaristaMode({required bool baristaMode}) {
+    final st = state;
+
+    if (st is TicketsLoaded) {
+      emit(
+        st.copyWith(
+          isBarista: baristaMode,
+          filteredTickets: baristaMode
+              ? st.tickets.where((ticket) => ticket.isBaristaTicket).toList()
+              : st.tickets,
+        ),
+      );
+      return;
+    }
+    // log('Setting barista mode to $baristaMode');
+
     emit(state.copyWith(isBarista: baristaMode));
   }
 
@@ -33,7 +48,13 @@ class TicketsCubit extends Cubit<TicketsState> {
 
     final st = state as TicketsLoaded;
 
-    emit(TicketUsing(tickets: st.tickets, isBarista: state.isBarista));
+    emit(
+      TicketUsing(
+        tickets: st.tickets,
+        filteredTickets: st.tickets,
+        isBarista: state.isBarista,
+      ),
+    );
 
     final either = await consumeTicket(Params(productId: productId));
 
@@ -49,6 +70,7 @@ class TicketsCubit extends Cubit<TicketsState> {
           receipt: receipt,
           tickets: st.tickets,
           isBarista: state.isBarista,
+          filteredTickets: st.tickets,
         ),
       ),
     );
@@ -66,8 +88,15 @@ class TicketsCubit extends Cubit<TicketsState> {
           isBarista: state.isBarista,
         ),
       ),
-      (tickets) =>
-          emit(TicketsLoaded(tickets: tickets, isBarista: state.isBarista)),
+      (tickets) => emit(
+        TicketsLoaded(
+          tickets: tickets,
+          isBarista: state.isBarista,
+          filteredTickets: state.isBarista
+              ? tickets.where((ticket) => ticket.isBaristaTicket).toList()
+              : tickets,
+        ),
+      ),
     );
   }
 }

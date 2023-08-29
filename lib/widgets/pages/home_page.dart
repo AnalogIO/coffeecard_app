@@ -14,7 +14,6 @@ import 'package:coffeecard/features/user/domain/entities/user.dart';
 import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/widgets/components/helpers/lazy_indexed_stack.dart';
-import 'package:coffeecard/widgets/pages/barista_page.dart';
 import 'package:coffeecard/widgets/pages/settings/settings_page.dart';
 import 'package:coffeecard/widgets/pages/stats_page.dart';
 import 'package:coffeecard/widgets/routers/app_flow.dart';
@@ -35,11 +34,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _currentPageIndex = 0;
   List<int> _navFlowsStack = [0];
-  List<PageSettings> get pages =>
-      widget.user.hasBaristaPerks ? _baristaPages : _pages;
-  List<AppFlow> get bottomNavAppFlow => widget.user.hasBaristaPerks
-      ? _baristaBottomNavAppFlows
-      : _bottomNavAppFlows;
 
   void onNavFlowChange(int newFlowIndex) {
     setState(() => _currentPageIndex = newFlowIndex);
@@ -80,21 +74,11 @@ class _HomePageState extends State<HomePage> {
         ),
       ];
 
-  List<AppFlow> get _baristaBottomNavAppFlows => [
-        AppFlow(
-          navigatorKey: _baristaPages.first.navigatorKey,
-          initialRoute: BaristaPage.routeWith(
-            scrollController: _baristaPages.first.scrollController,
-          ),
-        ),
-        ..._bottomNavAppFlows,
-      ];
-
   Future<bool> onWillPop() async {
     // If back arrow is present on page, go back in the current flow
     {
       final currentFlow = _navFlowsStack.last;
-      final currentNavigator = pages[currentFlow].navigatorKey.currentState!;
+      final currentNavigator = _pages[currentFlow].navigatorKey.currentState!;
       if (currentNavigator.canPop()) {
         return true;
       }
@@ -115,13 +99,13 @@ class _HomePageState extends State<HomePage> {
 
     // Reset navigation stack
     {
-      final navigatorKey = pages[index].navigatorKey;
+      final navigatorKey = _pages[index].navigatorKey;
       navigatorKey.currentState!.popUntil((route) => route.isFirst);
     }
 
     // Scroll to the top of the page
     {
-      final scrollController = pages[index].scrollController;
+      final scrollController = _pages[index].scrollController;
       final ms = () {
         // We divide by d in the next line, so make sure it cannot be zero
         final d = max(1, scrollController.position.pixels);
@@ -148,7 +132,7 @@ class _HomePageState extends State<HomePage> {
                 .user
                 .hasBaristaPerks,
             loadTickets: sl(),
-          ),
+          )..getTickets(),
         ),
         BlocProvider(
           create: (_) => sl<ReceiptCubit>()..fetchReceipts(),
@@ -168,10 +152,10 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: AppColor.background,
           body: LazyIndexedStack(
             index: _currentPageIndex,
-            children: bottomNavAppFlow,
+            children: _bottomNavAppFlows,
           ),
           bottomNavigationBar: BottomNavigationBar(
-            items: pages.map((p) => p.bottomNavigationBarItem).toList(),
+            items: _pages.map((p) => p.bottomNavigationBarItem).toList(),
             currentIndex: _currentPageIndex,
             onTap: onBottomNavTap,
             type: BottomNavigationBarType.fixed,
@@ -224,14 +208,4 @@ final _pages = <PageSettings>[
       label: Strings.settingsNavTitle,
     ),
   ),
-];
-
-final _baristaPages = <PageSettings>[
-  PageSettings(
-    bottomNavigationBarItem: const BottomNavigationBarItem(
-      icon: Icon(Icons.person),
-      label: Strings.baristaNavTitle,
-    ),
-  ),
-  ..._pages,
 ];
