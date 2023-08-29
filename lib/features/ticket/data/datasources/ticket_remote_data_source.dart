@@ -8,7 +8,7 @@ import 'package:coffeecard/features/ticket/data/models/ticket_count_model.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
 import 'package:collection/collection.dart';
-import 'package:dartz/dartz.dart';
+import 'package:fpdart/fpdart.dart';
 
 class TicketRemoteDataSource {
   TicketRemoteDataSource({
@@ -30,17 +30,20 @@ class TicketRemoteDataSource {
       () => apiV2.apiV2TicketsGet(includeUsed: false),
     ).bindFuture(
       (result) => result
-          .groupListsBy((t) => t.productName)
+          .groupListsBy((t) => t.productId)
           .entries
           .map(
-            (t) {
-              final value = t.value;
+            (entry) {
+              final MapEntry(key: id, value: tickets) = entry;
+              // Join ticket names if they share the same product id
+              final ticketName =
+                  tickets.map((t) => t.productName).toSet().join('/');
               return TicketCountModel(
-                count: value.length,
-                productName: t.key,
-                productId: value.first.productId,
+                count: tickets.length,
+                productName: ticketName,
+                productId: id,
                 isBaristaTicket:
-                    baristaProductIds.contains(value.first.productId),
+                    baristaProductIds.contains(id),
               );
             },
           )

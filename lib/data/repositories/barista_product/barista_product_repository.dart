@@ -1,5 +1,5 @@
-import 'package:coffeecard/cubits/environment/environment_cubit.dart';
-import 'package:coffeecard/models/environment.dart';
+import 'package:coffeecard/features/environment/domain/entities/environment.dart';
+import 'package:coffeecard/features/environment/presentation/cubit/environment_cubit.dart';
 import 'package:coffeecard/service_locator.dart';
 
 class BaristaProductsRepository {

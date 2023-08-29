@@ -1,8 +1,9 @@
-import 'package:coffeecard/features/receipt/domain/entities/receipt.dart';
+part of 'receipt.dart';
 
 class PurchaseReceipt extends Receipt {
   final int price;
   final int amountPurchased;
+  final PaymentStatus paymentStatus;
 
   const PurchaseReceipt({
     required super.productName,
@@ -10,9 +11,10 @@ class PurchaseReceipt extends Receipt {
     required super.id,
     required this.price,
     required this.amountPurchased,
+    required this.paymentStatus,
   });
 
   @override
   List<Object?> get props =>
-      [productName, timeUsed, id, price, amountPurchased];
+      [productName, timeUsed, id, price, amountPurchased, paymentStatus];
 }

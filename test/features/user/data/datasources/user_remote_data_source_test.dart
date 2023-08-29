@@ -8,8 +8,8 @@ import 'package:coffeecard/features/user/data/models/user_model.dart';
 import 'package:coffeecard/features/user/domain/entities/role.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
 import 'package:coffeecard/models/account/update_user.dart';
-import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
@@ -30,7 +30,7 @@ void main() {
     );
   });
 
-  const tUserModel = UserModel(
+  const testUserModel = UserModel(
     id: 0,
     name: 'name',
     email: 'email',
@@ -84,7 +84,7 @@ void main() {
       final actual = await dataSource.getUser();
 
       // assert
-      expect(actual, const Right(tUserModel));
+      expect(actual, const Right(testUserModel));
     });
   });
 
@@ -126,7 +126,7 @@ void main() {
       final actual = await dataSource.updateUserDetails(const UpdateUser());
 
       // assert
-      expect(actual, const Right(tUserModel));
+      expect(actual, const Right(testUserModel));
     });
   });
 

@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/core/widgets/upgrade_alert.dart';
-import 'package:coffeecard/features/opening_hours/opening_hours.dart';
 import 'package:coffeecard/features/ticket/presentation/cubit/tickets_cubit.dart';
 import 'package:coffeecard/features/ticket/presentation/widgets/shop_section.dart';
 import 'package:coffeecard/features/ticket/presentation/widgets/tickets_section.dart';

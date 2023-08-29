@@ -1,8 +1,8 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/features/ticket/presentation/pages/buy_single_drink_page.dart';
-import 'package:coffeecard/features/ticket/presentation/pages/buy_tickets_page.dart';
+import 'package:coffeecard/features/product/presentation/pages/buy_single_drink_page.dart';
+import 'package:coffeecard/features/product/presentation/pages/buy_tickets_page.dart';
+import 'package:coffeecard/features/ticket/presentation/widgets/shop_card.dart';
 import 'package:coffeecard/widgets/components/helpers/grid.dart';
-import 'package:coffeecard/widgets/components/tickets/shop_card.dart';
 import 'package:flutter/material.dart';
 
 class BaristaPerksSection extends StatelessWidget {

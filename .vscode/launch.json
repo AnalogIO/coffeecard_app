@@ -18,6 +18,19 @@
         ]
       },
       {
+        "name": "Development flavor (profile mode)",
+        "request": "launch",
+        "type": "dart",
+        "flutterMode": "profile",
+        "program": "lib/main_development.dart",
+        "args": [
+          "--flavor",
+          "development",
+          "--target",
+          "lib/main_development.dart"
+        ]
+      },
+      {
         "name": "Production flavor (debug mode)",
         "request": "launch",
         "type": "dart",

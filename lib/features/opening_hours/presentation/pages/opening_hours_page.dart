@@ -84,7 +84,7 @@ class _OpeningHoursView extends StatelessWidget {
               Strings.weekdaysPlural[weekday]!,
               style: AppTextStyle.settingKey,
             ),
-            Text(hours, style: AppTextStyle.recieptItemKey),
+            Text(hours, style: AppTextStyle.receiptItemKey),
           ],
         );
       },

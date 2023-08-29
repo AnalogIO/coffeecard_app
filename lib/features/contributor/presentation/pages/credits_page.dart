@@ -1,16 +1,16 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/core/external/external_url_launcher.dart';
+import 'package:coffeecard/core/widgets/images/analogio_logo.dart';
 import 'package:coffeecard/features/contributor/presentation/cubit/contributor_cubit.dart';
 import 'package:coffeecard/features/contributor/presentation/widgets/contributor_card.dart';
+import 'package:coffeecard/features/settings/presentation/widgets/settings_group.dart';
+import 'package:coffeecard/features/settings/presentation/widgets/settings_list_entry.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/utils/api_uri_constants.dart';
-import 'package:coffeecard/utils/launch.dart';
-import 'package:coffeecard/widgets/components/images/analogio_logo.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:coffeecard/widgets/components/section_title.dart';
-import 'package:coffeecard/widgets/components/settings_group.dart';
-import 'package:coffeecard/widgets/components/settings_list_entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
@@ -76,7 +76,8 @@ class CreditsPage extends StatelessWidget {
                 ),
                 SettingListEntry(
                   name: Strings.github,
-                  onTap: () => launchUrlExternalApplication(
+                  onTap: () =>
+                      sl<ExternalUrlLauncher>().launchUrlExternalApplication(
                     ApiUriConstants.analogIOGitHub,
                     context,
                   ),

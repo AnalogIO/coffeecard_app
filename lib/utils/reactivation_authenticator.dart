@@ -1,131 +1,149 @@
 import 'dart:async';
 
 import 'package:chopper/chopper.dart';
+import 'package:coffeecard/core/data/datasources/account_remote_data_source.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
-import 'package:coffeecard/data/repositories/shared/account_repository.dart';
 import 'package:coffeecard/data/storage/secure_storage.dart';
-import 'package:coffeecard/utils/mutex.dart';
+import 'package:coffeecard/generated/api/coffeecard_api.models.swagger.dart'
+    show LoginDto;
+import 'package:coffeecard/utils/throttler.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 
 class ReactivationAuthenticator extends Authenticator {
-  final GetIt serviceLocator;
-  static const Duration debounce = Duration(seconds: 2);
+  /// Whether [initialize] has been called.
+  bool _ready = false;
+  late final AccountRemoteDataSource _accountRemoteDataSource;
 
-  DateTime? tokenRefreshedAt;
-  Mutex mutex = Mutex();
+  final SecureStorage _secureStorage;
+  final AuthenticationCubit _authenticationCubit;
+  final Logger _logger;
 
-  late SecureStorage secureStorage;
-  late AuthenticationCubit authenticationCubit;
-  late Logger logger;
+  final _throttler = Throttler<Option<String>>();
 
-  ReactivationAuthenticator(this.serviceLocator) {
-    secureStorage = serviceLocator.get<SecureStorage>();
-    authenticationCubit = serviceLocator.get<AuthenticationCubit>();
-    logger = serviceLocator.get<Logger>();
-  }
+  /// Creates a new [ReactivationAuthenticator] instance.
+  ///
+  /// This instance is not ready to be used. Call [initialize] before using it.
+  ReactivationAuthenticator.uninitialized({required GetIt serviceLocator})
+      : _secureStorage = serviceLocator<SecureStorage>(),
+        _authenticationCubit = serviceLocator<AuthenticationCubit>(),
+        _logger = serviceLocator<Logger>();
 
-  bool canRefreshToken() =>
-      tokenRefreshedAt == null ||
-      DateTime.now().difference(tokenRefreshedAt!) > debounce;
-
-  Future<void> evict() => authenticationCubit.unauthenticated();
-
-  Map<String, String> updateHeadersWithToken(
-    Map<String, String> headers,
-    String token,
-  ) {
-    final _ = headers.update(
-      'Authorization',
-      (String _) => token,
-      ifAbsent: () => token,
-    );
-
-    return headers;
-  }
-
-  void log(Request request, Response response) {
-    logger.d(
-      '${request.method} ${request.url} ${response.statusCode}\n${response.bodyString}',
-    );
+  /// Initializes the [ReactivationAuthenticator] by providing the
+  /// [AccountRemoteDataSource] to use.
+  ///
+  /// This method must be called before the [ReactivationAuthenticator] is used.
+  void initialize(AccountRemoteDataSource accountRemoteDataSource) {
+    _ready = true;
+    _accountRemoteDataSource = accountRemoteDataSource;
   }
 
   @override
-  FutureOr<Request?> authenticate(
+  Future<Request?> authenticate(
     Request request,
     Response response, [
-    Request? originalRequest,
-  ]) async {
-    log(request, response);
+    Request? _,
+  ]) {
+    // If the [ReactivationAuthenticator] is not ready, an error is thrown.
+    assert(
+      _ready,
+      'ReactivationAuthenticator is not ready. '
+      'Call initialize() before using it.',
+    );
 
+    // If the response is not unauthorized, we don't need to do anything.
     if (response.statusCode != 401) {
-      return null;
+      return Future.value();
     }
 
-    if (mutex.isLocked()) {
-      // someone is updating the token, wait until they are done and read it
-      await mutex.wait();
-
-      final refreshedToken = await secureStorage.readToken();
-
-      if (refreshedToken == null) {
-        return null;
-      }
-
-      return request.copyWith(
-        headers: updateHeadersWithToken(request.headers, refreshedToken),
-      );
+    // If the request is a unauthorized login request (token refresh request),
+    // we should not try to refresh the token.
+    // Otherwise, we would end up in an infinite loop.
+    if (request.body is LoginDto) {
+      return Future.value();
     }
 
-    // avoid refreshing the token multiple times if requests happen at the same time
-    if (canRefreshToken()) {
-      return await refreshToken(request);
-    }
+    // Try to refresh the token.
+    final maybeNewToken = Task(() async {
+      // Set a minimum duration for the token refresh to allow for throttling.
+      final minimumDuration =
+          Future<void>.delayed(const Duration(milliseconds: 250));
+      final maybeToken = await _getNewToken(request).run();
+      await minimumDuration;
+      // Side effect: save the new token or evict the current token.
+      final _ = _saveOrEvict(maybeToken).run();
+      return maybeToken;
+    }).runThrottled(_throttler);
 
-    return null;
+    // Convert the [maybeNewToken] to a [Request] with the new token, or null.
+    final maybeNewRequest = TaskOption(() => maybeNewToken).match(
+      () => null,
+      (token) => request..headers['Authorization'] = 'Bearer $token',
+    );
+
+    return maybeNewRequest.run();
   }
 
-  Future<Request?> refreshToken(
-    Request request,
-  ) async {
-    final email = await secureStorage.readEmail();
-    final encodedPasscode = await secureStorage.readEncodedPasscode();
+  /// Attempt to retrieve a new token by logging in with stored credentials.
+  Task<Option<String>> _getNewToken(Request request) {
+    _logRefreshingToken(request);
 
-    if (email == null || encodedPasscode == null) {
-      //User is not logged in
-      return null;
-    }
+    return Task(
+      () async {
+        // Check if user credentials are stored; if not, return None.
+        final email = await _secureStorage.readEmail();
+        final encodedPasscode = await _secureStorage.readEncodedPasscode();
+        if (email == null || encodedPasscode == null) {
+          return none();
+        }
 
-    mutex.lock();
+        // Attempt to log in with the stored credentials.
+        // This login call may return 401 if the stored credentials are invalid;
+        // recursive calls to [authenticate] are blocked by a check in the
+        // [authenticate] method.
+        final either =
+            await _accountRemoteDataSource.login(email, encodedPasscode);
 
-    try {
-      final accountRepository = serviceLocator.get<AccountRepository>();
+        return Option.fromEither(either).map((user) => user.token);
+      },
+    );
+  }
 
-      // this call may return 401 which triggers a recursive call, use a guard
-      final either = await accountRepository.login(email, encodedPasscode);
-
-      return either.fold(
-        (_) {
-          // refresh failed, sign the user out
-          evict();
-
-          return null;
+  /// Saves the [token] in [SecureStorage]
+  /// or signs out the user if the [token] is [None].
+  Task<Unit> _saveOrEvict(Option<String> token) {
+    return Task(() async {
+      return token.match(
+        () async {
+          _logRefreshTokenFailed();
+          await _authenticationCubit.unauthenticated();
+          return unit;
         },
-        (user) async {
-          // refresh succeeded, update the token in secure storage
-          tokenRefreshedAt = DateTime.now();
-
-          final token = user.token;
-          final bearerToken = 'Bearer ${user.token}';
-          await secureStorage.updateToken(token);
-
-          return request.copyWith(
-            headers: updateHeadersWithToken(request.headers, bearerToken),
-          );
+        (token) async {
+          _logRefreshTokenSucceeded();
+          await _secureStorage.updateToken(token);
+          return unit;
         },
       );
-    } finally {
-      mutex.unlock();
-    }
+    });
+  }
+
+  /// Logs that a token refresh was triggered by a request.
+  void _logRefreshingToken(Request request) {
+    _logger.d(
+      'Token refresh triggered by request:\n'
+      '\t${request.method} ${request.url}',
+    );
+  }
+
+  /// Logs that the refresh token call failed.
+  void _logRefreshTokenFailed() {
+    _logger.e('Failed to refresh token. Signing out.');
+  }
+
+  /// Logs that the refresh token call succeeded.
+  void _logRefreshTokenSucceeded() {
+    _logger.d('Successfully refreshed token.');
   }
 }

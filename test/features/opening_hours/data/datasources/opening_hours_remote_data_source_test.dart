@@ -1,8 +1,8 @@
 import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/features/opening_hours/opening_hours.dart';
 import 'package:coffeecard/generated/api/shiftplanning_api.swagger.dart';
-import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
@@ -38,10 +38,10 @@ void main() {
   group('getOpeningHours', () {
     test('should call executor', () async {
       // arrange
-      final List<OpeningHoursDTO> tOpeningHours = [];
+      final List<OpeningHoursDTO> testOpeningHours = [];
 
       when(executor<List<OpeningHoursDTO>>(any)).thenAnswer(
-        (_) async => Right(tOpeningHours),
+        (_) async => Right(testOpeningHours),
       );
 
       // act

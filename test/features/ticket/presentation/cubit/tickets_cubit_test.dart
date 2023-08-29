@@ -1,11 +1,11 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/features/receipt/domain/entities/placeholder_receipt.dart';
+import 'package:coffeecard/features/receipt/domain/entities/receipt.dart';
 import 'package:coffeecard/features/ticket/domain/usecases/consume_ticket.dart';
 import 'package:coffeecard/features/ticket/domain/usecases/load_tickets.dart';
 import 'package:coffeecard/features/ticket/presentation/cubit/tickets_cubit.dart';
-import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
@@ -54,14 +54,14 @@ void main() {
     );
   });
   group('useTicket', () {
-    final tReceipt = PlaceholderReceipt();
+    final testReceipt = PlaceholderReceipt();
 
     blocTest<TicketsCubit, TicketsState>(
       'should not emit new state when state is not [Loaded]',
       build: () => cubit,
       setUp: () {
         when(loadTickets(any)).thenAnswer((_) async => const Right([]));
-        when(consumeTicket(any)).thenAnswer((_) async => Right(tReceipt));
+        when(consumeTicket(any)).thenAnswer((_) async => Right(testReceipt));
       },
       act: (cubit) => cubit.useTicket(0),
       expect: () => [],
@@ -72,7 +72,7 @@ void main() {
       build: () => cubit,
       setUp: () {
         when(loadTickets(any)).thenAnswer((_) async => const Right([]));
-        when(consumeTicket(any)).thenAnswer((_) async => Right(tReceipt));
+        when(consumeTicket(any)).thenAnswer((_) async => Right(testReceipt));
       },
       act: (_) async {
         await cubit.getTickets();
@@ -83,7 +83,7 @@ void main() {
       expect: () => [
         const TicketUsing(tickets: [], isBarista: false, filteredTickets: []),
         TicketUsed(
-          receipt: tReceipt,
+          receipt: testReceipt,
           tickets: const [],
           isBarista: false,
           filteredTickets: const [],
