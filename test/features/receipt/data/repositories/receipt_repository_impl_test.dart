@@ -19,6 +19,10 @@ void main() {
   setUp(() {
     remoteDataSource = MockReceiptRemoteDataSource();
     repository = ReceiptRepositoryImpl(remoteDataSource: remoteDataSource);
+
+    provideDummy<Either<Failure, List<Receipt>>>(
+      const Left(ConnectionFailure()),
+    );
   });
 
   group('getUserReceipts', () {

@@ -1,3 +1,4 @@
+import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/core/usecases/usecase.dart';
 import 'package:coffeecard/features/user/data/datasources/user_remote_data_source.dart';
 import 'package:coffeecard/features/user/domain/usecases/request_account_deletion.dart';
@@ -16,6 +17,10 @@ void main() {
   setUp(() {
     dataSource = MockUserRemoteDataSource();
     usecase = RequestAccountDeletion(dataSource: dataSource);
+
+    provideDummy<Either<NetworkFailure, void>>(
+      const Left(ConnectionFailure()),
+    );
   });
 
   test('should call repository', () async {

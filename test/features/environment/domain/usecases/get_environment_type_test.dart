@@ -1,3 +1,4 @@
+import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/core/usecases/usecase.dart';
 import 'package:coffeecard/features/environment/data/datasources/environment_remote_data_source.dart';
 import 'package:coffeecard/features/environment/domain/entities/environment.dart';
@@ -17,6 +18,10 @@ void main() {
   setUp(() {
     remoteDataSource = MockEnvironmentRemoteDataSource();
     usecase = GetEnvironmentType(remoteDataSource: remoteDataSource);
+
+    provideDummy<Either<NetworkFailure, Environment>>(
+      const Left(ConnectionFailure()),
+    );
   });
 
   test('should call data source', () async {

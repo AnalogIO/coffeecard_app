@@ -17,11 +17,11 @@ import 'package:mockito/mockito.dart';
 
 import 'reactivation_authenticator_test.mocks.dart';
 
-@GenerateNiceMocks([
-  MockSpec<AuthenticationCubit>(),
-  MockSpec<AccountRemoteDataSource>(),
-  MockSpec<SecureStorage>(),
-  MockSpec<Logger>(),
+@GenerateMocks([
+  AuthenticationCubit,
+  AccountRemoteDataSource,
+  SecureStorage,
+  Logger,
 ])
 void main() {
   late _FakeGetIt serviceLocator;
@@ -47,6 +47,10 @@ void main() {
     authenticator =
         ReactivationAuthenticator.uninitialized(serviceLocator: serviceLocator);
     authenticator.initialize(accountRemoteDataSource);
+
+    provideDummy<Either<NetworkFailure, AuthenticatedUser>>(
+      const Left(ConnectionFailure()),
+    );
   });
 
   test(
@@ -77,6 +81,9 @@ void main() {
       // Arrange
       final request = _requestFromMethod('GET');
       final response = _responseFromStatusCode(401);
+
+      when(secureStorage.readEmail()).thenAnswer((_) async => null);
+      when(secureStorage.readEncodedPasscode()).thenAnswer((_) async => null);
 
       // Act
       final result = await authenticator.authenticate(request, response);

@@ -3,6 +3,7 @@ import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
 import 'package:coffeecard/features/login/domain/usecases/login_user.dart';
 import 'package:coffeecard/features/login/presentation/cubit/login_cubit.dart';
+import 'package:coffeecard/models/account/authenticated_user.dart';
 import 'package:coffeecard/utils/firebase_analytics_event_logging.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
@@ -31,6 +32,10 @@ void main() {
       authenticationCubit: authenticationCubit,
       loginUser: loginUser,
       firebaseAnalyticsEventLogging: firebaseAnalyticsEventLogging,
+    );
+
+    provideDummy<Either<Failure, AuthenticatedUser>>(
+      const Left(ConnectionFailure()),
     );
   });
 

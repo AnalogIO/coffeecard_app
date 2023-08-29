@@ -1,3 +1,4 @@
+import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/features/purchase/data/repositories/payment_handler.dart';
 import 'package:coffeecard/features/purchase/domain/entities/payment.dart';
 import 'package:coffeecard/features/purchase/domain/entities/payment_status.dart';
@@ -17,6 +18,10 @@ void main() {
   setUp(() {
     paymentHandler = MockPaymentHandler();
     usecase = InitPurchase(paymentHandler: paymentHandler);
+
+    provideDummy<Either<Failure, Payment>>(
+      const Left(ConnectionFailure()),
+    );
   });
 
   test('should call repository', () async {

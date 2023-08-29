@@ -19,6 +19,10 @@ void main() {
     api = MockCoffeecardApi();
     executor = MockNetworkRequestExecutor();
     dataSource = OccupationRemoteDataSource(api: api, executor: executor);
+
+    provideDummy<Either<NetworkFailure, List<ProgrammeDto>>>(
+      const Left(ConnectionFailure()),
+    );
   });
 
   group('getOccupations', () {

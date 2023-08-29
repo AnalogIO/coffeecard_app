@@ -1,3 +1,4 @@
+import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/features/purchase/data/datasources/purchase_remote_data_source.dart';
 import 'package:coffeecard/features/purchase/data/repositories/free_product_service.dart';
 import 'package:coffeecard/features/purchase/domain/entities/initiate_purchase.dart';
@@ -24,6 +25,10 @@ void main() {
     freeProductService = FreeProductService(
       remoteDataSource: remoteDataSource,
       buildContext: buildContext,
+    );
+
+    provideDummy<Either<NetworkFailure, InitiatePurchase>>(
+      const Left(ConnectionFailure()),
     );
   });
 

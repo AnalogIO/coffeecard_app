@@ -18,6 +18,10 @@ void main() {
   setUp(() {
     fetchContributors = MockFetchContributors();
     cubit = ContributorCubit(fetchContributors: fetchContributors);
+
+    provideDummy<Either<Failure, List<Contributor>>>(
+      const Left(ConnectionFailure()),
+    );
   });
 
   test('initial state is ContributorInitial', () {

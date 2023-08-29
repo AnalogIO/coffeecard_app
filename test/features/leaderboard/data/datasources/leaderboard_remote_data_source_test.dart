@@ -21,6 +21,13 @@ void main() {
     apiV2 = MockCoffeecardApiV2();
     executor = MockNetworkRequestExecutor();
     dataSource = LeaderboardRemoteDataSource(apiV2: apiV2, executor: executor);
+
+    provideDummy<Either<NetworkFailure, List<LeaderboardEntry>>>(
+      const Left(ConnectionFailure()),
+    );
+    provideDummy<Either<NetworkFailure, LeaderboardEntry>>(
+      const Left(ConnectionFailure()),
+    );
   });
 
   const testErrorMessage = 'some error';

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/features/purchase/data/datasources/purchase_remote_data_source.dart';
 import 'package:coffeecard/features/purchase/data/models/initiate_purchase_model.dart';
@@ -25,6 +26,13 @@ void main() {
     purchaseRemoteDataSource = PurchaseRemoteDataSource(
       apiV2: apiV2,
       executor: executor,
+    );
+
+    provideDummy<Either<NetworkFailure, InitiatePurchaseResponse>>(
+      const Left(ConnectionFailure()),
+    );
+    provideDummy<Either<NetworkFailure, SinglePurchaseResponse>>(
+      const Left(ConnectionFailure()),
     );
   });
 

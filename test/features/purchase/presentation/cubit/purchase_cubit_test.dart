@@ -41,6 +41,13 @@ void main() {
       verifyPurchaseStatus: verifyPurchaseStatus,
       firebaseAnalyticsEventLogging: firebaseAnalyticsEventLogging,
     );
+
+    provideDummy<Either<Failure, Payment>>(
+      const Left(ConnectionFailure()),
+    );
+    provideDummy<Either<Failure, PaymentStatus>>(
+      const Left(ConnectionFailure()),
+    );
   });
 
   const testError = 'some error';

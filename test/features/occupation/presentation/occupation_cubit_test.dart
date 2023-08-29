@@ -1,5 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:coffeecard/core/errors/failures.dart';
+import 'package:coffeecard/features/occupation/domain/entities/occupation.dart';
 import 'package:coffeecard/features/occupation/domain/usecases/get_occupations.dart';
 import 'package:coffeecard/features/occupation/presentation/cubit/occupation_cubit.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -18,6 +19,10 @@ void main() {
     getOccupations = MockGetOccupations();
     cubit = OccupationCubit(
       getOccupations: getOccupations,
+    );
+
+    provideDummy<Either<Failure, List<Occupation>>>(
+      const Left(ConnectionFailure()),
     );
   });
 
