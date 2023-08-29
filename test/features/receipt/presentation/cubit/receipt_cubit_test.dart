@@ -18,6 +18,10 @@ void main() {
   setUp(() {
     getReceipts = MockGetReceipts();
     cubit = ReceiptCubit(getReceipts: getReceipts);
+
+    provideDummy<Either<Failure, List<Receipt>>>(
+      const Left(ConnectionFailure()),
+    );
   });
 
   group('fetchReceipts', () {

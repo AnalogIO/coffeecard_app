@@ -23,6 +23,10 @@ void main() {
       registerUser: registerUser,
       firebaseAnalyticsEventLogging: firebaseAnalyticsEventLogging,
     );
+
+    provideDummy<Either<Failure, void>>(
+      const Left(ConnectionFailure()),
+    );
   });
 
   group('register', () {

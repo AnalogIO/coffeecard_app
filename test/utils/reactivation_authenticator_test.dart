@@ -17,11 +17,11 @@ import 'package:mockito/mockito.dart';
 
 import 'reactivation_authenticator_test.mocks.dart';
 
-@GenerateNiceMocks([
-  MockSpec<AuthenticationCubit>(),
-  MockSpec<AccountRemoteDataSource>(),
-  MockSpec<SecureStorage>(),
-  MockSpec<Logger>(),
+@GenerateMocks([
+  AuthenticationCubit,
+  AccountRemoteDataSource,
+  SecureStorage,
+  Logger,
 ])
 void main() {
   late _FakeGetIt serviceLocator;
@@ -47,6 +47,10 @@ void main() {
     authenticator =
         ReactivationAuthenticator.uninitialized(serviceLocator: serviceLocator);
     authenticator.initialize(accountRemoteDataSource);
+
+    provideDummy<Either<NetworkFailure, AuthenticatedUser>>(
+      const Left(ConnectionFailure()),
+    );
   });
 
   test(
@@ -77,6 +81,9 @@ void main() {
       // Arrange
       final request = _requestFromMethod('GET');
       final response = _responseFromStatusCode(401);
+
+      when(secureStorage.readEmail()).thenAnswer((_) async => null);
+      when(secureStorage.readEncodedPasscode()).thenAnswer((_) async => null);
 
       // Act
       final result = await authenticator.authenticate(request, response);
@@ -333,10 +340,10 @@ class _FakeGetIt extends Fake implements GetIt {
   // ignore: type_annotate_public_apis
   T get<T extends Object>({String? instanceName, param1, param2, Type? type}) {
     return switch (T) {
-      AuthenticationCubit => mockAuthenticationCubit,
-      AccountRemoteDataSource => mockAccountRemoteDataSource,
-      SecureStorage => mockSecureStorage,
-      Logger => mockLogger,
+      const (AuthenticationCubit) => mockAuthenticationCubit,
+      const (AccountRemoteDataSource) => mockAccountRemoteDataSource,
+      const (SecureStorage) => mockSecureStorage,
+      const (Logger) => mockLogger,
       _ => throw UnimplementedError('Mock for $T not implemented.'),
     } as T;
   }
@@ -344,10 +351,10 @@ class _FakeGetIt extends Fake implements GetIt {
   /// Given a mocked type, get the mocked object for the given type.
   T getMock<T extends Mock>() {
     return switch (T) {
-      MockAuthenticationCubit => mockAuthenticationCubit,
-      MockAccountRemoteDataSource => mockAccountRemoteDataSource,
-      MockSecureStorage => mockSecureStorage,
-      MockLogger => mockLogger,
+      const (MockAuthenticationCubit) => mockAuthenticationCubit,
+      const (MockAccountRemoteDataSource) => mockAccountRemoteDataSource,
+      const (MockSecureStorage) => mockSecureStorage,
+      const (MockLogger) => mockLogger,
       _ => throw UnimplementedError('Mock for $T not implemented.'),
     } as T;
   }

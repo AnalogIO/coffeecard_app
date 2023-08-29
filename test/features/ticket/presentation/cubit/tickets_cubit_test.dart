@@ -1,6 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/features/receipt/domain/entities/receipt.dart';
+import 'package:coffeecard/features/ticket/domain/entities/ticket_count.dart';
 import 'package:coffeecard/features/ticket/domain/usecases/consume_ticket.dart';
 import 'package:coffeecard/features/ticket/domain/usecases/load_tickets.dart';
 import 'package:coffeecard/features/ticket/presentation/cubit/tickets_cubit.dart';
@@ -24,6 +25,13 @@ void main() {
       loadTickets: loadTickets,
       consumeTicket: consumeTicket,
       isBarista: false,
+    );
+
+    provideDummy<Either<Failure, List<TicketCount>>>(
+      const Left(ConnectionFailure()),
+    );
+    provideDummy<Either<Failure, Receipt>>(
+      const Left(ConnectionFailure()),
     );
   });
 

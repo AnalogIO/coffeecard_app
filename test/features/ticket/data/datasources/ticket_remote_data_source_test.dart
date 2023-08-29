@@ -37,6 +37,13 @@ void main() {
       executor: executor,
       baristaProductsRepository: baristaProductsRepository,
     );
+
+    provideDummy<Either<NetworkFailure, List<TicketResponse>>>(
+      const Left(ConnectionFailure()),
+    );
+    provideDummy<Either<NetworkFailure, TicketDto>>(
+      const Left(ConnectionFailure()),
+    );
   });
 
   group('getUserTickets', () {

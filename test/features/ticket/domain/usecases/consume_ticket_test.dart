@@ -1,4 +1,5 @@
 import 'package:coffeecard/core/errors/failures.dart';
+import 'package:coffeecard/features/receipt/domain/entities/receipt.dart';
 import 'package:coffeecard/features/ticket/data/datasources/ticket_remote_data_source.dart';
 import 'package:coffeecard/features/ticket/domain/usecases/consume_ticket.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -16,6 +17,10 @@ void main() {
   setUp(() {
     ticketRemoteDataSource = MockTicketRemoteDataSource();
     usecase = ConsumeTicket(ticketRemoteDataSource: ticketRemoteDataSource);
+
+    provideDummy<Either<NetworkFailure, Receipt>>(
+      const Left(ConnectionFailure()),
+    );
   });
 
   test('should call repository', () async {
