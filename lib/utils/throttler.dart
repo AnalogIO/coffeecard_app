@@ -45,7 +45,7 @@ class Throttler<T> {
   /// runs the given [task] and stores it until it completes.
   /// Otherwise, returns the currently running task.
   Future<T> throttle(Task<T> task) {
-    return _storedTask.toOption().getOrElse(
+        return Option.of(_storedTask!).getOrElse(
           () => _storedTask = task.run().whenComplete(() => _storedTask = null),
         );
   }
