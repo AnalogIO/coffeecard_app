@@ -18,6 +18,10 @@ void main() {
   setUp(() {
     redeemVoucherCode = MockRedeemVoucherCode();
     cubit = VoucherCubit(redeemVoucherCode: redeemVoucherCode);
+
+    provideDummy<Either<Failure, RedeemedVoucher>>(
+      const Left(ConnectionFailure()),
+    );
   });
 
   const testErrorMessage = 'some error';

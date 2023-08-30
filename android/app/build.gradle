@@ -47,7 +47,7 @@ android {
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 31
+        targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
@@ -72,6 +72,7 @@ android {
             applicationId "dk.analogio.analog.dev"
             versionNameSuffix "-dev"
             resValue "string", "app_name", "[DEV] Analog"
+            resValue "string", "app_deep_link", "analogcoffeecard-dev"
         }
         production {
             dimension "app"
@@ -79,6 +80,7 @@ android {
             applicationIdSuffix ""
             versionNameSuffix "-prod"
             resValue "string", "app_name", "Analog"
+            resValue "string", "app_deep_link", "analogcoffeecard"
         }
     }
 

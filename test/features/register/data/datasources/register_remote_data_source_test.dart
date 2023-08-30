@@ -1,3 +1,4 @@
+import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/features/register/data/datasources/register_remote_data_source.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
@@ -20,6 +21,13 @@ void main() {
     dataSource = RegisterRemoteDataSource(
       apiV2: apiV2,
       executor: executor,
+    );
+
+    provideDummy<Either<NetworkFailure, MessageResponseDto>>(
+      const Left(ConnectionFailure()),
+    );
+    provideDummy<Either<NetworkFailure, dynamic>>(
+      const Left(ConnectionFailure()),
     );
   });
 

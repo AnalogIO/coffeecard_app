@@ -14,7 +14,11 @@ import 'package:mockito/mockito.dart';
 
 import 'account_remote_data_source_test.mocks.dart';
 
-@GenerateMocks([v1.CoffeecardApi, v2.CoffeecardApiV2, NetworkRequestExecutor])
+@GenerateMocks([
+  v1.CoffeecardApi,
+  v2.CoffeecardApiV2,
+  NetworkRequestExecutor,
+])
 void main() {
   late MockCoffeecardApi apiV1;
   late MockCoffeecardApiV2 apiV2;
@@ -30,6 +34,19 @@ void main() {
       apiV1: apiV1,
       apiV2: apiV2,
       executor: executor,
+    );
+
+    provideDummy<Either<NetworkFailure, v1.TokenDto>>(
+      const Left(ConnectionFailure()),
+    );
+    provideDummy<Either<NetworkFailure, v2.UserResponse>>(
+      const Left(ConnectionFailure()),
+    );
+    provideDummy<Either<NetworkFailure, v1.MessageResponseDto>>(
+      const Left(ConnectionFailure()),
+    );
+    provideDummy<Either<NetworkFailure, v2.EmailExistsResponse>>(
+      const Left(ConnectionFailure()),
     );
   });
 

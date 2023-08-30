@@ -11,7 +11,11 @@ import 'package:mockito/mockito.dart';
 import 'ticket_remote_data_source_test.mocks.dart';
 
 @GenerateMocks(
-  [CoffeecardApi, CoffeecardApiV2, NetworkRequestExecutor],
+  [
+    CoffeecardApi,
+    CoffeecardApiV2,
+    NetworkRequestExecutor,
+  ],
 )
 void main() {
   late MockCoffeecardApi apiV1;
@@ -23,8 +27,18 @@ void main() {
     apiV1 = MockCoffeecardApi();
     apiV2 = MockCoffeecardApiV2();
     executor = MockNetworkRequestExecutor();
-    dataSource =
-        TicketRemoteDataSource(apiV1: apiV1, apiV2: apiV2, executor: executor);
+    dataSource = TicketRemoteDataSource(
+      apiV1: apiV1,
+      apiV2: apiV2,
+      executor: executor,
+    );
+
+    provideDummy<Either<NetworkFailure, List<TicketResponse>>>(
+      const Left(ConnectionFailure()),
+    );
+    provideDummy<Either<NetworkFailure, TicketDto>>(
+      const Left(ConnectionFailure()),
+    );
   });
 
   group('getUserTickets', () {

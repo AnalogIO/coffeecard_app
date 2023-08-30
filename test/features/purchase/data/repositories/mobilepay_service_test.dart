@@ -30,6 +30,10 @@ void main() {
       remoteDataSource: remoteDataSource,
       buildContext: buildContext,
     );
+
+    provideDummy<Either<NetworkFailure, InitiatePurchase>>(
+      const Left(ConnectionFailure()),
+    );
   });
 
   const testError = 'some error';

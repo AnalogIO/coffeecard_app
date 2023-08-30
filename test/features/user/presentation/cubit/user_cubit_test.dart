@@ -31,6 +31,13 @@ void main() {
       updateUserDetails: updateUserDetails,
       requestAccountDeletion: requestAccountDeletion,
     );
+
+    provideDummy<Either<Failure, User>>(
+      const Left(ConnectionFailure()),
+    );
+    provideDummy<Either<Failure, void>>(
+      const Left(ConnectionFailure()),
+    );
   });
 
   const testUser = User(

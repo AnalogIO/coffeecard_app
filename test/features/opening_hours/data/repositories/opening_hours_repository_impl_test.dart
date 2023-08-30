@@ -1,6 +1,7 @@
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/features/opening_hours/domain/entities/opening_hours.dart';
 import 'package:coffeecard/features/opening_hours/opening_hours.dart';
+import 'package:coffeecard/generated/api/shiftplanning_api.swagger.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:mockito/annotations.dart';
@@ -16,6 +17,10 @@ void main() {
   setUp(() {
     dataSource = MockOpeningHoursRemoteDataSource();
     repository = OpeningHoursRepositoryImpl(dataSource: dataSource);
+
+    provideDummy<Either<Failure, List<OpeningHoursDTO>>>(
+      const Left(ConnectionFailure()),
+    );
   });
 
   group('getOpeningHours', () {

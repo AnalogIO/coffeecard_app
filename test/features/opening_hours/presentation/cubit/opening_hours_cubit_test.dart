@@ -22,6 +22,13 @@ void main() {
       isOpen: checkOpenStatus,
       fetchOpeningHours: getOpeningHours,
     );
+
+    provideDummy<Either<Failure, bool>>(
+      const Left(ConnectionFailure()),
+    );
+    provideDummy<Either<Failure, OpeningHours>>(
+      const Left(ConnectionFailure()),
+    );
   });
 
   group('getOpeninghours', () {
