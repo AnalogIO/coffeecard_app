@@ -19,7 +19,10 @@ import 'package:coffeecard/features/login/domain/usecases/login_user.dart';
 import 'package:coffeecard/features/occupation/data/datasources/occupation_remote_data_source.dart';
 import 'package:coffeecard/features/occupation/domain/usecases/get_occupations.dart';
 import 'package:coffeecard/features/occupation/presentation/cubit/occupation_cubit.dart';
-import 'package:coffeecard/features/opening_hours/opening_hours.dart';
+import 'package:coffeecard/features/opening_hours/data/datasources/opening_hours_remote_data_source.dart';
+import 'package:coffeecard/features/opening_hours/domain/usecases/check_open_status.dart';
+import 'package:coffeecard/features/opening_hours/domain/usecases/get_opening_hours.dart';
+import 'package:coffeecard/features/opening_hours/presentation/cubit/opening_hours_cubit.dart';
 import 'package:coffeecard/features/product/data/datasources/product_remote_data_source.dart';
 import 'package:coffeecard/features/product/domain/usecases/get_all_products.dart';
 import 'package:coffeecard/features/product/presentation/cubit/product_cubit.dart';
@@ -139,13 +142,8 @@ void initOpeningHours() {
   );
 
   // use case
-  sl.registerFactory(() => GetOpeningHours(repository: sl()));
+  sl.registerFactory(() => GetOpeningHours(dataSource: sl()));
   sl.registerFactory(() => CheckOpenStatus(dataSource: sl()));
-
-  // repository
-  sl.registerLazySingleton<OpeningHoursRepository>(
-    () => OpeningHoursRepositoryImpl(dataSource: sl()),
-  );
 
   // data source
   sl.registerLazySingleton<OpeningHoursRemoteDataSource>(

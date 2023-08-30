@@ -1,5 +1,4 @@
 import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/core/extensions/either_extensions.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/features/user/data/models/user_model.dart';
 import 'package:coffeecard/features/user/domain/entities/user.dart';
@@ -25,7 +24,7 @@ class AccountRemoteDataSource {
     String email,
     String encodedPasscode,
   ) async {
-    return executor(
+    return executor.executeAndMap(
       () => apiV1.apiV1AccountLoginPost(
         body: LoginDto(
           email: email,
@@ -33,7 +32,6 @@ class AccountRemoteDataSource {
           version: ApiUriConstants.minAppVersion,
         ),
       ),
-    ).bindFuture(
       (result) => AuthenticatedUser(
         email: email,
         token: result.token!,
@@ -42,26 +40,25 @@ class AccountRemoteDataSource {
   }
 
   Future<Either<NetworkFailure, User>> getUser() async {
-    return executor(
+    return executor.executeAndMap(
       apiV2.apiV2AccountGet,
-    ).bindFuture(UserModel.fromResponse);
+      UserModel.fromResponse,
+    );
   }
 
-  Future<Either<NetworkFailure, void>> requestPasscodeReset(
-    String email,
-  ) async {
-    final result = await executor(
+  Future<Either<NetworkFailure, Unit>> requestPasscodeReset(String email) {
+    return executor.executeAndMap(
       () => apiV1.apiV1AccountForgotpasswordPost(body: EmailDto(email: email)),
+      (_) => unit,
     );
-
-    return result.pure(null);
   }
 
   Future<Either<NetworkFailure, bool>> emailExists(String email) async {
-    return executor(
+    return executor.executeAndMap(
       () => apiV2.apiV2AccountEmailExistsPost(
         body: EmailExistsRequest(email: email),
       ),
-    ).bindFuture((result) => result.emailExists);
+      (result) => result.emailExists,
+    );
   }
 }

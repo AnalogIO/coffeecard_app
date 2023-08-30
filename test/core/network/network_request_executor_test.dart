@@ -41,8 +41,12 @@ void main() {
     final testResponse = responseFromStatusCode(500, body: '');
 
     // act
-    final actual = await executor(() async => testResponse);
-
+    final actual = await executor.executeAndMap(
+      () async => testResponse,
+      identity,
+    );
+// TODO... MAKE SURE TO TRANSFORM ALL THE EXECUTOR CALLS TO CALLANDMAPLIST WHERE
+//  IT IS APPROPRIATE
     // assert
     expect(actual, const Left(ServerFailure(Strings.unknownErrorOccured)));
   });
@@ -52,7 +56,7 @@ void main() {
     final testResponse = responseFromStatusCode(200, body: 'some string');
 
     // act
-    final actual = await executor(() async => testResponse);
+    final actual = await executor.execute(() async => testResponse);
 
     // assert
     expect(actual, const Right('some string'));
@@ -63,9 +67,10 @@ void main() {
     final testException = Exception('some error');
 
     // act
-    final actual = await executor(() async => throw testException);
+    final actual = await executor.execute(() async => throw testException);
 
     // assert
     expect(actual, const Left(ConnectionFailure()));
+    // FIXME: this is not the correct error message
   });
 }

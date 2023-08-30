@@ -2,6 +2,7 @@ import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/features/voucher/data/datasources/voucher_remote_data_source.dart';
 import 'package:coffeecard/features/voucher/data/models/redeemed_voucher_model.dart';
+import 'package:coffeecard/features/voucher/domain/entities/redeemed_voucher.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
@@ -10,14 +11,16 @@ import 'package:mockito/mockito.dart';
 
 import 'voucher_remote_data_source_test.mocks.dart';
 
-@GenerateMocks([CoffeecardApi, NetworkRequestExecutor])
+@GenerateNiceMocks([
+  MockSpec<CoffeecardApi>(),
+])
 void main() {
   late VoucherRemoteDataSource remoteDataSource;
   late MockCoffeecardApi apiV1;
-  late MockNetworkRequestExecutor executor;
+  late NetworkRequestExecutor executor;
 
   setUp(() {
-    executor = MockNetworkRequestExecutor();
+    executor = NetworkRequestExecutor();
     apiV1 = MockCoffeecardApi();
     remoteDataSource = VoucherRemoteDataSource(
       apiV1: apiV1,
@@ -27,12 +30,15 @@ void main() {
     provideDummy<Either<NetworkFailure, PurchaseDto>>(
       const Left(ConnectionFailure()),
     );
+    provideDummy<Either<NetworkFailure, RedeemedVoucher>>(
+      const Left(ConnectionFailure()),
+    );
   });
 
   group('redeemVoucher', () {
     test('should call executor and map data', () async {
       // arrange
-      when(executor.call<PurchaseDto>(any)).thenAnswer(
+      when(executor.execute<PurchaseDto>(any)).thenAnswer(
         (_) async => Right(
           PurchaseDto(
             id: 0,
@@ -52,7 +58,7 @@ void main() {
       final actual = await remoteDataSource.redeemVoucher('voucher');
 
       // assert
-      verify(executor.call<PurchaseDto>(any));
+      verify(executor.execute<PurchaseDto>(any));
       expect(
         actual,
         const Right(

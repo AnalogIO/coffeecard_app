@@ -28,7 +28,7 @@ void main() {
   group('getOccupations', () {
     test('should return [Left] if executor returns [Left]', () async {
       // arrange
-      when(executor.call<List<ProgrammeDto>>(any)).thenAnswer(
+      when(executor.execute<List<ProgrammeDto>>(any)).thenAnswer(
         (_) async => const Left(ServerFailure('some error')),
       );
 
@@ -43,7 +43,7 @@ void main() {
       'should return [Right<List<OccupationModel>>] executor succeeds',
       () async {
         // arrange
-        when(executor.call<List<ProgrammeDto>>(any)).thenAnswer(
+        when(executor.execute<List<ProgrammeDto>>(any)).thenAnswer(
           (_) async => const Right([]),
         );
 

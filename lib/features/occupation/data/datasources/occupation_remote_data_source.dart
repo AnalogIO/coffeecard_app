@@ -13,11 +13,10 @@ class OccupationRemoteDataSource {
     required this.executor,
   });
 
-  Future<Either<NetworkFailure, List<OccupationModel>>> getOccupations() async {
-    final result = await executor(
-      () => api.apiV1ProgrammesGet(),
+  Future<Either<NetworkFailure, List<OccupationModel>>> getOccupations() {
+    return executor.executeAndMap(
+      api.apiV1ProgrammesGet,
+      (occupations) => occupations.map(OccupationModel.fromDTOV1).toList(),
     );
-    return result
-        .map((result) => result.map(OccupationModel.fromDTOV1).toList());
   }
 }

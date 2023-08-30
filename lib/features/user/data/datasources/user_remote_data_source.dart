@@ -15,18 +15,17 @@ class UserRemoteDataSource {
   });
 
   /// Get the currently logged in user.
-  Future<Either<NetworkFailure, UserModel>> getUser() async {
-    final result = await executor(() => apiV2.apiV2AccountGet());
-
-    return result.map(UserModel.fromResponse);
+  Future<Either<NetworkFailure, UserModel>> getUser() {
+    return executor.executeAndMap(
+      apiV2.apiV2AccountGet,
+      UserModel.fromResponse,
+    );
   }
 
   /// Updates the details of the currently logged in user based on
   /// the non-null details in [user]
-  Future<Either<NetworkFailure, UserModel>> updateUserDetails(
-    UpdateUser user,
-  ) async {
-    final result = await executor(
+  Future<Either<NetworkFailure, UserModel>> updateUserDetails(UpdateUser user) {
+    return executor.executeAndMap(
       () => apiV2.apiV2AccountPut(
         body: UpdateUserRequest(
           name: user.name,
@@ -36,15 +35,15 @@ class UserRemoteDataSource {
           password: user.encodedPasscode,
         ),
       ),
+      UserModel.fromResponse,
     );
-
-    return result.map(UserModel.fromResponse);
   }
 
   /// Request account deletion for the currently logged in user.
-  Future<Either<NetworkFailure, void>> requestAccountDeletion() async {
-    final result = await executor(() => apiV2.apiV2AccountDelete());
-
-    return result.bind((_) => const Right(null));
+  Future<Either<NetworkFailure, Unit>> requestAccountDeletion() async {
+    return executor.executeAndMap(
+      apiV2.apiV2AccountDelete,
+      (_) => unit,
+    );
   }
 }

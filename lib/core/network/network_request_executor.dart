@@ -4,6 +4,8 @@ import 'package:coffeecard/utils/firebase_analytics_event_logging.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:logger/logger.dart';
 
+typedef _NetworkRequest<Result> = Future<Response<Result>> Function();
+
 class NetworkRequestExecutor {
   final Logger logger;
   final FirebaseAnalyticsEventLogging firebaseLogger;
@@ -13,7 +15,40 @@ class NetworkRequestExecutor {
     required this.firebaseLogger,
   });
 
-  Future<Either<NetworkFailure, Result>> call<Result>(
+  /// Executes the network [request] and returns the result as an [Either].
+  Future<Either<NetworkFailure, R>> execute<R>(_NetworkRequest<R> request) {
+    return _execute(request);
+  }
+
+  /// Executes the network [request] and returns the result as an [Either],
+  /// where the Right value of type [ResponseType] is transformed to an [R]
+  /// using the given [transformer].
+  Future<Either<NetworkFailure, R>> executeAndMap<R, ResponseType>(
+    _NetworkRequest<ResponseType> request,
+    R Function(ResponseType) transformer,
+  ) async {
+    final result = await execute(request);
+    return result.map(transformer);
+  }
+
+  /// Executes the network [request] and returns the result as an [Either],
+  /// where the Right value is an [Iterable] of [ResponseType], where each
+  /// element herein is transformed to an [R] using the given [transformer].
+  ///
+  /// The result is returned as a [List].
+  // TODO(marfavi): return Iterable instead of List?
+  Future<Either<NetworkFailure, List<R>>> executeAndMapAll<R, ResponseType>(
+    _NetworkRequest<Iterable<ResponseType>> request,
+    R Function(ResponseType) transformer,
+  ) {
+    return executeAndMap(
+      request,
+      (items) => items.map(transformer).toList(),
+    );
+  }
+
+  /// Executes a network request and returns the result as an [Either].
+  Future<Either<NetworkFailure, Result>> _execute<Result>(
     Future<Response<Result>> Function() request,
   ) async {
     try {
@@ -21,7 +56,7 @@ class NetworkRequestExecutor {
 
       // request is successful if response code is >= 200 && <300
       if (!response.isSuccessful) {
-        logResponse(response);
+        _logResponse(response);
         return Left(ServerFailure.fromResponse(response));
       }
 
@@ -33,15 +68,15 @@ class NetworkRequestExecutor {
     }
   }
 
-  void logResponse(Response response) {
+  /// Logs the response to the console and to Firebase.
+  ///
+  /// Does not log 401 responses to Firebase since these are expected when
+  /// the user is not logged in.
+  void _logResponse<T>(Response<T> response) {
     logger.e(response.toString());
 
-    final ignore = [401];
-
-    if (ignore.contains(response.statusCode)) {
-      return;
+    if (response.statusCode != 401) {
+      firebaseLogger.errorEvent(response.toString());
     }
-
-    firebaseLogger.errorEvent(response.toString());
   }
 }

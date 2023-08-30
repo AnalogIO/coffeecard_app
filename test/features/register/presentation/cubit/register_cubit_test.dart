@@ -24,7 +24,7 @@ void main() {
       firebaseAnalyticsEventLogging: firebaseAnalyticsEventLogging,
     );
 
-    provideDummy<Either<Failure, void>>(
+    provideDummy<Either<Failure, Unit>>(
       const Left(ConnectionFailure()),
     );
   });
@@ -45,7 +45,7 @@ void main() {
       'should emit [Success] if use case succeeds',
       build: () => cubit,
       setUp: () {
-        when(registerUser(any)).thenAnswer((_) async => const Right(null));
+        when(registerUser(any)).thenAnswer((_) async => const Right(unit));
         when(firebaseAnalyticsEventLogging.signUpEvent());
       },
       act: (_) => cubit.register('name', 'email', 'passcode', 0),

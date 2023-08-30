@@ -26,15 +26,12 @@ void main() {
     provideDummy<Either<NetworkFailure, MessageResponseDto>>(
       const Left(ConnectionFailure()),
     );
-    provideDummy<Either<NetworkFailure, dynamic>>(
-      const Left(ConnectionFailure()),
-    );
   });
 
   group('register', () {
     test('should call executor', () async {
       // arrange
-      when(executor.call<MessageResponseDto>(any)).thenAnswer(
+      when(executor.execute<MessageResponseDto>(any)).thenAnswer(
         (_) async => Right(MessageResponseDto()),
       );
 
@@ -47,7 +44,7 @@ void main() {
       );
 
       // assert
-      verify(executor.call(any));
+      verify(executor.execute<MessageResponseDto>(any)).called(1);
     });
   });
 }

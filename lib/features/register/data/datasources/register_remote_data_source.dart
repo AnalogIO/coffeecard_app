@@ -1,5 +1,4 @@
 import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/core/extensions/either_extensions.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
 import 'package:fpdart/fpdart.dart';
@@ -13,13 +12,13 @@ class RegisterRemoteDataSource {
   final CoffeecardApiV2 apiV2;
   final NetworkRequestExecutor executor;
 
-  Future<Either<NetworkFailure, void>> register(
+  Future<Either<NetworkFailure, Unit>> register(
     String name,
     String email,
     String encodedPasscode,
     int occupationId,
   ) async {
-    return executor(
+    return executor.executeAndMap(
       () => apiV2.apiV2AccountPost(
         body: RegisterAccountRequest(
           name: name,
@@ -28,6 +27,7 @@ class RegisterRemoteDataSource {
           programmeId: occupationId,
         ),
       ),
-    ).bindFuture((_) => const Right(null));
+      (_) => unit,
+    );
   }
 }

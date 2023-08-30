@@ -57,7 +57,7 @@ void main() {
       'should return [Right<AuthenticatedUser>] when executor returns token',
       () async {
         // arrange
-        when(executor.call<v1.TokenDto>(any)).thenAnswer(
+        when(executor.execute<v1.TokenDto>(any)).thenAnswer(
           (_) async => Right(v1.TokenDto(token: 'token')),
         );
 
@@ -76,7 +76,7 @@ void main() {
   group('getUser', () {
     test('should return [Left] if executor fails', () async {
       // arrange
-      when(executor.call<v2.UserResponse>(any))
+      when(executor.execute<v2.UserResponse>(any))
           .thenAnswer((_) async => const Left(ServerFailure(testError)));
 
       // act
@@ -90,7 +90,7 @@ void main() {
       'should return [Right<UserModel>] when executor returns user response',
       () async {
         // arrange
-        when(executor.call<v2.UserResponse>(any)).thenAnswer(
+        when(executor.execute<v2.UserResponse>(any)).thenAnswer(
           (_) async => Right(
             v2.UserResponse(
               email: 'email',
@@ -141,7 +141,7 @@ void main() {
   group('requestPasscodeReset', () {
     test('should return [Right] when executor succeeds', () async {
       // arrange
-      when(executor.call<v1.MessageResponseDto>(any)).thenAnswer(
+      when(executor.execute<v1.MessageResponseDto>(any)).thenAnswer(
         (_) async => Right(v1.MessageResponseDto()),
       );
 
@@ -149,14 +149,14 @@ void main() {
       final actual = await dataSource.requestPasscodeReset('name');
 
       // assert
-      expect(actual, const Right(null));
+      expect(actual.isRight(), true);
     });
   });
 
   group('emailExists', () {
     test('should return [Right<bool>] if executor succeeds', () async {
       // arrange
-      when(executor.call<v2.EmailExistsResponse>(any)).thenAnswer(
+      when(executor.execute<v2.EmailExistsResponse>(any)).thenAnswer(
         (_) async => Right(v2.EmailExistsResponse(emailExists: true)),
       );
 

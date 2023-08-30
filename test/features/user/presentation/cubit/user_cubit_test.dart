@@ -142,7 +142,7 @@ void main() {
     test('should call use case', () {
       // arrange
       when(requestAccountDeletion(any)).thenAnswer(
-        (_) async => const Right(null),
+        (_) async => const Right(unit),
       );
 
       // act

@@ -1,5 +1,4 @@
 import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/core/extensions/either_extensions.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/features/product/data/models/product_model.dart';
 import 'package:coffeecard/features/product/domain/entities/product.dart';
@@ -16,8 +15,9 @@ class ProductRemoteDataSource {
   });
 
   Future<Either<NetworkFailure, List<Product>>> getProducts() async {
-    return executor(
+    return executor.executeAndMap(
       apiV1.apiV1ProductsGet,
-    ).bindFuture((result) => result.map(ProductModel.fromDTO).toList());
+      (products) => products.map(ProductModel.fromDTO).toList(),
+    );
   }
 }

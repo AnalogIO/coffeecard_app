@@ -1,5 +1,7 @@
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
+import 'package:coffeecard/features/opening_hours/data/models/opening_hours_model.dart';
+import 'package:coffeecard/features/opening_hours/domain/entities/opening_hours.dart';
 import 'package:coffeecard/generated/api/shiftplanning_api.swagger.dart';
 import 'package:fpdart/fpdart.dart';
 
@@ -16,18 +18,19 @@ class OpeningHoursRemoteDataSource {
   final shortkey = 'analog';
 
   /// Check if the cafe is open.
-  Future<Either<Failure, bool>> isOpen() async {
-    final result = await executor(
+  Future<Either<Failure, bool>> isOpen() {
+    return executor.executeAndMap(
       () async => api.apiOpenShortKeyGet(shortKey: shortkey),
+      (result) => result.open,
     );
-
-    return result.map((result) => result.open);
   }
 
-  /// Get the opening hours of the cafe.
-  Future<Either<Failure, List<OpeningHoursDTO>>> getOpeningHours() async {
-    return executor(
+  /// Get the opening hours of the cafe, including today's opening hours and
+  /// the opening hours for the next 7 days.
+  Future<Either<Failure, OpeningHours>> getOpeningHours() async {
+    return executor.executeAndMap(
       () => api.apiShiftsShortKeyGet(shortKey: shortkey),
+      OpeningHoursModel.fromDTO,
     );
   }
 }

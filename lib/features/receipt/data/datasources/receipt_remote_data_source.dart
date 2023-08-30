@@ -1,5 +1,4 @@
 import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/core/extensions/either_extensions.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/features/receipt/data/models/purchase_receipt_model.dart';
 import 'package:coffeecard/features/receipt/data/models/swipe_receipt_model.dart';
@@ -18,18 +17,17 @@ class ReceiptRemoteDataSource {
 
   /// Retrieves all of the users used receipts
   Future<Either<Failure, List<Receipt>>> getUsersUsedTicketsReceipts() async {
-    return executor(
+    return executor.executeAndMapAll(
       () => apiV2.apiV2TicketsGet(includeUsed: true),
-    ).bindFuture(
-      (result) => result.map(SwipeReceiptModel.fromTicketResponse).toList(),
+      SwipeReceiptModel.fromTicketResponse,
     );
   }
 
   /// Retrieves all of the users purchase receipts
   Future<Either<Failure, List<Receipt>>> getUserPurchasesReceipts() async {
-    return executor(apiV2.apiV2PurchasesGet).bindFuture(
-      (result) =>
-          result.map(PurchaseReceiptModel.fromSimplePurchaseResponse).toList(),
+    return executor.executeAndMapAll(
+      apiV2.apiV2PurchasesGet,
+      PurchaseReceiptModel.fromSimplePurchaseResponse,
     );
   }
 }

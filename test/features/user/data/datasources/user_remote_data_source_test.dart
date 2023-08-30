@@ -15,7 +15,10 @@ import 'package:mockito/mockito.dart';
 
 import 'user_remote_data_source_test.mocks.dart';
 
-@GenerateMocks([CoffeecardApiV2, NetworkRequestExecutor])
+@GenerateNiceMocks([
+  MockSpec<CoffeecardApiV2>(),
+  MockSpec<NetworkRequestExecutor>(),
+])
 void main() {
   late MockCoffeecardApiV2 apiV2;
   late MockNetworkRequestExecutor executor;
@@ -32,7 +35,10 @@ void main() {
     provideDummy<Either<NetworkFailure, UserResponse>>(
       const Left(ConnectionFailure()),
     );
-    provideDummy<Either<NetworkFailure, dynamic>>(
+    provideDummy<Either<NetworkFailure, Unit>>(
+      const Left(ConnectionFailure()),
+    );
+    provideDummy<Either<NetworkFailure, void>>(
       const Left(ConnectionFailure()),
     );
   });
@@ -56,7 +62,7 @@ void main() {
   group('getUser', () {
     test('should return [Left] if executor returns [Left]', () async {
       // arrange
-      when(executor.call<UserResponse>(any)).thenAnswer(
+      when(executor.execute<UserResponse>(any)).thenAnswer(
         (_) async => const Left(ServerFailure('some error')),
       );
 
@@ -69,7 +75,7 @@ void main() {
 
     test('should return [Right<UserModel>] executor succeeds', () async {
       // arrange
-      when(executor.call<UserResponse>(any)).thenAnswer(
+      when(executor.execute<UserResponse>(any)).thenAnswer(
         (_) async => Right(
           UserResponse(
             id: 0,
@@ -98,7 +104,7 @@ void main() {
   group('updateUserDetails', () {
     test('should return [Left] if executor returns [Left]', () async {
       // arrange
-      when(executor.call<UserResponse>(any)).thenAnswer(
+      when(executor.execute<UserResponse>(any)).thenAnswer(
         (_) async => const Left(ServerFailure('some error')),
       );
 
@@ -111,7 +117,7 @@ void main() {
 
     test('should return [UserModel] if api call succeeds', () async {
       // arrange
-      when(executor.call<UserResponse>(any)).thenAnswer(
+      when(executor.execute<UserResponse>(any)).thenAnswer(
         (_) async => Right(
           UserResponse(
             id: 0,
@@ -138,22 +144,22 @@ void main() {
   });
 
   group('requestAccountDeletion', () {
-    test('should return [Right<void>] if executor succeeds', () async {
+    test('should return [Right] if executor succeeds', () async {
       // arrange
-      when(executor.call(any)).thenAnswer(
-        (_) async => const Right(null),
+      when(executor.execute<Unit>(any)).thenAnswer(
+        (_) async => const Right(unit),
       );
 
       // act
       final actual = await dataSource.requestAccountDeletion();
 
       // assert
-      expect(actual, const Right(null));
+      expect(actual.isRight(), true);
     });
 
     test('should return [Left] if executor fails', () async {
       // arrange
-      when(executor.call(any)).thenAnswer(
+      when(executor.execute<Unit>(any)).thenAnswer(
         (_) async => const Left(ServerFailure('some error')),
       );
 
