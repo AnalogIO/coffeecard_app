@@ -14,10 +14,9 @@ class ProductRemoteDataSource {
     required this.executor,
   });
 
-  Future<Either<NetworkFailure, List<Product>>> getProducts() async {
-    return executor.executeAndMap(
-      apiV1.apiV1ProductsGet,
-      (products) => products.map(ProductModel.fromDTO).toList(),
-    );
+  Future<Either<NetworkFailure, List<Product>>> getProducts() {
+    return executor
+        .execute(apiV1.apiV1ProductsGet)
+        .mapAll(ProductModel.fromDTO);
   }
 }

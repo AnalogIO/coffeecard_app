@@ -27,18 +27,18 @@ class LeaderboardRemoteDataSource {
     LeaderboardFilter category,
     int top,
   ) {
-    return executor.executeAndMap(
-      () => apiV2.apiV2LeaderboardTopGet(preset: category.label, top: top),
-      (entries) => entries.map(LeaderboardUserModel.fromDTO).toList(),
-    );
+    return executor
+        .execute(
+          () => apiV2.apiV2LeaderboardTopGet(preset: category.label, top: top),
+        )
+        .mapAll(LeaderboardUserModel.fromDTO);
   }
 
   Future<Either<NetworkFailure, LeaderboardUser>> getLeaderboardUser(
     LeaderboardFilter category,
   ) {
-    return executor.executeAndMap(
-      () => apiV2.apiV2LeaderboardGet(preset: category.label),
-      LeaderboardUserModel.fromDTO,
-    );
+    return executor
+        .execute(() => apiV2.apiV2LeaderboardGet(preset: category.label))
+        .map(LeaderboardUserModel.fromDTO);
   }
 }

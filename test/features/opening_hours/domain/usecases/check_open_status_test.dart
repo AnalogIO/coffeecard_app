@@ -26,7 +26,6 @@ void main() {
   test('should call data source', () async {
     // arrange
     when(dataSource.isOpen()).thenAnswer((_) async => const Right(true));
-    // TODO(marfavi): change thenAnswer to thenReturn
 
     // act
     await getIsOpen(NoParams());

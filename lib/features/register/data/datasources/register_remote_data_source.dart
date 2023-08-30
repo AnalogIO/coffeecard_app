@@ -17,8 +17,8 @@ class RegisterRemoteDataSource {
     String email,
     String encodedPasscode,
     int occupationId,
-  ) async {
-    return executor.executeAndMap(
+  ) {
+    return executor.executeAndDiscard(
       () => apiV2.apiV2AccountPost(
         body: RegisterAccountRequest(
           name: name,
@@ -27,7 +27,6 @@ class RegisterRemoteDataSource {
           programmeId: occupationId,
         ),
       ),
-      (_) => unit,
     );
   }
 }

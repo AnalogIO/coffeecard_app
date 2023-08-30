@@ -16,18 +16,16 @@ class ReceiptRemoteDataSource {
   });
 
   /// Retrieves all of the users used receipts
-  Future<Either<Failure, List<Receipt>>> getUsersUsedTicketsReceipts() async {
-    return executor.executeAndMapAll(
-      () => apiV2.apiV2TicketsGet(includeUsed: true),
-      SwipeReceiptModel.fromTicketResponse,
-    );
+  Future<Either<Failure, List<Receipt>>> getUsersUsedTicketsReceipts() {
+    return executor
+        .execute(() => apiV2.apiV2TicketsGet(includeUsed: true))
+        .mapAll(SwipeReceiptModel.fromTicketResponse);
   }
 
   /// Retrieves all of the users purchase receipts
-  Future<Either<Failure, List<Receipt>>> getUserPurchasesReceipts() async {
-    return executor.executeAndMapAll(
-      apiV2.apiV2PurchasesGet,
-      PurchaseReceiptModel.fromSimplePurchaseResponse,
-    );
+  Future<Either<Failure, List<Receipt>>> getUserPurchasesReceipts() {
+    return executor
+        .execute(apiV2.apiV2PurchasesGet)
+        .mapAll(PurchaseReceiptModel.fromSimplePurchaseResponse);
   }
 }

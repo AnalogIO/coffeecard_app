@@ -26,13 +26,14 @@ void main() {
     provideDummy<Either<NetworkFailure, MessageResponseDto>>(
       const Left(ConnectionFailure()),
     );
+    provideDummy<Either<NetworkFailure, Unit>>(const Left(ConnectionFailure()));
   });
 
   group('register', () {
     test('should call executor', () async {
       // arrange
-      when(executor.execute<MessageResponseDto>(any)).thenAnswer(
-        (_) async => Right(MessageResponseDto()),
+      when(executor.executeAndDiscard<MessageResponseDto>(any)).thenAnswer(
+        (_) async => const Right(unit),
       );
 
       // act
@@ -44,7 +45,7 @@ void main() {
       );
 
       // assert
-      verify(executor.execute<MessageResponseDto>(any)).called(1);
+      verify(executor.executeAndDiscard<MessageResponseDto>(any)).called(1);
     });
   });
 }

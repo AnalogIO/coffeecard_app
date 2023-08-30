@@ -14,9 +14,8 @@ class OccupationRemoteDataSource {
   });
 
   Future<Either<NetworkFailure, List<OccupationModel>>> getOccupations() {
-    return executor.executeAndMap(
-      api.apiV1ProgrammesGet,
-      (occupations) => occupations.map(OccupationModel.fromDTOV1).toList(),
-    );
+    return executor
+        .execute(api.apiV1ProgrammesGet)
+        .mapAll(OccupationModel.fromDTOV1);
   }
 }

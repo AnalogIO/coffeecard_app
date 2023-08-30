@@ -42,7 +42,7 @@ void main() {
     provideDummy<Either<NetworkFailure, v2.UserResponse>>(
       const Left(ConnectionFailure()),
     );
-    provideDummy<Either<NetworkFailure, v1.MessageResponseDto>>(
+    provideDummy<Either<NetworkFailure, Unit>>(
       const Left(ConnectionFailure()),
     );
     provideDummy<Either<NetworkFailure, v2.EmailExistsResponse>>(
@@ -141,8 +141,8 @@ void main() {
   group('requestPasscodeReset', () {
     test('should return [Right] when executor succeeds', () async {
       // arrange
-      when(executor.execute<v1.MessageResponseDto>(any)).thenAnswer(
-        (_) async => Right(v1.MessageResponseDto()),
+      when(executor.executeAndDiscard(any)).thenAnswer(
+        (_) async => const Right(unit),
       );
 
       // act

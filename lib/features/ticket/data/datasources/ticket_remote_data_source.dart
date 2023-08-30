@@ -19,35 +19,39 @@ class TicketRemoteDataSource {
   final CoffeecardApiV2 apiV2;
   final NetworkRequestExecutor executor;
 
-  Future<Either<NetworkFailure, List<TicketCountModel>>>
-      getUserTickets() async {
-    return executor.executeAndMap(
-      () => apiV2.apiV2TicketsGet(includeUsed: false),
-      (result) => result
-          .groupListsBy((t) => t.productId)
-          .entries
-          .map(
-            (entry) {
-              final MapEntry(key: id, value: tickets) = entry;
-              // Join ticket names if they share the same product id
-              final ticketName =
-                  tickets.map((t) => t.productName).toSet().join('/');
-              return TicketCountModel(
-                count: tickets.length,
-                productName: ticketName,
-                productId: id,
-              );
-            },
-          )
-          .sortedBy<num>((t) => t.productId)
-          .toList(),
-    );
+  Future<Either<NetworkFailure, List<TicketCountModel>>> getUserTickets() {
+    // Mapper function for mapping a list of tickets (all with the same product
+    // id) to a TicketCountModel.
+    //
+    // This also takes into account that there might be
+    // some tickets with the same product id, but different names.
+    TicketCountModel mapper(MapEntry<int, List<TicketResponse>> entry) {
+      final MapEntry(key: id, value: tickets) = entry;
+      // If there are multiple ticket names present, join them with a slash.
+      final ticketName = tickets.map((t) => t.productName).toSet().join('/');
+
+      return TicketCountModel(
+        count: tickets.length,
+        productName: ticketName,
+        productId: id,
+      );
+    }
+
+    return executor
+        .execute(() => apiV2.apiV2TicketsGet(includeUsed: false))
+        .map(
+          (result) => result
+              .groupListsBy((t) => t.productId)
+              .entries
+              .map(mapper)
+              .sortedBy<num>((t) => t.productId),
+        );
   }
 
-  Future<Either<NetworkFailure, Receipt>> useTicket(int productId) async {
-    return executor.executeAndMap(
-      () => apiV1.apiV1TicketsUsePost(body: UseTicketDTO(productId: productId)),
-      SwipeReceiptModel.fromTicketDto,
-    );
+  Future<Either<NetworkFailure, Receipt>> useTicket(int productId) {
+    final body = UseTicketDTO(productId: productId);
+    return executor
+        .execute(() => apiV1.apiV1TicketsUsePost(body: body))
+        .map(SwipeReceiptModel.fromTicketDto);
   }
 }

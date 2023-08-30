@@ -21,25 +21,23 @@ class PurchaseRemoteDataSource {
   Future<Either<NetworkFailure, InitiatePurchase>> initiatePurchase(
     int productId,
     PaymentType paymentType,
-  ) async {
-    return executor.executeAndMap(
-      () => apiV2.apiV2PurchasesPost(
-        body: InitiatePurchaseRequest(
-          productId: productId,
-          paymentType: paymentTypeToJson(paymentType),
-        ),
-      ),
-      InitiatePurchaseModel.fromDto,
-    );
+  ) {
+    return executor
+        .execute(
+          () => apiV2.apiV2PurchasesPost(
+            body: InitiatePurchaseRequest(
+              productId: productId,
+              paymentType: paymentTypeToJson(paymentType),
+            ),
+          ),
+        )
+        .map(InitiatePurchaseModel.fromDto);
   }
 
   /// Get a purchase by its purchase id
-  Future<Either<NetworkFailure, SinglePurchase>> getPurchase(
-    int purchaseId,
-  ) async {
-    return executor.executeAndMap(
-      () => apiV2.apiV2PurchasesIdGet(id: purchaseId),
-      SinglePurchaseModel.fromDto,
-    );
+  Future<Either<NetworkFailure, SinglePurchase>> getPurchase(int purchaseId) {
+    return executor
+        .execute(() => apiV2.apiV2PurchasesIdGet(id: purchaseId))
+        .map(SinglePurchaseModel.fromDto);
   }
 }

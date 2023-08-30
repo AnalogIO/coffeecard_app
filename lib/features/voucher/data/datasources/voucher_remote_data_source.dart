@@ -17,9 +17,10 @@ class VoucherRemoteDataSource {
   Future<Either<NetworkFailure, RedeemedVoucher>> redeemVoucher(
     String voucher,
   ) {
-    return executor.executeAndMap(
-      () => apiV1.apiV1PurchasesRedeemvoucherPost(voucherCode: voucher),
-      RedeemedVoucherModel.fromDTO,
-    );
+    return executor
+        .execute(
+          () => apiV1.apiV1PurchasesRedeemvoucherPost(voucherCode: voucher),
+        )
+        .map(RedeemedVoucherModel.fromDTO);
   }
 }

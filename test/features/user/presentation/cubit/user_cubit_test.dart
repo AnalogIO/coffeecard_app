@@ -35,7 +35,7 @@ void main() {
     provideDummy<Either<Failure, User>>(
       const Left(ConnectionFailure()),
     );
-    provideDummy<Either<Failure, void>>(
+    provideDummy<Either<Failure, Unit>>(
       const Left(ConnectionFailure()),
     );
   });

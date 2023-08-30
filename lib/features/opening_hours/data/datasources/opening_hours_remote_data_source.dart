@@ -19,18 +19,16 @@ class OpeningHoursRemoteDataSource {
 
   /// Check if the cafe is open.
   Future<Either<Failure, bool>> isOpen() {
-    return executor.executeAndMap(
-      () async => api.apiOpenShortKeyGet(shortKey: shortkey),
-      (result) => result.open,
-    );
+    return executor
+        .execute(() => api.apiOpenShortKeyGet(shortKey: shortkey))
+        .map((result) => result.open);
   }
 
   /// Get the opening hours of the cafe, including today's opening hours and
   /// the opening hours for the next 7 days.
-  Future<Either<Failure, OpeningHours>> getOpeningHours() async {
-    return executor.executeAndMap(
-      () => api.apiShiftsShortKeyGet(shortKey: shortkey),
-      OpeningHoursModel.fromDTO,
-    );
+  Future<Either<Failure, OpeningHours>> getOpeningHours() {
+    return executor
+        .execute(() => api.apiShiftsShortKeyGet(shortKey: shortkey))
+        .map(OpeningHoursModel.fromDTO);
   }
 }

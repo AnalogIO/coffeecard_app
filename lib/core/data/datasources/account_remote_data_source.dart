@@ -23,42 +23,35 @@ class AccountRemoteDataSource {
   Future<Either<NetworkFailure, AuthenticatedUser>> login(
     String email,
     String encodedPasscode,
-  ) async {
-    return executor.executeAndMap(
-      () => apiV1.apiV1AccountLoginPost(
-        body: LoginDto(
-          email: email,
-          password: encodedPasscode,
-          version: ApiUriConstants.minAppVersion,
-        ),
-      ),
-      (result) => AuthenticatedUser(
-        email: email,
-        token: result.token!,
-      ),
-    );
+  ) {
+    return executor
+        .execute(
+          () => apiV1.apiV1AccountLoginPost(
+            body: LoginDto(
+              email: email,
+              password: encodedPasscode,
+              version: ApiUriConstants.minAppVersion,
+            ),
+          ),
+        )
+        .map((result) => AuthenticatedUser(email: email, token: result.token!));
   }
 
-  Future<Either<NetworkFailure, User>> getUser() async {
-    return executor.executeAndMap(
-      apiV2.apiV2AccountGet,
-      UserModel.fromResponse,
-    );
+  Future<Either<NetworkFailure, User>> getUser() {
+    return executor.execute(apiV2.apiV2AccountGet).map(UserModel.fromResponse);
   }
 
   Future<Either<NetworkFailure, Unit>> requestPasscodeReset(String email) {
-    return executor.executeAndMap(
-      () => apiV1.apiV1AccountForgotpasswordPost(body: EmailDto(email: email)),
-      (_) => unit,
+    final body = EmailDto(email: email);
+    return executor.executeAndDiscard(
+      () => apiV1.apiV1AccountForgotpasswordPost(body: body),
     );
   }
 
-  Future<Either<NetworkFailure, bool>> emailExists(String email) async {
-    return executor.executeAndMap(
-      () => apiV2.apiV2AccountEmailExistsPost(
-        body: EmailExistsRequest(email: email),
-      ),
-      (result) => result.emailExists,
-    );
+  Future<Either<NetworkFailure, bool>> emailExists(String email) {
+    final body = EmailExistsRequest(email: email);
+    return executor
+        .execute(() => apiV2.apiV2AccountEmailExistsPost(body: body))
+        .map((result) => result.emailExists);
   }
 }

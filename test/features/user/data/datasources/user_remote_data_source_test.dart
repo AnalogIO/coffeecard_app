@@ -38,9 +38,6 @@ void main() {
     provideDummy<Either<NetworkFailure, Unit>>(
       const Left(ConnectionFailure()),
     );
-    provideDummy<Either<NetworkFailure, void>>(
-      const Left(ConnectionFailure()),
-    );
   });
 
   const testUserModel = UserModel(
@@ -146,7 +143,7 @@ void main() {
   group('requestAccountDeletion', () {
     test('should return [Right] if executor succeeds', () async {
       // arrange
-      when(executor.execute<Unit>(any)).thenAnswer(
+      when(executor.executeAndDiscard(any)).thenAnswer(
         (_) async => const Right(unit),
       );
 
@@ -159,7 +156,7 @@ void main() {
 
     test('should return [Left] if executor fails', () async {
       // arrange
-      when(executor.execute<Unit>(any)).thenAnswer(
+      when(executor.executeAndDiscard(any)).thenAnswer(
         (_) async => const Left(ServerFailure('some error')),
       );
 
