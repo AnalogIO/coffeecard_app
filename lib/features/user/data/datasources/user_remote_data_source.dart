@@ -1,6 +1,7 @@
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/features/user/data/models/user_model.dart';
+import 'package:coffeecard/features/user/domain/entities/user.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
 import 'package:coffeecard/models/account/update_user.dart';
 import 'package:fpdart/fpdart.dart';
@@ -15,13 +16,13 @@ class UserRemoteDataSource {
   });
 
   /// Get the currently logged in user.
-  Future<Either<NetworkFailure, UserModel>> getUser() {
+  Future<Either<NetworkFailure, User>> getUser() {
     return executor.execute(apiV2.apiV2AccountGet).map(UserModel.fromResponse);
   }
 
   /// Updates the details of the currently logged in user based on
   /// the non-null details in [user]
-  Future<Either<NetworkFailure, UserModel>> updateUserDetails(UpdateUser user) {
+  Future<Either<NetworkFailure, User>> updateUserDetails(UpdateUser user) {
     return executor
         .execute(
           () => apiV2.apiV2AccountPut(
