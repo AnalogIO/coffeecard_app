@@ -10,10 +10,8 @@ class OpeningHoursModel extends OpeningHours {
     required super.todaysOpeningHours,
   });
 
-  // An [OpeningHoursDTO] actually represents a barista shift, so "dto.start"
-  // means the start of the shift and "dto.end" means the end of the shift.
-  factory OpeningHoursModel.fromDTO(List<OpeningHoursDTO> shifts) {
-    final openingHours = _transformOpeningHours(shifts);
+  factory OpeningHoursModel.fromDTO(List<OpeningHoursDTO> allShifts) {
+    final openingHours = _transformOpeningHours(allShifts);
     final todaysOpeningHours = _calculateTodaysOpeningHours(
       DateTime.now().weekday,
       openingHours,

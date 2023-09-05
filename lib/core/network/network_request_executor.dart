@@ -64,7 +64,9 @@ class NetworkRequestExecutor {
   void _logResponse<Body>(Response<Body> response) {
     logger.e(response.toString());
 
-    if (response.statusCode != 401) {
+    final ignoreCodes = [401];
+
+    if (!ignoreCodes.contains(response.statusCode)) {
       firebaseLogger.errorEvent(response.toString());
     }
   }
