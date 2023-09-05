@@ -57,6 +57,7 @@ import 'package:coffeecard/utils/firebase_analytics_event_logging.dart';
 import 'package:coffeecard/utils/ignore_value.dart';
 import 'package:coffeecard/utils/reactivation_authenticator.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 
@@ -78,7 +79,9 @@ void configureServices() {
 
   // Storage
   ignoreValue(
-    sl.registerSingleton(SecureStorage(sl<Logger>())),
+    sl.registerSingleton(
+      SecureStorage(storage: const FlutterSecureStorage(), logger: sl()),
+    ),
   );
 
   // Authentication

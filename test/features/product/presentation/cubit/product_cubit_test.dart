@@ -1,15 +1,27 @@
-// TODO(fremartini): uncomment when Mockito supports records, https://github.com/AnalogIO/coffeecard_app/issues/488
-//import 'product_cubit_test.mocks.dart';
+import 'package:bloc_test/bloc_test.dart';
+import 'package:coffeecard/core/errors/failures.dart';
+import 'package:coffeecard/features/product/domain/entities/product.dart';
+import 'package:coffeecard/features/product/domain/usecases/get_all_products.dart';
+import 'package:coffeecard/features/product/presentation/cubit/product_cubit.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:fpdart/fpdart.dart';
+import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
 
-//@GenerateMocks([GetAllProducts])
+import 'product_cubit_test.mocks.dart';
+
+@GenerateMocks([GetAllProducts])
 void main() {
-  /*
   late ProductCubit cubit;
   late MockGetAllProducts getAllProducts;
 
   setUp(() {
     getAllProducts = MockGetAllProducts();
     cubit = ProductCubit(getAllProducts: getAllProducts);
+
+    provideDummy<Either<Failure, (List<Product>, List<Product>)>>(
+      const Left(ConnectionFailure()),
+    );
   });
 
   const tickets = [
@@ -58,5 +70,4 @@ void main() {
       ],
     );
   });
-  */
 }
