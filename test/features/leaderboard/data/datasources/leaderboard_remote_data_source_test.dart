@@ -35,7 +35,7 @@ void main() {
   group('getLeaderboard', () {
     test('should return [Right] when executor succeeds', () async {
       // arrange
-      when(executor.call<List<LeaderboardEntry>>(any)).thenAnswer(
+      when(executor.execute<List<LeaderboardEntry>>(any)).thenAnswer(
         (_) async => const Right([]),
       );
 
@@ -54,7 +54,7 @@ void main() {
 
     test('should return [Left] when executor fails', () async {
       // arrange
-      when(executor.call<List<LeaderboardEntry>>(any)).thenAnswer(
+      when(executor.execute<List<LeaderboardEntry>>(any)).thenAnswer(
         (_) async => const Left(ServerFailure(testErrorMessage)),
       );
 
@@ -72,7 +72,7 @@ void main() {
   group('getLeaderboardUser', () {
     test('should return [Right] when executor succeeds', () async {
       // arrange
-      when(executor.call<LeaderboardEntry>(any)).thenAnswer(
+      when(executor.execute<LeaderboardEntry>(any)).thenAnswer(
         (_) async => Right(
           LeaderboardEntry(
             id: 0,
@@ -105,7 +105,7 @@ void main() {
 
     test('should return [Left] when executor fails', () async {
       // arrange
-      when(executor.call<LeaderboardEntry>(any)).thenAnswer(
+      when(executor.execute<LeaderboardEntry>(any)).thenAnswer(
         (_) async => const Left(ServerFailure(testErrorMessage)),
       );
 

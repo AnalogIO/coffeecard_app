@@ -1,5 +1,4 @@
 import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/core/extensions/either_extensions.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/features/leaderboard/data/models/leaderboard_user_model.dart';
 import 'package:coffeecard/features/leaderboard/domain/entities/leaderboard_user.dart';
@@ -27,19 +26,19 @@ class LeaderboardRemoteDataSource {
   Future<Either<NetworkFailure, List<LeaderboardUser>>> getLeaderboard(
     LeaderboardFilter category,
     int top,
-  ) async {
-    return executor(
-      () => apiV2.apiV2LeaderboardTopGet(preset: category.label, top: top),
-    ).bindFuture(
-      (result) => result.map(LeaderboardUserModel.fromDTO).toList(),
-    );
+  ) {
+    return executor
+        .execute(
+          () => apiV2.apiV2LeaderboardTopGet(preset: category.label, top: top),
+        )
+        .mapAll(LeaderboardUserModel.fromDTO);
   }
 
   Future<Either<NetworkFailure, LeaderboardUser>> getLeaderboardUser(
     LeaderboardFilter category,
-  ) async {
-    return executor(
-      () => apiV2.apiV2LeaderboardGet(preset: category.label),
-    ).bindFuture(LeaderboardUserModel.fromDTO);
+  ) {
+    return executor
+        .execute(() => apiV2.apiV2LeaderboardGet(preset: category.label))
+        .map(LeaderboardUserModel.fromDTO);
   }
 }

@@ -17,7 +17,7 @@ void main() {
     remoteDataSource = MockRegisterRemoteDataSource();
     usecase = RegisterUser(remoteDataSource: remoteDataSource);
 
-    provideDummy<Either<NetworkFailure, void>>(
+    provideDummy<Either<NetworkFailure, Unit>>(
       const Left(ConnectionFailure()),
     );
   });
@@ -25,7 +25,7 @@ void main() {
   test('should call data source', () async {
     // arrange
     when(remoteDataSource.register(any, any, any, any))
-        .thenAnswer((_) async => const Right(null));
+        .thenAnswer((_) async => const Right(unit));
 
     // act
     await usecase(

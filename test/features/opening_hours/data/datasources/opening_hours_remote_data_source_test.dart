@@ -1,6 +1,6 @@
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
-import 'package:coffeecard/features/opening_hours/opening_hours.dart';
+import 'package:coffeecard/features/opening_hours/data/datasources/opening_hours_remote_data_source.dart';
 import 'package:coffeecard/generated/api/shiftplanning_api.swagger.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
@@ -31,7 +31,7 @@ void main() {
   group('isOpen', () {
     test('should call executor', () async {
       // arrange
-      when(executor<IsOpenDTO>(any)).thenAnswer(
+      when(executor.execute<IsOpenDTO>(any)).thenAnswer(
         (_) async => Right(IsOpenDTO(open: true)),
       );
 
@@ -39,7 +39,7 @@ void main() {
       await dataSource.isOpen();
 
       // assert
-      verify(executor<IsOpenDTO>(any));
+      verify(executor.execute<IsOpenDTO>(any));
     });
   });
 
@@ -48,7 +48,7 @@ void main() {
       // arrange
       final List<OpeningHoursDTO> testOpeningHours = [];
 
-      when(executor<List<OpeningHoursDTO>>(any)).thenAnswer(
+      when(executor.execute<List<OpeningHoursDTO>>(any)).thenAnswer(
         (_) async => Right(testOpeningHours),
       );
 
@@ -56,7 +56,7 @@ void main() {
       await dataSource.getOpeningHours();
 
       // assert
-      verify(executor<List<OpeningHoursDTO>>(any));
+      verify(executor.execute<List<OpeningHoursDTO>>(any));
     });
   });
 }

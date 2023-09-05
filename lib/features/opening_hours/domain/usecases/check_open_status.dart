@@ -1,6 +1,6 @@
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/core/usecases/usecase.dart';
-import 'package:coffeecard/features/opening_hours/opening_hours.dart';
+import 'package:coffeecard/features/opening_hours/data/datasources/opening_hours_remote_data_source.dart';
 import 'package:fpdart/fpdart.dart';
 
 class CheckOpenStatus implements UseCase<bool, NoParams> {

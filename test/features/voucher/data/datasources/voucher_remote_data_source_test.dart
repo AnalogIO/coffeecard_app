@@ -10,7 +10,10 @@ import 'package:mockito/mockito.dart';
 
 import 'voucher_remote_data_source_test.mocks.dart';
 
-@GenerateMocks([CoffeecardApi, NetworkRequestExecutor])
+@GenerateNiceMocks([
+  MockSpec<CoffeecardApi>(),
+  MockSpec<NetworkRequestExecutor>(),
+])
 void main() {
   late VoucherRemoteDataSource remoteDataSource;
   late MockCoffeecardApi apiV1;
@@ -32,7 +35,7 @@ void main() {
   group('redeemVoucher', () {
     test('should call executor and map data', () async {
       // arrange
-      when(executor.call<PurchaseDto>(any)).thenAnswer(
+      when(executor.execute<PurchaseDto>(any)).thenAnswer(
         (_) async => Right(
           PurchaseDto(
             id: 0,
@@ -52,7 +55,7 @@ void main() {
       final actual = await remoteDataSource.redeemVoucher('voucher');
 
       // assert
-      verify(executor.call<PurchaseDto>(any));
+      verify(executor.execute<PurchaseDto>(any)).called(1);
       expect(
         actual,
         const Right(
