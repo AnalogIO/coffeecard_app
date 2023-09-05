@@ -55,6 +55,8 @@ void main() {
         // arrange
         when(executor.call<List<TicketResponse>>(any))
             .thenAnswer((_) async => const Right([]));
+        when(baristaProductsRepository.getBaristaProductIds())
+            .thenReturn(const []);
 
         // act
         final actual = await dataSource.getUserTickets();
@@ -72,6 +74,8 @@ void main() {
         // arrange
         when(executor.call<List<TicketResponse>>(any))
             .thenAnswer((_) async => const Left(ServerFailure('some error')));
+        when(baristaProductsRepository.getBaristaProductIds())
+            .thenReturn(const []);
 
         // act
         final actual = await dataSource.getUserTickets();
@@ -105,6 +109,8 @@ void main() {
             ),
           ]),
         );
+        when(baristaProductsRepository.getBaristaProductIds())
+            .thenReturn(const []);
 
         // act
         final actual = await dataSource.getUserTickets();
