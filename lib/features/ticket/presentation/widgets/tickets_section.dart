@@ -10,6 +10,7 @@ import 'package:coffeecard/widgets/components/dialog.dart';
 import 'package:coffeecard/widgets/components/error_section.dart';
 import 'package:coffeecard/widgets/components/helpers/shimmer_builder.dart';
 import 'package:coffeecard/widgets/components/loading_overlay.dart';
+import 'package:coffeecard/widgets/components/section_title.dart';
 import 'package:coffeecard/widgets/components/tickets/coffee_card.dart';
 import 'package:coffeecard/widgets/components/tickets/coffee_card_placeholder.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,9 @@ class TicketSection extends StatelessWidget {
     return BlocBuilder<TicketsCubit, TicketsState>(
       builder: (context, state) {
         return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const SectionTitle(Strings.ticketsMyTickets),
             BlocConsumer<TicketsCubit, TicketsState>(
               listenWhen: (previous, current) =>
                   current is TicketUsing ||

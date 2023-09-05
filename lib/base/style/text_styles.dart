@@ -78,9 +78,11 @@ abstract final class AppTextStyle {
 
   static final overLine = _body.size(12).color(AppColor.primary).style;
 
-  static final newLabel = _body.size(12).color(AppColor.ticket).bold().style;
+  static final shopCardOptionalLabel =
+      _body.size(12).color(AppColor.ticket).bold().style;
 
-  static final comingSoonLabel = newLabel.copyWith(color: AppColor.gray);
+  static final comingSoonLabel =
+      shopCardOptionalLabel.copyWith(color: AppColor.gray);
 
   static final label = _body.size(11).color(AppColor.secondary).style;
 
@@ -109,4 +111,7 @@ abstract final class AppTextStyle {
 
   static final rankingNumber =
       _mono.size(12).color(AppColor.primary).bold().style;
+
+  static final baristaButton =
+      _body.size(12).color(AppColor.secondary).weight(500).style;
 }

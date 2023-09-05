@@ -36,6 +36,7 @@ abstract final class Strings {
   static const baristaTickets = 'Barista tickets';
   static const baristaPerks = 'Barista perks';
   static const baristaClaimOnShiftDrink = 'Claim on-shift drink';
+  static const baristaClaimFreeDrink = 'Claim free drink';
   static const baristaClaimFreeFilter = 'Claim free filter/tea';
 
   // Tickets
