@@ -309,7 +309,7 @@ void initVoucher() {
 
   // data source
   sl.registerLazySingleton(
-    () => VoucherRemoteDataSource(apiV1: sl(), executor: sl()),
+    () => VoucherRemoteDataSource(apiV2: sl(), executor: sl()),
   );
 }
 
