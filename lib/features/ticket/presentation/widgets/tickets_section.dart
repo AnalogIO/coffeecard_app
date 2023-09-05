@@ -88,11 +88,11 @@ class TicketSection extends StatelessWidget {
                 }
                 if (state is TicketsLoaded) {
                   // States extending this are also caught on this
-                  if (state.filteredTickets.isEmpty) {
+                  if (state.tickets.isEmpty) {
                     return const CoffeeCardPlaceholder();
                   }
                   return Column(
-                    children: state.filteredTickets
+                    children: state.tickets
                         .map(
                           (p) => Padding(
                             padding: const EdgeInsets.only(bottom: 12.0),

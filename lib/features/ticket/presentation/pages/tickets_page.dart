@@ -1,8 +1,5 @@
-import 'dart:developer';
-
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/core/widgets/upgrade_alert.dart';
-import 'package:coffeecard/features/ticket/presentation/cubit/tickets_cubit.dart';
 import 'package:coffeecard/features/ticket/presentation/widgets/shop_section.dart';
 import 'package:coffeecard/features/ticket/presentation/widgets/tickets_section.dart';
 import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
@@ -37,19 +34,19 @@ class TicketsPage extends StatelessWidget {
                 shrinkWrap: true,
                 padding: const EdgeInsets.all(16.0),
                 children: [
-                  Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SectionTitle(Strings.ticketsMyTickets),
-                      if ((context.read<UserCubit>().state as UserLoaded)
-                          .user
-                          .hasBaristaPerks)
-                        const SwitchWidget(),
+                      SectionTitle(Strings.ticketsMyTickets),
                     ],
                   ),
                   const TicketSection(),
                   const Gap(24),
+                  if ((context.read<UserCubit>().state as UserLoaded)
+                      .user
+                      .hasBaristaPerks)
+                    const SectionTitle(Strings.baristaPerks),
                   const SectionTitle(Strings.shopText),
                   const ShopSection(),
                 ],
@@ -58,31 +55,6 @@ class TicketsPage extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-class SwitchWidget extends StatefulWidget {
-  const SwitchWidget({super.key});
-
-  @override
-  State<SwitchWidget> createState() => _SwitchWidgetState();
-}
-
-class _SwitchWidgetState extends State<SwitchWidget> {
-  // bool toggleState = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return Switch(
-      value: context.read<TicketsCubit>().state.isBarista,
-      onChanged: (val) {
-        log('$val');
-        setState(() {
-          // toggleState = val;
-          context.read<TicketsCubit>().setBaristaMode(baristaMode: val);
-        });
-      },
     );
   }
 }

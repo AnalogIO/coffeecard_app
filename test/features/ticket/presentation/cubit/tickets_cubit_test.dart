@@ -44,7 +44,10 @@ void main() {
       act: (_) => cubit.getTickets(),
       expect: () => [
         const TicketsLoading(isBarista: false),
-        const TicketsLoaded(tickets: [], isBarista: false, filteredTickets: []),
+        const TicketsLoaded(
+          tickets: [],
+          isBarista: false,
+        ),
       ],
     );
 
@@ -89,14 +92,16 @@ void main() {
       // skip the initial Loading/Loaded states emitted by getTickets
       skip: 2,
       expect: () => [
-        const TicketUsing(tickets: [], isBarista: false, filteredTickets: []),
+        const TicketUsing(tickets: [], isBarista: false),
         TicketUsed(
           receipt: testReceipt,
           tickets: const [],
           isBarista: false,
-          filteredTickets: const [],
         ),
-        const TicketsLoaded(tickets: [], isBarista: false, filteredTickets: []),
+        const TicketsLoaded(
+          tickets: [],
+          isBarista: false,
+        ),
       ],
     );
 
@@ -116,9 +121,15 @@ void main() {
       // skip the initial Loading/Loaded states emitted by getTickets
       skip: 2,
       expect: () => [
-        const TicketUsing(tickets: [], isBarista: false, filteredTickets: []),
+        const TicketUsing(
+          tickets: [],
+          isBarista: false,
+        ),
         const TicketsUseError(message: 'some error', isBarista: false),
-        const TicketsLoaded(tickets: [], isBarista: false, filteredTickets: []),
+        const TicketsLoaded(
+          tickets: [],
+          isBarista: false,
+        ),
       ],
     );
   });
@@ -130,7 +141,10 @@ void main() {
           when(loadTickets(any)).thenAnswer((_) async => const Right([])),
       act: (_) => cubit.refreshTickets(),
       expect: () => [
-        const TicketsLoaded(tickets: [], isBarista: false, filteredTickets: []),
+        const TicketsLoaded(
+          tickets: [],
+          isBarista: false,
+        ),
       ],
     );
 

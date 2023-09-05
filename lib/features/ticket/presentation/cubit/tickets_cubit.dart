@@ -31,9 +31,6 @@ class TicketsCubit extends Cubit<TicketsState> {
       emit(
         st.copyWith(
           isBarista: baristaMode,
-          filteredTickets: baristaMode
-              ? st.tickets.where((ticket) => ticket.isBaristaTicket).toList()
-              : st.tickets,
         ),
       );
       return;
@@ -51,7 +48,6 @@ class TicketsCubit extends Cubit<TicketsState> {
     emit(
       TicketUsing(
         tickets: st.tickets,
-        filteredTickets: st.tickets,
         isBarista: state.isBarista,
       ),
     );
@@ -70,7 +66,6 @@ class TicketsCubit extends Cubit<TicketsState> {
           receipt: receipt,
           tickets: st.tickets,
           isBarista: state.isBarista,
-          filteredTickets: st.tickets,
         ),
       ),
     );
@@ -92,9 +87,6 @@ class TicketsCubit extends Cubit<TicketsState> {
         TicketsLoaded(
           tickets: tickets,
           isBarista: state.isBarista,
-          filteredTickets: state.isBarista
-              ? tickets.where((ticket) => ticket.isBaristaTicket).toList()
-              : tickets,
         ),
       ),
     );

@@ -22,27 +22,23 @@ class TicketsLoading extends TicketsState {
 
 class TicketsLoaded extends TicketsState {
   final List<TicketCount> tickets;
-  final List<TicketCount> filteredTickets;
 
   const TicketsLoaded({
     required super.isBarista,
     required this.tickets,
-    required this.filteredTickets,
   });
 
   @override
-  List<Object?> get props => [tickets, isBarista, filteredTickets];
+  List<Object?> get props => [tickets, isBarista];
 
   @override
   TicketsState copyWith({
     bool? isBarista,
     List<TicketCount>? tickets,
-    List<TicketCount>? filteredTickets,
   }) {
     return TicketsLoaded(
       isBarista: isBarista ?? this.isBarista,
       tickets: tickets ?? this.tickets,
-      filteredTickets: filteredTickets ?? this.filteredTickets,
     );
   }
 }
@@ -51,7 +47,6 @@ class TicketUsing extends TicketsLoaded {
   const TicketUsing({
     required super.isBarista,
     required super.tickets,
-    required super.filteredTickets,
   });
 }
 
@@ -62,7 +57,6 @@ class TicketUsed extends TicketsLoaded {
     required this.receipt,
     required super.tickets,
     required super.isBarista,
-    required super.filteredTickets,
   });
 
   @override
@@ -73,13 +67,11 @@ class TicketUsed extends TicketsLoaded {
     bool? isBarista,
     List<TicketCount>? tickets,
     Receipt? receipt,
-    List<TicketCount>? filteredTickets,
   }) {
     return TicketUsed(
       isBarista: isBarista ?? this.isBarista,
       tickets: tickets ?? this.tickets,
       receipt: receipt ?? this.receipt,
-      filteredTickets: filteredTickets ?? this.filteredTickets,
     );
   }
 }
