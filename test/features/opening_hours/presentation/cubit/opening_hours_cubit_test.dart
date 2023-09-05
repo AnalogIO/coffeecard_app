@@ -1,6 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/features/opening_hours/domain/entities/opening_hours.dart';
+import 'package:coffeecard/features/opening_hours/domain/entities/timeslot.dart';
 import 'package:coffeecard/features/opening_hours/domain/usecases/check_open_status.dart';
 import 'package:coffeecard/features/opening_hours/domain/usecases/get_opening_hours.dart';
 import 'package:coffeecard/features/opening_hours/presentation/cubit/opening_hours_cubit.dart';
@@ -21,24 +21,19 @@ void main() {
     getOpeningHours = MockGetOpeningHours();
     checkOpenStatus = MockCheckOpenStatus();
     cubit = OpeningHoursCubit(
-      isOpen: checkOpenStatus,
+      checkIsOpen: checkOpenStatus,
       fetchOpeningHours: getOpeningHours,
     );
 
     provideDummy<Either<Failure, bool>>(
       const Left(ConnectionFailure()),
     );
-    provideDummy<Either<Failure, OpeningHours>>(
+    provideDummy<Either<Failure, Map<int, Timeslot>>>(
       const Left(ConnectionFailure()),
     );
   });
 
   group('getOpeninghours', () {
-    const theOpeningHours = OpeningHours(
-      allOpeningHours: {},
-      todaysOpeningHours: '',
-    );
-
     blocTest(
       'should emit [Loading, Error] when isOpen fails',
       build: () => cubit,
@@ -80,7 +75,7 @@ void main() {
           (_) => Future.value(const Right(true)),
         );
         when(getOpeningHours(any)).thenAnswer(
-          (_) => Future.value(const Right(theOpeningHours)),
+          (_) => Future.value(const Right({})),
         );
       },
       act: (_) async => cubit.getOpeninghours(),

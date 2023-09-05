@@ -12,7 +12,6 @@ class OpeningHoursLoading extends OpeningHoursState {
 }
 
 class OpeningHoursLoaded extends OpeningHoursState {
-  /// Opening hours in the format of Map<Datetime.weekday, String>
   final Map<int, String> openingHours;
   final bool isOpen;
   final String todaysOpeningHours;

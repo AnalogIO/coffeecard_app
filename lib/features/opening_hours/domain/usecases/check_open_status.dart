@@ -1,15 +1,15 @@
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/core/usecases/usecase.dart';
-import 'package:coffeecard/features/opening_hours/data/datasources/opening_hours_remote_data_source.dart';
+import 'package:coffeecard/features/opening_hours/domain/repositories/opening_hours_repository.dart';
 import 'package:fpdart/fpdart.dart';
 
 class CheckOpenStatus implements UseCase<bool, NoParams> {
-  final OpeningHoursRemoteDataSource dataSource;
+  final OpeningHoursRepository repository;
 
-  CheckOpenStatus({required this.dataSource});
+  CheckOpenStatus({required this.repository});
 
   @override
   Future<Either<Failure, bool>> call(NoParams params) async {
-    return dataSource.isOpen();
+    return Right(repository.isOpen(DateTime.now()));
   }
 }

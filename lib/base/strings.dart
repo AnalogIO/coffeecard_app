@@ -41,7 +41,6 @@ abstract final class Strings {
   static const comingSoonLabel = 'COMING SOON';
 
   // Opening hours
-  static const open = 'open';
   static const closed = 'closed';
   static const openingHoursIndicatorPrefix = "We're";
   static const openingHoursDisclaimer =

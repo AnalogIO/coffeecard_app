@@ -8,15 +8,17 @@ part 'opening_hours_state.dart';
 
 class OpeningHoursCubit extends Cubit<OpeningHoursState> {
   final GetOpeningHours fetchOpeningHours;
-  final CheckOpenStatus isOpen;
+  final CheckOpenStatus checkIsOpen;
 
-  OpeningHoursCubit({required this.fetchOpeningHours, required this.isOpen})
-      : super(const OpeningHoursLoading());
+  OpeningHoursCubit({
+    required this.fetchOpeningHours,
+    required this.checkIsOpen,
+  }) : super(const OpeningHoursLoading());
 
   Future<void> getOpeninghours() async {
     emit(const OpeningHoursLoading());
 
-    final either = await isOpen(NoParams());
+    final either = await checkIsOpen(NoParams());
 
     either.fold(
       (error) => emit(OpeningHoursError(error: error.reason)),
@@ -25,13 +27,18 @@ class OpeningHoursCubit extends Cubit<OpeningHoursState> {
 
         openingHoursResult.fold(
           (error) => emit(OpeningHoursError(error: error.reason)),
-          (openingHours) => emit(
-            OpeningHoursLoaded(
-              isOpen: isOpen,
-              openingHours: openingHours.allOpeningHours,
-              todaysOpeningHours: openingHours.todaysOpeningHours,
-            ),
-          ),
+          (openingHours) {
+            final todaysOpeningHours = openingHours[DateTime.now().weekday]!;
+
+            emit(
+              OpeningHoursLoaded(
+                isOpen: isOpen,
+                openingHours: openingHours
+                    .map((key, value) => MapEntry(key, value.toString())),
+                todaysOpeningHours: todaysOpeningHours.toString(),
+              ),
+            );
+          },
         );
       },
     );
