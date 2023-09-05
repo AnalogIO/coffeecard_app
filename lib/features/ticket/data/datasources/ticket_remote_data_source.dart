@@ -42,8 +42,7 @@ class TicketRemoteDataSource {
                 count: tickets.length,
                 productName: ticketName,
                 productId: id,
-                isBaristaTicket:
-                    baristaProductIds.contains(id),
+                isBaristaTicket: baristaProductIds.contains(id),
               );
             },
           )
