@@ -1,5 +1,4 @@
 import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/core/usecases/usecase.dart';
 import 'package:coffeecard/features/opening_hours/domain/entities/timeslot.dart';
 import 'package:coffeecard/features/opening_hours/domain/repositories/opening_hours_repository.dart';
 import 'package:coffeecard/features/opening_hours/domain/usecases/get_opening_hours.dart';
@@ -29,7 +28,7 @@ void main() {
     when(repository.getOpeningHours()).thenReturn({});
 
     // act
-    await fetchOpeningHours(NoParams());
+    fetchOpeningHours();
 
     // assert
     verify(repository.getOpeningHours()).called(1);

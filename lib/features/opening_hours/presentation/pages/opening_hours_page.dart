@@ -1,6 +1,7 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/colors.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/features/opening_hours/domain/entities/timeslot.dart';
 import 'package:coffeecard/features/opening_hours/presentation/cubit/opening_hours_cubit.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,7 @@ class OpeningHoursPage extends StatelessWidget {
     return MaterialPageRoute(builder: (_) => OpeningHoursPage(state: state));
   }
 
-  List<MapEntry<int, String>> get openingHours {
+  List<MapEntry<int, Timeslot>> get openingHours {
     return state.openingHours.entries.toList()
       ..sort((a, b) => a.key.compareTo(b.key));
   }
@@ -64,7 +65,7 @@ class OpeningHoursPage extends StatelessWidget {
 class _OpeningHoursView extends StatelessWidget {
   const _OpeningHoursView({required this.openingHours});
 
-  final List<MapEntry<int, String>> openingHours;
+  final List<MapEntry<int, Timeslot>> openingHours;
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +85,7 @@ class _OpeningHoursView extends StatelessWidget {
               Strings.weekdaysPlural[weekday]!,
               style: AppTextStyle.settingKey,
             ),
-            Text(hours, style: AppTextStyle.receiptItemKey),
+            Text(hours.toString(), style: AppTextStyle.receiptItemKey),
           ],
         );
       },

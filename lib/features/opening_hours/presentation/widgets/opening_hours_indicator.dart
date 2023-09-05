@@ -21,22 +21,15 @@ class OpeningHoursIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<OpeningHoursCubit, OpeningHoursState>(
       builder: (context, state) {
-        if (state is OpeningHoursError) {
+        if (state is! OpeningHoursLoaded) {
           return const SizedBox.shrink();
         }
 
-        var isOpen = false;
-        if (state is OpeningHoursLoaded) {
-          isOpen = state.isOpen;
-        }
-
-        final todaysOpeningHours =
-            (state as OpeningHoursLoaded).openingHours[DateTime.now().weekday]!;
-
-        final text = isOpen
-            ? '$formatCurrentWeekday $todaysOpeningHours'
+        final text = state.isOpen
+            ? '$formatCurrentWeekday: ${state.todaysOpeningHours}'
             : '${Strings.openingHoursIndicatorPrefix} ${Strings.closed}';
-        final color = isOpen ? AppColor.success : AppColor.errorOnBright;
+        final color = state.isOpen ? AppColor.success : AppColor.errorOnBright;
+
         final textStyle =
             AppTextStyle.openingHoursIndicator.copyWith(color: color);
 

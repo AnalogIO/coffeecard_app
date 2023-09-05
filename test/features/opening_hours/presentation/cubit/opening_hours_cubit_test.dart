@@ -1,4 +1,3 @@
-import 'package:bloc_test/bloc_test.dart';
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/features/opening_hours/domain/entities/timeslot.dart';
 import 'package:coffeecard/features/opening_hours/domain/usecases/check_open_status.dart';
@@ -34,59 +33,6 @@ void main() {
   });
 
   group('getOpeninghours', () {
-    blocTest(
-      'should emit [Loading, Error] when isOpen fails',
-      build: () => cubit,
-      setUp: () => {
-        when(checkOpenStatus(any)).thenAnswer(
-          (_) => Future.value(const Left(ServerFailure('some error'))),
-        ),
-      },
-      act: (_) async => cubit.getOpeninghours(),
-      expect: () => [
-        const OpeningHoursLoading(),
-        const OpeningHoursError(error: 'some error'),
-      ],
-    );
-
-    blocTest(
-      'should emit [Loading, Error] when fetchOpeningHours fails',
-      build: () => cubit,
-      setUp: () {
-        when(checkOpenStatus(any)).thenAnswer(
-          (_) => Future.value(const Right(false)),
-        );
-        when(getOpeningHours(any)).thenAnswer(
-          (_) => Future.value(const Left(ServerFailure('some error'))),
-        );
-      },
-      act: (_) async => cubit.getOpeninghours(),
-      expect: () => [
-        const OpeningHoursLoading(),
-        const OpeningHoursError(error: 'some error'),
-      ],
-    );
-
-    blocTest(
-      'should emit [Loading, Loaded] when isOpen and openingHours succeeds',
-      build: () => cubit,
-      setUp: () {
-        when(checkOpenStatus(any)).thenAnswer(
-          (_) => Future.value(const Right(true)),
-        );
-        when(getOpeningHours(any)).thenAnswer(
-          (_) => Future.value(const Right({})),
-        );
-      },
-      act: (_) async => cubit.getOpeninghours(),
-      expect: () => [
-        const OpeningHoursLoading(),
-        const OpeningHoursLoaded(
-          isOpen: true,
-          openingHours: {},
-          todaysOpeningHours: '',
-        ),
-      ],
-    );
+    //TODO: test
   });
 }

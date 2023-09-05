@@ -1,5 +1,4 @@
 import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/core/usecases/usecase.dart';
 import 'package:coffeecard/features/opening_hours/domain/repositories/opening_hours_repository.dart';
 import 'package:coffeecard/features/opening_hours/domain/usecases/check_open_status.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -28,7 +27,7 @@ void main() {
     when(repository.isOpen(DateTime.now())).thenReturn(true);
 
     // act
-    await getIsOpen(NoParams());
+    getIsOpen();
 
     // assert
     verify(repository.isOpen(DateTime.now()));
