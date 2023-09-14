@@ -16,7 +16,7 @@ class VoucherRemoteDataSource {
 
   Future<Either<NetworkFailure, RedeemedVoucher>> redeemVoucher(
     String voucher,
-  ) async {
+  ) {
     return executor
         .execute(
           () => api.apiV2VouchersVoucherCodeRedeemPost(voucherCode: voucher),
