@@ -18,7 +18,7 @@ void main() {
     dataSource = MockUserRemoteDataSource();
     usecase = RequestAccountDeletion(dataSource: dataSource);
 
-    provideDummy<Either<NetworkFailure, void>>(
+    provideDummy<Either<NetworkFailure, Unit>>(
       const Left(ConnectionFailure()),
     );
   });
@@ -26,7 +26,7 @@ void main() {
   test('should call repository', () async {
     // arrange
     when(dataSource.requestAccountDeletion()).thenAnswer(
-      (_) async => const Right(null),
+      (_) async => const Right(unit),
     );
 
     // act

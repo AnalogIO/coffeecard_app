@@ -1,29 +1,28 @@
-// TODO(fremartini): uncomment when Mockito supports records, https://github.com/AnalogIO/coffeecard_app/issues/488
-//import 'get_all_products_test.mocks.dart';
+import 'package:coffeecard/core/errors/failures.dart';
+import 'package:coffeecard/core/usecases/usecase.dart';
+import 'package:coffeecard/features/product/data/datasources/product_remote_data_source.dart';
+import 'package:coffeecard/features/product/data/models/product_model.dart';
+import 'package:coffeecard/features/product/domain/entities/product.dart';
+import 'package:coffeecard/features/product/domain/usecases/get_all_products.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:fpdart/fpdart.dart';
+import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
 
-//@GenerateMocks([ProductRemoteDataSource])
+import 'get_all_products_test.mocks.dart';
+
+@GenerateMocks([ProductRemoteDataSource])
 void main() {
-  /*
   late GetAllProducts usecase;
   late MockProductRemoteDataSource remoteDataSource;
 
   setUp(() {
     remoteDataSource = MockProductRemoteDataSource();
     usecase = GetAllProducts(remoteDataSource: remoteDataSource);
-  });
 
-  const testError = 'some error';
-
-  test('should return [Left] if data source fails', () async {
-    // arrange
-    when(remoteDataSource.getProducts())
-        .thenAnswer((_) async => const Left(ServerFailure(testError)));
-
-    // act
-    final actual = await usecase(NoParams());
-
-    // assert
-    expect(actual, const Left(ServerFailure(testError)));
+    provideDummy<Either<NetworkFailure, List<Product>>>(
+      const Left(ConnectionFailure()),
+    );
   });
 
   test(
@@ -63,5 +62,4 @@ void main() {
       );
     },
   );
-  */
 }

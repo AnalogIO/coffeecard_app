@@ -32,7 +32,7 @@ void main() {
   group('redeemVoucher', () {
     test('should call executor and map data', () async {
       // arrange
-      when(executor.call<SimplePurchaseResponse>(any)).thenAnswer(
+      when(executor.execute<SimplePurchaseResponse>(any)).thenAnswer(
         (_) async => Right(
           SimplePurchaseResponse(
             id: 0,
@@ -50,7 +50,7 @@ void main() {
       final actual = await remoteDataSource.redeemVoucher('voucher');
 
       // assert
-      verify(executor.call<SimplePurchaseResponse>(any));
+      verify(executor.execute<SimplePurchaseResponse>(any));
       expect(
         actual,
         const Right(

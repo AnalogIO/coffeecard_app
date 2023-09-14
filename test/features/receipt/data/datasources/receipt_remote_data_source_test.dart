@@ -37,7 +37,7 @@ void main() {
   group('getUsersUsedTicketsReceipts', () {
     test('should return [Left] if executor fails', () async {
       // arrange
-      when(executor<List<TicketResponse>>(any))
+      when(executor.execute<List<TicketResponse>>(any))
           .thenAnswer((_) async => const Left(ServerFailure('some error')));
 
       // act
@@ -49,7 +49,7 @@ void main() {
 
     test('should return [Right] if executor succeeds', () async {
       // arrange
-      when(executor<List<TicketResponse>>(any))
+      when(executor.execute<List<TicketResponse>>(any))
           .thenAnswer((_) async => const Right([]));
 
       // act
@@ -64,7 +64,7 @@ void main() {
   group('getUserPurchasesReceipts', () {
     test('should return [Left] if executor fails', () async {
       // arrange
-      when(executor<List<SimplePurchaseResponse>>(any))
+      when(executor.execute<List<SimplePurchaseResponse>>(any))
           .thenAnswer((_) async => const Left(ServerFailure('some error')));
 
       // act
@@ -76,7 +76,7 @@ void main() {
 
     test('should return [Right] if executor succeeds', () async {
       // arrange
-      when(executor<List<SimplePurchaseResponse>>(any))
+      when(executor.execute<List<SimplePurchaseResponse>>(any))
           .thenAnswer((_) async => const Right([]));
 
       // act

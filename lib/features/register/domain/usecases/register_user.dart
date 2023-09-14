@@ -4,13 +4,13 @@ import 'package:coffeecard/features/register/data/datasources/register_remote_da
 import 'package:equatable/equatable.dart';
 import 'package:fpdart/fpdart.dart';
 
-class RegisterUser implements UseCase<void, Params> {
+class RegisterUser implements UseCase<Unit, Params> {
   final RegisterRemoteDataSource remoteDataSource;
 
   RegisterUser({required this.remoteDataSource});
 
   @override
-  Future<Either<Failure, void>> call(Params params) {
+  Future<Either<Failure, Unit>> call(Params params) {
     return remoteDataSource.register(
       params.name,
       params.email,

@@ -9,7 +9,7 @@ class RequestAccountDeletion implements UseCase<void, NoParams> {
   RequestAccountDeletion({required this.dataSource});
 
   @override
-  Future<Either<Failure, void>> call(NoParams params) async {
+  Future<Either<Failure, Unit>> call(NoParams params) async {
     return dataSource.requestAccountDeletion();
   }
 }
