@@ -4,7 +4,7 @@ import 'package:chopper/chopper.dart';
 import 'package:coffeecard/base/strings.dart';
 import 'package:equatable/equatable.dart';
 
-sealed class Failure extends Equatable {
+abstract class Failure extends Equatable {
   final String reason;
 
   const Failure(this.reason);
@@ -22,7 +22,9 @@ sealed class NetworkFailure extends Failure {
 }
 
 class ServerFailure extends NetworkFailure {
-  const ServerFailure(super.reason);
+  final int statuscode;
+
+  const ServerFailure(super.reason, this.statuscode);
 
   factory ServerFailure.fromResponse(Response response) {
     try {
@@ -32,12 +34,18 @@ class ServerFailure extends NetworkFailure {
       final message = jsonString['message'] as String?;
 
       if (message == null) {
-        return const ServerFailure(Strings.unknownErrorOccured);
+        return ServerFailure(
+          Strings.unknownErrorOccured,
+          response.statusCode,
+        );
       }
 
-      return ServerFailure(message);
+      return ServerFailure(message, response.statusCode);
     } on Exception {
-      return const ServerFailure(Strings.unknownErrorOccured);
+      return ServerFailure(
+        Strings.unknownErrorOccured,
+        response.statusCode,
+      );
     }
   }
 }

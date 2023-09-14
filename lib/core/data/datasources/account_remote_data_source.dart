@@ -1,3 +1,4 @@
+import 'package:coffeecard/core/errors/email_not_verified_failure.dart';
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/features/user/data/models/user_model.dart';
@@ -20,21 +21,31 @@ class AccountRemoteDataSource {
   final CoffeecardApiV2 apiV2;
   final NetworkRequestExecutor executor;
 
-  Future<Either<NetworkFailure, AuthenticatedUser>> login(
+  Future<Either<Failure, AuthenticatedUser>> login(
     String email,
     String encodedPasscode,
-  ) {
-    return executor
-        .execute(
-          () => apiV1.apiV1AccountLoginPost(
-            body: LoginDto(
-              email: email,
-              password: encodedPasscode,
-              version: ApiUriConstants.minAppVersion,
-            ),
-          ),
-        )
-        .map((result) => AuthenticatedUser(email: email, token: result.token!));
+  ) async {
+    final result = await executor.execute(
+      () => apiV1.apiV1AccountLoginPost(
+        body: LoginDto(
+          email: email,
+          password: encodedPasscode,
+          version: ApiUriConstants.minAppVersion,
+        ),
+      ),
+    );
+
+    return result.fold(
+      (err) {
+        /// API returns 403 when email is not verified
+        if (err is ServerFailure && err.statuscode == 403) {
+          return const Left(EmailNotVerifiedFailure());
+        }
+
+        return Left(err);
+      },
+      (result) => Right(AuthenticatedUser(email: email, token: result.token!)),
+    );
   }
 
   Future<Either<NetworkFailure, User>> getUser() {

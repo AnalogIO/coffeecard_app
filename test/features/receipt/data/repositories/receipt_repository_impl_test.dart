@@ -28,28 +28,30 @@ void main() {
   group('getUserReceipts', () {
     test('should return [Left] if get user receipts fails', () async {
       // arrange
-      when(remoteDataSource.getUsersUsedTicketsReceipts())
-          .thenAnswer((_) async => const Left(ServerFailure('some error')));
+      when(remoteDataSource.getUsersUsedTicketsReceipts()).thenAnswer(
+        (_) async => const Left(ServerFailure('some error', 500)),
+      );
 
       // act
       final actual = await repository.getUserReceipts();
 
       // assert
-      expect(actual, const Left(ServerFailure('some error')));
+      expect(actual, const Left(ServerFailure('some error', 500)));
     });
 
     test('should return [Left] if get user purchases fails', () async {
       // arrange
       when(remoteDataSource.getUsersUsedTicketsReceipts())
           .thenAnswer((_) async => const Right([]));
-      when(remoteDataSource.getUserPurchasesReceipts())
-          .thenAnswer((_) async => const Left(ServerFailure('some error')));
+      when(remoteDataSource.getUserPurchasesReceipts()).thenAnswer(
+        (_) async => const Left(ServerFailure('some error', 500)),
+      );
 
       // act
       final actual = await repository.getUserReceipts();
 
       // assert
-      expect(actual, const Left(ServerFailure('some error')));
+      expect(actual, const Left(ServerFailure('some error', 500)));
     });
 
     test(

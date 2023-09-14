@@ -19,9 +19,14 @@ class LoginLoading extends LoginState {
   const LoginLoading();
 }
 
+class LoginEmailNotVerified extends LoginError {
+  const LoginEmailNotVerified(super.errorMessage);
+}
+
 class LoginError extends LoginState {
-  const LoginError(this.errorMessage);
   final String errorMessage;
+
+  const LoginError(this.errorMessage);
 
   @override
   List<Object?> get props => [errorMessage];

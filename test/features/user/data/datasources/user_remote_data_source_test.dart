@@ -60,14 +60,14 @@ void main() {
     test('should return [Left] if executor returns [Left]', () async {
       // arrange
       when(executor.execute<UserResponse>(any)).thenAnswer(
-        (_) async => const Left(ServerFailure('some error')),
+        (_) async => const Left(ServerFailure('some error', 500)),
       );
 
       // act
       final actual = await dataSource.getUser();
 
       // assert
-      expect(actual, const Left(ServerFailure('some error')));
+      expect(actual, const Left(ServerFailure('some error', 500)));
     });
 
     test('should return [Right<UserModel>] executor succeeds', () async {
@@ -102,14 +102,14 @@ void main() {
     test('should return [Left] if executor returns [Left]', () async {
       // arrange
       when(executor.execute<UserResponse>(any)).thenAnswer(
-        (_) async => const Left(ServerFailure('some error')),
+        (_) async => const Left(ServerFailure('some error', 500)),
       );
 
       // act
       final actual = await dataSource.updateUserDetails(const UpdateUser());
 
       // assert
-      expect(actual, const Left(ServerFailure('some error')));
+      expect(actual, const Left(ServerFailure('some error', 500)));
     });
 
     test('should return [UserModel] if api call succeeds', () async {
@@ -157,14 +157,14 @@ void main() {
     test('should return [Left] if executor fails', () async {
       // arrange
       when(executor.executeAndDiscard(any)).thenAnswer(
-        (_) async => const Left(ServerFailure('some error')),
+        (_) async => const Left(ServerFailure('some error', 500)),
       );
 
       // act
       final actual = await dataSource.requestAccountDeletion();
 
       // assert
-      expect(actual, const Left(ServerFailure('some error')));
+      expect(actual, const Left(ServerFailure('some error', 500)));
     });
   });
 }

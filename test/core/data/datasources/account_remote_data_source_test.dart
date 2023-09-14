@@ -77,13 +77,13 @@ void main() {
     test('should return [Left] if executor fails', () async {
       // arrange
       when(executor.execute<v2.UserResponse>(any))
-          .thenAnswer((_) async => const Left(ServerFailure(testError)));
+          .thenAnswer((_) async => const Left(ServerFailure(testError, 500)));
 
       // act
       final actual = await dataSource.getUser();
 
       // assert
-      expect(actual, const Left(ServerFailure(testError)));
+      expect(actual, const Left(ServerFailure(testError, 500)));
     });
 
     test(

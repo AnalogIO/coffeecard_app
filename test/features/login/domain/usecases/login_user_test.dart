@@ -28,7 +28,7 @@ void main() {
   test('should call data source', () async {
     // arrange
     when(remoteDataSource.login(any, any)).thenAnswer(
-      (_) async => const Left(ServerFailure(testError)),
+      (_) async => const Left(ServerFailure(testError, 500)),
     );
 
     // act
@@ -39,6 +39,6 @@ void main() {
 
     // assert
     verify(remoteDataSource.login(any, any)).called(1);
-    expect(actual, const Left(ServerFailure(testError)));
+    expect(actual, const Left(ServerFailure(testError, 500)));
   });
 }

@@ -136,7 +136,7 @@ void main() {
             loginRequest,
             _responseFromStatusCode(401),
           );
-          return left(const ServerFailure(reason));
+          return left(const ServerFailure(reason, 500));
         },
       );
 

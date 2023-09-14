@@ -65,8 +65,9 @@ void main() {
       'THEN a [Left] value is returned',
       () async {
         // arrange
-        when(executor.execute<List<TicketResponse>>(any))
-            .thenAnswer((_) async => const Left(ServerFailure('some error')));
+        when(executor.execute<List<TicketResponse>>(any)).thenAnswer(
+          (_) async => const Left(ServerFailure('some error', 500)),
+        );
 
         // act
         final actual = await dataSource.getUserTickets();
@@ -149,8 +150,9 @@ void main() {
         'THEN a [Left] value is returned',
         () async {
           // arrange
-          when(executor.execute<TicketDto>(any))
-              .thenAnswer((_) async => const Left(ServerFailure('some error')));
+          when(executor.execute<TicketDto>(any)).thenAnswer(
+            (_) async => const Left(ServerFailure('some error', 500)),
+          );
 
           // act
           final actual = await dataSource.useTicket(0);

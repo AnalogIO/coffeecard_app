@@ -2,6 +2,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
 import 'package:coffeecard/features/login/domain/usecases/login_user.dart';
+import 'package:coffeecard/features/login/domain/usecases/resend_email.dart';
 import 'package:coffeecard/features/login/presentation/cubit/login_cubit.dart';
 import 'package:coffeecard/models/account/authenticated_user.dart';
 import 'package:coffeecard/utils/firebase_analytics_event_logging.dart';
@@ -15,22 +16,26 @@ import 'login_cubit_test.mocks.dart';
 @GenerateMocks([
   AuthenticationCubit,
   LoginUser,
+  ResendEmail,
   FirebaseAnalyticsEventLogging,
 ])
 void main() {
   late LoginCubit cubit;
   late MockAuthenticationCubit authenticationCubit;
   late MockLoginUser loginUser;
+  late MockResendEmail resendEmail;
   late MockFirebaseAnalyticsEventLogging firebaseAnalyticsEventLogging;
 
   setUp(() {
     authenticationCubit = MockAuthenticationCubit();
     loginUser = MockLoginUser();
+    resendEmail = MockResendEmail();
     firebaseAnalyticsEventLogging = MockFirebaseAnalyticsEventLogging();
     cubit = LoginCubit(
       email: '',
       authenticationCubit: authenticationCubit,
       loginUser: loginUser,
+      resendEmail: resendEmail,
       firebaseAnalyticsEventLogging: firebaseAnalyticsEventLogging,
     );
 
@@ -67,7 +72,7 @@ void main() {
             encodedPasscode: anyNamed('encodedPasscode'),
           ),
         ).thenAnswer(
-          (_) async => const Left(ServerFailure('some error')),
+          (_) async => const Left(ServerFailure('some error', 500)),
         );
         return cubit
           ..addPasscodeInput('1')

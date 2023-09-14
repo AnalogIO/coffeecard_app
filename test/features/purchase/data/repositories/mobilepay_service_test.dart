@@ -52,13 +52,13 @@ void main() {
     test('should return [Left] if remote data source fails', () async {
       // arrange
       when(remoteDataSource.initiatePurchase(any, any))
-          .thenAnswer((_) async => const Left(ServerFailure(testError)));
+          .thenAnswer((_) async => const Left(ServerFailure(testError, 500)));
 
       // act
       final actual = await mobilePayService.initPurchase(0);
 
       // assert
-      expect(actual, const Left(ServerFailure(testError)));
+      expect(actual, const Left(ServerFailure(testError, 500)));
     });
 
     test('should return [Right] if remote data source succeeds', () async {

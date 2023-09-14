@@ -58,7 +58,7 @@ void main() {
       build: () => cubit,
       setUp: () => when(getUser()).thenAnswer(
         (_) async => const Left(
-          ServerFailure('some error'),
+          ServerFailure('some error', 500),
         ),
       ),
       act: (_) => cubit.fetchUserDetails(),
@@ -120,7 +120,7 @@ void main() {
         ),
       ).thenAnswer(
         (_) async => const Left(
-          ServerFailure('some error'),
+          ServerFailure('some error', 500),
         ),
       ),
       act: (_) => cubit.updateUser(const UpdateUser()),

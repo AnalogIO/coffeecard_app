@@ -52,8 +52,9 @@ void main() {
       blocTest(
         'should emit [Loaded] with empty list when use case fails',
         build: () => cubit,
-        setUp: () => when(fetchContributors())
-            .thenAnswer((_) async => const Left(ServerFailure('some error'))),
+        setUp: () => when(fetchContributors()).thenAnswer(
+          (_) async => const Left(ServerFailure('some error', 500)),
+        ),
         act: (_) => cubit.getContributors(),
         expect: () => [
           const ContributorLoaded([]),

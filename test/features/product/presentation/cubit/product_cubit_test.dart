@@ -62,7 +62,7 @@ void main() {
       'should emit [Loading, Error] when use case fails',
       build: () => cubit,
       setUp: () => when(getAllProducts())
-          .thenAnswer((_) async => const Left(ServerFailure(testError))),
+          .thenAnswer((_) async => const Left(ServerFailure(testError, 500))),
       act: (cubit) => cubit.getProducts(),
       expect: () => [
         const ProductsLoading(),
