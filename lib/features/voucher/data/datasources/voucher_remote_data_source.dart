@@ -7,11 +7,11 @@ import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
 import 'package:fpdart/fpdart.dart';
 
 class VoucherRemoteDataSource {
-  final CoffeecardApiV2 apiV2;
+  final CoffeecardApiV2 api;
   final NetworkRequestExecutor executor;
 
   VoucherRemoteDataSource({
-    required this.apiV2,
+    required this.api,
     required this.executor,
   });
 
@@ -19,7 +19,7 @@ class VoucherRemoteDataSource {
     String voucher,
   ) async {
     return executor(
-      () => apiV2.apiV2VouchersVoucherCodeRedeemPost(voucherCode: voucher),
+      () => api.apiV2VouchersVoucherCodeRedeemPost(voucherCode: voucher),
     ).bindFuture(RedeemedVoucherModel.fromDTO);
   }
 }

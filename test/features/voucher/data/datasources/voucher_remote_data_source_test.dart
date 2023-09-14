@@ -13,14 +13,14 @@ import 'voucher_remote_data_source_test.mocks.dart';
 @GenerateMocks([CoffeecardApiV2, NetworkRequestExecutor])
 void main() {
   late VoucherRemoteDataSource remoteDataSource;
-  late MockCoffeecardApiV2 apiV2;
+  late MockCoffeecardApiV2 api;
   late MockNetworkRequestExecutor executor;
 
   setUp(() {
     executor = MockNetworkRequestExecutor();
-    apiV2 = MockCoffeecardApiV2();
+    api = MockCoffeecardApiV2();
     remoteDataSource = VoucherRemoteDataSource(
-      apiV2: apiV2,
+      api: api,
       executor: executor,
     );
 
