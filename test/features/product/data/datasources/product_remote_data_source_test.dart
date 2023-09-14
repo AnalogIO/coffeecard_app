@@ -32,7 +32,7 @@ void main() {
   group('getProducts', () {
     test('should call executor', () async {
       // arrange
-      when(executor.call<List<ProductDto>>(any)).thenAnswer(
+      when(executor.execute<List<ProductDto>>(any)).thenAnswer(
         (_) async => Right([
           ProductDto(
             id: 0,

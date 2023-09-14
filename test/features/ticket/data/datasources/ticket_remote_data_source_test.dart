@@ -53,7 +53,7 @@ void main() {
       'THEN a [Right] value is returned',
       () async {
         // arrange
-        when(executor.call<List<TicketResponse>>(any))
+        when(executor.execute<List<TicketResponse>>(any))
             .thenAnswer((_) async => const Right([]));
         when(baristaProductsRepository.getBaristaProductIds())
             .thenReturn(const []);
@@ -72,7 +72,7 @@ void main() {
       'THEN a [Left] value is returned',
       () async {
         // arrange
-        when(executor.call<List<TicketResponse>>(any))
+        when(executor.execute<List<TicketResponse>>(any))
             .thenAnswer((_) async => const Left(ServerFailure('some error')));
         when(baristaProductsRepository.getBaristaProductIds())
             .thenReturn(const []);
@@ -91,7 +91,7 @@ void main() {
       'THEN a [TicketCountModel] with the count of tickets and joined ticket names is returned',
       () async {
         // arrange
-        when(executor.call<List<TicketResponse>>(any)).thenAnswer(
+        when(executor.execute<List<TicketResponse>>(any)).thenAnswer(
           (_) async => Right([
             TicketResponse(
               id: 0,
@@ -135,7 +135,7 @@ void main() {
         'THEN a [Right] value is returned',
         () async {
           // arrange
-          when(executor.call<TicketDto>(any)).thenAnswer(
+          when(executor.execute<TicketDto>(any)).thenAnswer(
             (_) async => Right(
               TicketDto(
                 id: 0,
@@ -160,7 +160,7 @@ void main() {
         'THEN a [Left] value is returned',
         () async {
           // arrange
-          when(executor.call<TicketDto>(any))
+          when(executor.execute<TicketDto>(any))
               .thenAnswer((_) async => const Left(ServerFailure('some error')));
 
           // act

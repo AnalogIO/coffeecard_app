@@ -1,5 +1,4 @@
 import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/core/extensions/either_extensions.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/data/repositories/barista_product/barista_product_repository.dart';
 import 'package:coffeecard/features/receipt/data/models/swipe_receipt_model.dart';
@@ -23,39 +22,39 @@ class TicketRemoteDataSource {
   final BaristaProductsRepository baristaProductsRepository;
   final NetworkRequestExecutor executor;
 
-  Future<Either<NetworkFailure, List<TicketCountModel>>>
-      getUserTickets() async {
-    final baristaProductIds = baristaProductsRepository.getBaristaProductIds();
-    return executor(
-      () => apiV2.apiV2TicketsGet(includeUsed: false),
-    ).bindFuture(
-      (result) => result
-          .groupListsBy((t) => t.productId)
-          .entries
-          .map(
-            (entry) {
-              final MapEntry(key: id, value: tickets) = entry;
-              // Join ticket names if they share the same product id
-              final ticketName =
-                  tickets.map((t) => t.productName).toSet().join('/');
-              return TicketCountModel(
-                count: tickets.length,
-                productName: ticketName,
-                productId: id,
-                isBaristaTicket: baristaProductIds.contains(id),
-              );
-            },
-          )
-          .sortedBy<num>((t) => t.productId)
-          .toList(),
-    );
+  Future<Either<NetworkFailure, List<TicketCountModel>>> getUserTickets() {
+    // Mapper function for mapping a list of tickets (all with the same product
+    // id) to a TicketCountModel.
+    //
+    // This also takes into account that there might be
+    // some tickets with the same product id, but different names.
+    TicketCountModel mapper(MapEntry<int, List<TicketResponse>> entry) {
+      final MapEntry(key: id, value: tickets) = entry;
+      // If there are multiple ticket names present, join them with a slash.
+      final ticketName = tickets.map((t) => t.productName).toSet().join('/');
+
+      return TicketCountModel(
+        count: tickets.length,
+        productName: ticketName,
+        productId: id,
+      );
+    }
+
+    return executor
+        .execute(() => apiV2.apiV2TicketsGet(includeUsed: false))
+        .map(
+          (result) => result
+              .groupListsBy((t) => t.productId)
+              .entries
+              .map(mapper)
+              .sortedBy<num>((t) => t.productId),
+        );
   }
 
-  Future<Either<NetworkFailure, Receipt>> useTicket(int productId) async {
-    return executor(
-      () => apiV1.apiV1TicketsUsePost(
-        body: UseTicketDTO(productId: productId),
-      ),
-    ).bindFuture(SwipeReceiptModel.fromTicketDto);
+  Future<Either<NetworkFailure, Receipt>> useTicket(int productId) {
+    final body = UseTicketDTO(productId: productId);
+    return executor
+        .execute(() => apiV1.apiV1TicketsUsePost(body: body))
+        .map(SwipeReceiptModel.fromTicketDto);
   }
 }

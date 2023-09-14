@@ -36,36 +36,51 @@ void main() {
     );
   }
 
-  test('should return [ServerFailure] if api call fails', () async {
-    // arrange
-    final testResponse = responseFromStatusCode(500, body: '');
+  group('execute', () {
+    test('should return [ServerFailure] if api call fails', () async {
+      // arrange
+      final testResponse = responseFromStatusCode(500, body: '');
 
-    // act
-    final actual = await executor(() async => testResponse);
+      // act
+      final actual = await executor.execute(() async => testResponse);
 
-    // assert
-    expect(actual, const Left(ServerFailure(Strings.unknownErrorOccured)));
+      // assert
+      expect(actual, const Left(ServerFailure(Strings.unknownErrorOccured)));
+    });
+
+    test('should return response body if api call succeeds', () async {
+      // arrange
+      final testResponse = responseFromStatusCode(200, body: 'some string');
+
+      // act
+      final actual = await executor.execute(() async => testResponse);
+
+      // assert
+      expect(actual, const Right('some string'));
+    });
+
+    test('should return [ConnectionFailure] if exception is caught', () async {
+      // arrange
+      final testException = Exception('some error');
+
+      // act
+      final actual = await executor.execute(() async => throw testException);
+
+      // assert
+      expect(actual, const Left(ConnectionFailure()));
+    });
   });
 
-  test('should return response body if api call succeeds', () async {
-    // arrange
-    final testResponse = responseFromStatusCode(200, body: 'some string');
+  group('executeAndDiscard', () {
+    test('should return [Unit] if api call succeeds', () async {
+      // arrange
+      final testResponse = responseFromStatusCode(200, body: 'some string');
 
-    // act
-    final actual = await executor(() async => testResponse);
+      // act
+      final actual = await executor.executeAndDiscard(() async => testResponse);
 
-    // assert
-    expect(actual, const Right('some string'));
-  });
-
-  test('should return [ServerFailure] if call throws [Exception]', () async {
-    // arrange
-    final testException = Exception('some error');
-
-    // act
-    final actual = await executor(() async => throw testException);
-
-    // assert
-    expect(actual, const Left(ConnectionFailure()));
+      // assert
+      expect(actual, const Right(unit));
+    });
   });
 }

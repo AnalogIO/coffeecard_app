@@ -2,6 +2,7 @@ import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/features/environment/domain/entities/environment.dart';
 import 'package:coffeecard/features/environment/presentation/cubit/environment_cubit.dart';
+import 'package:coffeecard/features/opening_hours/presentation/widgets/opening_hours_indicator.dart';
 import 'package:coffeecard/features/receipt/domain/entities/receipt.dart';
 import 'package:coffeecard/features/receipt/presentation/widgets/receipt_overlay.dart';
 import 'package:coffeecard/features/ticket/presentation/cubit/tickets_cubit.dart';
@@ -26,7 +27,14 @@ class TicketSection extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SectionTitle(Strings.ticketsMyTickets),
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                SectionTitle(Strings.ticketsMyTickets),
+                OpeningHoursIndicator(),
+              ],
+            ),
             BlocConsumer<TicketsCubit, TicketsState>(
               listenWhen: (previous, current) =>
                   current is TicketUsing ||

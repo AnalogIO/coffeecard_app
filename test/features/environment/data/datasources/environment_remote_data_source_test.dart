@@ -30,7 +30,7 @@ void main() {
   });
   test('should call executor', () async {
     // arrange
-    when(executor.call<AppConfig>(any))
+    when(executor.execute<AppConfig>(any))
         .thenAnswer((_) async => Right(AppConfig(environmentType: 'Test')));
 
     // act

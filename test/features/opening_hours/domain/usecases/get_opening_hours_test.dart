@@ -1,7 +1,8 @@
 import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/core/usecases/usecase.dart';
 import 'package:coffeecard/features/opening_hours/domain/entities/opening_hours.dart';
-import 'package:coffeecard/features/opening_hours/opening_hours.dart';
+import 'package:coffeecard/features/opening_hours/domain/entities/timeslot.dart';
+import 'package:coffeecard/features/opening_hours/domain/repositories/opening_hours_repository.dart';
+import 'package:coffeecard/features/opening_hours/domain/usecases/get_opening_hours.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:mockito/annotations.dart';
@@ -11,33 +12,31 @@ import 'get_opening_hours_test.mocks.dart';
 
 @GenerateMocks([OpeningHoursRepository])
 void main() {
-  late MockOpeningHoursRepository repository;
+  late OpeningHoursRepository repository;
   late GetOpeningHours fetchOpeningHours;
 
   setUp(() {
     repository = MockOpeningHoursRepository();
     fetchOpeningHours = GetOpeningHours(repository: repository);
 
-    provideDummy<Either<Failure, OpeningHours>>(
+    provideDummy<Either<Failure, Map<int, Timeslot>>>(
       const Left(ConnectionFailure()),
     );
   });
 
-  test('should call repository', () async {
-    const theOpeningHours = OpeningHours(
-      allOpeningHours: {},
-      todaysOpeningHours: '',
+  test('should return opening hours', () async {
+    // arrange
+    const theOpeningHours =
+        OpeningHours(allOpeningHours: {}, todaysOpeningHours: Timeslot());
+
+    when(repository.getOpeningHours()).thenReturn(
+      theOpeningHours,
     );
 
-    // arrange
-    when(repository.getOpeningHours(any))
-        .thenAnswer((_) async => const Right(theOpeningHours));
-
     // act
-    await fetchOpeningHours(NoParams());
+    final actual = fetchOpeningHours();
 
     // assert
-    verify(repository.getOpeningHours(any));
-    verifyNoMoreInteractions(repository);
+    expect(actual, theOpeningHours);
   });
 }

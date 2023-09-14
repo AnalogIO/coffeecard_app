@@ -1,70 +1,43 @@
-import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/core/extensions/string_extensions.dart';
+import 'package:coffeecard/core/external/date_service.dart';
+import 'package:coffeecard/features/opening_hours/data/datasources/opening_hours_local_data_source.dart';
 import 'package:coffeecard/features/opening_hours/domain/entities/opening_hours.dart';
-import 'package:coffeecard/features/opening_hours/opening_hours.dart';
-import 'package:coffeecard/generated/api/shiftplanning_api.swagger.dart';
-import 'package:coffeecard/models/opening_hours_day.dart';
-import 'package:fpdart/fpdart.dart';
+import 'package:coffeecard/features/opening_hours/domain/repositories/opening_hours_repository.dart';
 
 class OpeningHoursRepositoryImpl implements OpeningHoursRepository {
-  final OpeningHoursRemoteDataSource dataSource;
+  final OpeningHoursLocalDataSource dataSource;
+  final DateService dateService;
 
-  OpeningHoursRepositoryImpl({required this.dataSource});
+  OpeningHoursRepositoryImpl({
+    required this.dataSource,
+    required this.dateService,
+  });
 
   @override
-  Future<Either<Failure, OpeningHours>> getOpeningHours(int weekday) async {
-    final openingHours = await dataSource.getOpeningHours();
+  OpeningHours getOpeningHours() {
+    final allOpeningHours = dataSource.getOpeningHours();
+    final currentWeekDay = dateService.currentWeekday();
 
-    return openingHours.map((openingHours) {
-      final openingHoursMap = transformOpeningHours(openingHours);
+    final todaysOpeningHours = allOpeningHours[currentWeekDay]!;
 
-      return OpeningHours(
-        allOpeningHours: openingHoursMap,
-        todaysOpeningHours: calculateTodaysOpeningHours(
-          weekday,
-          openingHoursMap,
-        ),
-      );
-    });
-  }
-
-  // An [OpeningHoursDTO] actually represents a barista shift, so "dto.start"
-  // means the start of the shift and "dto.end" means the end of the shift.
-  Map<int, String> transformOpeningHours(List<OpeningHoursDTO> allShifts) {
-    final shiftsByWeekday = <int, List<OpeningHoursDTO>>{
-      DateTime.monday: [],
-      DateTime.tuesday: [],
-      DateTime.wednesday: [],
-      DateTime.thursday: [],
-      DateTime.friday: [],
-      DateTime.saturday: [],
-      DateTime.sunday: [],
-    };
-
-    for (final shift in allShifts) {
-      final weekday = shift.start.weekday;
-      shiftsByWeekday[weekday]!.add(shift);
-    }
-
-    return shiftsByWeekday.map(
-      (day, shifts) => MapEntry(
-        day,
-        shifts.isEmpty
-            ? Strings.closed.capitalize()
-            : OpeningHoursDay(shifts.first.start, shifts.last.end).toString(),
-      ),
+    return OpeningHours(
+      allOpeningHours: allOpeningHours,
+      todaysOpeningHours: todaysOpeningHours,
     );
   }
 
-  /// Return the current weekday and the corresponding opening hours e.g
-  /// 'Monday: 8 - 16'
-  String calculateTodaysOpeningHours(
-    int weekday,
-    Map<int, String> openingHours,
-  ) {
-    final weekdayPlural = Strings.weekdaysPlural[weekday]!;
-    final hours = openingHours[weekday];
-    return '$weekdayPlural: $hours';
+  @override
+  bool isOpen() {
+    final todaysOpeningHours = getOpeningHours().todaysOpeningHours;
+
+    if (todaysOpeningHours.isClosed) {
+      return false;
+    }
+
+    final currentHour = dateService.currentHour();
+
+    if (currentHour < todaysOpeningHours.start! ||
+        currentHour > todaysOpeningHours.end!) return false;
+
+    return true;
   }
 }

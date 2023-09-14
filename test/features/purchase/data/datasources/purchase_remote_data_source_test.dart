@@ -39,7 +39,7 @@ void main() {
   group('initiatePurchase', () {
     test('should call executor', () async {
       // arrange
-      when(executor.call<InitiatePurchaseResponse>(any)).thenAnswer(
+      when(executor.execute<InitiatePurchaseResponse>(any)).thenAnswer(
         (_) async => Right(
           InitiatePurchaseResponse(
             dateCreated: DateTime.parse('2023-05-19'),
@@ -89,7 +89,7 @@ void main() {
   group('getPurchase', () {
     test('should call executor', () async {
       // arrange
-      when(executor.call<SinglePurchaseResponse>(any)).thenAnswer(
+      when(executor.execute<SinglePurchaseResponse>(any)).thenAnswer(
         (_) async => Right(
           SinglePurchaseResponse(
             dateCreated: DateTime.parse('2023-05-19'),

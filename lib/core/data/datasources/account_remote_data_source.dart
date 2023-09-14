@@ -1,5 +1,4 @@
 import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/core/extensions/either_extensions.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/features/user/data/models/user_model.dart';
 import 'package:coffeecard/features/user/domain/entities/user.dart';
@@ -24,44 +23,35 @@ class AccountRemoteDataSource {
   Future<Either<NetworkFailure, AuthenticatedUser>> login(
     String email,
     String encodedPasscode,
-  ) async {
-    return executor(
-      () => apiV1.apiV1AccountLoginPost(
-        body: LoginDto(
-          email: email,
-          password: encodedPasscode,
-          version: ApiUriConstants.minAppVersion,
-        ),
-      ),
-    ).bindFuture(
-      (result) => AuthenticatedUser(
-        email: email,
-        token: result.token!,
-      ),
+  ) {
+    return executor
+        .execute(
+          () => apiV1.apiV1AccountLoginPost(
+            body: LoginDto(
+              email: email,
+              password: encodedPasscode,
+              version: ApiUriConstants.minAppVersion,
+            ),
+          ),
+        )
+        .map((result) => AuthenticatedUser(email: email, token: result.token!));
+  }
+
+  Future<Either<NetworkFailure, User>> getUser() {
+    return executor.execute(apiV2.apiV2AccountGet).map(UserModel.fromResponse);
+  }
+
+  Future<Either<NetworkFailure, Unit>> requestPasscodeReset(String email) {
+    final body = EmailDto(email: email);
+    return executor.executeAndDiscard(
+      () => apiV1.apiV1AccountForgotpasswordPost(body: body),
     );
   }
 
-  Future<Either<NetworkFailure, User>> getUser() async {
-    return executor(
-      apiV2.apiV2AccountGet,
-    ).bindFuture(UserModel.fromResponse);
-  }
-
-  Future<Either<NetworkFailure, void>> requestPasscodeReset(
-    String email,
-  ) async {
-    final result = await executor(
-      () => apiV1.apiV1AccountForgotpasswordPost(body: EmailDto(email: email)),
-    );
-
-    return result.pure(null);
-  }
-
-  Future<Either<NetworkFailure, bool>> emailExists(String email) async {
-    return executor(
-      () => apiV2.apiV2AccountEmailExistsPost(
-        body: EmailExistsRequest(email: email),
-      ),
-    ).bindFuture((result) => result.emailExists);
+  Future<Either<NetworkFailure, bool>> emailExists(String email) {
+    final body = EmailExistsRequest(email: email);
+    return executor
+        .execute(() => apiV2.apiV2AccountEmailExistsPost(body: body))
+        .map((result) => result.emailExists);
   }
 }
