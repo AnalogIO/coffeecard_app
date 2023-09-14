@@ -4,34 +4,24 @@ sealed class OpeningHoursState extends Equatable {
   const OpeningHoursState();
 }
 
-class OpeningHoursLoading extends OpeningHoursState {
-  const OpeningHoursLoading();
+class OpeningHoursInitial extends OpeningHoursState {
+  const OpeningHoursInitial();
 
   @override
   List<Object?> get props => [];
 }
 
 class OpeningHoursLoaded extends OpeningHoursState {
-  /// Opening hours in the format of Map<Datetime.weekday, String>
-  final Map<int, String> openingHours;
+  final Map<int, Timeslot> openingHours;
+  final Timeslot todaysOpeningHours;
   final bool isOpen;
-  final String todaysOpeningHours;
 
   const OpeningHoursLoaded({
-    required this.isOpen,
     required this.openingHours,
     required this.todaysOpeningHours,
+    required this.isOpen,
   });
 
   @override
-  List<Object?> get props => [isOpen, openingHours, todaysOpeningHours];
-}
-
-class OpeningHoursError extends OpeningHoursState {
-  final String error;
-
-  const OpeningHoursError({required this.error});
-
-  @override
-  List<Object?> get props => [error];
+  List<Object?> get props => [openingHours, todaysOpeningHours, isOpen];
 }

@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:coffeecard/core/usecases/usecase.dart';
+import 'package:coffeecard/features/opening_hours/domain/entities/timeslot.dart';
 import 'package:coffeecard/features/opening_hours/domain/usecases/check_open_status.dart';
 import 'package:coffeecard/features/opening_hours/domain/usecases/get_opening_hours.dart';
 import 'package:equatable/equatable.dart';
@@ -8,32 +8,23 @@ part 'opening_hours_state.dart';
 
 class OpeningHoursCubit extends Cubit<OpeningHoursState> {
   final GetOpeningHours fetchOpeningHours;
-  final CheckOpenStatus isOpen;
+  final CheckOpenStatus checkIsOpen;
 
-  OpeningHoursCubit({required this.fetchOpeningHours, required this.isOpen})
-      : super(const OpeningHoursLoading());
+  OpeningHoursCubit({
+    required this.fetchOpeningHours,
+    required this.checkIsOpen,
+  }) : super(const OpeningHoursInitial());
 
   Future<void> getOpeninghours() async {
-    emit(const OpeningHoursLoading());
+    final openingHours = fetchOpeningHours();
+    final isOpen = checkIsOpen();
 
-    final either = await isOpen(NoParams());
-
-    either.fold(
-      (error) => emit(OpeningHoursError(error: error.reason)),
-      (isOpen) async {
-        final openingHoursResult = await fetchOpeningHours(NoParams());
-
-        openingHoursResult.fold(
-          (error) => emit(OpeningHoursError(error: error.reason)),
-          (openingHours) => emit(
-            OpeningHoursLoaded(
-              isOpen: isOpen,
-              openingHours: openingHours.allOpeningHours,
-              todaysOpeningHours: openingHours.todaysOpeningHours,
-            ),
-          ),
-        );
-      },
+    emit(
+      OpeningHoursLoaded(
+        isOpen: isOpen,
+        openingHours: openingHours.allOpeningHours,
+        todaysOpeningHours: openingHours.todaysOpeningHours,
+      ),
     );
   }
 }

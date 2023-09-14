@@ -1,13 +1,15 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/core/external/external_url_launcher.dart';
 import 'package:coffeecard/features/contributor/presentation/pages/credits_page.dart';
+import 'package:coffeecard/features/opening_hours/presentation/cubit/opening_hours_cubit.dart';
+import 'package:coffeecard/features/opening_hours/presentation/pages/opening_hours_page.dart';
 import 'package:coffeecard/features/settings/presentation/pages/faq_page.dart';
-import 'package:coffeecard/features/settings/presentation/widgets/setting_value_text.dart';
 import 'package:coffeecard/features/settings/presentation/widgets/settings_group.dart';
 import 'package:coffeecard/features/settings/presentation/widgets/settings_list_entry.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/utils/api_uri_constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AboutSection extends StatelessWidget {
   const AboutSection();
@@ -30,6 +32,21 @@ class AboutSection extends StatelessWidget {
     );
   }
 
+  void openingHoursTapCallback(BuildContext context) {
+    final state = context.read<OpeningHoursCubit>().state;
+
+    if (state is! OpeningHoursLoaded) {
+      return;
+    }
+
+    Navigator.push(
+      context,
+      OpeningHoursPage.routeWith(
+        state: state,
+      ),
+    ).ignore();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SettingsGroup(
@@ -39,11 +56,9 @@ class AboutSection extends StatelessWidget {
           name: Strings.frequentlyAskedQuestions,
           onTap: () => faqTapCallback(context),
         ),
-        const SettingListEntry(
+        SettingListEntry(
           name: Strings.openingHours,
-          valueWidget: SettingValueText(
-            value: Strings.notAvailable,
-          ),
+          onTap: () => openingHoursTapCallback(context),
         ),
         SettingListEntry(
           name: Strings.privacyPolicy,

@@ -1,5 +1,6 @@
 import 'package:chopper/chopper.dart';
 import 'package:coffeecard/core/data/datasources/account_remote_data_source.dart';
+import 'package:coffeecard/core/external/date_service.dart';
 import 'package:coffeecard/core/external/external_url_launcher.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
@@ -19,7 +20,9 @@ import 'package:coffeecard/features/login/domain/usecases/login_user.dart';
 import 'package:coffeecard/features/occupation/data/datasources/occupation_remote_data_source.dart';
 import 'package:coffeecard/features/occupation/domain/usecases/get_occupations.dart';
 import 'package:coffeecard/features/occupation/presentation/cubit/occupation_cubit.dart';
-import 'package:coffeecard/features/opening_hours/data/datasources/opening_hours_remote_data_source.dart';
+import 'package:coffeecard/features/opening_hours/data/datasources/opening_hours_local_data_source.dart';
+import 'package:coffeecard/features/opening_hours/data/repositories/opening_hours_repository_impl.dart';
+import 'package:coffeecard/features/opening_hours/domain/repositories/opening_hours_repository.dart';
 import 'package:coffeecard/features/opening_hours/domain/usecases/check_open_status.dart';
 import 'package:coffeecard/features/opening_hours/domain/usecases/get_opening_hours.dart';
 import 'package:coffeecard/features/opening_hours/presentation/cubit/opening_hours_cubit.dart';
@@ -113,6 +116,8 @@ void configureServices() {
     ),
   );
 
+  ignoreValue(sl.registerFactory(() => DateService()));
+
   ignoreValue(sl.registerLazySingleton(() => ExternalUrlLauncher()));
 
   // provide the account repository to the reactivation authenticator
@@ -140,17 +145,25 @@ void initOpeningHours() {
   sl.registerFactory(
     () => OpeningHoursCubit(
       fetchOpeningHours: sl(),
-      isOpen: sl(),
+      checkIsOpen: sl(),
     ),
   );
 
   // use case
-  sl.registerFactory(() => GetOpeningHours(dataSource: sl()));
-  sl.registerFactory(() => CheckOpenStatus(dataSource: sl()));
+  sl.registerFactory(() => GetOpeningHours(repository: sl()));
+  sl.registerFactory(() => CheckOpenStatus(repository: sl()));
+
+  // repository
+  sl.registerFactory<OpeningHoursRepository>(
+    () => OpeningHoursRepositoryImpl(
+      dataSource: sl(),
+      dateService: sl(),
+    ),
+  );
 
   // data source
-  sl.registerLazySingleton<OpeningHoursRemoteDataSource>(
-    () => OpeningHoursRemoteDataSource(api: sl(), executor: sl()),
+  sl.registerLazySingleton<OpeningHoursLocalDataSource>(
+    () => OpeningHoursLocalDataSource(),
   );
 }
 
