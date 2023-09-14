@@ -49,7 +49,7 @@ void main() {
     blocTest(
       'should emit [Loading, Loaded] use case succeeds',
       build: () => cubit,
-      setUp: () => when(getAllProducts(any))
+      setUp: () => when(getAllProducts())
           .thenAnswer((_) async => const Right((tickets, singleDrinks))),
       act: (cubit) => cubit.getProducts(),
       expect: () => [
@@ -61,7 +61,7 @@ void main() {
     blocTest(
       'should emit [Loading, Error] when use case fails',
       build: () => cubit,
-      setUp: () => when(getAllProducts(any))
+      setUp: () => when(getAllProducts())
           .thenAnswer((_) async => const Left(ServerFailure(testError))),
       act: (cubit) => cubit.getProducts(),
       expect: () => [

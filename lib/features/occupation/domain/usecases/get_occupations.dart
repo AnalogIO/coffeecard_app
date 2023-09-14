@@ -1,16 +1,14 @@
 import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/core/usecases/usecase.dart';
 import 'package:coffeecard/features/occupation/data/datasources/occupation_remote_data_source.dart';
 import 'package:coffeecard/features/occupation/domain/entities/occupation.dart';
 import 'package:fpdart/fpdart.dart';
 
-class GetOccupations implements UseCase<List<Occupation>, NoParams> {
+class GetOccupations {
   final OccupationRemoteDataSource dataSource;
 
   GetOccupations({required this.dataSource});
 
-  @override
-  Future<Either<Failure, List<Occupation>>> call(NoParams params) {
+  Future<Either<Failure, List<Occupation>>> call() {
     return dataSource.getOccupations();
   }
 }

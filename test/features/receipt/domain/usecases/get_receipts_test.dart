@@ -1,5 +1,4 @@
 import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/core/usecases/usecase.dart';
 import 'package:coffeecard/features/receipt/domain/entities/receipt.dart';
 import 'package:coffeecard/features/receipt/domain/repositories/receipt_repository.dart';
 import 'package:coffeecard/features/receipt/domain/usecases/get_receipts.dart';
@@ -29,7 +28,7 @@ void main() {
     when(repository.getUserReceipts()).thenAnswer((_) async => const Right([]));
 
     // act
-    await getReceipts(NoParams());
+    await getReceipts();
 
     // assert
     verify(repository.getUserReceipts());

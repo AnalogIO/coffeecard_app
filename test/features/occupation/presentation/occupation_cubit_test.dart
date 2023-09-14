@@ -31,7 +31,7 @@ void main() {
       'should emit [Loading, Error] when use case fails',
       build: () => cubit,
       setUp: () => {
-        when(getOccupations(any)).thenAnswer(
+        when(getOccupations()).thenAnswer(
           (_) => Future.value(const Left(ServerFailure('some error'))),
         ),
       },
@@ -45,7 +45,7 @@ void main() {
     blocTest(
       'should emit [Loading, Loaded] when use case succeeds',
       build: () => cubit,
-      setUp: () => when(getOccupations(any)).thenAnswer(
+      setUp: () => when(getOccupations()).thenAnswer(
         (_) => Future.value(const Right([])),
       ),
       act: (_) async => cubit.fetchOccupations(),

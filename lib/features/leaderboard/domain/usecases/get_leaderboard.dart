@@ -1,17 +1,14 @@
 import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/core/usecases/usecase.dart';
 import 'package:coffeecard/features/leaderboard/data/datasources/leaderboard_remote_data_source.dart';
 import 'package:coffeecard/features/leaderboard/domain/entities/leaderboard_user.dart';
 import 'package:coffeecard/features/leaderboard/presentation/cubit/leaderboard_cubit.dart';
 import 'package:fpdart/fpdart.dart';
 
-class GetLeaderboard
-    implements UseCase<List<LeaderboardUser>, LeaderboardFilter> {
+class GetLeaderboard {
   final LeaderboardRemoteDataSource remoteDataSource;
 
   GetLeaderboard({required this.remoteDataSource});
 
-  @override
   Future<Either<Failure, List<LeaderboardUser>>> call(
     LeaderboardFilter filter,
   ) async {

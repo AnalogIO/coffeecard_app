@@ -42,7 +42,8 @@ class LoginCubit extends Cubit<LoginState> {
     emit(const LoginLoading());
 
     final either = await loginUser(
-      Params(email: email, encodedPasscode: encodedPasscode),
+      email: email,
+      encodedPasscode: encodedPasscode,
     );
 
     either.fold(

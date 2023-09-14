@@ -29,7 +29,7 @@ void main() {
         .thenAnswer((_) async => const Left(ServerFailure('some error')));
 
     // act
-    await usecase(const Params(productId: 0));
+    await usecase(productId: 0);
 
     // assert
     verify(ticketRemoteDataSource.useTicket(any));

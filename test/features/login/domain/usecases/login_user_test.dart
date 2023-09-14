@@ -33,7 +33,8 @@ void main() {
 
     // act
     final actual = await usecase(
-      const Params(email: 'email', encodedPasscode: 'encodedPasscode'),
+      email: 'email',
+      encodedPasscode: 'encodedPasscode',
     );
 
     // assert

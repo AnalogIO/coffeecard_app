@@ -1,5 +1,4 @@
 import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/core/usecases/usecase.dart';
 import 'package:coffeecard/features/occupation/data/datasources/occupation_remote_data_source.dart';
 import 'package:coffeecard/features/occupation/data/models/occupation_model.dart';
 import 'package:coffeecard/features/occupation/domain/usecases/get_occupations.dart';
@@ -29,7 +28,7 @@ void main() {
     when(dataSource.getOccupations()).thenAnswer((_) async => const Right([]));
 
     // act
-    await usecase(NoParams());
+    await usecase();
 
     // assert
     verify(dataSource.getOccupations());

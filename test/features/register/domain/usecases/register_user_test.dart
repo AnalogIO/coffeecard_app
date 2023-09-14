@@ -29,12 +29,10 @@ void main() {
 
     // act
     await usecase(
-      const Params(
-        name: 'name',
-        email: 'email',
-        encodedPasscode: 'encodedPasscode',
-        occupationId: 0,
-      ),
+      name: 'name',
+      email: 'email',
+      encodedPasscode: 'encodedPasscode',
+      occupationId: 0,
     );
 
     // assert
