@@ -1,5 +1,5 @@
 import 'package:coffeecard/features/voucher/domain/entities/redeemed_voucher.dart';
-import 'package:coffeecard/generated/api/coffeecard_api.models.swagger.dart';
+import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
 
 class RedeemedVoucherModel extends RedeemedVoucher {
   const RedeemedVoucherModel({
@@ -7,7 +7,7 @@ class RedeemedVoucherModel extends RedeemedVoucher {
     required super.productName,
   });
 
-  factory RedeemedVoucherModel.fromDTO(PurchaseDto dto) {
+  factory RedeemedVoucherModel.fromDTO(SimplePurchaseResponse dto) {
     return RedeemedVoucherModel(
       numberOfTickets: dto.numberOfTickets,
       productName: dto.productName,
