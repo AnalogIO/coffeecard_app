@@ -35,7 +35,7 @@ void main() {
   });
 
   group('getOpeninghours', () {
-    final theOpeningHours =
+    const theOpeningHours =
         OpeningHours(allOpeningHours: {}, todaysOpeningHours: Timeslot());
     const isOpen = true;
 

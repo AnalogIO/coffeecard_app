@@ -2,9 +2,9 @@ import 'package:coffeecard/features/opening_hours/domain/entities/timeslot.dart'
 
 class OpeningHoursLocalDataSource {
   Map<int, Timeslot> getOpeningHours() {
-    final normalOperation = Timeslot(start: 8, end: 16);
-    final shortDayOperation = Timeslot(start: 8, end: 14);
-    final closed = Timeslot();
+    const normalOperation = Timeslot(start: 8, end: 16);
+    const shortDayOperation = Timeslot(start: 8, end: 14);
+    const closed = Timeslot();
 
     return {
       DateTime.monday: normalOperation,

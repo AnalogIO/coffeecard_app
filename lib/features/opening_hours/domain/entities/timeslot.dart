@@ -1,10 +1,11 @@
 import 'package:coffeecard/base/strings.dart';
+import 'package:equatable/equatable.dart';
 
-class Timeslot {
+class Timeslot extends Equatable {
   final int? start;
   final int? end;
 
-  Timeslot({this.start, this.end});
+  const Timeslot({this.start, this.end});
 
   bool get isClosed => start == null || end == null;
 
@@ -12,4 +13,7 @@ class Timeslot {
   String toString() => isClosed
       ? Strings.closed
       : '${start.toString().padLeft(2, '0')}:00 - $end:00';
+
+  @override
+  List<Object?> get props => [start, end];
 }

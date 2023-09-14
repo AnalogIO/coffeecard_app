@@ -32,6 +32,21 @@ class AboutSection extends StatelessWidget {
     );
   }
 
+  void openingHoursTapCallback(BuildContext context) {
+    final state = context.read<OpeningHoursCubit>().state;
+
+    if (state is! OpeningHoursLoaded) {
+      return;
+    }
+
+    Navigator.push(
+      context,
+      OpeningHoursPage.routeWith(
+        state: state,
+      ),
+    ).ignore();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SettingsGroup(
@@ -43,14 +58,7 @@ class AboutSection extends StatelessWidget {
         ),
         SettingListEntry(
           name: Strings.openingHours,
-          onTap: () => Navigator.push(
-            context,
-            //TODO: frem - fix
-            OpeningHoursPage.routeWith(
-              state:
-                  context.read<OpeningHoursCubit>().state as OpeningHoursLoaded,
-            ),
-          ),
+          onTap: () => privacyPolicyTapCallback(context),
         ),
         SettingListEntry(
           name: Strings.privacyPolicy,
