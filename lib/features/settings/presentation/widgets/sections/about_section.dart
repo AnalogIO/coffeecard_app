@@ -58,7 +58,7 @@ class AboutSection extends StatelessWidget {
         ),
         SettingListEntry(
           name: Strings.openingHours,
-          onTap: () => privacyPolicyTapCallback(context),
+          onTap: () => openingHoursTapCallback(context),
         ),
         SettingListEntry(
           name: Strings.privacyPolicy,
