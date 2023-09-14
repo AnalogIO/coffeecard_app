@@ -1,6 +1,6 @@
-import 'package:coffeecard/features/opening_hours/domain/entities/timeslot.dart';
+import 'package:coffeecard/features/opening_hours/domain/entities/opening_hours.dart';
 
 abstract interface class OpeningHoursRepository {
-  bool isOpen(DateTime now);
-  Map<int, Timeslot> getOpeningHours();
+  bool isOpen();
+  OpeningHours getOpeningHours();
 }

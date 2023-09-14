@@ -24,12 +24,12 @@ void main() {
 
   test('should call data source', () async {
     // arrange
-    when(repository.isOpen(DateTime.now())).thenReturn(true);
+    when(repository.isOpen()).thenReturn(true);
 
     // act
     getIsOpen();
 
     // assert
-    verify(repository.isOpen(DateTime.now()));
+    verify(repository.isOpen());
   });
 }

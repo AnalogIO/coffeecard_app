@@ -6,6 +6,6 @@ class CheckOpenStatus {
   CheckOpenStatus({required this.repository});
 
   bool call() {
-    return repository.isOpen(DateTime.now());
+    return repository.isOpen();
   }
 }

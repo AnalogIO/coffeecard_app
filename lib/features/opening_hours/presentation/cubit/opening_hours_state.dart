@@ -13,15 +13,15 @@ class OpeningHoursInitial extends OpeningHoursState {
 
 class OpeningHoursLoaded extends OpeningHoursState {
   final Map<int, Timeslot> openingHours;
-  final bool isOpen;
   final Timeslot todaysOpeningHours;
+  final bool isOpen;
 
   const OpeningHoursLoaded({
-    required this.isOpen,
     required this.openingHours,
     required this.todaysOpeningHours,
+    required this.isOpen,
   });
 
   @override
-  List<Object?> get props => [isOpen, openingHours, todaysOpeningHours];
+  List<Object?> get props => [openingHours, todaysOpeningHours, isOpen];
 }

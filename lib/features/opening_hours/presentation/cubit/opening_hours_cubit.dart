@@ -17,14 +17,13 @@ class OpeningHoursCubit extends Cubit<OpeningHoursState> {
 
   Future<void> getOpeninghours() async {
     final openingHours = fetchOpeningHours();
-
-    final todaysOpeningHours = openingHours[DateTime.now().weekday]!;
+    final isOpen = checkIsOpen();
 
     emit(
       OpeningHoursLoaded(
-        isOpen: checkIsOpen(),
-        openingHours: openingHours,
-        todaysOpeningHours: todaysOpeningHours,
+        isOpen: isOpen,
+        openingHours: openingHours.allOpeningHours,
+        todaysOpeningHours: openingHours.todaysOpeningHours,
       ),
     );
   }

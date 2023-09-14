@@ -1,4 +1,5 @@
 import 'package:coffeecard/core/errors/failures.dart';
+import 'package:coffeecard/features/opening_hours/domain/entities/opening_hours.dart';
 import 'package:coffeecard/features/opening_hours/domain/entities/timeslot.dart';
 import 'package:coffeecard/features/opening_hours/domain/repositories/opening_hours_repository.dart';
 import 'package:coffeecard/features/opening_hours/domain/usecases/get_opening_hours.dart';
@@ -23,15 +24,19 @@ void main() {
     );
   });
 
-  test('should call data source', () async {
+  test('should return opening hours', () async {
     // arrange
-    when(repository.getOpeningHours()).thenReturn({});
+    final theOpeningHours =
+        OpeningHours(allOpeningHours: {}, todaysOpeningHours: Timeslot());
+
+    when(repository.getOpeningHours()).thenReturn(
+      theOpeningHours,
+    );
 
     // act
-    fetchOpeningHours();
+    final actual = fetchOpeningHours();
 
     // assert
-    verify(repository.getOpeningHours()).called(1);
-    verifyNoMoreInteractions(repository);
+    expect(actual, theOpeningHours);
   });
 }

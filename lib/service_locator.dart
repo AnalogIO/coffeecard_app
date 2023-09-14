@@ -1,5 +1,6 @@
 import 'package:chopper/chopper.dart';
 import 'package:coffeecard/core/data/datasources/account_remote_data_source.dart';
+import 'package:coffeecard/core/external/date_service.dart';
 import 'package:coffeecard/core/external/external_url_launcher.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
@@ -115,6 +116,8 @@ void configureServices() {
     ),
   );
 
+  ignoreValue(sl.registerFactory(() => DateService()));
+
   ignoreValue(sl.registerLazySingleton(() => ExternalUrlLauncher()));
 
   // provide the account repository to the reactivation authenticator
@@ -152,7 +155,10 @@ void initOpeningHours() {
 
   // repository
   sl.registerFactory<OpeningHoursRepository>(
-    () => OpeningHoursRepositoryImpl(dataSource: sl()),
+    () => OpeningHoursRepositoryImpl(
+      dataSource: sl(),
+      dateService: sl(),
+    ),
   );
 
   // data source
