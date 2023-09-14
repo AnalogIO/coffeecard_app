@@ -1,4 +1,3 @@
-import 'package:coffeecard/core/usecases/usecase.dart';
 import 'package:coffeecard/features/receipt/domain/entities/receipt.dart';
 import 'package:coffeecard/features/ticket/domain/entities/ticket_count.dart';
 import 'package:coffeecard/features/ticket/domain/usecases/consume_ticket.dart';
@@ -30,7 +29,7 @@ class TicketsCubit extends Cubit<TicketsState> {
 
     emit(TicketUsing(st.tickets));
 
-    final either = await consumeTicket(Params(productId: productId));
+    final either = await consumeTicket(productId: productId);
 
     either.fold(
       (error) => emit(TicketsUseError(error.reason)),
@@ -41,7 +40,7 @@ class TicketsCubit extends Cubit<TicketsState> {
   }
 
   Future<void> refreshTickets() async {
-    final either = await loadTickets(NoParams());
+    final either = await loadTickets();
 
     either.fold(
       (error) => emit(TicketsLoadError(error.reason)),

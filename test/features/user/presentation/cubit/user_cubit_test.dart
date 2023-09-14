@@ -56,7 +56,7 @@ void main() {
     blocTest(
       'should emit [Loading, Error] when use case fails',
       build: () => cubit,
-      setUp: () => when(getUser(any)).thenAnswer(
+      setUp: () => when(getUser()).thenAnswer(
         (_) async => const Left(
           ServerFailure('some error'),
         ),
@@ -71,7 +71,7 @@ void main() {
     blocTest(
       'should emit [Loading, Loaded] when use case succeeds',
       build: () => cubit,
-      setUp: () => when(getUser(any)).thenAnswer(
+      setUp: () => when(getUser()).thenAnswer(
         (_) async => const Right(testUser),
       ),
       act: (_) => cubit.fetchUserDetails(),
@@ -110,7 +110,15 @@ void main() {
     blocTest<UserCubit, UserState>(
       'should emit [Updating, Error] if use case fails',
       build: () => cubit,
-      setUp: () => when(updateUserDetails(any)).thenAnswer(
+      setUp: () => when(
+        updateUserDetails(
+          email: anyNamed('email'),
+          encodedPasscode: anyNamed('encodedPasscode'),
+          name: anyNamed('name'),
+          occupationId: anyNamed('occupationId'),
+          privacyActivated: anyNamed('privacyActivated'),
+        ),
+      ).thenAnswer(
         (_) async => const Left(
           ServerFailure('some error'),
         ),
@@ -126,7 +134,15 @@ void main() {
     blocTest<UserCubit, UserState>(
       'should emit [Updating, Loaded] if use case succeeds',
       build: () => cubit,
-      setUp: () => when(updateUserDetails(any)).thenAnswer(
+      setUp: () => when(
+        updateUserDetails(
+          email: anyNamed('email'),
+          encodedPasscode: anyNamed('encodedPasscode'),
+          name: anyNamed('name'),
+          occupationId: anyNamed('occupationId'),
+          privacyActivated: anyNamed('privacyActivated'),
+        ),
+      ).thenAnswer(
         (_) async => const Right(testUser),
       ),
       act: (_) => cubit.updateUser(const UpdateUser()),
@@ -141,7 +157,7 @@ void main() {
   group('requestUserAccountDeletion', () {
     test('should call use case', () {
       // arrange
-      when(requestAccountDeletion(any)).thenAnswer(
+      when(requestAccountDeletion()).thenAnswer(
         (_) async => const Right(unit),
       );
 
@@ -149,7 +165,7 @@ void main() {
       cubit.requestUserAccountDeletion();
 
       // assert
-      verify(requestAccountDeletion(any));
+      verify(requestAccountDeletion());
     });
   });
 }

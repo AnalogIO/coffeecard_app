@@ -35,8 +35,14 @@ void main() {
     blocTest(
       'should emit [Error] if use case fails',
       build: () => cubit,
-      setUp: () => when(registerUser(any))
-          .thenAnswer((_) async => const Left(ServerFailure(testError))),
+      setUp: () => when(
+        registerUser(
+          email: anyNamed('email'),
+          encodedPasscode: anyNamed('encodedPasscode'),
+          name: anyNamed('name'),
+          occupationId: anyNamed('occupationId'),
+        ),
+      ).thenAnswer((_) async => const Left(ServerFailure(testError))),
       act: (_) => cubit.register('name', 'email', 'passcode', 0),
       expect: () => [RegisterError(testError)],
     );
@@ -45,7 +51,14 @@ void main() {
       'should emit [Success] if use case succeeds',
       build: () => cubit,
       setUp: () {
-        when(registerUser(any)).thenAnswer((_) async => const Right(unit));
+        when(
+          registerUser(
+            email: anyNamed('email'),
+            encodedPasscode: anyNamed('encodedPasscode'),
+            name: anyNamed('name'),
+            occupationId: anyNamed('occupationId'),
+          ),
+        ).thenAnswer((_) async => const Right(unit));
         when(firebaseAnalyticsEventLogging.signUpEvent());
       },
       act: (_) => cubit.register('name', 'email', 'passcode', 0),

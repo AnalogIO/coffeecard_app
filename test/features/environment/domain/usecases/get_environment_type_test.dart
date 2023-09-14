@@ -1,5 +1,4 @@
 import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/core/usecases/usecase.dart';
 import 'package:coffeecard/features/environment/data/datasources/environment_remote_data_source.dart';
 import 'package:coffeecard/features/environment/domain/entities/environment.dart';
 import 'package:coffeecard/features/environment/domain/usecases/get_environment_type.dart';
@@ -30,7 +29,7 @@ void main() {
         .thenAnswer((_) async => const Right(Environment.production));
 
     // act
-    await usecase(NoParams());
+    await usecase();
 
     // assert
     verify(remoteDataSource.getEnvironmentType());

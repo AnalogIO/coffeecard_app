@@ -1,5 +1,4 @@
 import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/core/usecases/usecase.dart';
 import 'package:coffeecard/features/product/data/datasources/product_remote_data_source.dart';
 import 'package:coffeecard/features/product/data/models/product_model.dart';
 import 'package:coffeecard/features/product/domain/entities/product.dart';
@@ -50,7 +49,7 @@ void main() {
           .thenAnswer((_) async => const Right(products));
 
       // act
-      final actual = await usecase(NoParams());
+      final actual = await usecase();
 
       // assert
       actual.fold(

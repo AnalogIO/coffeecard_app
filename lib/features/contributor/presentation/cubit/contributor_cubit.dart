@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:coffeecard/core/usecases/usecase.dart';
 import 'package:coffeecard/features/contributor/domain/entities/contributor.dart';
 import 'package:coffeecard/features/contributor/domain/usecases/fetch_contributors.dart';
 import 'package:equatable/equatable.dart';
@@ -13,7 +12,7 @@ class ContributorCubit extends Cubit<ContributorState> {
       : super(const ContributorInitial());
 
   Future<void> getContributors() async {
-    final contributors = await fetchContributors(NoParams());
+    final contributors = await fetchContributors();
 
     contributors.fold(
       (error) => emit(const ContributorLoaded([])),

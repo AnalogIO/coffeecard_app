@@ -28,7 +28,7 @@ void main() {
     blocTest(
       'should have [Error] status when use case fails',
       build: () => cubit,
-      setUp: () => when(getReceipts.call(any))
+      setUp: () => when(getReceipts.call())
           .thenAnswer((_) async => const Left(ServerFailure('some error'))),
       act: (_) => cubit.fetchReceipts(),
       expect: () =>
@@ -39,7 +39,7 @@ void main() {
       'should have [Success] status when use case succeeds',
       build: () => cubit,
       setUp: () =>
-          when(getReceipts.call(any)).thenAnswer((_) async => const Right([])),
+          when(getReceipts.call()).thenAnswer((_) async => const Right([])),
       act: (_) => cubit.fetchReceipts(),
       expect: () => [
         ReceiptState(

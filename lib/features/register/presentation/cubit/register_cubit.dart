@@ -22,12 +22,10 @@ class RegisterCubit extends Cubit<RegisterState> {
     int occupationId,
   ) async {
     final either = await registerUser(
-      Params(
-        name: name,
-        email: email,
-        encodedPasscode: encodePasscode(passcode),
-        occupationId: occupationId,
-      ),
+      name: name,
+      email: email,
+      encodedPasscode: encodePasscode(passcode),
+      occupationId: occupationId,
     );
 
     either.fold(

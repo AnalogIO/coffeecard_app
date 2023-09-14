@@ -61,7 +61,12 @@ void main() {
     blocTest(
       'should emit [TypingPasscode, Loading, Error] when passcode length is 4 and login fails',
       build: () {
-        when(loginUser(any)).thenAnswer(
+        when(
+          loginUser(
+            email: anyNamed('email'),
+            encodedPasscode: anyNamed('encodedPasscode'),
+          ),
+        ).thenAnswer(
           (_) async => const Left(ServerFailure('some error')),
         );
         return cubit

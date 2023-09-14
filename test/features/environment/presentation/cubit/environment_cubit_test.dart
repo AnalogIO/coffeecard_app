@@ -33,7 +33,7 @@ void main() {
       'should emit [Loaded] when usecase suceeds',
       build: () => cubit,
       setUp: () {
-        when(getEnvironmentType(any))
+        when(getEnvironmentType())
             .thenAnswer((_) async => const Right(Environment.production));
       },
       act: (_) => cubit.getConfig(),
@@ -44,7 +44,7 @@ void main() {
       'should emit [Error] when usecase fails',
       build: () => cubit,
       setUp: () {
-        when(getEnvironmentType(any)).thenAnswer(
+        when(getEnvironmentType()).thenAnswer(
           (_) async => const Left(ServerFailure('some error')),
         );
       },
