@@ -39,12 +39,12 @@ class _LoginPagePasscodeState extends State<LoginPagePasscode> {
       context: context,
       title: Strings.loginVerificationEmailSent,
       children: [
-        //FIXME: style
+        //TODO: style
         Text(Strings.loginVerificationEMailBody(widget.email)),
       ],
       actions: [
         TextButton(
-          //FIXME: style
+          //TODO: style
           child: const Text(Strings.buttonOK),
           onPressed: () => closeAppDialog(context),
         ),
