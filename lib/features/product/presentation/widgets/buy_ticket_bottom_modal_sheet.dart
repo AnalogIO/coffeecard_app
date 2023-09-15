@@ -1,6 +1,6 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/base/style/colors.dart';
-import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/base/style/app_colors.dart';
+import 'package:coffeecard/base/style/app_text_styles.dart';
 import 'package:coffeecard/features/product/domain/entities/product.dart';
 import 'package:coffeecard/features/purchase/domain/entities/internal_payment_type.dart';
 import 'package:coffeecard/features/purchase/domain/entities/payment.dart';
@@ -52,7 +52,7 @@ class _ModalContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ColoredBox(
-      color: AppColor.background,
+      color: AppColors.background,
       child: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24.0),

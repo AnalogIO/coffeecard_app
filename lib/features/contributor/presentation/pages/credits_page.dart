@@ -1,6 +1,6 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/base/style/colors.dart';
-import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/base/style/app_colors.dart';
+import 'package:coffeecard/base/style/app_text_styles.dart';
 import 'package:coffeecard/core/external/external_url_launcher.dart';
 import 'package:coffeecard/core/widgets/images/analogio_logo.dart';
 import 'package:coffeecard/features/contributor/presentation/cubit/contributor_cubit.dart';
@@ -54,9 +54,9 @@ class CreditsPage extends StatelessWidget {
               listItems: [
                 DecoratedBox(
                   decoration: const BoxDecoration(
-                    color: AppColor.white,
+                    color: AppColors.white,
                     border:
-                        Border(bottom: BorderSide(color: AppColor.lightGray)),
+                        Border(bottom: BorderSide(color: AppColors.lightGray)),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(24),

@@ -1,5 +1,5 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/base/style/colors.dart';
+import 'package:coffeecard/base/style/app_colors.dart';
 import 'package:coffeecard/cubits/form/form_bloc.dart';
 import 'package:coffeecard/utils/input_validator.dart';
 import 'package:coffeecard/widgets/components/section_title.dart';

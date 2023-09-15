@@ -1,5 +1,5 @@
-import 'package:coffeecard/base/style/colors.dart';
-import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/base/style/app_colors.dart';
+import 'package:coffeecard/base/style/app_text_styles.dart';
 import 'package:flutter/material.dart';
 
 Future<void> appDialog({
@@ -13,7 +13,7 @@ Future<void> appDialog({
   return showAdaptiveDialog(
     context: context,
     barrierDismissible: dismissible,
-    barrierColor: transparentBarrier ? Colors.transparent : AppColor.scrim,
+    barrierColor: transparentBarrier ? Colors.transparent : AppColors.scrim,
     useRootNavigator: true,
     builder: (BuildContext context) {
       return WillPopScope(

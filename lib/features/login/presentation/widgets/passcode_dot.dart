@@ -1,4 +1,4 @@
-import 'package:coffeecard/base/style/colors.dart';
+import 'package:coffeecard/base/style/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class PasscodeDot extends StatelessWidget {
@@ -11,7 +11,7 @@ class PasscodeDot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color fill = isError ? AppColor.errorOnDark : AppColor.white;
+    final Color fill = isError ? AppColors.errorOnDark : AppColors.white;
     final double opacity = isLit || isError ? 1 : 0.35;
 
     return AnimatedContainer(

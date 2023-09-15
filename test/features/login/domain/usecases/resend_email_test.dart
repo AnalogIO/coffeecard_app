@@ -1,22 +1,22 @@
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/features/login/data/datasources/account_remote_data_source.dart';
-import 'package:coffeecard/features/login/domain/usecases/login_user.dart';
+import 'package:coffeecard/features/login/domain/usecases/resend_email.dart';
 import 'package:coffeecard/models/account/authenticated_user.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import 'login_user_test.mocks.dart';
+import 'resend_email_test.mocks.dart';
 
 @GenerateMocks([AccountRemoteDataSource])
 void main() {
   late MockAccountRemoteDataSource remoteDataSource;
-  late LoginUser usecase;
+  late ResendEmail usecase;
 
   setUp(() {
     remoteDataSource = MockAccountRemoteDataSource();
-    usecase = LoginUser(remoteDataSource: remoteDataSource);
+    usecase = ResendEmail(remoteDataSource: remoteDataSource);
 
     provideDummy<Either<NetworkFailure, AuthenticatedUser>>(
       const Left(ConnectionFailure()),
@@ -27,18 +27,17 @@ void main() {
 
   test('should call data source', () async {
     // arrange
-    when(remoteDataSource.login(any, any)).thenAnswer(
+    when(remoteDataSource.resendVerificationEmail(any)).thenAnswer(
       (_) async => const Left(ServerFailure(testError, 500)),
     );
 
     // act
     final actual = await usecase(
-      email: 'email',
-      encodedPasscode: 'encodedPasscode',
+      'email',
     );
 
     // assert
-    verify(remoteDataSource.login(any, any)).called(1);
+    verify(remoteDataSource.resendVerificationEmail(any)).called(1);
     expect(actual, const Left(ServerFailure(testError, 500)));
   });
 }

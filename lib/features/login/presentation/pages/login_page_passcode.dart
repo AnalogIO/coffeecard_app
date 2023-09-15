@@ -33,6 +33,26 @@ class _LoginPagePasscodeState extends State<LoginPagePasscode> {
     );
   }
 
+  Future<void> resendEmailCallback(LoginCubit cubit) async {
+    cubit.resendVerificationEmail(widget.email);
+    await appDialog(
+      context: context,
+      title: Strings.loginVerificationEmailSent,
+      children: [
+        //FIXME: style
+        Text(Strings.loginVerificationEMailBody(widget.email)),
+      ],
+      actions: [
+        TextButton(
+          //FIXME: style
+          child: const Text(Strings.buttonOK),
+          onPressed: () => closeAppDialog(context),
+        ),
+      ],
+      dismissible: true,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -70,29 +90,7 @@ class _LoginPagePasscodeState extends State<LoginPagePasscode> {
               if (state is LoginEmailNotVerified)
                 RoundedButton(
                   text: Strings.loginResendVerificationEmail,
-                  onTap: () async {
-                    final cubit = context.read<LoginCubit>();
-
-                    cubit.resendVerificationEmail(widget.email);
-                    await appDialog(
-                      context: context,
-                      title: Strings.loginVerificationEmailSent,
-                      children: [
-                        //TODO: style
-                        Text(Strings.loginVerificationEMailBody(widget.email)),
-                      ],
-                      actions: [
-                        TextButton(
-                          //TODO: style
-                          child: const Text(Strings.buttonOK),
-                          onPressed: () {
-                            closeAppDialog(context);
-                          },
-                        ),
-                      ],
-                      dismissible: true,
-                    );
-                  },
+                  onTap: () => resendEmailCallback(context.read<LoginCubit>()),
                 ),
             ],
             bottomWidget: Numpad(forgotPasscodeAction: _forgotPasscode),

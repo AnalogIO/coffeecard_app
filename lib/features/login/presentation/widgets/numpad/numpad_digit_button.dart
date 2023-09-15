@@ -1,4 +1,4 @@
-import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/base/style/app_text_styles.dart';
 import 'package:coffeecard/features/login/presentation/cubit/login_cubit.dart';
 import 'package:coffeecard/features/login/presentation/widgets/numpad/numpad_button.dart';
 import 'package:coffeecard/utils/responsive.dart';

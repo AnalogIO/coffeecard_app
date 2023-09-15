@@ -1,6 +1,6 @@
-import 'package:coffeecard/core/errors/email_not_verified_failure.dart';
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
+import 'package:coffeecard/features/login/domain/errors/email_not_verified_failure.dart';
 import 'package:coffeecard/features/user/data/models/user_model.dart';
 import 'package:coffeecard/features/user/domain/entities/user.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
@@ -11,15 +11,15 @@ import 'package:coffeecard/utils/api_uri_constants.dart';
 import 'package:fpdart/fpdart.dart';
 
 class AccountRemoteDataSource {
+  final CoffeecardApi apiV1;
+  final CoffeecardApiV2 apiV2;
+  final NetworkRequestExecutor executor;
+
   AccountRemoteDataSource({
     required this.apiV1,
     required this.apiV2,
     required this.executor,
   });
-
-  final CoffeecardApi apiV1;
-  final CoffeecardApiV2 apiV2;
-  final NetworkRequestExecutor executor;
 
   Future<Either<Failure, AuthenticatedUser>> login(
     String email,
@@ -48,14 +48,23 @@ class AccountRemoteDataSource {
     );
   }
 
+  Future<Either<NetworkFailure, Unit>> resendVerificationEmail(
+    String email,
+  ) {
+    return executor.executeAndDiscard(
+      () => apiV2.apiV2AccountResendVerificationEmailPost(
+        body: ResendAccountVerificationEmailRequest(email: email),
+      ),
+    );
+  }
+
   Future<Either<NetworkFailure, User>> getUser() {
     return executor.execute(apiV2.apiV2AccountGet).map(UserModel.fromResponse);
   }
 
   Future<Either<NetworkFailure, Unit>> requestPasscodeReset(String email) {
-    final body = EmailDto(email: email);
     return executor.executeAndDiscard(
-      () => apiV1.apiV1AccountForgotpasswordPost(body: body),
+      () => apiV1.apiV1AccountForgotpasswordPost(body: EmailDto(email: email)),
     );
   }
 

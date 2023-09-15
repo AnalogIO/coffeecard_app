@@ -1,4 +1,4 @@
-import 'package:coffeecard/base/style/colors.dart';
+import 'package:coffeecard/base/style/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class Tappable extends StatelessWidget {
@@ -20,9 +20,9 @@ class Tappable extends StatelessWidget {
   });
 
   Color? get splashColor =>
-      (color == AppColor.white || color == AppColor.primary)
+      (color == AppColors.white || color == AppColors.primary)
           ? null
-          : AppColor.primary.withOpacity(0.12);
+          : AppColors.primary.withOpacity(0.12);
 
   @override
   Widget build(BuildContext context) {

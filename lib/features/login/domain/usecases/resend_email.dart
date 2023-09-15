@@ -1,9 +1,13 @@
 import 'package:coffeecard/core/errors/failures.dart';
+import 'package:coffeecard/features/login/data/datasources/account_remote_data_source.dart';
 import 'package:fpdart/fpdart.dart';
 
 class ResendEmail {
-  Future<Either<ServerFailure, void>> call(String email) async {
-    //TODO: implement
-    return const Left(ServerFailure('fail!', 500));
+  final AccountRemoteDataSource remoteDataSource;
+
+  ResendEmail({required this.remoteDataSource});
+
+  Future<Either<NetworkFailure, void>> call(String email) async {
+    return remoteDataSource.resendVerificationEmail(email);
   }
 }

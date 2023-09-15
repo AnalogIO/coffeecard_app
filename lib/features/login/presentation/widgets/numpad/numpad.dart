@@ -1,6 +1,6 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/base/style/colors.dart';
-import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/base/style/app_colors.dart';
+import 'package:coffeecard/base/style/app_text_styles.dart';
 import 'package:coffeecard/features/login/presentation/cubit/login_cubit.dart';
 import 'package:coffeecard/features/login/presentation/widgets/numpad/numpad_button.dart';
 import 'package:coffeecard/features/login/presentation/widgets/numpad/numpad_digit_button.dart';
@@ -45,14 +45,14 @@ class _NumpadState extends State<Numpad> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     final _ = _controller.forward();
 
-    const borderInside = BorderSide(color: AppColor.lightGray, width: 2);
+    const borderInside = BorderSide(color: AppColors.lightGray, width: 2);
 
     return SlideTransition(
       position: _animation,
       child: BlocBuilder<LoginCubit, LoginState>(
         builder: (context, state) {
           return ColoredBox(
-            color: AppColor.white,
+            color: AppColors.white,
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
               child: Table(

@@ -1,5 +1,5 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/base/style/colors.dart';
+import 'package:coffeecard/base/style/app_colors.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
 import 'package:coffeecard/features/settings/presentation/pages/change_email_page.dart';
 import 'package:coffeecard/features/settings/presentation/widgets/change_passcode_flow.dart';
@@ -88,7 +88,7 @@ void _showDeleteAccountDialog(BuildContext context, String email) {
       TextButton(
         child: const Text(
           Strings.buttonUnderstand,
-          style: TextStyle(color: AppColor.errorOnBright),
+          style: TextStyle(color: AppColors.errorOnBright),
         ),
         onPressed: () {
           context.read<UserCubit>().requestUserAccountDeletion();

@@ -1,5 +1,4 @@
 import 'package:chopper/chopper.dart';
-import 'package:coffeecard/core/data/datasources/account_remote_data_source.dart';
 import 'package:coffeecard/core/external/date_service.dart';
 import 'package:coffeecard/core/external/external_url_launcher.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
@@ -16,7 +15,9 @@ import 'package:coffeecard/features/environment/presentation/cubit/environment_c
 import 'package:coffeecard/features/leaderboard/data/datasources/leaderboard_remote_data_source.dart';
 import 'package:coffeecard/features/leaderboard/domain/usecases/get_leaderboard.dart';
 import 'package:coffeecard/features/leaderboard/presentation/cubit/leaderboard_cubit.dart';
+import 'package:coffeecard/features/login/data/datasources/account_remote_data_source.dart';
 import 'package:coffeecard/features/login/domain/usecases/login_user.dart';
+import 'package:coffeecard/features/login/domain/usecases/resend_email.dart';
 import 'package:coffeecard/features/occupation/data/datasources/occupation_remote_data_source.dart';
 import 'package:coffeecard/features/occupation/domain/usecases/get_occupations.dart';
 import 'package:coffeecard/features/occupation/presentation/cubit/occupation_cubit.dart';
@@ -329,6 +330,7 @@ void initLogin() {
 
   // use case
   sl.registerFactory(() => LoginUser(remoteDataSource: sl()));
+  sl.registerFactory(() => ResendEmail(remoteDataSource: sl()));
 
   // data source
 }

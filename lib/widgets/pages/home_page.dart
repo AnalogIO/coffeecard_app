@@ -1,8 +1,8 @@
 import 'dart:math';
 
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/base/style/colors.dart';
-import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/base/style/app_colors.dart';
+import 'package:coffeecard/base/style/app_text_styles.dart';
 import 'package:coffeecard/features/leaderboard/presentation/cubit/leaderboard_cubit.dart';
 import 'package:coffeecard/features/leaderboard/presentation/pages/leaderboard_page.dart';
 import 'package:coffeecard/features/opening_hours/presentation/cubit/opening_hours_cubit.dart';
@@ -138,7 +138,7 @@ class _HomePageState extends State<HomePage> {
       child: WillPopScope(
         onWillPop: onWillPop,
         child: Scaffold(
-          backgroundColor: AppColor.background,
+          backgroundColor: AppColors.background,
           body: LazyIndexedStack(
             index: _currentPageIndex,
             children: _bottomNavAppFlows,
@@ -148,9 +148,9 @@ class _HomePageState extends State<HomePage> {
             currentIndex: _currentPageIndex,
             onTap: onBottomNavTap,
             type: BottomNavigationBarType.fixed,
-            backgroundColor: AppColor.primary,
-            selectedItemColor: AppColor.white,
-            unselectedItemColor: AppColor.white.withOpacity(0.5),
+            backgroundColor: AppColors.primary,
+            selectedItemColor: AppColors.white,
+            unselectedItemColor: AppColors.white.withOpacity(0.5),
             selectedFontSize: 12,
             unselectedLabelStyle: AppTextStyle.bottomNavBarLabel,
             selectedLabelStyle: AppTextStyle.bottomNavBarLabel,
