@@ -47,7 +47,7 @@ void main() {
         ReactivationAuthenticator.uninitialized(serviceLocator: serviceLocator);
     authenticator.initialize(accountRemoteDataSource);
 
-    provideDummy<Either<NetworkFailure, AuthenticatedUser>>(
+    provideDummy<Either<Failure, AuthenticatedUser>>(
       const Left(ConnectionFailure()),
     );
   });

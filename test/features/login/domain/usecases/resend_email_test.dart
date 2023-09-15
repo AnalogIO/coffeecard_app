@@ -1,7 +1,6 @@
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/features/login/data/datasources/account_remote_data_source.dart';
 import 'package:coffeecard/features/login/domain/usecases/resend_email.dart';
-import 'package:coffeecard/models/account/authenticated_user.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:mockito/annotations.dart';
@@ -18,7 +17,7 @@ void main() {
     remoteDataSource = MockAccountRemoteDataSource();
     usecase = ResendEmail(remoteDataSource: remoteDataSource);
 
-    provideDummy<Either<NetworkFailure, AuthenticatedUser>>(
+    provideDummy<Either<NetworkFailure, Unit>>(
       const Left(ConnectionFailure()),
     );
   });
