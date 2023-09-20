@@ -40,7 +40,7 @@ class _LoginPagePasscodeState extends State<LoginPagePasscode> {
       title: Strings.loginVerificationEmailSent,
       children: [
         //TODO: style
-        Text(Strings.loginVerificationEMailBody(widget.email)),
+        Text(Strings.loginVerificationEmailBody(widget.email)),
       ],
       actions: [
         TextButton(

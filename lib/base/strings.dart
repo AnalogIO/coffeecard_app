@@ -32,7 +32,7 @@ abstract final class Strings {
 
   static const loginResendVerificationEmail = 'Resend verification email';
   static const loginVerificationEmailSent = 'Verification email sent';
-  static String loginVerificationEMailBody(String email) =>
+  static String loginVerificationEmailBody(String email) =>
       'We have sent an email to $email, please check your spam folder';
 
   // Tickets
