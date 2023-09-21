@@ -1,7 +1,7 @@
 import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/core/widgets/components/dialog.dart';
 import 'package:coffeecard/core/widgets/components/loading_overlay.dart';
-import 'package:coffeecard/core/widgets/components/tickets/rounded_button.dart';
+import 'package:coffeecard/core/widgets/components/rounded_button.dart';
 import 'package:coffeecard/core/widgets/fast_slide_transition.dart';
 import 'package:coffeecard/features/login/presentation/cubit/login_cubit.dart';
 import 'package:coffeecard/features/login/presentation/pages/forgot_passcode_page.dart';
