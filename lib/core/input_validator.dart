@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:coffeecard/utils/email_is_valid.dart';
+import 'package:coffeecard/core/email_is_valid.dart';
 import 'package:fpdart/fpdart.dart';
 
 part 'input_validator_helpers.dart';

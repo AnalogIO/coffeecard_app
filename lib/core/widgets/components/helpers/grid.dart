@@ -1,4 +1,4 @@
-import 'package:coffeecard/utils/responsive.dart';
+import 'package:coffeecard/core/widgets/components/helpers/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';

@@ -1,5 +1,5 @@
 import 'package:coffeecard/core/strings.dart';
-import 'package:coffeecard/utils/time_since.dart';
+import 'package:coffeecard/features/receipt/presentation/widgets/time_since.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

@@ -1,3 +1,4 @@
+import 'package:coffeecard/core/api_uri_constants.dart';
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/features/authentication/domain/entities/authenticated_user.dart';
@@ -7,7 +8,6 @@ import 'package:coffeecard/features/user/domain/entities/user.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart'
     hide MessageResponseDto;
-import 'package:coffeecard/utils/api_uri_constants.dart';
 import 'package:fpdart/fpdart.dart';
 
 class AccountRemoteDataSource {

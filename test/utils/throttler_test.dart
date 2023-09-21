@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:coffeecard/utils/throttler.dart';
+import 'package:coffeecard/core/throttler.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 

@@ -1,8 +1,8 @@
+import 'package:coffeecard/core/input_validator.dart';
 import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/features/form/presentation/widgets/form.dart';
 import 'package:coffeecard/features/login/data/datasources/account_remote_data_source.dart';
 import 'package:coffeecard/service_locator.dart';
-import 'package:coffeecard/utils/input_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:fpdart/fpdart.dart';
 

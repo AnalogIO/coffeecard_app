@@ -1,6 +1,6 @@
+import 'package:coffeecard/core/encode_passcode.dart';
+import 'package:coffeecard/core/firebase_analytics_event_logging.dart';
 import 'package:coffeecard/features/register/domain/usecases/register_user.dart';
-import 'package:coffeecard/utils/encode_passcode.dart';
-import 'package:coffeecard/utils/firebase_analytics_event_logging.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

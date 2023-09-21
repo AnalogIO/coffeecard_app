@@ -1,5 +1,6 @@
 import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/core/styles/app_text_styles.dart';
+import 'package:coffeecard/core/widgets/components/helpers/responsive.dart';
 import 'package:coffeecard/features/occupation/presentation/pages/change_occupation_page.dart';
 import 'package:coffeecard/features/settings/presentation/pages/change_name_page.dart';
 import 'package:coffeecard/features/settings/presentation/widgets/settings_group.dart';
@@ -7,7 +8,6 @@ import 'package:coffeecard/features/settings/presentation/widgets/settings_list_
 import 'package:coffeecard/features/settings/presentation/widgets/user_icon.dart';
 import 'package:coffeecard/features/user/domain/entities/user.dart';
 import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
-import 'package:coffeecard/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';

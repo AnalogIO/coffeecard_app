@@ -1,10 +1,10 @@
 import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/core/widgets/components/dialog.dart';
 import 'package:coffeecard/core/widgets/components/loading_overlay.dart';
+import 'package:coffeecard/core/widgets/fast_slide_transition.dart';
 import 'package:coffeecard/features/register/presentation/cubit/register_cubit.dart';
 import 'package:coffeecard/features/register/presentation/widgets/forms/register_name_form.dart';
 import 'package:coffeecard/service_locator.dart';
-import 'package:coffeecard/utils/fast_slide_transition.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';

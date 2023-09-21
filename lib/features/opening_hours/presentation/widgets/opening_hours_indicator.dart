@@ -2,7 +2,7 @@ import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/core/styles/app_colors.dart';
 import 'package:coffeecard/core/styles/app_text_styles.dart';
 import 'package:coffeecard/features/opening_hours/presentation/cubit/opening_hours_cubit.dart';
-import 'package:coffeecard/utils/analog_icons.dart';
+import 'package:coffeecard/features/opening_hours/presentation/widgets/analog_icons.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';

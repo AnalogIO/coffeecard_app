@@ -1,3 +1,4 @@
+import 'package:coffeecard/core/api_uri_constants.dart';
 import 'package:coffeecard/core/external/external_url_launcher.dart';
 import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/features/contributor/presentation/pages/credits_page.dart';
@@ -7,7 +8,6 @@ import 'package:coffeecard/features/settings/presentation/pages/faq_page.dart';
 import 'package:coffeecard/features/settings/presentation/widgets/settings_group.dart';
 import 'package:coffeecard/features/settings/presentation/widgets/settings_list_entry.dart';
 import 'package:coffeecard/service_locator.dart';
-import 'package:coffeecard/utils/api_uri_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

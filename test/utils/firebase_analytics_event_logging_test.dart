@@ -1,7 +1,7 @@
+import 'package:coffeecard/core/firebase_analytics_event_logging.dart';
 import 'package:coffeecard/features/product/domain/entities/product.dart';
 import 'package:coffeecard/features/purchase/domain/entities/payment.dart';
 import 'package:coffeecard/features/purchase/domain/entities/payment_status.dart';
-import 'package:coffeecard/utils/firebase_analytics_event_logging.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';

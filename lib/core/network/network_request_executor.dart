@@ -1,6 +1,6 @@
 import 'package:chopper/chopper.dart' show Response;
 import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/utils/firebase_analytics_event_logging.dart';
+import 'package:coffeecard/core/firebase_analytics_event_logging.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:logger/logger.dart';
 

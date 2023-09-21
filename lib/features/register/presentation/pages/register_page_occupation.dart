@@ -1,10 +1,10 @@
 import 'package:coffeecard/core/styles/app_colors.dart';
 import 'package:coffeecard/core/widgets/components/error_section.dart';
+import 'package:coffeecard/core/widgets/fast_slide_transition.dart';
 import 'package:coffeecard/features/occupation/domain/entities/occupation.dart';
 import 'package:coffeecard/features/occupation/presentation/cubit/occupation_cubit.dart';
 import 'package:coffeecard/features/occupation/presentation/widgets/occupation_form.dart';
 import 'package:coffeecard/features/register/presentation/pages/register_page_name.dart';
-import 'package:coffeecard/utils/fast_slide_transition.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
