@@ -1,5 +1,5 @@
 import 'package:coffeecard/core/strings.dart';
-import 'package:coffeecard/core/widgets/form/form.dart';
+import 'package:coffeecard/features/form/presentation/widgets/form.dart';
 import 'package:coffeecard/features/settings/presentation/widgets/forms/change_passcode_repeat_form.dart';
 import 'package:coffeecard/utils/fast_slide_transition.dart';
 import 'package:coffeecard/utils/input_validator.dart';
