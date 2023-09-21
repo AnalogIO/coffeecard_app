@@ -12,13 +12,18 @@ class ProductsLoading extends ProductState {
 }
 
 class ProductsLoaded extends ProductState {
-  final List<Product> ticketProducts;
-  final List<Product> singleDrinkProducts;
+  final List<Product> clipCards;
+  final List<Product> singleDrinks;
+  final List<Product> perks;
 
-  const ProductsLoaded(this.ticketProducts, this.singleDrinkProducts);
+  const ProductsLoaded({
+    required this.clipCards,
+    required this.singleDrinks,
+    required this.perks,
+  });
 
   @override
-  List<Object?> get props => [ticketProducts, singleDrinkProducts];
+  List<Object?> get props => [clipCards, singleDrinks, perks];
 }
 
 class ProductsError extends ProductState {

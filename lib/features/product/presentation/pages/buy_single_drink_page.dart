@@ -31,7 +31,7 @@ class BuySingleDrinkPage extends StatelessWidget {
               return const Loading(loading: true);
             } else if (state is ProductsLoaded) {
               sl<FirebaseAnalyticsEventLogging>().viewProductsListEvent(
-                state.singleDrinkProducts,
+                state.singleDrinks,
                 fbAnalyticsListId,
                 fbAnalyticsListName,
               );
@@ -42,9 +42,8 @@ class BuySingleDrinkPage extends StatelessWidget {
                   gap: GridGap.normal,
                   gapSmall: GridGap.tight,
                   singleColumnOnSmallDevice: true,
-                  children: state.singleDrinkProducts
-                      .map(BuyTicketsCard.single)
-                      .toList(),
+                  children:
+                      state.singleDrinks.map(BuyTicketsCard.single).toList(),
                 ),
               );
             } else if (state is ProductsError) {

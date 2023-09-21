@@ -8,6 +8,7 @@ class ProductModel extends Product {
     required super.name,
     required super.id,
     required super.description,
+    required super.isPerk,
   });
 
   factory ProductModel.fromDTO(ProductDto dto) {
@@ -17,6 +18,7 @@ class ProductModel extends Product {
       name: dto.name,
       id: dto.id,
       description: dto.description,
+      isPerk: dto.isPerk,
     );
   }
 }

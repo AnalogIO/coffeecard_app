@@ -1,17 +1,9 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/base/style/colors.dart';
-import 'package:coffeecard/features/environment/domain/entities/environment.dart';
-import 'package:coffeecard/features/environment/presentation/cubit/environment_cubit.dart';
 import 'package:coffeecard/features/product/domain/entities/product.dart';
 import 'package:coffeecard/features/product/presentation/cubit/product_cubit.dart';
-import 'package:coffeecard/features/product/presentation/pages/buy_single_drink_page.dart';
-import 'package:coffeecard/features/product/presentation/widgets/buy_ticket_bottom_modal_sheet.dart';
+import 'package:coffeecard/features/product/presentation/functions.dart';
 import 'package:coffeecard/features/product/presentation/widgets/buy_tickets_card.dart';
 import 'package:coffeecard/features/purchase/domain/entities/payment.dart';
-import 'package:coffeecard/features/purchase/domain/entities/payment_status.dart';
-import 'package:coffeecard/features/receipt/presentation/cubit/receipt_cubit.dart';
-import 'package:coffeecard/features/receipt/presentation/widgets/receipt_overlay.dart';
-import 'package:coffeecard/features/ticket/presentation/cubit/tickets_cubit.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/utils/firebase_analytics_event_logging.dart';
 import 'package:coffeecard/widgets/components/error_section.dart';
@@ -47,7 +39,7 @@ class _BuyTicketsPageState extends State<BuyTicketsPage> {
               return const Loading(loading: true);
             } else if (state is ProductsLoaded) {
               sl<FirebaseAnalyticsEventLogging>().viewProductsListEvent(
-                state.ticketProducts,
+                state.clipCards,
                 BuyTicketsPage.fbAnalyticsListId,
                 BuyTicketsPage.fbAnalyticsListName,
               );
@@ -58,9 +50,8 @@ class _BuyTicketsPageState extends State<BuyTicketsPage> {
                   gap: GridGap.normal,
                   gapSmall: GridGap.tight,
                   singleColumnOnSmallDevice: true,
-                  children: state.ticketProducts
-                      .map(BuyTicketsCard.multiple)
-                      .toList(),
+                  children:
+                      state.clipCards.map(BuyTicketsCard.multiple).toList(),
                 ),
               );
             } else if (state is ProductsError) {
@@ -79,78 +70,11 @@ class _BuyTicketsPageState extends State<BuyTicketsPage> {
   }
 
   Future<void> onTap(BuildContext context, Product product) async {
-    final payment = await buyTicketsModal(context, product);
-
-    if (!mounted) return;
-
-    if (payment != null && payment.status == PaymentStatus.completed) {
-      // Send the user back to the home-screen.
-      Navigator.pop(context);
-
-      final envState = context.read<EnvironmentCubit>().state;
-
-      final updateTicketsRequest = context.read<TicketsCubit>().getTickets();
-      final updateReceiptsRequest =
-          context.read<ReceiptCubit>().fetchReceipts();
-
-      ReceiptOverlay.of(context).show(
-        isTestEnvironment: envState is EnvironmentLoaded && envState.env.isTest,
-        status: Strings.purchased,
-        productName: payment.productName,
-        timeUsed: payment.purchaseTime,
-      );
-      await updateTicketsRequest;
-      await updateReceiptsRequest;
-    }
-  }
-}
-
-Future<Payment?> buyTicketsModal(BuildContext context, Product product) {
-  sl<FirebaseAnalyticsEventLogging>().selectProductFromListEvent(
-    product,
-    BuyTicketsPage.fbAnalyticsListId,
-    BuyTicketsPage.fbAnalyticsListName,
-  );
-  sl<FirebaseAnalyticsEventLogging>().viewProductEvent(product);
-
-  return showModalBottomSheet<Payment>(
-    context: context,
-    barrierColor: AppColor.scrim,
-    backgroundColor: Colors.transparent,
-    useRootNavigator: true,
-    builder: (_) => BuyTicketBottomModalSheet(
-      product: product,
-      description:
-          Strings.paymentConfirmationTopTickets(product.amount, product.name),
-    ),
-  );
-}
-
-// FIXME move
-
-Future<Payment?> buyNSwipeModal(BuildContext context, Product product) {
-  {
-    sl<FirebaseAnalyticsEventLogging>().selectProductFromListEvent(
-      product,
-      BuySingleDrinkPage.fbAnalyticsListId,
-      BuySingleDrinkPage.fbAnalyticsListName,
-    );
-    sl<FirebaseAnalyticsEventLogging>().viewProductEvent(
-      product,
-    );
-
-    return showModalBottomSheet<Payment>(
-      context: context,
-      barrierColor: AppColor.scrim,
-      backgroundColor: Colors.transparent,
-      useRootNavigator: true,
-      builder: (_) => BuyTicketBottomModalSheet(
-        product: product,
-        description: Strings.paymentConfirmationTopSingle(
-          product.amount,
-          product.name,
-        ),
-      ),
-    );
+    final showModal = switch (product.amount) {
+      1 => buyNSwipeModal,
+      _ => buyTicketsModal,
+    };
+    final payment = await showModal(context, product);
+    if (mounted) return afterPurchaseModal(payment, context);
   }
 }
