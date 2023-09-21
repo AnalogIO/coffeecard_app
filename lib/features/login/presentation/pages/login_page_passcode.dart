@@ -1,4 +1,4 @@
-import 'package:coffeecard/base/strings.dart';
+import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/features/login/presentation/cubit/login_cubit.dart';
 import 'package:coffeecard/features/login/presentation/pages/forgot_passcode_page.dart';
 import 'package:coffeecard/features/login/presentation/pages/login_page_base.dart';

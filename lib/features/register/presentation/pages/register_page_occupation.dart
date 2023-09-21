@@ -1,4 +1,4 @@
-import 'package:coffeecard/base/style/app_colors.dart';
+import 'package:coffeecard/core/styles/app_colors.dart';
 import 'package:coffeecard/features/occupation/domain/entities/occupation.dart';
 import 'package:coffeecard/features/occupation/presentation/cubit/occupation_cubit.dart';
 import 'package:coffeecard/features/occupation/presentation/widgets/occupation_form.dart';

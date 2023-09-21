@@ -1,4 +1,4 @@
-import 'package:coffeecard/base/strings.dart';
+import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/features/login/presentation/pages/login_page_base.dart';
 import 'package:coffeecard/features/login/presentation/pages/login_page_passcode.dart';
 import 'package:coffeecard/features/login/presentation/widgets/login_cta.dart';

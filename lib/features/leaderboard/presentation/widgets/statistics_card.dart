@@ -1,5 +1,5 @@
-import 'package:coffeecard/base/style/app_colors.dart';
-import 'package:coffeecard/base/style/app_text_styles.dart';
+import 'package:coffeecard/core/styles/app_colors.dart';
+import 'package:coffeecard/core/styles/app_text_styles.dart';
 import 'package:coffeecard/widgets/components/card.dart';
 import 'package:coffeecard/widgets/components/helpers/shimmer_builder.dart';
 import 'package:flutter/material.dart';

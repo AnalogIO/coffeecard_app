@@ -1,4 +1,4 @@
-import 'package:coffeecard/base/strings.dart';
+import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/core/widgets/list_entry.dart';
 import 'package:coffeecard/features/occupation/domain/entities/occupation.dart';
 import 'package:coffeecard/features/settings/presentation/widgets/settings_list_entry.dart';

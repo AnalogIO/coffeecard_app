@@ -1,4 +1,4 @@
-import 'package:coffeecard/base/style/app_text_styles.dart';
+import 'package:coffeecard/core/styles/app_text_styles.dart';
 import 'package:coffeecard/core/widgets/images/analog_logo.dart';
 import 'package:coffeecard/core/widgets/upgrade_alert.dart';
 import 'package:coffeecard/features/login/presentation/widgets/login_input_hint.dart';

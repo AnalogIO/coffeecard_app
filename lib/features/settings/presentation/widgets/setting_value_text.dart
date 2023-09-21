@@ -1,4 +1,4 @@
-import 'package:coffeecard/base/style/app_text_styles.dart';
+import 'package:coffeecard/core/styles/app_text_styles.dart';
 import 'package:flutter/material.dart';
 
 class SettingValueText extends StatelessWidget {

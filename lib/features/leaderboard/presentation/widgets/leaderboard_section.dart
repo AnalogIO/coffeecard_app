@@ -1,4 +1,4 @@
-import 'package:coffeecard/base/strings.dart';
+import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/features/leaderboard/presentation/cubit/leaderboard_cubit.dart';
 import 'package:coffeecard/features/leaderboard/presentation/widgets/leaderboard_list_view.dart';
 import 'package:coffeecard/features/leaderboard/presentation/widgets/leaderboard_list_view_placeholder.dart';

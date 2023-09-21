@@ -1,6 +1,6 @@
-import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/base/style/app_colors.dart';
-import 'package:coffeecard/base/style/app_text_styles.dart';
+import 'package:coffeecard/core/strings.dart';
+import 'package:coffeecard/core/styles/app_colors.dart';
+import 'package:coffeecard/core/styles/app_text_styles.dart';
 import 'package:coffeecard/features/opening_hours/presentation/cubit/opening_hours_cubit.dart';
 import 'package:coffeecard/utils/analog_icons.dart';
 import 'package:flutter/widgets.dart';

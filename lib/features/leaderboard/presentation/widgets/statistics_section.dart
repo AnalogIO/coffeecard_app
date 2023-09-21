@@ -1,5 +1,5 @@
-import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/base/style/app_text_styles.dart';
+import 'package:coffeecard/core/strings.dart';
+import 'package:coffeecard/core/styles/app_text_styles.dart';
 import 'package:coffeecard/features/leaderboard/presentation/widgets/statistics_card.dart';
 import 'package:coffeecard/features/user/domain/entities/user.dart';
 import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';

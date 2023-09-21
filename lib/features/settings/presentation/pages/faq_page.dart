@@ -1,4 +1,4 @@
-import 'package:coffeecard/base/strings.dart';
+import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/features/settings/presentation/widgets/faq.dart';
 import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:flutter/material.dart';

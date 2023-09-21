@@ -1,4 +1,4 @@
-import 'package:coffeecard/base/strings.dart';
+import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/features/register/presentation/cubit/register_cubit.dart';
 import 'package:coffeecard/features/register/presentation/widgets/forms/register_name_form.dart';
 import 'package:coffeecard/service_locator.dart';

@@ -1,4 +1,4 @@
-import 'package:coffeecard/base/strings.dart';
+import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/features/environment/domain/entities/environment.dart';
 import 'package:coffeecard/features/environment/presentation/cubit/environment_cubit.dart';
 import 'package:coffeecard/features/receipt/presentation/widgets/receipt_card.dart';

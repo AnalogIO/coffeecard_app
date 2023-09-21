@@ -1,5 +1,5 @@
-import 'package:coffeecard/base/style/app_colors.dart';
-import 'package:coffeecard/base/style/text_style_builder.dart';
+import 'package:coffeecard/core/styles/app_colors.dart';
+import 'package:coffeecard/core/styles/text_style_builder.dart';
 import 'package:flutter/material.dart';
 
 abstract final class AppTextStyle {

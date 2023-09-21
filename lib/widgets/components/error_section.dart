@@ -1,4 +1,4 @@
-import 'package:coffeecard/base/strings.dart';
+import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/widgets/components/tickets/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';

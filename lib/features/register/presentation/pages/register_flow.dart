@@ -1,4 +1,4 @@
-import 'package:coffeecard/base/strings.dart';
+import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/features/occupation/presentation/cubit/occupation_cubit.dart';
 import 'package:coffeecard/features/register/presentation/cubit/register_cubit.dart';
 import 'package:coffeecard/features/register/presentation/pages/register_page_email.dart';

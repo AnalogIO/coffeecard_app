@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/base/style/app_colors.dart';
-import 'package:coffeecard/base/style/app_text_styles.dart';
+import 'package:coffeecard/core/strings.dart';
+import 'package:coffeecard/core/styles/app_colors.dart';
+import 'package:coffeecard/core/styles/app_text_styles.dart';
 import 'package:coffeecard/features/receipt/presentation/cubit/receipt_cubit.dart';
 import 'package:coffeecard/features/ticket/presentation/cubit/tickets_cubit.dart';
 import 'package:coffeecard/widgets/components/card.dart';

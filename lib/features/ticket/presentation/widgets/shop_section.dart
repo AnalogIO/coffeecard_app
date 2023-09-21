@@ -1,4 +1,4 @@
-import 'package:coffeecard/base/strings.dart';
+import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/features/product/presentation/pages/buy_single_drink_page.dart';
 import 'package:coffeecard/features/product/presentation/pages/buy_tickets_page.dart';
 import 'package:coffeecard/features/ticket/presentation/widgets/shop_card.dart';

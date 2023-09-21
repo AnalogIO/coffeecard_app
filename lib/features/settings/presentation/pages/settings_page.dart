@@ -1,4 +1,4 @@
-import 'package:coffeecard/base/strings.dart';
+import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/features/settings/presentation/widgets/sections/about_section.dart';
 import 'package:coffeecard/features/settings/presentation/widgets/sections/account_section.dart';
 import 'package:coffeecard/features/settings/presentation/widgets/sections/footer.dart';

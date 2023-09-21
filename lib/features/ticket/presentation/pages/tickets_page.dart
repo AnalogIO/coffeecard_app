@@ -1,4 +1,4 @@
-import 'package:coffeecard/base/strings.dart';
+import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/core/widgets/upgrade_alert.dart';
 import 'package:coffeecard/features/opening_hours/presentation/widgets/opening_hours_indicator.dart';
 import 'package:coffeecard/features/ticket/presentation/widgets/shop_section.dart';

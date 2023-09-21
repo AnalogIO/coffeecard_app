@@ -1,5 +1,5 @@
-import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/core/external/external_url_launcher.dart';
+import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/features/contributor/presentation/pages/credits_page.dart';
 import 'package:coffeecard/features/opening_hours/presentation/cubit/opening_hours_cubit.dart';
 import 'package:coffeecard/features/opening_hours/presentation/pages/opening_hours_page.dart';

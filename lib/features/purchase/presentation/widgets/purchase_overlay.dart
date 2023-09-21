@@ -1,4 +1,4 @@
-import 'package:coffeecard/base/style/app_colors.dart';
+import 'package:coffeecard/core/styles/app_colors.dart';
 import 'package:coffeecard/features/product/domain/entities/product.dart';
 import 'package:coffeecard/features/purchase/data/repositories/payment_handler.dart';
 import 'package:coffeecard/features/purchase/domain/entities/internal_payment_type.dart';

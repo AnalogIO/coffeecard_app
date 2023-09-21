@@ -1,5 +1,5 @@
-import 'package:coffeecard/base/style/app_colors.dart';
-import 'package:coffeecard/base/style/app_text_styles.dart';
+import 'package:coffeecard/core/styles/app_colors.dart';
+import 'package:coffeecard/core/styles/app_text_styles.dart';
 import 'package:coffeecard/features/environment/domain/entities/environment.dart';
 import 'package:coffeecard/features/environment/presentation/cubit/environment_cubit.dart';
 import 'package:coffeecard/features/environment/presentation/widgets/environment_banner.dart';

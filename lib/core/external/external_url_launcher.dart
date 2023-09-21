@@ -1,4 +1,4 @@
-import 'package:coffeecard/base/strings.dart';
+import 'package:coffeecard/core/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart' as url_launch;
 

@@ -1,4 +1,4 @@
-import 'package:coffeecard/base/strings.dart';
+import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/features/settings/presentation/widgets/edit_profile.dart';
 import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
 import 'package:coffeecard/widgets/components/loading.dart';

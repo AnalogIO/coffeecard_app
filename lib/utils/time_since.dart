@@ -1,4 +1,4 @@
-import 'package:coffeecard/base/strings.dart';
+import 'package:coffeecard/core/strings.dart';
 
 String timeSince(DateTime time, {DateTime? now}) {
   // Set `now` if not provided

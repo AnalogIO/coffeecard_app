@@ -1,6 +1,6 @@
-import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/base/style/app_colors.dart';
-import 'package:coffeecard/base/style/app_text_styles.dart';
+import 'package:coffeecard/core/strings.dart';
+import 'package:coffeecard/core/styles/app_colors.dart';
+import 'package:coffeecard/core/styles/app_text_styles.dart';
 import 'package:coffeecard/core/widgets/images/analog_logo.dart';
 import 'package:coffeecard/utils/responsive.dart';
 import 'package:coffeecard/utils/time_since.dart';
