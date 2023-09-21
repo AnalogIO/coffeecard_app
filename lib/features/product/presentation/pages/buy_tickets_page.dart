@@ -3,7 +3,6 @@ import 'package:coffeecard/features/product/domain/entities/product.dart';
 import 'package:coffeecard/features/product/presentation/cubit/product_cubit.dart';
 import 'package:coffeecard/features/product/presentation/functions.dart';
 import 'package:coffeecard/features/product/presentation/widgets/buy_tickets_card.dart';
-import 'package:coffeecard/features/purchase/domain/entities/payment.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/utils/firebase_analytics_event_logging.dart';
 import 'package:coffeecard/widgets/components/error_section.dart';
@@ -39,7 +38,7 @@ class _BuyTicketsPageState extends State<BuyTicketsPage> {
               return const Loading(loading: true);
             } else if (state is ProductsLoaded) {
               sl<FirebaseAnalyticsEventLogging>().viewProductsListEvent(
-                state.clipCards,
+                state.clipCards.toList(),
                 BuyTicketsPage.fbAnalyticsListId,
                 BuyTicketsPage.fbAnalyticsListName,
               );

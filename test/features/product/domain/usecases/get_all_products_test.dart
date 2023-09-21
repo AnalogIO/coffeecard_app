@@ -36,6 +36,7 @@ void main() {
           amount: 10,
           price: 1,
           description: 'test',
+          isPerk: false,
         ),
         ProductModel(
           id: 2,
@@ -43,6 +44,7 @@ void main() {
           amount: 1,
           price: 1,
           description: 'test',
+          isPerk: false,
         ),
       ];
 

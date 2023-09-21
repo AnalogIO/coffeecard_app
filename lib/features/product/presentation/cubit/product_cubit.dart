@@ -18,11 +18,21 @@ class ProductCubit extends Cubit<ProductState> {
 
     either.fold(
       (error) => emit(ProductsError(error.reason)),
-      (ticketsAndSingleDrinks) {
+      (ticketsAndSingleDrinksAndPerks) {
         emit(
           ProductsLoaded(
-            ticketsAndSingleDrinks.$1.toList(),
-            ticketsAndSingleDrinks.$2.toList(),
+            clipCards: ticketsAndSingleDrinksAndPerks.$1,
+            singleDrinks: ticketsAndSingleDrinksAndPerks.$2,
+            perks: const [
+              Product(
+                id: 999,
+                amount: 1,
+                price: 0,
+                name: 'Gratis filter',
+                description: 'deskription',
+                isPerk: true,
+              ),
+            ],
           ),
         );
       },

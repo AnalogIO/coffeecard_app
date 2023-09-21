@@ -31,7 +31,7 @@ class BuySingleDrinkPage extends StatelessWidget {
               return const Loading(loading: true);
             } else if (state is ProductsLoaded) {
               sl<FirebaseAnalyticsEventLogging>().viewProductsListEvent(
-                state.singleDrinks,
+                state.singleDrinks.toList(),
                 fbAnalyticsListId,
                 fbAnalyticsListName,
               );

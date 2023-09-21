@@ -60,6 +60,7 @@ void main() {
                 name: 'name',
                 id: 0,
                 description: 'description',
+                isPerk: false,
               ),
             ],
           );

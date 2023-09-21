@@ -1,7 +1,6 @@
 import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/features/product/domain/entities/product.dart';
 import 'package:coffeecard/features/product/presentation/functions.dart';
-import 'package:coffeecard/features/product/presentation/pages/buy_single_drink_page.dart';
 import 'package:coffeecard/features/product/presentation/pages/buy_tickets_page.dart';
 import 'package:coffeecard/features/ticket/presentation/widgets/shop_card.dart';
 import 'package:coffeecard/widgets/components/forms/barista/barista_indicator.dart';
@@ -44,7 +43,14 @@ class _BaristaPerksSectionState extends State<BaristaPerksSection> {
               icon: Icons.coffee_maker,
               onTapped: (context) => onTap(
                 context,
-                const Product
+                const Product(
+                  id: 999,
+                  amount: 1,
+                  price: 0,
+                  name: 'FREE FILTER',
+                  description: 'IT IS FREE',
+                  isPerk: true,
+                ),
               ),
             ),
             ShopCard(

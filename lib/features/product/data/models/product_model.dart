@@ -18,7 +18,7 @@ class ProductModel extends Product {
       name: dto.name,
       id: dto.id,
       description: dto.description,
-      isPerk: dto.isPerk,
+      isPerk: false, // TODO Integrate with backend
     );
   }
 }

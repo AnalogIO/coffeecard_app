@@ -5,6 +5,5 @@ class TicketCountModel extends TicketCount {
     required super.count,
     required super.productName,
     required super.productId,
-    required super.isBaristaTicket,
   });
 }

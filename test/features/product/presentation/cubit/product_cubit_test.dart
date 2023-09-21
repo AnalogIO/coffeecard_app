@@ -31,6 +31,7 @@ void main() {
       amount: 10,
       price: 1,
       description: 'test',
+      isPerk: false,
     ),
   ];
   const singleDrinks = [
@@ -40,6 +41,17 @@ void main() {
       amount: 1,
       price: 1,
       description: 'test',
+      isPerk: false,
+    ),
+  ];
+  const perks = [
+    Product(
+      id: 999,
+      name: 'Gratis filter',
+      amount: 1,
+      price: 0,
+      description: 'deription',
+      isPerk: true,
     ),
   ];
 
@@ -50,11 +62,15 @@ void main() {
       'should emit [Loading, Loaded] use case succeeds',
       build: () => cubit,
       setUp: () => when(getAllProducts(any))
-          .thenAnswer((_) async => const Right((tickets, singleDrinks))),
+          .thenAnswer((_) async => const Right((tickets, singleDrinks, perks))),
       act: (cubit) => cubit.getProducts(),
       expect: () => [
         const ProductsLoading(),
-        const ProductsLoaded(tickets, singleDrinks),
+        const ProductsLoaded(
+          clipCards: tickets,
+          singleDrinks: singleDrinks,
+          perks: perks,
+        ),
       ],
     );
 

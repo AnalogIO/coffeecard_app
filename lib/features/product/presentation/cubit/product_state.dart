@@ -12,9 +12,9 @@ class ProductsLoading extends ProductState {
 }
 
 class ProductsLoaded extends ProductState {
-  final List<Product> clipCards;
-  final List<Product> singleDrinks;
-  final List<Product> perks;
+  final Iterable<Product> clipCards;
+  final Iterable<Product> singleDrinks;
+  final Iterable<Product> perks;
 
   const ProductsLoaded({
     required this.clipCards,
