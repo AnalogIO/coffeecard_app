@@ -1,7 +1,7 @@
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/features/user/data/datasources/user_remote_data_source.dart';
+import 'package:coffeecard/features/user/domain/entities/update_user.dart';
 import 'package:coffeecard/features/user/domain/entities/user.dart';
-import 'package:coffeecard/models/account/update_user.dart';
 import 'package:fpdart/fpdart.dart';
 
 class UpdateUserDetails {

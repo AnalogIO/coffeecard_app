@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
+import 'package:coffeecard/features/user/domain/entities/update_user.dart';
 import 'package:coffeecard/features/user/domain/entities/user.dart';
 import 'package:coffeecard/features/user/domain/usecases/get_user.dart';
 import 'package:coffeecard/features/user/domain/usecases/request_account_deletion.dart';
 import 'package:coffeecard/features/user/domain/usecases/update_user_details.dart';
-import 'package:coffeecard/models/account/update_user.dart';
 import 'package:coffeecard/utils/encode_passcode.dart';
 import 'package:equatable/equatable.dart';
 
