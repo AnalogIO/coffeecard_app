@@ -1,12 +1,12 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:coffeecard/core/errors/failures.dart';
+import 'package:coffeecard/core/firebase_analytics_event_logging.dart';
 import 'package:coffeecard/features/product/domain/entities/product.dart';
 import 'package:coffeecard/features/purchase/domain/entities/payment.dart';
 import 'package:coffeecard/features/purchase/domain/entities/payment_status.dart';
 import 'package:coffeecard/features/purchase/domain/usecases/init_purchase.dart';
 import 'package:coffeecard/features/purchase/domain/usecases/verify_purchase_status.dart';
 import 'package:coffeecard/features/purchase/presentation/cubit/purchase_cubit.dart';
-import 'package:coffeecard/utils/firebase_analytics_event_logging.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:mockito/annotations.dart';

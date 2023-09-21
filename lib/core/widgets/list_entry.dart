@@ -1,5 +1,5 @@
-import 'package:coffeecard/base/style/app_colors.dart';
-import 'package:coffeecard/widgets/components/helpers/tappable.dart';
+import 'package:coffeecard/core/styles/app_colors.dart';
+import 'package:coffeecard/core/widgets/components/helpers/tappable.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 

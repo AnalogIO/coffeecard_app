@@ -1,5 +1,5 @@
-import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/base/style/app_colors.dart';
+import 'package:coffeecard/core/strings.dart';
+import 'package:coffeecard/core/styles/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class LoginEmailTextField extends StatefulWidget {

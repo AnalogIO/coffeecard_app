@@ -1,9 +1,9 @@
-import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/base/style/app_colors.dart';
-import 'package:coffeecard/base/style/app_text_styles.dart';
+import 'package:coffeecard/core/strings.dart';
+import 'package:coffeecard/core/styles/app_colors.dart';
+import 'package:coffeecard/core/styles/app_text_styles.dart';
+import 'package:coffeecard/core/widgets/components/helpers/shimmer_builder.dart';
 import 'package:coffeecard/core/widgets/list_entry.dart';
 import 'package:coffeecard/features/settings/presentation/widgets/user_icon.dart';
-import 'package:coffeecard/widgets/components/helpers/shimmer_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 

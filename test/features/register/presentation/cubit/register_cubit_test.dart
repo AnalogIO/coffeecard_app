@@ -1,8 +1,8 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:coffeecard/core/errors/failures.dart';
+import 'package:coffeecard/core/firebase_analytics_event_logging.dart';
 import 'package:coffeecard/features/register/domain/usecases/register_user.dart';
 import 'package:coffeecard/features/register/presentation/cubit/register_cubit.dart';
-import 'package:coffeecard/utils/firebase_analytics_event_logging.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:mockito/annotations.dart';

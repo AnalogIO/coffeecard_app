@@ -1,4 +1,4 @@
-import 'package:coffeecard/utils/responsive.dart';
+import 'package:coffeecard/core/widgets/components/helpers/responsive.dart';
 import 'package:flutter/material.dart';
 
 class AnalogLogo extends StatelessWidget {

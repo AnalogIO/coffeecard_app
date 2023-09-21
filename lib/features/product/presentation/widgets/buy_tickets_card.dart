@@ -1,8 +1,8 @@
-import 'package:coffeecard/base/style/app_colors.dart';
-import 'package:coffeecard/base/style/app_text_styles.dart';
+import 'package:coffeecard/core/styles/app_colors.dart';
+import 'package:coffeecard/core/styles/app_text_styles.dart';
+import 'package:coffeecard/core/widgets/components/card.dart';
+import 'package:coffeecard/core/widgets/components/helpers/responsive.dart';
 import 'package:coffeecard/features/product/domain/entities/product.dart';
-import 'package:coffeecard/utils/responsive.dart';
-import 'package:coffeecard/widgets/components/card.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 

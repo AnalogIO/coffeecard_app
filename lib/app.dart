@@ -1,11 +1,11 @@
-import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/base/style/theme.dart';
-import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
+import 'package:coffeecard/core/strings.dart';
+import 'package:coffeecard/core/styles/theme.dart';
+import 'package:coffeecard/core/widgets/pages/splash/splash_error_page.dart';
+import 'package:coffeecard/core/widgets/pages/splash/splash_loading_page.dart';
+import 'package:coffeecard/core/widgets/routers/splash_router.dart';
+import 'package:coffeecard/features/authentication/presentation/cubits/authentication_cubit.dart';
 import 'package:coffeecard/features/environment/presentation/cubit/environment_cubit.dart';
 import 'package:coffeecard/service_locator.dart';
-import 'package:coffeecard/widgets/pages/splash/splash_error_page.dart';
-import 'package:coffeecard/widgets/pages/splash/splash_loading_page.dart';
-import 'package:coffeecard/widgets/routers/splash_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

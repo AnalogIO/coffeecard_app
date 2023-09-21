@@ -1,8 +1,8 @@
 import 'package:chopper/chopper.dart' as chopper;
-import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/core/errors/failures.dart';
+import 'package:coffeecard/core/firebase_analytics_event_logging.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
-import 'package:coffeecard/utils/firebase_analytics_event_logging.dart';
+import 'package:coffeecard/core/strings.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart' as http;

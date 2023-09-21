@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:coffeecard/core/api_uri_constants.dart';
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/core/extensions/either_extensions.dart';
 import 'package:coffeecard/core/external/external_url_launcher.dart';
@@ -7,7 +8,6 @@ import 'package:coffeecard/features/purchase/data/repositories/payment_handler.d
 import 'package:coffeecard/features/purchase/domain/entities/payment.dart';
 import 'package:coffeecard/features/purchase/domain/entities/payment_status.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
-import 'package:coffeecard/utils/api_uri_constants.dart';
 import 'package:fpdart/fpdart.dart';
 
 class MobilePayService extends PaymentHandler {

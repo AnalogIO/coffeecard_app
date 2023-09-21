@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:chopper/chopper.dart';
-import 'package:coffeecard/base/strings.dart';
+import 'package:coffeecard/core/strings.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class Failure extends Equatable {

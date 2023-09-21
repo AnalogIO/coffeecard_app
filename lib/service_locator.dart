@@ -1,11 +1,14 @@
 import 'package:chopper/chopper.dart';
+import 'package:coffeecard/core/api_uri_constants.dart';
 import 'package:coffeecard/core/external/date_service.dart';
 import 'package:coffeecard/core/external/external_url_launcher.dart';
+import 'package:coffeecard/core/firebase_analytics_event_logging.dart';
+import 'package:coffeecard/core/ignore_value.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
-import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
-import 'package:coffeecard/data/api/interceptors/authentication_interceptor.dart';
-import 'package:coffeecard/data/storage/secure_storage.dart';
+import 'package:coffeecard/core/storage/secure_storage.dart';
 import 'package:coffeecard/env/env.dart';
+import 'package:coffeecard/features/authentication/data/intercepters/authentication_interceptor.dart';
+import 'package:coffeecard/features/authentication/presentation/cubits/authentication_cubit.dart';
 import 'package:coffeecard/features/contributor/data/datasources/contributor_local_data_source.dart';
 import 'package:coffeecard/features/contributor/domain/usecases/fetch_contributors.dart';
 import 'package:coffeecard/features/contributor/presentation/cubit/contributor_cubit.dart';
@@ -31,6 +34,7 @@ import 'package:coffeecard/features/product/data/datasources/product_remote_data
 import 'package:coffeecard/features/product/domain/usecases/get_all_products.dart';
 import 'package:coffeecard/features/product/presentation/cubit/product_cubit.dart';
 import 'package:coffeecard/features/purchase/data/datasources/purchase_remote_data_source.dart';
+import 'package:coffeecard/features/reactivation/data/reactivation_authenticator.dart';
 import 'package:coffeecard/features/receipt/data/datasources/receipt_remote_data_source.dart';
 import 'package:coffeecard/features/receipt/data/repositories/receipt_repository_impl.dart';
 import 'package:coffeecard/features/receipt/domain/repositories/receipt_repository.dart';
@@ -56,10 +60,6 @@ import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart'
     hide $JsonSerializableConverter;
 import 'package:coffeecard/generated/api/shiftplanning_api.swagger.dart'
     hide $JsonSerializableConverter;
-import 'package:coffeecard/utils/api_uri_constants.dart';
-import 'package:coffeecard/utils/firebase_analytics_event_logging.dart';
-import 'package:coffeecard/utils/ignore_value.dart';
-import 'package:coffeecard/utils/reactivation_authenticator.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
