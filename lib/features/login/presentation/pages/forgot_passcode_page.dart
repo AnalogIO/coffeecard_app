@@ -1,6 +1,6 @@
 import 'package:coffeecard/core/strings.dart';
+import 'package:coffeecard/core/widgets/components/scaffold.dart';
 import 'package:coffeecard/features/login/presentation/widgets/forgot_passcode_form.dart';
-import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:flutter/material.dart';
 
 class ForgotPasscodePage extends StatefulWidget {

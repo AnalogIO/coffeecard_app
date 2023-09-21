@@ -1,10 +1,10 @@
 import 'package:coffeecard/core/strings.dart';
+import 'package:coffeecard/core/widgets/components/loading.dart';
+import 'package:coffeecard/core/widgets/components/scaffold.dart';
 import 'package:coffeecard/features/occupation/presentation/cubit/occupation_cubit.dart';
 import 'package:coffeecard/features/occupation/presentation/widgets/occupation_form.dart';
 import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
 import 'package:coffeecard/service_locator.dart';
-import 'package:coffeecard/widgets/components/loading.dart';
-import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

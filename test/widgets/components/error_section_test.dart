@@ -1,4 +1,4 @@
-import 'package:coffeecard/widgets/components/error_section.dart';
+import 'package:coffeecard/core/widgets/components/error_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

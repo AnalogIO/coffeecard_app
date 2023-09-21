@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/core/styles/app_colors.dart';
 import 'package:coffeecard/core/styles/app_text_styles.dart';
+import 'package:coffeecard/core/widgets/components/helpers/lazy_indexed_stack.dart';
+import 'package:coffeecard/core/widgets/routers/app_flow.dart';
 import 'package:coffeecard/features/leaderboard/presentation/cubit/leaderboard_cubit.dart';
 import 'package:coffeecard/features/leaderboard/presentation/pages/leaderboard_page.dart';
 import 'package:coffeecard/features/opening_hours/presentation/cubit/opening_hours_cubit.dart';
@@ -13,8 +15,6 @@ import 'package:coffeecard/features/ticket/presentation/cubit/tickets_cubit.dart
 import 'package:coffeecard/features/ticket/presentation/pages/tickets_page.dart';
 import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
 import 'package:coffeecard/service_locator.dart';
-import 'package:coffeecard/widgets/components/helpers/lazy_indexed_stack.dart';
-import 'package:coffeecard/widgets/routers/app_flow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

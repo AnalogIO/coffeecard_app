@@ -1,4 +1,4 @@
-import 'package:coffeecard/widgets/components/helpers/tappable.dart';
+import 'package:coffeecard/core/widgets/components/helpers/tappable.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 

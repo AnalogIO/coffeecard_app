@@ -1,9 +1,9 @@
 import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/core/styles/app_colors.dart';
 import 'package:coffeecard/core/styles/app_text_styles.dart';
+import 'package:coffeecard/core/widgets/components/scaffold.dart';
 import 'package:coffeecard/features/opening_hours/domain/entities/timeslot.dart';
 import 'package:coffeecard/features/opening_hours/presentation/cubit/opening_hours_cubit.dart';
-import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 

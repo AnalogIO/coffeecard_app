@@ -1,5 +1,9 @@
 import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/core/styles/app_colors.dart';
+import 'package:coffeecard/core/widgets/components/error_section.dart';
+import 'package:coffeecard/core/widgets/components/helpers/grid.dart';
+import 'package:coffeecard/core/widgets/components/loading.dart';
+import 'package:coffeecard/core/widgets/components/scaffold.dart';
 import 'package:coffeecard/features/product/domain/entities/product.dart';
 import 'package:coffeecard/features/product/presentation/cubit/product_cubit.dart';
 import 'package:coffeecard/features/product/presentation/widgets/buy_ticket_bottom_modal_sheet.dart';
@@ -10,10 +14,6 @@ import 'package:coffeecard/features/receipt/presentation/cubit/receipt_cubit.dar
 import 'package:coffeecard/features/ticket/presentation/cubit/tickets_cubit.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/utils/firebase_analytics_event_logging.dart';
-import 'package:coffeecard/widgets/components/error_section.dart';
-import 'package:coffeecard/widgets/components/helpers/grid.dart';
-import 'package:coffeecard/widgets/components/loading.dart';
-import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

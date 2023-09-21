@@ -1,9 +1,9 @@
 import 'package:coffeecard/core/strings.dart';
+import 'package:coffeecard/core/widgets/components/scaffold.dart';
 import 'package:coffeecard/features/settings/presentation/widgets/sections/about_section.dart';
 import 'package:coffeecard/features/settings/presentation/widgets/sections/account_section.dart';
 import 'package:coffeecard/features/settings/presentation/widgets/sections/footer.dart';
 import 'package:coffeecard/features/settings/presentation/widgets/sections/profile_section.dart';
-import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:flutter/material.dart';
 
 class SettingsPage extends StatelessWidget {
