@@ -3,7 +3,7 @@ import 'package:coffeecard/features/product/domain/entities/product.dart';
 import 'package:coffeecard/features/product/presentation/functions.dart';
 import 'package:coffeecard/features/product/presentation/pages/buy_tickets_page.dart';
 import 'package:coffeecard/features/ticket/presentation/widgets/shop_card.dart';
-import 'package:coffeecard/widgets/components/forms/barista/barista_indicator.dart';
+import 'package:coffeecard/widgets/components/barista_indicator.dart';
 import 'package:coffeecard/widgets/components/helpers/grid.dart';
 import 'package:coffeecard/widgets/components/section_title.dart';
 import 'package:flutter/material.dart';
@@ -44,10 +44,10 @@ class _BaristaPerksSectionState extends State<BaristaPerksSection> {
               onTapped: (context) => onTap(
                 context,
                 const Product(
-                  id: 999,
+                  id: 8,
                   amount: 1,
                   price: 0,
-                  name: 'FREE FILTER',
+                  name: 'FREE FILTER 😎',
                   description: 'IT IS FREE',
                   isPerk: true,
                 ),
@@ -66,7 +66,10 @@ class _BaristaPerksSectionState extends State<BaristaPerksSection> {
   }
 
   Future<void> onTap(BuildContext context, Product product) async {
-    final payment = await buyTicketsModal(context, product);
-    if (mounted) return afterPurchaseModal(payment, context);
+    return buyModal(
+      context: context,
+      product: product,
+      callback: (_, __) => Future.value(),
+    );
   }
 }
