@@ -1,6 +1,6 @@
 import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/core/styles/theme.dart';
-import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
+import 'package:coffeecard/features/authentication/presentation/cubits/authentication_cubit.dart';
 import 'package:coffeecard/features/environment/presentation/cubit/environment_cubit.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/widgets/pages/splash/splash_error_page.dart';

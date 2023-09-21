@@ -1,7 +1,7 @@
 import 'package:chopper/chopper.dart' as chopper;
 import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
 import 'package:coffeecard/data/storage/secure_storage.dart';
+import 'package:coffeecard/features/authentication/presentation/cubits/authentication_cubit.dart';
 import 'package:coffeecard/features/login/data/datasources/account_remote_data_source.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/models/account/authenticated_user.dart';

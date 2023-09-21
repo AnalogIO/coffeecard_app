@@ -1,6 +1,6 @@
 import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/core/styles/app_colors.dart';
-import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
+import 'package:coffeecard/features/authentication/presentation/cubits/authentication_cubit.dart';
 import 'package:coffeecard/features/settings/presentation/pages/change_email_page.dart';
 import 'package:coffeecard/features/settings/presentation/widgets/change_passcode_flow.dart';
 import 'package:coffeecard/features/settings/presentation/widgets/setting_value_text.dart';

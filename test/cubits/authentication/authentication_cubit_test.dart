@@ -1,6 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
-import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
 import 'package:coffeecard/data/storage/secure_storage.dart';
+import 'package:coffeecard/features/authentication/presentation/cubits/authentication_cubit.dart';
 import 'package:coffeecard/models/account/authenticated_user.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';

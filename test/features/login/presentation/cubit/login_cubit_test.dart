@@ -1,6 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
+import 'package:coffeecard/features/authentication/presentation/cubits/authentication_cubit.dart';
 import 'package:coffeecard/features/login/domain/usecases/login_user.dart';
 import 'package:coffeecard/features/login/domain/usecases/resend_email.dart';
 import 'package:coffeecard/features/login/presentation/cubit/login_cubit.dart';
