@@ -1,6 +1,6 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/base/style/colors.dart';
-import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/base/style/app_colors.dart';
+import 'package:coffeecard/base/style/app_text_styles.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 
@@ -10,7 +10,7 @@ class CoffeeCardPlaceholder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DottedBorder(
-      color: AppColor.secondary,
+      color: AppColors.secondary,
       strokeWidth: 2,
       borderType: BorderType.RRect,
       radius: const Radius.circular(24),

@@ -1,6 +1,6 @@
 import 'package:coffeecard/base/strings_environment.dart';
-import 'package:coffeecard/base/style/colors.dart';
-import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/base/style/app_colors.dart';
+import 'package:coffeecard/base/style/app_text_styles.dart';
 import 'package:coffeecard/features/environment/domain/entities/environment.dart';
 import 'package:coffeecard/features/environment/presentation/cubit/environment_cubit.dart';
 import 'package:coffeecard/widgets/components/dialog.dart';
@@ -52,7 +52,7 @@ class EnvironmentButton extends StatelessWidget {
               dismissible: true,
             ),
             style: TextButton.styleFrom(
-              backgroundColor: AppColor.white,
+              backgroundColor: AppColors.white,
               padding: const EdgeInsets.only(left: 16, right: 12),
               shape: const StadiumBorder(),
               visualDensity: VisualDensity.comfortable,
@@ -67,7 +67,7 @@ class EnvironmentButton extends StatelessWidget {
                 const Gap(8),
                 const Icon(
                   Icons.info_outline,
-                  color: AppColor.primary,
+                  color: AppColors.primary,
                   size: 18,
                 ),
               ],

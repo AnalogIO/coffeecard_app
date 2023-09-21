@@ -1,5 +1,7 @@
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
+import 'package:coffeecard/features/login/domain/errors/email_not_verified_failure.dart';
 import 'package:coffeecard/features/login/domain/usecases/login_user.dart';
+import 'package:coffeecard/features/login/domain/usecases/resend_email.dart';
 import 'package:coffeecard/utils/encode_passcode.dart';
 import 'package:coffeecard/utils/firebase_analytics_event_logging.dart';
 import 'package:equatable/equatable.dart';
@@ -11,12 +13,14 @@ class LoginCubit extends Cubit<LoginState> {
   final String email;
   final AuthenticationCubit authenticationCubit;
   final LoginUser loginUser;
+  final ResendEmail resendEmail;
   final FirebaseAnalyticsEventLogging firebaseAnalyticsEventLogging;
 
   LoginCubit({
     required this.email,
     required this.authenticationCubit,
     required this.loginUser,
+    required this.resendEmail,
     required this.firebaseAnalyticsEventLogging,
   }) : super(const LoginTypingPasscode(''));
 
@@ -29,6 +33,15 @@ class LoginCubit extends Cubit<LoginState> {
     emit(LoginTypingPasscode(newPasscode));
 
     if (newPasscode.length == 4) _loginRequested();
+  }
+
+  Future<void> resendVerificationEmail(String email) async {
+    final either = await resendEmail(email);
+
+    return either.fold(
+      (err) => emit(LoginError(err.reason)),
+      (_) => clearPasscode(),
+    );
   }
 
   void clearPasscode() {
@@ -47,7 +60,14 @@ class LoginCubit extends Cubit<LoginState> {
     );
 
     either.fold(
-      (error) => emit(LoginError(error.reason)),
+      (error) {
+        if (error is EmailNotVerifiedFailure) {
+          emit(LoginEmailNotVerified(error.reason));
+          return;
+        }
+
+        emit(LoginError(error.reason));
+      },
       (user) {
         firebaseAnalyticsEventLogging.loginEvent();
 

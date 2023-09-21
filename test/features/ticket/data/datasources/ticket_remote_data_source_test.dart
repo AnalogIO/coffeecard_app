@@ -39,6 +39,9 @@ void main() {
     provideDummy<Either<NetworkFailure, TicketDto>>(
       const Left(ConnectionFailure()),
     );
+    provideDummy<Either<NetworkFailure, UsedTicketResponse>>(
+      const Left(ConnectionFailure()),
+    );
   });
 
   group('getUserTickets', () {
@@ -65,8 +68,9 @@ void main() {
       'THEN a [Left] value is returned',
       () async {
         // arrange
-        when(executor.execute<List<TicketResponse>>(any))
-            .thenAnswer((_) async => const Left(ServerFailure('some error')));
+        when(executor.execute<List<TicketResponse>>(any)).thenAnswer(
+          (_) async => const Left(ServerFailure('some error', 500)),
+        );
 
         // act
         final actual = await dataSource.getUserTickets();
@@ -124,9 +128,9 @@ void main() {
         'THEN a [Right] value is returned',
         () async {
           // arrange
-          when(executor.execute<TicketDto>(any)).thenAnswer(
+          when(executor.execute<UsedTicketResponse>(any)).thenAnswer(
             (_) async => Right(
-              TicketDto(
+              UsedTicketResponse(
                 id: 0,
                 dateCreated: DateTime.parse('2023-04-11'),
                 dateUsed: DateTime.parse('2023-04-11'),
@@ -149,8 +153,9 @@ void main() {
         'THEN a [Left] value is returned',
         () async {
           // arrange
-          when(executor.execute<TicketDto>(any))
-              .thenAnswer((_) async => const Left(ServerFailure('some error')));
+          when(executor.execute<UsedTicketResponse>(any)).thenAnswer(
+            (_) async => const Left(ServerFailure('some error', 500)),
+          );
 
           // act
           final actual = await dataSource.useTicket(0);

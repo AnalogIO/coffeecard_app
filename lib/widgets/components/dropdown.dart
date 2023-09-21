@@ -1,5 +1,5 @@
-import 'package:coffeecard/base/style/colors.dart';
-import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/base/style/app_colors.dart';
+import 'package:coffeecard/base/style/app_text_styles.dart';
 import 'package:flutter/material.dart';
 
 class Dropdown<FilterCategory> extends StatelessWidget {
@@ -29,14 +29,14 @@ class Dropdown<FilterCategory> extends StatelessWidget {
     );
   }
 
-  Color get _color => loading ? AppColor.lightGray : AppColor.white;
+  Color get _color => loading ? AppColors.lightGray : AppColors.white;
 
   @override
   Widget build(BuildContext context) {
     return Theme(
-      data: ThemeData(disabledColor: AppColor.lightGray),
+      data: ThemeData(disabledColor: AppColors.lightGray),
       child: DropdownButton(
-        dropdownColor: AppColor.secondary,
+        dropdownColor: AppColors.secondary,
         underline: _underline,
         icon: Icon(Icons.arrow_drop_down, color: _color),
         style: AppTextStyle.buttonText,

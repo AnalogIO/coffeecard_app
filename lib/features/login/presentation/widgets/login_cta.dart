@@ -1,4 +1,4 @@
-import 'package:coffeecard/base/style/colors.dart';
+import 'package:coffeecard/base/style/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class LoginCTA extends StatelessWidget {
@@ -18,7 +18,7 @@ class LoginCTA extends StatelessWidget {
       child: Text(
         text,
         style: const TextStyle(
-          color: AppColor.white,
+          color: AppColors.white,
           fontSize: 12,
           fontWeight: FontWeight.normal,
           decoration: TextDecoration.underline,

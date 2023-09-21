@@ -1,4 +1,4 @@
-import 'package:coffeecard/base/style/colors.dart';
+import 'package:coffeecard/base/style/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class LoadingDialog extends StatelessWidget {
@@ -18,7 +18,7 @@ class LoadingDialog extends StatelessWidget {
           children: [
             Padding(
               padding: EdgeInsets.all(16),
-              child: CircularProgressIndicator(color: AppColor.primary),
+              child: CircularProgressIndicator(color: AppColors.primary),
             ),
           ],
         ),

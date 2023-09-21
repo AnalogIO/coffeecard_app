@@ -28,8 +28,9 @@ void main() {
     blocTest(
       'should have [Error] status when use case fails',
       build: () => cubit,
-      setUp: () => when(getReceipts.call())
-          .thenAnswer((_) async => const Left(ServerFailure('some error'))),
+      setUp: () => when(getReceipts.call()).thenAnswer(
+        (_) async => const Left(ServerFailure('some error', 500)),
+      ),
       act: (_) => cubit.fetchReceipts(),
       expect: () =>
           [ReceiptState(status: ReceiptStatus.failure, error: 'some error')],

@@ -1,5 +1,5 @@
-import 'package:coffeecard/base/style/colors.dart';
-import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/base/style/app_colors.dart';
+import 'package:coffeecard/base/style/app_text_styles.dart';
 import 'package:coffeecard/features/environment/domain/entities/environment.dart';
 import 'package:coffeecard/features/environment/presentation/cubit/environment_cubit.dart';
 import 'package:coffeecard/features/environment/presentation/widgets/environment_banner.dart';
@@ -29,7 +29,7 @@ class AppScaffold extends StatelessWidget {
     this.resizeToAvoidBottomInset = true,
     required this.body,
   })  : title = Text(title, style: AppTextStyle.pageTitle),
-        backgroundColor = AppColor.background,
+        backgroundColor = AppColors.background,
         // Use default app bar height
         appBarHeight = null;
 
@@ -40,7 +40,7 @@ class AppScaffold extends StatelessWidget {
   ///
   /// The body's background color is, by default, the same as the app bar.
   const AppScaffold.withoutTitle({
-    this.backgroundColor = AppColor.primary,
+    this.backgroundColor = AppColors.primary,
     this.resizeToAvoidBottomInset = true,
     required this.body,
   })  : title = null,
@@ -55,7 +55,7 @@ class AppScaffold extends StatelessWidget {
       // between the AppBar and the _EnvironmentBanner.
       // The actual background of the body is defined
       // in the child of the Expanded widget below.
-      backgroundColor: AppColor.primary,
+      backgroundColor: AppColors.primary,
       appBar: AppBar(
         title: hasTitle ? title : const EnvironmentButton(),
         centerTitle: hasTitle ? null : true,

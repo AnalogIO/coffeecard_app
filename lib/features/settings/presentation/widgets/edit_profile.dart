@@ -1,5 +1,5 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/base/style/app_text_styles.dart';
 import 'package:coffeecard/features/occupation/presentation/pages/change_occupation_page.dart';
 import 'package:coffeecard/features/settings/presentation/pages/change_name_page.dart';
 import 'package:coffeecard/features/settings/presentation/widgets/settings_group.dart';

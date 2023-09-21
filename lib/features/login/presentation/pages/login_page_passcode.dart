@@ -1,6 +1,4 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
-import 'package:coffeecard/features/login/domain/usecases/login_user.dart';
 import 'package:coffeecard/features/login/presentation/cubit/login_cubit.dart';
 import 'package:coffeecard/features/login/presentation/pages/forgot_passcode_page.dart';
 import 'package:coffeecard/features/login/presentation/pages/login_page_base.dart';
@@ -8,8 +6,9 @@ import 'package:coffeecard/features/login/presentation/widgets/login_passcode_do
 import 'package:coffeecard/features/login/presentation/widgets/numpad/numpad.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/utils/fast_slide_transition.dart';
-import 'package:coffeecard/utils/firebase_analytics_event_logging.dart';
+import 'package:coffeecard/widgets/components/dialog.dart';
 import 'package:coffeecard/widgets/components/loading_overlay.dart';
+import 'package:coffeecard/widgets/components/tickets/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -34,14 +33,35 @@ class _LoginPagePasscodeState extends State<LoginPagePasscode> {
     );
   }
 
+  Future<void> resendEmailCallback(LoginCubit cubit) async {
+    cubit.resendVerificationEmail(widget.email);
+    await appDialog(
+      context: context,
+      title: Strings.loginVerificationEmailSent,
+      children: [
+        //TODO: style
+        Text(Strings.loginVerificationEmailBody(widget.email)),
+      ],
+      actions: [
+        TextButton(
+          //TODO: style
+          child: const Text(Strings.buttonOK),
+          onPressed: () => closeAppDialog(context),
+        ),
+      ],
+      dismissible: true,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => LoginCubit(
         email: widget.email,
-        loginUser: sl<LoginUser>(),
-        authenticationCubit: sl<AuthenticationCubit>(),
-        firebaseAnalyticsEventLogging: sl<FirebaseAnalyticsEventLogging>(),
+        loginUser: sl(),
+        resendEmail: sl(),
+        authenticationCubit: sl(),
+        firebaseAnalyticsEventLogging: sl(),
       ),
       child: BlocConsumer<LoginCubit, LoginState>(
         listenWhen: (previous, current) =>
@@ -66,7 +86,13 @@ class _LoginPagePasscodeState extends State<LoginPagePasscode> {
             ),
             defaultHint: Strings.loginPasscodeHint,
             error: state is LoginError ? state.errorMessage : null,
-            ctaChildren: const [],
+            ctaChildren: [
+              if (state is LoginEmailNotVerified)
+                RoundedButton(
+                  text: Strings.loginResendVerificationEmail,
+                  onTap: () => resendEmailCallback(context.read<LoginCubit>()),
+                ),
+            ],
             bottomWidget: Numpad(forgotPasscodeAction: _forgotPasscode),
           );
         },

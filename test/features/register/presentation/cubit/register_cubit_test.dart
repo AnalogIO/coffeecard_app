@@ -42,7 +42,7 @@ void main() {
           name: anyNamed('name'),
           occupationId: anyNamed('occupationId'),
         ),
-      ).thenAnswer((_) async => const Left(ServerFailure(testError))),
+      ).thenAnswer((_) async => const Left(ServerFailure(testError, 500))),
       act: (_) => cubit.register('name', 'email', 'passcode', 0),
       expect: () => [RegisterError(testError)],
     );

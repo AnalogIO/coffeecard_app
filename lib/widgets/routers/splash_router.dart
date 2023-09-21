@@ -1,4 +1,4 @@
-import 'package:coffeecard/base/style/colors.dart';
+import 'package:coffeecard/base/style/app_colors.dart';
 import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
 import 'package:coffeecard/features/environment/presentation/cubit/environment_cubit.dart';
 import 'package:coffeecard/features/login/presentation/pages/login_page_email.dart';
@@ -55,7 +55,7 @@ class _SplashRouterState extends State<SplashRouter> {
       ],
       // The colored container prevents brief black flashes
       // during page transitions
-      child: ColoredBox(color: AppColor.primary, child: widget.child),
+      child: ColoredBox(color: AppColors.primary, child: widget.child),
     );
   }
 }

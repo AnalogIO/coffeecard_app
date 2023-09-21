@@ -1,5 +1,5 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/base/style/colors.dart';
+import 'package:coffeecard/base/style/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class LoginEmailTextField extends StatefulWidget {
@@ -50,19 +50,19 @@ class _LoginEmailTextFieldState extends State<LoginEmailTextField> {
       final border = OutlineInputBorder(
         borderRadius: const BorderRadius.all(Radius.circular(32)),
         borderSide: widget.hasError
-            ? const BorderSide(color: AppColor.errorOnDark, width: 2)
+            ? const BorderSide(color: AppColors.errorOnDark, width: 2)
             : const BorderSide(color: Colors.transparent, width: 0),
       );
 
       return InputDecoration(
         constraints: const BoxConstraints(maxWidth: 260),
-        hintStyle: const TextStyle(color: AppColor.gray),
+        hintStyle: const TextStyle(color: AppColors.gray),
         hintText: Strings.loginHintEmail,
         border: const OutlineInputBorder(),
         enabledBorder: border,
         focusedBorder: border,
         filled: true,
-        fillColor: AppColor.white,
+        fillColor: AppColors.white,
         suffixIcon: IconButton(
           splashColor: Colors.transparent,
           icon: const Icon(Icons.arrow_forward, size: 20),
@@ -79,7 +79,7 @@ class _LoginEmailTextFieldState extends State<LoginEmailTextField> {
       focusNode: _focusNode,
       keyboardType: TextInputType.emailAddress,
       decoration: getInputDecoration(),
-      style: const TextStyle(color: AppColor.primary),
+      style: const TextStyle(color: AppColors.primary),
       cursorWidth: 1,
       onEditingComplete: onSubmit,
       onChanged: (_) => widget.onChange(),

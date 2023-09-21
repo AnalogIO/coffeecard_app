@@ -82,7 +82,7 @@ void main() {
         when(firebaseAnalyticsEventLogging.beginCheckoutEvent(any))
             .thenReturn(null);
         when(initPurchase(any))
-            .thenAnswer((_) async => const Left(ServerFailure(testError)));
+            .thenAnswer((_) async => const Left(ServerFailure(testError, 500)));
       },
       act: (_) => cubit.pay(),
       expect: () => [
@@ -162,7 +162,7 @@ void main() {
       ),
       setUp: () {
         when(verifyPurchaseStatus(any))
-            .thenAnswer((_) async => const Left(ServerFailure(testError)));
+            .thenAnswer((_) async => const Left(ServerFailure(testError, 500)));
       },
       act: (_) => cubit.verifyPurchase(),
       expect: () => [
@@ -196,7 +196,7 @@ void main() {
       build: () => cubit,
       setUp: () {
         when(verifyPurchaseStatus(any)).thenAnswer(
-          (_) async => const Left(ServerFailure(testError)),
+          (_) async => const Left(ServerFailure(testError, 500)),
         );
       },
       act: (_) async => cubit.checkPurchaseStatus(

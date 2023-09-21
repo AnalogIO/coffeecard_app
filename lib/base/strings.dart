@@ -30,6 +30,11 @@ abstract final class Strings {
   static const loginForgotYourPasscode = 'Forgot your passcode?';
   static const loginForgot = 'Forgot?';
 
+  static const loginResendVerificationEmail = 'Resend verification email';
+  static const loginVerificationEmailSent = 'Verification email sent';
+  static String loginVerificationEmailBody(String email) =>
+      'We have sent an email to $email, please check your spam folder';
+
   // Tickets
   static const ticketsMyTickets = 'My tickets';
   static const shopText = 'Shop';

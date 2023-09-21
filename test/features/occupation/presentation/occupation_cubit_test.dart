@@ -32,7 +32,7 @@ void main() {
       build: () => cubit,
       setUp: () => {
         when(getOccupations()).thenAnswer(
-          (_) => Future.value(const Left(ServerFailure('some error'))),
+          (_) => Future.value(const Left(ServerFailure('some error', 500))),
         ),
       },
       act: (_) async => cubit.fetchOccupations(),

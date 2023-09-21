@@ -10,11 +10,10 @@ class SwipeReceiptModel extends SwipeReceipt {
   });
 
   /// Creates a receipt from a used ticket DTO
-  factory SwipeReceiptModel.fromTicketDto(TicketDto dto) {
+  factory SwipeReceiptModel.fromTicketDto(UsedTicketResponse dto) {
     return SwipeReceiptModel(
       productName: dto.productName,
-      timeUsed: dto
-          .dateUsed!, // will not be null as the dto is a ticket that has been used at some point
+      timeUsed: dto.dateUsed,
       id: dto.id,
     );
   }

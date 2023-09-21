@@ -1,5 +1,5 @@
-import 'package:coffeecard/base/style/colors.dart';
-import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/base/style/app_colors.dart';
+import 'package:coffeecard/base/style/app_text_styles.dart';
 import 'package:coffeecard/features/ticket/presentation/widgets/swipe_ticket_confirm.dart';
 import 'package:coffeecard/widgets/components/card.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +18,7 @@ class CoffeeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CardBase(
-      color: AppColor.ticket,
+      color: AppColors.ticket,
       top: CardTitle(
         title: Text(title, style: AppTextStyle.ownedTicket),
       ),
@@ -63,11 +63,11 @@ class _TicketDots extends StatelessWidget {
                 height: 14,
                 decoration: BoxDecoration(
                   color: (amountOwned > index)
-                      ? AppColor.secondary
+                      ? AppColors.secondary
                       : Colors.transparent,
                   borderRadius: const BorderRadius.all(Radius.circular(14)),
                   border: const Border.fromBorderSide(
-                    BorderSide(color: AppColor.primary, width: 2),
+                    BorderSide(color: AppColors.primary, width: 2),
                   ),
                 ),
               );

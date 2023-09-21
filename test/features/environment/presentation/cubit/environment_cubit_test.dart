@@ -45,7 +45,7 @@ void main() {
       build: () => cubit,
       setUp: () {
         when(getEnvironmentType()).thenAnswer(
-          (_) async => const Left(ServerFailure('some error')),
+          (_) async => const Left(ServerFailure('some error', 500)),
         );
       },
       act: (cubit) => cubit.getConfig(),

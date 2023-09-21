@@ -45,7 +45,10 @@ void main() {
       final actual = await executor.execute(() async => testResponse);
 
       // assert
-      expect(actual, const Left(ServerFailure(Strings.unknownErrorOccured)));
+      expect(
+        actual,
+        const Left(ServerFailure(Strings.unknownErrorOccured, 500)),
+      );
     });
 
     test('should return response body if api call succeeds', () async {

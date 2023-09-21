@@ -1,18 +1,18 @@
-import 'package:coffeecard/base/style/colors.dart';
+import 'package:coffeecard/base/style/app_colors.dart';
 import 'package:flutter/material.dart';
 
 final ThemeData analogTheme = ThemeData(
   appBarTheme: const AppBarTheme(centerTitle: false, elevation: 0),
-  primaryColor: AppColor.primary,
+  primaryColor: AppColors.primary,
   brightness: Brightness.light,
   visualDensity: VisualDensity.adaptivePlatformDensity,
   primaryTextTheme:
-      const TextTheme(titleLarge: TextStyle(color: AppColor.white)),
-  primaryIconTheme: const IconThemeData(color: AppColor.primary),
-  canvasColor: AppColor.background,
+      const TextTheme(titleLarge: TextStyle(color: AppColors.white)),
+  primaryIconTheme: const IconThemeData(color: AppColors.primary),
+  canvasColor: AppColors.background,
   textSelectionTheme:
-      const TextSelectionThemeData(cursorColor: AppColor.secondary),
-  disabledColor: AppColor.lightGray,
+      const TextSelectionThemeData(cursorColor: AppColors.secondary),
+  disabledColor: AppColors.lightGray,
   pageTransitionsTheme: const PageTransitionsTheme(
     // No intent of supporting aditional platforms
     // ignore: avoid-missing-enum-constant-in-map
@@ -22,6 +22,6 @@ final ThemeData analogTheme = ThemeData(
     },
   ),
   colorScheme: ColorScheme.fromSwatch(
-    primarySwatch: AppColor.createMaterialColor(AppColor.primary),
-  ).copyWith(background: AppColor.background),
+    primarySwatch: AppColors.createMaterialColor(AppColors.primary),
+  ).copyWith(background: AppColors.background),
 );

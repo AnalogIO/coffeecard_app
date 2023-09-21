@@ -37,14 +37,15 @@ void main() {
   group('getUsersUsedTicketsReceipts', () {
     test('should return [Left] if executor fails', () async {
       // arrange
-      when(executor.execute<List<TicketResponse>>(any))
-          .thenAnswer((_) async => const Left(ServerFailure('some error')));
+      when(executor.execute<List<TicketResponse>>(any)).thenAnswer(
+        (_) async => const Left(ServerFailure('some error', 500)),
+      );
 
       // act
       final actual = await remoteDataSource.getUsersUsedTicketsReceipts();
 
       // assert
-      expect(actual, const Left(ServerFailure('some error')));
+      expect(actual, const Left(ServerFailure('some error', 500)));
     });
 
     test('should return [Right] if executor succeeds', () async {
@@ -64,14 +65,15 @@ void main() {
   group('getUserPurchasesReceipts', () {
     test('should return [Left] if executor fails', () async {
       // arrange
-      when(executor.execute<List<SimplePurchaseResponse>>(any))
-          .thenAnswer((_) async => const Left(ServerFailure('some error')));
+      when(executor.execute<List<SimplePurchaseResponse>>(any)).thenAnswer(
+        (_) async => const Left(ServerFailure('some error', 500)),
+      );
 
       // act
       final actual = await remoteDataSource.getUserPurchasesReceipts();
 
       // assert
-      expect(actual, const Left(ServerFailure('some error')));
+      expect(actual, const Left(ServerFailure('some error', 500)));
     });
 
     test('should return [Right] if executor succeeds', () async {

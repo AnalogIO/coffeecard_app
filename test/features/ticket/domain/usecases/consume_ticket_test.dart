@@ -26,7 +26,7 @@ void main() {
   test('should call repository', () async {
     // arrange
     when(ticketRemoteDataSource.useTicket(any))
-        .thenAnswer((_) async => const Left(ServerFailure('some error')));
+        .thenAnswer((_) async => const Left(ServerFailure('some error', 500)));
 
     // act
     await usecase(productId: 0);

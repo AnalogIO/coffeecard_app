@@ -1,6 +1,6 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/base/style/colors.dart';
-import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/base/style/app_colors.dart';
+import 'package:coffeecard/base/style/app_text_styles.dart';
 import 'package:coffeecard/features/settings/presentation/pages/your_profile_page.dart';
 import 'package:coffeecard/features/settings/presentation/widgets/user_icon.dart';
 import 'package:coffeecard/widgets/components/helpers/shimmer_builder.dart';
@@ -73,7 +73,7 @@ class UserCard extends StatelessWidget {
                     ),
                   ),
                   const Gap(16),
-                  const Icon(Icons.edit, color: AppColor.primary),
+                  const Icon(Icons.edit, color: AppColors.primary),
                   const Gap(12),
                 ],
               );

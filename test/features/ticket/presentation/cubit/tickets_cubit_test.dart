@@ -50,7 +50,7 @@ void main() {
       'should emit [Loading, Error] when use case fails',
       build: () => cubit,
       setUp: () => when(loadTickets()).thenAnswer(
-        (_) async => const Left(ServerFailure('some error')),
+        (_) async => const Left(ServerFailure('some error', 500)),
       ),
       act: (_) => cubit.getTickets(),
       expect: () => [
@@ -101,7 +101,7 @@ void main() {
       setUp: () {
         when(loadTickets()).thenAnswer((_) async => const Right([]));
         when(consumeTicket(productId: anyNamed('productId'))).thenAnswer(
-          (_) async => const Left(ServerFailure('some error')),
+          (_) async => const Left(ServerFailure('some error', 500)),
         );
       },
       act: (_) async {
@@ -130,7 +130,7 @@ void main() {
       'should emit [Error] when use case fails',
       build: () => cubit,
       setUp: () => when(loadTickets()).thenAnswer(
-        (_) async => const Left(ServerFailure('some error')),
+        (_) async => const Left(ServerFailure('some error', 500)),
       ),
       act: (_) => cubit.refreshTickets(),
       expect: () => [const TicketsLoadError('some error')],

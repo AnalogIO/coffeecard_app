@@ -1,6 +1,6 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/base/style/colors.dart';
-import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/base/style/app_colors.dart';
+import 'package:coffeecard/base/style/app_text_styles.dart';
 import 'package:coffeecard/features/opening_hours/presentation/cubit/opening_hours_cubit.dart';
 import 'package:coffeecard/utils/analog_icons.dart';
 import 'package:flutter/widgets.dart';
@@ -28,7 +28,8 @@ class OpeningHoursIndicator extends StatelessWidget {
         final text = state.isOpen
             ? '$formatCurrentWeekday: ${state.todaysOpeningHours}'
             : '${Strings.openingHoursIndicatorPrefix} ${Strings.closed}';
-        final color = state.isOpen ? AppColor.success : AppColor.errorOnBright;
+        final color =
+            state.isOpen ? AppColors.success : AppColors.errorOnBright;
 
         final textStyle =
             AppTextStyle.openingHoursIndicator.copyWith(color: color);

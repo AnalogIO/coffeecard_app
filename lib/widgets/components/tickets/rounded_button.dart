@@ -1,5 +1,5 @@
-import 'package:coffeecard/base/style/colors.dart';
-import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/base/style/app_colors.dart';
+import 'package:coffeecard/base/style/app_text_styles.dart';
 import 'package:flutter/material.dart';
 
 class RoundedButton extends StatelessWidget {
@@ -11,13 +11,13 @@ class RoundedButton extends StatelessWidget {
   bool get disabled => onTap == null;
 
   Color _getBackgroundColor(Set<MaterialState> states) {
-    if (states.contains(MaterialState.disabled)) return AppColor.lightGray;
-    return AppColor.primary;
+    if (states.contains(MaterialState.disabled)) return AppColors.lightGray;
+    return AppColors.primary;
   }
 
   Color _getForegroundColor(Set<MaterialState> states) {
-    if (states.contains(MaterialState.disabled)) return AppColor.gray;
-    return AppColor.white;
+    if (states.contains(MaterialState.disabled)) return AppColors.gray;
+    return AppColors.white;
   }
 
   @override

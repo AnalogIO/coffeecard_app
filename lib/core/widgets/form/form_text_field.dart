@@ -64,7 +64,7 @@ class _FormTextFieldState extends State<_FormTextField> {
   UnderlineInputBorder get _defaultBorder {
     return const UnderlineInputBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
-      borderSide: BorderSide(color: AppColor.gray),
+      borderSide: BorderSide(color: AppColors.gray),
     );
   }
 
@@ -75,7 +75,7 @@ class _FormTextFieldState extends State<_FormTextField> {
     if (widget.showCheckMark) {
       return const Icon(
         Icons.check_circle_outline,
-        color: AppColor.secondary,
+        color: AppColors.secondary,
       );
     }
     return null;
@@ -111,7 +111,7 @@ class _FormTextFieldState extends State<_FormTextField> {
             onEditingComplete: widget.onEditingComplete,
             cursorWidth: 1,
             style: TextStyle(
-              color: AppColor.primary,
+              color: AppColors.primary,
               letterSpacing: _isPasscode ? 3 : 0,
             ),
             maxLength: widget.maxLength,
@@ -120,15 +120,15 @@ class _FormTextFieldState extends State<_FormTextField> {
               enabledBorder: _defaultBorder,
               focusedBorder: const UnderlineInputBorder(
                 borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
-                borderSide: BorderSide(color: AppColor.secondary, width: 2),
+                borderSide: BorderSide(color: AppColors.secondary, width: 2),
               ),
               labelText: widget.label,
               labelStyle: const TextStyle(
-                color: AppColor.secondary,
+                color: AppColors.secondary,
                 letterSpacing: 0,
               ),
               filled: true,
-              fillColor: AppColor.white.withOpacity(opacityLevel),
+              fillColor: AppColors.white.withOpacity(opacityLevel),
               contentPadding: const EdgeInsets.only(
                 top: 8,
                 bottom: 12,
@@ -138,7 +138,7 @@ class _FormTextFieldState extends State<_FormTextField> {
               helperText: widget.hint,
               helperMaxLines: 2,
               helperStyle: const TextStyle(
-                color: AppColor.secondary,
+                color: AppColors.secondary,
                 fontSize: 12,
                 fontWeight: FontWeight.w500,
               ),
@@ -163,7 +163,7 @@ class _FormTextFieldSpinner extends StatelessWidget {
         height: 12,
         child: Center(
           child: CircularProgressIndicator(
-            color: AppColor.secondary,
+            color: AppColors.secondary,
             strokeWidth: 2.2,
           ),
         ),

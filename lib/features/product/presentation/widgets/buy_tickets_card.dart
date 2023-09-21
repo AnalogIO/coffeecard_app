@@ -1,5 +1,5 @@
-import 'package:coffeecard/base/style/colors.dart';
-import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/base/style/app_colors.dart';
+import 'package:coffeecard/base/style/app_text_styles.dart';
 import 'package:coffeecard/features/product/domain/entities/product.dart';
 import 'package:coffeecard/utils/responsive.dart';
 import 'package:coffeecard/widgets/components/card.dart';
@@ -20,7 +20,7 @@ class _BuyTicketsCardState extends State<BuyTicketsCard> {
   @override
   Widget build(BuildContext context) {
     return CardBase(
-      color: AppColor.white,
+      color: AppColors.white,
       gap: deviceIsSmall(context) ? 48 : 64,
       top: CardTitle(
         title: Text(widget.product.name, style: AppTextStyle.ownedTicket),

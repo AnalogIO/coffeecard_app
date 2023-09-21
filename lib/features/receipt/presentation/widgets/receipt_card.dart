@@ -1,6 +1,6 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/base/style/colors.dart';
-import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/base/style/app_colors.dart';
+import 'package:coffeecard/base/style/app_text_styles.dart';
 import 'package:coffeecard/core/widgets/images/analog_logo.dart';
 import 'package:coffeecard/utils/responsive.dart';
 import 'package:coffeecard/utils/time_since.dart';
@@ -33,8 +33,8 @@ class ReceiptCard extends StatelessWidget {
     return IgnorePointer(
       child: CardBase(
         color: isTestEnvironment
-            ? AppColor.testEnvironmentReceipt
-            : AppColor.white,
+            ? AppColors.testEnvironmentReceipt
+            : AppColors.white,
         top: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

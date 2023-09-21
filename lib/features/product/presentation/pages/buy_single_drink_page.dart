@@ -1,5 +1,5 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/base/style/colors.dart';
+import 'package:coffeecard/base/style/app_colors.dart';
 import 'package:coffeecard/features/product/domain/entities/product.dart';
 import 'package:coffeecard/features/product/presentation/cubit/product_cubit.dart';
 import 'package:coffeecard/features/product/presentation/widgets/buy_ticket_bottom_modal_sheet.dart';
@@ -90,7 +90,7 @@ class BuySingleDrinkPage extends StatelessWidget {
 
       final payment = await showModalBottomSheet<Payment>(
         context: context,
-        barrierColor: AppColor.scrim,
+        barrierColor: AppColors.scrim,
         backgroundColor: Colors.transparent,
         useRootNavigator: true,
         builder: (_) => BuyTicketBottomModalSheet(

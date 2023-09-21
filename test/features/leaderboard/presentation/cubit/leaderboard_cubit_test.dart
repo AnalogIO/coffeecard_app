@@ -54,7 +54,7 @@ void main() {
     blocTest(
       'should emit [LeaderboardLoading, LeaderboardError] with correct filter',
       setUp: () => when(getLeaderboard(any)).thenAnswer(
-        (_) async => const Left(ServerFailure('some error')),
+        (_) async => const Left(ServerFailure('some error', 500)),
       ),
       build: () => cubit,
       act: (_) => cubit.setFilter(LeaderboardFilter.total),
@@ -83,7 +83,7 @@ void main() {
     blocTest<LeaderboardCubit, LeaderboardState>(
       'should emit [LeaderboardError] when usecase fails',
       setUp: () => when(getLeaderboard(any)).thenAnswer(
-        (_) async => const Left(ServerFailure('some error')),
+        (_) async => const Left(ServerFailure('some error', 500)),
       ),
       build: () => cubit,
       act: (_) => cubit.loadLeaderboard(),

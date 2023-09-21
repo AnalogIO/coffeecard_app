@@ -1,6 +1,6 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/base/style/colors.dart';
-import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/base/style/app_colors.dart';
+import 'package:coffeecard/base/style/app_text_styles.dart';
 import 'package:coffeecard/features/environment/presentation/cubit/environment_cubit.dart';
 import 'package:coffeecard/widgets/components/loading_overlay.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +20,7 @@ class _SplashErrorPageState extends State<SplashErrorPage> {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(48),
-      color: AppColor.primary,
+      color: AppColors.primary,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -32,9 +32,9 @@ class _SplashErrorPageState extends State<SplashErrorPage> {
           const Gap(8),
           ElevatedButton(
             style: ButtonStyle(
-              foregroundColor: MaterialStateProperty.all(AppColor.primary),
+              foregroundColor: MaterialStateProperty.all(AppColors.primary),
               maximumSize: MaterialStateProperty.all(Size.infinite),
-              backgroundColor: MaterialStateProperty.all(AppColor.white),
+              backgroundColor: MaterialStateProperty.all(AppColors.white),
               shape: MaterialStateProperty.all(const StadiumBorder()),
               padding: MaterialStateProperty.all(
                 const EdgeInsets.symmetric(horizontal: 16),

@@ -1,6 +1,6 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/base/style/colors.dart';
-import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/base/style/app_colors.dart';
+import 'package:coffeecard/base/style/app_text_styles.dart';
 import 'package:coffeecard/widgets/components/card.dart';
 import 'package:flutter/material.dart';
 
@@ -27,7 +27,7 @@ class ShopCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CardBase(
-      color: type.isComingSoon ? AppColor.lightGray : AppColor.secondary,
+      color: type.isComingSoon ? AppColors.lightGray : AppColors.secondary,
       gap: 12,
       onTap: type.isComingSoon ? null : onTapped,
       top: Text(
@@ -41,7 +41,7 @@ class ShopCard extends StatelessWidget {
         left: _OptionalLabel(type: type),
         right: Icon(
           icon,
-          color: type.isComingSoon ? AppColor.gray : AppColor.white,
+          color: type.isComingSoon ? AppColors.gray : AppColors.white,
         ),
       ),
     );

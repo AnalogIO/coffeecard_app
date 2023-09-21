@@ -1,4 +1,4 @@
-import 'package:coffeecard/base/style/colors.dart';
+import 'package:coffeecard/base/style/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class LoginInputHint extends StatelessWidget {
@@ -13,7 +13,7 @@ class LoginInputHint extends StatelessWidget {
       error ?? defaultHint,
       textAlign: TextAlign.center,
       style: TextStyle(
-        color: (error != null) ? AppColor.errorOnDark : AppColor.white,
+        color: (error != null) ? AppColors.errorOnDark : AppColors.white,
         fontSize: 14,
       ),
     );
