@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:chopper/chopper.dart';
-import 'package:coffeecard/core/throttler.dart';
 import 'package:coffeecard/data/storage/secure_storage.dart';
 import 'package:coffeecard/features/authentication/presentation/cubits/authentication_cubit.dart';
 import 'package:coffeecard/features/login/data/datasources/account_remote_data_source.dart';
+import 'package:coffeecard/features/reactivation/data/throttler.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.models.swagger.dart'
     show LoginDto;
 import 'package:fpdart/fpdart.dart';

@@ -5,7 +5,6 @@ import 'package:coffeecard/core/external/external_url_launcher.dart';
 import 'package:coffeecard/core/firebase_analytics_event_logging.dart';
 import 'package:coffeecard/core/ignore_value.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
-import 'package:coffeecard/core/reactivation_authenticator.dart';
 import 'package:coffeecard/data/api/interceptors/authentication_interceptor.dart';
 import 'package:coffeecard/data/storage/secure_storage.dart';
 import 'package:coffeecard/env/env.dart';
@@ -35,6 +34,7 @@ import 'package:coffeecard/features/product/data/datasources/product_remote_data
 import 'package:coffeecard/features/product/domain/usecases/get_all_products.dart';
 import 'package:coffeecard/features/product/presentation/cubit/product_cubit.dart';
 import 'package:coffeecard/features/purchase/data/datasources/purchase_remote_data_source.dart';
+import 'package:coffeecard/features/reactivation/data/reactivation_authenticator.dart';
 import 'package:coffeecard/features/receipt/data/datasources/receipt_remote_data_source.dart';
 import 'package:coffeecard/features/receipt/data/repositories/receipt_repository_impl.dart';
 import 'package:coffeecard/features/receipt/domain/repositories/receipt_repository.dart';

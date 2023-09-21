@@ -1,6 +1,6 @@
-import 'package:coffeecard/core/input_validator.dart';
 import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/core/styles/app_colors.dart';
+import 'package:coffeecard/core/validator/input_validator.dart';
 import 'package:coffeecard/core/widgets/components/section_title.dart';
 import 'package:coffeecard/core/widgets/components/tickets/rounded_button.dart';
 import 'package:coffeecard/features/form/presentation/cubit/form_bloc.dart';

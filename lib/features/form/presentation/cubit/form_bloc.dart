@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:coffeecard/core/debouncing.dart';
-import 'package:coffeecard/core/input_validator.dart';
+import 'package:coffeecard/core/validator/input_validator.dart';
 import 'package:equatable/equatable.dart';
 import 'package:fpdart/fpdart.dart';
 

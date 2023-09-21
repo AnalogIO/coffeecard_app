@@ -1,5 +1,5 @@
-import 'package:coffeecard/core/input_validator.dart';
 import 'package:coffeecard/core/strings.dart';
+import 'package:coffeecard/core/validator/input_validator.dart';
 import 'package:coffeecard/core/widgets/components/dialog.dart';
 import 'package:coffeecard/core/widgets/components/loading_overlay.dart';
 import 'package:coffeecard/features/form/presentation/widgets/form.dart';
