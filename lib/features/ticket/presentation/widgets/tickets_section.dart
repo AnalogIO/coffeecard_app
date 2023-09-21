@@ -29,7 +29,7 @@ class TicketSection extends StatelessWidget {
           children: [
             const Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SectionTitle(Strings.ticketsMyTickets),
                 OpeningHoursIndicator(),

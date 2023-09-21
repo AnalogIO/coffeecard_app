@@ -42,8 +42,7 @@ class BuySingleDrinkPage extends StatelessWidget {
                   gap: GridGap.normal,
                   gapSmall: GridGap.tight,
                   singleColumnOnSmallDevice: true,
-                  children:
-                      state.singleDrinks.map(BuyTicketsCard.single).toList(),
+                  children: state.singleDrinks.map(BuyTicketsCard.new).toList(),
                 ),
               );
             } else if (state is ProductsError) {

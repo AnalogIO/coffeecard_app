@@ -7,26 +7,24 @@ import 'package:coffeecard/widgets/components/card.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-enum BuyTicketsCardType { single, multiple }
-
 class BuyTicketsCard extends StatefulWidget {
   final Product product;
-  final BuyTicketsCardType type;
 
-  const BuyTicketsCard.multiple(this.product)
-      : type = BuyTicketsCardType.multiple;
-  const BuyTicketsCard.single(this.product) : type = BuyTicketsCardType.single;
+  const BuyTicketsCard(this.product);
 
   @override
   State<BuyTicketsCard> createState() => _BuyTicketsCardState();
-
-  Function(BuildContext, Product) get onTap => switch (type) {
-        BuyTicketsCardType.multiple => buyTicketsModal,
-        BuyTicketsCardType.single => buyNSwipeModal,
-      };
 }
 
 class _BuyTicketsCardState extends State<BuyTicketsCard> {
+  Future<void> onTap(BuildContext context, Product product) {
+    return buyModal(
+      context: context,
+      product: product,
+      callback: (context, _) async => Navigator.of(context).pop(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return CardBase(
@@ -43,7 +41,7 @@ class _BuyTicketsCardState extends State<BuyTicketsCard> {
           price: widget.product.price,
         ),
       ),
-      onTap: (context) => widget.onTap(context, widget.product),
+      onTap: (context) => onTap(context, widget.product),
     );
   }
 }

@@ -8,7 +8,7 @@ void main() {
     await tester.pumpWidget(
       const MaterialApp(
         home: Scaffold(
-          body: BuyTicketsCard.multiple(
+          body: BuyTicketsCard(
             Product(
               id: 0,
               name: 'CoffeeTitle',
@@ -32,7 +32,7 @@ void main() {
     await tester.pumpWidget(
       const MaterialApp(
         home: Scaffold(
-          body: BuyTicketsCard.single(
+          body: BuyTicketsCard(
             Product(
               id: 0,
               name: 'Coffee',

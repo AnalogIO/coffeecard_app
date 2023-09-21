@@ -1,7 +1,5 @@
 import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/features/product/domain/entities/product.dart';
 import 'package:coffeecard/features/product/presentation/cubit/product_cubit.dart';
-import 'package:coffeecard/features/product/presentation/functions.dart';
 import 'package:coffeecard/features/product/presentation/widgets/buy_tickets_card.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:coffeecard/utils/firebase_analytics_event_logging.dart';
@@ -49,8 +47,7 @@ class _BuyTicketsPageState extends State<BuyTicketsPage> {
                   gap: GridGap.normal,
                   gapSmall: GridGap.tight,
                   singleColumnOnSmallDevice: true,
-                  children:
-                      state.clipCards.map(BuyTicketsCard.multiple).toList(),
+                  children: state.clipCards.map(BuyTicketsCard.new).toList(),
                 ),
               );
             } else if (state is ProductsError) {
@@ -66,14 +63,5 @@ class _BuyTicketsPageState extends State<BuyTicketsPage> {
         ),
       ),
     );
-  }
-
-  Future<void> onTap(BuildContext context, Product product) async {
-    final showModal = switch (product.amount) {
-      1 => buyNSwipeModal,
-      _ => buyTicketsModal,
-    };
-    final payment = await showModal(context, product);
-    if (mounted) return afterPurchaseModal(payment, context);
   }
 }

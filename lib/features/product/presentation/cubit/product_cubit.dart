@@ -25,7 +25,7 @@ class ProductCubit extends Cubit<ProductState> {
             singleDrinks: ticketsAndSingleDrinksAndPerks.$2,
             perks: const [
               Product(
-                id: 999,
+                id: 8,
                 amount: 1,
                 price: 0,
                 name: 'Gratis filter',
