@@ -1,3 +1,4 @@
+import 'package:coffeecard/core/ignore_value.dart';
 import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/core/widgets/components/dialog.dart';
 import 'package:coffeecard/core/widgets/components/loading_overlay.dart';
@@ -68,9 +69,9 @@ class _LoginPagePasscodeState extends State<LoginPagePasscode> {
             previous is LoginLoading || current is LoginLoading,
         listener: (context, state) {
           if (state is LoginLoading) {
-            showLoadingOverlay(context);
+            ignoreValue(LoadingOverlay.show(context));
           } else {
-            hideLoadingOverlay(context);
+            LoadingOverlay.hide(context);
           }
         },
         buildWhen: (_, current) => current is! LoginLoading,

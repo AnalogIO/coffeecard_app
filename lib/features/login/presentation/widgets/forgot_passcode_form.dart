@@ -1,3 +1,4 @@
+import 'package:coffeecard/core/ignore_value.dart';
 import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/core/validator/input_validator.dart';
 import 'package:coffeecard/core/widgets/components/dialog.dart';
@@ -50,7 +51,7 @@ class ForgotPasscodeForm extends StatelessWidget {
   }
 
   Future<void> _onSubmit(BuildContext context, String email) async {
-    showLoadingOverlay(context);
+    ignoreValue(LoadingOverlay.show(context));
 
     final either =
         await sl<AccountRemoteDataSource>().requestPasscodeReset(email);
@@ -74,7 +75,7 @@ class ForgotPasscodeForm extends StatelessWidget {
           TextButton(
             onPressed: () {
               closeAppDialog(context);
-              hideLoadingOverlay(context);
+              LoadingOverlay.hide(context);
               // Exits the forgot passcode flow
               Navigator.pop(context);
             },

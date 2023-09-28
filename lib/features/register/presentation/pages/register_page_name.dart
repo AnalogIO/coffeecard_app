@@ -79,7 +79,7 @@ class RegisterPageName extends StatelessWidget {
         TextButton(
           onPressed: () {
             closeAppDialog(context);
-            hideLoadingOverlay(context);
+            LoadingOverlay.hide(context);
             // Exits the register flow
             Navigator.of(context, rootNavigator: true).pop();
           },
@@ -104,7 +104,7 @@ class RegisterPageName extends StatelessWidget {
         TextButton(
           onPressed: () {
             closeAppDialog(context);
-            hideLoadingOverlay(context);
+            LoadingOverlay.hide(context);
           },
           child: const Text(Strings.buttonClose),
         ),
