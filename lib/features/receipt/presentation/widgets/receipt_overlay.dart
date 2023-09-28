@@ -11,20 +11,20 @@ import 'package:gap/gap.dart';
 class ReceiptOverlay {
   static final ScreenBrightness screenBrightness = sl();
 
-  static void hide(BuildContext context) {
-    Navigator.of(context).pop();
-  }
+  static void hide(BuildContext context) => Navigator.of(context).pop();
 
-  static Future<void> show({
+  static Future<T?> show<T>({
     required String productName,
     required DateTime timeUsed,
     required bool isTestEnvironment,
     required String status,
     required BuildContext context,
   }) async {
+    T? result;
+
     await screenBrightness.setScreenBrightness(1);
     if (context.mounted) {
-      final _ = await showDialog(
+      result = await showDialog<T>(
         context: context,
         barrierColor: AppColors.scrim,
         builder: (context) {
@@ -54,5 +54,7 @@ class ReceiptOverlay {
       );
     }
     await screenBrightness.resetScreenBrightness();
+
+    return result;
   }
 }

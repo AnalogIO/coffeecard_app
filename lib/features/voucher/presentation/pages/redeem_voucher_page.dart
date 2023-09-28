@@ -25,7 +25,10 @@ class RedeemVoucherPage extends StatelessWidget {
         create: (_) => sl<VoucherCubit>(),
         child: BlocListener<VoucherCubit, VoucherState>(
           listener: (context, state) {
-            if (state is VoucherLoading) return LoadingOverlay.show(context);
+            if (state is VoucherLoading) {
+              final _ = LoadingOverlay.show(context);
+              return;
+            }
             LoadingOverlay.hide(context);
             if (state is VoucherSuccess) return _onSuccess(context, state);
             if (state is VoucherError) return _onError(context, state);
