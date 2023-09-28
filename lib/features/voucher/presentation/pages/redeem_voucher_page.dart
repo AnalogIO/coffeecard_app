@@ -25,8 +25,8 @@ class RedeemVoucherPage extends StatelessWidget {
         create: (_) => sl<VoucherCubit>(),
         child: BlocListener<VoucherCubit, VoucherState>(
           listener: (context, state) {
-            if (state is VoucherLoading) return showLoadingOverlay(context);
-            hideLoadingOverlay(context);
+            if (state is VoucherLoading) return LoadingOverlay.show(context);
+            LoadingOverlay.hide(context);
             if (state is VoucherSuccess) return _onSuccess(context, state);
             if (state is VoucherError) return _onError(context, state);
           },
@@ -55,7 +55,10 @@ class RedeemVoucherPage extends StatelessWidget {
       ],
       children: [
         Text(
-          '${Strings.youRedeemed} ${state.redeemedVoucher.numberOfTickets} ${state.redeemedVoucher.productName}!',
+          Strings.voucherYouRedeemedProducts(
+            state.redeemedVoucher.numberOfTickets,
+            state.redeemedVoucher.productName,
+          ),
           style: AppTextStyle.settingKey,
         ),
       ],

@@ -243,8 +243,12 @@ abstract final class Strings {
   static const voucherCode = 'Voucher code';
   static const voucherEmpty = 'Enter a voucher code';
   static const voucherUsed = 'That voucher is already used';
-  static const youRedeemed = 'You redeemed';
   static const voucherRedeemed = 'Voucher redeemed 🎉';
+  static String voucherYouRedeemedProducts(
+    int numberOfTickets,
+    String productName,
+  ) =>
+      'You redeemed $numberOfTickets $productName!';
 
   // Settings
   static const settingsPageTitle = 'Settings';

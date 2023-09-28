@@ -37,7 +37,7 @@ class TicketSection extends StatelessWidget {
                 Navigator.of(context, rootNavigator: true).pop();
               }
 
-              showLoadingOverlay(context);
+              LoadingOverlay.show(context);
             }
             if (state is TicketUsed) {
               // Refresh or load user info (for updated rank stats)
@@ -45,8 +45,8 @@ class TicketSection extends StatelessWidget {
               context.read<UserCubit>().fetchUserDetails();
 
               final envState = context.read<EnvironmentCubit>().state;
-              hideLoadingOverlay(context);
-              ReceiptOverlay.of(context).show(
+              LoadingOverlay.hide(context);
+              ReceiptOverlay.show(
                 isTestEnvironment:
                     envState is EnvironmentLoaded && envState.env.isTest,
                 status: state.receipt is PurchaseReceipt
@@ -56,10 +56,11 @@ class TicketSection extends StatelessWidget {
                     : Strings.swiped,
                 productName: state.receipt.productName,
                 timeUsed: state.receipt.timeUsed,
+                context: context,
               );
             }
             if (state is TicketsUseError) {
-              hideLoadingOverlay(context);
+              LoadingOverlay.hide(context);
               appDialog(
                 context: context,
                 title: Strings.error,

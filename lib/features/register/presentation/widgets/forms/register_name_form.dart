@@ -40,7 +40,7 @@ class _RegisterNameFormState extends State<RegisterNameForm> {
   }
 
   Future<void> _showTerms(BuildContext context, String name) async {
-    showLoadingOverlay(context);
+    LoadingOverlay.show(context);
     // Allow keyboard to disappear before showing dialog
     final _ = await Future.delayed(const Duration(milliseconds: 350));
     if (!mounted) return;
@@ -64,7 +64,7 @@ class _RegisterNameFormState extends State<RegisterNameForm> {
           child: const Text(Strings.buttonDecline),
           onPressed: () {
             closeAppDialog(context);
-            if (mounted) hideLoadingOverlay(context);
+            if (mounted) LoadingOverlay.hide(context);
           },
         ),
         TextButton(

@@ -50,7 +50,7 @@ class ForgotPasscodeForm extends StatelessWidget {
   }
 
   Future<void> _onSubmit(BuildContext context, String email) async {
-    showLoadingOverlay(context);
+    LoadingOverlay.show(context);
 
     final either =
         await sl<AccountRemoteDataSource>().requestPasscodeReset(email);
@@ -74,7 +74,7 @@ class ForgotPasscodeForm extends StatelessWidget {
           TextButton(
             onPressed: () {
               closeAppDialog(context);
-              hideLoadingOverlay(context);
+              LoadingOverlay.hide(context);
               // Exits the forgot passcode flow
               Navigator.pop(context);
             },

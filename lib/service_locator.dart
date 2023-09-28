@@ -2,6 +2,7 @@ import 'package:chopper/chopper.dart';
 import 'package:coffeecard/core/api_uri_constants.dart';
 import 'package:coffeecard/core/external/date_service.dart';
 import 'package:coffeecard/core/external/external_url_launcher.dart';
+import 'package:coffeecard/core/external/screen_brightness.dart';
 import 'package:coffeecard/core/firebase_analytics_event_logging.dart';
 import 'package:coffeecard/core/ignore_value.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
@@ -118,7 +119,7 @@ void configureServices() {
   );
 
   ignoreValue(sl.registerFactory(() => DateService()));
-
+  ignoreValue(sl.registerFactory(() => ScreenBrightness()));
   ignoreValue(sl.registerLazySingleton(() => ExternalUrlLauncher()));
 
   // provide the account repository to the reactivation authenticator

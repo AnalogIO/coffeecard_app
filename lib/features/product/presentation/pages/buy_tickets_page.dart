@@ -116,12 +116,13 @@ class BuyTicketsPage extends StatelessWidget {
         final updateReceiptsRequest =
             context.read<ReceiptCubit>().fetchReceipts();
 
-        ReceiptOverlay.of(context).show(
+        ReceiptOverlay.show(
           isTestEnvironment:
               envState is EnvironmentLoaded && envState.env.isTest,
           status: Strings.purchased,
           productName: payment.productName,
           timeUsed: payment.purchaseTime,
+          context: context,
         );
         await updateTicketsRequest;
         await updateReceiptsRequest;
