@@ -37,7 +37,7 @@ class TicketSection extends StatelessWidget {
                 Navigator.of(context, rootNavigator: true).pop();
               }
 
-              LoadingOverlay.show(context);
+              LoadingOverlay.show(context).ignore();
             }
             if (state is TicketUsed) {
               // Refresh or load user info (for updated rank stats)

@@ -43,7 +43,7 @@ class _SplashErrorPageState extends State<SplashErrorPage> {
             onPressed: () async {
               final environmentLoaded =
                   context.read<EnvironmentCubit>().getConfig();
-              LoadingOverlay.show(context);
+              LoadingOverlay.show(context).ignore();
               // Delay since it is otherwise not obvious
               // a load is happening with no internet
               final _ = await Future.delayed(const Duration(milliseconds: 200));

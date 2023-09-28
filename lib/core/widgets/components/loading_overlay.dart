@@ -17,6 +17,6 @@ class LoadingOverlay {
         },
       );
 
-  static void hide<T>(BuildContext context) =>
+  static void hide<T extends Object?>(BuildContext context) =>
       Navigator.of(context, rootNavigator: true).pop();
 }
