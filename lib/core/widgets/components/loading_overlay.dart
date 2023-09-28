@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class LoadingOverlay {
   static void show(BuildContext context) {
-    final _ = showDialog(
+    final _ = showAdaptiveDialog(
       context: context,
       barrierColor: AppColors.scrim,
       barrierDismissible: false,

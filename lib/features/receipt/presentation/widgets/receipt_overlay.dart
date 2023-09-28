@@ -22,7 +22,7 @@ class ReceiptOverlay {
     required String status,
     required BuildContext context,
   }) async {
-    await ScreenBrightness().setScreenBrightness(1);
+    await screenBrightness.setScreenBrightness(1);
     if (context.mounted) {
       final _ = await showDialog(
         context: context,
@@ -53,6 +53,6 @@ class ReceiptOverlay {
         },
       );
     }
-    await ScreenBrightness().resetScreenBrightness();
+    await screenBrightness.resetScreenBrightness();
   }
 }
