@@ -37,7 +37,7 @@ class TicketSection extends StatelessWidget {
                 Navigator.of(context, rootNavigator: true).pop();
               }
 
-              LoadingOverlay.show(context).ignore();
+              final _ = LoadingOverlay.show(context);
             }
             if (state is TicketUsed) {
               // Refresh or load user info (for updated rank stats)
@@ -46,7 +46,7 @@ class TicketSection extends StatelessWidget {
 
               final envState = context.read<EnvironmentCubit>().state;
               LoadingOverlay.hide(context);
-              ReceiptOverlay.show(
+              final _ = ReceiptOverlay.show(
                 isTestEnvironment:
                     envState is EnvironmentLoaded && envState.env.isTest,
                 status: state.receipt is PurchaseReceipt

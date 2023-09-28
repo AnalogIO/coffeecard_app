@@ -1,3 +1,4 @@
+import 'package:coffeecard/core/ignore_value.dart';
 import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/core/styles/app_colors.dart';
 import 'package:coffeecard/core/styles/app_text_styles.dart';
@@ -43,7 +44,7 @@ class _SplashErrorPageState extends State<SplashErrorPage> {
             onPressed: () async {
               final environmentLoaded =
                   context.read<EnvironmentCubit>().getConfig();
-              LoadingOverlay.show(context).ignore();
+              ignoreValue(LoadingOverlay.show(context));
               // Delay since it is otherwise not obvious
               // a load is happening with no internet
               final _ = await Future.delayed(const Duration(milliseconds: 200));

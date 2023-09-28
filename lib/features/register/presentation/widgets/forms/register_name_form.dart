@@ -1,3 +1,4 @@
+import 'package:coffeecard/core/ignore_value.dart';
 import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/core/validator/input_validator.dart';
 import 'package:coffeecard/core/widgets/components/dialog.dart';
@@ -40,9 +41,9 @@ class _RegisterNameFormState extends State<RegisterNameForm> {
   }
 
   Future<void> _showTerms(BuildContext context, String name) async {
-    LoadingOverlay.show(context).ignore();
+    ignoreValue(LoadingOverlay.show(context));
     // Allow keyboard to disappear before showing dialog
-    final _ = await Future.delayed(const Duration(milliseconds: 350));
+    ignoreValue(await Future.delayed(const Duration(milliseconds: 350)));
     if (!mounted) return;
 
     // Shows the terms to the user before proceeding with the registration.
