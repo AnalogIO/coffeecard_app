@@ -1,6 +1,7 @@
 import 'package:chopper/chopper.dart';
 import 'package:coffeecard/features/authentication/data/datasources/authentication_local_data_source.dart';
 import 'package:coffeecard/features/authentication/data/intercepters/authentication_interceptor.dart';
+import 'package:coffeecard/features/authentication/data/models/authenticated_user_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -16,8 +17,13 @@ void main() {
           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
 
       final mockSecureStorage = MockAuthenticationLocalDataSource();
-      when(mockSecureStorage.readToken())
-          .thenAnswer((_) => Future<String>.value(token));
+      when(mockSecureStorage.getAuthenticatedUser()).thenAnswer(
+        (_) async => const AuthenticatedUserModel(
+          email: 'email',
+          token: token,
+          encodedPasscode: 'encodedPasscode',
+        ),
+      );
 
       final interceptor = AuthenticationInterceptor(mockSecureStorage);
       final request = Request('POST', Uri.parse('url'), Uri.parse('baseurl'));
@@ -33,7 +39,8 @@ void main() {
     'GIVEN no token in SecureStorage WHEN calling onRequest THEN no Authorization Header is added to the request',
     () async {
       final mockSecureStorage = MockAuthenticationLocalDataSource();
-      when(mockSecureStorage.readToken()).thenAnswer((_) async => null);
+      when(mockSecureStorage.getAuthenticatedUser())
+          .thenAnswer((_) async => null);
 
       final interceptor = AuthenticationInterceptor(mockSecureStorage);
       final request = Request('POST', Uri.parse('url'), Uri.parse('baseurl'));

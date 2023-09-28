@@ -67,7 +67,13 @@ void main() {
         // assert
         expect(
           actual,
-          const Right(AuthenticatedUser(email: 'email', token: 'token')),
+          const Right(
+            AuthenticatedUser(
+              email: 'email',
+              token: 'token',
+              encodedPasscode: 'encodedPasscode',
+            ),
+          ),
         );
       },
     );

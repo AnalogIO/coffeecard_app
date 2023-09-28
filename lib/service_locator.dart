@@ -9,6 +9,9 @@ import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/env/env.dart';
 import 'package:coffeecard/features/authentication/data/datasources/authentication_local_data_source.dart';
 import 'package:coffeecard/features/authentication/data/intercepters/authentication_interceptor.dart';
+import 'package:coffeecard/features/authentication/domain/usecases/clear_authenticated_user.dart';
+import 'package:coffeecard/features/authentication/domain/usecases/get_authenticated_user.dart';
+import 'package:coffeecard/features/authentication/domain/usecases/save_authenticated_user.dart';
 import 'package:coffeecard/features/authentication/presentation/cubits/authentication_cubit.dart';
 import 'package:coffeecard/features/contributor/data/datasources/contributor_local_data_source.dart';
 import 'package:coffeecard/features/contributor/domain/usecases/fetch_contributors.dart';
@@ -82,23 +85,6 @@ void configureServices() {
     ),
   );
 
-  // Storage
-  ignoreValue(
-    sl.registerSingleton(
-      AuthenticationLocalDataSource(
-        storage: const FlutterSecureStorage(),
-        logger: sl(),
-      ),
-    ),
-  );
-
-  // Authentication
-  ignoreValue(
-    sl.registerSingleton<AuthenticationCubit>(
-      AuthenticationCubit(sl<AuthenticationLocalDataSource>()),
-    ),
-  );
-
   // Reactivation authenticator (uninitalized), http client and interceptors
   initHttp();
 
@@ -130,6 +116,7 @@ void configureServices() {
 }
 
 void initFeatures() {
+  initAuthentication();
   initOpeningHours();
   initTicket();
   initOccupation();
@@ -143,6 +130,37 @@ void initFeatures() {
   initVoucher();
   initLogin();
   initRegister();
+}
+
+void initAuthentication() {
+  // bloc
+  // Authentication
+  ignoreValue(
+    sl.registerSingleton(
+      AuthenticationCubit(
+        clearAuthenticatedUser: sl(),
+        saveAuthenticatedUser: sl(),
+        getAuthenticatedUser: sl(),
+      ),
+    ),
+  );
+
+  // use case
+  ignoreValue(sl.registerFactory(() => ClearAuthenticatedUser()));
+  ignoreValue(sl.registerFactory(() => SaveAuthenticatedUser()));
+  ignoreValue(sl.registerFactory(() => GetAuthenticatedUser()));
+
+  // repository
+
+  // data source
+  ignoreValue(
+    sl.registerSingleton(
+      AuthenticationLocalDataSource(
+        storage: const FlutterSecureStorage(),
+        logger: sl(),
+      ),
+    ),
+  );
 }
 
 void initOpeningHours() {

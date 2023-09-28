@@ -1,5 +1,8 @@
-import 'package:coffeecard/features/authentication/data/datasources/authentication_local_data_source.dart';
+import 'package:coffeecard/features/authentication/data/models/authenticated_user_model.dart';
 import 'package:coffeecard/features/authentication/domain/entities/authenticated_user.dart';
+import 'package:coffeecard/features/authentication/domain/usecases/clear_authenticated_user.dart';
+import 'package:coffeecard/features/authentication/domain/usecases/get_authenticated_user.dart';
+import 'package:coffeecard/features/authentication/domain/usecases/save_authenticated_user.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -9,12 +12,18 @@ part 'authentication_state.dart';
 // trigger a logout (for instance, when the user requests logs out themselves
 // vs the user's token expires and fails to renew).
 class AuthenticationCubit extends Cubit<AuthenticationState> {
-  AuthenticationCubit(this._storage) : super(const AuthenticationState._());
+  final ClearAuthenticatedUser clearAuthenticatedUser;
+  final SaveAuthenticatedUser saveAuthenticatedUser;
+  final GetAuthenticatedUser getAuthenticatedUser;
 
-  final AuthenticationLocalDataSource _storage;
+  AuthenticationCubit({
+    required this.clearAuthenticatedUser,
+    required this.saveAuthenticatedUser,
+    required this.getAuthenticatedUser,
+  }) : super(const AuthenticationState._());
 
   Future<void> appStarted() async {
-    final authenticatedUser = await _storage.getAuthenticatedUser();
+    final authenticatedUser = await getAuthenticatedUser();
     if (authenticatedUser != null) {
       emit(AuthenticationState.authenticated(authenticatedUser));
     } else {
@@ -27,20 +36,23 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     String encodedPasscode,
     String token,
   ) async {
-    await _storage.saveAuthenticatedUser(
-      email,
-      encodedPasscode,
-      token,
+    final user = AuthenticatedUserModel(
+      token: token,
+      email: email,
+      encodedPasscode: encodedPasscode,
+      lastLogin: DateTime.now(),
     );
+
+    await saveAuthenticatedUser(user);
     emit(
       AuthenticationState.authenticated(
-        AuthenticatedUser(token: token, email: email),
+        user,
       ),
     );
   }
 
   Future<void> unauthenticated() async {
-    await _storage.clearAuthenticatedUser();
+    await clearAuthenticatedUser();
     emit(const AuthenticationState.unauthenticated());
   }
 }

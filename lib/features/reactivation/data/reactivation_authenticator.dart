@@ -92,9 +92,8 @@ class ReactivationAuthenticator extends Authenticator {
     return Task(
       () async {
         // Check if user credentials are stored; if not, return None.
-        final email = await _secureStorage.readEmail();
-        final encodedPasscode = await _secureStorage.readEncodedPasscode();
-        if (email == null || encodedPasscode == null) {
+        final user = await _secureStorage.getAuthenticatedUser();
+        if (user == null) {
           return none();
         }
 
@@ -102,8 +101,10 @@ class ReactivationAuthenticator extends Authenticator {
         // This login call may return 401 if the stored credentials are invalid;
         // recursive calls to [authenticate] are blocked by a check in the
         // [authenticate] method.
-        final either =
-            await _accountRemoteDataSource.login(email, encodedPasscode);
+        final either = await _accountRemoteDataSource.login(
+          user.email,
+          user.encodedPasscode,
+        );
 
         return Option.fromEither(either).map((user) => user.token);
       },

@@ -1,6 +1,7 @@
 import 'package:chopper/chopper.dart' as chopper;
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/features/authentication/data/datasources/authentication_local_data_source.dart';
+import 'package:coffeecard/features/authentication/data/models/authenticated_user_model.dart';
 import 'package:coffeecard/features/authentication/domain/entities/authenticated_user.dart';
 import 'package:coffeecard/features/authentication/presentation/cubits/authentication_cubit.dart';
 import 'package:coffeecard/features/login/data/datasources/account_remote_data_source.dart';
@@ -81,8 +82,7 @@ void main() {
       final request = _requestFromMethod('GET');
       final response = _responseFromStatusCode(401);
 
-      when(secureStorage.readEmail()).thenAnswer((_) async => null);
-      when(secureStorage.readEncodedPasscode()).thenAnswer((_) async => null);
+      when(secureStorage.getAuthenticatedUser()).thenAnswer((_) async => null);
 
       // Act
       final result = await authenticator.authenticate(request, response);
@@ -119,14 +119,12 @@ void main() {
         ),
       );
 
-      when(secureStorage.readEmail()).thenAnswer(
-        (_) async => email,
-      );
-      when(secureStorage.readEncodedPasscode()).thenAnswer(
-        (_) async => encodedPasscode,
-      );
       when(secureStorage.getAuthenticatedUser()).thenAnswer(
-        (_) async => const AuthenticatedUser(email: email, token: token),
+        (_) async => const AuthenticatedUserModel(
+          email: email,
+          token: token,
+          encodedPasscode: 'encodedPasscode',
+        ),
       );
       when(accountRemoteDataSource.login(email, encodedPasscode)).thenAnswer(
         (_) async {
@@ -171,19 +169,21 @@ void main() {
       const oldToken = 'oldToken';
       const newToken = 'newToken';
 
-      when(secureStorage.readEmail()).thenAnswer(
-        (_) async => email,
-      );
-      when(secureStorage.readEncodedPasscode()).thenAnswer(
-        (_) async => encodedPasscode,
-      );
-      when(secureStorage.readToken()).thenAnswer(
-        (_) async => oldToken,
+      when(secureStorage.getAuthenticatedUser()).thenAnswer(
+        (_) async => const AuthenticatedUserModel(
+          email: email,
+          token: oldToken,
+          encodedPasscode: encodedPasscode,
+        ),
       );
 
       when(accountRemoteDataSource.login(email, encodedPasscode)).thenAnswer(
         (_) async => right(
-          const AuthenticatedUser(email: email, token: newToken),
+          const AuthenticatedUser(
+            email: email,
+            token: newToken,
+            encodedPasscode: 'encodedPasscode',
+          ),
         ),
       );
 
@@ -197,8 +197,7 @@ void main() {
       verify(accountRemoteDataSource.login(email, encodedPasscode)).called(1);
       verifyNoMoreInteractions(accountRemoteDataSource);
 
-      verify(secureStorage.readEmail()).called(1);
-      verify(secureStorage.readEncodedPasscode()).called(1);
+      verify(secureStorage.getAuthenticatedUser()).called(1);
       verify(secureStorage.updateToken(newToken)).called(1);
       verifyNoMoreInteractions(secureStorage);
 
@@ -223,19 +222,22 @@ void main() {
       int counter = 0;
       String getNewToken() => '${++counter}';
 
-      when(secureStorage.readEmail()).thenAnswer(
-        (_) async => email,
-      );
-      when(secureStorage.readEncodedPasscode()).thenAnswer(
-        (_) async => encodedPasscode,
-      );
-      when(secureStorage.readToken()).thenAnswer(
-        (_) async => oldToken,
+      when(secureStorage.getAuthenticatedUser()).thenAnswer(
+        (_) async => const AuthenticatedUserModel(
+          email: email,
+          token: oldToken,
+          encodedPasscode: encodedPasscode,
+        ),
       );
 
       when(accountRemoteDataSource.login(email, encodedPasscode)).thenAnswer(
-        (_) async =>
-            right(AuthenticatedUser(email: email, token: getNewToken())),
+        (_) async => right(
+          AuthenticatedUser(
+            email: email,
+            token: getNewToken(),
+            encodedPasscode: 'encodedPasscode',
+          ),
+        ),
       );
 
       final request = _requestFromMethod('GET');
@@ -270,16 +272,22 @@ void main() {
       const encodedPasscode = 'encodedPasscode';
       const newToken = 'newToken';
 
-      when(secureStorage.readEmail()).thenAnswer(
-        (_) async => email,
-      );
-      when(secureStorage.readEncodedPasscode()).thenAnswer(
-        (_) async => encodedPasscode,
+      when(secureStorage.getAuthenticatedUser()).thenAnswer(
+        (_) async => const AuthenticatedUserModel(
+          email: email,
+          token: newToken,
+          encodedPasscode: encodedPasscode,
+        ),
       );
 
       when(accountRemoteDataSource.login(email, encodedPasscode)).thenAnswer(
-        (_) async =>
-            right(const AuthenticatedUser(email: email, token: newToken)),
+        (_) async => right(
+          const AuthenticatedUser(
+            email: email,
+            token: newToken,
+            encodedPasscode: 'encodedPasscode',
+          ),
+        ),
       );
 
       final request = _requestFromMethod('GET');
