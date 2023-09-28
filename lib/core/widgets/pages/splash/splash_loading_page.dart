@@ -13,26 +13,16 @@ class SplashLoadingPage extends StatefulWidget {
 }
 
 class _SplashLoadingPageState extends State<SplashLoadingPage> {
-  Timer? countdownTimer;
-  bool show = false;
+  bool showLoadingIndicator = false;
   final timeBeforeShowLoadingIndicator = const Duration(seconds: 3);
 
   @override
   void initState() {
     super.initState();
-    startTimer();
-  }
-
-  void startTimer() {
-    countdownTimer =
-        Timer.periodic(timeBeforeShowLoadingIndicator, (_) => stopTimer());
-  }
-
-  void stopTimer() {
-    setState(() {
-      countdownTimer!.cancel();
-      show = true;
-    });
+    Timer(
+      timeBeforeShowLoadingIndicator,
+      () => setState(() => showLoadingIndicator = true),
+    );
   }
 
   @override
@@ -45,7 +35,7 @@ class _SplashLoadingPageState extends State<SplashLoadingPage> {
           const AnalogLogo(),
           const Gap(32),
           CircularProgressIndicator(
-            color: show ? AppColors.white : AppColors.primary,
+            color: showLoadingIndicator ? AppColors.white : AppColors.primary,
           ),
         ],
       ),
