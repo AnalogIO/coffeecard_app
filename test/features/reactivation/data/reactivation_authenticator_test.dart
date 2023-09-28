@@ -1,6 +1,6 @@
 import 'package:chopper/chopper.dart' as chopper;
 import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/core/storage/secure_storage.dart';
+import 'package:coffeecard/features/authentication/data/datasources/authentication_local_data_source.dart';
 import 'package:coffeecard/features/authentication/domain/entities/authenticated_user.dart';
 import 'package:coffeecard/features/authentication/presentation/cubits/authentication_cubit.dart';
 import 'package:coffeecard/features/login/data/datasources/account_remote_data_source.dart';
@@ -19,29 +19,29 @@ import 'reactivation_authenticator_test.mocks.dart';
 @GenerateMocks([
   AuthenticationCubit,
   AccountRemoteDataSource,
-  SecureStorage,
+  AuthenticationLocalDataSource,
   Logger,
 ])
 void main() {
   late _FakeGetIt serviceLocator;
   late MockAuthenticationCubit authenticationCubit;
   late MockAccountRemoteDataSource accountRemoteDataSource;
-  late MockSecureStorage secureStorage;
+  late MockAuthenticationLocalDataSource secureStorage;
 
   late ReactivationAuthenticator authenticator;
 
   setUp(() {
     serviceLocator = _FakeGetIt.fromMockedObjects(
-      mockAuthenticationCubit: MockAuthenticationCubit(),
-      mockAccountRemoteDataSource: MockAccountRemoteDataSource(),
-      mockSecureStorage: MockSecureStorage(),
+      authenticationCubit: MockAuthenticationCubit(),
+      accountRemoteDataSource: MockAccountRemoteDataSource(),
+      authenticationLocalDataSource: MockAuthenticationLocalDataSource(),
       mockLogger: MockLogger(),
     );
 
     authenticationCubit = serviceLocator.getMock<MockAuthenticationCubit>();
     accountRemoteDataSource =
         serviceLocator.getMock<MockAccountRemoteDataSource>();
-    secureStorage = serviceLocator.getMock<MockSecureStorage>();
+    secureStorage = serviceLocator.getMock<MockAuthenticationLocalDataSource>();
 
     authenticator =
         ReactivationAuthenticator.uninitialized(serviceLocator: serviceLocator);
@@ -311,15 +311,15 @@ chopper.Request _requestFromMethod(String method) {
 
 class _FakeGetIt extends Fake implements GetIt {
   _FakeGetIt.fromMockedObjects({
-    required this.mockAuthenticationCubit,
-    required this.mockAccountRemoteDataSource,
-    required this.mockSecureStorage,
+    required this.authenticationCubit,
+    required this.accountRemoteDataSource,
+    required this.authenticationLocalDataSource,
     required this.mockLogger,
   });
 
-  final MockAuthenticationCubit mockAuthenticationCubit;
-  final MockAccountRemoteDataSource mockAccountRemoteDataSource;
-  final MockSecureStorage mockSecureStorage;
+  final MockAuthenticationCubit authenticationCubit;
+  final MockAccountRemoteDataSource accountRemoteDataSource;
+  final MockAuthenticationLocalDataSource authenticationLocalDataSource;
   final MockLogger mockLogger;
 
   @override
@@ -339,9 +339,9 @@ class _FakeGetIt extends Fake implements GetIt {
   // ignore: type_annotate_public_apis
   T get<T extends Object>({String? instanceName, param1, param2, Type? type}) {
     return switch (T) {
-      const (AuthenticationCubit) => mockAuthenticationCubit,
-      const (AccountRemoteDataSource) => mockAccountRemoteDataSource,
-      const (SecureStorage) => mockSecureStorage,
+      const (AuthenticationCubit) => authenticationCubit,
+      const (AccountRemoteDataSource) => accountRemoteDataSource,
+      const (AuthenticationLocalDataSource) => authenticationLocalDataSource,
       const (Logger) => mockLogger,
       _ => throw UnimplementedError('Mock for $T not implemented.'),
     } as T;
@@ -350,9 +350,10 @@ class _FakeGetIt extends Fake implements GetIt {
   /// Given a mocked type, get the mocked object for the given type.
   T getMock<T extends Mock>() {
     return switch (T) {
-      const (MockAuthenticationCubit) => mockAuthenticationCubit,
-      const (MockAccountRemoteDataSource) => mockAccountRemoteDataSource,
-      const (MockSecureStorage) => mockSecureStorage,
+      const (MockAuthenticationCubit) => authenticationCubit,
+      const (MockAccountRemoteDataSource) => accountRemoteDataSource,
+      const (MockAuthenticationLocalDataSource) =>
+        authenticationLocalDataSource,
       const (MockLogger) => mockLogger,
       _ => throw UnimplementedError('Mock for $T not implemented.'),
     } as T;

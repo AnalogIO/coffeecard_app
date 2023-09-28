@@ -1,11 +1,11 @@
-import 'package:coffeecard/core/storage/secure_storage.dart';
+import 'package:coffeecard/features/authentication/data/datasources/authentication_local_data_source.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logger/logger.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import 'secure_storage_test.mocks.dart';
+import 'authentication_local_data_source_test.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<FlutterSecureStorage>(), MockSpec<Logger>()])
 void main() {
@@ -13,14 +13,15 @@ void main() {
   const tokenKey = 'authentication_token';
   const encodedPasscodeKey = 'encoded_passcode';
 
-  late SecureStorage secureStorage;
+  late AuthenticationLocalDataSource secureStorage;
   late MockFlutterSecureStorage mockStorage;
   late MockLogger mockLogger;
 
   setUp(() {
     mockStorage = MockFlutterSecureStorage();
     mockLogger = MockLogger();
-    secureStorage = SecureStorage(storage: mockStorage, logger: mockLogger);
+    secureStorage =
+        AuthenticationLocalDataSource(storage: mockStorage, logger: mockLogger);
   });
 
   test(

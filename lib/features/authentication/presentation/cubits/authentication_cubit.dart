@@ -1,4 +1,4 @@
-import 'package:coffeecard/core/storage/secure_storage.dart';
+import 'package:coffeecard/features/authentication/data/datasources/authentication_local_data_source.dart';
 import 'package:coffeecard/features/authentication/domain/entities/authenticated_user.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,7 +11,7 @@ part 'authentication_state.dart';
 class AuthenticationCubit extends Cubit<AuthenticationState> {
   AuthenticationCubit(this._storage) : super(const AuthenticationState._());
 
-  final SecureStorage _storage;
+  final AuthenticationLocalDataSource _storage;
 
   Future<void> appStarted() async {
     final authenticatedUser = await _storage.getAuthenticatedUser();

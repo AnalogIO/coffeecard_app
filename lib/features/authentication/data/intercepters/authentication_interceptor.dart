@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:chopper/chopper.dart';
-import 'package:coffeecard/core/storage/secure_storage.dart';
+import 'package:coffeecard/features/authentication/data/datasources/authentication_local_data_source.dart';
 
 class AuthenticationInterceptor extends RequestInterceptor {
-  final SecureStorage _storage;
+  final AuthenticationLocalDataSource _storage;
 
   AuthenticationInterceptor(this._storage);
 

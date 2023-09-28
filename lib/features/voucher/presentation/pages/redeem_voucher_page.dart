@@ -29,7 +29,7 @@ class RedeemVoucherPage extends StatelessWidget {
               final _ = LoadingOverlay.show(context);
               return;
             }
-            LoadingOverlay.hide(context);
+            final _ = LoadingOverlay.hide(context);
             if (state is VoucherSuccess) return _onSuccess(context, state);
             if (state is VoucherError) return _onError(context, state);
           },

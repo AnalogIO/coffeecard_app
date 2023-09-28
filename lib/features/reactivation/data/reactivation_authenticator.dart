@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:chopper/chopper.dart';
-import 'package:coffeecard/core/storage/secure_storage.dart';
+import 'package:coffeecard/features/authentication/data/datasources/authentication_local_data_source.dart';
 import 'package:coffeecard/features/authentication/presentation/cubits/authentication_cubit.dart';
 import 'package:coffeecard/features/login/data/datasources/account_remote_data_source.dart';
 import 'package:coffeecard/features/reactivation/data/throttler.dart';
@@ -16,7 +16,7 @@ class ReactivationAuthenticator extends Authenticator {
   bool _ready = false;
   late final AccountRemoteDataSource _accountRemoteDataSource;
 
-  final SecureStorage _secureStorage;
+  final AuthenticationLocalDataSource _secureStorage;
   final AuthenticationCubit _authenticationCubit;
   final Logger _logger;
 
@@ -26,7 +26,7 @@ class ReactivationAuthenticator extends Authenticator {
   ///
   /// This instance is not ready to be used. Call [initialize] before using it.
   ReactivationAuthenticator.uninitialized({required GetIt serviceLocator})
-      : _secureStorage = serviceLocator<SecureStorage>(),
+      : _secureStorage = serviceLocator<AuthenticationLocalDataSource>(),
         _authenticationCubit = serviceLocator<AuthenticationCubit>(),
         _logger = serviceLocator<Logger>();
 
@@ -110,7 +110,7 @@ class ReactivationAuthenticator extends Authenticator {
     );
   }
 
-  /// Saves the [token] in [SecureStorage]
+  /// Saves the [token] in [AuthenticationLocalDataSource]
   /// or signs out the user if the [token] is [None].
   Task<Unit> _saveOrEvict(Option<String> token) {
     return Task(() async {

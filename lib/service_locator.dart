@@ -6,8 +6,8 @@ import 'package:coffeecard/core/external/screen_brightness.dart';
 import 'package:coffeecard/core/firebase_analytics_event_logging.dart';
 import 'package:coffeecard/core/ignore_value.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
-import 'package:coffeecard/core/storage/secure_storage.dart';
 import 'package:coffeecard/env/env.dart';
+import 'package:coffeecard/features/authentication/data/datasources/authentication_local_data_source.dart';
 import 'package:coffeecard/features/authentication/data/intercepters/authentication_interceptor.dart';
 import 'package:coffeecard/features/authentication/presentation/cubits/authentication_cubit.dart';
 import 'package:coffeecard/features/contributor/data/datasources/contributor_local_data_source.dart';
@@ -85,14 +85,17 @@ void configureServices() {
   // Storage
   ignoreValue(
     sl.registerSingleton(
-      SecureStorage(storage: const FlutterSecureStorage(), logger: sl()),
+      AuthenticationLocalDataSource(
+        storage: const FlutterSecureStorage(),
+        logger: sl(),
+      ),
     ),
   );
 
   // Authentication
   ignoreValue(
     sl.registerSingleton<AuthenticationCubit>(
-      AuthenticationCubit(sl<SecureStorage>()),
+      AuthenticationCubit(sl<AuthenticationLocalDataSource>()),
     ),
   );
 
@@ -363,7 +366,7 @@ void initHttp() {
 
   final coffeCardChopper = ChopperClient(
     baseUrl: Uri.parse(Env.coffeeCardUrl),
-    interceptors: [AuthenticationInterceptor(sl<SecureStorage>())],
+    interceptors: [AuthenticationInterceptor(sl())],
     converter: $JsonSerializableConverter(),
     services: [
       CoffeecardApi.create(),

@@ -1,5 +1,5 @@
 import 'package:bloc_test/bloc_test.dart';
-import 'package:coffeecard/core/storage/secure_storage.dart';
+import 'package:coffeecard/features/authentication/data/datasources/authentication_local_data_source.dart';
 import 'package:coffeecard/features/authentication/domain/entities/authenticated_user.dart';
 import 'package:coffeecard/features/authentication/presentation/cubits/authentication_cubit.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -8,13 +8,13 @@ import 'package:mockito/mockito.dart';
 
 import 'authentication_cubit_test.mocks.dart';
 
-@GenerateMocks([SecureStorage])
+@GenerateMocks([AuthenticationLocalDataSource])
 void main() {
   const dummyUser = AuthenticatedUser(email: 'email', token: 'token');
 
   group('authentication cubit tests', () {
     late AuthenticationCubit authenticationCubit;
-    final secureStorage = MockSecureStorage();
+    final secureStorage = MockAuthenticationLocalDataSource();
 
     setUp(() {
       authenticationCubit = AuthenticationCubit(secureStorage);
