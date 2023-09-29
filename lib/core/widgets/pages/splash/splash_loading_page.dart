@@ -21,7 +21,11 @@ class _SplashLoadingPageState extends State<SplashLoadingPage> {
     super.initState();
     Timer(
       timeBeforeShowLoadingIndicator,
-      () => setState(() => showLoadingIndicator = true),
+      () {
+        if (mounted) {
+          setState(() => showLoadingIndicator = true);
+        }
+      },
     );
   }
 
