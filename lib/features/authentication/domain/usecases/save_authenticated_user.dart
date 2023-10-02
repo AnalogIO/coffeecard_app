@@ -14,6 +14,7 @@ class SaveAuthenticatedUser {
         token: user.token,
         encodedPasscode: user.encodedPasscode,
         lastLogin: user.lastLogin,
+        sessionTimeout: user.sessionTimeout,
       ),
     );
   }

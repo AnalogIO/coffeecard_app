@@ -26,7 +26,7 @@ class AuthenticationLocalDataSource {
     );
 
     logger.d(
-      'Email (${authenticatedUser.email}), encoded passcode and token added to Secure Storage',
+      '$authenticatedUser added to Secure Storage',
     );
   }
 

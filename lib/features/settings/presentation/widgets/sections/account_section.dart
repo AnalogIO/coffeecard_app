@@ -66,9 +66,15 @@ class AccountSection extends StatelessWidget {
           ),
           onTap: _tappableIfUserLoaded(context, changePasscodeTapCallback),
         ),
-        const SettingListEntry(
+        SettingListEntry(
           name: Strings.sessionTimeout,
-          valueWidget: SessionTimeoutDropdown(),
+          valueWidget: SessionTimeoutDropdown(
+            selectedDuration: context
+                .read<AuthenticationCubit>()
+                .state
+                .authenticatedUser
+                ?.sessionTimeout,
+          ),
           overrideDisableBehaviour: true,
         ),
         SettingListEntry(

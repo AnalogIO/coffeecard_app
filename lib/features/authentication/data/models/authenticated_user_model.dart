@@ -6,17 +6,23 @@ class AuthenticatedUserModel extends AuthenticatedUser {
     required super.token,
     required super.encodedPasscode,
     super.lastLogin,
+    super.sessionTimeout,
   });
 
   factory AuthenticatedUserModel.fromJson(Map<String, dynamic> json) {
-    final lastLogin =
-        json['lastLogin'] == 'null' ? null : json['lastLogin'] as String;
+    final lastLogin = json['lastLogin'] != 'null'
+        ? DateTime.parse(json['lastLogin'] as String)
+        : null;
+    final sessionTimeout = json['sessionTimeout'] != 'null'
+        ? parseDuration(json['sessionTimeout'] as String)
+        : null;
 
     return AuthenticatedUserModel(
       email: json['email'] as String,
       token: json['token'] as String,
       encodedPasscode: json['passcode'] as String,
-      lastLogin: lastLogin != null ? DateTime.parse(lastLogin) : null,
+      lastLogin: lastLogin,
+      sessionTimeout: sessionTimeout,
     );
   }
 
@@ -26,6 +32,22 @@ class AuthenticatedUserModel extends AuthenticatedUser {
       'token': token,
       'passcode': encodedPasscode,
       'lastLogin': lastLogin.toString(),
+      'sessionTimeout': sessionTimeout.toString(),
     };
+  }
+
+  static Duration parseDuration(String s) {
+    int hours = 0;
+    int minutes = 0;
+
+    final parts = s.split(':');
+    if (parts.length > 2) {
+      hours = int.parse(parts[parts.length - 3]);
+    }
+    if (parts.length > 1) {
+      minutes = int.parse(parts[parts.length - 2]);
+    }
+
+    return Duration(hours: hours, minutes: minutes);
   }
 }
