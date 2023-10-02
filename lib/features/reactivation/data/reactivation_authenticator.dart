@@ -16,7 +16,7 @@ class ReactivationAuthenticator extends Authenticator {
   bool _ready = false;
   late final AccountRemoteDataSource _accountRemoteDataSource;
 
-  final AuthenticationLocalDataSource _secureStorage;
+  final AuthenticationLocalDataSource _authenticationLocalDataSource;
   final AuthenticationCubit _authenticationCubit;
   final Logger _logger;
 
@@ -26,9 +26,9 @@ class ReactivationAuthenticator extends Authenticator {
   ///
   /// This instance is not ready to be used. Call [initialize] before using it.
   ReactivationAuthenticator.uninitialized({required GetIt serviceLocator})
-      : _secureStorage = serviceLocator<AuthenticationLocalDataSource>(),
-        _authenticationCubit = serviceLocator<AuthenticationCubit>(),
-        _logger = serviceLocator<Logger>();
+      : _authenticationLocalDataSource = serviceLocator(),
+        _authenticationCubit = serviceLocator(),
+        _logger = serviceLocator();
 
   /// Initializes the [ReactivationAuthenticator] by providing the
   /// [AccountRemoteDataSource] to use.
@@ -92,7 +92,8 @@ class ReactivationAuthenticator extends Authenticator {
     return Task(
       () async {
         // Check if user credentials are stored; if not, return None.
-        final user = await _secureStorage.getAuthenticatedUser();
+        final user =
+            await _authenticationLocalDataSource.getAuthenticatedUser();
         if (user == null) {
           return none();
         }
@@ -123,7 +124,7 @@ class ReactivationAuthenticator extends Authenticator {
         },
         (token) async {
           _logRefreshTokenSucceeded();
-          await _secureStorage.updateToken(token);
+          await _authenticationLocalDataSource.updateToken(token);
           return unit;
         },
       );

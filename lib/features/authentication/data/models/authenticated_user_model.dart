@@ -9,11 +9,14 @@ class AuthenticatedUserModel extends AuthenticatedUser {
   });
 
   factory AuthenticatedUserModel.fromJson(Map<String, dynamic> json) {
+    final lastLogin =
+        json['lastLogin'] == 'null' ? null : json['lastLogin'] as String;
+
     return AuthenticatedUserModel(
       email: json['email'] as String,
       token: json['token'] as String,
       encodedPasscode: json['passcode'] as String,
-      lastLogin: DateTime.parse(json['lastLogin'] as String),
+      lastLogin: lastLogin != null ? DateTime.parse(lastLogin) : null,
     );
   }
 

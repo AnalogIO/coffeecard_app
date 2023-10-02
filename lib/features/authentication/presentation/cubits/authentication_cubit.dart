@@ -1,3 +1,4 @@
+import 'package:coffeecard/core/external/date_service.dart';
 import 'package:coffeecard/features/authentication/data/models/authenticated_user_model.dart';
 import 'package:coffeecard/features/authentication/domain/entities/authenticated_user.dart';
 import 'package:coffeecard/features/authentication/domain/usecases/clear_authenticated_user.dart';
@@ -15,20 +16,38 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   final ClearAuthenticatedUser clearAuthenticatedUser;
   final SaveAuthenticatedUser saveAuthenticatedUser;
   final GetAuthenticatedUser getAuthenticatedUser;
+  final DateService dateService;
 
   AuthenticationCubit({
     required this.clearAuthenticatedUser,
     required this.saveAuthenticatedUser,
     required this.getAuthenticatedUser,
+    required this.dateService,
   }) : super(const AuthenticationState._());
 
   Future<void> appStarted() async {
     final authenticatedUser = await getAuthenticatedUser();
-    if (authenticatedUser != null) {
-      emit(AuthenticationState.authenticated(authenticatedUser));
-    } else {
+
+    final sessionExpired = isSessionExpired(authenticatedUser?.lastLogin);
+
+    if (authenticatedUser == null || sessionExpired) {
       emit(const AuthenticationState.unauthenticated());
+    } else {
+      emit(AuthenticationState.authenticated(authenticatedUser));
     }
+  }
+
+  bool isSessionExpired(DateTime? lastLogin) {
+    if (lastLogin == null) {
+      return false;
+    }
+
+    //TODO: configure
+    const tDuration = Duration(hours: 2);
+
+    final now = dateService.now();
+    final tDifference = now.difference(lastLogin);
+    return tDifference > tDuration;
   }
 
   Future<void> authenticated(
@@ -44,6 +63,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     );
 
     await saveAuthenticatedUser(user);
+
     emit(
       AuthenticationState.authenticated(
         user,

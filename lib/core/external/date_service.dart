@@ -1,4 +1,5 @@
 class DateService {
-  int currentWeekday() => DateTime.now().weekday;
-  int currentHour() => DateTime.now().hour;
+  DateTime now() => DateTime.now();
+  int currentWeekday() => now().weekday;
+  int currentHour() => now().hour;
 }

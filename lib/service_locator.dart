@@ -77,7 +77,23 @@ void configureServices() {
     sl.registerSingleton(Logger()),
   );
 
-  // Executor
+  initFeatures();
+  initExternal();
+
+  // Reactivation authenticator (uninitalized), http client and interceptors
+  initHttp();
+
+  // provide the account repository to the reactivation authenticator
+  sl<ReactivationAuthenticator>().initialize(sl<AccountRemoteDataSource>());
+}
+
+void initExternal() {
+  ignoreValue(
+    sl.registerSingleton<FirebaseAnalyticsEventLogging>(
+      FirebaseAnalyticsEventLogging(FirebaseAnalytics.instance),
+    ),
+  );
+
   sl.registerLazySingleton(
     () => NetworkRequestExecutor(
       logger: sl(),
@@ -85,34 +101,10 @@ void configureServices() {
     ),
   );
 
-  // Reactivation authenticator (uninitalized), http client and interceptors
-  initHttp();
-
-  // Features
-  initFeatures();
-
-  // v1 and v2
-  sl.registerFactory<AccountRemoteDataSource>(
-    () => AccountRemoteDataSource(
-      apiV1: sl<CoffeecardApi>(),
-      apiV2: sl<CoffeecardApiV2>(),
-      executor: sl<NetworkRequestExecutor>(),
-    ),
-  );
-
-  // external
-  ignoreValue(
-    sl.registerSingleton<FirebaseAnalyticsEventLogging>(
-      FirebaseAnalyticsEventLogging(FirebaseAnalytics.instance),
-    ),
-  );
-
-  ignoreValue(sl.registerFactory(() => DateService()));
-  ignoreValue(sl.registerFactory(() => ScreenBrightness()));
-  ignoreValue(sl.registerLazySingleton(() => ExternalUrlLauncher()));
-
-  // provide the account repository to the reactivation authenticator
-  sl<ReactivationAuthenticator>().initialize(sl<AccountRemoteDataSource>());
+  sl.registerFactory(() => const FlutterSecureStorage());
+  sl.registerFactory(() => DateService());
+  sl.registerFactory(() => ScreenBrightness());
+  sl.registerLazySingleton(() => ExternalUrlLauncher());
 }
 
 void initFeatures() {
@@ -134,31 +126,27 @@ void initFeatures() {
 
 void initAuthentication() {
   // bloc
-  // Authentication
-  ignoreValue(
-    sl.registerSingleton(
-      AuthenticationCubit(
-        clearAuthenticatedUser: sl(),
-        saveAuthenticatedUser: sl(),
-        getAuthenticatedUser: sl(),
-      ),
+  sl.registerLazySingleton(
+    () => AuthenticationCubit(
+      clearAuthenticatedUser: sl(),
+      saveAuthenticatedUser: sl(),
+      getAuthenticatedUser: sl(),
+      dateService: sl(),
     ),
   );
 
   // use case
-  ignoreValue(sl.registerFactory(() => ClearAuthenticatedUser()));
-  ignoreValue(sl.registerFactory(() => SaveAuthenticatedUser()));
-  ignoreValue(sl.registerFactory(() => GetAuthenticatedUser()));
+  sl.registerFactory(() => ClearAuthenticatedUser(dataSource: sl()));
+  sl.registerFactory(() => SaveAuthenticatedUser(dataSource: sl()));
+  sl.registerFactory(() => GetAuthenticatedUser(dataSource: sl()));
 
   // repository
 
   // data source
-  ignoreValue(
-    sl.registerSingleton(
-      AuthenticationLocalDataSource(
-        storage: const FlutterSecureStorage(),
-        logger: sl(),
-      ),
+  sl.registerLazySingleton(
+    () => AuthenticationLocalDataSource(
+      storage: sl(),
+      logger: sl(),
     ),
   );
 }
@@ -355,6 +343,13 @@ void initLogin() {
   sl.registerFactory(() => ResendEmail(remoteDataSource: sl()));
 
   // data source
+  sl.registerLazySingleton<AccountRemoteDataSource>(
+    () => AccountRemoteDataSource(
+      apiV1: sl(),
+      apiV2: sl(),
+      executor: sl(),
+    ),
+  );
 }
 
 void initRegister() {

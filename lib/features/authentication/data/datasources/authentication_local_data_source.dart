@@ -18,9 +18,11 @@ class AuthenticationLocalDataSource {
   Future<void> saveAuthenticatedUser(
     AuthenticatedUserModel authenticatedUser,
   ) async {
+    final tJson = json.encode(authenticatedUser);
+
     await storage.write(
       key: _authenticatedUserKey,
-      value: json.encode(authenticatedUser),
+      value: tJson,
     );
 
     logger.d(
