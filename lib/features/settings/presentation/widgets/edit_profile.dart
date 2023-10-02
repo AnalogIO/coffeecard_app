@@ -3,6 +3,7 @@ import 'package:coffeecard/core/styles/app_text_styles.dart';
 import 'package:coffeecard/core/widgets/components/helpers/responsive.dart';
 import 'package:coffeecard/features/occupation/presentation/pages/change_occupation_page.dart';
 import 'package:coffeecard/features/settings/presentation/pages/change_name_page.dart';
+import 'package:coffeecard/features/settings/presentation/widgets/setting_description.dart';
 import 'package:coffeecard/features/settings/presentation/widgets/settings_group.dart';
 import 'package:coffeecard/features/settings/presentation/widgets/settings_list_entry.dart';
 import 'package:coffeecard/features/settings/presentation/widgets/user_icon.dart';
