@@ -12,43 +12,38 @@ import 'authentication_local_data_source_test.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<FlutterSecureStorage>(), MockSpec<Logger>()])
 void main() {
-  const emailKey = 'email';
-  const tokenKey = 'authentication_token';
-  const encodedPasscodeKey = 'encoded_passcode';
-
-  late AuthenticationLocalDataSource secureStorage;
-  late MockFlutterSecureStorage mockStorage;
-  late MockLogger mockLogger;
+  late AuthenticationLocalDataSource dataSource;
+  late MockFlutterSecureStorage storage;
+  late MockLogger logger;
 
   setUp(() {
-    mockStorage = MockFlutterSecureStorage();
-    mockLogger = MockLogger();
-    secureStorage =
-        AuthenticationLocalDataSource(storage: mockStorage, logger: mockLogger);
+    storage = MockFlutterSecureStorage();
+    logger = MockLogger();
+    dataSource =
+        AuthenticationLocalDataSource(storage: storage, logger: logger);
   });
+
+  const user = AuthenticatedUserModel(
+    email: 'email',
+    token: 'token',
+    encodedPasscode: 'encodedPasscode',
+  );
 
   group('saveAuthenticatedUser', () {
     test(
-      'GIVEN user credentials '
-      'WHEN saveAuthenticatedUser is called '
-      'THEN it should save the user credentials to secure storage',
+      'should save user object',
       () async {
         // arrange
-        const user = AuthenticatedUserModel(
-          email: 'test@example.com',
-          token: 'token',
-          encodedPasscode: 'encodedPasscode',
-        );
 
         // act
-        await secureStorage.saveAuthenticatedUser(user);
+        await dataSource.saveAuthenticatedUser(user);
 
         // assert
         final jsonString = json.encode(user);
 
         verifyInOrder([
-          mockStorage.write(key: emailKey, value: jsonString),
-          mockLogger.d(any),
+          storage.write(key: anyNamed('key'), value: jsonString),
+          logger.d(any),
         ]);
       },
     );
@@ -56,39 +51,29 @@ void main() {
 
   group('getAuthenticatedUser', () {
     test(
-      'GIVEN user credentials in secure storage '
-      'WHEN getAuthenticatedUser is called '
-      'THEN it should return the authenticated user',
+      'should return user when storage contains key',
       () async {
         // arrange
-        const email = 'test@example.com';
-        const token = 'token';
-
-        when(mockStorage.read(key: emailKey)).thenAnswer((_) async => email);
-        when(mockStorage.read(key: tokenKey)).thenAnswer((_) async => token);
+        when(storage.read(key: anyNamed('key')))
+            .thenAnswer((_) async => json.encode(user));
 
         // act
-        final actual = await secureStorage.getAuthenticatedUser();
+        final actual = await dataSource.getAuthenticatedUser();
 
         // assert
-        expect(actual, isNotNull);
-        expect(actual?.email, email);
-        expect(actual?.token, token);
+        expect(actual!.email, user.email);
+        expect(actual.token, user.token);
+        expect(actual.encodedPasscode, user.encodedPasscode);
       },
     );
     test(
-      'GIVEN missing token in secure storage '
-      'WHEN getAuthenticatedUser is called '
-      'THEN it should return null',
+      'should return null when storage does not contains key',
       () async {
         // arrange
-        const email = 'test@example.com';
+        when(storage.read(key: anyNamed('key'))).thenAnswer((_) async => null);
 
         // act
-        when(mockStorage.read(key: emailKey)).thenAnswer((_) async => email);
-        when(mockStorage.read(key: tokenKey)).thenAnswer((_) async => null);
-
-        final actual = await secureStorage.getAuthenticatedUser();
+        final actual = await dataSource.getAuthenticatedUser();
 
         // assert
         expect(actual, isNull);
@@ -98,66 +83,39 @@ void main() {
 
   group('clearAuthenticatedUser', () {
     test(
-      'GIVEN user credentials in secure storage '
-      'WHEN clearAuthenticatedUser is called '
-      'THEN it should remove the user credentials from secure storage',
+      'should delete key',
       () async {
-        // arrange
-        when(mockStorage.read(key: emailKey))
-            .thenAnswer((_) async => 'test@example.com');
-        when(mockStorage.read(key: encodedPasscodeKey))
-            .thenAnswer((_) async => 'encodedPasscode');
-        when(mockStorage.read(key: tokenKey)).thenAnswer((_) async => 'token');
-
         // act
-        await secureStorage.clearAuthenticatedUser();
+        await dataSource.clearAuthenticatedUser();
 
         // assert
-        verifyInOrder([
-          mockStorage.delete(key: emailKey),
-          mockStorage.delete(key: encodedPasscodeKey),
-          mockStorage.delete(key: tokenKey),
-          mockLogger.d(any),
-        ]);
-      },
-    );
-
-    test(
-      'GIVEN missing email in secure storage '
-      'WHEN clearAuthenticatedUser is called '
-      'THEN it should not remove any user credentials',
-      () async {
-        // arrange
-        when(mockStorage.read(key: emailKey)).thenAnswer((_) async => null);
-
-        // act
-        await secureStorage.clearAuthenticatedUser();
-
-        // assert
-        verifyInOrder([
-          mockStorage.read(key: emailKey),
-          mockStorage.read(key: tokenKey),
-        ]);
-        verifyNever(mockStorage.delete(key: anyNamed('key')));
+        verify(storage.delete(key: anyNamed('key')));
       },
     );
   });
 
   group('updateToken', () {
     test(
-      'GIVEN a new token '
-      'WHEN updateToken is called '
-      'THEN it should update the token in secure storage',
+      'should update token in storage',
       () async {
         // arrange
         const token = 'new_token';
+        when(storage.read(key: anyNamed('key')))
+            .thenAnswer((_) async => json.encode(user));
 
         // act
-        await secureStorage.updateToken(token);
+        await dataSource.updateToken(token);
 
         // assert
-        verify(mockStorage.write(key: tokenKey, value: token));
-        verify(mockLogger.d('Token updated in Secure Storage'));
+        const expected = AuthenticatedUserModel(
+          email: 'email',
+          token: token,
+          encodedPasscode: 'encodedPasscode',
+        );
+
+        verify(
+          storage.write(key: anyNamed('key'), value: json.encode(expected)),
+        );
       },
     );
   });
