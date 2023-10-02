@@ -10,12 +10,13 @@ class AuthenticatedUserModel extends AuthenticatedUser {
   });
 
   factory AuthenticatedUserModel.fromJson(Map<String, dynamic> json) {
-    final lastLogin = json['lastLogin'] != 'null'
-        ? DateTime.parse(json['lastLogin'] as String)
-        : null;
-    final sessionTimeout = json['sessionTimeout'] != 'null'
-        ? parseDuration(json['sessionTimeout'] as String)
-        : null;
+    final lastLogin =
+        _nullOrValue<DateTime>(json, 'last_login', (r) => DateTime.parse(r));
+    final sessionTimeout = _nullOrValue<Duration>(
+      json,
+      'session_timeout',
+      (r) => _parseDuration(r),
+    );
 
     return AuthenticatedUserModel(
       email: json['email'] as String,
@@ -31,12 +32,24 @@ class AuthenticatedUserModel extends AuthenticatedUser {
       'email': email,
       'token': token,
       'passcode': encodedPasscode,
-      'lastLogin': lastLogin.toString(),
-      'sessionTimeout': sessionTimeout.toString(),
+      'last_login': lastLogin.toString(),
+      'session_timeout': sessionTimeout.toString(),
     };
   }
 
-  static Duration parseDuration(String s) {
+  static T? _nullOrValue<T>(
+    Map<String, dynamic> m,
+    String key,
+    T? Function(String) callback,
+  ) {
+    if (m[key] == 'null') {
+      return null;
+    }
+
+    return callback(m[key]! as String);
+  }
+
+  static Duration _parseDuration(String s) {
     int hours = 0;
     int minutes = 0;
 

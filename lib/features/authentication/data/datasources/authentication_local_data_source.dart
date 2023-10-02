@@ -18,16 +18,12 @@ class AuthenticationLocalDataSource {
   Future<void> saveAuthenticatedUser(
     AuthenticatedUserModel authenticatedUser,
   ) async {
-    final tJson = json.encode(authenticatedUser);
-
     await storage.write(
       key: _authenticatedUserKey,
-      value: tJson,
+      value: json.encode(authenticatedUser),
     );
 
-    logger.d(
-      '$authenticatedUser added to Secure Storage',
-    );
+    logger.d('$authenticatedUser added to storage');
   }
 
   Future<AuthenticatedUserModel?> getAuthenticatedUser() async {
@@ -44,7 +40,7 @@ class AuthenticationLocalDataSource {
 
   Future<void> clearAuthenticatedUser() async {
     await storage.delete(key: _authenticatedUserKey);
-    logger.d('Email, encoded passcode and token removed from Secure Storage');
+    logger.d('deleted data for $_authenticatedUserKey');
   }
 
   Future<void> updateToken(String token) async {
@@ -62,8 +58,6 @@ class AuthenticationLocalDataSource {
       sessionTimeout: user.sessionTimeout,
     );
 
-    saveAuthenticatedUser(model);
-
-    logger.d('Token updated in Secure Storage');
+    await saveAuthenticatedUser(model);
   }
 }
