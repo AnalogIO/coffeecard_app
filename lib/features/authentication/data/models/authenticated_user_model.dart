@@ -11,11 +11,11 @@ class AuthenticatedUserModel extends AuthenticatedUser {
 
   factory AuthenticatedUserModel.fromJson(Map<String, dynamic> json) {
     final lastLogin =
-        _nullOrValue<DateTime>(json, 'last_login', (r) => DateTime.parse(r));
+        _nullOrValue<DateTime>(json, 'last_login', DateTime.parse);
     final sessionTimeout = _nullOrValue<Duration>(
       json,
       'session_timeout',
-      (r) => _parseDuration(r),
+      _parseDuration,
     );
 
     return AuthenticatedUserModel(
