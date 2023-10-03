@@ -42,11 +42,13 @@ class AuthenticatedUserModel extends AuthenticatedUser {
     String key,
     T? Function(String) callback,
   ) {
-    if (m[key] == 'null') {
+    final val = m[key] as String;
+
+    if (val == 'null') {
       return null;
     }
 
-    return callback(m[key]! as String);
+    return callback(val);
   }
 
   static Duration _parseDuration(String s) {
