@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:coffeecard/core/usecases/usecase.dart';
 import 'package:coffeecard/features/occupation/domain/entities/occupation.dart';
 import 'package:coffeecard/features/occupation/domain/usecases/get_occupations.dart';
 import 'package:equatable/equatable.dart';
@@ -15,7 +14,7 @@ class OccupationCubit extends Cubit<OccupationState> {
   Future<void> fetchOccupations() async {
     emit(const OccupationLoading());
 
-    final either = await getOccupations(NoParams());
+    final either = await getOccupations();
 
     either.fold(
       (error) => emit(OccupationError(message: error.reason)),

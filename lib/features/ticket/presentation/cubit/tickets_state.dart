@@ -1,109 +1,52 @@
 part of 'tickets_cubit.dart';
 
 sealed class TicketsState extends Equatable {
-  final bool isBarista;
-
-  const TicketsState({required this.isBarista});
-
-  TicketsState copyWith({bool? isBarista});
+  const TicketsState();
 }
 
 class TicketsLoading extends TicketsState {
-  const TicketsLoading({required super.isBarista});
+  const TicketsLoading();
 
   @override
-  List<Object?> get props => [isBarista];
-
-  @override
-  TicketsState copyWith({bool? isBarista}) {
-    return TicketsLoading(isBarista: isBarista ?? this.isBarista);
-  }
+  List<Object?> get props => [];
 }
 
 class TicketsLoaded extends TicketsState {
   final List<TicketCount> tickets;
 
   const TicketsLoaded({
-    required super.isBarista,
     required this.tickets,
   });
 
   @override
-  List<Object?> get props => [tickets, isBarista];
-
-  @override
-  TicketsState copyWith({
-    bool? isBarista,
-    List<TicketCount>? tickets,
-  }) {
-    return TicketsLoaded(
-      isBarista: isBarista ?? this.isBarista,
-      tickets: tickets ?? this.tickets,
-    );
-  }
+  List<Object?> get props => [tickets];
 }
 
 class TicketUsing extends TicketsLoaded {
-  const TicketUsing({
-    required super.isBarista,
-    required super.tickets,
-  });
+  const TicketUsing({required super.tickets});
 }
 
 class TicketUsed extends TicketsLoaded {
   final Receipt receipt;
 
-  const TicketUsed({
-    required this.receipt,
-    required super.tickets,
-    required super.isBarista,
-  });
+  const TicketUsed({required this.receipt, required super.tickets});
 
   @override
-  List<Object?> get props => [receipt, tickets, isBarista];
-
-  @override
-  TicketsState copyWith({
-    bool? isBarista,
-    List<TicketCount>? tickets,
-    Receipt? receipt,
-  }) {
-    return TicketUsed(
-      isBarista: isBarista ?? this.isBarista,
-      tickets: tickets ?? this.tickets,
-      receipt: receipt ?? this.receipt,
-    );
-  }
+  List<Object?> get props => [receipt, tickets];
 }
 
 class TicketsUseError extends TicketsState {
   final String message;
-  const TicketsUseError({required this.message, required super.isBarista});
+  const TicketsUseError({required this.message});
 
   @override
-  List<Object?> get props => [message, isBarista];
-
-  @override
-  TicketsState copyWith({bool? isBarista, String? message}) {
-    return TicketsUseError(
-      message: message ?? this.message,
-      isBarista: isBarista ?? this.isBarista,
-    );
-  }
+  List<Object?> get props => [message];
 }
 
 class TicketsLoadError extends TicketsState {
   final String message;
-  const TicketsLoadError({required this.message, required super.isBarista});
+  const TicketsLoadError({required this.message});
 
   @override
-  List<Object?> get props => [message, isBarista];
-
-  @override
-  TicketsState copyWith({bool? isBarista, String? message}) {
-    return TicketsLoadError(
-      isBarista: isBarista ?? this.isBarista,
-      message: message ?? this.message,
-    );
-  }
+  List<Object?> get props => [message];
 }

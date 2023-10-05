@@ -24,7 +24,6 @@ void main() {
     cubit = TicketsCubit(
       loadTickets: loadTickets,
       consumeTicket: consumeTicket,
-      isBarista: false,
     );
 
     provideDummy<Either<Failure, List<TicketCount>>>(
@@ -39,28 +38,24 @@ void main() {
     blocTest<TicketsCubit, TicketsState>(
       'should emit [Loading, Loaded] when use case succeeds',
       build: () => cubit,
-      setUp: () =>
-          when(loadTickets(any)).thenAnswer((_) async => const Right([])),
+      setUp: () => when(loadTickets()).thenAnswer((_) async => const Right([])),
       act: (_) => cubit.getTickets(),
       expect: () => [
-        const TicketsLoading(isBarista: false),
-        const TicketsLoaded(
-          tickets: [],
-          isBarista: false,
-        ),
+        const TicketsLoading(),
+        const TicketsLoaded(tickets: []),
       ],
     );
 
     blocTest<TicketsCubit, TicketsState>(
       'should emit [Loading, Error] when use case fails',
       build: () => cubit,
-      setUp: () => when(loadTickets(any)).thenAnswer(
-        (_) async => const Left(ServerFailure('some error')),
+      setUp: () => when(loadTickets()).thenAnswer(
+        (_) async => const Left(ServerFailure('some error', 500)),
       ),
       act: (_) => cubit.getTickets(),
       expect: () => [
-        const TicketsLoading(isBarista: false),
-        const TicketsLoadError(message: 'some error', isBarista: false),
+        const TicketsLoading(),
+        const TicketsLoadError(message: 'some error'),
       ],
     );
   });
@@ -71,8 +66,9 @@ void main() {
       'should not emit new state when state is not [Loaded]',
       build: () => cubit,
       setUp: () {
-        when(loadTickets(any)).thenAnswer((_) async => const Right([]));
-        when(consumeTicket(any)).thenAnswer((_) async => Right(testReceipt));
+        when(loadTickets()).thenAnswer((_) async => const Right([]));
+        when(consumeTicket(productId: anyNamed('productId')))
+            .thenAnswer((_) async => Right(testReceipt));
       },
       act: (cubit) => cubit.useTicket(0),
       expect: () => [],
@@ -82,8 +78,9 @@ void main() {
       'should emit [Using, Used, Loaded] when state is Loaded',
       build: () => cubit,
       setUp: () {
-        when(loadTickets(any)).thenAnswer((_) async => const Right([]));
-        when(consumeTicket(any)).thenAnswer((_) async => Right(testReceipt));
+        when(loadTickets()).thenAnswer((_) async => const Right([]));
+        when(consumeTicket(productId: anyNamed('productId')))
+            .thenAnswer((_) async => Right(testReceipt));
       },
       act: (_) async {
         await cubit.getTickets();
@@ -92,16 +89,9 @@ void main() {
       // skip the initial Loading/Loaded states emitted by getTickets
       skip: 2,
       expect: () => [
-        const TicketUsing(tickets: [], isBarista: false),
-        TicketUsed(
-          receipt: testReceipt,
-          tickets: const [],
-          isBarista: false,
-        ),
-        const TicketsLoaded(
-          tickets: [],
-          isBarista: false,
-        ),
+        const TicketUsing(tickets: []),
+        TicketUsed(receipt: testReceipt, tickets: const []),
+        const TicketsLoaded(tickets: []),
       ],
     );
 
@@ -109,9 +99,9 @@ void main() {
       'should emit [Using, Error, Loaded] when state is Loaded',
       build: () => cubit,
       setUp: () {
-        when(loadTickets(any)).thenAnswer((_) async => const Right([]));
-        when(consumeTicket(any)).thenAnswer(
-          (_) async => const Left(ServerFailure('some error')),
+        when(loadTickets()).thenAnswer((_) async => const Right([]));
+        when(consumeTicket(productId: anyNamed('productId'))).thenAnswer(
+          (_) async => const Left(ServerFailure('some error', 500)),
         );
       },
       act: (_) async {
@@ -121,15 +111,9 @@ void main() {
       // skip the initial Loading/Loaded states emitted by getTickets
       skip: 2,
       expect: () => [
-        const TicketUsing(
-          tickets: [],
-          isBarista: false,
-        ),
-        const TicketsUseError(message: 'some error', isBarista: false),
-        const TicketsLoaded(
-          tickets: [],
-          isBarista: false,
-        ),
+        const TicketUsing(tickets: []),
+        const TicketsUseError(message: 'some error'),
+        const TicketsLoaded(tickets: []),
       ],
     );
   });
@@ -137,26 +121,21 @@ void main() {
     blocTest<TicketsCubit, TicketsState>(
       'should emit [Loaded] when use case succeeds',
       build: () => cubit,
-      setUp: () =>
-          when(loadTickets(any)).thenAnswer((_) async => const Right([])),
+      setUp: () => when(loadTickets()).thenAnswer((_) async => const Right([])),
       act: (_) => cubit.refreshTickets(),
       expect: () => [
-        const TicketsLoaded(
-          tickets: [],
-          isBarista: false,
-        ),
+        const TicketsLoaded(tickets: []),
       ],
     );
 
     blocTest<TicketsCubit, TicketsState>(
       'should emit [Error] when use case fails',
       build: () => cubit,
-      setUp: () => when(loadTickets(any)).thenAnswer(
-        (_) async => const Left(ServerFailure('some error')),
+      setUp: () => when(loadTickets()).thenAnswer(
+        (_) async => const Left(ServerFailure('some error', 500)),
       ),
       act: (_) => cubit.refreshTickets(),
-      expect: () =>
-          [const TicketsLoadError(message: 'some error', isBarista: false)],
+      expect: () => [const TicketsLoadError(message: 'some error')],
     );
   });
 }

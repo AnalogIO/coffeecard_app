@@ -1,7 +1,7 @@
-import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/core/widgets/form/form.dart';
+import 'package:coffeecard/core/strings.dart';
+import 'package:coffeecard/core/validator/input_validator.dart';
+import 'package:coffeecard/features/form/presentation/widgets/form.dart';
 import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
-import 'package:coffeecard/utils/input_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

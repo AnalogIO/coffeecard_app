@@ -1,9 +1,9 @@
-import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/base/style/colors.dart';
-import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/core/strings.dart';
+import 'package:coffeecard/core/styles/app_colors.dart';
+import 'package:coffeecard/core/styles/app_text_styles.dart';
+import 'package:coffeecard/core/widgets/components/helpers/shimmer_builder.dart';
 import 'package:coffeecard/core/widgets/list_entry.dart';
 import 'package:coffeecard/features/settings/presentation/widgets/user_icon.dart';
-import 'package:coffeecard/widgets/components/helpers/shimmer_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
@@ -37,7 +37,7 @@ class LeaderboardListEntry extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListEntry(
-      backgroundColor: highlight ? AppColor.slightlyHighlighted : null,
+      backgroundColor: highlight ? AppColors.slightlyHighlighted : null,
       sideToExpand: ListEntrySide.right,
       leftWidget: ShimmerBuilder(
         showShimmer: isPlaceholder,
@@ -86,16 +86,16 @@ class _LeaderboardRankMedal extends StatelessWidget {
   String get rankString => rank == 0 ? '-' : '$rank';
 
   Color get _fillColor {
-    if (rank == 1) return AppColor.goldMedal;
-    if (rank == 2) return AppColor.silverMedal;
-    if (rank == 3) return AppColor.bronzeMedal;
+    if (rank == 1) return AppColors.goldMedal;
+    if (rank == 2) return AppColors.silverMedal;
+    if (rank == 3) return AppColors.bronzeMedal;
     return Colors.transparent;
   }
 
   Color get _borderColor {
-    if (rank == 1) return AppColor.goldMedalBorder;
-    if (rank == 2) return AppColor.silverMedalBorder;
-    if (rank == 3) return AppColor.bronzeMedalBorder;
+    if (rank == 1) return AppColors.goldMedalBorder;
+    if (rank == 2) return AppColors.silverMedalBorder;
+    if (rank == 3) return AppColors.bronzeMedalBorder;
     return Colors.transparent;
   }
 

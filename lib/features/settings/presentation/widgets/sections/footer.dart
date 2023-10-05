@@ -1,5 +1,5 @@
-import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/core/strings.dart';
+import 'package:coffeecard/core/styles/app_text_styles.dart';
 import 'package:coffeecard/core/widgets/images/analogio_logo.dart';
 import 'package:coffeecard/features/contributor/presentation/pages/credits_page.dart';
 import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';

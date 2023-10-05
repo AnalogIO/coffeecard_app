@@ -1,5 +1,5 @@
+import 'package:coffeecard/core/widgets/components/dropdown.dart';
 import 'package:coffeecard/features/receipt/presentation/cubit/receipt_cubit.dart';
-import 'package:coffeecard/widgets/components/dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

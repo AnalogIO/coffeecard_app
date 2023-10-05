@@ -1,15 +1,13 @@
 import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/core/usecases/usecase.dart';
 import 'package:coffeecard/features/user/data/datasources/user_remote_data_source.dart';
 import 'package:fpdart/fpdart.dart';
 
-class RequestAccountDeletion implements UseCase<void, NoParams> {
+class RequestAccountDeletion {
   final UserRemoteDataSource dataSource;
 
   RequestAccountDeletion({required this.dataSource});
 
-  @override
-  Future<Either<Failure, Unit>> call(NoParams params) async {
+  Future<Either<Failure, Unit>> call() async {
     return dataSource.requestAccountDeletion();
   }
 }

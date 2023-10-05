@@ -1,12 +1,12 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:coffeecard/core/errors/failures.dart';
+import 'package:coffeecard/core/firebase_analytics_event_logging.dart';
 import 'package:coffeecard/features/product/domain/entities/product.dart';
 import 'package:coffeecard/features/purchase/domain/entities/payment.dart';
 import 'package:coffeecard/features/purchase/domain/entities/payment_status.dart';
 import 'package:coffeecard/features/purchase/domain/usecases/init_purchase.dart';
 import 'package:coffeecard/features/purchase/domain/usecases/verify_purchase_status.dart';
 import 'package:coffeecard/features/purchase/presentation/cubit/purchase_cubit.dart';
-import 'package:coffeecard/utils/firebase_analytics_event_logging.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:mockito/annotations.dart';
@@ -83,7 +83,7 @@ void main() {
         when(firebaseAnalyticsEventLogging.beginCheckoutEvent(any))
             .thenReturn(null);
         when(initPurchase(any))
-            .thenAnswer((_) async => const Left(ServerFailure(testError)));
+            .thenAnswer((_) async => const Left(ServerFailure(testError, 500)));
       },
       act: (_) => cubit.pay(),
       expect: () => [
@@ -163,7 +163,7 @@ void main() {
       ),
       setUp: () {
         when(verifyPurchaseStatus(any))
-            .thenAnswer((_) async => const Left(ServerFailure(testError)));
+            .thenAnswer((_) async => const Left(ServerFailure(testError, 500)));
       },
       act: (_) => cubit.verifyPurchase(),
       expect: () => [
@@ -197,7 +197,7 @@ void main() {
       build: () => cubit,
       setUp: () {
         when(verifyPurchaseStatus(any)).thenAnswer(
-          (_) async => const Left(ServerFailure(testError)),
+          (_) async => const Left(ServerFailure(testError, 500)),
         );
       },
       act: (_) async => cubit.checkPurchaseStatus(

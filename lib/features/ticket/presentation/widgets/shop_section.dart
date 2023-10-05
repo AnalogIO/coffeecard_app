@@ -1,9 +1,9 @@
-import 'package:coffeecard/base/strings.dart';
+import 'package:coffeecard/core/strings.dart';
+import 'package:coffeecard/core/widgets/components/helpers/grid.dart';
+import 'package:coffeecard/core/widgets/components/section_title.dart';
 import 'package:coffeecard/features/product/presentation/pages/buy_single_drink_page.dart';
 import 'package:coffeecard/features/product/presentation/pages/buy_tickets_page.dart';
 import 'package:coffeecard/features/ticket/presentation/widgets/shop_card.dart';
-import 'package:coffeecard/widgets/components/helpers/grid.dart';
-import 'package:coffeecard/widgets/components/section_title.dart';
 import 'package:flutter/material.dart';
 
 class ShopSection extends StatelessWidget {

@@ -1,5 +1,4 @@
 import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/core/usecases/usecase.dart';
 import 'package:coffeecard/features/user/data/datasources/user_remote_data_source.dart';
 import 'package:coffeecard/features/user/domain/usecases/request_account_deletion.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -30,7 +29,7 @@ void main() {
     );
 
     // act
-    await usecase(NoParams());
+    await usecase();
 
     // assert
     verify(dataSource.requestAccountDeletion());

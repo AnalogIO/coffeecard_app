@@ -1,7 +1,7 @@
-import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/base/style/colors.dart';
-import 'package:coffeecard/base/style/text_styles.dart';
-import 'package:coffeecard/widgets/components/card.dart';
+import 'package:coffeecard/core/strings.dart';
+import 'package:coffeecard/core/styles/app_colors.dart';
+import 'package:coffeecard/core/styles/app_text_styles.dart';
+import 'package:coffeecard/core/widgets/components/card.dart';
 import 'package:flutter/material.dart';
 
 class ShopCard extends StatelessWidget {
@@ -33,7 +33,7 @@ class ShopCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CardBase(
-      color: AppColor.secondary,
+      color: AppColors.secondary,
       gap: 12,
       onTap: onTapped,
       top: Text(
@@ -45,7 +45,7 @@ class ShopCard extends StatelessWidget {
         left: label,
         right: Icon(
           icon,
-          color: AppColor.white,
+          color: AppColors.white,
         ),
       ),
     );

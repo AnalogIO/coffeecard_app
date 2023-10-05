@@ -1,9 +1,9 @@
-import 'package:coffeecard/base/strings_environment.dart';
-import 'package:coffeecard/base/style/colors.dart';
-import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/core/strings.dart';
+import 'package:coffeecard/core/styles/app_colors.dart';
+import 'package:coffeecard/core/styles/app_text_styles.dart';
+import 'package:coffeecard/core/widgets/components/dialog.dart';
 import 'package:coffeecard/features/environment/domain/entities/environment.dart';
 import 'package:coffeecard/features/environment/presentation/cubit/environment_cubit.dart';
-import 'package:coffeecard/widgets/components/dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
@@ -26,33 +26,33 @@ class EnvironmentButton extends StatelessWidget {
           child: TextButton(
             onPressed: () => appDialog(
               context: context,
-              title: TestEnvironmentStrings.title,
+              title: Strings.environmentTitle,
               children: [
                 Text(
-                  TestEnvironmentStrings.description.first,
+                  Strings.environmentDescription.first,
                   style: AppTextStyle.settingKey,
                 ),
                 const Gap(8),
                 Text(
-                  TestEnvironmentStrings.description[1],
+                  Strings.environmentDescription[1],
                   style: AppTextStyle.settingKey,
                 ),
                 const Gap(8),
                 Text(
-                  TestEnvironmentStrings.description[2],
+                  Strings.environmentDescription[2],
                   style: AppTextStyle.settingKey,
                 ),
               ],
               actions: [
                 TextButton(
-                  child: const Text(TestEnvironmentStrings.understood),
+                  child: const Text(Strings.environmentUnderstood),
                   onPressed: () => closeAppDialog(context),
                 ),
               ],
               dismissible: true,
             ),
             style: TextButton.styleFrom(
-              backgroundColor: AppColor.white,
+              backgroundColor: AppColors.white,
               padding: const EdgeInsets.only(left: 16, right: 12),
               shape: const StadiumBorder(),
               visualDensity: VisualDensity.comfortable,
@@ -61,13 +61,13 @@ class EnvironmentButton extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  TestEnvironmentStrings.title,
+                  Strings.environmentTitle,
                   style: AppTextStyle.environmentNotifier,
                 ),
                 const Gap(8),
                 const Icon(
                   Icons.info_outline,
-                  color: AppColor.primary,
+                  color: AppColors.primary,
                   size: 18,
                 ),
               ],

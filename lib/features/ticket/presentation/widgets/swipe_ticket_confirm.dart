@@ -1,13 +1,13 @@
 import 'dart:async';
 
-import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/base/style/colors.dart';
-import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/core/strings.dart';
+import 'package:coffeecard/core/styles/app_colors.dart';
+import 'package:coffeecard/core/styles/app_text_styles.dart';
+import 'package:coffeecard/core/widgets/components/bottom_modal_sheet_helper.dart';
+import 'package:coffeecard/core/widgets/components/card.dart';
+import 'package:coffeecard/core/widgets/components/slide_action.dart';
 import 'package:coffeecard/features/receipt/presentation/cubit/receipt_cubit.dart';
 import 'package:coffeecard/features/ticket/presentation/cubit/tickets_cubit.dart';
-import 'package:coffeecard/widgets/components/card.dart';
-import 'package:coffeecard/widgets/components/tickets/bottom_modal_sheet_helper.dart';
-import 'package:coffeecard/widgets/components/tickets/slide_to_act.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -106,7 +106,7 @@ class _ModalContentState extends State<_ModalContent>
               // error during the hero animation.
               child: SingleChildScrollView(
                 child: CardBase(
-                  color: AppColor.ticket,
+                  color: AppColors.ticket,
                   gap: 36,
                   top: CardTitle(
                     title: Text(
@@ -126,8 +126,8 @@ class _ModalContentState extends State<_ModalContent>
                         size: 48,
                       ),
                       sliderButtonIconPadding: 0,
-                      innerColor: AppColor.white,
-                      outerColor: AppColor.primary,
+                      innerColor: AppColors.white,
+                      outerColor: AppColors.primary,
                       onSubmit: () async {
                         // Disable hero animation in the reverse direction
                         setState(() => _heroTag = null);
@@ -168,7 +168,7 @@ class _HeroDialogRoute<T> extends PageRoute<T> {
   bool get maintainState => true;
 
   @override
-  Color get barrierColor => AppColor.scrim;
+  Color get barrierColor => AppColors.scrim;
 
   @override
   Widget buildTransitions(

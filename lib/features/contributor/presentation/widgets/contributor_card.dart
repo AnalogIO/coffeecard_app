@@ -1,10 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:coffeecard/base/style/colors.dart';
-import 'package:coffeecard/base/style/text_styles.dart';
 import 'package:coffeecard/core/external/external_url_launcher.dart';
+import 'package:coffeecard/core/styles/app_colors.dart';
+import 'package:coffeecard/core/styles/app_text_styles.dart';
+import 'package:coffeecard/core/widgets/components/helpers/tappable.dart';
 import 'package:coffeecard/features/contributor/domain/entities/contributor.dart';
 import 'package:coffeecard/service_locator.dart';
-import 'package:coffeecard/widgets/components/helpers/tappable.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
@@ -22,8 +22,8 @@ class ContributorCard extends StatelessWidget {
       ),
       child: DecoratedBox(
         decoration: const BoxDecoration(
-          color: AppColor.white,
-          border: Border(bottom: BorderSide(color: AppColor.lightGray)),
+          color: AppColors.white,
+          border: Border(bottom: BorderSide(color: AppColors.lightGray)),
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
@@ -35,7 +35,7 @@ class ContributorCard extends StatelessWidget {
                   width: 60,
                   height: 60,
                   child: CircularProgressIndicator(
-                    color: AppColor.primary,
+                    color: AppColors.primary,
                     strokeWidth: 2,
                   ),
                 ),

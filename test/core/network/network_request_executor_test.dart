@@ -1,8 +1,8 @@
 import 'package:chopper/chopper.dart' as chopper;
-import 'package:coffeecard/base/strings.dart';
 import 'package:coffeecard/core/errors/failures.dart';
+import 'package:coffeecard/core/firebase_analytics_event_logging.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
-import 'package:coffeecard/utils/firebase_analytics_event_logging.dart';
+import 'package:coffeecard/core/strings.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart' as http;
@@ -45,7 +45,10 @@ void main() {
       final actual = await executor.execute(() async => testResponse);
 
       // assert
-      expect(actual, const Left(ServerFailure(Strings.unknownErrorOccured)));
+      expect(
+        actual,
+        const Left(ServerFailure(Strings.unknownErrorOccured, 500)),
+      );
     });
 
     test('should return response body if api call succeeds', () async {

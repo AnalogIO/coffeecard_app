@@ -1,8 +1,8 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:coffeecard/core/errors/failures.dart';
+import 'package:coffeecard/core/firebase_analytics_event_logging.dart';
 import 'package:coffeecard/features/register/domain/usecases/register_user.dart';
 import 'package:coffeecard/features/register/presentation/cubit/register_cubit.dart';
-import 'package:coffeecard/utils/firebase_analytics_event_logging.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:mockito/annotations.dart';
@@ -35,8 +35,14 @@ void main() {
     blocTest(
       'should emit [Error] if use case fails',
       build: () => cubit,
-      setUp: () => when(registerUser(any))
-          .thenAnswer((_) async => const Left(ServerFailure(testError))),
+      setUp: () => when(
+        registerUser(
+          email: anyNamed('email'),
+          encodedPasscode: anyNamed('encodedPasscode'),
+          name: anyNamed('name'),
+          occupationId: anyNamed('occupationId'),
+        ),
+      ).thenAnswer((_) async => const Left(ServerFailure(testError, 500))),
       act: (_) => cubit.register('name', 'email', 'passcode', 0),
       expect: () => [RegisterError(testError)],
     );
@@ -45,7 +51,14 @@ void main() {
       'should emit [Success] if use case succeeds',
       build: () => cubit,
       setUp: () {
-        when(registerUser(any)).thenAnswer((_) async => const Right(unit));
+        when(
+          registerUser(
+            email: anyNamed('email'),
+            encodedPasscode: anyNamed('encodedPasscode'),
+            name: anyNamed('name'),
+            occupationId: anyNamed('occupationId'),
+          ),
+        ).thenAnswer((_) async => const Right(unit));
         when(firebaseAnalyticsEventLogging.signUpEvent());
       },
       act: (_) => cubit.register('name', 'email', 'passcode', 0),

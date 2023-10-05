@@ -1,4 +1,4 @@
-import 'package:coffeecard/base/strings.dart';
+import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.enums.swagger.dart';
 
 enum PaymentStatus {

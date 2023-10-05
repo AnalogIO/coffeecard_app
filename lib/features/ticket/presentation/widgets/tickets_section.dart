@@ -1,5 +1,12 @@
-import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/core/strings.dart';
+import 'package:coffeecard/core/styles/app_text_styles.dart';
+import 'package:coffeecard/core/widgets/components/coffee_card.dart';
+import 'package:coffeecard/core/widgets/components/coffee_card_placeholder.dart';
+import 'package:coffeecard/core/widgets/components/dialog.dart';
+import 'package:coffeecard/core/widgets/components/error_section.dart';
+import 'package:coffeecard/core/widgets/components/helpers/shimmer_builder.dart';
+import 'package:coffeecard/core/widgets/components/loading_overlay.dart';
+import 'package:coffeecard/core/widgets/components/section_title.dart';
 import 'package:coffeecard/features/environment/domain/entities/environment.dart';
 import 'package:coffeecard/features/environment/presentation/cubit/environment_cubit.dart';
 import 'package:coffeecard/features/opening_hours/presentation/widgets/opening_hours_indicator.dart';
@@ -7,13 +14,6 @@ import 'package:coffeecard/features/receipt/domain/entities/receipt.dart';
 import 'package:coffeecard/features/receipt/presentation/widgets/receipt_overlay.dart';
 import 'package:coffeecard/features/ticket/presentation/cubit/tickets_cubit.dart';
 import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
-import 'package:coffeecard/widgets/components/dialog.dart';
-import 'package:coffeecard/widgets/components/error_section.dart';
-import 'package:coffeecard/widgets/components/helpers/shimmer_builder.dart';
-import 'package:coffeecard/widgets/components/loading_overlay.dart';
-import 'package:coffeecard/widgets/components/section_title.dart';
-import 'package:coffeecard/widgets/components/tickets/coffee_card.dart';
-import 'package:coffeecard/widgets/components/tickets/coffee_card_placeholder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -50,7 +50,7 @@ class TicketSection extends StatelessWidget {
                     Navigator.of(context, rootNavigator: true).pop();
                   }
 
-                  showLoadingOverlay(context);
+                  LoadingOverlay.show(context).ignore();
                 }
                 if (state is TicketUsed) {
                   // Refresh or load user info (for updated rank stats)
@@ -58,8 +58,10 @@ class TicketSection extends StatelessWidget {
                   context.read<UserCubit>().fetchUserDetails();
 
                   final envState = context.read<EnvironmentCubit>().state;
-                  hideLoadingOverlay(context);
-                  ReceiptOverlay.of(context).show(
+                  LoadingOverlay.hide(context);
+                  ReceiptOverlay.show(
+                    productName: state.receipt.productName,
+                    timeUsed: state.receipt.timeUsed,
                     isTestEnvironment:
                         envState is EnvironmentLoaded && envState.env.isTest,
                     status: state.receipt is PurchaseReceipt
@@ -67,12 +69,11 @@ class TicketSection extends StatelessWidget {
                             .paymentStatus
                             .toString()
                         : Strings.swiped,
-                    productName: state.receipt.productName,
-                    timeUsed: state.receipt.timeUsed,
-                  );
+                    context: context,
+                  ).ignore();
                 }
                 if (state is TicketsUseError) {
-                  hideLoadingOverlay(context);
+                  LoadingOverlay.hide(context);
                   appDialog(
                     context: context,
                     title: Strings.error,

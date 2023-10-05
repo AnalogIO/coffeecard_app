@@ -1,5 +1,4 @@
 import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/core/usecases/usecase.dart';
 import 'package:coffeecard/features/ticket/data/datasources/ticket_remote_data_source.dart';
 import 'package:coffeecard/features/ticket/data/models/ticket_count_model.dart';
 import 'package:coffeecard/features/ticket/domain/usecases/load_tickets.dart';
@@ -30,7 +29,7 @@ void main() {
         .thenAnswer((_) async => const Right([]));
 
     // act
-    await usecase(NoParams());
+    await usecase();
 
     // assert
     verify(ticketRemoteDataSource.getUserTickets());

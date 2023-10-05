@@ -1,16 +1,14 @@
 import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/core/usecases/usecase.dart';
 import 'package:coffeecard/features/receipt/domain/entities/receipt.dart';
 import 'package:coffeecard/features/receipt/domain/repositories/receipt_repository.dart';
 import 'package:fpdart/fpdart.dart';
 
-class GetReceipts implements UseCase<List<Receipt>, NoParams> {
+class GetReceipts {
   final ReceiptRepository repository;
 
   GetReceipts({required this.repository});
 
-  @override
-  Future<Either<Failure, List<Receipt>>> call(NoParams params) async {
+  Future<Either<Failure, List<Receipt>>> call() async {
     return repository.getUserReceipts();
   }
 }

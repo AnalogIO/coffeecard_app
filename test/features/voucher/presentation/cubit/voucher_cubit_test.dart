@@ -34,7 +34,7 @@ void main() {
       'should emit [Loading, Error] when use case fails',
       build: () => cubit,
       setUp: () => when(redeemVoucherCode(any)).thenAnswer(
-        (_) async => const Left(ServerFailure(testErrorMessage)),
+        (_) async => const Left(ServerFailure(testErrorMessage, 500)),
       ),
       act: (_) => cubit.redeemVoucher('voucher'),
       expect: () => [

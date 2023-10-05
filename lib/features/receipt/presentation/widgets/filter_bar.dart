@@ -1,5 +1,5 @@
-import 'package:coffeecard/base/style/colors.dart';
-import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/core/styles/app_colors.dart';
+import 'package:coffeecard/core/styles/app_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
@@ -13,7 +13,7 @@ class FilterBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      color: AppColor.secondary,
+      color: AppColors.secondary,
       child: Row(
         children: [
           Text(title, style: AppTextStyle.loginExplainer),

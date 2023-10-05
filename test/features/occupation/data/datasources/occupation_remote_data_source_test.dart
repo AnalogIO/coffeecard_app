@@ -29,14 +29,14 @@ void main() {
     test('should return [Left] if executor returns [Left]', () async {
       // arrange
       when(executor.execute<List<ProgrammeDto>>(any)).thenAnswer(
-        (_) async => const Left(ServerFailure('some error')),
+        (_) async => const Left(ServerFailure('some error', 500)),
       );
 
       // act
       final actual = await dataSource.getOccupations();
 
       // assert
-      expect(actual, const Left(ServerFailure('some error')));
+      expect(actual, const Left(ServerFailure('some error', 500)));
     });
 
     test(

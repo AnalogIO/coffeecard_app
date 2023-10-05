@@ -1,12 +1,12 @@
-import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/core/strings.dart';
+import 'package:coffeecard/core/styles/app_text_styles.dart';
+import 'package:coffeecard/core/widgets/components/dialog.dart';
+import 'package:coffeecard/core/widgets/components/loading_overlay.dart';
+import 'package:coffeecard/core/widgets/components/scaffold.dart';
 import 'package:coffeecard/features/ticket/presentation/cubit/tickets_cubit.dart';
 import 'package:coffeecard/features/voucher/presentation/cubit/voucher_cubit.dart';
 import 'package:coffeecard/features/voucher/presentation/widgets/voucher_form.dart';
 import 'package:coffeecard/service_locator.dart';
-import 'package:coffeecard/widgets/components/dialog.dart';
-import 'package:coffeecard/widgets/components/loading_overlay.dart';
-import 'package:coffeecard/widgets/components/scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -25,8 +25,11 @@ class RedeemVoucherPage extends StatelessWidget {
         create: (_) => sl<VoucherCubit>(),
         child: BlocListener<VoucherCubit, VoucherState>(
           listener: (context, state) {
-            if (state is VoucherLoading) return showLoadingOverlay(context);
-            hideLoadingOverlay(context);
+            if (state is VoucherLoading) {
+              final _ = LoadingOverlay.show(context);
+              return;
+            }
+            LoadingOverlay.hide(context);
             if (state is VoucherSuccess) return _onSuccess(context, state);
             if (state is VoucherError) return _onError(context, state);
           },
@@ -55,7 +58,10 @@ class RedeemVoucherPage extends StatelessWidget {
       ],
       children: [
         Text(
-          '${Strings.youRedeemed} ${state.redeemedVoucher.numberOfTickets} ${state.redeemedVoucher.productName}!',
+          Strings.voucherYouRedeemedProducts(
+            state.redeemedVoucher.numberOfTickets,
+            state.redeemedVoucher.productName,
+          ),
           style: AppTextStyle.settingKey,
         ),
       ],

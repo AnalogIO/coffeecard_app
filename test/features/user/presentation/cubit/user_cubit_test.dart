@@ -2,12 +2,12 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/features/occupation/domain/entities/occupation.dart';
 import 'package:coffeecard/features/user/domain/entities/role.dart';
+import 'package:coffeecard/features/user/domain/entities/update_user.dart';
 import 'package:coffeecard/features/user/domain/entities/user.dart';
 import 'package:coffeecard/features/user/domain/usecases/get_user.dart';
 import 'package:coffeecard/features/user/domain/usecases/request_account_deletion.dart';
 import 'package:coffeecard/features/user/domain/usecases/update_user_details.dart';
 import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
-import 'package:coffeecard/models/account/update_user.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:mockito/annotations.dart';
@@ -56,9 +56,9 @@ void main() {
     blocTest(
       'should emit [Loading, Error] when use case fails',
       build: () => cubit,
-      setUp: () => when(getUser(any)).thenAnswer(
+      setUp: () => when(getUser()).thenAnswer(
         (_) async => const Left(
-          ServerFailure('some error'),
+          ServerFailure('some error', 500),
         ),
       ),
       act: (_) => cubit.fetchUserDetails(),
@@ -71,7 +71,7 @@ void main() {
     blocTest(
       'should emit [Loading, Loaded] when use case succeeds',
       build: () => cubit,
-      setUp: () => when(getUser(any)).thenAnswer(
+      setUp: () => when(getUser()).thenAnswer(
         (_) async => const Right(testUser),
       ),
       act: (_) => cubit.fetchUserDetails(),
@@ -110,9 +110,17 @@ void main() {
     blocTest<UserCubit, UserState>(
       'should emit [Updating, Error] if use case fails',
       build: () => cubit,
-      setUp: () => when(updateUserDetails(any)).thenAnswer(
+      setUp: () => when(
+        updateUserDetails(
+          email: anyNamed('email'),
+          encodedPasscode: anyNamed('encodedPasscode'),
+          name: anyNamed('name'),
+          occupationId: anyNamed('occupationId'),
+          privacyActivated: anyNamed('privacyActivated'),
+        ),
+      ).thenAnswer(
         (_) async => const Left(
-          ServerFailure('some error'),
+          ServerFailure('some error', 500),
         ),
       ),
       act: (_) => cubit.updateUser(const UpdateUser()),
@@ -126,7 +134,15 @@ void main() {
     blocTest<UserCubit, UserState>(
       'should emit [Updating, Loaded] if use case succeeds',
       build: () => cubit,
-      setUp: () => when(updateUserDetails(any)).thenAnswer(
+      setUp: () => when(
+        updateUserDetails(
+          email: anyNamed('email'),
+          encodedPasscode: anyNamed('encodedPasscode'),
+          name: anyNamed('name'),
+          occupationId: anyNamed('occupationId'),
+          privacyActivated: anyNamed('privacyActivated'),
+        ),
+      ).thenAnswer(
         (_) async => const Right(testUser),
       ),
       act: (_) => cubit.updateUser(const UpdateUser()),
@@ -141,7 +157,7 @@ void main() {
   group('requestUserAccountDeletion', () {
     test('should call use case', () {
       // arrange
-      when(requestAccountDeletion(any)).thenAnswer(
+      when(requestAccountDeletion()).thenAnswer(
         (_) async => const Right(unit),
       );
 
@@ -149,7 +165,7 @@ void main() {
       cubit.requestUserAccountDeletion();
 
       // assert
-      verify(requestAccountDeletion(any));
+      verify(requestAccountDeletion());
     });
   });
 }

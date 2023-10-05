@@ -6,8 +6,8 @@ import 'package:coffeecard/features/occupation/data/models/occupation_model.dart
 import 'package:coffeecard/features/user/data/datasources/user_remote_data_source.dart';
 import 'package:coffeecard/features/user/data/models/user_model.dart';
 import 'package:coffeecard/features/user/domain/entities/role.dart';
+import 'package:coffeecard/features/user/domain/entities/update_user.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
-import 'package:coffeecard/models/account/update_user.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:mockito/annotations.dart';
@@ -60,14 +60,14 @@ void main() {
     test('should return [Left] if executor returns [Left]', () async {
       // arrange
       when(executor.execute<UserResponse>(any)).thenAnswer(
-        (_) async => const Left(ServerFailure('some error')),
+        (_) async => const Left(ServerFailure('some error', 500)),
       );
 
       // act
       final actual = await dataSource.getUser();
 
       // assert
-      expect(actual, const Left(ServerFailure('some error')));
+      expect(actual, const Left(ServerFailure('some error', 500)));
     });
 
     test('should return [Right<UserModel>] executor succeeds', () async {
@@ -102,14 +102,14 @@ void main() {
     test('should return [Left] if executor returns [Left]', () async {
       // arrange
       when(executor.execute<UserResponse>(any)).thenAnswer(
-        (_) async => const Left(ServerFailure('some error')),
+        (_) async => const Left(ServerFailure('some error', 500)),
       );
 
       // act
       final actual = await dataSource.updateUserDetails(const UpdateUser());
 
       // assert
-      expect(actual, const Left(ServerFailure('some error')));
+      expect(actual, const Left(ServerFailure('some error', 500)));
     });
 
     test('should return [UserModel] if api call succeeds', () async {
@@ -157,14 +157,14 @@ void main() {
     test('should return [Left] if executor fails', () async {
       // arrange
       when(executor.executeAndDiscard(any)).thenAnswer(
-        (_) async => const Left(ServerFailure('some error')),
+        (_) async => const Left(ServerFailure('some error', 500)),
       );
 
       // act
       final actual = await dataSource.requestAccountDeletion();
 
       // assert
-      expect(actual, const Left(ServerFailure('some error')));
+      expect(actual, const Left(ServerFailure('some error', 500)));
     });
   });
 }

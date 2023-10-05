@@ -1,6 +1,6 @@
+import 'package:coffeecard/core/widgets/fast_slide_transition.dart';
 import 'package:coffeecard/features/register/presentation/pages/register_page_occupation.dart';
 import 'package:coffeecard/features/register/presentation/widgets/forms/register_passcode_repeat_form.dart';
-import 'package:coffeecard/utils/fast_slide_transition.dart';
 import 'package:flutter/material.dart';
 
 class RegisterPagePasscodeRepeat extends StatelessWidget {

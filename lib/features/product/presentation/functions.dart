@@ -1,5 +1,6 @@
-import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/base/style/colors.dart';
+import 'package:coffeecard/core/firebase_analytics_event_logging.dart';
+import 'package:coffeecard/core/strings.dart';
+import 'package:coffeecard/core/styles/app_colors.dart';
 import 'package:coffeecard/features/environment/domain/entities/environment.dart';
 import 'package:coffeecard/features/environment/presentation/cubit/environment_cubit.dart';
 import 'package:coffeecard/features/product/domain/entities/product.dart';
@@ -11,7 +12,6 @@ import 'package:coffeecard/features/receipt/presentation/cubit/receipt_cubit.dar
 import 'package:coffeecard/features/receipt/presentation/widgets/receipt_overlay.dart';
 import 'package:coffeecard/features/ticket/presentation/cubit/tickets_cubit.dart';
 import 'package:coffeecard/service_locator.dart';
-import 'package:coffeecard/utils/firebase_analytics_event_logging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -37,7 +37,7 @@ Future<void> buyModal({
   // Create a task that will open the purchase modal and wait for the result.
   final maybePayment = await showModalBottomSheet<Payment>(
     context: context,
-    barrierColor: AppColor.scrim,
+    barrierColor: AppColors.scrim,
     backgroundColor: Colors.transparent,
     useRootNavigator: true,
     builder: (_) => BuyTicketBottomModalSheet(
@@ -68,12 +68,13 @@ Future<void> afterPurchaseModal(BuildContext context, Payment? payment) async {
   final updateTicketsRequest = context.read<TicketsCubit>().getTickets();
   final updateReceiptsRequest = context.read<ReceiptCubit>().fetchReceipts();
 
-  ReceiptOverlay.of(context).show(
+  ReceiptOverlay.show(
+    context: context,
     isTestEnvironment: envState is EnvironmentLoaded && envState.env.isTest,
     status: Strings.purchased,
     productName: payment.productName,
     timeUsed: payment.purchaseTime,
-  );
+  ).ignore();
 
   // TODO: Explain why we need to await here.
   await updateTicketsRequest;

@@ -1,11 +1,10 @@
 import 'package:bloc/bloc.dart';
-import 'package:coffeecard/core/usecases/usecase.dart';
+import 'package:coffeecard/core/encode_passcode.dart';
+import 'package:coffeecard/features/user/domain/entities/update_user.dart';
 import 'package:coffeecard/features/user/domain/entities/user.dart';
 import 'package:coffeecard/features/user/domain/usecases/get_user.dart';
 import 'package:coffeecard/features/user/domain/usecases/request_account_deletion.dart';
 import 'package:coffeecard/features/user/domain/usecases/update_user_details.dart';
-import 'package:coffeecard/models/account/update_user.dart';
-import 'package:coffeecard/utils/encode_passcode.dart';
 import 'package:equatable/equatable.dart';
 
 part 'user_state.dart';
@@ -32,7 +31,7 @@ class UserCubit extends Cubit<UserState> {
   Future<void> fetchUserDetails() async {
     emit(UserLoading());
 
-    final either = await getUser(NoParams());
+    final either = await getUser();
 
     either.fold(
       (error) => emit(UserError(error.reason)),
@@ -50,13 +49,11 @@ class UserCubit extends Cubit<UserState> {
     emit(UserUpdating(user: loadedState.user));
 
     final either = await updateUserDetails(
-      Params(
-        email: user.email,
-        encodedPasscode: user.encodedPasscode,
-        name: user.name,
-        occupationId: user.occupationId,
-        privacyActivated: user.privacyActivated,
-      ),
+      email: user.email,
+      encodedPasscode: user.encodedPasscode,
+      name: user.name,
+      occupationId: user.occupationId,
+      privacyActivated: user.privacyActivated,
     );
 
     either.fold(
@@ -86,6 +83,6 @@ class UserCubit extends Cubit<UserState> {
   }
 
   void requestUserAccountDeletion() {
-    final _ = requestAccountDeletion(NoParams());
+    requestAccountDeletion().ignore();
   }
 }

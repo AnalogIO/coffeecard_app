@@ -1,31 +1,32 @@
-import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/base/style/colors.dart';
-import 'package:coffeecard/base/style/text_styles.dart';
+import 'package:coffeecard/core/external/screen_brightness.dart';
+import 'package:coffeecard/core/strings.dart';
+import 'package:coffeecard/core/styles/app_colors.dart';
+import 'package:coffeecard/core/styles/app_text_styles.dart';
+import 'package:coffeecard/core/widgets/components/helpers/responsive.dart';
 import 'package:coffeecard/features/receipt/presentation/widgets/receipt_card.dart';
-import 'package:coffeecard/utils/responsive.dart';
+import 'package:coffeecard/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:screen_brightness/screen_brightness.dart';
 
 class ReceiptOverlay {
-  // TODO(marfavi): see if a more generic version can be made that supports both the loading overlay and this one, https://github.com/AnalogIO/coffeecard_app/issues/386
-  BuildContext _context;
+  static final ScreenBrightness screenBrightness = sl();
 
-  void hide() {
-    Navigator.of(_context).pop();
-  }
+  static void hide(BuildContext context) => Navigator.of(context).pop();
 
-  Future<void> show({
+  static Future<T?> show<T>({
     required String productName,
     required DateTime timeUsed,
     required bool isTestEnvironment,
     required String status,
+    required BuildContext context,
   }) async {
-    await ScreenBrightness().setScreenBrightness(1);
-    if (_context.mounted) {
-      final _ = await showDialog(
-        context: _context,
-        barrierColor: AppColor.scrim,
+    T? result;
+
+    await screenBrightness.setScreenBrightness(1);
+    if (context.mounted) {
+      result = await showDialog<T>(
+        context: context,
+        barrierColor: AppColors.scrim,
         builder: (context) {
           return Padding(
             padding: EdgeInsets.all(deviceIsSmall(context) ? 24 : 48),
@@ -52,12 +53,8 @@ class ReceiptOverlay {
         },
       );
     }
-    await ScreenBrightness().resetScreenBrightness();
-  }
+    await screenBrightness.resetScreenBrightness();
 
-  ReceiptOverlay.__create(this._context);
-
-  factory ReceiptOverlay.of(BuildContext context) {
-    return ReceiptOverlay.__create(context);
+    return result;
   }
 }

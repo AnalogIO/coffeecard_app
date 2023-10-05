@@ -1,5 +1,5 @@
-import 'package:coffeecard/base/style/colors.dart';
-import 'package:coffeecard/widgets/components/helpers/tappable.dart';
+import 'package:coffeecard/core/styles/app_colors.dart';
+import 'package:coffeecard/core/widgets/components/helpers/tappable.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
@@ -49,8 +49,8 @@ class ListEntry extends StatelessWidget {
   Widget build(BuildContext context) {
     final childWidget = DecoratedBox(
       decoration: BoxDecoration(
-        color: backgroundColor ?? AppColor.white,
-        border: const Border(bottom: BorderSide(color: AppColor.lightGray)),
+        color: backgroundColor ?? AppColors.white,
+        border: const Border(bottom: BorderSide(color: AppColors.lightGray)),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),

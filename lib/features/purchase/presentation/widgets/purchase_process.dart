@@ -1,4 +1,4 @@
-import 'package:coffeecard/base/strings.dart';
+import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/features/purchase/presentation/cubit/purchase_cubit.dart';
 import 'package:coffeecard/features/purchase/presentation/widgets/error_dialog.dart';
 import 'package:coffeecard/features/purchase/presentation/widgets/loading_dialog.dart';

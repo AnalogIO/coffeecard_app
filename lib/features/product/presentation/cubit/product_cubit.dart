@@ -1,4 +1,3 @@
-import 'package:coffeecard/core/usecases/usecase.dart';
 import 'package:coffeecard/features/product/domain/entities/product.dart';
 import 'package:coffeecard/features/product/domain/usecases/get_all_products.dart';
 import 'package:equatable/equatable.dart';
@@ -14,7 +13,7 @@ class ProductCubit extends Cubit<ProductState> {
   Future<void> getProducts() async {
     emit(const ProductsLoading());
 
-    final either = await getAllProducts(NoParams());
+    final either = await getAllProducts();
 
     either.fold(
       (error) => emit(ProductsError(error.reason)),

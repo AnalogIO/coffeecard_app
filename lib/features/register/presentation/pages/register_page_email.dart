@@ -1,6 +1,6 @@
+import 'package:coffeecard/core/widgets/fast_slide_transition.dart';
 import 'package:coffeecard/features/register/presentation/pages/register_page_passcode.dart';
 import 'package:coffeecard/features/register/presentation/widgets/forms/register_email_form.dart';
-import 'package:coffeecard/utils/fast_slide_transition.dart';
 import 'package:flutter/material.dart';
 
 class RegisterPageEmail extends StatelessWidget {

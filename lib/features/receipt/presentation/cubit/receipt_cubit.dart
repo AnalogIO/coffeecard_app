@@ -1,5 +1,4 @@
-import 'package:coffeecard/base/strings.dart';
-import 'package:coffeecard/core/usecases/usecase.dart';
+import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/features/receipt/domain/entities/receipt.dart';
 import 'package:coffeecard/features/receipt/domain/usecases/get_receipts.dart';
 import 'package:equatable/equatable.dart';
@@ -13,7 +12,7 @@ class ReceiptCubit extends Cubit<ReceiptState> {
   ReceiptCubit({required this.getReceipts}) : super(ReceiptState());
 
   Future<void> fetchReceipts() async {
-    final either = await getReceipts(NoParams());
+    final either = await getReceipts();
 
     either.fold(
       (error) => emit(

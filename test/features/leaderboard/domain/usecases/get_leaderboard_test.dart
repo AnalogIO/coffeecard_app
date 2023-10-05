@@ -38,14 +38,15 @@ void main() {
 
     test('should return [Left] if getLeaderboardUser fails', () async {
       // arrange
-      when(remoteDataSource.getLeaderboardUser(any))
-          .thenAnswer((_) async => const Left(ServerFailure('some error')));
+      when(remoteDataSource.getLeaderboardUser(any)).thenAnswer(
+        (_) async => const Left(ServerFailure('some error', 500)),
+      );
 
       // act
       final actual = await usecase(LeaderboardFilter.total);
 
       // assert
-      expect(actual, const Left(ServerFailure('some error')));
+      expect(actual, const Left(ServerFailure('some error', 500)));
     });
     test('should return [Left] if getLeaderboard fails', () async {
       // arrange
@@ -54,14 +55,15 @@ void main() {
           testUserLeaderboard,
         ),
       );
-      when(remoteDataSource.getLeaderboard(any, any))
-          .thenAnswer((_) async => const Left(ServerFailure('some error')));
+      when(remoteDataSource.getLeaderboard(any, any)).thenAnswer(
+        (_) async => const Left(ServerFailure('some error', 500)),
+      );
 
       // act
       final actual = await usecase(LeaderboardFilter.total);
 
       // assert
-      expect(actual, const Left(ServerFailure('some error')));
+      expect(actual, const Left(ServerFailure('some error', 500)));
     });
     test('should return [Right] if api calls succeed', () async {
       // arrange

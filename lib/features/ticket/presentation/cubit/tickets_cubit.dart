@@ -1,4 +1,3 @@
-import 'package:coffeecard/core/usecases/usecase.dart';
 import 'package:coffeecard/features/receipt/domain/entities/receipt.dart';
 import 'package:coffeecard/features/ticket/domain/entities/ticket_count.dart';
 import 'package:coffeecard/features/ticket/domain/usecases/consume_ticket.dart';
@@ -15,29 +14,11 @@ class TicketsCubit extends Cubit<TicketsState> {
   TicketsCubit({
     required this.loadTickets,
     required this.consumeTicket,
-    required bool isBarista,
-  }) : super(TicketsLoading(isBarista: isBarista));
+  }) : super(const TicketsLoading());
 
   Future<void> getTickets() async {
-    emit(TicketsLoading(isBarista: state.isBarista));
-
+    emit(const TicketsLoading());
     refreshTickets();
-  }
-
-  void setBaristaMode({required bool baristaMode}) {
-    final st = state;
-
-    if (st is TicketsLoaded) {
-      emit(
-        st.copyWith(
-          isBarista: baristaMode,
-        ),
-      );
-      return;
-    }
-    // log('Setting barista mode to $baristaMode');
-
-    emit(state.copyWith(isBarista: baristaMode));
   }
 
   Future<void> useTicket(int productId) async {
@@ -46,27 +27,17 @@ class TicketsCubit extends Cubit<TicketsState> {
     final st = state as TicketsLoaded;
 
     emit(
-      TicketUsing(
-        tickets: st.tickets,
-        isBarista: state.isBarista,
-      ),
+      TicketUsing(tickets: st.tickets),
     );
 
-    final either = await consumeTicket(Params(productId: productId));
+    final either = await consumeTicket(productId: productId);
 
     either.fold(
       (error) => emit(
-        TicketsUseError(
-          message: error.reason,
-          isBarista: state.isBarista,
-        ),
+        TicketsUseError(message: error.reason),
       ),
       (receipt) => emit(
-        TicketUsed(
-          receipt: receipt,
-          tickets: st.tickets,
-          isBarista: state.isBarista,
-        ),
+        TicketUsed(receipt: receipt, tickets: st.tickets),
       ),
     );
 
@@ -74,21 +45,11 @@ class TicketsCubit extends Cubit<TicketsState> {
   }
 
   Future<void> refreshTickets() async {
-    final either = await loadTickets(NoParams());
+    final either = await loadTickets();
 
     either.fold(
-      (error) => emit(
-        TicketsLoadError(
-          message: error.reason,
-          isBarista: state.isBarista,
-        ),
-      ),
-      (tickets) => emit(
-        TicketsLoaded(
-          tickets: tickets,
-          isBarista: state.isBarista,
-        ),
-      ),
+      (error) => emit(TicketsLoadError(message: error.reason)),
+      (tickets) => emit(TicketsLoaded(tickets: tickets)),
     );
   }
 }

@@ -1,4 +1,3 @@
-import 'package:coffeecard/core/usecases/usecase.dart';
 import 'package:coffeecard/features/contributor/data/datasources/contributor_local_data_source.dart';
 import 'package:coffeecard/features/contributor/domain/usecases/fetch_contributors.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -22,7 +21,7 @@ void main() {
     when(dataSource.getContributors()).thenReturn(const []);
 
     // act
-    await usecase(NoParams());
+    await usecase();
 
     // assert
     verify(dataSource.getContributors());

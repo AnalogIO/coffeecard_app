@@ -1,13 +1,16 @@
 import 'package:chopper/chopper.dart';
-import 'package:coffeecard/core/data/datasources/account_remote_data_source.dart';
+import 'package:coffeecard/core/api_uri_constants.dart';
 import 'package:coffeecard/core/external/date_service.dart';
 import 'package:coffeecard/core/external/external_url_launcher.dart';
+import 'package:coffeecard/core/external/screen_brightness.dart';
+import 'package:coffeecard/core/firebase_analytics_event_logging.dart';
+import 'package:coffeecard/core/ignore_value.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
-import 'package:coffeecard/cubits/authentication/authentication_cubit.dart';
-import 'package:coffeecard/data/api/interceptors/authentication_interceptor.dart';
+import 'package:coffeecard/core/storage/secure_storage.dart';
 import 'package:coffeecard/data/repositories/barista_product/barista_product_repository.dart';
-import 'package:coffeecard/data/storage/secure_storage.dart';
 import 'package:coffeecard/env/env.dart';
+import 'package:coffeecard/features/authentication/data/intercepters/authentication_interceptor.dart';
+import 'package:coffeecard/features/authentication/presentation/cubits/authentication_cubit.dart';
 import 'package:coffeecard/features/contributor/data/datasources/contributor_local_data_source.dart';
 import 'package:coffeecard/features/contributor/domain/usecases/fetch_contributors.dart';
 import 'package:coffeecard/features/contributor/presentation/cubit/contributor_cubit.dart';
@@ -17,11 +20,12 @@ import 'package:coffeecard/features/environment/presentation/cubit/environment_c
 import 'package:coffeecard/features/leaderboard/data/datasources/leaderboard_remote_data_source.dart';
 import 'package:coffeecard/features/leaderboard/domain/usecases/get_leaderboard.dart';
 import 'package:coffeecard/features/leaderboard/presentation/cubit/leaderboard_cubit.dart';
+import 'package:coffeecard/features/login/data/datasources/account_remote_data_source.dart';
 import 'package:coffeecard/features/login/domain/usecases/login_user.dart';
+import 'package:coffeecard/features/login/domain/usecases/resend_email.dart';
 import 'package:coffeecard/features/occupation/data/datasources/occupation_remote_data_source.dart';
 import 'package:coffeecard/features/occupation/domain/usecases/get_occupations.dart';
 import 'package:coffeecard/features/occupation/presentation/cubit/occupation_cubit.dart';
-import 'package:coffeecard/features/opening_hours/data/datasources/opening_hours_local_data_source.dart';
 import 'package:coffeecard/features/opening_hours/data/repositories/opening_hours_repository_impl.dart';
 import 'package:coffeecard/features/opening_hours/domain/repositories/opening_hours_repository.dart';
 import 'package:coffeecard/features/opening_hours/domain/usecases/check_open_status.dart';
@@ -31,6 +35,7 @@ import 'package:coffeecard/features/product/data/datasources/product_remote_data
 import 'package:coffeecard/features/product/domain/usecases/get_all_products.dart';
 import 'package:coffeecard/features/product/presentation/cubit/product_cubit.dart';
 import 'package:coffeecard/features/purchase/data/datasources/purchase_remote_data_source.dart';
+import 'package:coffeecard/features/reactivation/data/reactivation_authenticator.dart';
 import 'package:coffeecard/features/receipt/data/datasources/receipt_remote_data_source.dart';
 import 'package:coffeecard/features/receipt/data/repositories/receipt_repository_impl.dart';
 import 'package:coffeecard/features/receipt/domain/repositories/receipt_repository.dart';
@@ -42,6 +47,7 @@ import 'package:coffeecard/features/register/presentation/cubit/register_cubit.d
 import 'package:coffeecard/features/ticket/data/datasources/ticket_remote_data_source.dart';
 import 'package:coffeecard/features/ticket/domain/usecases/consume_ticket.dart';
 import 'package:coffeecard/features/ticket/domain/usecases/load_tickets.dart';
+import 'package:coffeecard/features/ticket/presentation/cubit/tickets_cubit.dart';
 import 'package:coffeecard/features/user/data/datasources/user_remote_data_source.dart';
 import 'package:coffeecard/features/user/domain/usecases/get_user.dart';
 import 'package:coffeecard/features/user/domain/usecases/request_account_deletion.dart';
@@ -55,10 +61,6 @@ import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart'
     hide $JsonSerializableConverter;
 import 'package:coffeecard/generated/api/shiftplanning_api.swagger.dart'
     hide $JsonSerializableConverter;
-import 'package:coffeecard/utils/api_uri_constants.dart';
-import 'package:coffeecard/utils/firebase_analytics_event_logging.dart';
-import 'package:coffeecard/utils/ignore_value.dart';
-import 'package:coffeecard/utils/reactivation_authenticator.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
@@ -121,6 +123,8 @@ void configureServices() {
 
   ignoreValue(sl.registerFactory(() => DateService()));
 
+  ignoreValue(sl.registerFactory(() => DateService()));
+  ignoreValue(sl.registerFactory(() => ScreenBrightness()));
   ignoreValue(sl.registerLazySingleton(() => ExternalUrlLauncher()));
 
   // provide the account repository to the reactivation authenticator
@@ -162,10 +166,12 @@ void initOpeningHours() {
       dateService: sl(),
     ),
   );
+}
 
-  // data source
-  sl.registerLazySingleton<OpeningHoursLocalDataSource>(
-    () => OpeningHoursLocalDataSource(),
+void initTicket() {
+  // bloc
+  sl.registerFactory(
+    () => TicketsCubit(loadTickets: sl(), consumeTicket: sl()),
   );
 }
 
@@ -329,6 +335,7 @@ void initLogin() {
 
   // use case
   sl.registerFactory(() => LoginUser(remoteDataSource: sl()));
+  sl.registerFactory(() => ResendEmail(remoteDataSource: sl()));
 
   // data source
 }
