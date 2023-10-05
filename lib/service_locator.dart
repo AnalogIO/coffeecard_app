@@ -26,6 +26,7 @@ import 'package:coffeecard/features/login/domain/usecases/resend_email.dart';
 import 'package:coffeecard/features/occupation/data/datasources/occupation_remote_data_source.dart';
 import 'package:coffeecard/features/occupation/domain/usecases/get_occupations.dart';
 import 'package:coffeecard/features/occupation/presentation/cubit/occupation_cubit.dart';
+import 'package:coffeecard/features/opening_hours/data/datasources/opening_hours_local_data_source.dart';
 import 'package:coffeecard/features/opening_hours/data/repositories/opening_hours_repository_impl.dart';
 import 'package:coffeecard/features/opening_hours/domain/repositories/opening_hours_repository.dart';
 import 'package:coffeecard/features/opening_hours/domain/usecases/check_open_status.dart';
@@ -123,7 +124,6 @@ void configureServices() {
 
   ignoreValue(sl.registerFactory(() => DateService()));
 
-  ignoreValue(sl.registerFactory(() => DateService()));
   ignoreValue(sl.registerFactory(() => ScreenBrightness()));
   ignoreValue(sl.registerLazySingleton(() => ExternalUrlLauncher()));
 
@@ -158,6 +158,11 @@ void initOpeningHours() {
   // use case
   sl.registerFactory(() => GetOpeningHours(repository: sl()));
   sl.registerFactory(() => CheckOpenStatus(repository: sl()));
+
+  // data source
+  sl.registerLazySingleton<OpeningHoursLocalDataSource>(
+    () => OpeningHoursLocalDataSource(),
+  );
 
   // repository
   sl.registerFactory<OpeningHoursRepository>(
