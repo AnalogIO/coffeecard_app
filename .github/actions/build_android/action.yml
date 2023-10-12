@@ -1,0 +1,55 @@
+name: Build Android app
+description: Build and upload Android app
+inputs:
+  version:
+    required: true
+    description: "App version"
+  build_version:
+    required: true
+    description: "Build version"
+  store_artifacts:
+    required: false
+    description: "Store artifact"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Flutter environment
+      uses: ./.github/actions/setup_flutter_environment
+
+    - name: Replace target URI in Production
+      if: github.ref_name == 'production'
+      run: sed -i 's/.env.develop/.env.production/' lib/env/env.dart
+      shell: bash
+
+    - name: Generate code
+      run: dart run build_runner build
+      shell: bash
+
+    - name: Build apk (dev)
+      if: github.ref_name != 'production'
+      run: flutter build apk --flavor development --release --build-name ${{ inputs.version }} --build-number ${{ inputs.build_version }} --target lib/main_development.dart
+      shell: bash
+
+    - name: Build appbundle (prod)
+      if: ${{ github.ref_name == 'production'}}
+      run: flutter build appbundle --release --flavor production --build-name ${{ inputs.version }} --build-number ${{ inputs.build_version }} --target lib/main_production.dart
+      shell: bash
+
+    - name: Upload Android build (dev)
+      if: ${{ !!inputs.store_artifacts && github.ref_name != 'production'}}
+      uses: actions/upload-artifact@v3.0.0
+      with:
+        name: android
+        path: build/app/outputs/flutter-apk
+        retention-days: 1
+        if-no-files-found: error
+
+    - name: Upload Android build (prod)
+      if: ${{ !!inputs.store_artifacts && github.ref_name == 'production'}}
+      uses: actions/upload-artifact@v3.0.0
+      with:
+        name: android
+        path: build/app/outputs/bundle/release
+        retention-days: 1
+        if-no-files-found: error

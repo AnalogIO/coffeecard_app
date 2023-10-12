@@ -1,0 +1,119 @@
+name: Build iOS app
+description: Build and upload iOS app
+inputs:
+  version:
+    required: true
+    description: "App version"
+  build_version:
+      required: true
+      description: "Build version"
+  apple_ios_signing_cert_dev:
+      required: true
+      description: "iOS signing certificate"
+  apple_ios_signing_cert_pw_dev:
+      required: true
+      description: "iOS signing certificate password"
+  apple_ios_provisioning_profile_dev:
+      required: true
+      description: "Provisioning profile"
+  apple_ios_signing_cert_prod:
+      required: true
+      description: "TODO"
+  apple_ios_signing_cert_pw_prod:
+      required: true
+      description: "TODO"
+  apple_ios_provisioning_profile_prod:
+      required: true
+      description: "TODO"
+  apple_keychain_pw:
+      required: true
+      description: "Keychain password"
+  store_artifacts:
+      required: false
+      description: "Store artifact"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install Apple certificate and provisioning profile (dev)
+      if: github.ref_name != 'production'
+      run: .github/scripts/setup-certs.command
+      env:
+        APPLE_IOS_SIGNING_CERT: ${{ inputs.apple_ios_signing_cert_dev }}
+        APPLE_IOS_SIGNING_CERT_PW: ${{ inputs.apple_ios_signing_cert_pw_dev }}
+        APPLE_IOS_PROVISIONING_PROFILE: ${{ inputs.apple_ios_provisioning_profile_dev }}
+        APPLE_KEYCHAIN_PW: ${{ inputs.apple_keychain_pw }}
+      shell: bash
+
+    - name: Install Apple certificate and provisioning profile (prod)
+      if: github.ref_name == 'production'
+      run: .github/scripts/setup-certs.command
+      env:
+        APPLE_IOS_SIGNING_CERT: ${{ inputs.apple_ios_signing_cert_prod }}
+        APPLE_IOS_SIGNING_CERT_PW: ${{ inputs.apple_ios_signing_cert_pw_prod }}
+        APPLE_IOS_PROVISIONING_PROFILE: ${{ inputs.apple_ios_provisioning_profile_prod }}
+        APPLE_KEYCHAIN_PW: ${{ inputs.apple_keychain_pw }}
+      shell: bash
+
+    - name: Setup Flutter environment
+      uses: ./.github/actions/setup_flutter_environment
+
+    - name: Set URI (prod)
+      if: github.ref_name == 'production'
+      run: sed -i '' 's/.env.develop/.env.production/' lib/env/env.dart
+      shell: bash
+
+    - name: Generate code
+      run: dart run build_runner build
+      shell: bash
+
+    - name: Build iOS (dev)
+      if: github.ref_name != 'production'
+      run: flutter build ios --flavor development --release --no-codesign --build-name ${{ inputs.version }} --build-number ${{ inputs.build_version }} --target lib/main_development.dart
+      shell: bash
+
+    - name: Build iOS (prod)
+      if: github.ref_name == 'production'
+      run: flutter build ios --flavor production --release --no-codesign --build-name ${{ inputs.version }} --build-number ${{ inputs.build_version }} --target lib/main_production.dart
+      shell: bash
+
+    - name: Build resolve Swift dependencies (dev)
+      if: github.ref_name != 'production'
+      run: xcodebuild -resolvePackageDependencies -workspace ios/Runner.xcworkspace -scheme development -configuration Release-development
+      shell: bash
+
+    - name: Build resolve Swift dependencies (prod)
+      run: xcodebuild -resolvePackageDependencies -workspace ios/Runner.xcworkspace -scheme production -configuration Release-production
+      if: github.ref_name == 'production'
+      shell: bash
+
+    - name: Build xArchive (dev)
+      if: github.ref_name != 'production'
+      run: |
+        xcodebuild -workspace ios/Runner.xcworkspace -scheme development -configuration Release-development DEVELOPMENT_TEAM=Y5U9T77F2K -sdk 'iphoneos' -destination 'generic/platform=iOS' -archivePath build-output/app.xcarchive PROVISIONING_PROFILE_SPECIFIER="development" clean archive CODE_SIGN_IDENTITY="iPhone Developer"
+      shell: bash
+
+    - name: Build xArchive (prod)
+      if: github.ref_name == 'production'
+      run: |
+        xcodebuild -workspace ios/Runner.xcworkspace -scheme production -configuration Release-production DEVELOPMENT_TEAM=Y5U9T77F2K -sdk 'iphoneos' -destination 'generic/platform=iOS' -archivePath build-output/app.xcarchive PROVISIONING_PROFILE_SPECIFIER="githubactions-prod" clean archive CODE_SIGN_IDENTITY="Apple Distribution"
+      shell: bash
+
+    - name: Export ipa (dev)
+      if: github.ref_name != 'production'
+      run: xcodebuild -exportArchive -archivePath build-output/app.xcarchive -exportPath build-output/ios -exportOptionsPlist ios/exportOptions.dev.plist
+      shell: bash
+
+    - name: Export ipa (prod)
+      if: github.ref_name == 'production'
+      run: xcodebuild -exportArchive -archivePath build-output/app.xcarchive -exportPath build-output/ios -exportOptionsPlist ios/exportOptions.prod.plist
+      shell: bash
+
+    - name: Upload iOS build
+      if: ${{ inputs.store_artifacts }}
+      uses: actions/upload-artifact@v3.0.0
+      with:
+        name: ios
+        path: build-output/ios
+        retention-days: 1
+        if-no-files-found: error

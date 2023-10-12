@@ -1,0 +1,40 @@
+name: Upload iOS app
+description: Upload iOS app
+inputs:
+  app_store_connect_username:
+    required: true
+    description: "App Store Connect username"
+  app_store_connect_password:
+    required: true
+    description: "App Store Connect password"
+  firebase_ios_app_id:
+    required: true
+    description: "Firebase iOS app id"
+  firebase_token:
+    required: true
+    description: "Firebase token"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Download artifact
+      uses: actions/download-artifact@v3.0.0
+      with:
+        name: ios
+
+    - name: Upload to Firebase App Distribution
+      uses: ./.github/actions/upload_to_firebase
+      with:
+        firebase_app_id: ${{ inputs.firebase_ios_app_id }}
+        firebase_token: ${{ inputs.firebase_token }}
+        file: Analog.ipa
+      if: github.ref_name != 'production'
+
+    - name: Upload to App Store Connect
+      env:
+        APP_STORE_CONNECT_USERNAME: ${{ inputs.app_store_connect_username }}
+        APP_STORE_CONNECT_PASSWORD: ${{ inputs.app_store_connect_password }}
+      run: |
+        xcrun altool --upload-app -t ios -f "Analog.ipa" -u "$APP_STORE_CONNECT_USERNAME" -p "$APP_STORE_CONNECT_PASSWORD"
+      shell: bash
+      if: github.ref_name == 'production'

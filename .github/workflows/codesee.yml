@@ -15,7 +15,7 @@ jobs:
   codesee:
     runs-on: ubuntu-latest
     continue-on-error: true
-    name: Analyze the repo with CodeSee
+    name: Analyze repository
     steps:
       - uses: Codesee-io/codesee-action@v2
         with:

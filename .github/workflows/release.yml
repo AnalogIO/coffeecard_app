@@ -1,123 +1,62 @@
 name: Release Coffeecard App
 
 on:
-  push:
+  pull_request:
     branches: [develop, production]
-    paths:
-      - android/**
-      - assets/**
-      - ios/**
-      - lib/**
-      - openapi/**
-      - .metadata
-      - .github/workflows/**
-      - pubspec.lock
-      - pubspec.yml
-      - .env.develop
-      - .env.production
 
 jobs:
-  build_and_test:
+  build:
     uses: ./.github/workflows/build.yml
     with:
-      storeArtifacts: true
+      store_artifacts: true
     secrets: inherit
 
-  dev_upload_ios:
-    name: Upload iOS build to Firebase App Distribution
-    runs-on: ubuntu-latest
-    needs: [build_and_test]
-    if: github.ref_name == 'develop'
-
-    steps:
-      - name: Download Artifact
-        uses: actions/download-artifact@v3.0.0
-        with:
-          name: ios
-      - name: Firebase App Distribution
-        uses: wzieba/Firebase-Distribution-Github-Action@v1.3.3
-        with:
-          appId: ${{ secrets.FIREBASE_IOS_APP_ID }}
-          token: ${{ secrets.FIREBASE_TOKEN }}
-          groups: analogio-devs
-          file: Analog.ipa
-
-  dev_upload_android:
-    name: Upload Android build to Firebase App Distribution
-    runs-on: ubuntu-latest
-    needs: [build_and_test]
-    if: github.ref_name == 'develop'
-
-    steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v3.0.0
-        with:
-          name: android
-      - name: Firebase App Distribution
-        uses: wzieba/Firebase-Distribution-Github-Action@v1.3.3
-        with:
-          appId: ${{ secrets.FIREBASE_ANDROID_APP_ID }}
-          token: ${{ secrets.FIREBASE_TOKEN }}
-          groups: analogio-devs
-          file: app-development-release.apk
-
-  prod_release_ios:
-    name: Upload iOS build to App Store connect
+  upload_ios:
+    name: Upload iOS build
     runs-on: macos-latest
-    needs: [build_and_test]
-    if: github.ref_name == 'production'
-
+    needs: [build]
     steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v3.0.0
-        with:
-          name: ios
-      - name: Upload app to App Store Connect
-        env:
-          APP_STORE_CONNECT_USERNAME: ${{ secrets.APP_STORE_CONNECT_USERNAME }}
-          APP_STORE_CONNECT_PASSWORD: ${{ secrets.APP_STORE_CONNECT_PASSWORD }}
-        run: |
-          xcrun altool --upload-app -t ios -f "Analog.ipa" -u "$APP_STORE_CONNECT_USERNAME" -p "$APP_STORE_CONNECT_PASSWORD"
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-  prod_release_android:
-    name: Upload Android build to Play Store
+      - name: Upload iOS app
+        uses: ./.github/actions/upload_ios
+        with:
+          app_store_connect_username: ${{ secrets.APP_STORE_CONNECT_USERNAME }}
+          app_store_connect_password: ${{ secrets.APP_STORE_CONNECT_PASSWORD }}
+          firebase_ios_app_id: ${{ secrets.FIREBASE_IOS_APP_ID }}
+          firebase_token: ${{ secrets.FIREBASE_TOKEN }}
+
+  upload_android:
+    name: Upload Android build
     runs-on: ubuntu-latest
-    needs: [build_and_test]
-    if: github.ref_name == 'production'
-
+    needs: [build]
     steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v3.0.0
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Upload Android app
+        uses: ./.github/actions/upload_android
         with:
-          name: android
-      - name: Sign Android appbundle
-        uses: r0adkll/sign-android-release@v1
-        id: sign_app
-        with:
-          releaseDirectory: .
-          signingKeyBase64: ${{ secrets.ANDROID_KEYSTORE }}
-          alias: ${{ secrets.ANDROID_KEY_ALIAS }}
-          keyStorePassword: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-          keyPassword: ${{ secrets.ANDROID_KEY_PASSWORD }}
-      - name: Upload to Google Play Store
-        uses: r0adkll/upload-google-play@v1.0.16
-        with:
-          serviceAccountJsonPlainText: ${{ secrets.PLAYSTORE_SERVICE_ACCOUNT_JSON }}
-          packageName: dk.analog.digitalclipcard
-          releaseFiles: ${{ steps.sign_app.outputs.signedReleaseFile }}
-          track: internal
-          status: draft
+          firebase_android_app_id: ${{ secrets.FIREBASE_ANDROID_APP_ID }}
+          firebase_token: ${{ secrets.FIREBASE_TOKEN }}
+          android_signing_key: ${{ secrets.ANDROID_KEYSTORE }}
+          android_key_alias: ${{ secrets.ANDROID_KEY_ALIAS }}
+          android_keystore_password: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          android_Key_password: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          playstore_service_account: ${{ secrets.PLAYSTORE_SERVICE_ACCOUNT_JSON }}
 
   tag:
     name: Git Tag version
     runs-on: ubuntu-latest
-    needs: [build_and_test, prod_release_ios, prod_release_android]
-    if: ${{ needs.prod_release_ios.result == 'success' && needs.prod_release_android.result == 'success' }}
+    needs: [build, upload_ios, upload_android]
+    if: ${{ needs.upload_ios.result == 'success' && needs.upload_android.result == 'success' && github.ref_name == 'production' }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Git Tag ${{ needs.build_and_test.outputs.version_tag }}
+        uses: actions/checkout@v3
+
+      - name: Git Tag ${{ needs.build.outputs.version_tag }}
         uses: anothrNick/github-tag-action@1.36.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CUSTOM_TAG: ${{ needs.build_and_test.outputs.version_tag }}
+          CUSTOM_TAG: ${{ needs.build.outputs.version_tag }}

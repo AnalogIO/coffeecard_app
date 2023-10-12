@@ -1,0 +1,61 @@
+name: Upload Android app
+description: Upload Android app
+inputs:
+  firebase_android_app_id:
+    required: true
+    description: "Firebase Android app id"
+  firebase_token:
+    required: true
+    description: "Firebase token"
+  android_signing_key:
+    required: true
+    description: "Android signing key"
+  android_key_alias:
+    required: true
+    description: "Android key alias"
+  android_keystore_password:
+    required: true
+    description: "Android keystore password"
+  android_Key_password:
+    required: true
+    description: "Android key password"
+  playstore_service_account:
+    required: true
+    description: "Playstore service account json"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Download artifact
+      uses: actions/download-artifact@v3.0.0
+      with:
+        name: android
+
+    - name: Firebase App Distribution
+      uses: ./.github/actions/upload_to_firebase
+      with:
+        firebase_app_id: ${{ inputs.firebase_android_app_id }}
+        firebase_token: ${{ inputs.firebase_token }}
+        file: app-development-release.apk
+      if: github.ref_name != 'production'
+
+    - name: Sign Android appbundle
+      uses: r0adkll/sign-android-release@v1
+      id: sign_app
+      with:
+        releaseDirectory: .
+        signingKeyBase64: ${{ inputs.android_signing_key }}
+        alias: ${{ inputs.android_key_alias }}
+        keyStorePassword: ${{ inputs.android_keystore_password }}
+        keyPassword: ${{ inputs.android_key_password }}
+      if: github.ref_name == 'production'
+      
+    - name: Upload to Google Play Store
+      uses: r0adkll/upload-google-play@v1.0.16
+      with:
+        serviceAccountJsonPlainText: ${{ inputs.playstore_service_account }}
+        packageName: dk.analog.digitalclipcard
+        releaseFiles: ${{ steps.sign_app.outputs.signedReleaseFile }}
+        track: internal
+        status: draft
+      if: github.ref_name == 'production'
