@@ -2,7 +2,7 @@ name: Build and test
 
 on:
   pull_request:
-    branches: [develop, production]
+    branches: [main]
 
   workflow_dispatch:
 
