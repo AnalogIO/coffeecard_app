@@ -98,17 +98,11 @@ jobs:
 
       - name: Create Development build
         if: env.DEV_RELEASE == 'true'
-        run: .github/scripts/build-dev.sh
-        env:
-          BUILD_NAME: ${{ needs.version.outputs.version }}
-          BUILD_NUMBER: ${{ needs.version.outputs.build_version }}
+        run: .github/scripts/build-dev.sh ${{ needs.version.outputs.version }} ${{ needs.version.outputs.build_version }}
 
       - name: Create Production build
         if: env.PROD_RELEASE == 'true'
-        run: .github/scripts/build-prod.sh
-        env:
-          BUILD_NAME: ${{ needs.version.outputs.version }}
-          BUILD_NUMBER: ${{ needs.version.outputs.build_version }}
+        run: .github/scripts/build-prod.sh ${{ needs.version.outputs.version }} ${{ needs.version.outputs.build_version }}
 
       - name: Upload iOS build
         if: ${{ inputs.storeArtifacts }}
@@ -152,9 +146,11 @@ jobs:
       - name: Build appbundle (dev)
         if: env.DEV_RELEASE == 'true'
         run: flutter build apk --flavor development --release --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_version }} --target lib/main_development.dart
+
       - name: Build appbundle (prod)
         if: env.PROD_RELEASE== 'true'
         run: flutter build apk --flavor production --release --dart-define=IS_PROD=true --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_version }} --target lib/main_production.dart
+
       - name: Upload Android build
         if: ${{ inputs.storeArtifacts }}
         uses: actions/upload-artifact@v3

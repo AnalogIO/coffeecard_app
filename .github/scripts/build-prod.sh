@@ -1,5 +1,8 @@
 #! /bin/bash
 
+BUILD_NAME=$1
+BUILD_NUMBER=$2
+
 sed -i '' 's/.env.develop/.env.production/' lib/env/env.dart
 flutter build ios --flavor production --release --no-codesign --build-name $BUILD_NAME --build-number $BUILD_NUMBER --target lib/main_production.dart
 xcodebuild -resolvePackageDependencies -workspace ios/Runner.xcworkspace -scheme production -configuration Release-production
