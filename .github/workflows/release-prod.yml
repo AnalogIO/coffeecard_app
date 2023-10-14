@@ -10,7 +10,7 @@ jobs:
     with:
       storeArtifacts: true
       prodRelease: true
-      tagName: ${{ github.event.inputs.tagName }}
+      tagName: ${{ github.event.release.tag_name }}
     secrets: inherit
 
   prod_release_ios:
@@ -23,6 +23,7 @@ jobs:
         uses: actions/download-artifact@v3.0.0
         with:
           name: ios
+          
       - name: Upload app to App Store Connect
         env:
           APP_STORE_CONNECT_USERNAME: ${{ secrets.APP_STORE_CONNECT_USERNAME }}
@@ -40,6 +41,7 @@ jobs:
         uses: actions/download-artifact@v3.0.0
         with:
           name: android
+
       - name: Sign Android appbundle
         uses: r0adkll/sign-android-release@v1
         id: sign_app
@@ -49,6 +51,7 @@ jobs:
           alias: ${{ secrets.ANDROID_KEY_ALIAS }}
           keyStorePassword: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           keyPassword: ${{ secrets.ANDROID_KEY_PASSWORD }}
+
       - name: Upload to Google Play Store
         uses: r0adkll/upload-google-play@v1
         with:
