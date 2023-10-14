@@ -62,7 +62,7 @@ jobs:
 
       - name: Install Apple certificate and provisioning profile (dev)
         if: env.DEV_RELEASE == 'true'
-        run: .github/scripts/setup-certs.command
+        run: .github/scripts/setup-certs.sh
         env:
           APPLE_IOS_SIGNING_CERT: ${{ secrets.APPLE_IOS_SIGNING_CERTIFICATE_DEVELOPMENT }}
           APPLE_IOS_SIGNING_CERT_PW: ${{ secrets.APPLE_IOS_SIGNING_CERTIFICATE_DEVELOPMENT_PASSWORD }}
@@ -71,7 +71,7 @@ jobs:
 
       - name: Install Apple certificate and provisioning profile (prod)
         if: env.PROD_RELEASE== 'true'
-        run: .github/scripts/setup-certs.command
+        run: .github/scripts/setup-certs.sh
         env:
           APPLE_IOS_SIGNING_CERT: ${{ secrets.APPLE_IOS_SIGNING_CERT_PROD }}
           APPLE_IOS_SIGNING_CERT_PW: ${{ secrets.APPLE_IOS_SIGNING_CERT_PW }}
@@ -93,40 +93,22 @@ jobs:
       - name: Download dependencies
         run: flutter pub get
 
-      - name: Set URI (prod)
-        if: env.PROD_RELEASE == 'true'
-        run: sed -i '' 's/.env.develop/.env.production/' lib/env/env.dart
-
       - name: Generate code
         run: dart run build_runner build
 
-      - name: Build iOS (dev)
+      - name: Create Development build
         if: env.DEV_RELEASE == 'true'
-        run: flutter build ios --flavor development --release --no-codesign --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_version }} --target lib/main_development.dart
-      - name: Build iOS (prod)
-        if: env.PROD_RELEASE == 'true'
-        run: flutter build ios --flavor production --release --no-codesign --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_version }} --target lib/main_production.dart
-      - name: Build resolve Swift dependencies (dev)
-        if: env.DEV_RELEASE == 'true'
-        run: xcodebuild -resolvePackageDependencies -workspace ios/Runner.xcworkspace -scheme development -configuration Release-development
-      - name: Build resolve Swift dependencies (prod)
-        run: xcodebuild -resolvePackageDependencies -workspace ios/Runner.xcworkspace -scheme production -configuration Release-production
-        if: env.PROD_RELEASE == 'true'
-      - name: Build xArchive (dev)
-        if: env.DEV_RELEASE == 'true'
-        run: |
-          xcodebuild -workspace ios/Runner.xcworkspace -scheme development -configuration Release-development DEVELOPMENT_TEAM=Y5U9T77F2K -sdk 'iphoneos' -destination 'generic/platform=iOS' -archivePath build-output/app.xcarchive PROVISIONING_PROFILE_SPECIFIER="development" clean archive CODE_SIGN_IDENTITY="iPhone Developer"
-      - name: Build xArchive (prod)
-        if: env.PROD_RELEASE == 'true'
-        run: |
-          xcodebuild -workspace ios/Runner.xcworkspace -scheme production -configuration Release-production DEVELOPMENT_TEAM=Y5U9T77F2K -sdk 'iphoneos' -destination 'generic/platform=iOS' -archivePath build-output/app.xcarchive PROVISIONING_PROFILE_SPECIFIER="githubactions-prod" clean archive CODE_SIGN_IDENTITY="Apple Distribution"
-      - name: Export ipa (dev)
-        if: env.DEV_RELEASE == 'true'
-        run: xcodebuild -exportArchive -archivePath build-output/app.xcarchive -exportPath build-output/ios -exportOptionsPlist ios/exportOptions.dev.plist
+        run: .github/scripts/build-dev.sh
+        env:
+          BUILD_NAME: ${{ needs.version.outputs.version }}
+          BUILD_NUMBER: ${{ needs.version.outputs.build_version }}
 
-      - name: Export ipa (prod)
+      - name: Create Production build
         if: env.PROD_RELEASE == 'true'
-        run: xcodebuild -exportArchive -archivePath build-output/app.xcarchive -exportPath build-output/ios -exportOptionsPlist ios/exportOptions.prod.plist
+        run: .github/scripts/build-prod.sh
+        env:
+          BUILD_NAME: ${{ needs.version.outputs.version }}
+          BUILD_NUMBER: ${{ needs.version.outputs.build_version }}
 
       - name: Upload iOS build
         if: ${{ inputs.storeArtifacts }}
@@ -171,7 +153,7 @@ jobs:
         if: env.DEV_RELEASE == 'true'
         run: flutter build apk --flavor development --release --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_version }} --target lib/main_development.dart
       - name: Build appbundle (prod)
-        if: env.PROD_RELEASE == 'true'
+        if: env.PROD_RELEASE== 'true'
         run: flutter build apk --flavor production --release --dart-define=IS_PROD=true --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_version }} --target lib/main_production.dart
       - name: Upload Android build
         if: ${{ inputs.storeArtifacts }}
