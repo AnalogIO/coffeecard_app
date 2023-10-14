@@ -9,13 +9,14 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       storeArtifacts: true
+      prodRelease: true
+      tagName: ${{ github.event.inputs.tagName }}
     secrets: inherit
 
   prod_release_ios:
     name: Upload iOS build to App Store connect
     runs-on: macos-latest
     needs: [build_and_test]
-    if: github.ref_name == 'production'
 
     steps:
       - name: Download artifact
@@ -33,7 +34,6 @@ jobs:
     name: Upload Android build to Play Store
     runs-on: ubuntu-latest
     needs: [build_and_test]
-    if: github.ref_name == 'production'
 
     steps:
       - name: Download artifact
@@ -50,7 +50,7 @@ jobs:
           keyStorePassword: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           keyPassword: ${{ secrets.ANDROID_KEY_PASSWORD }}
       - name: Upload to Google Play Store
-        uses: r0adkll/upload-google-play@v1.0.16
+        uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJsonPlainText: ${{ secrets.PLAYSTORE_SERVICE_ACCOUNT_JSON }}
           packageName: dk.analog.digitalclipcard

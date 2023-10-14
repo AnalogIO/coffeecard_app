@@ -1,14 +1,15 @@
 name: Publish Development App
 
 on:
-  release:
-    types: [created]
+  push:
+    branches: [ main ]
 
 jobs:
   build_and_test:
     uses: ./.github/workflows/build.yml
     with:
       storeArtifacts: true
+      prodRelease: false
     secrets: inherit
 
   dev_upload_ios:
