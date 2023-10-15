@@ -95,7 +95,7 @@ jobs:
 
       - name: Set URI (prod)
         if: env.PROD_RELEASE == 'true'
-        run: sed -i 's/.env.develop/.env.production/' lib/env/env.dart
+        run: sed -i '' 's/.env.develop/.env.production/' lib/env/env.dart
 
       - name: Generate code
         run: dart run build_runner build
