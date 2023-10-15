@@ -17,6 +17,12 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Setup Java
+      uses: actions/setup-java@v3.13.0
+      with:
+        distribution: "adopt"
+        java-version: 17
+
     - name: Setup Flutter environment
       uses: ./.github/actions/setup_flutter_environment
       with:
@@ -34,7 +40,7 @@ runs:
 
     - name: Upload Android build
       if: ${{ !!inputs.store_artifacts }}
-      uses: actions/upload-artifact@v3.0.0
+      uses: actions/upload-artifact@v3.1.3
       with:
         name: android
         path: build/app/outputs/bundle/release

@@ -25,7 +25,7 @@ jobs:
         run: flutter test --coverage
 
       - name: Upload test report to Codecov
-        uses: codecov/codecov-action@v2.1.0
+        uses: codecov/codecov-action@v3.1.4
         with:
           flags: unittests
           file: coverage/lcov.info
