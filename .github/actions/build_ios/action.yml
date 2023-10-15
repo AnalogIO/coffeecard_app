@@ -7,24 +7,15 @@ inputs:
   build_version:
       required: true
       description: "Build version"
-  apple_ios_signing_cert_dev:
+  apple_ios_signing_cert:
       required: true
       description: "iOS signing certificate"
-  apple_ios_signing_cert_pw_dev:
+  apple_ios_signing_cert_pw:
       required: true
       description: "iOS signing certificate password"
-  apple_ios_provisioning_profile_dev:
+  apple_ios_provisioning_profile:
       required: true
       description: "Provisioning profile"
-  apple_ios_signing_cert_prod:
-      required: true
-      description: "TODO"
-  apple_ios_signing_cert_pw_prod:
-      required: true
-      description: "TODO"
-  apple_ios_provisioning_profile_prod:
-      required: true
-      description: "TODO"
   apple_keychain_pw:
       required: true
       description: "Keychain password"
@@ -38,46 +29,29 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Install Apple certificate and provisioning profile (dev)
-      if: ${{ inputs.prod_release }} != 'true'
-      run: .github/scripts/setup-certs.command
+    - name: Install Apple certificate and provisioning profile
+      if: ${{ inputs.prod_release != 'true' }}
+      run: .github/scripts/setup_certs.sh
       env:
-        APPLE_IOS_SIGNING_CERT: ${{ inputs.apple_ios_signing_cert_dev }}
-        APPLE_IOS_SIGNING_CERT_PW: ${{ inputs.apple_ios_signing_cert_pw_dev }}
-        APPLE_IOS_PROVISIONING_PROFILE: ${{ inputs.apple_ios_provisioning_profile_dev }}
-        APPLE_KEYCHAIN_PW: ${{ inputs.apple_keychain_pw }}
-      shell: bash
-
-    - name: Install Apple certificate and provisioning profile (prod)
-      if: ${{ inputs.prod_release }}== 'true'
-      run: .github/scripts/setup-certs.command
-      env:
-        APPLE_IOS_SIGNING_CERT: ${{ inputs.apple_ios_signing_cert_prod }}
-        APPLE_IOS_SIGNING_CERT_PW: ${{ inputs.apple_ios_signing_cert_pw_prod }}
-        APPLE_IOS_PROVISIONING_PROFILE: ${{ inputs.apple_ios_provisioning_profile_prod }}
+        APPLE_IOS_SIGNING_CERT: ${{ inputs.apple_ios_signing_cert }}
+        APPLE_IOS_SIGNING_CERT_PW: ${{ inputs.apple_ios_signing_cert_pw }}
+        APPLE_IOS_PROVISIONING_PROFILE: ${{ inputs.apple_ios_provisioning_profile }}
         APPLE_KEYCHAIN_PW: ${{ inputs.apple_keychain_pw }}
       shell: bash
 
     - name: Setup Flutter environment
       uses: ./.github/actions/setup_flutter_environment
-
-    - name: Set URI (prod)
-      if: github.ref_name == 'production'
-      run: sed -i '' 's/.env.develop/.env.production/' lib/env/env.dart
-      shell: bash
-
-    - name: Generate code
-      run: dart run build_runner build
-      shell: bash
+      with:
+        prod_release: ${{ inputs.prod_release }}
 
     - name: Build iOS (dev)
-      if: ${{ inputs.prod_release }} != 'true'
-      run: .github/scripts/build-dev.sh ${{ needs.version.outputs.version }} ${{ needs.version.outputs.build_version }}
+      if: ${{ inputs.prod_release != 'true' }}
+      run: .github/scripts/build_ios_dev.sh ${{ inputs.version }} ${{ inputs.build_version }}
       shell: bash
 
     - name: Build iOS (prod)
-      if: ${{ inputs.prod_release }} == 'true'
-      run: .github/scripts/build-prod.sh ${{ needs.version.outputs.version }} ${{ needs.version.outputs.build_version }}
+      if: ${{ inputs.prod_release == 'true' }}
+      run: .github/scripts/build_ios_prod.sh ${{ inputs.version }} ${{ inputs.build_version }}
       shell: bash
 
     - name: Upload iOS build

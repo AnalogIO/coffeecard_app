@@ -2,21 +2,18 @@ name: Test
 
 on:
   pull_request:
-    branches: [production, develop]
+    branches: [main]
 
 jobs:
-  build-and-test:
-    name: Build and test Flutter app
+  test:
+    name: Test app
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2.4.0
+        uses: actions/checkout@v3
 
       - name: Setup Flutter environment
         uses: ./.github/actions/setup_flutter_environment
-
-      - name: Generate code
-        run: dart run build_runner build
 
       - name: Check formatting
         run: dart format --set-exit-if-changed lib/
