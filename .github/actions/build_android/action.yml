@@ -22,7 +22,7 @@ runs:
       with:
         prod_release: ${{ inputs.prod_release }}
 
-    - name: Build apk (dev)
+    - name: Build appbundle (dev)
       if: ${{ inputs.prod_release != 'true' }}
       run: flutter build appbundle --flavor development --release --build-name ${{ inputs.version }} --build-number ${{ inputs.build_version }} --target lib/main_development.dart
       shell: bash
