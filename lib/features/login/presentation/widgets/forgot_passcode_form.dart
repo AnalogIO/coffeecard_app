@@ -28,14 +28,14 @@ class ForgotPasscodeForm extends StatelessWidget {
         InputValidator(
           forceErrorMessage: true,
           validate: (text) async {
-            final either =
+            final emailExistsResult =
                 await sl<AccountRemoteDataSource>().emailExists(text);
 
-            return either.fold(
-              (l) => const Left(Strings.emailValidationError),
-              (r) => r
-                  ? const Left(Strings.forgotPasscodeNoAccountExists)
-                  : const Right(null),
+            return emailExistsResult.fold(
+              (error) => const Left(Strings.emailValidationError),
+              (emailExists) => emailExists
+                  ? const Right(null)
+                  : const Left(Strings.forgotPasscodeNoAccountExists),
             );
           },
         ),

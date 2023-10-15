@@ -10,6 +10,9 @@ inputs:
   store_artifacts:
     required: false
     description: "Store artifact"
+  prod_release:
+      required: true
+      description: "Is prod release"
 
 runs:
   using: "composite"
@@ -18,7 +21,7 @@ runs:
       uses: ./.github/actions/setup_flutter_environment
 
     - name: Replace target URI in Production
-      if: github.ref_name == 'production'
+      if: ${{ inputs.prod_release }} == 'true'
       run: sed -i 's/.env.develop/.env.production/' lib/env/env.dart
       shell: bash
 
@@ -27,17 +30,17 @@ runs:
       shell: bash
 
     - name: Build apk (dev)
-      if: github.ref_name != 'production'
-      run: flutter build apk --flavor development --release --build-name ${{ inputs.version }} --build-number ${{ inputs.build_version }} --target lib/main_development.dart
+      if: ${{ inputs.prod_release }} != 'true'
+      run: flutter build apk --flavor development --release --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_version }} --target lib/main_development.dart
       shell: bash
 
     - name: Build appbundle (prod)
-      if: ${{ github.ref_name == 'production'}}
-      run: flutter build appbundle --release --flavor production --build-name ${{ inputs.version }} --build-number ${{ inputs.build_version }} --target lib/main_production.dart
+      if: ${{ inputs.prod_release }} == 'true'
+      run: flutter build apk --flavor production --release --dart-define=IS_PROD=true --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_version }} --target lib/main_production.dart
       shell: bash
 
     - name: Upload Android build (dev)
-      if: ${{ !!inputs.store_artifacts && github.ref_name != 'production'}}
+      if: ${{ !!inputs.store_artifacts && ${{ inputs.prod_release }} != 'true' }}
       uses: actions/upload-artifact@v3.0.0
       with:
         name: android
@@ -46,7 +49,7 @@ runs:
         if-no-files-found: error
 
     - name: Upload Android build (prod)
-      if: ${{ !!inputs.store_artifacts && github.ref_name == 'production'}}
+      if: ${{ !!inputs.store_artifacts && ${{ inputs.prod_release }} == 'true' }}
       uses: actions/upload-artifact@v3.0.0
       with:
         name: android

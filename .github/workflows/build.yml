@@ -1,8 +1,8 @@
 name: Build application
 
 on:
-  push:
-    branches: [develop, production]
+  pull_request:
+    branches: [ main ]
 
   workflow_dispatch:
 
@@ -11,10 +11,17 @@ on:
       store_artifacts:
         type: boolean
         required: false
-    outputs:
-      version_tag:
-        description: "Version used for Git tag"
-        value: ${{ jobs.version.outputs.version_tag }}
+        default: false
+      prod_release:
+        type: boolean
+        required: false
+      tag_name:
+        type: string
+        required: false
+
+env:
+  PROD_RELEASE: ${{ inputs.prod_release || 'false' }}
+  TAG_NAME: ${{ inputs.tag_name || 'dev' }}
 
 jobs:
   version:
@@ -22,17 +29,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-      
-    - name: Determine version
-      id: versioning
-      uses: ./.github/actions/versioning
+      - name: Determine build version
+        id: build_version
+        run: |
+          BUILD_NO=$((${{ github.run_number }} + 100))
+          echo "::set-output name=build_no::$BUILD_NO"
+
+      - name: Print versioning
+        run: |
+          echo "Version: $VERSION"
+          echo "Run No: $BUILD_NO"
+        env:
+          VERSION: ${{ env.TAG_NAME }}
+          BUILD_NO: ${{ steps.build_version.outputs.build_no }}
 
     outputs:
-      version: ${{ steps.versioning.outputs.version }}
-      version_tag: ${{ steps.versioning.outputs.version_tag }}
-      build_version: ${{ steps.versioning.outputs.build_version }}
+      version: ${{ env.TAG_NAME }}
+      build_version: ${{ steps.build_version.outputs.build_no }}
 
   build_ios:
     name: Build iOS App
@@ -55,6 +68,7 @@ jobs:
           apple_ios_provisioning_profile_prod: ${{ secrets.APPLE_IOS_PROVISIONING_PROFILE_PROD }}
           apple_keychain_pw: ${{ secrets.APPLE_KEYCHAIN_PW }}
           store_artifacts: ${{ inputs.store_artifacts }}
+          prod_release: ${{ env.PROD_RELEASE }}
 
   build_android:
     name: Build Android App
@@ -70,3 +84,4 @@ jobs:
           version: ${{ needs.version.outputs.version }}
           build_version: ${{ needs.version.outputs.build_version }}
           store_artifacts: ${{ inputs.store_artifacts }}
+          prod_release: ${{ env.PROD_RELEASE }}
