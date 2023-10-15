@@ -34,7 +34,7 @@ jobs:
       - name: Determine build version
         id: build_version
         run: |
-          LEGACY_PIPELINE_BUILD_NO_START = 100
+          LEGACY_PIPELINE_BUILD_NO_START=100
 
           BUILD_NO=$((${{ github.run_number }} + $LEGACY_PIPELINE_BUILD_NO_START))
           echo "build_no=$BUILD_NO" >> $GITHUB_OUTPUT
