@@ -24,7 +24,7 @@ runs:
 
     - name: Replace target URI in Production
       if: ${{ inputs.prod_release == 'true' }}
-      run: sed -i 's/.env.develop/.env.production/' lib/env/env.dart
+      run: sed -i'' -e 's/.env.develop/.env.production/' lib/env/env.dart
       shell: bash
 
     - name: Generate code
