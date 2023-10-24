@@ -13,7 +13,6 @@ import 'package:coffeecard/features/receipt/presentation/pages/receipts_page.dar
 import 'package:coffeecard/features/settings/presentation/pages/settings_page.dart';
 import 'package:coffeecard/features/ticket/presentation/cubit/tickets_cubit.dart';
 import 'package:coffeecard/features/ticket/presentation/pages/tickets_page.dart';
-import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -119,9 +118,6 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (_) => sl<UserCubit>()..fetchUserDetails(),
-        ),
         BlocProvider(
           create: (_) => sl<TicketsCubit>()..getTickets(),
         ),

@@ -1,22 +1,28 @@
 part of 'user_cubit.dart';
 
-sealed class UserState extends Equatable {
-  @override
-  List<Object?> get props => [];
-}
+sealed class UserState extends Equatable {}
 
 class UserError extends UserState {
   final String error;
 
   UserError(this.error);
+
+  @override
+  List<Object?> get props => [error];
 }
 
-class UserLoading extends UserState {}
+class UserLoading extends UserState {
+  @override
+  List<Object?> get props => [];
+}
 
 sealed class UserWithData extends UserState {
   final User user;
 
   UserWithData({required this.user});
+
+  @override
+  List<Object?> get props => [user];
 }
 
 class UserUpdating extends UserWithData {
@@ -29,12 +35,8 @@ class UserUpdated extends UserWithData {
 
 class UserLoaded extends UserWithData {
   UserLoaded({required super.user});
+}
 
-  UserLoaded copyWith({
-    User? user,
-  }) {
-    return UserLoaded(
-      user: user ?? this.user,
-    );
-  }
+class UserInitiallyLoaded extends UserLoaded {
+  UserInitiallyLoaded({required super.user});
 }
