@@ -2,7 +2,6 @@ abstract final class Strings {
   static const appTitle = 'Cafe Analog';
 
   // Titles for the app bar.
-  static const baristaPageTitle = 'Barista hub';
   static const ticketsPageTitle = 'Tickets';
   static const statsPageTitle = 'Statistics';
   static const buyOneDrinkPageTitle = 'Buy one drink';
@@ -10,7 +9,6 @@ abstract final class Strings {
   static const redeemVoucherPageTitle = 'Redeem voucher';
 
   // Titles for the navigation bar.
-  static const baristaNavTitle = 'Barista';
   static const ticketsNavTitle = ticketsPageTitle;
   static const receiptsNavTitle = receiptsPageTitle;
   static const statsNavTitle = 'Stats';
