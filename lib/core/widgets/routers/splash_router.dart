@@ -3,7 +3,6 @@ import 'package:coffeecard/core/widgets/pages/home_page.dart';
 import 'package:coffeecard/features/authentication/presentation/cubits/authentication_cubit.dart';
 import 'package:coffeecard/features/environment/presentation/cubit/environment_cubit.dart';
 import 'package:coffeecard/features/login/presentation/pages/login_page_email.dart';
-import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -20,42 +19,25 @@ class SplashRouter extends StatefulWidget {
 class _SplashRouterState extends State<SplashRouter> {
   bool firstNavigation = true;
 
-  /// Ensures that the environment and authentication states are loaded.
-  /// If so, runs [checkAuthentication]
-  void ensureLoaded(BuildContext context) {
+  /// Navigates out of the splash screen if both
+  /// authentication status and environment status are loaded.
+  void _maybeNavigate(BuildContext context) {
     final envState = context.read<EnvironmentCubit>().state;
     final authStatus = context.read<AuthenticationCubit>().state.status;
 
     if (authStatus.isUnknown || envState is! EnvironmentLoaded) return;
-    checkAuthentication(context);
-  }
 
-  /// Either redirects to the login page or load the user based on
-  /// authentication status
-  void checkAuthentication(BuildContext context) {
-    final Route route;
-    final authStatus = context.read<AuthenticationCubit>().state.status;
-
-    if (authStatus.isAuthenticated) {
-      context.read<UserCubit>().init();
-      return;
-    }
-
-    // Different routes are because of animations between pages
-    route = firstNavigation
+    // Where to go if the user is not authenticated.
+    final firstNavigationRoute = firstNavigation
         ? LoginPageEmail.routeFromSplash
         : LoginPageEmail.routeFromLogout;
 
+    // If the user is authenticated, go to the home page.
+    final Route route =
+        authStatus.isAuthenticated ? HomePage.route : firstNavigationRoute;
     firstNavigation = false;
 
     // Replaces the whole navigation stack with the approriate route.
-    final _ = widget.navigatorKey.currentState!
-        .pushAndRemoveUntil(route, (_) => false);
-  }
-
-  void navigateToHome(UserWithData userState) {
-    final Route route = HomePage.routeWith(user: userState.user);
-
     final _ = widget.navigatorKey.currentState!
         .pushAndRemoveUntil(route, (_) => false);
   }
@@ -65,14 +47,10 @@ class _SplashRouterState extends State<SplashRouter> {
     return MultiBlocListener(
       listeners: [
         BlocListener<EnvironmentCubit, EnvironmentState>(
-          listener: (context, _) => ensureLoaded(context),
+          listener: (context, _) => _maybeNavigate(context),
         ),
         BlocListener<AuthenticationCubit, AuthenticationState>(
-          listener: (context, _) => ensureLoaded(context),
-        ),
-        BlocListener<UserCubit, UserState>(
-          listener: (_, state) => navigateToHome(state as UserInitiallyLoaded),
-          listenWhen: (_, current) => current is UserInitiallyLoaded,
+          listener: (context, _) => _maybeNavigate(context),
         ),
       ],
       // The colored container prevents brief black flashes

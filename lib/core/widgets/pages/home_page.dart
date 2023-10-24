@@ -13,17 +13,13 @@ import 'package:coffeecard/features/receipt/presentation/pages/receipts_page.dar
 import 'package:coffeecard/features/settings/presentation/pages/settings_page.dart';
 import 'package:coffeecard/features/ticket/presentation/cubit/tickets_cubit.dart';
 import 'package:coffeecard/features/ticket/presentation/pages/tickets_page.dart';
-import 'package:coffeecard/features/user/domain/entities/user.dart';
+import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key, required this.user});
-
-  static Route routeWith({required User user}) =>
-      MaterialPageRoute(builder: (_) => HomePage(user: user));
-  final User user;
+  static Route get route => MaterialPageRoute(builder: (_) => HomePage());
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -44,33 +40,6 @@ class _HomePageState extends State<HomePage> {
       ..remove(newFlowIndex)
       ..add(newFlowIndex);
   }
-
-  List<AppFlow> get _bottomNavAppFlows => <AppFlow>[
-        AppFlow(
-          navigatorKey: _pages.first.navigatorKey,
-          initialRoute: TicketsPage.routeWith(
-            scrollController: _pages.first.scrollController,
-          ),
-        ),
-        AppFlow(
-          navigatorKey: _pages[1].navigatorKey,
-          initialRoute: ReceiptsPage.routeWith(
-            scrollController: _pages[1].scrollController,
-          ),
-        ),
-        AppFlow(
-          navigatorKey: _pages[2].navigatorKey,
-          initialRoute: StatisticsPage.routeWith(
-            scrollController: _pages[2].scrollController,
-          ),
-        ),
-        AppFlow(
-          navigatorKey: _pages[3].navigatorKey,
-          initialRoute: SettingsPage.routeWith(
-            scrollController: _pages[3].scrollController,
-          ),
-        ),
-      ];
 
   Future<bool> onWillPop() async {
     // If back arrow is present on page, go back in the current flow
@@ -119,15 +88,42 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  final _bottomNavAppFlows = <AppFlow>[
+    AppFlow(
+      navigatorKey: _pages.first.navigatorKey,
+      initialRoute: TicketsPage.routeWith(
+        scrollController: _pages.first.scrollController,
+      ),
+    ),
+    AppFlow(
+      navigatorKey: _pages[1].navigatorKey,
+      initialRoute: ReceiptsPage.routeWith(
+        scrollController: _pages[1].scrollController,
+      ),
+    ),
+    AppFlow(
+      navigatorKey: _pages[2].navigatorKey,
+      initialRoute: StatisticsPage.routeWith(
+        scrollController: _pages[2].scrollController,
+      ),
+    ),
+    AppFlow(
+      navigatorKey: _pages[3].navigatorKey,
+      initialRoute: SettingsPage.routeWith(
+        scrollController: _pages[3].scrollController,
+      ),
+    ),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) => TicketsCubit(
-            consumeTicket: sl(),
-            loadTickets: sl(),
-          )..getTickets(),
+          create: (_) => sl<UserCubit>()..fetchUserDetails(),
+        ),
+        BlocProvider(
+          create: (_) => sl<TicketsCubit>()..getTickets(),
         ),
         BlocProvider(
           create: (_) => sl<ReceiptCubit>()..fetchReceipts(),

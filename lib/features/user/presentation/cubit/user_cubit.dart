@@ -20,14 +20,6 @@ class UserCubit extends Cubit<UserState> {
     required this.requestAccountDeletion,
   }) : super(UserLoading());
 
-  Future<void> init() async {
-    await fetchUserDetails();
-    final st = state;
-    if (st is UserLoaded) {
-      emit(UserInitiallyLoaded(st));
-    }
-  }
-
   Future<void> fetchUserDetails() async {
     emit(UserLoading());
 

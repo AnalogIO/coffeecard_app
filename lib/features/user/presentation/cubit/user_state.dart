@@ -19,10 +19,6 @@ sealed class UserWithData extends UserState {
   UserWithData({required this.user});
 }
 
-class UserInitiallyLoaded extends UserLoaded {
-  UserInitiallyLoaded(UserWithData u) : super(user: u.user);
-}
-
 class UserUpdating extends UserWithData {
   UserUpdating({required super.user});
 }
