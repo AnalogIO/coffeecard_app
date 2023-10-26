@@ -37,7 +37,10 @@ class TicketsPage extends StatelessWidget {
                 padding: const EdgeInsets.all(16.0),
                 children: [
                   const TicketSection(),
-                  if (hasBaristaPerks) const BaristaPerksSection(),
+                  if (hasBaristaPerks)
+                    BaristaPerksSection(
+                      userRole: user.role,
+                    ),
                   const ShopSection(),
                 ],
               ),

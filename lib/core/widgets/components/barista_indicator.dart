@@ -2,18 +2,21 @@ import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/core/styles/app_colors.dart';
 import 'package:coffeecard/core/styles/app_text_styles.dart';
 import 'package:coffeecard/core/widgets/components/dialog.dart';
+import 'package:coffeecard/features/user/domain/entities/role.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 class BaristaIndicator extends StatelessWidget {
-  const BaristaIndicator();
+  const BaristaIndicator({required this.userRole});
+
+  final Role userRole;
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: () => appDialog(
         context: context,
-        title: 'Barista',
+        title: userRole.name, // TODO(fredpetersen): Should be capitalized
         children: [
           Text(
             Strings.baristaPerksExplainer,
@@ -45,7 +48,10 @@ class BaristaIndicator extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text('Barista', style: AppTextStyle.baristaButton),
+          Text(
+            userRole.name, // TODO(fredpetersen): Should be capitalized
+            style: AppTextStyle.baristaButton,
+          ),
           const Gap(8),
           const Icon(
             Icons.info_outline,

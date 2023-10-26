@@ -6,10 +6,13 @@ import 'package:coffeecard/features/product/domain/entities/product.dart';
 import 'package:coffeecard/features/product/presentation/functions.dart';
 import 'package:coffeecard/features/product/presentation/pages/buy_tickets_page.dart';
 import 'package:coffeecard/features/ticket/presentation/widgets/shop_card.dart';
+import 'package:coffeecard/features/user/domain/entities/role.dart';
 import 'package:flutter/material.dart';
 
 class BaristaPerksSection extends StatefulWidget {
-  const BaristaPerksSection();
+  const BaristaPerksSection({required this.userRole});
+
+  final Role userRole;
 
   @override
   State<BaristaPerksSection> createState() => _BaristaPerksSectionState();
@@ -20,12 +23,14 @@ class _BaristaPerksSectionState extends State<BaristaPerksSection> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Row(
+        Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            SectionTitle(Strings.baristaPerks),
-            BaristaIndicator(),
+            const SectionTitle(Strings.baristaPerks),
+            BaristaIndicator(
+              userRole: widget.userRole,
+            ),
           ],
         ),
         Grid(
