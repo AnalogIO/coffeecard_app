@@ -6,6 +6,7 @@ import 'package:coffeecard/features/user/domain/usecases/get_user.dart';
 import 'package:coffeecard/features/user/domain/usecases/request_account_deletion.dart';
 import 'package:coffeecard/features/user/domain/usecases/update_user_details.dart';
 import 'package:equatable/equatable.dart';
+import 'package:fpdart/fpdart.dart';
 
 part 'user_state.dart';
 
@@ -18,37 +19,31 @@ class UserCubit extends Cubit<UserState> {
     required this.getUser,
     required this.updateUserDetails,
     required this.requestAccountDeletion,
-  }) : super(UserLoading());
+  }) : super(const UserLoading());
 
-  Future<void> initialize() async {
-    await fetchUserDetails();
-    final st = state;
-    if (st is UserLoaded) {
-      emit(UserInitiallyLoaded(user: st.user));
-    }
-  }
-
-  Future<void> fetchUserDetails() async {
-    emit(UserLoading());
-
-    final either = await getUser();
-
-    either.fold(
-      (error) => emit(UserError(error.reason)),
-      (user) => emit(UserLoaded(user: user)),
+  Future<void> _fetchUserDetails({required bool firstLoad}) async {
+    emit(const UserLoading());
+    emit(
+      switch (await getUser()) {
+        Left(value: final failure) => UserError(failure.reason),
+        Right(value: final user) when firstLoad => UserInitiallyLoaded(user),
+        Right(value: final user) => UserLoaded(user),
+      },
     );
   }
 
+  Future<void> initialize() => _fetchUserDetails(firstLoad: true);
+  Future<void> fetchUserDetails() => _fetchUserDetails(firstLoad: false);
+
   Future<void> updateUser(UpdateUser user) async {
+    final state = this.state;
     if (state is! UserLoaded) {
       return;
     }
 
-    final loadedState = state as UserLoaded;
+    emit(UserUpdating(state.user));
 
-    emit(UserUpdating(user: loadedState.user));
-
-    final either = await updateUserDetails(
+    final result = await updateUserDetails(
       email: user.email,
       encodedPasscode: user.encodedPasscode,
       name: user.name,
@@ -56,9 +51,11 @@ class UserCubit extends Cubit<UserState> {
       privacyActivated: user.privacyActivated,
     );
 
-    either.fold(
-      (error) => emit(UserError(error.reason)),
-      (user) => emit(UserLoaded(user: user)),
+    emit(
+      result.fold(
+        (error) => UserError(error.reason),
+        (user) => UserLoaded(user),
+      ),
     );
   }
 
