@@ -33,10 +33,6 @@ class UserUpdating extends UserWithData {
   const UserUpdating(super.user);
 }
 
-class UserUpdated extends UserWithData {
-  const UserUpdated(super.user);
-}
-
 class UserLoaded extends UserWithData {
   const UserLoaded(super.user);
 }
