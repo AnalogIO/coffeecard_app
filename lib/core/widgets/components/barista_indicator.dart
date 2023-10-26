@@ -16,12 +16,12 @@ class BaristaIndicator extends StatelessWidget {
         title: 'Barista',
         children: [
           Text(
-            'As a contributor to the cafe, you have access to special perks, that you can redeem here in the app.',
+            Strings.baristaPerksExplainer,
             style: AppTextStyle.settingKey,
           ),
           const Gap(8),
           Text(
-            'Claiming an "on-shift drink" works on the trust system, so please only claim a drink when you are actually working.',
+            Strings.baristaOnShiftDisclaimer,
             style: AppTextStyle.settingKey,
           ),
         ],
