@@ -11,7 +11,8 @@ class AuthenticationInterceptor extends RequestInterceptor {
   /// Try retrieve authentication token from storage and add authentication header if exists
   @override
   FutureOr<Request> onRequest(Request request) async {
-    final token = (await localDataSource.getAuthenticatedUser())?.token;
+    final user = await localDataSource.getAuthenticatedUser();
+    final token = user?.token;
 
     if (token == null) {
       return request;
