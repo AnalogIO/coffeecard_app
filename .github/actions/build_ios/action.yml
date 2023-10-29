@@ -12,7 +12,7 @@ inputs:
       description: "iOS signing certificate"
   apple_ios_signing_cert_pw:
       required: true
-      description: "iOS signing certificate password"
+      description: "iOS signing certificate password base 64 encoded"
   apple_ios_provisioning_profile:
       required: true
       description: "Provisioning profile"
