@@ -1,0 +1,33 @@
+name: Test
+
+on:
+  pull_request:
+    branches: [ main ]
+
+  workflow_call:
+
+jobs:
+  test:
+    name: Test app
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Flutter environment
+        uses: ./.github/actions/setup_flutter_environment
+
+      - name: Check formatting
+        run: dart format --set-exit-if-changed lib/
+
+      - name: Static Analysis
+        run: flutter analyze
+
+      - name: Run tests
+        run: flutter test --coverage
+
+      - name: Upload test report to Codecov
+        uses: codecov/codecov-action@v3.1.4
+        with:
+          flags: unittests
+          file: coverage/lcov.info

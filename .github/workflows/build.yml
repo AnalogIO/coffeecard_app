@@ -1,4 +1,4 @@
-name: Build and test
+name: Build application
 
 on:
   pull_request:
@@ -8,22 +8,20 @@ on:
 
   workflow_call:
     inputs:
-      storeArtifacts:
+      store_artifacts:
         type: boolean
         required: false
         default: false
-      prodRelease:
+      prod_release:
         type: boolean
         required: false
-      tagName:
+      tag_name:
         type: string
         required: false
 
 env:
-  FLUTTER_VERSION: 3.13.1
-  JAVA_VERSION: 17.x
-  PROD_RELEASE: ${{ inputs.prodRelease || 'false' }}
-  TAG_NAME: ${{ inputs.tagName || 'dev' }}
+  PROD_RELEASE: ${{ inputs.prod_release || 'false' }}
+  TAG_NAME: ${{ inputs.tag_name || 'dev' }}
 
 jobs:
   version:
@@ -55,67 +53,35 @@ jobs:
     name: Build iOS App
     runs-on: macos-latest
     needs: [version]
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4.1.0
 
-      - name: Install Apple certificate and provisioning profile (dev)
-        if: env.PROD_RELEASE != 'true'
-        run: .github/scripts/setup-certs.sh
-        env:
-          APPLE_IOS_SIGNING_CERT: ${{ secrets.APPLE_IOS_SIGNING_CERTIFICATE_DEVELOPMENT }}
-          APPLE_IOS_SIGNING_CERT_PW: ${{ secrets.APPLE_IOS_SIGNING_CERTIFICATE_DEVELOPMENT_PASSWORD }}
-          APPLE_IOS_PROVISIONING_PROFILE: ${{ secrets.APPLE_IOS_PROVISIONING_PROFILE_DEVELOPMENT }}
-          APPLE_KEYCHAIN_PW: ${{ secrets.APPLE_KEYCHAIN_PW }}
-
-      - name: Install Apple certificate and provisioning profile (prod)
-        if: env.PROD_RELEASE== 'true'
-        run: .github/scripts/setup-certs.sh
-        env:
-          APPLE_IOS_SIGNING_CERT: ${{ secrets.APPLE_IOS_SIGNING_CERT_PROD }}
-          APPLE_IOS_SIGNING_CERT_PW: ${{ secrets.APPLE_IOS_SIGNING_CERT_PW }}
-          APPLE_IOS_PROVISIONING_PROFILE: ${{ secrets.APPLE_IOS_PROVISIONING_PROFILE_PROD }}
-          APPLE_KEYCHAIN_PW: ${{ secrets.APPLE_KEYCHAIN_PW }}
-
-      - name: Setup Java
-        uses: actions/setup-java@v3.13.0
+      - name: Build iOS app (dev)
+        if: ${{ env.PROD_RELEASE != 'true' }}
+        uses: ./.github/actions/build_ios
         with:
-          distribution: "adopt"
-          java-version: ${{ env.JAVA_VERSION }}
+          version: ${{ needs.version.outputs.version }}
+          build_version: ${{ needs.version.outputs.build_version }}
+          apple_ios_signing_cert: ${{ secrets.APPLE_IOS_SIGNING_CERTIFICATE_DEVELOPMENT }}
+          apple_ios_signing_cert_pw: ${{ secrets.APPLE_IOS_SIGNING_CERTIFICATE_DEVELOPMENT_PASSWORD }}
+          apple_ios_provisioning_profile: ${{ secrets.APPLE_IOS_PROVISIONING_PROFILE_DEVELOPMENT }}
+          apple_keychain_pw: ${{ secrets.APPLE_KEYCHAIN_PW }}
+          store_artifacts: ${{ inputs.store_artifacts }}
+          prod_release: ${{ env.PROD_RELEASE }}
 
-      - name: Setup Flutter environment
-        uses: subosito/flutter-action@v2.11.0
+      - name: Build iOS app (prod)
+        if: ${{ env.PROD_RELEASE == 'true' }}
+        uses: ./.github/actions/build_ios
         with:
-          flutter-version: ${{ env.FLUTTER_VERSION }}
-          channel: "stable"
-
-      - name: Download dependencies
-        run: flutter pub get
-
-      - name: Set URI (prod)
-        if: env.PROD_RELEASE == 'true'
-        run: sed -i '' 's/.env.develop/.env.production/' lib/env/env.dart
-
-      - name: Generate code
-        run: dart run build_runner build
-
-      - name: Create Development build
-        if: env.PROD_RELEASE != 'true'
-        run: .github/scripts/build-dev.sh ${{ needs.version.outputs.version }} ${{ needs.version.outputs.build_version }}
-
-      - name: Create Production build
-        if: env.PROD_RELEASE == 'true'
-        run: .github/scripts/build-prod.sh ${{ needs.version.outputs.version }} ${{ needs.version.outputs.build_version }}
-
-      - name: Upload iOS build
-        if: ${{ inputs.storeArtifacts }}
-        uses: actions/upload-artifact@v3.1.3
-        with:
-          name: ios
-          path: build-output/ios
-          retention-days: 1
-          if-no-files-found: error
+          version: ${{ needs.version.outputs.version }}
+          build_version: ${{ needs.version.outputs.build_version }}
+          apple_ios_signing_cert: ${{ secrets.APPLE_IOS_SIGNING_CERT_PROD }}
+          apple_ios_signing_cert_pw: ${{ secrets.APPLE_IOS_SIGNING_CERT_PW }}
+          apple_ios_provisioning_profile: ${{ secrets.APPLE_IOS_PROVISIONING_PROFILE_PROD }}
+          apple_keychain_pw: ${{ secrets.APPLE_KEYCHAIN_PW }}
+          store_artifacts: ${{ inputs.store_artifacts }}
+          prod_release: ${{ env.PROD_RELEASE }}
 
   build_android:
     name: Build Android App
@@ -125,79 +91,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4.1.0
 
-      - name: Setup Java
-        uses: actions/setup-java@v3.13.0
+      - name: Build Android app
+        uses: ./.github/actions/build_android
         with:
-          distribution: "adopt"
-          java-version: ${{ env.JAVA_VERSION }}
-
-      - name: Setup Flutter environment
-        uses: subosito/flutter-action@v2.11.0
-        with:
-          flutter-version: ${{ env.FLUTTER_VERSION }}
-          channel: "stable"
-
-      - name: Download dependencies
-        run: flutter pub get
-
-      - name: Set URI (prod)
-        if: env.PROD_RELEASE == 'true'
-        run: sed -i 's/.env.develop/.env.production/' lib/env/env.dart
-
-      - name: Generate code
-        run: dart run build_runner build
-
-      - name: Build appbundle (dev)
-        if: env.PROD_RELEASE != 'true'
-        run: flutter build apk --flavor development --release --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_version }} --target lib/main_development.dart
-
-      - name: Build appbundle (prod)
-        if: env.PROD_RELEASE== 'true'
-        run: flutter build apk --flavor production --release --dart-define=IS_PROD=true --build-name ${{ needs.version.outputs.version }} --build-number ${{ needs.version.outputs.build_version }} --target lib/main_production.dart
-
-      - name: Upload Android build
-        if: ${{ inputs.storeArtifacts }}
-        uses: actions/upload-artifact@v3.1.3
-        with:
-          name: android
-          path: build/app/outputs/flutter-apk
-          retention-days: 1
-          if-no-files-found: error
-
-  test:
-    name: Test Flutter app
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4.1.0
-
-      - name: Setup Flutter environment
-        uses: subosito/flutter-action@v2.11.0
-        with:
-          flutter-version: ${{ env.FLUTTER_VERSION }}
-          channel: "stable"
-
-      - name: Download dependencies
-        run: flutter pub get
-
-      - name: Generate code
-        run: dart run build_runner build
-
-      - name: Check formatting
-        run: dart format --set-exit-if-changed lib/
-
-      - name: Static Analysis
-        run: flutter analyze
-
-      - name: Run Code Metrics
-        run: dart run dart_code_metrics:metrics --reporter=github lib
-
-      - name: Run tests
-        run: flutter test --coverage
-
-      - name: Upload test report to Codecov
-        uses: codecov/codecov-action@v3.1.4
-        with:
-          flags: unittests
-          file: coverage/lcov.info
+          version: ${{ needs.version.outputs.version }}
+          build_version: ${{ needs.version.outputs.build_version }}
+          store_artifacts: ${{ inputs.store_artifacts }}
+          prod_release: ${{ env.PROD_RELEASE }}
