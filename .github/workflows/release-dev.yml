@@ -55,4 +55,4 @@ jobs:
           # FIXME: token is deprecated, use serviceCredentialsFileContent instead
           # serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           groups: analogio-devs
-          file: app-development-release.apk
+          file: android.aab
