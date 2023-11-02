@@ -57,8 +57,8 @@ void main() {
       actual.fold(
         (_) => throw Exception(),
         (actual) {
-          expect(actual.$1, [products.first]);
-          expect(actual.$2, [products[1]]);
+          expect(actual.clipCards, [products.first]);
+          expect(actual.singleDrinks, [products[1]]);
         },
       );
     },

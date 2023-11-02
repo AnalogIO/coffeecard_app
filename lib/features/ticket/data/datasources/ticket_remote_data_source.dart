@@ -1,6 +1,5 @@
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
-import 'package:coffeecard/data/repositories/barista_product/barista_product_repository.dart';
 import 'package:coffeecard/features/receipt/data/models/swipe_receipt_model.dart';
 import 'package:coffeecard/features/receipt/domain/entities/receipt.dart';
 import 'package:coffeecard/features/ticket/data/models/ticket_count_model.dart';
@@ -14,12 +13,10 @@ class TicketRemoteDataSource {
     required this.apiV1,
     required this.apiV2,
     required this.executor,
-    required this.baristaProductsRepository,
   });
 
   final CoffeecardApi apiV1;
   final CoffeecardApiV2 apiV2;
-  final BaristaProductsRepository baristaProductsRepository;
   final NetworkRequestExecutor executor;
 
   Future<Either<NetworkFailure, List<TicketCountModel>>> getUserTickets() {

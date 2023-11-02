@@ -3,9 +3,12 @@ import 'package:coffeecard/core/widgets/pages/home_page.dart';
 import 'package:coffeecard/features/authentication/presentation/cubits/authentication_cubit.dart';
 import 'package:coffeecard/features/environment/presentation/cubit/environment_cubit.dart';
 import 'package:coffeecard/features/login/presentation/pages/login_page_email.dart';
+import 'package:coffeecard/features/product/domain/entities/purchasable_products.dart';
+import 'package:coffeecard/features/product/presentation/cubit/product_cubit.dart';
 import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fpdart/fpdart.dart' hide State;
 
 class SplashRouter extends StatefulWidget {
   const SplashRouter({required this.navigatorKey, required this.child});
@@ -18,48 +21,94 @@ class SplashRouter extends StatefulWidget {
 }
 
 class _SplashRouterState extends State<SplashRouter> {
+  /// Used to determine which animation to use when going to the login page.
   bool firstNavigation = true;
 
-  /// Ensures that the environment and authentication states are loaded.
-  /// If so, runs [redirect].
-  void ensureLoaded(BuildContext context) {
-    final envState = context.read<EnvironmentCubit>().state;
-    final authStatus = context.read<AuthenticationCubit>().state.status;
+  /// This method is called when either the authentication or environment state
+  /// changes.
+  ///
+  /// If both are loaded, the user is redirected to either the login flow or
+  /// the home flow depending on whether the user is authenticated or not.
+  void listener() {
+    final authenticationCubit = context.read<AuthenticationCubit>();
+    final environmentState = context.read<EnvironmentCubit>().state;
+    final authenticationStatus = authenticationCubit.state.status;
 
-    if (!authStatus.isUnknown && envState is EnvironmentLoaded) {
-      redirect(context);
+    // Ensure both environment and authentication state are
+    // loaded before proceeding.
+    if (!authenticationStatus.isUnknown && environmentState.isLoaded) {
+      handleAuthentication(authenticationStatus);
     }
   }
 
-  /// Either redirects to the login page or load the user based on
-  /// authentication status.
-  void redirect(BuildContext context) {
-    final authStatus = context.read<AuthenticationCubit>().state.status;
-
-    if (authStatus.isAuthenticated) {
-      // User is authenticated; load user details
-      // (will redirect to home page as a side effect)
-      context.read<UserCubit>().initialize();
-      return;
+  Future<void> handleAuthentication(AuthenticationStatus status) async {
+    // If no user credentials are stored, redirect to login page.
+    if (!status.isAuthenticated) {
+      return redirectToLogin();
     }
 
-    // User is not authenticated; redirect to login page
+    // Use the stored user credentrials to load the user and all purchaseable
+    // products, then redirect to home page if both were successfully loaded.
+    return loadUserAndProducts()
+        .match(onUserOrProductsLoadFailed, redirectToHome)
+        .run();
+  }
 
-    // Different routes are because of animations between pages
-    final route = firstNavigation
+  /// Handle the case where user credentials are stored but either the user or
+  /// products could not be loaded.
+  ///
+  /// (this should not normally happen.)
+  // TODO(marfavi): Find a better way to handle this.
+  void onUserOrProductsLoadFailed() {
+    final authenticationCubit = context.read<AuthenticationCubit>();
+    authenticationCubit.unauthenticated();
+    redirectToLogin();
+  }
+
+  /// Loads the user and purchasable products and returns
+  /// `true` if both are successfully loaded; `false` otherwise.
+  TaskOption<PurchasableProducts> loadUserAndProducts() {
+    return TaskOption(() async {
+      final userCubit = context.read<UserCubit>();
+      final productCubit = context.read<ProductCubit>();
+
+      // Load and wait for both
+      final _ = await Future.wait([
+        userCubit.initialize(),
+        productCubit.getProducts(),
+      ]);
+
+      final userInitiallyLoaded = userCubit.state is UserInitiallyLoaded;
+      final productState = productCubit.state;
+
+      return userInitiallyLoaded && productState is ProductsLoaded
+          ? some(productState.products)
+          : none();
+    });
+  }
+
+  /// Redirects the user to the login page based.
+  /// The route (animation) is determined by the [firstNavigation] flag.
+  void redirectToLogin() {
+    final Route route;
+    route = firstNavigation
         ? LoginPageEmail.routeFromSplash
         : LoginPageEmail.routeFromLogout;
 
     firstNavigation = false;
 
     // Replaces the whole navigation stack with the approriate route.
-    final _ = widget.navigatorKey.currentState!
-        .pushAndRemoveUntil(route, (_) => false);
+    widget.navigatorKey.currentState!
+        .pushAndRemoveUntil(route, (_) => false)
+        .ignore();
   }
 
-  void navigateToHome() {
-    final _ = widget.navigatorKey.currentState!
-        .pushAndRemoveUntil(HomePage.route, (_) => false);
+  /// Redirects the user to the home page.
+  void redirectToHome(PurchasableProducts products) {
+    final route = HomePage.routeWith(products: products);
+    widget.navigatorKey.currentState!
+        .pushAndRemoveUntil(route, (_) => false)
+        .ignore();
   }
 
   @override
@@ -67,14 +116,10 @@ class _SplashRouterState extends State<SplashRouter> {
     return MultiBlocListener(
       listeners: [
         BlocListener<EnvironmentCubit, EnvironmentState>(
-          listener: (context, _) => ensureLoaded(context),
+          listener: (_, __) => listener(),
         ),
         BlocListener<AuthenticationCubit, AuthenticationState>(
-          listener: (context, _) => ensureLoaded(context),
-        ),
-        BlocListener<UserCubit, UserState>(
-          listenWhen: (_, current) => current is UserInitiallyLoaded,
-          listener: (_, __) => navigateToHome(),
+          listener: (_, __) => listener(),
         ),
       ],
       // The colored container prevents brief black flashes

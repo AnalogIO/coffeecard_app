@@ -67,9 +67,7 @@ void main() {
       expect: () => [
         const ProductsLoading(),
         const ProductsLoaded(
-          clipCards: tickets,
-          singleDrinks: singleDrinks,
-          perks: perks,
+          (clipCards: tickets, singleDrinks: singleDrinks, perks: perks),
         ),
       ],
     );

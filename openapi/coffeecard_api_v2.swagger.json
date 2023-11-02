@@ -498,6 +498,110 @@
         }
       }
     },
+    "/api/v2/products": {
+      "post": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Adds a new product to the database.",
+        "operationId": "Products_AddProduct",
+        "requestBody": {
+          "x-name": "addProductRequest",
+          "description": "The request containing the details of the product to be added and allowed user groups.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddProductRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "The request was successful, and the product was added.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChangedProductResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          },
+          {
+            "apikey": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Updates a product with the specified changes.",
+        "operationId": "Products_UpdateProduct",
+        "requestBody": {
+          "x-name": "product",
+          "description": "The request containing the changes to be applied to the product.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProductRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "The request was successful, and the product was updated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChangedProductResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          },
+          {
+            "apikey": []
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Returns a list of available products based on a account's user group",
+        "operationId": "Products_GetProducts",
+        "responses": {
+          "200": {
+            "description": "Successful request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v2/purchases": {
       "get": {
         "tags": [
@@ -1286,6 +1390,256 @@
             "type": "string",
             "description": "Internal MobilePay representation of a type.",
             "example": "payment"
+          }
+        }
+      },
+      "ChangedProductResponse": {
+        "type": "object",
+        "description": "Represents the product response.",
+        "additionalProperties": false,
+        "required": [
+          "price",
+          "numberOfTickets",
+          "name",
+          "description",
+          "visible"
+        ],
+        "properties": {
+          "price": {
+            "type": "integer",
+            "description": "Gets or sets the price of the product.",
+            "format": "int32",
+            "maximum": 2147483647,
+            "minimum": 0,
+            "example": {
+              "Price": 150,
+              "NumberOfTickets": 10,
+              "Name": "Espresso",
+              "Description": "A coffee made by forcing steam through ground coffee beans.",
+              "Visible": false
+            }
+          },
+          "numberOfTickets": {
+            "type": "integer",
+            "description": "Gets or sets the number of tickets associated with the product.",
+            "format": "int32",
+            "maximum": 2147483647,
+            "minimum": 0,
+            "example": 5
+          },
+          "name": {
+            "type": "string",
+            "description": "Gets or sets the name of the product.",
+            "minLength": 1,
+            "example": "Espresso "
+          },
+          "description": {
+            "type": "string",
+            "description": "Gets or sets the description of the product.",
+            "minLength": 1,
+            "example": "A homemade espresso from fresh beans "
+          },
+          "visible": {
+            "type": "boolean",
+            "description": "Gets or sets the visibility of the product.",
+            "example": true
+          }
+        }
+      },
+      "AddProductRequest": {
+        "type": "object",
+        "description": "Initiate a new product add request.",
+        "example": {
+          "Name": "Latte",
+          "Price": 25,
+          "NumberOfTickets": 10,
+          "Description": "xxx",
+          "Visible": true
+        },
+        "additionalProperties": false,
+        "required": [
+          "price",
+          "numberOfTickets",
+          "name",
+          "description",
+          "allowedUserGroups"
+        ],
+        "properties": {
+          "price": {
+            "type": "integer",
+            "description": "Gets or sets the price of the product.",
+            "format": "int32",
+            "maximum": 2147483647,
+            "minimum": 0,
+            "example": 10
+          },
+          "numberOfTickets": {
+            "type": "integer",
+            "description": "Gets or sets the number of tickets associated with the product.",
+            "format": "int32",
+            "maximum": 2147483647,
+            "minimum": 0,
+            "example": 5
+          },
+          "name": {
+            "type": "string",
+            "description": "Gets or sets the name of the product.",
+            "minLength": 1,
+            "example": "Latte "
+          },
+          "description": {
+            "type": "string",
+            "description": "Gets or sets the description of the product.",
+            "minLength": 1,
+            "example": "A homemade latte with soy milk "
+          },
+          "visible": {
+            "type": "boolean",
+            "description": "Gets or sets the visibility of the product. Default is true.",
+            "default": true,
+            "example": true
+          },
+          "allowedUserGroups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserGroup"
+            }
+          }
+        }
+      },
+      "UserGroup": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "Customer",
+          "Barista",
+          "Manager",
+          "Board"
+        ],
+        "enum": [
+          "Customer",
+          "Barista",
+          "Manager",
+          "Board"
+        ]
+      },
+      "UpdateProductRequest": {
+        "type": "object",
+        "description": "Initiate an update product request.",
+        "example": {
+          "Id": 1,
+          "Price": 150,
+          "NumberOfTickets": 10,
+          "Name": "Espresso",
+          "Description": "A coffee made by forcing steam through ground coffee beans.",
+          "Visible": false
+        },
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "price",
+          "numberOfTickets",
+          "name",
+          "description"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Gets or sets the ID of the product to update.",
+            "format": "int32",
+            "example": 1
+          },
+          "price": {
+            "type": "integer",
+            "description": "Gets or sets the updated price of the product.",
+            "format": "int32",
+            "maximum": 2147483647,
+            "minimum": 0,
+            "example": 10
+          },
+          "numberOfTickets": {
+            "type": "integer",
+            "description": "Gets or sets the updated number of tickets associated with the product.",
+            "format": "int32",
+            "maximum": 2147483647,
+            "minimum": 0,
+            "example": 5
+          },
+          "name": {
+            "type": "string",
+            "description": "Gets or sets the updated name of the product.",
+            "minLength": 1,
+            "example": "Espresso "
+          },
+          "description": {
+            "type": "string",
+            "description": "Gets or sets the updated description of the product.",
+            "minLength": 1,
+            "example": "A homemade espresso from fresh beans "
+          },
+          "visible": {
+            "type": "boolean",
+            "description": "Gets or sets the updated visibility of the product. Default is true.",
+            "default": true,
+            "example": true
+          }
+        }
+      },
+      "ProductResponse": {
+        "type": "object",
+        "description": "Represents a purchasable product",
+        "example": {
+          "id": 1,
+          "price": 300,
+          "numberOfTickets": 10,
+          "name": "Coffee clip card",
+          "description": "Coffee clip card of 10 clips",
+          "isPerk": true
+        },
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "price",
+          "numberOfTickets",
+          "name",
+          "description",
+          "isPerk"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Id of product",
+            "format": "int32",
+            "example": 1
+          },
+          "price": {
+            "type": "integer",
+            "description": "Product price",
+            "format": "int32",
+            "example": 300
+          },
+          "numberOfTickets": {
+            "type": "integer",
+            "description": "Number of tickets in product",
+            "format": "int32",
+            "example": 10
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of product",
+            "minLength": 1,
+            "example": "Coffee clip card"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of products",
+            "minLength": 1,
+            "example": "Coffee clip card of 10 clips"
+          },
+          "isPerk": {
+            "type": "boolean",
+            "description": "Eligible due to a user perk privilege ",
+            "example": true
           }
         }
       },

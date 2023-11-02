@@ -8,6 +8,7 @@ import 'package:coffeecard/core/widgets/routers/app_flow.dart';
 import 'package:coffeecard/features/leaderboard/presentation/cubit/leaderboard_cubit.dart';
 import 'package:coffeecard/features/leaderboard/presentation/pages/leaderboard_page.dart';
 import 'package:coffeecard/features/opening_hours/presentation/cubit/opening_hours_cubit.dart';
+import 'package:coffeecard/features/product/domain/entities/purchasable_products.dart';
 import 'package:coffeecard/features/receipt/presentation/cubit/receipt_cubit.dart';
 import 'package:coffeecard/features/receipt/presentation/pages/receipts_page.dart';
 import 'package:coffeecard/features/settings/presentation/pages/settings_page.dart';
@@ -16,9 +17,15 @@ import 'package:coffeecard/features/ticket/presentation/pages/tickets_page.dart'
 import 'package:coffeecard/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
-  static Route get route => MaterialPageRoute(builder: (_) => HomePage());
+  const HomePage._({required this.products});
+  final PurchasableProducts products;
+
+  static Route routeWith({required PurchasableProducts products}) {
+    return MaterialPageRoute(builder: (_) => HomePage._(products: products));
+  }
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -116,40 +123,43 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (_) => sl<TicketsCubit>()..getTickets(),
-        ),
-        BlocProvider(
-          create: (_) => sl<ReceiptCubit>()..fetchReceipts(),
-        ),
-        BlocProvider(
-          create: (_) => sl<LeaderboardCubit>()..loadLeaderboard(),
-        ),
-        BlocProvider(
-          create: (_) => sl<OpeningHoursCubit>()..getOpeninghours(),
-        ),
-      ],
-      child: WillPopScope(
-        onWillPop: onWillPop,
-        child: Scaffold(
-          backgroundColor: AppColors.background,
-          body: LazyIndexedStack(
-            index: _currentPageIndex,
-            children: _bottomNavAppFlows,
+    return Provider(
+      create: (BuildContext context) => widget.products,
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (_) => sl<TicketsCubit>()..getTickets(),
           ),
-          bottomNavigationBar: BottomNavigationBar(
-            items: _pages.map((p) => p.bottomNavigationBarItem).toList(),
-            currentIndex: _currentPageIndex,
-            onTap: onBottomNavTap,
-            type: BottomNavigationBarType.fixed,
-            backgroundColor: AppColors.primary,
-            selectedItemColor: AppColors.white,
-            unselectedItemColor: AppColors.white.withOpacity(0.5),
-            selectedFontSize: 12,
-            unselectedLabelStyle: AppTextStyle.bottomNavBarLabel,
-            selectedLabelStyle: AppTextStyle.bottomNavBarLabel,
+          BlocProvider(
+            create: (_) => sl<ReceiptCubit>()..fetchReceipts(),
+          ),
+          BlocProvider(
+            create: (_) => sl<LeaderboardCubit>()..loadLeaderboard(),
+          ),
+          BlocProvider(
+            create: (_) => sl<OpeningHoursCubit>()..getOpeninghours(),
+          ),
+        ],
+        child: WillPopScope(
+          onWillPop: onWillPop,
+          child: Scaffold(
+            backgroundColor: AppColors.background,
+            body: LazyIndexedStack(
+              index: _currentPageIndex,
+              children: _bottomNavAppFlows,
+            ),
+            bottomNavigationBar: BottomNavigationBar(
+              items: _pages.map((p) => p.bottomNavigationBarItem).toList(),
+              currentIndex: _currentPageIndex,
+              onTap: onBottomNavTap,
+              type: BottomNavigationBarType.fixed,
+              backgroundColor: AppColors.primary,
+              selectedItemColor: AppColors.white,
+              unselectedItemColor: AppColors.white.withOpacity(0.5),
+              selectedFontSize: 12,
+              unselectedLabelStyle: AppTextStyle.bottomNavBarLabel,
+              selectedLabelStyle: AppTextStyle.bottomNavBarLabel,
+            ),
           ),
         ),
       ),

@@ -1,4 +1,5 @@
-import 'package:coffeecard/features/product/domain/entities/product.dart';
+import 'package:coffeecard/core/errors/failures.dart';
+import 'package:coffeecard/features/product/domain/entities/purchasable_products.dart';
 import 'package:coffeecard/features/product/domain/usecases/get_all_products.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,20 +13,7 @@ class ProductCubit extends Cubit<ProductState> {
 
   Future<void> getProducts() async {
     emit(const ProductsLoading());
-
-    final either = await getAllProducts();
-
-    either.fold(
-      (error) => emit(ProductsError(error.reason)),
-      (ticketsAndSingleDrinksAndPerks) {
-        emit(
-          ProductsLoaded(
-            clipCards: ticketsAndSingleDrinksAndPerks.$1,
-            singleDrinks: ticketsAndSingleDrinksAndPerks.$2,
-            perks: ticketsAndSingleDrinksAndPerks.$3,
-          ),
-        );
-      },
-    );
+    final result = await getAllProducts();
+    emit(result.fold(ProductsError.fromFailure, ProductsLoaded.new));
   }
 }

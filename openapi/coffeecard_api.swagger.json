@@ -540,8 +540,11 @@
               }
             }
           },
-          "409": {
-            "description": "Voucher code already used",
+          "401": {
+            "description": "Invalid credentials"
+          },
+          "404": {
+            "description": "Voucher code not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -550,11 +553,8 @@
               }
             }
           },
-          "401": {
-            "description": "Invalid credentials"
-          },
-          "404": {
-            "description": "Voucher code not found",
+          "409": {
+            "description": "Voucher code already used",
             "content": {
               "application/json": {
                 "schema": {

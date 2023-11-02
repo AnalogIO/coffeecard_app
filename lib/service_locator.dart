@@ -7,7 +7,6 @@ import 'package:coffeecard/core/firebase_analytics_event_logging.dart';
 import 'package:coffeecard/core/ignore_value.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/core/storage/secure_storage.dart';
-import 'package:coffeecard/data/repositories/barista_product/barista_product_repository.dart';
 import 'package:coffeecard/env/env.dart';
 import 'package:coffeecard/features/authentication/data/intercepters/authentication_interceptor.dart';
 import 'package:coffeecard/features/authentication/presentation/cubits/authentication_cubit.dart';
@@ -104,8 +103,6 @@ void configureServices() {
   initFeatures();
 
   // v1 and v2
-
-  sl.registerFactory(() => BaristaProductsRepository());
 
   sl.registerFactory<AccountRemoteDataSource>(
     () => AccountRemoteDataSource(
@@ -219,7 +216,6 @@ void initUser() {
       apiV1: sl(),
       apiV2: sl(),
       executor: sl(),
-      baristaProductsRepository: sl(),
     ),
   );
 
@@ -319,7 +315,7 @@ void initProduct() {
 
   // data source
   sl.registerLazySingleton(
-    () => ProductRemoteDataSource(apiV1: sl(), executor: sl()),
+    () => ProductRemoteDataSource(api: sl(), executor: sl()),
   );
 }
 
