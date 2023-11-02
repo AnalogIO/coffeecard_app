@@ -22,16 +22,7 @@ class ProductCubit extends Cubit<ProductState> {
           ProductsLoaded(
             clipCards: ticketsAndSingleDrinksAndPerks.$1,
             singleDrinks: ticketsAndSingleDrinksAndPerks.$2,
-            perks: const [
-              Product(
-                id: 8,
-                amount: 1,
-                price: 0,
-                name: 'Gratis filter',
-                description: 'deskription',
-                isPerk: true,
-              ),
-            ],
+            perks: ticketsAndSingleDrinksAndPerks.$3,
           ),
         );
       },

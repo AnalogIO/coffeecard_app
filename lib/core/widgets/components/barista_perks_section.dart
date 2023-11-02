@@ -1,13 +1,18 @@
 import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/core/widgets/components/barista_indicator.dart';
+import 'package:coffeecard/core/widgets/components/error_section.dart';
 import 'package:coffeecard/core/widgets/components/helpers/grid.dart';
+import 'package:coffeecard/core/widgets/components/loading.dart';
+import 'package:coffeecard/core/widgets/components/scaffold.dart';
 import 'package:coffeecard/core/widgets/components/section_title.dart';
 import 'package:coffeecard/features/product/domain/entities/product.dart';
+import 'package:coffeecard/features/product/presentation/cubit/product_cubit.dart';
 import 'package:coffeecard/features/product/presentation/functions.dart';
-import 'package:coffeecard/features/product/presentation/pages/buy_tickets_page.dart';
 import 'package:coffeecard/features/ticket/presentation/widgets/shop_card.dart';
 import 'package:coffeecard/features/user/domain/entities/role.dart';
+import 'package:coffeecard/service_locator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BaristaPerksSection extends StatefulWidget {
   const BaristaPerksSection({required this.userRole});
@@ -33,48 +38,37 @@ class _BaristaPerksSectionState extends State<BaristaPerksSection> {
             ),
           ],
         ),
-        Grid(
-          singleColumnOnSmallDevice: false,
-          gap: GridGap.tightVertical,
-          gapSmall: GridGap.tight,
-          children: [
-            ShopCard(
-              title: Strings.baristaClaimOnShiftDrink,
-              icon: Icons.coffee,
-              onTapped: (_) => Navigator.push(context, BuyTicketsPage.route),
+        BlocProvider(
+          create: (context) => sl<ProductCubit>()..getProducts(),
+          child: AppScaffold.withTitle(
+            title: Strings.baristaPerks,
+            body: BlocBuilder<ProductCubit, ProductState>(
+              builder: (context, state) {
+                if (state is ProductsLoading) {
+                  return const Loading(loading: true);
+                } else if (state is ProductsLoaded) {
+                  return SingleChildScrollView(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Grid(
+                      gap: GridGap.normal,
+                      gapSmall: GridGap.tight,
+                      singleColumnOnSmallDevice: true,
+                      children: state.perks.map(ShopCard.fromProduct).toList(),
+                    ),
+                  );
+                } else if (state is ProductsError) {
+                  return ErrorSection(
+                    error: state.error,
+                    retry: context.read<ProductCubit>().getProducts,
+                  );
+                }
+
+                throw ArgumentError(this);
+              },
             ),
-            ShopCard(
-              title: Strings.baristaClaimFreeFilter,
-              icon: Icons.coffee_maker,
-              onTapped: (context) => onTap(
-                context,
-                const Product(
-                  id: 8,
-                  amount: 1,
-                  price: 0,
-                  name: 'FREE FILTER 😎',
-                  description: 'IT IS FREE',
-                  isPerk: true,
-                ),
-              ),
-            ),
-            ShopCard(
-              title: Strings.buyOneDrink,
-              icon: Icons.coffee,
-              onTapped: (context) => onTap,
-              optionalText: '6,-',
-            ),
-          ],
+          ),
         ),
       ],
-    );
-  }
-
-  Future<void> onTap(BuildContext context, Product product) async {
-    return buyModal(
-      context: context,
-      product: product,
-      callback: (_, __) => Future.value(),
     );
   }
 }

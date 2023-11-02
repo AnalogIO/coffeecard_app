@@ -2,6 +2,8 @@ import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/core/styles/app_colors.dart';
 import 'package:coffeecard/core/styles/app_text_styles.dart';
 import 'package:coffeecard/core/widgets/components/card.dart';
+import 'package:coffeecard/features/product/domain/entities/product.dart';
+import 'package:coffeecard/features/product/presentation/functions.dart';
 import 'package:flutter/material.dart';
 
 class ShopCard extends StatelessWidget {
@@ -11,6 +13,17 @@ class ShopCard extends StatelessWidget {
     required this.onTapped,
     this.optionalText,
   });
+
+  factory ShopCard.fromProduct(Product product) => ShopCard(
+        title: product.name,
+        icon: Icons.star,
+        onTapped: (context) => buyModal(
+          context: context,
+          product: product,
+          callback: (_, __) => Future.value(),
+        ),
+        optionalText: 'FREE',
+      );
 
   const ShopCard.newFeature({
     required this.title,
