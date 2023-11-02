@@ -5,6 +5,7 @@ import 'package:coffeecard/core/widgets/pages/splash/splash_loading_page.dart';
 import 'package:coffeecard/core/widgets/routers/splash_router.dart';
 import 'package:coffeecard/features/authentication/presentation/cubits/authentication_cubit.dart';
 import 'package:coffeecard/features/environment/presentation/cubit/environment_cubit.dart';
+import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,6 +23,7 @@ class App extends StatelessWidget {
       providers: [
         BlocProvider.value(value: sl<AuthenticationCubit>()..appStarted()),
         BlocProvider.value(value: sl<EnvironmentCubit>()..getConfig()),
+        BlocProvider(create: (_) => sl<UserCubit>()),
       ],
       child: SplashRouter(
         navigatorKey: _navigatorKey,
