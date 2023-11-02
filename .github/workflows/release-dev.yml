@@ -1,7 +1,7 @@
 name: Publish Development App
 
 on:
-  push:
+  pull_request:
     branches: [ main ]
 
 jobs:
@@ -10,6 +10,7 @@ jobs:
     with:
       store_artifacts: true
       prod_release: false
+      build_apk: true
     secrets: inherit
 
   test:

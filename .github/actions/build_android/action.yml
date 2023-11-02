@@ -11,8 +11,12 @@ inputs:
     required: false
     description: "Store artifact"
   prod_release:
-      required: true
-      description: "Is prod release"
+    required: true
+    description: "Is prod release"
+  build_apk:
+    required: false
+    description: "Build appbundle"
+    default: false
 
 runs:
   using: "composite"
@@ -28,25 +32,41 @@ runs:
       with:
         prod_release: ${{ inputs.prod_release }}
 
-    - name: Build appbundle (dev)
-      if: ${{ inputs.prod_release != 'true' }}
+    - name: Build apk (dev)
+      if: ${{ inputs.build_apk == 'true' }}
       run: |
         flutter build appbundle --flavor development --release --build-name ${{ inputs.version }} --build-number ${{ inputs.build_version }} --target lib/main_development.dart
-        mv build/app/outputs/bundle/developmentRelease/app-development-release.aab android.aab
+        mv build/app/outputs/bundle/developmentRelease/app-development-release.aab android.apk
+      shell: bash
+
+    - name: Build appbundle (dev)
+      if: ${{ inputs.prod_release != 'true' && inputs.build_apk == 'false'}}
+      run: |
+        flutter build appbundle --flavor development --release --build-name ${{ inputs.version }} --build-number ${{ inputs.build_version }} --target lib/main_development.dart
+        mv build/app/outputs/apk/development/release/app-development-release.apk android.aab
       shell: bash
 
     - name: Build appbundle (prod)
-      if: ${{ inputs.prod_release == 'true' }}
+      if: ${{ inputs.prod_release == 'true' && inputs.build_apk == 'false' }}
       run: |
         flutter build appbundle --flavor production --release --build-name ${{ inputs.version }} --build-number ${{ inputs.build_version }} --target lib/main_production.dart
         mv build/app/outputs/bundle/productionRelease/app-production-release.aab android.aab
       shell: bash
 
-    - name: Upload Android build
-      if: ${{ !!inputs.store_artifacts }}
+    - name: Upload Android build (aab)
+      if: ${{ !!inputs.store_artifacts && inputs.build_apk == 'false'}}
       uses: actions/upload-artifact@v3.1.3
       with:
         name: android
         path: android.aab
+        retention-days: 1
+        if-no-files-found: error
+
+    - name: Upload Android build (apk)
+      if: ${{ !!inputs.store_artifacts && inputs.build_apk == 'true'}}
+      uses: actions/upload-artifact@v3.1.3
+      with:
+        name: android
+        path: android.apk
         retention-days: 1
         if-no-files-found: error

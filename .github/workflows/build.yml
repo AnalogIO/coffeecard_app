@@ -18,6 +18,10 @@ on:
       tag_name:
         type: string
         required: false
+      build_apk:
+        required: false
+        default: false 
+        type: boolean
 
 env:
   PROD_RELEASE: ${{ inputs.prod_release || 'false' }}
@@ -98,3 +102,4 @@ jobs:
           build_version: ${{ needs.version.outputs.build_version }}
           store_artifacts: ${{ inputs.store_artifacts }}
           prod_release: ${{ env.PROD_RELEASE }}
+          build_apk: ${{ inputs.build_apk }}
