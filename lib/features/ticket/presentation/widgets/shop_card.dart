@@ -14,16 +14,22 @@ class ShopCard extends StatelessWidget {
     this.optionalText,
   });
 
-  factory ShopCard.fromProduct(Product product) => ShopCard(
-        title: product.name,
-        icon: Icons.star,
-        onTapped: (context) => buyModal(
-          context: context,
-          product: product,
-          callback: (_, __) => Future.value(),
-        ),
-        optionalText: 'FREE',
-      );
+  factory ShopCard.fromProduct(Product product) {
+    final price = switch (product.price) {
+      0 => 'FREE',
+      final price => Strings.price(price),
+    };
+    return ShopCard(
+      title: product.name,
+      icon: Icons.star,
+      onTapped: (context) => buyModal(
+        context: context,
+        product: product,
+        callback: (_, __) => Future.value(),
+      ),
+      optionalText: price,
+    );
+  }
 
   const ShopCard.newFeature({
     required this.title,

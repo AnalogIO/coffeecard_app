@@ -136,6 +136,7 @@ void initFeatures() {
   initOccupation();
   initUser();
   initReceipt();
+  initTicket();
   initContributor();
   initPayment();
   initLeaderboard();
