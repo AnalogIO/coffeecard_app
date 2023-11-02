@@ -5,17 +5,20 @@ on:
     branches: [ main ]
 
 jobs:
-  build_and_test:
+  build:
     uses: ./.github/workflows/build.yml
     with:
-      storeArtifacts: true
-      prodRelease: false
+      store_artifacts: true
+      prod_release: false
     secrets: inherit
 
-  dev_upload_ios:
+  test:
+    uses: ./.github/workflows/test.yml
+
+  upload_ios:
     name: Upload iOS build to Firebase App Distribution
     runs-on: ubuntu-latest
-    needs: [build_and_test]
+    needs: [build, test]
 
     steps:
       - name: Download Artifact
@@ -33,10 +36,10 @@ jobs:
           groups: analogio-devs
           file: Analog.ipa
 
-  dev_upload_android:
+  upload_android:
     name: Upload Android build to Firebase App Distribution
     runs-on: ubuntu-latest
-    needs: [build_and_test]
+    needs: [build, test]
 
     steps:
       - name: Download artifact
@@ -52,4 +55,4 @@ jobs:
           # FIXME: token is deprecated, use serviceCredentialsFileContent instead
           # serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           groups: analogio-devs
-          file: app-development-release.apk
+          file: android.aab
