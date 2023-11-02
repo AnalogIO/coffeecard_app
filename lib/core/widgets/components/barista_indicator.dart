@@ -1,3 +1,4 @@
+import 'package:coffeecard/core/extensions/string_extensions.dart';
 import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/core/styles/app_colors.dart';
 import 'package:coffeecard/core/styles/app_text_styles.dart';
@@ -16,7 +17,7 @@ class BaristaIndicator extends StatelessWidget {
     return TextButton(
       onPressed: () => appDialog(
         context: context,
-        title: userRole.name, // TODO(fredpetersen): Should be capitalized
+        title: userRole.name.capitalize(),
         children: [
           Text(
             Strings.baristaPerksExplainer,
@@ -49,7 +50,7 @@ class BaristaIndicator extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            userRole.name, // TODO(fredpetersen): Should be capitalized
+            userRole.name,
             style: AppTextStyle.baristaButton,
           ),
           const Gap(8),
