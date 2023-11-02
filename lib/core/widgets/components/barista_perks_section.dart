@@ -1,11 +1,9 @@
 import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/core/widgets/components/barista_indicator.dart';
-import 'package:coffeecard/core/widgets/components/error_section.dart';
 import 'package:coffeecard/core/widgets/components/helpers/grid.dart';
 import 'package:coffeecard/core/widgets/components/section_title.dart';
 import 'package:coffeecard/features/product/domain/entities/purchasable_products.dart';
-import 'package:coffeecard/features/product/presentation/cubit/product_cubit.dart';
-import 'package:coffeecard/features/ticket/presentation/widgets/shop_card.dart';
+import 'package:coffeecard/features/ticket/presentation/widgets/perk_card.dart';
 import 'package:coffeecard/features/user/domain/entities/role.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,7 +38,7 @@ class _BaristaPerksSectionState extends State<BaristaPerksSection> {
           gap: GridGap.normal,
           gapSmall: GridGap.tight,
           singleColumnOnSmallDevice: true,
-          children: perks.map(ShopCard.fromProduct).toList(),
+          children: perks.map(PerkCard.fromProduct).toList(),
         ),
         const Gap(16),
       ],

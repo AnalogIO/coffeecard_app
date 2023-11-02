@@ -50,7 +50,7 @@ class BaristaIndicator extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            userRole.name,
+            userRole.name.capitalize(),
             style: AppTextStyle.baristaButton,
           ),
           const Gap(8),

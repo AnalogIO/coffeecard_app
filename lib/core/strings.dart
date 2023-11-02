@@ -184,6 +184,8 @@ abstract final class Strings {
     return '$price,-';
   }
 
+  static const free = 'FREE';
+
   // Purchase process
   static const purchaseErrorOk = 'Ok';
   static const purchaseTalking = 'Talking with payment provider';
