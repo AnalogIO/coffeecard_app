@@ -1,7 +1,7 @@
 import 'package:coffeecard/core/strings.dart';
-import 'package:coffeecard/core/widgets/components/barista_indicator.dart';
 import 'package:coffeecard/core/widgets/components/helpers/grid.dart';
 import 'package:coffeecard/core/widgets/components/section_title.dart';
+import 'package:coffeecard/core/widgets/components/user_role_indicator.dart';
 import 'package:coffeecard/features/product/domain/entities/purchasable_products.dart';
 import 'package:coffeecard/features/ticket/presentation/widgets/perk_card.dart';
 import 'package:coffeecard/features/user/domain/entities/role.dart';
@@ -29,9 +29,7 @@ class _BaristaPerksSectionState extends State<BaristaPerksSection> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             const SectionTitle(Strings.baristaPerks),
-            BaristaIndicator(
-              userRole: widget.userRole,
-            ),
+            UserRoleIndicator(widget.userRole),
           ],
         ),
         Grid(

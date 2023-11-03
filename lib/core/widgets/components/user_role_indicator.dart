@@ -7,8 +7,8 @@ import 'package:coffeecard/features/user/domain/entities/role.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-class BaristaIndicator extends StatelessWidget {
-  const BaristaIndicator({required this.userRole});
+class UserRoleIndicator extends StatelessWidget {
+  const UserRoleIndicator(this.userRole);
 
   final Role userRole;
 

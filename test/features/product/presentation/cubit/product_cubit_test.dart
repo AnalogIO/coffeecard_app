@@ -1,6 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/features/product/domain/entities/product.dart';
+import 'package:coffeecard/features/product/domain/entities/purchasable_products.dart';
 import 'package:coffeecard/features/product/domain/usecases/get_all_products.dart';
 import 'package:coffeecard/features/product/presentation/cubit/product_cubit.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -10,7 +11,7 @@ import 'package:mockito/mockito.dart';
 
 import 'product_cubit_test.mocks.dart';
 
-@GenerateMocks([GetAllProducts])
+@GenerateNiceMocks([MockSpec<GetAllProducts>()])
 void main() {
   late ProductCubit cubit;
   late MockGetAllProducts getAllProducts;
@@ -19,7 +20,7 @@ void main() {
     getAllProducts = MockGetAllProducts();
     cubit = ProductCubit(getAllProducts: getAllProducts);
 
-    provideDummy<Either<Failure, (List<Product>, List<Product>)>>(
+    provideDummy<Either<Failure, PurchasableProducts>>(
       const Left(ConnectionFailure()),
     );
   });
@@ -54,6 +55,11 @@ void main() {
       isPerk: true,
     ),
   ];
+  const allProducts = (
+    clipCards: tickets,
+    singleDrinks: singleDrinks,
+    perks: perks,
+  );
 
   const testError = 'some error';
 
@@ -62,13 +68,11 @@ void main() {
       'should emit [Loading, Loaded] use case succeeds',
       build: () => cubit,
       setUp: () => when(getAllProducts())
-          .thenAnswer((_) async => const Right((tickets, singleDrinks, perks))),
+          .thenAnswer((_) async => const Right(allProducts)),
       act: (cubit) => cubit.getProducts(),
       expect: () => [
         const ProductsLoading(),
-        const ProductsLoaded(
-          (clipCards: tickets, singleDrinks: singleDrinks, perks: perks),
-        ),
+        const ProductsLoaded(allProducts),
       ],
     );
 
