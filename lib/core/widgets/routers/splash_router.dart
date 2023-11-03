@@ -29,7 +29,7 @@ class _SplashRouterState extends State<SplashRouter> {
   ///
   /// If both are loaded, the user is redirected to either the login flow or
   /// the home flow depending on whether the user is authenticated or not.
-  void listener() {
+  void onAuthenticationOrEnvironmentChange() {
     final authenticationCubit = context.read<AuthenticationCubit>();
     final environmentState = context.read<EnvironmentCubit>().state;
     final authenticationStatus = authenticationCubit.state.status;
@@ -116,10 +116,10 @@ class _SplashRouterState extends State<SplashRouter> {
     return MultiBlocListener(
       listeners: [
         BlocListener<EnvironmentCubit, EnvironmentState>(
-          listener: (_, __) => listener(),
+          listener: (_, __) => onAuthenticationOrEnvironmentChange(),
         ),
         BlocListener<AuthenticationCubit, AuthenticationState>(
-          listener: (_, __) => listener(),
+          listener: (_, __) => onAuthenticationOrEnvironmentChange(),
         ),
       ],
       // The colored container prevents brief black flashes
