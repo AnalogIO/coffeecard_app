@@ -49,7 +49,7 @@ class _SplashRouterState extends State<SplashRouter> {
 
     // Use the stored user credentrials to load the user and all purchaseable
     // products, then redirect to home page if both were successfully loaded.
-    return loadUserAndProducts()
+    return loadUserAndProducts
         .match(onUserOrProductsLoadFailed, redirectToHome)
         .run();
   }
@@ -65,9 +65,11 @@ class _SplashRouterState extends State<SplashRouter> {
     redirectToLogin();
   }
 
-  /// Loads the user and purchasable products and returns
-  /// `true` if both are successfully loaded; `false` otherwise.
-  TaskOption<PurchasableProducts> loadUserAndProducts() {
+  /// A TaskOption that loads the user and purchasable products.
+  ///
+  /// Returns a [Some] with the products if both were successfully loaded,
+  /// and [None] otherwise.
+  TaskOption<PurchasableProducts> get loadUserAndProducts {
     return TaskOption(() async {
       final userCubit = context.read<UserCubit>();
       final productCubit = context.read<ProductCubit>();
