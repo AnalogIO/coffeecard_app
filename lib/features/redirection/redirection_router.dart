@@ -10,17 +10,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fpdart/fpdart.dart' hide State;
 
-class SplashRouter extends StatefulWidget {
-  const SplashRouter({required this.navigatorKey, required this.child});
+/// A router widget that handles the top-level redirection logic for the app
+/// (i.e. switching between the login flow and the home flow).
+///
+/// This widget listens to changes in the authentication and environment state.
+/// Once both are loaded, it redirects the user to either the login flow or the
+/// home flow depending on whether the user is authenticated or not.
+class MainRedirectionRouter extends StatefulWidget {
+  const MainRedirectionRouter({
+    required this.navigatorKey,
+    required this.child,
+  });
 
   final GlobalKey<NavigatorState> navigatorKey;
   final Widget child;
 
   @override
-  _SplashRouterState createState() => _SplashRouterState();
+  _MainRedirectionRouterState createState() => _MainRedirectionRouterState();
 }
 
-class _SplashRouterState extends State<SplashRouter> {
+class _MainRedirectionRouterState extends State<MainRedirectionRouter> {
   /// Used to determine which animation to use when going to the login page.
   bool firstNavigation = true;
 
