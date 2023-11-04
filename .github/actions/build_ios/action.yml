@@ -5,26 +5,30 @@ inputs:
     required: true
     description: "App version"
   build_version:
-      required: true
-      description: "Build version"
+    required: true
+    description: "Build version"
   apple_ios_signing_cert:
-      required: true
-      description: "iOS signing certificate"
+    required: true
+    description: "iOS signing certificate"
   apple_ios_signing_cert_pw:
-      required: true
-      description: "iOS signing certificate password base 64 encoded"
+    required: true
+    description: "iOS signing certificate password base 64 encoded"
   apple_ios_provisioning_profile:
-      required: true
-      description: "Provisioning profile"
+    required: true
+    description: "Provisioning profile"
   apple_keychain_pw:
-      required: true
-      description: "Keychain password"
+    required: true
+    description: "Keychain password"
   store_artifacts:
-      required: true
-      description: "Store artifact"
-  prod_release:
-      required: true
-      description: "Is prod release"
+    required: true
+    description: "Store artifact"
+  build_type:
+    required: false
+    default: "dev"
+    options:
+    - dev
+    - preview
+    - prod
 
 runs:
   using: "composite"
@@ -42,15 +46,15 @@ runs:
     - name: Setup Flutter environment
       uses: ./.github/actions/setup_flutter_environment
       with:
-        prod_release: ${{ inputs.prod_release }}
+        prod_release: ${{ build_type == 'prod' }}
 
     - name: Build iOS (dev)
-      if: ${{ inputs.prod_release != 'true' }}
+      if: ${{ inputs.build_type != 'prod' }}
       run: .github/scripts/build_ios_dev.sh ${{ inputs.version }} ${{ inputs.build_version }}
       shell: bash
 
     - name: Build iOS (prod)
-      if: ${{ inputs.prod_release == 'true' }}
+      if: ${{ inputs.build_type == 'prod' }}
       run: .github/scripts/build_ios_prod.sh ${{ inputs.version }} ${{ inputs.build_version }}
       shell: bash
 

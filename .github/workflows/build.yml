@@ -12,19 +12,18 @@ on:
         type: boolean
         required: false
         default: false
-      prod_release:
-        type: boolean
-        required: false
       tag_name:
         type: string
         required: false
-      build_apk:
+      build_type:
         required: false
-        default: false 
-        type: boolean
+        default: "dev"
+        options:
+        - dev
+        - preview
+        - prod
 
 env:
-  PROD_RELEASE: ${{ inputs.prod_release || 'false' }}
   TAG_NAME: ${{ inputs.tag_name || 'dev' }}
 
 jobs:
@@ -62,7 +61,7 @@ jobs:
         uses: actions/checkout@v4.1.0
 
       - name: Build iOS app (dev)
-        if: ${{ env.PROD_RELEASE != 'true' }}
+        if: ${{ env.build_type != 'prod' }}
         uses: ./.github/actions/build_ios
         with:
           version: ${{ needs.version.outputs.version }}
@@ -72,10 +71,10 @@ jobs:
           apple_ios_provisioning_profile: ${{ secrets.APPLE_IOS_PROVISIONING_PROFILE_DEVELOPMENT }}
           apple_keychain_pw: ${{ secrets.APPLE_KEYCHAIN_PW }}
           store_artifacts: ${{ inputs.store_artifacts }}
-          prod_release: ${{ env.PROD_RELEASE }}
+          build_type: ${ inputs.build_type }}
 
       - name: Build iOS app (prod)
-        if: ${{ env.PROD_RELEASE == 'true' }}
+        if: ${{ env.build_type == 'prod' }}
         uses: ./.github/actions/build_ios
         with:
           version: ${{ needs.version.outputs.version }}
@@ -85,7 +84,7 @@ jobs:
           apple_ios_provisioning_profile: ${{ secrets.APPLE_IOS_PROVISIONING_PROFILE_PROD }}
           apple_keychain_pw: ${{ secrets.APPLE_KEYCHAIN_PW }}
           store_artifacts: ${{ inputs.store_artifacts }}
-          prod_release: ${{ env.PROD_RELEASE }}
+          build_type: ${ inputs.build_type }}
 
   build_android:
     name: Build Android App
@@ -101,5 +100,4 @@ jobs:
           version: ${{ needs.version.outputs.version }}
           build_version: ${{ needs.version.outputs.build_version }}
           store_artifacts: ${{ inputs.store_artifacts }}
-          prod_release: ${{ env.PROD_RELEASE }}
-          build_apk: ${{ inputs.build_apk }}
+          build_type: ${ inputs.build_type }}
