@@ -120,7 +120,6 @@ void configureServices() {
   );
 
   ignoreValue(sl.registerFactory(() => DateService()));
-
   ignoreValue(sl.registerFactory(() => ScreenBrightness()));
   ignoreValue(sl.registerLazySingleton(() => ExternalUrlLauncher()));
 
