@@ -49,12 +49,9 @@ class TicketRemoteDataSource {
   }
 
   Future<Either<NetworkFailure, Receipt>> useTicket(int productId) {
+    final body = UseTicketDTO(productId: productId);
     return executor
-        .execute(
-          () => apiV1.apiV1TicketsUsePost(
-            body: UseTicketDTO(productId: productId),
-          ),
-        )
+        .execute(() => apiV1.apiV1TicketsUsePost(body: body))
         .map(SwipeReceiptModel.fromTicketDto);
   }
 }

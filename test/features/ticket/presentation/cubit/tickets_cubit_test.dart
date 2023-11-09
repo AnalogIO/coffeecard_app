@@ -42,7 +42,7 @@ void main() {
       act: (_) => cubit.getTickets(),
       expect: () => [
         const TicketsLoading(),
-        const TicketsLoaded([]),
+        const TicketsLoaded(tickets: []),
       ],
     );
 
@@ -55,7 +55,7 @@ void main() {
       act: (_) => cubit.getTickets(),
       expect: () => [
         const TicketsLoading(),
-        const TicketsLoadError('some error'),
+        const TicketsLoadError(message: 'some error'),
       ],
     );
   });
@@ -89,9 +89,9 @@ void main() {
       // skip the initial Loading/Loaded states emitted by getTickets
       skip: 2,
       expect: () => [
-        const TicketUsing([]),
-        TicketUsed(testReceipt, const []),
-        const TicketsLoaded([]),
+        const TicketUsing(tickets: []),
+        TicketUsed(receipt: testReceipt, tickets: const []),
+        const TicketsLoaded(tickets: []),
       ],
     );
 
@@ -111,9 +111,9 @@ void main() {
       // skip the initial Loading/Loaded states emitted by getTickets
       skip: 2,
       expect: () => [
-        const TicketUsing([]),
-        const TicketsUseError('some error'),
-        const TicketsLoaded([]),
+        const TicketUsing(tickets: []),
+        const TicketsUseError(message: 'some error'),
+        const TicketsLoaded(tickets: []),
       ],
     );
   });
@@ -123,7 +123,9 @@ void main() {
       build: () => cubit,
       setUp: () => when(loadTickets()).thenAnswer((_) async => const Right([])),
       act: (_) => cubit.refreshTickets(),
-      expect: () => [const TicketsLoaded([])],
+      expect: () => [
+        const TicketsLoaded(tickets: []),
+      ],
     );
 
     blocTest<TicketsCubit, TicketsState>(
@@ -133,7 +135,7 @@ void main() {
         (_) async => const Left(ServerFailure('some error', 500)),
       ),
       act: (_) => cubit.refreshTickets(),
-      expect: () => [const TicketsLoadError('some error')],
+      expect: () => [const TicketsLoadError(message: 'some error')],
     );
   });
 }

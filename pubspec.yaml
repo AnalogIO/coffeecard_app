@@ -36,6 +36,7 @@ dependencies:
   flutter_bloc: 8.1.3
   bloc: 8.1.2
   stream_transform: 2.1.0
+  provider: 6.0.5
 
   # Utility
   meta: 1.9.1

@@ -6,14 +6,17 @@ import 'package:coffeecard/core/widgets/components/dialog.dart';
 import 'package:coffeecard/core/widgets/components/error_section.dart';
 import 'package:coffeecard/core/widgets/components/helpers/shimmer_builder.dart';
 import 'package:coffeecard/core/widgets/components/loading_overlay.dart';
+import 'package:coffeecard/core/widgets/components/section_title.dart';
 import 'package:coffeecard/features/environment/domain/entities/environment.dart';
 import 'package:coffeecard/features/environment/presentation/cubit/environment_cubit.dart';
+import 'package:coffeecard/features/opening_hours/presentation/widgets/opening_hours_indicator.dart';
 import 'package:coffeecard/features/receipt/domain/entities/receipt.dart';
 import 'package:coffeecard/features/receipt/presentation/widgets/receipt_overlay.dart';
 import 'package:coffeecard/features/ticket/presentation/cubit/tickets_cubit.dart';
 import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gap/gap.dart';
 
 class TicketSection extends StatelessWidget {
   const TicketSection();
@@ -21,7 +24,16 @@ class TicketSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        const Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SectionTitle(Strings.ticketsMyTickets),
+            OpeningHoursIndicator(),
+          ],
+        ),
         BlocConsumer<TicketsCubit, TicketsState>(
           listenWhen: (previous, current) =>
               current is TicketUsing ||
@@ -37,7 +49,7 @@ class TicketSection extends StatelessWidget {
                 Navigator.of(context, rootNavigator: true).pop();
               }
 
-              final _ = LoadingOverlay.show(context);
+              LoadingOverlay.show(context).ignore();
             }
             if (state is TicketUsed) {
               // Refresh or load user info (for updated rank stats)
@@ -46,7 +58,9 @@ class TicketSection extends StatelessWidget {
 
               final envState = context.read<EnvironmentCubit>().state;
               LoadingOverlay.hide(context);
-              final _ = ReceiptOverlay.show(
+              ReceiptOverlay.show(
+                productName: state.receipt.productName,
+                timeUsed: state.receipt.timeUsed,
                 isTestEnvironment:
                     envState is EnvironmentLoaded && envState.env.isTest,
                 status: state.receipt is PurchaseReceipt
@@ -54,10 +68,8 @@ class TicketSection extends StatelessWidget {
                         .paymentStatus
                         .toString()
                     : Strings.swiped,
-                productName: state.receipt.productName,
-                timeUsed: state.receipt.timeUsed,
                 context: context,
-              );
+              ).ignore();
             }
             if (state is TicketsUseError) {
               LoadingOverlay.hide(context);
@@ -86,7 +98,10 @@ class TicketSection extends StatelessWidget {
             if (state is TicketsLoaded) {
               // States extending this are also caught on this
               if (state.tickets.isEmpty) {
-                return const CoffeeCardPlaceholder();
+                return const Padding(
+                  padding: EdgeInsets.only(bottom: 12.0),
+                  child: CoffeeCardPlaceholder(),
+                );
               }
               return Column(
                 children: state.tickets
@@ -116,6 +131,7 @@ class TicketSection extends StatelessWidget {
             throw ArgumentError(this);
           },
         ),
+        const Gap(4),
       ],
     );
   }

@@ -32,7 +32,18 @@ class UserCubit extends Cubit<UserState> {
     );
   }
 
+  /// Fetches the user details from the server, and emits a successful state
+  /// as a [UserInitiallyLoaded] state.
+  ///
+  /// This is used to log in the user and should only be called when the user
+  /// is in the login flow.
   Future<void> initialize() => _fetchUserDetails(firstLoad: true);
+
+  /// Fetches the user details from the server, and emits a successful state
+  /// as a [UserLoaded] state.
+  ///
+  /// This is used to update the user details
+  /// when the user is already logged in.
   Future<void> fetchUserDetails() => _fetchUserDetails(firstLoad: false);
 
   Future<void> updateUser(UpdateUser user) async {

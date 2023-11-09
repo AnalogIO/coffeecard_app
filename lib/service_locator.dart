@@ -103,6 +103,7 @@ void configureServices() {
   initFeatures();
 
   // v1 and v2
+
   sl.registerFactory<AccountRemoteDataSource>(
     () => AccountRemoteDataSource(
       apiV1: sl<CoffeecardApi>(),
@@ -128,10 +129,10 @@ void configureServices() {
 
 void initFeatures() {
   initOpeningHours();
-  initTicket();
   initOccupation();
   initUser();
   initReceipt();
+  initTicket();
   initContributor();
   initPayment();
   initLeaderboard();
@@ -155,17 +156,17 @@ void initOpeningHours() {
   sl.registerFactory(() => GetOpeningHours(repository: sl()));
   sl.registerFactory(() => CheckOpenStatus(repository: sl()));
 
+  // data source
+  sl.registerLazySingleton<OpeningHoursLocalDataSource>(
+    () => OpeningHoursLocalDataSource(),
+  );
+
   // repository
   sl.registerFactory<OpeningHoursRepository>(
     () => OpeningHoursRepositoryImpl(
       dataSource: sl(),
       dateService: sl(),
     ),
-  );
-
-  // data source
-  sl.registerLazySingleton<OpeningHoursLocalDataSource>(
-    () => OpeningHoursLocalDataSource(),
   );
 }
 
@@ -210,7 +211,11 @@ void initUser() {
 
   // data source
   sl.registerLazySingleton(
-    () => TicketRemoteDataSource(apiV1: sl(), apiV2: sl(), executor: sl()),
+    () => TicketRemoteDataSource(
+      apiV1: sl(),
+      apiV2: sl(),
+      executor: sl(),
+    ),
   );
 
   sl.registerFactory(() => GetUser(dataSource: sl()));
@@ -309,7 +314,7 @@ void initProduct() {
 
   // data source
   sl.registerLazySingleton(
-    () => ProductRemoteDataSource(apiV1: sl(), executor: sl()),
+    () => ProductRemoteDataSource(api: sl(), executor: sl()),
   );
 }
 

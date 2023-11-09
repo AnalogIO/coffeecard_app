@@ -2,7 +2,7 @@ import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/features/product/data/datasources/product_remote_data_source.dart';
 import 'package:coffeecard/features/product/data/models/product_model.dart';
-import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
+import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:mockito/annotations.dart';
@@ -10,21 +10,18 @@ import 'package:mockito/mockito.dart';
 
 import 'product_remote_data_source_test.mocks.dart';
 
-@GenerateMocks([CoffeecardApi, NetworkRequestExecutor])
+@GenerateMocks([CoffeecardApiV2, NetworkRequestExecutor])
 void main() {
   late ProductRemoteDataSource remoteDataSource;
-  late MockCoffeecardApi apiV1;
+  late MockCoffeecardApiV2 api;
   late MockNetworkRequestExecutor executor;
 
   setUp(() {
     executor = MockNetworkRequestExecutor();
-    apiV1 = MockCoffeecardApi();
-    remoteDataSource = ProductRemoteDataSource(
-      apiV1: apiV1,
-      executor: executor,
-    );
+    api = MockCoffeecardApiV2();
+    remoteDataSource = ProductRemoteDataSource(api: api, executor: executor);
 
-    provideDummy<Either<NetworkFailure, List<ProductDto>>>(
+    provideDummy<Either<NetworkFailure, List<ProductResponse>>>(
       const Left(ConnectionFailure()),
     );
   });
@@ -32,14 +29,15 @@ void main() {
   group('getProducts', () {
     test('should call executor', () async {
       // arrange
-      when(executor.execute<List<ProductDto>>(any)).thenAnswer(
+      when(executor.execute<List<ProductResponse>>(any)).thenAnswer(
         (_) async => Right([
-          ProductDto(
+          ProductResponse(
             id: 0,
             price: 0,
             numberOfTickets: 0,
             name: 'name',
             description: 'description',
+            isPerk: false,
           ),
         ]),
       );
@@ -60,6 +58,7 @@ void main() {
                 name: 'name',
                 id: 0,
                 description: 'description',
+                isPerk: false,
               ),
             ],
           );

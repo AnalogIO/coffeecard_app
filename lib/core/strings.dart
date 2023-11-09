@@ -30,6 +30,12 @@ abstract final class Strings {
   static const loginForgotYourPasscode = 'Forgot your passcode?';
   static const loginForgot = 'Forgot?';
 
+  // Barista hub
+  static const baristaTickets = 'Barista tickets';
+  static String perksTitle(String role) => '$role perks';
+  static const baristaPerksExplainer =
+      'As a contributor to the cafe, you have access to special perks that you can redeem here in the app.';
+
   static const loginResendVerificationEmail = 'Resend verification email';
   static const loginVerificationEmailSent = 'Verification email sent';
   static String loginVerificationEmailBody(String email) =>
@@ -139,7 +145,6 @@ abstract final class Strings {
       'Tickets that you buy will show up here.';
   static const emptyCoffeeCardTextBottom =
       'Use the section below to shop tickets.';
-  static const cofeeCardTicketsLeft = 'Tickets left:';
   static const useTicket = 'Use ticket';
 
   // "Buy ticket" card
@@ -172,6 +177,8 @@ abstract final class Strings {
   static String price(int price) {
     return '$price,-';
   }
+
+  static const free = 'FREE';
 
   // Purchase process
   static const purchaseErrorOk = 'Ok';

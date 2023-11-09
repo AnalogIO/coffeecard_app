@@ -6,20 +6,17 @@ class Product extends Equatable {
   final int price;
   final String name;
   final String description;
+  final bool isPerk;
 
   const Product({
-    required this.price,
-    required this.amount,
-    required this.name,
     required this.id,
+    required this.amount,
+    required this.price,
+    required this.name,
     required this.description,
+    required this.isPerk,
   });
 
   @override
-  String toString() {
-    return 'Product{id: $id, amount: $amount, price: $price, productName: $name, description> $description}';
-  }
-
-  @override
-  List<Object?> get props => [id, amount, price, name, description];
+  List<Object?> get props => [id, amount, price, name, description, isPerk];
 }

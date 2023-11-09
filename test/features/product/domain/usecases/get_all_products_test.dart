@@ -35,6 +35,7 @@ void main() {
           amount: 10,
           price: 1,
           description: 'test',
+          isPerk: false,
         ),
         ProductModel(
           id: 2,
@@ -42,6 +43,15 @@ void main() {
           amount: 1,
           price: 1,
           description: 'test',
+          isPerk: false,
+        ),
+        ProductModel(
+          id: 3,
+          name: 'test (single perk)',
+          amount: 1,
+          price: 0,
+          description: 'test',
+          isPerk: true,
         ),
       ];
 
@@ -55,8 +65,9 @@ void main() {
       actual.fold(
         (_) => throw Exception(),
         (actual) {
-          expect(actual.$1, [products.first]);
-          expect(actual.$2, [products[1]]);
+          expect(actual.clipCards, [products.first]);
+          expect(actual.singleDrinks, [products[1], products[2]]);
+          expect(actual.perks, [products.last]);
         },
       );
     },

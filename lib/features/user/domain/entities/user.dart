@@ -25,6 +25,17 @@ class User extends Equatable {
     required this.role,
   });
 
+  bool get hasBaristaPerks {
+    switch (role) {
+      case Role.barista:
+      case Role.manager:
+      case Role.board:
+        return true;
+      case Role.customer:
+        return false;
+    }
+  }
+
   User copyWith({
     int? id,
     String? name,

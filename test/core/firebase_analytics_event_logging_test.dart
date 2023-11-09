@@ -25,6 +25,7 @@ void main() {
       price: price,
       amount: amount,
       description: '',
+      isPerk: false,
     );
   }
 
