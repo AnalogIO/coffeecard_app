@@ -1,3 +1,4 @@
+import 'package:coffeecard/core/extensions/string_extensions.dart';
 import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/core/widgets/components/helpers/grid.dart';
 import 'package:coffeecard/core/widgets/components/section_title.dart';
@@ -28,7 +29,9 @@ class _BaristaPerksSectionState extends State<BaristaPerksSection> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const SectionTitle(Strings.baristaPerks),
+            SectionTitle(
+              Strings.perksTitle(widget.userRole.name.capitalize()),
+            ),
             UserRoleIndicator(widget.userRole),
           ],
         ),

@@ -32,7 +32,7 @@ abstract final class Strings {
 
   // Barista hub
   static const baristaTickets = 'Barista tickets';
-  static const baristaPerks = 'Barista perks';
+  static String perksTitle(String role) => '$role perks';
   static const baristaClaimOnShiftDrink = 'Claim on-shift drink';
   static const baristaClaimFreeDrink = 'Claim free drink';
   static const baristaClaimFreeFilter = 'Claim free filter/tea';
