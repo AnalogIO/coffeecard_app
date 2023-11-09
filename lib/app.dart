@@ -5,7 +5,7 @@ import 'package:coffeecard/core/widgets/pages/splash/splash_loading_page.dart';
 import 'package:coffeecard/features/authentication/presentation/cubits/authentication_cubit.dart';
 import 'package:coffeecard/features/environment/presentation/cubit/environment_cubit.dart';
 import 'package:coffeecard/features/product/presentation/cubit/product_cubit.dart';
-import 'package:coffeecard/features/redirection/splash_router.dart';
+import 'package:coffeecard/features/redirection/redirection_router.dart';
 import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:flutter/material.dart';
