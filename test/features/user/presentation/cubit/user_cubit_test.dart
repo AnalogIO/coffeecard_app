@@ -62,7 +62,7 @@ void main() {
         ),
       ),
       act: (_) => cubit.fetchUserDetails(),
-      expect: () => [
+      expect: () => const [
         UserLoading(),
         UserError('some error'),
       ],
@@ -75,9 +75,24 @@ void main() {
         (_) async => const Right(testUser),
       ),
       act: (_) => cubit.fetchUserDetails(),
-      expect: () => [
+      expect: () => const [
         UserLoading(),
-        UserLoaded(user: testUser),
+        UserLoaded(testUser),
+      ],
+    );
+  });
+
+  group('initialize', () {
+    blocTest(
+      'should emit [Loading, InitiallyLoaded] when use case succeeds',
+      build: () => cubit,
+      setUp: () => when(getUser()).thenAnswer(
+        (_) async => const Right(testUser),
+      ),
+      act: (_) => cubit.initialize(),
+      expect: () => const [
+        UserLoading(),
+        UserInitiallyLoaded(testUser),
       ],
     );
   });
@@ -87,7 +102,7 @@ void main() {
       'should not update state if state is [Loading]',
       build: () => cubit,
       act: (_) => cubit.updateUser(const UpdateUser()),
-      seed: () => UserLoading(),
+      seed: () => const UserLoading(),
       expect: () => [],
     );
 
@@ -95,7 +110,7 @@ void main() {
       'should not update state if state is [Error]',
       build: () => cubit,
       act: (_) => cubit.updateUser(const UpdateUser()),
-      seed: () => UserError('some error'),
+      seed: () => const UserError('some error'),
       expect: () => [],
     );
 
@@ -103,7 +118,7 @@ void main() {
       'should not update state if state is [Updating]',
       build: () => cubit,
       act: (_) => cubit.updateUser(const UpdateUser()),
-      seed: () => UserUpdating(user: testUser),
+      seed: () => const UserUpdating(testUser),
       expect: () => [],
     );
 
@@ -124,9 +139,9 @@ void main() {
         ),
       ),
       act: (_) => cubit.updateUser(const UpdateUser()),
-      seed: () => UserLoaded(user: testUser),
-      expect: () => [
-        UserUpdating(user: testUser),
+      seed: () => const UserLoaded(testUser),
+      expect: () => const [
+        UserUpdating(testUser),
         UserError('some error'),
       ],
     );
@@ -146,10 +161,10 @@ void main() {
         (_) async => const Right(testUser),
       ),
       act: (_) => cubit.updateUser(const UpdateUser()),
-      seed: () => UserLoaded(user: testUser),
-      expect: () => [
-        UserUpdating(user: testUser),
-        UserLoaded(user: testUser),
+      seed: () => const UserLoaded(testUser),
+      expect: () => const [
+        UserUpdating(testUser),
+        UserLoaded(testUser),
       ],
     );
   });
