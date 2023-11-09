@@ -16,6 +16,7 @@ import 'package:coffeecard/features/ticket/presentation/cubit/tickets_cubit.dart
 import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gap/gap.dart';
 
 class TicketSection extends StatelessWidget {
   const TicketSection();
@@ -101,7 +102,10 @@ class TicketSection extends StatelessWidget {
                 if (state is TicketsLoaded) {
                   // States extending this are also caught on this
                   if (state.tickets.isEmpty) {
-                    return const CoffeeCardPlaceholder();
+                    return const Padding(
+                      padding: EdgeInsets.only(bottom: 12.0),
+                      child: CoffeeCardPlaceholder(),
+                    );
                   }
                   return Column(
                     children: state.tickets
@@ -109,7 +113,7 @@ class TicketSection extends StatelessWidget {
                           (p) => Padding(
                             padding: const EdgeInsets.only(bottom: 12.0),
                             child: Hero(
-                              tag: p.productId,
+                              tag: (p.productName, p.productId),
                               child: CoffeeCard(
                                 title: p.productName,
                                 amountOwned: p.count,
@@ -131,6 +135,7 @@ class TicketSection extends StatelessWidget {
                 throw ArgumentError(this);
               },
             ),
+            const Gap(4),
           ],
         );
       },
