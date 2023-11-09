@@ -1,7 +1,7 @@
 name: Publish Development App
 
 on:
-  push:
+  pull_request:
     branches: [ main ]
 
 jobs:
@@ -9,7 +9,8 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       store_artifacts: true
-      prod_release: false
+      build_type: "dev"
+      tag_name: ${{ github.head_ref }}
     secrets: inherit
 
   test:
@@ -55,4 +56,4 @@ jobs:
           # FIXME: token is deprecated, use serviceCredentialsFileContent instead
           # serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           groups: analogio-devs
-          file: android.aab
+          file: android.apk

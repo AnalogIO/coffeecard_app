@@ -9,7 +9,7 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       store_artifacts: true
-      prod_release: true
+      build_type: "prod"
       tag_name: ${{ github.event.release.tag_name }}
     secrets: inherit
 

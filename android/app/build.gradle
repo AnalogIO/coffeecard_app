@@ -70,7 +70,6 @@ android {
         development {
             dimension "app"
             applicationId "dk.analogio.analog.dev"
-            versionNameSuffix "-dev"
             resValue "string", "app_name", "[DEV] Analog"
             resValue "string", "app_deep_link", "analogcoffeecard-dev"
         }
@@ -78,7 +77,6 @@ android {
             dimension "app"
             applicationId "dk.analog.digitalclipcard"
             applicationIdSuffix ""
-            versionNameSuffix "-prod"
             resValue "string", "app_name", "Analog"
             resValue "string", "app_deep_link", "analogcoffeecard"
         }
