@@ -81,9 +81,6 @@ abstract final class AppTextStyle {
   static final shopCardOptionalLabel =
       _body.size(12).color(AppColors.ticket).bold().style;
 
-  static final comingSoonLabel =
-      shopCardOptionalLabel.copyWith(color: AppColors.gray);
-
   static final label = _body.size(11).color(AppColors.secondary).style;
 
   static final labelUnfocused = _body.size(11).color(AppColors.gray).style;
