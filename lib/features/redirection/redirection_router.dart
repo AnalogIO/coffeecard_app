@@ -45,7 +45,9 @@ class _MainRedirectionRouterState extends State<MainRedirectionRouter> {
 
     // Ensure both environment and authentication state are
     // loaded before proceeding.
-    if (!authenticationStatus.isUnknown && environmentState.isLoaded) {
+    final authenticationLoaded = !authenticationStatus.isUnknown;
+    final environmentLoaded = environmentState is EnvironmentLoaded;
+    if (authenticationLoaded && environmentLoaded) {
       handleAuthentication(authenticationStatus);
     }
   }

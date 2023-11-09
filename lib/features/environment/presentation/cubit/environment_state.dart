@@ -2,8 +2,6 @@ part of 'environment_cubit.dart';
 
 sealed class EnvironmentState extends Equatable {
   const EnvironmentState();
-
-  bool get isLoaded => this is EnvironmentLoaded;
 }
 
 class EnvironmentInitial extends EnvironmentState {
