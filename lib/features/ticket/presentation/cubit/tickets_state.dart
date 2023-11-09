@@ -14,9 +14,7 @@ class TicketsLoading extends TicketsState {
 class TicketsLoaded extends TicketsState {
   final List<TicketCount> tickets;
 
-  const TicketsLoaded({
-    required this.tickets,
-  });
+  const TicketsLoaded({required this.tickets});
 
   @override
   List<Object?> get props => [tickets];
