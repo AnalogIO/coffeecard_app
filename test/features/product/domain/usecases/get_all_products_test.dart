@@ -45,6 +45,14 @@ void main() {
           description: 'test',
           isPerk: false,
         ),
+        ProductModel(
+          id: 3,
+          name: 'test (single perk)',
+          amount: 1,
+          price: 0,
+          description: 'test',
+          isPerk: true,
+        ),
       ];
 
       when(remoteDataSource.getProducts())
@@ -58,7 +66,8 @@ void main() {
         (_) => throw Exception(),
         (actual) {
           expect(actual.clipCards, [products.first]);
-          expect(actual.singleDrinks, [products[1]]);
+          expect(actual.singleDrinks, [products[1], products[2]]);
+          expect(actual.perks, [products.last]);
         },
       );
     },
