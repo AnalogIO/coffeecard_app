@@ -15,20 +15,7 @@ class UserRoleIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: () => appDialog(
-        context: context,
-        title: userRole.name.capitalize(),
-        children: [
-          Text(Strings.baristaPerksExplainer, style: AppTextStyle.settingKey),
-        ],
-        actions: [
-          TextButton(
-            child: const Text(Strings.buttonGotIt),
-            onPressed: () => closeAppDialog(context),
-          ),
-        ],
-        dismissible: true,
-      ),
+      onPressed: () => showDialog(context),
       style: TextButton.styleFrom(
         backgroundColor: AppColors.background,
         padding: const EdgeInsets.only(left: 16, right: 12),
@@ -53,6 +40,23 @@ class UserRoleIndicator extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Future<void> showDialog(BuildContext context) {
+    return appDialog(
+      context: context,
+      title: userRole.name.capitalize(),
+      children: [
+        Text(Strings.baristaPerksExplainer, style: AppTextStyle.settingKey),
+      ],
+      actions: [
+        TextButton(
+          child: const Text(Strings.buttonGotIt),
+          onPressed: () => closeAppDialog(context),
+        ),
+      ],
+      dismissible: true,
     );
   }
 }
