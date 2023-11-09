@@ -19,6 +19,11 @@ class ContributorLocalDataSource {
         avatarUrl: 'https://avatars.githubusercontent.com/u/43568735?v=4',
       ),
       Contributor(
+        name: 'Hubert Wójcik',
+        githubUrl: 'https://github.com/HubertWojcik10',
+        avatarUrl: 'https://avatars.githubusercontent.com/u/81220416?v=4',
+      ),
+      Contributor(
         name: 'Jonas Anker Rasmussen',
         githubUrl: 'https://github.com/jonasanker',
         avatarUrl: 'https://avatars.githubusercontent.com/u/25930103?v=4',
