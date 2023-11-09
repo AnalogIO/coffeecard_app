@@ -10,6 +10,7 @@ jobs:
     with:
       store_artifacts: true
       build_type: "dev"
+      tag_name: ${{ github.head_ref }}
     secrets: inherit
 
   test:

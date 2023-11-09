@@ -1,9 +1,6 @@
 name: Build application
 
 on:
-  pull_request:
-    branches: [ main ]
-
   workflow_dispatch:
 
   workflow_call:
@@ -14,16 +11,11 @@ on:
         default: false
       tag_name:
         type: string
-        required: false
+        required: true
       build_type:
+        type: string
         required: false
         default: "dev"
-        options:
-        - dev
-        - prod
-
-env:
-  TAG_NAME: ${{ inputs.tag_name || 'dev' }}
 
 jobs:
   version:
@@ -44,11 +36,11 @@ jobs:
           echo "Version: $VERSION"
           echo "Run No: $BUILD_NO"
         env:
-          VERSION: ${{ env.TAG_NAME }}
+          VERSION: ${{ inputs.TAG_NAME }}
           BUILD_NO: ${{ steps.build_version.outputs.build_no }}
 
     outputs:
-      version: ${{ env.TAG_NAME }}
+      version: ${{ inputs.TAG_NAME }}
       build_version: ${{ steps.build_version.outputs.build_no }}
 
   build_ios:
@@ -60,7 +52,7 @@ jobs:
         uses: actions/checkout@v4.1.0
 
       - name: Build iOS app (dev)
-        if: ${{ env.build_type != 'prod' }}
+        if: ${{ inputs.build_type != 'prod' }}
         uses: ./.github/actions/build_ios
         with:
           version: ${{ needs.version.outputs.version }}
@@ -73,7 +65,7 @@ jobs:
           build_type: ${{ inputs.build_type }}
 
       - name: Build iOS app (prod)
-        if: ${{ env.build_type == 'prod' }}
+        if: ${{ inputs.build_type == 'prod' }}
         uses: ./.github/actions/build_ios
         with:
           version: ${{ needs.version.outputs.version }}
