@@ -9,6 +9,7 @@ import 'package:coffeecard/features/settings/presentation/widgets/setting_value_
 import 'package:coffeecard/features/settings/presentation/widgets/settings_group.dart';
 import 'package:coffeecard/features/settings/presentation/widgets/settings_list_entry.dart';
 import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
+import 'package:coffeecard/features/voucher/presentation/pages/redeem_voucher_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -22,11 +23,16 @@ class AccountSection extends StatelessWidget {
     ).ignore();
   }
 
-  void changePasscodeTapCallback(BuildContext context, UserLoaded _) =>
-      Navigator.push(context, ChangePasscodeFlow.route);
+  void changePasscodeTapCallback(BuildContext context, UserLoaded _) {
+    Navigator.push(context, ChangePasscodeFlow.route).ignore();
+  }
 
   void logoutTapCallback(BuildContext context) {
     context.read<AuthenticationCubit>().unauthenticated();
+  }
+
+  void redeemVoucherTapCallback(BuildContext context) {
+    Navigator.push(context, RedeemVoucherPage.route).ignore();
   }
 
   void deleteAccountTapCallback(BuildContext context, UserLoaded loadedState) {
@@ -64,6 +70,10 @@ class AccountSection extends StatelessWidget {
             value: Strings.change,
           ),
           onTap: _tappableIfUserLoaded(context, changePasscodeTapCallback),
+        ),
+        SettingListEntry(
+          name: Strings.redeemVoucher,
+          onTap: () => redeemVoucherTapCallback(context),
         ),
         SettingListEntry(
           name: Strings.logOut,
