@@ -24,14 +24,13 @@ class _BaristaPerksSectionState extends State<BaristaPerksSection> {
   @override
   Widget build(BuildContext context) {
     final perks = context.watch<PurchasableProducts>().perks;
+    final roleName = widget.userRole.name.capitalize();
     return Column(
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            SectionTitle(
-              Strings.perksTitle(widget.userRole.name.capitalize()),
-            ),
+            SectionTitle(Strings.perksTitle(roleName)),
             UserRoleIndicator(widget.userRole),
           ],
         ),
