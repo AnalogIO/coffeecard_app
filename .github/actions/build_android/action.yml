@@ -1,0 +1,64 @@
+name: Build Android app
+description: Build and upload Android app
+inputs:
+  version:
+    required: true
+    description: "App version"
+  build_version:
+    required: true
+    description: "Build version"
+  store_artifacts:
+    required: false
+    description: "Store artifact"
+  build_type:
+    required: false
+    default: "dev"
+    options:
+    - dev
+    - prod
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Java
+      uses: actions/setup-java@v3.13.0
+      with:
+        distribution: "adopt"
+        java-version: 17
+
+    - name: Setup Flutter environment
+      uses: ./.github/actions/setup_flutter_environment
+      with:
+        prod_release: ${{ inputs.prod_release }}
+
+    - name: Build apk (dev)
+      if: ${{ inputs.build_type == 'dev' }}
+      run: |
+        flutter build apk --flavor development --release --build-name ${{ inputs.version }} --build-number ${{ inputs.build_version }} --target lib/main_development.dart
+        mv build/app/outputs/flutter-apk/app-development-release.apk android.apk
+      shell: bash
+
+    - name: Upload apk (dev)
+      if: ${{ !!inputs.store_artifacts && inputs.build_type == 'dev'}}
+      uses: actions/upload-artifact@v3.1.3
+      with:
+        name: android
+        path: android.apk
+        retention-days: 1
+        if-no-files-found: error
+
+    - name: Build appbundle (prod)
+      if: ${{ inputs.build_type == 'prod' }}
+      run: |
+        flutter build appbundle --flavor production --release --build-name ${{ inputs.version }} --build-number ${{ inputs.build_version }} --target lib/main_production.dart
+        mv build/app/outputs/bundle/productionRelease/app-production-release.aab android.aab
+      shell: bash
+
+    - name: Upload appbundle (prod)
+      if: ${{ !!inputs.store_artifacts && inputs.build_type == 'prod'}}
+      uses: actions/upload-artifact@v3.1.3
+      with:
+        name: android
+        path: android.aab
+        retention-days: 1
+        if-no-files-found: error

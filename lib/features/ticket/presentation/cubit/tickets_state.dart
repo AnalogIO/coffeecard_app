@@ -14,28 +14,28 @@ class TicketsLoading extends TicketsState {
 class TicketsLoaded extends TicketsState {
   final List<TicketCount> tickets;
 
-  const TicketsLoaded(this.tickets);
+  const TicketsLoaded({required this.tickets});
 
   @override
-  List<Object?> get props => tickets;
+  List<Object?> get props => [tickets];
 }
 
 class TicketUsing extends TicketsLoaded {
-  const TicketUsing(super.tickets);
+  const TicketUsing({required super.tickets});
 }
 
 class TicketUsed extends TicketsLoaded {
   final Receipt receipt;
 
-  const TicketUsed(this.receipt, List<TicketCount> tickets) : super(tickets);
+  const TicketUsed({required this.receipt, required super.tickets});
 
   @override
-  List<Object?> get props => [receipt];
+  List<Object?> get props => [receipt, tickets];
 }
 
 class TicketsUseError extends TicketsState {
   final String message;
-  const TicketsUseError(this.message);
+  const TicketsUseError({required this.message});
 
   @override
   List<Object?> get props => [message];
@@ -43,7 +43,7 @@ class TicketsUseError extends TicketsState {
 
 class TicketsLoadError extends TicketsState {
   final String message;
-  const TicketsLoadError(this.message);
+  const TicketsLoadError({required this.message});
 
   @override
   List<Object?> get props => [message];

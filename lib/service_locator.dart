@@ -72,10 +72,7 @@ import 'package:logger/logger.dart';
 final GetIt sl = GetIt.instance;
 
 void configureServices() {
-  // Logger
-  ignoreValue(
-    sl.registerSingleton(Logger()),
-  );
+  ignoreValue(sl.registerSingleton(Logger()));
 
   initFeatures();
   initExternal();
@@ -88,6 +85,12 @@ void configureServices() {
 }
 
 void initExternal() {
+  ignoreValue(sl.registerSingleton(const FlutterSecureStorage()));
+
+  ignoreValue(sl.registerFactory(() => DateService()));
+  ignoreValue(sl.registerFactory(() => ScreenBrightness()));
+  ignoreValue(sl.registerLazySingleton(() => ExternalUrlLauncher()));
+
   ignoreValue(
     sl.registerSingleton<FirebaseAnalyticsEventLogging>(
       FirebaseAnalyticsEventLogging(FirebaseAnalytics.instance),
@@ -100,20 +103,15 @@ void initExternal() {
       firebaseLogger: sl(),
     ),
   );
-
-  sl.registerFactory(() => const FlutterSecureStorage());
-  sl.registerFactory(() => DateService());
-  sl.registerFactory(() => ScreenBrightness());
-  sl.registerLazySingleton(() => ExternalUrlLauncher());
 }
 
 void initFeatures() {
   initAuthentication();
   initOpeningHours();
-  initTicket();
   initOccupation();
   initUser();
   initReceipt();
+  initTicket();
   initContributor();
   initPayment();
   initLeaderboard();
@@ -164,17 +162,17 @@ void initOpeningHours() {
   sl.registerFactory(() => GetOpeningHours(repository: sl()));
   sl.registerFactory(() => CheckOpenStatus(repository: sl()));
 
+  // data source
+  sl.registerLazySingleton<OpeningHoursLocalDataSource>(
+    () => OpeningHoursLocalDataSource(),
+  );
+
   // repository
   sl.registerFactory<OpeningHoursRepository>(
     () => OpeningHoursRepositoryImpl(
       dataSource: sl(),
       dateService: sl(),
     ),
-  );
-
-  // data source
-  sl.registerLazySingleton<OpeningHoursLocalDataSource>(
-    () => OpeningHoursLocalDataSource(),
   );
 }
 
@@ -219,7 +217,11 @@ void initUser() {
 
   // data source
   sl.registerLazySingleton(
-    () => TicketRemoteDataSource(apiV1: sl(), apiV2: sl(), executor: sl()),
+    () => TicketRemoteDataSource(
+      apiV1: sl(),
+      apiV2: sl(),
+      executor: sl(),
+    ),
   );
 
   sl.registerFactory(() => GetUser(dataSource: sl()));
@@ -318,7 +320,7 @@ void initProduct() {
 
   // data source
   sl.registerLazySingleton(
-    () => ProductRemoteDataSource(apiV1: sl(), executor: sl()),
+    () => ProductRemoteDataSource(api: sl(), executor: sl()),
   );
 }
 

@@ -10,13 +10,7 @@ import 'package:mockito/mockito.dart';
 
 import 'ticket_remote_data_source_test.mocks.dart';
 
-@GenerateMocks(
-  [
-    CoffeecardApi,
-    CoffeecardApiV2,
-    NetworkRequestExecutor,
-  ],
-)
+@GenerateMocks([CoffeecardApi, CoffeecardApiV2, NetworkRequestExecutor])
 void main() {
   late MockCoffeecardApi apiV1;
   late MockCoffeecardApiV2 apiV2;

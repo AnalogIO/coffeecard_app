@@ -1,0 +1,32 @@
+name: Setup Flutter environment
+description: Setup the Flutter environment
+inputs:
+  prod_release:
+    required: false
+    default: 'false'
+    description: "Is prod release"
+
+env:
+  FLUTTER_VERSION: 3.13.7
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Flutter environment
+      uses: subosito/flutter-action@v2.11.0
+      with:
+        flutter-version: ${{ env.FLUTTER_VERSION }}
+        channel: "stable"
+
+    - name: Download dependencies
+      run: flutter pub get
+      shell: bash
+
+    - name: Replace target URI in Production
+      if: ${{ inputs.prod_release == 'true' }}
+      run: sed -i'' -e 's/.env.develop/.env.production/' lib/env/env.dart
+      shell: bash
+
+    - name: Generate code
+      run: dart run build_runner build
+      shell: bash

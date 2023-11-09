@@ -1,12 +1,12 @@
 import 'package:coffeecard/core/strings.dart';
+import 'package:coffeecard/core/widgets/components/barista_perks_section.dart';
 import 'package:coffeecard/core/widgets/components/scaffold.dart';
-import 'package:coffeecard/core/widgets/components/section_title.dart';
 import 'package:coffeecard/core/widgets/upgrade_alert.dart';
-import 'package:coffeecard/features/opening_hours/presentation/widgets/opening_hours_indicator.dart';
 import 'package:coffeecard/features/ticket/presentation/widgets/shop_section.dart';
 import 'package:coffeecard/features/ticket/presentation/widgets/tickets_section.dart';
+import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TicketsPage extends StatelessWidget {
   const TicketsPage({required this.scrollController});
@@ -21,6 +21,9 @@ class TicketsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final user = (context.read<UserCubit>().state as UserLoaded).user;
+    final hasBaristaPerks = user.hasBaristaPerks;
+
     return UpgradeAlert(
       child: AppScaffold.withTitle(
         title: Strings.ticketsPageTitle,
@@ -32,19 +35,10 @@ class TicketsPage extends StatelessWidget {
                 controller: scrollController,
                 shrinkWrap: true,
                 padding: const EdgeInsets.all(16.0),
-                children: const [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SectionTitle(Strings.ticketsMyTickets),
-                      OpeningHoursIndicator(),
-                    ],
-                  ),
-                  TicketSection(),
-                  Gap(24),
-                  SectionTitle(Strings.shopText),
-                  ShopSection(),
+                children: [
+                  const TicketSection(),
+                  if (hasBaristaPerks) BaristaPerksSection(userRole: user.role),
+                  const ShopSection(),
                 ],
               ),
             ),

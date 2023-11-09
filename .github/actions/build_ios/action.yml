@@ -1,0 +1,67 @@
+name: Build iOS app
+description: Build and upload iOS app
+inputs:
+  version:
+    required: true
+    description: "App version"
+  build_version:
+    required: true
+    description: "Build version"
+  apple_ios_signing_cert:
+    required: true
+    description: "iOS signing certificate"
+  apple_ios_signing_cert_pw:
+    required: true
+    description: "iOS signing certificate password base 64 encoded"
+  apple_ios_provisioning_profile:
+    required: true
+    description: "Provisioning profile"
+  apple_keychain_pw:
+    required: true
+    description: "Keychain password"
+  store_artifacts:
+    required: true
+    description: "Store artifact"
+  build_type:
+    required: false
+    default: "dev"
+    options:
+    - dev
+    - prod
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install Apple certificate and provisioning profile
+      if: ${{ inputs.prod_release != 'true' }}
+      run: .github/scripts/setup_certs.sh
+      env:
+        APPLE_IOS_SIGNING_CERT: ${{ inputs.apple_ios_signing_cert }}
+        APPLE_IOS_SIGNING_CERT_PW: ${{ inputs.apple_ios_signing_cert_pw }}
+        APPLE_IOS_PROVISIONING_PROFILE: ${{ inputs.apple_ios_provisioning_profile }}
+        APPLE_KEYCHAIN_PW: ${{ inputs.apple_keychain_pw }}
+      shell: bash
+
+    - name: Setup Flutter environment
+      uses: ./.github/actions/setup_flutter_environment
+      with:
+        prod_release: ${{ inputs.build_type == 'prod' }}
+
+    - name: Build iOS (dev)
+      if: ${{ inputs.build_type != 'prod' }}
+      run: .github/scripts/build_ios_dev.sh ${{ inputs.version }} ${{ inputs.build_version }}
+      shell: bash
+
+    - name: Build iOS (prod)
+      if: ${{ inputs.build_type == 'prod' }}
+      run: .github/scripts/build_ios_prod.sh ${{ inputs.version }} ${{ inputs.build_version }}
+      shell: bash
+
+    - name: Upload iOS build
+      if: ${{ inputs.store_artifacts }}
+      uses: actions/upload-artifact@v3.1.3
+      with:
+        name: ios
+        path: build-output/ios
+        retention-days: 1
+        if-no-files-found: error

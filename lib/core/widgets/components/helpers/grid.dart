@@ -44,7 +44,9 @@ class Grid extends StatelessWidget {
     final horizontalGap = _horizontalGap(isSmall);
     final verticalGap = _verticalGap(isSmall);
     final columns = _columns(isSmall);
-
+    if (children.isEmpty) {
+      return const SizedBox.shrink();
+    }
     return UnconstrainedBox(
       constrainedAxis: Axis.horizontal,
       child: LayoutGrid(

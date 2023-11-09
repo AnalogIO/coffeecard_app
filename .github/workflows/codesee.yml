@@ -2,8 +2,7 @@
 # This is v2.0 of this workflow file
 on:
   push:
-    branches:
-      - develop
+    branches: [ main ]
   pull_request_target:
     types: [opened, synchronize, reopened]
 
@@ -15,7 +14,7 @@ jobs:
   codesee:
     runs-on: ubuntu-latest
     continue-on-error: true
-    name: Analyze the repo with CodeSee
+    name: Analyze repository
     steps:
       - uses: Codesee-io/codesee-action@v2
         with:

@@ -29,15 +29,15 @@ apply plugin: 'com.google.firebase.crashlytics'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-    compileSdkVersion 33
+    compileSdk 34
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '17'
     }
 
     sourceSets {
@@ -46,8 +46,8 @@ android {
 
 
     defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 33
+        minSdkVersion 23
+        targetSdkVersion 34
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
@@ -70,7 +70,6 @@ android {
         development {
             dimension "app"
             applicationId "dk.analogio.analog.dev"
-            versionNameSuffix "-dev"
             resValue "string", "app_name", "[DEV] Analog"
             resValue "string", "app_deep_link", "analogcoffeecard-dev"
         }
@@ -78,7 +77,6 @@ android {
             dimension "app"
             applicationId "dk.analog.digitalclipcard"
             applicationIdSuffix ""
-            versionNameSuffix "-prod"
             resValue "string", "app_name", "Analog"
             resValue "string", "app_deep_link", "analogcoffeecard"
         }

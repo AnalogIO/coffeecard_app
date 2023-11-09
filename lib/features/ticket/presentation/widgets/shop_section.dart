@@ -1,9 +1,9 @@
 import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/core/widgets/components/helpers/grid.dart';
+import 'package:coffeecard/core/widgets/components/section_title.dart';
 import 'package:coffeecard/features/product/presentation/pages/buy_single_drink_page.dart';
 import 'package:coffeecard/features/product/presentation/pages/buy_tickets_page.dart';
 import 'package:coffeecard/features/ticket/presentation/widgets/shop_card.dart';
-import 'package:coffeecard/features/voucher/presentation/pages/redeem_voucher_page.dart';
 import 'package:flutter/material.dart';
 
 class ShopSection extends StatelessWidget {
@@ -12,7 +12,9 @@ class ShopSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        const SectionTitle(Strings.shopText),
         Grid(
           singleColumnOnSmallDevice: false,
           gap: GridGap.tightVertical,
@@ -28,16 +30,6 @@ class ShopSection extends StatelessWidget {
               icon: Icons.coffee,
               onTapped: (_) =>
                   Navigator.push(context, BuySingleDrinkPage.route),
-            ),
-            const ShopCard(
-              title: Strings.buyOther,
-              icon: Icons.coffee_maker,
-              type: ShopCardType.comingSoon,
-            ),
-            ShopCard(
-              title: Strings.redeemVoucher,
-              icon: Icons.wallet_giftcard,
-              onTapped: (_) => Navigator.push(context, RedeemVoucherPage.route),
             ),
           ],
         ),

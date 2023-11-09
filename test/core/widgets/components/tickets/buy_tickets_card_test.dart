@@ -6,17 +6,17 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   testWidgets('BuyTicketsCard should have product information', (tester) async {
     await tester.pumpWidget(
-      MaterialApp(
+      const MaterialApp(
         home: Scaffold(
           body: BuyTicketsCard(
-            product: const Product(
+            Product(
               id: 0,
               name: 'CoffeeTitle',
               description: 'CoffeeDescription',
               amount: 2,
               price: 10,
+              isPerk: false,
             ),
-            onTap: (context, product, state) {},
           ),
         ),
       ),
@@ -30,17 +30,17 @@ void main() {
 
   testWidgets('BuyTicketsCard should match golden file', (tester) async {
     await tester.pumpWidget(
-      MaterialApp(
+      const MaterialApp(
         home: Scaffold(
           body: BuyTicketsCard(
-            product: const Product(
+            Product(
               id: 0,
               name: 'Coffee',
               description: 'Coffee',
               amount: 1,
               price: 1,
+              isPerk: false,
             ),
-            onTap: (context, product, state) {},
           ),
         ),
       ),

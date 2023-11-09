@@ -12,19 +12,19 @@ class ProductsLoading extends ProductState {
 }
 
 class ProductsLoaded extends ProductState {
-  final List<Product> ticketProducts;
-  final List<Product> singleDrinkProducts;
+  final PurchasableProducts products;
 
-  const ProductsLoaded(this.ticketProducts, this.singleDrinkProducts);
+  const ProductsLoaded(this.products);
 
   @override
-  List<Object?> get props => [ticketProducts, singleDrinkProducts];
+  List<Object?> get props => [products];
 }
 
 class ProductsError extends ProductState {
   final String error;
 
   const ProductsError(this.error);
+  ProductsError.fromFailure(Failure failure) : error = failure.reason;
 
   @override
   List<Object?> get props => [error];
