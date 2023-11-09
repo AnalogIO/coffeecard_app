@@ -44,10 +44,10 @@ Future<void> buyModal({
   if (!context.mounted) return;
 
   // Show the receipt overlay if the payment was successful.
-  return afterPurchaseModal(context, maybePayment);
+  return _afterPurchaseModal(context, maybePayment);
 }
 
-Future<void> afterPurchaseModal(BuildContext context, Payment? payment) async {
+Future<void> _afterPurchaseModal(BuildContext context, Payment? payment) async {
   // Don't do anything if the payment is null or not completed.
   if (payment == null || payment.status != PaymentStatus.completed) {
     return;
