@@ -27,7 +27,6 @@ inputs:
     default: "dev"
     options:
     - dev
-    - preview
     - prod
 
 runs:

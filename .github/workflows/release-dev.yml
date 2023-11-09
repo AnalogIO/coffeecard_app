@@ -10,7 +10,6 @@ jobs:
     with:
       store_artifacts: true
       build_type: "dev"
-      build_apk: true
     secrets: inherit
 
   test:
@@ -56,4 +55,4 @@ jobs:
           # FIXME: token is deprecated, use serviceCredentialsFileContent instead
           # serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           groups: analogio-devs
-          file: android.aab
+          file: android.apk

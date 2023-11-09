@@ -15,7 +15,6 @@ inputs:
     default: "dev"
     options:
     - dev
-    - preview
     - prod
 
 runs:
@@ -39,12 +38,14 @@ runs:
         mv build/app/outputs/bundle/developmentRelease/app-development-release.aab android.apk
       shell: bash
 
-    - name: Build appbundle (preview)
-      if: ${{ inputs.build_type == 'preview' }}
-      run: |
-        flutter build appbundle --flavor development --release --build-name ${{ inputs.version }} --build-number ${{ inputs.build_version }} --target lib/main_development.dart
-        mv build/app/outputs/apk/development/release/app-development-release.apk android.aab
-      shell: bash
+    - name: Upload apk (dev)
+      if: ${{ !!inputs.store_artifacts && inputs.build_type != 'dev'}}
+      uses: actions/upload-artifact@v3.1.3
+      with:
+        name: android
+        path: android.apk
+        retention-days: 1
+        if-no-files-found: error
 
     - name: Build appbundle (prod)
       if: ${{ inputs.build_type == 'prod' }}
@@ -53,20 +54,11 @@ runs:
         mv build/app/outputs/bundle/productionRelease/app-production-release.aab android.aab
       shell: bash
 
-    - name: Upload Android build (aab)
+    - name: Upload appbundle (prod)
       if: ${{ !!inputs.store_artifacts && inputs.build_type == 'dev'}}
       uses: actions/upload-artifact@v3.1.3
       with:
         name: android
         path: android.aab
-        retention-days: 1
-        if-no-files-found: error
-
-    - name: Upload Android build (apk)
-      if: ${{ !!inputs.store_artifacts && inputs.build_type != 'dev'}}
-      uses: actions/upload-artifact@v3.1.3
-      with:
-        name: android
-        path: android.apk
         retention-days: 1
         if-no-files-found: error

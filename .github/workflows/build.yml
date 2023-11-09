@@ -20,7 +20,6 @@ on:
         default: "dev"
         options:
         - dev
-        - preview
         - prod
 
 env:
@@ -71,7 +70,7 @@ jobs:
           apple_ios_provisioning_profile: ${{ secrets.APPLE_IOS_PROVISIONING_PROFILE_DEVELOPMENT }}
           apple_keychain_pw: ${{ secrets.APPLE_KEYCHAIN_PW }}
           store_artifacts: ${{ inputs.store_artifacts }}
-          build_type: ${ inputs.build_type }}
+          build_type: ${{ inputs.build_type }}
 
       - name: Build iOS app (prod)
         if: ${{ env.build_type == 'prod' }}
@@ -84,7 +83,7 @@ jobs:
           apple_ios_provisioning_profile: ${{ secrets.APPLE_IOS_PROVISIONING_PROFILE_PROD }}
           apple_keychain_pw: ${{ secrets.APPLE_KEYCHAIN_PW }}
           store_artifacts: ${{ inputs.store_artifacts }}
-          build_type: ${ inputs.build_type }}
+          build_type: ${{ inputs.build_type }}
 
   build_android:
     name: Build Android App
@@ -100,4 +99,4 @@ jobs:
           version: ${{ needs.version.outputs.version }}
           build_version: ${{ needs.version.outputs.build_version }}
           store_artifacts: ${{ inputs.store_artifacts }}
-          build_type: ${ inputs.build_type }}
+          build_type: ${{ inputs.build_type }}
