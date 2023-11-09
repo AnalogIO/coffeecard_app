@@ -26,7 +26,7 @@ class PerkCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return ShopCard(
       title: title,
-      icon: Icons.coffee_maker_outlined,
+      icon: Icons.coffee_maker_outlined, // TODO: Get icon from product
       onTapped: (_) => buyModal(
         context: context,
         product: product,
