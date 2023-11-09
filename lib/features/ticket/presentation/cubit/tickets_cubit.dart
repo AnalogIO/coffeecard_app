@@ -26,18 +26,14 @@ class TicketsCubit extends Cubit<TicketsState> {
 
     final st = state as TicketsLoaded;
 
-    emit(
-      TicketUsing(tickets: st.tickets),
-    );
+    emit(TicketUsing(tickets: st.tickets));
 
     final either = await consumeTicket(productId: productId);
 
-    either.fold(
-      (error) => emit(
-        TicketsUseError(message: error.reason),
-      ),
-      (receipt) => emit(
-        TicketUsed(receipt: receipt, tickets: st.tickets),
+    emit(
+      either.fold(
+        (error) => TicketsUseError(message: error.reason),
+        (receipt) => TicketUsed(receipt: receipt, tickets: st.tickets),
       ),
     );
 
@@ -47,9 +43,11 @@ class TicketsCubit extends Cubit<TicketsState> {
   Future<void> refreshTickets() async {
     final either = await loadTickets();
 
-    either.fold(
-      (error) => emit(TicketsLoadError(message: error.reason)),
-      (tickets) => emit(TicketsLoaded(tickets: tickets)),
+    emit(
+      either.fold(
+        (error) => TicketsLoadError(message: error.reason),
+        (tickets) => TicketsLoaded(tickets: tickets),
+      ),
     );
   }
 }
