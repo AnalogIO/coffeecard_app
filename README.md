@@ -4,10 +4,10 @@
 
 <p align="center">
   <a href="https://github.com/AnalogIO/coffeecard_app/actions">
-    <img alt="Build and test" src="https://github.com/AnalogIO/coffeecard_app/actions/workflows/build.yml/badge.svg">
+    <img alt="Build and test" src="https://github.com/AnalogIO/coffeecard_app/actions/workflows/release-prod.yml/badge.svg">
   </a>
   <a href="https://codecov.io/gh/AnalogIO/coffeecard_app">
-    <img alt="codecov" src="https://codecov.io/gh/AnalogIO/coffeecard_app/branch/develop/graph/badge.svg">
+    <img alt="codecov" src="https://codecov.io/gh/AnalogIO/coffeecard_app/branch/main/graph/badge.svg">
   </a>
   <a href="https://opensource.org/licenses/MIT">
     <img src="https://img.shields.io/badge/license-MIT-purple.svg" alt="License: MIT">
