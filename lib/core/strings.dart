@@ -33,17 +33,11 @@ abstract final class Strings {
   // Barista hub
   static const baristaTickets = 'Barista tickets';
   static String perksTitle(String role) => '$role perks';
-  static const baristaClaimOnShiftDrink = 'Claim on-shift drink';
-  static const baristaClaimFreeDrink = 'Claim free drink';
-  static const baristaClaimFreeFilter = 'Claim free filter/tea';
+  static const baristaPerksExplainer =
+      'As a contributor to the cafe, you have access to special perks that you can redeem here in the app.';
+
   static const loginResendVerificationEmail = 'Resend verification email';
   static const loginVerificationEmailSent = 'Verification email sent';
-
-  static const baristaPerksExplainer =
-      'As a contributor to the cafe, you have access to special perks, that you can redeem here in the app.';
-  static const baristaOnShiftDisclaimer =
-      'Claiming an "on-shift drink" works on the trust system, so please only claim a drink when you are actually working.';
-
   static String loginVerificationEmailBody(String email) =>
       'We have sent an email to $email, please check your spam folder';
 

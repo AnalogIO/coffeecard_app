@@ -19,15 +19,7 @@ class UserRoleIndicator extends StatelessWidget {
         context: context,
         title: userRole.name.capitalize(),
         children: [
-          Text(
-            Strings.baristaPerksExplainer,
-            style: AppTextStyle.settingKey,
-          ),
-          const Gap(8),
-          Text(
-            Strings.baristaOnShiftDisclaimer,
-            style: AppTextStyle.settingKey,
-          ),
+          Text(Strings.baristaPerksExplainer, style: AppTextStyle.settingKey),
         ],
         actions: [
           TextButton(
