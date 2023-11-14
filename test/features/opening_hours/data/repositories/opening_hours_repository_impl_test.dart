@@ -65,10 +65,11 @@ void main() {
     test('should return [false] if current hour is before opening time', () {
       // arrange
       when(dataSource.getOpeningHours()).thenReturn({
-        0: const Timeslot(start: 1, end: 2),
+        0: const Timeslot(start: (8, 0), end: (15, 0)),
       });
       when(dateService.currentWeekday()).thenReturn(0);
       when(dateService.currentHour()).thenReturn(0);
+      when(dateService.currentMinute()).thenReturn(0);
 
       // act
       final actual = repository.isOpen();
@@ -79,10 +80,11 @@ void main() {
 
     test('should return [false] if current hour is after closing time', () {
       when(dataSource.getOpeningHours()).thenReturn({
-        0: const Timeslot(start: 1, end: 2),
+        0: const Timeslot(start: (8, 0), end: (15, 0)),
       });
       when(dateService.currentWeekday()).thenReturn(0);
-      when(dateService.currentHour()).thenReturn(3);
+      when(dateService.currentHour()).thenReturn(16);
+      when(dateService.currentMinute()).thenReturn(0);
 
       // act
       final actual = repository.isOpen();
@@ -95,16 +97,71 @@ void main() {
       'should return [true] if current hour is between opening and closing hour',
       () {
         when(dataSource.getOpeningHours()).thenReturn({
-          0: const Timeslot(start: 0, end: 4),
+          0: const Timeslot(start: (8, 0), end: (15, 0)),
         });
         when(dateService.currentWeekday()).thenReturn(0);
-        when(dateService.currentHour()).thenReturn(2);
+        when(dateService.currentHour()).thenReturn(13);
+        when(dateService.currentMinute()).thenReturn(0);
 
         // act
         final actual = repository.isOpen();
 
         // assert
         expect(actual, true);
+      },
+    );
+
+    test(
+      'should return [true] if current minute is between opening and closing minute',
+      () {
+        when(dataSource.getOpeningHours()).thenReturn({
+          0: const Timeslot(start: (8, 0), end: (15, 30)),
+        });
+        when(dateService.currentWeekday()).thenReturn(0);
+        when(dateService.currentHour()).thenReturn(10);
+        when(dateService.currentMinute()).thenReturn(15);
+
+        // act
+        final actual = repository.isOpen();
+
+        // assert
+        expect(actual, true);
+      },
+    );
+
+    test(
+      'should return [false] if current minute is before opening minute',
+      () {
+        when(dataSource.getOpeningHours()).thenReturn({
+          0: const Timeslot(start: (8, 30), end: (15, 30)),
+        });
+        when(dateService.currentWeekday()).thenReturn(0);
+        when(dateService.currentHour()).thenReturn(8);
+        when(dateService.currentMinute()).thenReturn(15);
+
+        // act
+        final actual = repository.isOpen();
+
+        // assert
+        expect(actual, false);
+      },
+    );
+
+    test(
+      'should return [false] if current minute is after closing minute',
+      () {
+        when(dataSource.getOpeningHours()).thenReturn({
+          0: const Timeslot(start: (8, 0), end: (15, 30)),
+        });
+        when(dateService.currentWeekday()).thenReturn(0);
+        when(dateService.currentHour()).thenReturn(15);
+        when(dateService.currentMinute()).thenReturn(45);
+
+        // act
+        final actual = repository.isOpen();
+
+        // assert
+        expect(actual, false);
       },
     );
   });

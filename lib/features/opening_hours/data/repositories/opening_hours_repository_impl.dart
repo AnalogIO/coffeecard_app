@@ -33,10 +33,20 @@ class OpeningHoursRepositoryImpl implements OpeningHoursRepository {
       return false;
     }
 
-    final currentHour = dateService.currentHour();
+    final openTimeslot =
+        (todaysOpeningHours.start!.$1, todaysOpeningHours.start!.$2);
+    final closedTimeslot =
+        (todaysOpeningHours.end!.$1, todaysOpeningHours.end!.$2);
 
-    if (currentHour < todaysOpeningHours.start! ||
-        currentHour > todaysOpeningHours.end!) return false;
+    final currentHour = dateService.currentHour();
+    final currentMinute = dateService.currentMinute();
+
+    final beforeOpening =
+        currentHour <= openTimeslot.$1 && currentMinute <= openTimeslot.$2;
+    final afterClosing =
+        currentHour >= closedTimeslot.$1 && currentMinute >= closedTimeslot.$2;
+
+    if (beforeOpening || afterClosing) return false;
 
     return true;
   }
