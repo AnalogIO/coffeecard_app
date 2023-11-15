@@ -3,6 +3,7 @@ import 'package:coffeecard/core/widgets/pages/home_page.dart';
 import 'package:coffeecard/features/authentication/presentation/cubits/authentication_cubit.dart';
 import 'package:coffeecard/features/environment/presentation/cubit/environment_cubit.dart';
 import 'package:coffeecard/features/login/presentation/pages/login_page_email.dart';
+import 'package:coffeecard/features/login/presentation/pages/re_login_page.dart';
 import 'package:coffeecard/features/product/domain/entities/purchasable_products.dart';
 import 'package:coffeecard/features/product/presentation/cubit/product_cubit.dart';
 import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
@@ -48,11 +49,21 @@ class _MainRedirectionRouterState extends State<MainRedirectionRouter> {
     final authenticationLoaded = !authenticationStatus.isUnknown;
     final environmentLoaded = environmentState is EnvironmentLoaded;
     if (authenticationLoaded && environmentLoaded) {
-      handleAuthentication(authenticationStatus);
+      handleAuthentication(
+        authenticationStatus,
+        authenticationCubit.state.authenticatedUser?.email,
+      );
     }
   }
 
-  Future<void> handleAuthentication(AuthenticationStatus status) async {
+  Future<void> handleAuthentication(
+    AuthenticationStatus status,
+    String? email,
+  ) async {
+    if (status.isReauthenticated) {
+      return promptRelogin(email!);
+    }
+
     // If no user credentials are stored, redirect to login page.
     if (!status.isAuthenticated) {
       return redirectToLogin();
@@ -100,11 +111,21 @@ class _MainRedirectionRouterState extends State<MainRedirectionRouter> {
     });
   }
 
+  void promptRelogin(String email) {
+    final route = ReLoginPage.routeWith(
+      email: email,
+      navigatorKey: widget.navigatorKey,
+    );
+
+    widget.navigatorKey.currentState!
+        .pushAndRemoveUntil(route, (_) => false)
+        .ignore();
+  }
+
   /// Redirects the user to the login page based.
   /// The route (animation) is determined by the [firstNavigation] flag.
   void redirectToLogin() {
-    final Route route;
-    route = firstNavigation
+    final route = firstNavigation
         ? LoginPageEmail.routeFromSplash
         : LoginPageEmail.routeFromLogout;
 

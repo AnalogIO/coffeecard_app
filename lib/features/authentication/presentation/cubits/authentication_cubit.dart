@@ -27,16 +27,22 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   Future<void> appStarted() async {
     final authenticatedUser = await getAuthenticatedUser();
 
+    if (authenticatedUser == null) {
+      emit(const AuthenticationState.unauthenticated());
+      return;
+    }
+
     final sessionExpired = _isSessionExpired(
-      authenticatedUser?.lastLogin,
-      authenticatedUser?.sessionTimeout,
+      authenticatedUser.lastLogin,
+      authenticatedUser.sessionTimeout,
     );
 
-    if (authenticatedUser == null || sessionExpired) {
-      emit(const AuthenticationState.unauthenticated());
-    } else {
-      emit(AuthenticationState.authenticated(authenticatedUser));
+    if (sessionExpired) {
+      emit(AuthenticationState.reauthenticated(authenticatedUser));
+      return;
     }
+
+    emit(AuthenticationState.authenticated(authenticatedUser));
   }
 
   bool _isSessionExpired(DateTime? lastLogin, Duration? sessionTimeout) {

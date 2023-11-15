@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 const List<(String, Duration?)> entries = [
+  ('2 seconds', Duration(seconds: 2)),
   ('2 hours', Duration(hours: 2)),
   ('Never', null),
 ];

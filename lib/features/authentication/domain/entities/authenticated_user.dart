@@ -16,6 +16,11 @@ class AuthenticatedUser extends Equatable {
   });
 
   @override
-  List<Object?> get props =>
-      [email, token, encodedPasscode, lastLogin, sessionTimeout];
+  List<Object?> get props => [
+        email,
+        token,
+        encodedPasscode,
+        lastLogin,
+        sessionTimeout,
+      ];
 }
