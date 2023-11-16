@@ -13,7 +13,7 @@ class OpeningHoursInitial extends OpeningHoursState {
 
 class OpeningHoursLoaded extends OpeningHoursState {
   final Map<int, Timeslot> openingHours;
-  final Timeslot todaysOpeningHours;
+  final Option<Timeslot> todaysOpeningHours;
   final bool isOpen;
 
   const OpeningHoursLoaded({

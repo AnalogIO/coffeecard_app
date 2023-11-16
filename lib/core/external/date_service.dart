@@ -1,6 +1,3 @@
 class DateService {
-  DateTime now() => DateTime.now();
-  int currentWeekday() => now().weekday;
-  int currentHour() => now().hour;
-  int currentMinute() => now().minute;
+  DateTime get currentDateTime => DateTime.now();
 }

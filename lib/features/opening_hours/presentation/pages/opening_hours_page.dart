@@ -16,11 +16,6 @@ class OpeningHoursPage extends StatelessWidget {
     return MaterialPageRoute(builder: (_) => OpeningHoursPage(state: state));
   }
 
-  List<MapEntry<int, Timeslot>> get openingHours {
-    return state.openingHours.entries.toList()
-      ..sort((a, b) => a.key.compareTo(b.key));
-  }
-
   @override
   Widget build(BuildContext context) {
     return AppScaffold.withTitle(
@@ -37,7 +32,7 @@ class OpeningHoursPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                _OpeningHoursView(openingHours: openingHours),
+                _OpeningHoursView(openingHours: state.openingHours),
                 const Gap(36),
                 Row(
                   children: [
@@ -65,18 +60,21 @@ class OpeningHoursPage extends StatelessWidget {
 class _OpeningHoursView extends StatelessWidget {
   const _OpeningHoursView({required this.openingHours});
 
-  final List<MapEntry<int, Timeslot>> openingHours;
+  final Map<int, Timeslot> openingHours;
 
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      itemCount: openingHours.length,
+      itemCount: Strings.weekdaysPlural.length,
       separatorBuilder: (_, __) => const Gap(12),
-      itemBuilder: (context, index) {
-        final weekday = openingHours[index].key;
-        final hours = openingHours[index].value;
+      itemBuilder: (_, index) {
+        final weekday = index + 1;
+        final hours = switch (openingHours[weekday]) {
+          final Timeslot timeslot => timeslot.format(context),
+          _ => Strings.closed,
+        };
 
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -85,7 +83,10 @@ class _OpeningHoursView extends StatelessWidget {
               Strings.weekdaysPlural[weekday]!,
               style: AppTextStyle.settingKey,
             ),
-            Text(hours.toString(), style: AppTextStyle.receiptItemKey),
+            Text(
+              hours,
+              style: AppTextStyle.receiptItemKey,
+            ),
           ],
         );
       },
