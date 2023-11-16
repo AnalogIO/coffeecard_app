@@ -25,8 +25,8 @@ class _AppFlowState extends State<AppFlow> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => !await _didPopRoute(),
+    return PopScope(
+      onPopInvoked: (_) async => !await _didPopRoute(),
       child: Navigator(
         key: navigatorKey,
         onGenerateRoute: (_) => widget.initialRoute,

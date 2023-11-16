@@ -140,8 +140,8 @@ class _HomePageState extends State<HomePage> {
             create: (_) => sl<OpeningHoursCubit>()..getOpeninghours(),
           ),
         ],
-        child: WillPopScope(
-          onWillPop: onWillPop,
+        child: PopScope(
+          onPopInvoked: (_) => onWillPop(),
           child: Scaffold(
             backgroundColor: AppColors.background,
             body: LazyIndexedStack(

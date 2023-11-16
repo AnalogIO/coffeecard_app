@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:chopper/chopper.dart';
 import 'package:coffeecard/core/storage/secure_storage.dart';
 
-class AuthenticationInterceptor extends RequestInterceptor {
+class AuthenticationInterceptor implements RequestInterceptor {
   final SecureStorage _storage;
 
   AuthenticationInterceptor(this._storage);

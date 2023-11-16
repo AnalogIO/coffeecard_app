@@ -16,8 +16,8 @@ Future<void> appDialog({
     barrierColor: transparentBarrier ? Colors.transparent : AppColors.scrim,
     useRootNavigator: true,
     builder: (BuildContext context) {
-      return WillPopScope(
-        onWillPop: () async => dismissible,
+      return PopScope(
+        onPopInvoked: (_) async => dismissible,
         child: AlertDialog(
           title: Text(title, style: AppTextStyle.ownedTicket),
           shape: const RoundedRectangleBorder(

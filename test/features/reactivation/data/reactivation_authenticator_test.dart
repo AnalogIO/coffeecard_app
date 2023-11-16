@@ -112,7 +112,7 @@ void main() {
         'method',
         Uri.parse('test'),
         Uri.parse('basetest'),
-        body: LoginDto(
+        body: const LoginDto(
           email: 'email',
           password: 'encodedPasscode',
           version: 'verison',
