@@ -26,8 +26,10 @@ void main() {
 
   test('should return opening hours', () async {
     // arrange
-    const theOpeningHours =
-        OpeningHours(allOpeningHours: {}, todaysOpeningHours: Timeslot());
+    const theOpeningHours = OpeningHours(
+      allOpeningHours: {},
+      todaysOpeningHours: Option.none(),
+    );
 
     when(repository.getOpeningHours()).thenReturn(
       theOpeningHours,
