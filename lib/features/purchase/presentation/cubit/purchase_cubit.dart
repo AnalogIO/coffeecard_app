@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:coffeecard/core/firebase_analytics_event_logging.dart';
 import 'package:coffeecard/features/product/domain/entities/product.dart';
 import 'package:coffeecard/features/purchase/domain/entities/payment.dart';
 import 'package:coffeecard/features/purchase/domain/entities/payment_status.dart';
@@ -13,19 +12,15 @@ class PurchaseCubit extends Cubit<PurchaseState> {
   final Product product;
   final InitPurchase initPurchase;
   final VerifyPurchaseStatus verifyPurchaseStatus;
-  final FirebaseAnalyticsEventLogging firebaseAnalyticsEventLogging;
 
   PurchaseCubit({
     required this.product,
     required this.initPurchase,
     required this.verifyPurchaseStatus,
-    required this.firebaseAnalyticsEventLogging,
   }) : super(const PurchaseInitial());
 
   /// Initialise a purchase of [product]
   Future<void> pay() async {
-    firebaseAnalyticsEventLogging.beginCheckoutEvent(product);
-
     if (state is! PurchaseInitial) {
       return;
     }
@@ -108,7 +103,6 @@ class PurchaseCubit extends Cubit<PurchaseState> {
       (status) async {
         switch (status) {
           case PaymentStatus.completed:
-            firebaseAnalyticsEventLogging.purchaseCompletedEvent(payment);
             emit(PurchaseCompleted(payment.copyWith(status: status)));
           case PaymentStatus.error:
             emit(PurchasePaymentRejected(payment.copyWith(status: status)));

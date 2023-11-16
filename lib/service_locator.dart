@@ -3,7 +3,6 @@ import 'package:coffeecard/core/api_uri_constants.dart';
 import 'package:coffeecard/core/external/date_service.dart';
 import 'package:coffeecard/core/external/external_url_launcher.dart';
 import 'package:coffeecard/core/external/screen_brightness.dart';
-import 'package:coffeecard/core/firebase_analytics_event_logging.dart';
 import 'package:coffeecard/core/ignore_value.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/core/storage/secure_storage.dart';
@@ -61,7 +60,6 @@ import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart'
     hide $JsonSerializableConverter;
 import 'package:coffeecard/generated/api/shiftplanning_api.swagger.dart'
     hide $JsonSerializableConverter;
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
@@ -76,10 +74,7 @@ void configureServices() {
 
   // Executor
   sl.registerLazySingleton(
-    () => NetworkRequestExecutor(
-      logger: sl(),
-      firebaseLogger: sl(),
-    ),
+    () => NetworkRequestExecutor(logger: sl()),
   );
 
   // Storage
@@ -113,12 +108,6 @@ void configureServices() {
   );
 
   // external
-  ignoreValue(
-    sl.registerSingleton<FirebaseAnalyticsEventLogging>(
-      FirebaseAnalyticsEventLogging(FirebaseAnalytics.instance),
-    ),
-  );
-
   ignoreValue(sl.registerFactory(() => DateService()));
   ignoreValue(sl.registerFactory(() => ScreenBrightness()));
   ignoreValue(sl.registerLazySingleton(() => ExternalUrlLauncher()));
@@ -343,12 +332,7 @@ void initLogin() {
 
 void initRegister() {
   // bloc
-  sl.registerFactory(
-    () => RegisterCubit(
-      registerUser: sl(),
-      firebaseAnalyticsEventLogging: sl(),
-    ),
-  );
+  sl.registerFactory(() => RegisterCubit(registerUser: sl()));
 
   // use case
   sl.registerFactory(() => RegisterUser(remoteDataSource: sl()));

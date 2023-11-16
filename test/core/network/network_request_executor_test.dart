@@ -1,6 +1,5 @@
 import 'package:chopper/chopper.dart' as chopper;
 import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/core/firebase_analytics_event_logging.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/core/strings.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -11,19 +10,14 @@ import 'package:mockito/annotations.dart';
 
 import 'network_request_executor_test.mocks.dart';
 
-@GenerateMocks([Logger, FirebaseAnalyticsEventLogging])
+@GenerateMocks([Logger])
 void main() {
   late MockLogger logger;
-  late MockFirebaseAnalyticsEventLogging firebaseLogger;
   late NetworkRequestExecutor executor;
 
   setUp(() {
     logger = MockLogger();
-    firebaseLogger = MockFirebaseAnalyticsEventLogging();
-    executor = NetworkRequestExecutor(
-      logger: logger,
-      firebaseLogger: firebaseLogger,
-    );
+    executor = NetworkRequestExecutor(logger: logger);
   });
 
   chopper.Response<T> responseFromStatusCode<T>(

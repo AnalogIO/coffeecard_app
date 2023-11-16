@@ -1,6 +1,5 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/core/firebase_analytics_event_logging.dart';
 import 'package:coffeecard/features/register/domain/usecases/register_user.dart';
 import 'package:coffeecard/features/register/presentation/cubit/register_cubit.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -10,18 +9,15 @@ import 'package:mockito/mockito.dart';
 
 import 'register_cubit_test.mocks.dart';
 
-@GenerateMocks([RegisterUser, FirebaseAnalyticsEventLogging])
+@GenerateMocks([RegisterUser])
 void main() {
   late MockRegisterUser registerUser;
-  late MockFirebaseAnalyticsEventLogging firebaseAnalyticsEventLogging;
   late RegisterCubit cubit;
 
   setUp(() {
     registerUser = MockRegisterUser();
-    firebaseAnalyticsEventLogging = MockFirebaseAnalyticsEventLogging();
     cubit = RegisterCubit(
       registerUser: registerUser,
-      firebaseAnalyticsEventLogging: firebaseAnalyticsEventLogging,
     );
 
     provideDummy<Either<Failure, Unit>>(
@@ -59,7 +55,6 @@ void main() {
             occupationId: anyNamed('occupationId'),
           ),
         ).thenAnswer((_) async => const Right(unit));
-        when(firebaseAnalyticsEventLogging.signUpEvent());
       },
       act: (_) => cubit.register('name', 'email', 'passcode', 0),
       expect: () => [RegisterSuccess()],
