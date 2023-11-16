@@ -51,19 +51,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4.1.0
 
-      - name: Build iOS app (dev)
-        if: ${{ inputs.build_type != 'prod' }}
-        uses: ./.github/actions/build_ios
-        with:
-          version: ${{ needs.version.outputs.version }}
-          build_version: ${{ needs.version.outputs.build_version }}
-          apple_ios_signing_cert: ${{ secrets.APPLE_IOS_SIGNING_CERTIFICATE_DEVELOPMENT }}
-          apple_ios_signing_cert_pw: ${{ secrets.APPLE_IOS_SIGNING_CERTIFICATE_DEVELOPMENT_PASSWORD }}
-          apple_ios_provisioning_profile: ${{ secrets.APPLE_IOS_PROVISIONING_PROFILE_DEVELOPMENT }}
-          apple_keychain_pw: ${{ secrets.APPLE_KEYCHAIN_PW }}
-          store_artifacts: ${{ inputs.store_artifacts }}
-          build_type: ${{ inputs.build_type }}
-
       - name: Build iOS app (prod)
         if: ${{ inputs.build_type == 'prod' }}
         uses: ./.github/actions/build_ios
