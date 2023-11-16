@@ -58,6 +58,7 @@ runs:
       shell: bash
 
     - name: Sign artifact
+      if: ${{ !!inputs.store_artifacts }}
       uses: r0adkll/sign-android-release@v1.0.4
       id: sign_app
       with:
@@ -67,20 +68,32 @@ runs:
         keyStorePassword: ${{ inputs.keyStorePassword }}
         keyPassword: ${{ inputs.keyPassword }}
 
+    - name: Move appbundle
+      if: ${{ !!inputs.store_artifacts && inputs.build_type == 'prod'}}
+      run: |
+        mv ${{steps.sign_app.outputs.signedReleaseFile}} android.aab
+      shell: bash
+
     - name: Upload appbundle
       if: ${{ !!inputs.store_artifacts && inputs.build_type == 'prod'}}
       uses: actions/upload-artifact@v3.1.3
       with:
         name: android
-        path: "${{steps.sign_app.outputs.signedReleaseFile}}/android-signed.aab"
+        path: android.aab
         retention-days: 1
         if-no-files-found: error
+
+    - name: Move apk
+      if: ${{ !!inputs.store_artifacts && inputs.build_type != 'prod'}}
+      run: |
+        mv ${{steps.sign_app.outputs.signedReleaseFile}} android.apk
+      shell: bash
 
     - name: Upload apk
       if: ${{ !!inputs.store_artifacts && inputs.build_type != 'prod'}}
       uses: actions/upload-artifact@v3.1.3
       with:
         name: android
-        path: "${{steps.sign_app.outputs.signedReleaseFile}}/android-signed.apk"
+        path: android.apk
         retention-days: 1
         if-no-files-found: error
