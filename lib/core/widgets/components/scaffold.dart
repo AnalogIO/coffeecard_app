@@ -60,6 +60,7 @@ class AppScaffold extends StatelessWidget {
         title: hasTitle ? title : const EnvironmentButton(),
         centerTitle: hasTitle ? null : true,
         toolbarHeight: appBarHeight,
+        backgroundColor: AppColors.primary,
       ),
       body: BlocBuilder<EnvironmentCubit, EnvironmentState>(
         builder: (_, state) {
