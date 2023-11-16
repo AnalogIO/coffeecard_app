@@ -61,6 +61,7 @@ class AppScaffold extends StatelessWidget {
         centerTitle: hasTitle ? null : true,
         toolbarHeight: appBarHeight,
         backgroundColor: AppColors.primary,
+        iconTheme: const IconThemeData(color: AppColors.white),
       ),
       body: BlocBuilder<EnvironmentCubit, EnvironmentState>(
         builder: (_, state) {

@@ -1,19 +1,21 @@
 import 'package:coffeecard/features/opening_hours/domain/entities/timeslot.dart';
+import 'package:flutter/material.dart';
 
 class OpeningHoursLocalDataSource {
   Map<int, Timeslot> getOpeningHours() {
-    const normalOperation = Timeslot(start: 8, end: 16);
-    const shortDayOperation = Timeslot(start: 8, end: 14);
-    const closed = Timeslot();
+    const openTime = TimeOfDay(hour: 8, minute: 0);
+    const normalDayCloseTime = TimeOfDay(hour: 15, minute: 30);
+    const shortDayCloseTime = TimeOfDay(hour: 13, minute: 30);
+
+    const normalDayOpeningHours = Timeslot(openTime, normalDayCloseTime);
+    const shortDayOpeningHours = Timeslot(openTime, shortDayCloseTime);
 
     return {
-      DateTime.monday: normalOperation,
-      DateTime.tuesday: normalOperation,
-      DateTime.wednesday: normalOperation,
-      DateTime.thursday: normalOperation,
-      DateTime.friday: shortDayOperation,
-      DateTime.saturday: closed,
-      DateTime.sunday: closed,
+      DateTime.monday: normalDayOpeningHours,
+      DateTime.tuesday: normalDayOpeningHours,
+      DateTime.wednesday: normalDayOpeningHours,
+      DateTime.thursday: normalDayOpeningHours,
+      DateTime.friday: shortDayOpeningHours,
     };
   }
 }
