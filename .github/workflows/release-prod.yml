@@ -2,7 +2,7 @@ name: Release Production App
 
 on:
   release:
-    types: [ created ]
+    types: [created]
 
 jobs:
   build:
@@ -26,7 +26,7 @@ jobs:
         uses: actions/download-artifact@v3.0.2
         with:
           name: ios
-          
+
       - name: Upload app to App Store Connect
         env:
           APP_STORE_CONNECT_USERNAME: ${{ secrets.APP_STORE_CONNECT_USERNAME }}
