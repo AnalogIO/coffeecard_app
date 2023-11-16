@@ -35,8 +35,10 @@ void main() {
   });
 
   group('getOpeninghours', () {
-    const theOpeningHours =
-        OpeningHours(allOpeningHours: {}, todaysOpeningHours: Timeslot());
+    const theOpeningHours = OpeningHours(
+      allOpeningHours: {},
+      todaysOpeningHours: Option.none(),
+    );
     const isOpen = true;
 
     blocTest(
