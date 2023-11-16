@@ -50,7 +50,7 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v3.0.2
         with:
-          name: android.apk
+          name: android
 
       - name: Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1.7.0

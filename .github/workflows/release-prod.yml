@@ -43,7 +43,7 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v3.0.2
         with:
-          name: android.aab
+          name: android
 
       - name: Upload to Google Play Store
         uses: r0adkll/upload-google-play@v1.1.2
