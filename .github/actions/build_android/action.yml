@@ -67,11 +67,20 @@ runs:
         keyStorePassword: ${{ inputs.keyStorePassword }}
         keyPassword: ${{ inputs.keyPassword }}
 
-    - name: Upload artifact
-      if: ${{ !!inputs.store_artifacts }}
+    - name: Upload appbundle
+      if: ${{ !!inputs.store_artifacts && inputs.build_type == 'prod'}}
       uses: actions/upload-artifact@v3.1.3
       with:
         name: android
-        path: ${{steps.sign_app.outputs.signedReleaseFile}}
+        path: "${{steps.sign_app.outputs.signedReleaseFile}}/android-signed.aab"
+        retention-days: 1
+        if-no-files-found: error
+
+    - name: Upload apk
+      if: ${{ !!inputs.store_artifacts && inputs.build_type != 'prod'}}
+      uses: actions/upload-artifact@v3.1.3
+      with:
+        name: android
+        path: "${{steps.sign_app.outputs.signedReleaseFile}}/android-signed.apk"
         retention-days: 1
         if-no-files-found: error
