@@ -2,7 +2,7 @@ name: Publish Development App
 
 on:
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build:
@@ -36,6 +36,10 @@ jobs:
           # serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           groups: analogio-devs
           file: Analog.ipa
+          releaseNotes: |
+            ${{ github.event.pull_request.title }}
+            ${{ github.event.pull_request.html_url }}
+            (branch ${{ github.head_ref }})
 
   upload_android:
     name: Upload Android build to Firebase App Distribution
@@ -47,7 +51,7 @@ jobs:
         uses: actions/download-artifact@v3.0.2
         with:
           name: android
-          
+
       - name: Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1.7.0
         with:
@@ -57,3 +61,7 @@ jobs:
           # serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           groups: analogio-devs
           file: android.apk
+          releaseNotes: |
+            ${{ github.event.pull_request.title }}
+            ${{ github.event.pull_request.html_url }}
+            (branch ${{ github.head_ref }})
