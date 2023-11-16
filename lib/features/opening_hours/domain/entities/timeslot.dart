@@ -1,33 +1,37 @@
-import 'package:coffeecard/core/strings.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 
+/// A timeslot with a start and end time.
 class Timeslot extends Equatable {
-  final (int, int)? start;
-  final (int, int)? end;
+  final TimeOfDay startTime;
+  final TimeOfDay endTime;
 
-  const Timeslot({this.start, this.end});
+  const Timeslot(this.startTime, this.endTime);
 
-  bool get isClosed => start == null || end == null;
+  String format(BuildContext context) {
+    final start = startTime.format(context);
+    final end = endTime.format(context);
+    return '$start-$end';
+  }
 
   @override
-  String toString() {
-    if (isClosed) {
-      return Strings.closed;
+  List<Object?> get props => [startTime, endTime];
+}
+
+/// Operators for comparing [TimeOfDay]s.
+extension TimeOfDayOperators on TimeOfDay {
+  /// Returns true if [other] is before [this].
+  bool operator <=(TimeOfDay other) {
+    if (hour < other.hour) {
+      return true;
+    } else if (hour == other.hour) {
+      return minute <= other.minute;
+    } else {
+      return false;
     }
-
-    final startMinute = _pad(start!.$2.toString());
-    final startHor = _pad(start!.$1.toString());
-
-    final endMinute = _pad(end!.$2.toString());
-    final endHour = _pad(end!.$1.toString());
-
-    return '$startHor:$startMinute - $endHour:$endMinute';
   }
 
-  String _pad(String s) {
-    return s.padLeft(2, '0');
+  bool isInTimeslot(Timeslot timeslot) {
+    return timeslot.startTime <= this && this <= timeslot.endTime;
   }
-
-  @override
-  List<Object?> get props => [start, end];
 }
