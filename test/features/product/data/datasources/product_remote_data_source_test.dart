@@ -30,7 +30,7 @@ void main() {
     test('should call executor', () async {
       // arrange
       when(executor.execute<List<ProductResponse>>(any)).thenAnswer(
-        (_) async => Right([
+        (_) async => const Right([
           ProductResponse(
             id: 0,
             price: 0,
