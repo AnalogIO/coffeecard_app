@@ -73,7 +73,7 @@ void main() {
     test('should return [Right] when executor succeeds', () async {
       // arrange
       when(executor.execute<LeaderboardEntry>(any)).thenAnswer(
-        (_) async => Right(
+        (_) async => const Right(
           LeaderboardEntry(
             id: 0,
             rank: 0,

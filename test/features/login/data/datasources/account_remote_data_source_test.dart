@@ -58,7 +58,7 @@ void main() {
       () async {
         // arrange
         when(executor.execute<v1.TokenDto>(any)).thenAnswer(
-          (_) async => Right(v1.TokenDto(token: 'token')),
+          (_) async => const Right(v1.TokenDto(token: 'token')),
         );
 
         // act
@@ -91,7 +91,7 @@ void main() {
       () async {
         // arrange
         when(executor.execute<v2.UserResponse>(any)).thenAnswer(
-          (_) async => Right(
+          (_) async => const Right(
             v2.UserResponse(
               email: 'email',
               id: 0,
@@ -157,7 +157,7 @@ void main() {
     test('should return [Right<bool>] if executor succeeds', () async {
       // arrange
       when(executor.execute<v2.EmailExistsResponse>(any)).thenAnswer(
-        (_) async => Right(v2.EmailExistsResponse(emailExists: true)),
+        (_) async => const Right(v2.EmailExistsResponse(emailExists: true)),
       );
 
       // act

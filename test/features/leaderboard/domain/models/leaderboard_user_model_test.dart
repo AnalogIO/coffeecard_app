@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   test('should map LeaderboardEntry', () {
     // arrange
-    final entry = LeaderboardEntry(
+    const entry = LeaderboardEntry(
       id: 0,
       rank: 0,
       score: 0,

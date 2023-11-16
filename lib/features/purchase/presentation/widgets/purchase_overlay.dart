@@ -21,9 +21,9 @@ Future<Payment?> showPurchaseOverlay({
       barrierColor: AppColors.scrim,
       barrierDismissible: false,
       builder: (_) {
-        return WillPopScope(
+        return PopScope(
           // Will prevent Android back button from closing overlay.
-          onWillPop: () async => false,
+          onPopInvoked: (_) async => false,
           child: BlocProvider(
             create: (context) {
               final paymentHandler =
