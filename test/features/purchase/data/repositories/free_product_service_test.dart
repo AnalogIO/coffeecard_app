@@ -40,7 +40,7 @@ void main() {
           InitiatePurchase(
             id: 0,
             totalAmount: 0,
-            paymentDetails: MobilePayPaymentDetails(
+            paymentDetails: const MobilePayPaymentDetails(
               mobilePayAppRedirectUri: 'mobilePayAppRedirectUri',
               paymentId: 'paymentId',
               state: 'state',
