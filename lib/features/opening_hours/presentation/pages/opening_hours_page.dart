@@ -69,7 +69,8 @@ class _OpeningHoursView extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       itemCount: Strings.weekdaysPlural.length,
       separatorBuilder: (_, __) => const Gap(12),
-      itemBuilder: (_, weekday) {
+      itemBuilder: (_, index) {
+        final weekday = index + 1;
         final hours = switch (openingHours[weekday]) {
           final Timeslot timeslot => timeslot.format(context),
           _ => Strings.closed,
