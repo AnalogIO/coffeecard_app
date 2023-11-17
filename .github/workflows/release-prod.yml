@@ -45,21 +45,11 @@ jobs:
         with:
           name: android
 
-      - name: Sign Android appbundle
-        uses: r0adkll/sign-android-release@v1.0.4
-        id: sign_app
-        with:
-          releaseDirectory: .
-          signingKeyBase64: ${{ secrets.ANDROID_KEYSTORE }}
-          alias: ${{ secrets.ANDROID_KEY_ALIAS }}
-          keyStorePassword: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-          keyPassword: ${{ secrets.ANDROID_KEY_PASSWORD }}
-
       - name: Upload to Google Play Store
         uses: r0adkll/upload-google-play@v1.1.2
         with:
           serviceAccountJsonPlainText: ${{ secrets.PLAYSTORE_SERVICE_ACCOUNT_JSON }}
           packageName: dk.analog.digitalclipcard
-          releaseFiles: ${{ steps.sign_app.outputs.signedReleaseFile }}
+          releaseFiles: android.aab
           track: internal
           status: draft
