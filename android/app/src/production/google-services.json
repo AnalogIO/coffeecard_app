@@ -1,85 +1,84 @@
 {
-    "project_info": {
-      "project_number": "897975858437",
-      "firebase_url": "https://analogio-47cf0.firebaseio.com",
-      "project_id": "analogio-47cf0",
-      "storage_bucket": "analogio-47cf0.appspot.com"
-    },
-    "client": [
-      {
-        "client_info": {
-          "mobilesdk_app_id": "1:897975858437:android:5496e6f1f212adf7e3336c",
-          "android_client_info": {
-            "package_name": "com.analogio.coffeecard"
-          }
-        },
-        "oauth_client": [
-          {
-            "client_id": "897975858437-en6jjspk6sn0d7qhathuih0kih4iv0nc.apps.googleusercontent.com",
-            "client_type": 3
-          }
-        ],
-        "api_key": [
-          {
-            "current_key": "AIzaSyBSOwHLlN9ig7f0fLvQ7nra5OfWgbetT4c"
-          }
-        ],
-        "services": {
-          "appinvite_service": {
-            "other_platform_oauth_client": [
-              {
-                "client_id": "897975858437-en6jjspk6sn0d7qhathuih0kih4iv0nc.apps.googleusercontent.com",
-                "client_type": 3
-              },
-              {
-                "client_id": "897975858437-5mtqt6dn8qarvrb8ebfujvvkb5nldcoi.apps.googleusercontent.com",
-                "client_type": 2,
-                "ios_info": {
-                  "bundle_id": "DK.AnalogIO.DigitalCoffeeCard",
-                  "app_store_id": "1148152818"
-                }
-              }
-            ]
-          }
+  "project_info": {
+    "project_number": "897975858437",
+    "project_id": "analogio-47cf0",
+    "storage_bucket": "analogio-47cf0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:897975858437:android:5496e6f1f212adf7e3336c",
+        "android_client_info": {
+          "package_name": "com.analogio.coffeecard"
         }
       },
-      {
-        "client_info": {
-          "mobilesdk_app_id": "1:897975858437:android:4026acc554e19ffee3336c",
-          "android_client_info": {
-            "package_name": "dk.analog.digitalclipcard"
-          }
-        },
-        "oauth_client": [
-          {
-            "client_id": "897975858437-en6jjspk6sn0d7qhathuih0kih4iv0nc.apps.googleusercontent.com",
-            "client_type": 3
-          }
-        ],
-        "api_key": [
-          {
-            "current_key": "AIzaSyBSOwHLlN9ig7f0fLvQ7nra5OfWgbetT4c"
-          }
-        ],
-        "services": {
-          "appinvite_service": {
-            "other_platform_oauth_client": [
-              {
-                "client_id": "897975858437-en6jjspk6sn0d7qhathuih0kih4iv0nc.apps.googleusercontent.com",
-                "client_type": 3
-              },
-              {
-                "client_id": "897975858437-5mtqt6dn8qarvrb8ebfujvvkb5nldcoi.apps.googleusercontent.com",
-                "client_type": 2,
-                "ios_info": {
-                  "bundle_id": "DK.AnalogIO.DigitalCoffeeCard",
-                  "app_store_id": "1148152818"
-                }
+      "oauth_client": [
+        {
+          "client_id": "897975858437-en6jjspk6sn0d7qhathuih0kih4iv0nc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBSOwHLlN9ig7f0fLvQ7nra5OfWgbetT4c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "897975858437-en6jjspk6sn0d7qhathuih0kih4iv0nc.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "897975858437-5mtqt6dn8qarvrb8ebfujvvkb5nldcoi.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "DK.AnalogIO.DigitalCoffeeCard",
+                "app_store_id": "1148152818"
               }
-            ]
-          }
+            }
+          ]
         }
       }
-    ],
-    "configuration_version": "1"
-  }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:897975858437:android:4026acc554e19ffee3336c",
+        "android_client_info": {
+          "package_name": "dk.analog.digitalclipcard"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "897975858437-en6jjspk6sn0d7qhathuih0kih4iv0nc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBSOwHLlN9ig7f0fLvQ7nra5OfWgbetT4c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "897975858437-en6jjspk6sn0d7qhathuih0kih4iv0nc.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "897975858437-5mtqt6dn8qarvrb8ebfujvvkb5nldcoi.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "DK.AnalogIO.DigitalCoffeeCard",
+                "app_store_id": "1148152818"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

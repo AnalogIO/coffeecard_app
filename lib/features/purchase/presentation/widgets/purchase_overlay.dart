@@ -7,7 +7,6 @@ import 'package:coffeecard/features/purchase/domain/usecases/init_purchase.dart'
 import 'package:coffeecard/features/purchase/domain/usecases/verify_purchase_status.dart';
 import 'package:coffeecard/features/purchase/presentation/cubit/purchase_cubit.dart';
 import 'package:coffeecard/features/purchase/presentation/widgets/purchase_process.dart';
-import 'package:coffeecard/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -30,7 +29,6 @@ Future<Payment?> showPurchaseOverlay({
                   PaymentHandler.createPaymentHandler(paymentType, context);
 
               return PurchaseCubit(
-                firebaseAnalyticsEventLogging: sl(),
                 product: product,
                 initPurchase: InitPurchase(paymentHandler: paymentHandler),
                 verifyPurchaseStatus:

@@ -1,5 +1,4 @@
 import 'package:coffeecard/core/encode_passcode.dart';
-import 'package:coffeecard/core/firebase_analytics_event_logging.dart';
 import 'package:coffeecard/features/authentication/presentation/cubits/authentication_cubit.dart';
 import 'package:coffeecard/features/login/domain/errors/email_not_verified_failure.dart';
 import 'package:coffeecard/features/login/domain/usecases/login_user.dart';
@@ -14,14 +13,12 @@ class LoginCubit extends Cubit<LoginState> {
   final AuthenticationCubit authenticationCubit;
   final LoginUser loginUser;
   final ResendEmail resendEmail;
-  final FirebaseAnalyticsEventLogging firebaseAnalyticsEventLogging;
 
   LoginCubit({
     required this.email,
     required this.authenticationCubit,
     required this.loginUser,
     required this.resendEmail,
-    required this.firebaseAnalyticsEventLogging,
   }) : super(const LoginTypingPasscode(''));
 
   void addPasscodeInput(String input) {
@@ -69,8 +66,6 @@ class LoginCubit extends Cubit<LoginState> {
         emit(LoginError(error.reason));
       },
       (user) {
-        firebaseAnalyticsEventLogging.loginEvent();
-
         authenticationCubit.authenticated(
           user.email,
           encodedPasscode,

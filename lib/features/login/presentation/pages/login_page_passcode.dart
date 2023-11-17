@@ -62,7 +62,6 @@ class _LoginPagePasscodeState extends State<LoginPagePasscode> {
         loginUser: sl(),
         resendEmail: sl(),
         authenticationCubit: sl(),
-        firebaseAnalyticsEventLogging: sl(),
       ),
       child: BlocConsumer<LoginCubit, LoginState>(
         listenWhen: (previous, current) =>
