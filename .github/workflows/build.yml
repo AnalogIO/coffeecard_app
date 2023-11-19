@@ -91,7 +91,7 @@ jobs:
           version: ${{ needs.version.outputs.version }}
           build_version: ${{ needs.version.outputs.build_version }}
           store_artifacts: ${{ inputs.store_artifacts }}
-          build_type: 'prod'
+          build_type: ${{ inputs.build_type }}
           signingKeyBase64: ${{ secrets.ANDROID_KEYSTORE }}
           alias: ${{ secrets.ANDROID_KEY_ALIAS }}
           keyStorePassword: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
