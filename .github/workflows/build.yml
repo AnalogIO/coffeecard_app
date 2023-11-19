@@ -85,6 +85,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4.1.0
 
+      - name: Build appbundle
+        uses: ./.github/actions/build_android
+        with:
+          version: ${{ needs.version.outputs.version }}
+          build_version: ${{ needs.version.outputs.build_version }}
+          store_artifacts: false
+          build_type: 'prod'
+          signingKeyBase64: ${{ secrets.ANDROID_KEYSTORE }}
+          alias: ${{ secrets.ANDROID_KEY_ALIAS }}
+          keyStorePassword: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          keyPassword: ${{ secrets.ANDROID_KEY_PASSWORD }}
+
       - name: Build Android app
         uses: ./.github/actions/build_android
         with:
