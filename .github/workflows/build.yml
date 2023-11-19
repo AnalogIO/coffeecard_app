@@ -86,6 +86,7 @@ jobs:
         uses: actions/checkout@v4.1.0
 
       - name: Build appbundle
+        if: ${{ inputs.build_type != 'prod' }}
         uses: ./.github/actions/build_android
         with:
           version: ${{ needs.version.outputs.version }}
