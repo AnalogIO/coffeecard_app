@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:chopper/chopper.dart';
-import 'package:coffeecard/core/storage/secure_storage.dart';
+import 'package:coffeecard/features/authentication/data/datasources/authentication_local_data_source.dart';
 import 'package:coffeecard/features/authentication/presentation/cubits/authentication_cubit.dart';
 import 'package:coffeecard/features/login/data/datasources/account_remote_data_source.dart';
 import 'package:coffeecard/features/reactivation/data/throttler.dart';
@@ -16,7 +16,7 @@ class ReactivationAuthenticator extends Authenticator {
   bool _ready = false;
   late final AccountRemoteDataSource _accountRemoteDataSource;
 
-  final SecureStorage _secureStorage;
+  final AuthenticationLocalDataSource _authenticationLocalDataSource;
   final AuthenticationCubit _authenticationCubit;
   final Logger _logger;
 
@@ -26,9 +26,9 @@ class ReactivationAuthenticator extends Authenticator {
   ///
   /// This instance is not ready to be used. Call [initialize] before using it.
   ReactivationAuthenticator.uninitialized({required GetIt serviceLocator})
-      : _secureStorage = serviceLocator<SecureStorage>(),
-        _authenticationCubit = serviceLocator<AuthenticationCubit>(),
-        _logger = serviceLocator<Logger>();
+      : _authenticationLocalDataSource = serviceLocator(),
+        _authenticationCubit = serviceLocator(),
+        _logger = serviceLocator();
 
   /// Initializes the [ReactivationAuthenticator] by providing the
   /// [AccountRemoteDataSource] to use.
@@ -92,9 +92,9 @@ class ReactivationAuthenticator extends Authenticator {
     return Task(
       () async {
         // Check if user credentials are stored; if not, return None.
-        final email = await _secureStorage.readEmail();
-        final encodedPasscode = await _secureStorage.readEncodedPasscode();
-        if (email == null || encodedPasscode == null) {
+        final user =
+            await _authenticationLocalDataSource.getAuthenticatedUser();
+        if (user == null) {
           return none();
         }
 
@@ -102,15 +102,17 @@ class ReactivationAuthenticator extends Authenticator {
         // This login call may return 401 if the stored credentials are invalid;
         // recursive calls to [authenticate] are blocked by a check in the
         // [authenticate] method.
-        final either =
-            await _accountRemoteDataSource.login(email, encodedPasscode);
+        final either = await _accountRemoteDataSource.login(
+          user.email,
+          user.encodedPasscode,
+        );
 
         return Option.fromEither(either).map((user) => user.token);
       },
     );
   }
 
-  /// Saves the [token] in [SecureStorage]
+  /// Saves the [token] in [AuthenticationLocalDataSource]
   /// or signs out the user if the [token] is [None].
   Task<Unit> _saveOrEvict(Option<String> token) {
     return Task(() async {
@@ -122,7 +124,7 @@ class ReactivationAuthenticator extends Authenticator {
         },
         (token) async {
           _logRefreshTokenSucceeded();
-          await _secureStorage.updateToken(token);
+          await _authenticationLocalDataSource.updateToken(token);
           return unit;
         },
       );

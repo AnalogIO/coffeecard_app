@@ -1,13 +1,14 @@
 import 'package:chopper/chopper.dart';
-import 'package:coffeecard/core/storage/secure_storage.dart';
+import 'package:coffeecard/features/authentication/data/datasources/authentication_local_data_source.dart';
 import 'package:coffeecard/features/authentication/data/intercepters/authentication_interceptor.dart';
+import 'package:coffeecard/features/authentication/data/models/authenticated_user_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import 'authentication_interceptor_test.mocks.dart';
 
-@GenerateMocks([SecureStorage])
+@GenerateMocks([AuthenticationLocalDataSource])
 void main() {
   test(
     'GIVEN a token in SecureStorage WHEN calling onRequest THEN Authorization Header is added to the request',
@@ -15,9 +16,14 @@ void main() {
       const token =
           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
 
-      final mockSecureStorage = MockSecureStorage();
-      when(mockSecureStorage.readToken())
-          .thenAnswer((_) => Future<String>.value(token));
+      final mockSecureStorage = MockAuthenticationLocalDataSource();
+      when(mockSecureStorage.getAuthenticatedUser()).thenAnswer(
+        (_) async => const AuthenticatedUserModel(
+          email: 'email',
+          token: token,
+          encodedPasscode: 'encodedPasscode',
+        ),
+      );
 
       final interceptor = AuthenticationInterceptor(mockSecureStorage);
       final request = Request('POST', Uri.parse('url'), Uri.parse('baseurl'));
@@ -32,8 +38,9 @@ void main() {
   test(
     'GIVEN no token in SecureStorage WHEN calling onRequest THEN no Authorization Header is added to the request',
     () async {
-      final mockSecureStorage = MockSecureStorage();
-      when(mockSecureStorage.readToken()).thenAnswer((_) async => null);
+      final mockSecureStorage = MockAuthenticationLocalDataSource();
+      when(mockSecureStorage.getAuthenticatedUser())
+          .thenAnswer((_) async => null);
 
       final interceptor = AuthenticationInterceptor(mockSecureStorage);
       final request = Request('POST', Uri.parse('url'), Uri.parse('baseurl'));
