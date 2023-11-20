@@ -94,20 +94,22 @@ class ReactivationAuthenticator extends Authenticator {
         // Check if user credentials are stored; if not, return None.
         final user =
             await _authenticationLocalDataSource.getAuthenticatedUser();
-        if (user == null) {
-          return none();
-        }
 
-        // Attempt to log in with the stored credentials.
-        // This login call may return 401 if the stored credentials are invalid;
-        // recursive calls to [authenticate] are blocked by a check in the
-        // [authenticate] method.
-        final either = await _accountRemoteDataSource.login(
-          user.email,
-          user.encodedPasscode,
+        return user.match(
+          () => none(),
+          (user) async {
+            // Attempt to log in with the stored credentials.
+            // This login call may return 401 if the stored credentials are invalid;
+            // recursive calls to [authenticate] are blocked by a check in the
+            // [authenticate] method.
+            final either = await _accountRemoteDataSource.login(
+              user.email,
+              user.encodedPasscode,
+            );
+
+            return Option.fromEither(either).map((user) => user.token);
+          },
         );
-
-        return Option.fromEither(either).map((user) => user.token);
       },
     );
   }

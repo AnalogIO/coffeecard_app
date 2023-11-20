@@ -3,6 +3,7 @@ import 'package:coffeecard/features/authentication/data/datasources/authenticati
 import 'package:coffeecard/features/authentication/data/intercepters/authentication_interceptor.dart';
 import 'package:coffeecard/features/authentication/data/models/authenticated_user_model.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
@@ -10,6 +11,10 @@ import 'authentication_interceptor_test.mocks.dart';
 
 @GenerateMocks([AuthenticationLocalDataSource])
 void main() {
+  setUp(() {
+    provideDummy<Option<AuthenticatedUserModel>>(none());
+  });
+
   test(
     'GIVEN a token in SecureStorage WHEN calling onRequest THEN Authorization Header is added to the request',
     () async {
@@ -18,10 +23,12 @@ void main() {
 
       final mockSecureStorage = MockAuthenticationLocalDataSource();
       when(mockSecureStorage.getAuthenticatedUser()).thenAnswer(
-        (_) async => const AuthenticatedUserModel(
-          email: 'email',
-          token: token,
-          encodedPasscode: 'encodedPasscode',
+        (_) async => const Some(
+          AuthenticatedUserModel(
+            email: 'email',
+            token: token,
+            encodedPasscode: 'encodedPasscode',
+          ),
         ),
       );
 
@@ -40,7 +47,7 @@ void main() {
     () async {
       final mockSecureStorage = MockAuthenticationLocalDataSource();
       when(mockSecureStorage.getAuthenticatedUser())
-          .thenAnswer((_) async => null);
+          .thenAnswer((_) async => none());
 
       final interceptor = AuthenticationInterceptor(mockSecureStorage);
       final request = Request('POST', Uri.parse('url'), Uri.parse('baseurl'));

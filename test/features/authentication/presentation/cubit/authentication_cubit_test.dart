@@ -5,6 +5,7 @@ import 'package:coffeecard/features/authentication/domain/usecases/get_authentic
 import 'package:coffeecard/features/authentication/domain/usecases/save_authenticated_user.dart';
 import 'package:coffeecard/features/authentication/presentation/cubits/authentication_cubit.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
@@ -32,6 +33,8 @@ void main() {
       clearAuthenticatedUser: clearAuthenticatedUser,
       saveAuthenticatedUser: saveAuthenticatedUser,
     );
+
+    provideDummy<Option<AuthenticatedUser>>(none());
   });
 
   const testUser = AuthenticatedUser(
@@ -48,7 +51,7 @@ void main() {
     blocTest<AuthenticationCubit, AuthenticationState>(
       'should emit [Unauthenticated] when no user is stored',
       build: () => cubit,
-      setUp: () => when(getAuthenticatedUser()).thenAnswer((_) async => null),
+      setUp: () => when(getAuthenticatedUser()).thenAnswer((_) async => none()),
       act: (_) => cubit.appStarted(),
       expect: () => [const AuthenticationState.unauthenticated()],
     );
@@ -57,7 +60,7 @@ void main() {
       'should emit [Authenticated] when a user is stored',
       build: () => cubit,
       setUp: () =>
-          when(getAuthenticatedUser()).thenAnswer((_) async => testUser),
+          when(getAuthenticatedUser()).thenAnswer((_) async => some(testUser)),
       act: (_) => cubit.appStarted(),
       expect: () => [const AuthenticationState.authenticated(testUser)],
     );

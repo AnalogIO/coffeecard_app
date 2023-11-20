@@ -24,12 +24,11 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   Future<void> appStarted() async {
     final authenticatedUser = await getAuthenticatedUser();
 
-    if (authenticatedUser == null) {
-      emit(const AuthenticationState.unauthenticated());
-      return;
-    }
-
-    emit(AuthenticationState.authenticated(authenticatedUser));
+    authenticatedUser.match(
+      () => emit(const AuthenticationState.unauthenticated()),
+      (authenticatedUser) =>
+          emit(AuthenticationState.authenticated(authenticatedUser)),
+    );
   }
 
   Future<void> authenticated(
