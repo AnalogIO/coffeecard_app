@@ -1,8 +1,8 @@
 import 'package:coffeecard/core/ignore_value.dart';
 import 'package:coffeecard/core/strings.dart';
+import 'package:coffeecard/core/styles/app_colors.dart';
 import 'package:coffeecard/core/widgets/components/dialog.dart';
 import 'package:coffeecard/core/widgets/components/loading_overlay.dart';
-import 'package:coffeecard/core/widgets/components/rounded_button.dart';
 import 'package:coffeecard/core/widgets/fast_slide_transition.dart';
 import 'package:coffeecard/features/login/presentation/cubit/login_cubit.dart';
 import 'package:coffeecard/features/login/presentation/pages/forgot_passcode_page.dart';
@@ -40,12 +40,10 @@ class _LoginPagePasscodeState extends State<LoginPagePasscode> {
       context: context,
       title: Strings.loginVerificationEmailSent,
       children: [
-        //TODO: style
         Text(Strings.loginVerificationEmailBody(widget.email)),
       ],
       actions: [
         TextButton(
-          //TODO: style
           child: const Text(Strings.buttonOK),
           onPressed: () => closeAppDialog(context),
         ),
@@ -89,9 +87,16 @@ class _LoginPagePasscodeState extends State<LoginPagePasscode> {
             error: state is LoginError ? state.errorMessage : null,
             ctaChildren: [
               if (state is LoginEmailNotVerified)
-                RoundedButton(
-                  text: Strings.loginResendVerificationEmail,
-                  onTap: () => resendEmailCallback(context.read<LoginCubit>()),
+                ElevatedButton(
+                  style: const ButtonStyle(
+                    backgroundColor:
+                        MaterialStatePropertyAll(AppColors.secondary),
+                    foregroundColor:
+                        MaterialStatePropertyAll(AppColors.slightlyHighlighted),
+                  ),
+                  onPressed: () =>
+                      resendEmailCallback(context.read<LoginCubit>()),
+                  child: const Text(Strings.loginResendVerificationEmail),
                 ),
             ],
             bottomWidget: Numpad(forgotPasscodeAction: _forgotPasscode),
