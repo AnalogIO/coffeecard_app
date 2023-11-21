@@ -44,6 +44,6 @@ extension TimeOfDayOperators on TimeOfDay {
 
   /// Checks if [this] is within [timeslot].
   bool isInTimeslot(Timeslot timeslot) {
-    return timeslot.startTime <= this && this <= timeslot.endTime;
+    return isBetween(timeslot.startTime, timeslot.endTime);
   }
 }
