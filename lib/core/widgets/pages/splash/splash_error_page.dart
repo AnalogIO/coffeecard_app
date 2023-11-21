@@ -1,8 +1,7 @@
-import 'package:coffeecard/core/ignore_value.dart';
 import 'package:coffeecard/core/strings.dart';
-import 'package:coffeecard/core/styles/app_colors.dart';
 import 'package:coffeecard/core/styles/app_text_styles.dart';
 import 'package:coffeecard/core/widgets/components/loading_overlay.dart';
+import 'package:coffeecard/core/widgets/components/rounded_button.dart';
 import 'package:coffeecard/features/environment/presentation/cubit/environment_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,11 +16,25 @@ class SplashErrorPage extends StatefulWidget {
 }
 
 class _SplashErrorPageState extends State<SplashErrorPage> {
+  Future<void> onTap() async {
+    LoadingOverlay.show(context).ignore();
+
+    // Show loading overlay for at least 200 ms, otherwise it
+    // may not be obvious that a load is happening with no internet
+    await Future.wait<void>([
+      Future.delayed(const Duration(milliseconds: 200)),
+      context.read<EnvironmentCubit>().getConfig(),
+    ]);
+
+    if (mounted) {
+      LoadingOverlay.hide(context);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Padding(
       padding: const EdgeInsets.all(48),
-      color: AppColors.primary,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -31,31 +44,7 @@ class _SplashErrorPageState extends State<SplashErrorPage> {
             textAlign: TextAlign.center,
           ),
           const Gap(8),
-          ElevatedButton(
-            style: ButtonStyle(
-              foregroundColor: MaterialStateProperty.all(AppColors.primary),
-              maximumSize: MaterialStateProperty.all(Size.infinite),
-              backgroundColor: MaterialStateProperty.all(AppColors.white),
-              shape: MaterialStateProperty.all(const StadiumBorder()),
-              padding: MaterialStateProperty.all(
-                const EdgeInsets.symmetric(horizontal: 16),
-              ),
-            ),
-            onPressed: () async {
-              final environmentLoaded =
-                  context.read<EnvironmentCubit>().getConfig();
-              ignoreValue(LoadingOverlay.show(context));
-              // Delay since it is otherwise not obvious
-              // a load is happening with no internet
-              final _ = await Future.delayed(const Duration(milliseconds: 200));
-              await environmentLoaded;
-              if (mounted) LoadingOverlay.hide(context);
-            },
-            child: Text(
-              Strings.retry,
-              style: AppTextStyle.buttonTextDark,
-            ),
-          ),
+          RoundedButton.bright(text: Strings.retry, onTap: onTap),
         ],
       ),
     );
