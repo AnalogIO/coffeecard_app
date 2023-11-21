@@ -52,13 +52,7 @@ abstract final class AppTextStyle {
 
   static final loginError = settingKey.copyWith(color: AppColors.errorOnDark);
 
-  static final _buttonBase = _body.size(14).bold();
-
-  static final buttonText = _buttonBase.color(AppColors.white).style;
-
-  static final buttonTextDark = _buttonBase.color(AppColors.primary).style;
-
-  static final buttonTextDisabled = _buttonBase.color(AppColors.gray).style;
+  static final buttonText = _body.size(14).bold().style;
 
   static final explainer = _body.size(12).color(AppColors.secondary).style;
 
