@@ -3,21 +3,33 @@ import 'package:coffeecard/core/styles/app_text_styles.dart';
 import 'package:flutter/material.dart';
 
 class RoundedButton extends StatelessWidget {
-  const RoundedButton({required this.text, required this.onTap});
+  const RoundedButton({
+    required this.text,
+    required this.onTap,
+  })  : backgroundColor = AppColors.primary,
+        foregroundColor = AppColors.white;
+
+  const RoundedButton.bright({
+    required this.text,
+    required this.onTap,
+  })  : backgroundColor = AppColors.white,
+        foregroundColor = AppColors.primary;
 
   final String text;
   final void Function()? onTap;
-
-  bool get disabled => onTap == null;
+  final Color backgroundColor;
+  final Color foregroundColor;
 
   Color _getBackgroundColor(Set<MaterialState> states) {
-    if (states.contains(MaterialState.disabled)) return AppColors.lightGray;
-    return AppColors.primary;
+    return (states.contains(MaterialState.disabled))
+        ? AppColors.lightGray
+        : backgroundColor;
   }
 
   Color _getForegroundColor(Set<MaterialState> states) {
-    if (states.contains(MaterialState.disabled)) return AppColors.gray;
-    return AppColors.white;
+    return (states.contains(MaterialState.disabled))
+        ? AppColors.gray
+        : foregroundColor;
   }
 
   @override
@@ -33,12 +45,7 @@ class RoundedButton extends StatelessWidget {
         ),
       ),
       onPressed: onTap,
-      child: Text(
-        text,
-        style: disabled
-            ? AppTextStyle.buttonTextDisabled
-            : AppTextStyle.buttonText,
-      ),
+      child: Text(text, style: AppTextStyle.buttonText),
     );
   }
 }

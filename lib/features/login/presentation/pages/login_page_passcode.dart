@@ -40,12 +40,10 @@ class _LoginPagePasscodeState extends State<LoginPagePasscode> {
       context: context,
       title: Strings.loginVerificationEmailSent,
       children: [
-        //TODO: style
         Text(Strings.loginVerificationEmailBody(widget.email)),
       ],
       actions: [
         TextButton(
-          //TODO: style
           child: const Text(Strings.buttonOK),
           onPressed: () => closeAppDialog(context),
         ),
@@ -89,7 +87,7 @@ class _LoginPagePasscodeState extends State<LoginPagePasscode> {
             error: state is LoginError ? state.errorMessage : null,
             ctaChildren: [
               if (state is LoginEmailNotVerified)
-                RoundedButton(
+                RoundedButton.bright(
                   text: Strings.loginResendVerificationEmail,
                   onTap: () => resendEmailCallback(context.read<LoginCubit>()),
                 ),
