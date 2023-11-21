@@ -8,9 +8,6 @@ icon:
 	dart run flutter_launcher_icons:main
 splash:
 	dart run flutter_native_splash:create
-analyze:
-	flutter analyze && \
-	dart run dart_code_metrics:metrics analyze lib
 update_icon:
 	dart run flutter_launcher_icons:main
 update_name:

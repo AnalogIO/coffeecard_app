@@ -6,9 +6,12 @@ import 'package:coffeecard/core/external/screen_brightness.dart';
 import 'package:coffeecard/core/firebase_analytics_event_logging.dart';
 import 'package:coffeecard/core/ignore_value.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
-import 'package:coffeecard/core/storage/secure_storage.dart';
 import 'package:coffeecard/env/env.dart';
+import 'package:coffeecard/features/authentication/data/datasources/authentication_local_data_source.dart';
 import 'package:coffeecard/features/authentication/data/intercepters/authentication_interceptor.dart';
+import 'package:coffeecard/features/authentication/domain/usecases/clear_authenticated_user.dart';
+import 'package:coffeecard/features/authentication/domain/usecases/get_authenticated_user.dart';
+import 'package:coffeecard/features/authentication/domain/usecases/save_authenticated_user.dart';
 import 'package:coffeecard/features/authentication/presentation/cubits/authentication_cubit.dart';
 import 'package:coffeecard/features/contributor/data/datasources/contributor_local_data_source.dart';
 import 'package:coffeecard/features/contributor/domain/usecases/fetch_contributors.dart';
@@ -69,65 +72,41 @@ import 'package:logger/logger.dart';
 final GetIt sl = GetIt.instance;
 
 void configureServices() {
-  // Logger
-  ignoreValue(
-    sl.registerSingleton(Logger()),
-  );
+  ignoreValue(sl.registerSingleton(Logger()));
 
-  // Executor
-  sl.registerLazySingleton(
-    () => NetworkRequestExecutor(
-      logger: sl(),
-      firebaseLogger: sl(),
-    ),
-  );
-
-  // Storage
-  ignoreValue(
-    sl.registerSingleton(
-      SecureStorage(storage: const FlutterSecureStorage(), logger: sl()),
-    ),
-  );
-
-  // Authentication
-  ignoreValue(
-    sl.registerSingleton<AuthenticationCubit>(
-      AuthenticationCubit(sl<SecureStorage>()),
-    ),
-  );
+  initFeatures();
+  initExternal();
 
   // Reactivation authenticator (uninitalized), http client and interceptors
   initHttp();
 
-  // Features
-  initFeatures();
+  // provide the account repository to the reactivation authenticator
+  sl<ReactivationAuthenticator>().initialize(sl<AccountRemoteDataSource>());
+}
 
-  // v1 and v2
+void initExternal() {
+  ignoreValue(sl.registerSingleton(const FlutterSecureStorage()));
 
-  sl.registerFactory<AccountRemoteDataSource>(
-    () => AccountRemoteDataSource(
-      apiV1: sl<CoffeecardApi>(),
-      apiV2: sl<CoffeecardApiV2>(),
-      executor: sl<NetworkRequestExecutor>(),
-    ),
-  );
+  ignoreValue(sl.registerFactory(() => DateService()));
+  ignoreValue(sl.registerFactory(() => ScreenBrightness()));
+  ignoreValue(sl.registerLazySingleton(() => ExternalUrlLauncher()));
 
-  // external
   ignoreValue(
     sl.registerSingleton<FirebaseAnalyticsEventLogging>(
       FirebaseAnalyticsEventLogging(FirebaseAnalytics.instance),
     ),
   );
 
-  ignoreValue(sl.registerFactory(() => DateService()));
-  ignoreValue(sl.registerFactory(() => ScreenBrightness()));
-  ignoreValue(sl.registerLazySingleton(() => ExternalUrlLauncher()));
-
-  // provide the account repository to the reactivation authenticator
-  sl<ReactivationAuthenticator>().initialize(sl<AccountRemoteDataSource>());
+  sl.registerLazySingleton(
+    () => NetworkRequestExecutor(
+      logger: sl(),
+      firebaseLogger: sl(),
+    ),
+  );
 }
 
 void initFeatures() {
+  initAuthentication();
   initOpeningHours();
   initOccupation();
   initUser();
@@ -141,6 +120,32 @@ void initFeatures() {
   initVoucher();
   initLogin();
   initRegister();
+}
+
+void initAuthentication() {
+  // bloc
+  sl.registerLazySingleton(
+    () => AuthenticationCubit(
+      clearAuthenticatedUser: sl(),
+      saveAuthenticatedUser: sl(),
+      getAuthenticatedUser: sl(),
+    ),
+  );
+
+  // use case
+  sl.registerFactory(() => ClearAuthenticatedUser(dataSource: sl()));
+  sl.registerFactory(() => SaveAuthenticatedUser(dataSource: sl()));
+  sl.registerFactory(() => GetAuthenticatedUser(dataSource: sl()));
+
+  // repository
+
+  // data source
+  sl.registerLazySingleton(
+    () => AuthenticationLocalDataSource(
+      storage: sl(),
+      logger: sl(),
+    ),
+  );
 }
 
 void initOpeningHours() {
@@ -339,6 +344,13 @@ void initLogin() {
   sl.registerFactory(() => ResendEmail(remoteDataSource: sl()));
 
   // data source
+  sl.registerLazySingleton<AccountRemoteDataSource>(
+    () => AccountRemoteDataSource(
+      apiV1: sl(),
+      apiV2: sl(),
+      executor: sl(),
+    ),
+  );
 }
 
 void initRegister() {
@@ -368,7 +380,7 @@ void initHttp() {
 
   final coffeCardChopper = ChopperClient(
     baseUrl: Uri.parse(Env.coffeeCardUrl),
-    interceptors: [AuthenticationInterceptor(sl<SecureStorage>())],
+    interceptors: [AuthenticationInterceptor(sl())],
     converter: $JsonSerializableConverter(),
     services: [
       CoffeecardApi.create(),
