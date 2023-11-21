@@ -68,12 +68,6 @@ runs:
         keyStorePassword: ${{ inputs.keyStorePassword }}
         keyPassword: ${{ inputs.keyPassword }}
 
-    - name: Move appbundle
-      if: ${{ !!inputs.store_artifacts && inputs.build_type == 'prod'}}
-      run: |
-        mv ${{steps.sign_app.outputs.signedReleaseFile}} android.aab
-      shell: bash
-
     - name: Upload appbundle
       if: ${{ !!inputs.store_artifacts && inputs.build_type == 'prod'}}
       uses: actions/upload-artifact@v3.1.3
