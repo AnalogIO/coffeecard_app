@@ -20,8 +20,6 @@ class RoundedButton extends StatelessWidget {
   final Color backgroundColor;
   final Color foregroundColor;
 
-  bool get disabled => onTap == null;
-
   Color _getBackgroundColor(Set<MaterialState> states) {
     return (states.contains(MaterialState.disabled))
         ? AppColors.lightGray
