@@ -44,7 +44,13 @@ class AccountRemoteDataSource {
 
         return Left(err);
       },
-      (result) => Right(AuthenticatedUser(email: email, token: result.token!)),
+      (result) => Right(
+        AuthenticatedUser(
+          email: email,
+          encodedPasscode: encodedPasscode,
+          token: result.token!,
+        ),
+      ),
     );
   }
 

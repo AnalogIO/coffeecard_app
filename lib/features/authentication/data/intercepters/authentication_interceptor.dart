@@ -1,25 +1,23 @@
 import 'dart:async';
 
 import 'package:chopper/chopper.dart';
-import 'package:coffeecard/core/storage/secure_storage.dart';
+import 'package:coffeecard/features/authentication/data/datasources/authentication_local_data_source.dart';
 
 class AuthenticationInterceptor implements RequestInterceptor {
-  final SecureStorage _storage;
+  final AuthenticationLocalDataSource localDataSource;
 
-  AuthenticationInterceptor(this._storage);
+  AuthenticationInterceptor(this.localDataSource);
 
   /// Try retrieve authentication token from storage and add authentication header if exists
   @override
   FutureOr<Request> onRequest(Request request) async {
-    final token = await _storage.readToken();
+    final user = await localDataSource.getAuthenticatedUser();
 
-    if (token != null) {
+    return user.match(() => request, (user) {
       final updatedHeaders = Map.of(request.headers);
-      updatedHeaders['Authorization'] = 'Bearer $token';
+      updatedHeaders['Authorization'] = 'Bearer ${user.token}';
 
       return request.copyWith(headers: updatedHeaders);
-    }
-
-    return request;
+    });
   }
 }
