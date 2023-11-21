@@ -16,7 +16,7 @@ class SplashErrorPage extends StatefulWidget {
 }
 
 class _SplashErrorPageState extends State<SplashErrorPage> {
-  Future<void> onPressed() async {
+  Future<void> onTap() async {
     LoadingOverlay.show(context).ignore();
 
     // Show loading overlay for at least 200 ms, otherwise it
@@ -44,7 +44,7 @@ class _SplashErrorPageState extends State<SplashErrorPage> {
             textAlign: TextAlign.center,
           ),
           const Gap(8),
-          RoundedButton.bright(text: Strings.retry, onTap: onPressed),
+          RoundedButton.bright(text: Strings.retry, onTap: onTap),
         ],
       ),
     );
