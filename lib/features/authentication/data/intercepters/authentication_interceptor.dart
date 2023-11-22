@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:chopper/chopper.dart';
 import 'package:coffeecard/features/authentication/data/datasources/authentication_local_data_source.dart';
 
-class AuthenticationInterceptor extends RequestInterceptor {
+class AuthenticationInterceptor implements RequestInterceptor {
   final AuthenticationLocalDataSource localDataSource;
 
   AuthenticationInterceptor(this.localDataSource);
@@ -12,15 +12,12 @@ class AuthenticationInterceptor extends RequestInterceptor {
   @override
   FutureOr<Request> onRequest(Request request) async {
     final user = await localDataSource.getAuthenticatedUser();
-    final token = user?.token;
 
-    if (token == null) {
-      return request;
-    }
+    return user.match(() => request, (user) {
+      final updatedHeaders = Map.of(request.headers);
+      updatedHeaders['Authorization'] = 'Bearer ${user.token}';
 
-    final updatedHeaders = Map.of(request.headers);
-    updatedHeaders['Authorization'] = 'Bearer $token';
-
-    return request.copyWith(headers: updatedHeaders);
+      return request.copyWith(headers: updatedHeaders);
+    });
   }
 }

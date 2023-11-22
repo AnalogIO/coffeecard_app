@@ -42,6 +42,10 @@ class AuthenticatedUserModel extends AuthenticatedUser {
     String key,
     T? Function(String) callback,
   ) {
+    if (!m.containsKey(key)) {
+      return null;
+    }
+
     final val = m[key] as String;
 
     if (val == 'null') {

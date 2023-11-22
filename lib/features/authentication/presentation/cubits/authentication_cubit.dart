@@ -27,22 +27,21 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   Future<void> appStarted() async {
     final authenticatedUser = await getAuthenticatedUser();
 
-    if (authenticatedUser == null) {
-      emit(const AuthenticationState.unauthenticated());
-      return;
-    }
+    authenticatedUser
+        .match(() => emit(const AuthenticationState.unauthenticated()),
+            (authenticatedUser) {
+      final sessionExpired = _isSessionExpired(
+        authenticatedUser.lastLogin,
+        authenticatedUser.sessionTimeout,
+      );
 
-    final sessionExpired = _isSessionExpired(
-      authenticatedUser.lastLogin,
-      authenticatedUser.sessionTimeout,
-    );
+      if (sessionExpired) {
+        emit(AuthenticationState.reauthenticated(authenticatedUser));
+        return;
+      }
 
-    if (sessionExpired) {
-      emit(AuthenticationState.reauthenticated(authenticatedUser));
-      return;
-    }
-
-    emit(AuthenticationState.authenticated(authenticatedUser));
+      emit(AuthenticationState.authenticated(authenticatedUser));
+    });
   }
 
   bool _isSessionExpired(DateTime? lastLogin, Duration? sessionTimeout) {
@@ -50,7 +49,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
       return false;
     }
 
-    final now = dateService.now();
+    final now = dateService.currentDateTime;
     final difference = now.difference(lastLogin);
     return difference > sessionTimeout;
   }
@@ -60,7 +59,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     String encodedPasscode,
     String token,
   ) async {
-    final now = dateService.now();
+    final now = dateService.currentDateTime;
 
     await saveAuthenticatedUser(
       email: email,
@@ -89,16 +88,14 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   Future<void> saveSessionTimeout(Duration? duration) async {
     final user = await getAuthenticatedUser();
 
-    if (user == null) {
-      return;
-    }
-
-    await saveAuthenticatedUser(
-      email: user.email,
-      token: user.token,
-      encodedPasscode: user.encodedPasscode,
-      lastLogin: user.lastLogin,
-      sessionTimeout: duration,
-    );
+    user.match(() => null, (user) async {
+      await saveAuthenticatedUser(
+        email: user.email,
+        token: user.token,
+        encodedPasscode: user.encodedPasscode,
+        lastLogin: user.lastLogin,
+        sessionTimeout: duration,
+      );
+    });
   }
 }

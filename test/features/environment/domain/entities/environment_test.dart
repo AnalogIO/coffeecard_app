@@ -8,8 +8,9 @@ void main() {
       'should return [Production] when environment type is Production',
       () {
         // act
-        final actual =
-            Environment.fromAppConfig(AppConfig(environmentType: 'Production'));
+        final actual = Environment.fromAppConfig(
+          const AppConfig(environmentType: 'Production'),
+        );
 
         // assert
         expect(actual, Environment.production);
@@ -21,7 +22,7 @@ void main() {
       () {
         // act
         final actual =
-            Environment.fromAppConfig(AppConfig(environmentType: 'Test'));
+            Environment.fromAppConfig(const AppConfig(environmentType: 'Test'));
 
         // assert
         expect(actual, Environment.test);
@@ -33,7 +34,7 @@ void main() {
       () {
         // act
         final actual = Environment.fromAppConfig(
-          AppConfig(environmentType: 'LocalDevelopment'),
+          const AppConfig(environmentType: 'LocalDevelopment'),
         );
 
         // assert
@@ -46,7 +47,7 @@ void main() {
       () {
         // act
         final actual =
-            Environment.fromAppConfig(AppConfig(environmentType: ''));
+            Environment.fromAppConfig(const AppConfig(environmentType: ''));
 
         // assert
         expect(actual, Environment.unknown);

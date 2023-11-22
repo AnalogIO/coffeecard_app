@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:coffeecard/features/authentication/data/models/authenticated_user_model.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:logger/logger.dart';
 
 class AuthenticationLocalDataSource {
@@ -26,16 +27,18 @@ class AuthenticationLocalDataSource {
     logger.d('$authenticatedUser added to storage');
   }
 
-  Future<AuthenticatedUserModel?> getAuthenticatedUser() async {
+  Future<Option<AuthenticatedUserModel>> getAuthenticatedUser() async {
     final jsonString = await storage.read(key: _authenticatedUserKey);
 
     if (jsonString == null) {
-      return null;
+      return const None();
     }
 
-    return AuthenticatedUserModel.fromJson(
+    final user = AuthenticatedUserModel.fromJson(
       json.decode(jsonString) as Map<String, dynamic>,
     );
+
+    return Some(user);
   }
 
   Future<void> clearAuthenticatedUser() async {
@@ -46,18 +49,18 @@ class AuthenticationLocalDataSource {
   Future<void> updateToken(String token) async {
     final user = await getAuthenticatedUser();
 
-    if (user == null) {
-      return;
-    }
+    user.map(
+      (user) async {
+        final model = AuthenticatedUserModel(
+          email: user.email,
+          token: token,
+          encodedPasscode: user.encodedPasscode,
+          lastLogin: user.lastLogin,
+          sessionTimeout: user.sessionTimeout,
+        );
 
-    final model = AuthenticatedUserModel(
-      email: user.email,
-      token: token,
-      encodedPasscode: user.encodedPasscode,
-      lastLogin: user.lastLogin,
-      sessionTimeout: user.sessionTimeout,
+        await saveAuthenticatedUser(model);
+      },
     );
-
-    await saveAuthenticatedUser(model);
   }
 }

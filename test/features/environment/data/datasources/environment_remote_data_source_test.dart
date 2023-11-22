@@ -30,8 +30,9 @@ void main() {
   });
   test('should call executor', () async {
     // arrange
-    when(executor.execute<AppConfig>(any))
-        .thenAnswer((_) async => Right(AppConfig(environmentType: 'Test')));
+    when(executor.execute<AppConfig>(any)).thenAnswer(
+      (_) async => const Right(AppConfig(environmentType: 'Test')),
+    );
 
     // act
     final actual = await environmentRemoteDataSource.getEnvironmentType();

@@ -48,6 +48,8 @@ void main() {
         ReactivationAuthenticator.uninitialized(serviceLocator: serviceLocator);
     authenticator.initialize(accountRemoteDataSource);
 
+    provideDummy<Option<AuthenticatedUserModel>>(none());
+
     provideDummy<Either<Failure, AuthenticatedUser>>(
       const Left(ConnectionFailure()),
     );
@@ -82,7 +84,8 @@ void main() {
       final request = _requestFromMethod('GET');
       final response = _responseFromStatusCode(401);
 
-      when(secureStorage.getAuthenticatedUser()).thenAnswer((_) async => null);
+      when(secureStorage.getAuthenticatedUser())
+          .thenAnswer((_) async => none());
 
       // Act
       final result = await authenticator.authenticate(request, response);
@@ -112,7 +115,7 @@ void main() {
         'method',
         Uri.parse('test'),
         Uri.parse('basetest'),
-        body: LoginDto(
+        body: const LoginDto(
           email: 'email',
           password: 'encodedPasscode',
           version: 'verison',
@@ -120,10 +123,12 @@ void main() {
       );
 
       when(secureStorage.getAuthenticatedUser()).thenAnswer(
-        (_) async => const AuthenticatedUserModel(
-          email: email,
-          token: token,
-          encodedPasscode: 'encodedPasscode',
+        (_) async => some(
+          const AuthenticatedUserModel(
+            email: email,
+            token: token,
+            encodedPasscode: 'encodedPasscode',
+          ),
         ),
       );
       when(accountRemoteDataSource.login(email, encodedPasscode)).thenAnswer(
@@ -170,10 +175,12 @@ void main() {
       const newToken = 'newToken';
 
       when(secureStorage.getAuthenticatedUser()).thenAnswer(
-        (_) async => const AuthenticatedUserModel(
-          email: email,
-          token: oldToken,
-          encodedPasscode: encodedPasscode,
+        (_) async => some(
+          const AuthenticatedUserModel(
+            email: email,
+            token: oldToken,
+            encodedPasscode: encodedPasscode,
+          ),
         ),
       );
 
@@ -223,10 +230,12 @@ void main() {
       String getNewToken() => '${++counter}';
 
       when(secureStorage.getAuthenticatedUser()).thenAnswer(
-        (_) async => const AuthenticatedUserModel(
-          email: email,
-          token: oldToken,
-          encodedPasscode: encodedPasscode,
+        (_) async => some(
+          const AuthenticatedUserModel(
+            email: email,
+            token: oldToken,
+            encodedPasscode: encodedPasscode,
+          ),
         ),
       );
 
@@ -273,10 +282,12 @@ void main() {
       const newToken = 'newToken';
 
       when(secureStorage.getAuthenticatedUser()).thenAnswer(
-        (_) async => const AuthenticatedUserModel(
-          email: email,
-          token: newToken,
-          encodedPasscode: encodedPasscode,
+        (_) async => some(
+          const AuthenticatedUserModel(
+            email: email,
+            token: newToken,
+            encodedPasscode: encodedPasscode,
+          ),
         ),
       );
 

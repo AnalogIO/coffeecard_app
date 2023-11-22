@@ -6,6 +6,7 @@ import 'package:coffeecard/features/authentication/domain/usecases/get_authentic
 import 'package:coffeecard/features/authentication/domain/usecases/save_authenticated_user.dart';
 import 'package:coffeecard/features/authentication/presentation/cubits/authentication_cubit.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
@@ -54,7 +55,7 @@ void main() {
     blocTest<AuthenticationCubit, AuthenticationState>(
       'should emit [Unauthenticated] when no user is stored',
       build: () => cubit,
-      setUp: () => when(getAuthenticatedUser()).thenAnswer((_) async => null),
+      setUp: () => when(getAuthenticatedUser()).thenAnswer((_) async => none()),
       act: (_) => cubit.appStarted(),
       expect: () => [const AuthenticationState.unauthenticated()],
     );
@@ -63,16 +64,19 @@ void main() {
       'should emit [Authenticated] when a user is stored',
       build: () => cubit,
       setUp: () =>
-          when(getAuthenticatedUser()).thenAnswer((_) async => testUser),
+          when(getAuthenticatedUser()).thenAnswer((_) async => Some(testUser)),
       act: (_) => cubit.appStarted(),
       expect: () => [AuthenticationState.authenticated(testUser)],
     );
+  });
 
+  group('authenticated', () {
     blocTest<AuthenticationCubit, AuthenticationState>(
       'should emit [Unauthenticated] when session has expired',
       build: () => cubit,
       setUp: () {
-        when(dateService.now()).thenReturn(DateTime.parse('2012-02-27'));
+        when(dateService.currentDateTime)
+            .thenReturn(DateTime.parse('2012-02-27'));
 
         final testUser = AuthenticatedUser(
           email: 'email',
@@ -82,7 +86,7 @@ void main() {
           sessionTimeout: const Duration(hours: 2),
         );
 
-        when(getAuthenticatedUser()).thenAnswer((_) async => testUser);
+        when(getAuthenticatedUser()).thenAnswer((_) async => Some(testUser));
       },
       act: (_) => cubit.appStarted(),
       expect: () => [const AuthenticationState.unauthenticated()],
@@ -98,8 +102,8 @@ void main() {
         testUser.encodedPasscode,
         testUser.token,
       ),
-      setUp: () =>
-          when(dateService.now()).thenReturn(DateTime.parse('2012-02-27')),
+      setUp: () => when(dateService.currentDateTime)
+          .thenReturn(DateTime.parse('2012-02-27')),
       expect: () => [AuthenticationState.authenticated(testUser)],
       verify: (_) => verify(
         saveAuthenticatedUser(
@@ -128,7 +132,7 @@ void main() {
       build: () => cubit,
       act: (_) => cubit.saveSessionTimeout(const Duration(hours: 2)),
       setUp: () =>
-          when(getAuthenticatedUser()).thenAnswer((_) async => testUser),
+          when(getAuthenticatedUser()).thenAnswer((_) async => Some(testUser)),
       verify: (_) => verify(
         saveAuthenticatedUser(
           email: testUser.email,

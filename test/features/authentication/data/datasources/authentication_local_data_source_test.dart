@@ -4,6 +4,7 @@ import 'package:coffeecard/features/authentication/data/datasources/authenticati
 import 'package:coffeecard/features/authentication/data/models/authenticated_user_model.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:logger/logger.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -61,13 +62,17 @@ void main() {
         final actual = await dataSource.getAuthenticatedUser();
 
         // assert
-        expect(actual!.email, user.email);
-        expect(actual.token, user.token);
-        expect(actual.encodedPasscode, user.encodedPasscode);
+        expect(actual.isSome(), true);
+
+        actual.match(() {}, (actual) {
+          expect(actual.email, user.email);
+          expect(actual.token, user.token);
+          expect(actual.encodedPasscode, user.encodedPasscode);
+        });
       },
     );
     test(
-      'should return null when storage does not contains key',
+      'should return none when storage does not contains key',
       () async {
         // arrange
         when(storage.read(key: anyNamed('key'))).thenAnswer((_) async => null);
@@ -76,7 +81,7 @@ void main() {
         final actual = await dataSource.getAuthenticatedUser();
 
         // assert
-        expect(actual, isNull);
+        expect(actual, none());
       },
     );
   });

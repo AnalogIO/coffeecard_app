@@ -68,7 +68,7 @@ void main() {
           InitiatePurchaseModel(
             dateCreated: DateTime.parse('2023-05-19'),
             id: 0,
-            paymentDetails: MobilePayPaymentDetails(
+            paymentDetails: const MobilePayPaymentDetails(
               mobilePayAppRedirectUri: 'mobilePayAppRedirectUri',
               paymentId: 'paymentId',
               state: 'state',
