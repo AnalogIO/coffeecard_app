@@ -32,7 +32,7 @@ class OpeningHoursPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                _OpeningHoursView(openingHours: state.openingHours),
+                _OpeningHoursView(openingHours: state.week),
                 const Gap(36),
                 Row(
                   children: [
