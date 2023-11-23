@@ -5,6 +5,8 @@ import 'package:coffeecard/features/authentication/domain/usecases/clear_authent
 import 'package:coffeecard/features/authentication/domain/usecases/get_authenticated_user.dart';
 import 'package:coffeecard/features/authentication/domain/usecases/save_authenticated_user.dart';
 import 'package:coffeecard/features/authentication/presentation/cubits/authentication_cubit.dart';
+import 'package:coffeecard/features/session/domain/usecases/get_session_details.dart';
+import 'package:coffeecard/features/session/domain/usecases/save_session_details.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:mockito/annotations.dart';
@@ -17,6 +19,8 @@ import 'authentication_cubit_test.mocks.dart';
     MockSpec<GetAuthenticatedUser>(),
     MockSpec<ClearAuthenticatedUser>(),
     MockSpec<SaveAuthenticatedUser>(),
+    MockSpec<GetSessionDetails>(),
+    MockSpec<SaveSessionDetails>(),
     MockSpec<DateService>(),
   ],
 )
@@ -25,27 +29,31 @@ void main() {
   late MockGetAuthenticatedUser getAuthenticatedUser;
   late MockClearAuthenticatedUser clearAuthenticatedUser;
   late MockSaveAuthenticatedUser saveAuthenticatedUser;
+  late MockGetSessionDetails getSessionDetails;
+  late MockSaveSessionDetails saveSessionDetails;
   late MockDateService dateService;
 
   setUp(() {
     getAuthenticatedUser = MockGetAuthenticatedUser();
     clearAuthenticatedUser = MockClearAuthenticatedUser();
     saveAuthenticatedUser = MockSaveAuthenticatedUser();
+    getSessionDetails = MockGetSessionDetails();
+    saveSessionDetails = MockSaveSessionDetails();
     dateService = MockDateService();
     cubit = AuthenticationCubit(
       getAuthenticatedUser: getAuthenticatedUser,
       clearAuthenticatedUser: clearAuthenticatedUser,
       saveAuthenticatedUser: saveAuthenticatedUser,
+      getSessionDetails: getSessionDetails,
+      saveSessionDetails: saveSessionDetails,
       dateService: dateService,
     );
   });
 
-  final testUser = AuthenticatedUser(
+  const testUser = AuthenticatedUser(
     email: 'email',
     token: 'token',
     encodedPasscode: 'encodedPasscode',
-    lastLogin: some(DateTime.parse('2012-02-27')),
-    sessionTimeout: none(),
   );
 
   test('initial state is AuthenticationState.unknown', () {
@@ -64,10 +72,10 @@ void main() {
     blocTest<AuthenticationCubit, AuthenticationState>(
       'should emit [Authenticated] when a user is stored',
       build: () => cubit,
-      setUp: () =>
-          when(getAuthenticatedUser()).thenAnswer((_) async => Some(testUser)),
+      setUp: () => when(getAuthenticatedUser())
+          .thenAnswer((_) async => const Some(testUser)),
       act: (_) => cubit.appStarted(),
-      expect: () => [AuthenticationState.authenticated(testUser)],
+      expect: () => [const AuthenticationState.authenticated(testUser)],
     );
   });
 
@@ -79,15 +87,14 @@ void main() {
         when(dateService.currentDateTime)
             .thenReturn(DateTime.parse('2012-02-27'));
 
-        final testUser = AuthenticatedUser(
+        const testUser = AuthenticatedUser(
           email: 'email',
           token: 'token',
           encodedPasscode: 'encodedPasscode',
-          lastLogin: some(DateTime.parse('2012-02-20')),
-          sessionTimeout: some(const Duration(hours: 2)),
         );
 
-        when(getAuthenticatedUser()).thenAnswer((_) async => Some(testUser));
+        when(getAuthenticatedUser())
+            .thenAnswer((_) async => const Some(testUser));
       },
       act: (_) => cubit.appStarted(),
       expect: () => [const AuthenticationState.unauthenticated()],
@@ -105,14 +112,12 @@ void main() {
       ),
       setUp: () => when(dateService.currentDateTime)
           .thenReturn(DateTime.parse('2012-02-27')),
-      expect: () => [AuthenticationState.authenticated(testUser)],
+      expect: () => [const AuthenticationState.authenticated(testUser)],
       verify: (_) => verify(
         saveAuthenticatedUser(
           email: testUser.email,
           token: testUser.token,
           encodedPasscode: testUser.encodedPasscode,
-          lastLogin: some(DateTime.parse('2012-02-27')),
-          sessionTimeout: none(),
         ),
       ),
     );
@@ -125,25 +130,6 @@ void main() {
       act: (_) => cubit.unauthenticated(),
       expect: () => [const AuthenticationState.unauthenticated()],
       verify: (_) => verify(clearAuthenticatedUser()),
-    );
-  });
-
-  group('saveSessionTimeout', () {
-    blocTest<AuthenticationCubit, AuthenticationState>(
-      'should update sessionTimeout for user',
-      build: () => cubit,
-      act: (_) => cubit.saveSessionTimeout(const Duration(hours: 2)),
-      setUp: () =>
-          when(getAuthenticatedUser()).thenAnswer((_) async => Some(testUser)),
-      verify: (_) => verify(
-        saveAuthenticatedUser(
-          email: testUser.email,
-          token: testUser.token,
-          encodedPasscode: testUser.encodedPasscode,
-          lastLogin: testUser.lastLogin,
-          sessionTimeout: some(const Duration(hours: 2)),
-        ),
-      ),
     );
   });
 }

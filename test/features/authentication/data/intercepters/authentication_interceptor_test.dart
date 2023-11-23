@@ -23,13 +23,11 @@ void main() {
 
       final mockSecureStorage = MockAuthenticationLocalDataSource();
       when(mockSecureStorage.getAuthenticatedUser()).thenAnswer(
-        (_) async => Some(
+        (_) async => const Some(
           AuthenticatedUserModel(
             email: 'email',
             token: token,
             encodedPasscode: 'encodedPasscode',
-            sessionTimeout: none(),
-            lastLogin: none(),
           ),
         ),
       );

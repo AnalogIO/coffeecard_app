@@ -3,7 +3,6 @@ import 'package:coffeecard/core/widgets/pages/home_page.dart';
 import 'package:coffeecard/features/authentication/presentation/cubits/authentication_cubit.dart';
 import 'package:coffeecard/features/environment/presentation/cubit/environment_cubit.dart';
 import 'package:coffeecard/features/login/presentation/pages/login_page_email.dart';
-import 'package:coffeecard/features/login/presentation/pages/re_login_page.dart';
 import 'package:coffeecard/features/product/domain/entities/purchasable_products.dart';
 import 'package:coffeecard/features/product/presentation/cubit/product_cubit.dart';
 import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
@@ -49,21 +48,11 @@ class _MainRedirectionRouterState extends State<MainRedirectionRouter> {
     final authenticationLoaded = !authenticationStatus.isUnknown;
     final environmentLoaded = environmentState is EnvironmentLoaded;
     if (authenticationLoaded && environmentLoaded) {
-      handleAuthentication(
-        authenticationStatus,
-        authenticationCubit.state.authenticatedUser?.email,
-      );
+      handleAuthentication(authenticationStatus);
     }
   }
 
-  Future<void> handleAuthentication(
-    AuthenticationStatus status,
-    String? email,
-  ) async {
-    if (status.isReauthenticated) {
-      return promptRelogin(email!);
-    }
-
+  Future<void> handleAuthentication(AuthenticationStatus status) async {
     // If no user credentials are stored, redirect to login page.
     if (!status.isAuthenticated) {
       return redirectToLogin();
@@ -109,17 +98,6 @@ class _MainRedirectionRouterState extends State<MainRedirectionRouter> {
           ? some(productState.products)
           : none();
     });
-  }
-
-  void promptRelogin(String email) {
-    final route = ReLoginPage.routeWith(
-      email: email,
-      navigatorKey: widget.navigatorKey,
-    );
-
-    widget.navigatorKey.currentState!
-        .pushAndRemoveUntil(route, (_) => false)
-        .ignore();
   }
 
   /// Redirects the user to the login page based.

@@ -1,6 +1,5 @@
 import 'package:coffeecard/features/authentication/data/datasources/authentication_local_data_source.dart';
 import 'package:coffeecard/features/authentication/data/models/authenticated_user_model.dart';
-import 'package:fpdart/fpdart.dart';
 
 class SaveAuthenticatedUser {
   final AuthenticationLocalDataSource dataSource;
@@ -11,16 +10,12 @@ class SaveAuthenticatedUser {
     required String email,
     required String token,
     required String encodedPasscode,
-    required Option<DateTime> lastLogin,
-    required Option<Duration> sessionTimeout,
   }) async {
     return dataSource.saveAuthenticatedUser(
       AuthenticatedUserModel(
         email: email,
         token: token,
         encodedPasscode: encodedPasscode,
-        lastLogin: lastLogin,
-        sessionTimeout: sessionTimeout,
       ),
     );
   }

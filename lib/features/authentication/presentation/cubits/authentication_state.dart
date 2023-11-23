@@ -17,12 +17,6 @@ class AuthenticationState extends Equatable {
           authenticatedUser: authenticatedUser,
         );
 
-  const AuthenticationState.reauthenticated(AuthenticatedUser authenticatedUser)
-      : this._(
-          status: AuthenticationStatus.reauthenticated,
-          authenticatedUser: authenticatedUser,
-        );
-
   const AuthenticationState.unauthenticated()
       : this._(status: AuthenticationStatus.unauthenticated);
 
@@ -42,12 +36,10 @@ enum AuthenticationStatus {
   unknown,
   authenticated,
   unauthenticated,
-  reauthenticated
 }
 
 extension AuthenticationStatusIs on AuthenticationStatus {
   bool get isUnknown => this == AuthenticationStatus.unknown;
   bool get isAuthenticated => this == AuthenticationStatus.authenticated;
   bool get isUnauthenticated => this == AuthenticationStatus.unauthenticated;
-  bool get isReauthenticated => this == AuthenticationStatus.reauthenticated;
 }

@@ -24,12 +24,10 @@ void main() {
         AuthenticationLocalDataSource(storage: storage, logger: logger);
   });
 
-  final user = AuthenticatedUserModel(
+  const user = AuthenticatedUserModel(
     email: 'email',
     token: 'token',
     encodedPasscode: 'encodedPasscode',
-    sessionTimeout: none(),
-    lastLogin: none(),
   );
 
   group('saveAuthenticatedUser', () {
@@ -114,12 +112,10 @@ void main() {
         await dataSource.updateToken(token);
 
         // assert
-        final expected = AuthenticatedUserModel(
+        const expected = AuthenticatedUserModel(
           email: 'email',
           token: token,
           encodedPasscode: 'encodedPasscode',
-          lastLogin: none(),
-          sessionTimeout: none(),
         );
 
         verify(

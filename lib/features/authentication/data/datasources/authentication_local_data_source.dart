@@ -55,8 +55,6 @@ class AuthenticationLocalDataSource {
           email: user.email,
           token: token,
           encodedPasscode: user.encodedPasscode,
-          lastLogin: user.lastLogin,
-          sessionTimeout: user.sessionTimeout,
         );
 
         await saveAuthenticatedUser(model);

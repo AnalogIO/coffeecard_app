@@ -49,8 +49,6 @@ class AccountRemoteDataSource {
           email: email,
           encodedPasscode: encodedPasscode,
           token: result.token!,
-          lastLogin: none(),
-          sessionTimeout: none(),
         ),
       ),
     );

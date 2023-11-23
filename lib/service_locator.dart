@@ -46,6 +46,10 @@ import 'package:coffeecard/features/receipt/presentation/cubit/receipt_cubit.dar
 import 'package:coffeecard/features/register/data/datasources/register_remote_data_source.dart';
 import 'package:coffeecard/features/register/domain/usecases/register_user.dart';
 import 'package:coffeecard/features/register/presentation/cubit/register_cubit.dart';
+import 'package:coffeecard/features/session/data/datasources/session_local_data_source.dart';
+import 'package:coffeecard/features/session/domain/usecases/get_session_details.dart';
+import 'package:coffeecard/features/session/domain/usecases/save_session_details.dart';
+import 'package:coffeecard/features/session/presentation/cubit/session_timeout_cubit.dart';
 import 'package:coffeecard/features/ticket/data/datasources/ticket_remote_data_source.dart';
 import 'package:coffeecard/features/ticket/domain/usecases/consume_ticket.dart';
 import 'package:coffeecard/features/ticket/domain/usecases/load_tickets.dart';
@@ -105,6 +109,7 @@ void initExternal() {
 }
 
 void initFeatures() {
+  initSession();
   initAuthentication();
   initOpeningHours();
   initOccupation();
@@ -121,6 +126,28 @@ void initFeatures() {
   initRegister();
 }
 
+void initSession() {
+  // bloc
+  sl.registerFactory(
+    () => SessionTimeoutCubit(
+      getSessionDetails: sl(),
+      saveSessionDetails: sl(),
+    ),
+  );
+
+  // use case
+  sl.registerFactory(() => GetSessionDetails(dataSource: sl()));
+  sl.registerFactory(() => SaveSessionDetails(dataSource: sl()));
+
+  // repository
+  sl.registerLazySingleton(
+    () => SessionLocalDataSource(
+      storage: sl(),
+      logger: sl(),
+    ),
+  );
+}
+
 void initAuthentication() {
   // bloc
   sl.registerLazySingleton(
@@ -128,6 +155,8 @@ void initAuthentication() {
       clearAuthenticatedUser: sl(),
       saveAuthenticatedUser: sl(),
       getAuthenticatedUser: sl(),
+      getSessionDetails: sl(),
+      saveSessionDetails: sl(),
       dateService: sl(),
     ),
   );
