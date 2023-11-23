@@ -12,12 +12,12 @@ import 'package:mockito/mockito.dart';
 
 import 'authentication_cubit_test.mocks.dart';
 
-@GenerateMocks(
+@GenerateNiceMocks(
   [
-    GetAuthenticatedUser,
-    ClearAuthenticatedUser,
-    SaveAuthenticatedUser,
-    DateService,
+    MockSpec<GetAuthenticatedUser>(),
+    MockSpec<ClearAuthenticatedUser>(),
+    MockSpec<SaveAuthenticatedUser>(),
+    MockSpec<DateService>(),
   ],
 )
 void main() {
@@ -44,7 +44,8 @@ void main() {
     email: 'email',
     token: 'token',
     encodedPasscode: 'encodedPasscode',
-    lastLogin: DateTime.parse('2012-02-27'),
+    lastLogin: some(DateTime.parse('2012-02-27')),
+    sessionTimeout: none(),
   );
 
   test('initial state is AuthenticationState.unknown', () {
@@ -82,8 +83,8 @@ void main() {
           email: 'email',
           token: 'token',
           encodedPasscode: 'encodedPasscode',
-          lastLogin: DateTime.parse('2012-02-20'),
-          sessionTimeout: const Duration(hours: 2),
+          lastLogin: some(DateTime.parse('2012-02-20')),
+          sessionTimeout: some(const Duration(hours: 2)),
         );
 
         when(getAuthenticatedUser()).thenAnswer((_) async => Some(testUser));
@@ -110,7 +111,8 @@ void main() {
           email: testUser.email,
           token: testUser.token,
           encodedPasscode: testUser.encodedPasscode,
-          lastLogin: DateTime.parse('2012-02-27'),
+          lastLogin: some(DateTime.parse('2012-02-27')),
+          sessionTimeout: none(),
         ),
       ),
     );
@@ -139,7 +141,7 @@ void main() {
           token: testUser.token,
           encodedPasscode: testUser.encodedPasscode,
           lastLogin: testUser.lastLogin,
-          sessionTimeout: const Duration(hours: 2),
+          sessionTimeout: some(const Duration(hours: 2)),
         ),
       ),
     );

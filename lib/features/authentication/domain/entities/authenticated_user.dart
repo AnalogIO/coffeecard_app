@@ -1,18 +1,19 @@
 import 'package:equatable/equatable.dart';
+import 'package:fpdart/fpdart.dart';
 
 class AuthenticatedUser extends Equatable {
   final String email;
   final String token;
   final String encodedPasscode;
-  final DateTime? lastLogin;
-  final Duration? sessionTimeout;
+  final Option<DateTime> lastLogin;
+  final Option<Duration> sessionTimeout;
 
   const AuthenticatedUser({
     required this.email,
     required this.token,
     required this.encodedPasscode,
-    this.lastLogin,
-    this.sessionTimeout,
+    required this.lastLogin,
+    required this.sessionTimeout,
   });
 
   @override

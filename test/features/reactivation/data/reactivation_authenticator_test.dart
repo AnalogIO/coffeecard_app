@@ -124,10 +124,12 @@ void main() {
 
       when(secureStorage.getAuthenticatedUser()).thenAnswer(
         (_) async => some(
-          const AuthenticatedUserModel(
+          AuthenticatedUserModel(
             email: email,
             token: token,
             encodedPasscode: 'encodedPasscode',
+            lastLogin: none(),
+            sessionTimeout: none(),
           ),
         ),
       );
@@ -176,20 +178,24 @@ void main() {
 
       when(secureStorage.getAuthenticatedUser()).thenAnswer(
         (_) async => some(
-          const AuthenticatedUserModel(
+          AuthenticatedUserModel(
             email: email,
             token: oldToken,
             encodedPasscode: encodedPasscode,
+            lastLogin: none(),
+            sessionTimeout: none(),
           ),
         ),
       );
 
       when(accountRemoteDataSource.login(email, encodedPasscode)).thenAnswer(
         (_) async => right(
-          const AuthenticatedUser(
+          AuthenticatedUser(
             email: email,
             token: newToken,
             encodedPasscode: 'encodedPasscode',
+            lastLogin: none(),
+            sessionTimeout: none(),
           ),
         ),
       );
@@ -231,10 +237,12 @@ void main() {
 
       when(secureStorage.getAuthenticatedUser()).thenAnswer(
         (_) async => some(
-          const AuthenticatedUserModel(
+          AuthenticatedUserModel(
             email: email,
             token: oldToken,
             encodedPasscode: encodedPasscode,
+            lastLogin: none(),
+            sessionTimeout: none(),
           ),
         ),
       );
@@ -245,6 +253,8 @@ void main() {
             email: email,
             token: getNewToken(),
             encodedPasscode: 'encodedPasscode',
+            lastLogin: none(),
+            sessionTimeout: none(),
           ),
         ),
       );
@@ -283,20 +293,24 @@ void main() {
 
       when(secureStorage.getAuthenticatedUser()).thenAnswer(
         (_) async => some(
-          const AuthenticatedUserModel(
+          AuthenticatedUserModel(
             email: email,
             token: newToken,
             encodedPasscode: encodedPasscode,
+            lastLogin: none(),
+            sessionTimeout: none(),
           ),
         ),
       );
 
       when(accountRemoteDataSource.login(email, encodedPasscode)).thenAnswer(
         (_) async => right(
-          const AuthenticatedUser(
+          AuthenticatedUser(
             email: email,
             token: newToken,
             encodedPasscode: 'encodedPasscode',
+            lastLogin: none(),
+            sessionTimeout: none(),
           ),
         ),
       );

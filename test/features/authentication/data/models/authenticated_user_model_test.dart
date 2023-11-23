@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:coffeecard/features/authentication/data/models/authenticated_user_model.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:fpdart/fpdart.dart';
 
 import '../../../../fixtures/fixture_reader.dart';
 
@@ -10,13 +11,16 @@ void main() {
     email: 'email',
     token: 'token',
     encodedPasscode: 'passcode',
-    sessionTimeout: const Duration(hours: 2),
-    lastLogin: DateTime.parse('2012-02-27'),
+    sessionTimeout: some(const Duration(hours: 2)),
+    lastLogin: some(DateTime.parse('2012-02-27')),
   );
-  const modelNullFields = AuthenticatedUserModel(
+
+  final modelNullFields = AuthenticatedUserModel(
     email: 'email',
     token: 'token',
     encodedPasscode: 'passcode',
+    lastLogin: none(),
+    sessionTimeout: none(),
   );
 
   group('fromJson', () {

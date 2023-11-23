@@ -1,12 +1,13 @@
 import 'package:coffeecard/features/authentication/domain/entities/authenticated_user.dart';
+import 'package:fpdart/fpdart.dart';
 
 class AuthenticatedUserModel extends AuthenticatedUser {
   const AuthenticatedUserModel({
     required super.email,
     required super.token,
     required super.encodedPasscode,
-    super.lastLogin,
-    super.sessionTimeout,
+    required super.lastLogin,
+    required super.sessionTimeout,
   });
 
   factory AuthenticatedUserModel.fromJson(Map<String, dynamic> json) {
@@ -27,32 +28,36 @@ class AuthenticatedUserModel extends AuthenticatedUser {
     );
   }
 
+  static String? _optionToString<T>(Option<T> option) {
+    return option.match(() => 'null', (value) => value.toString());
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'email': email,
       'token': token,
       'passcode': encodedPasscode,
-      'last_login': lastLogin.toString(),
-      'session_timeout': sessionTimeout.toString(),
+      'last_login': _optionToString(lastLogin),
+      'session_timeout': _optionToString(sessionTimeout),
     };
   }
 
-  static T? _nullOrValue<T>(
+  static Option<T> _nullOrValue<T>(
     Map<String, dynamic> m,
     String key,
-    T? Function(String) callback,
+    T Function(String) callback,
   ) {
     if (!m.containsKey(key)) {
-      return null;
+      return none();
     }
 
     final val = m[key] as String;
 
     if (val == 'null') {
-      return null;
+      return none();
     }
 
-    return callback(val);
+    return Some(callback(val));
   }
 
   static Duration _parseDuration(String s) {

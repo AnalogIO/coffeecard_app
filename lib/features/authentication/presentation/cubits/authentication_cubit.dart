@@ -5,6 +5,7 @@ import 'package:coffeecard/features/authentication/domain/usecases/get_authentic
 import 'package:coffeecard/features/authentication/domain/usecases/save_authenticated_user.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fpdart/fpdart.dart';
 
 part 'authentication_state.dart';
 
@@ -27,31 +28,39 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   Future<void> appStarted() async {
     final authenticatedUser = await getAuthenticatedUser();
 
-    authenticatedUser
-        .match(() => emit(const AuthenticationState.unauthenticated()),
-            (authenticatedUser) {
-      final sessionExpired = _isSessionExpired(
-        authenticatedUser.lastLogin,
-        authenticatedUser.sessionTimeout,
-      );
+    authenticatedUser.match(
+      () => emit(const AuthenticationState.unauthenticated()),
+      (authenticatedUser) {
+        final sessionExpired = _isSessionExpired(
+          authenticatedUser.lastLogin,
+          authenticatedUser.sessionTimeout,
+        );
 
-      if (sessionExpired) {
-        emit(AuthenticationState.reauthenticated(authenticatedUser));
-        return;
-      }
+        if (sessionExpired) {
+          emit(AuthenticationState.reauthenticated(authenticatedUser));
+          return;
+        }
 
-      emit(AuthenticationState.authenticated(authenticatedUser));
-    });
+        emit(AuthenticationState.authenticated(authenticatedUser));
+      },
+    );
   }
 
-  bool _isSessionExpired(DateTime? lastLogin, Duration? sessionTimeout) {
-    if (lastLogin == null || sessionTimeout == null) {
-      return false;
-    }
-
-    final now = dateService.currentDateTime;
-    final difference = now.difference(lastLogin);
-    return difference > sessionTimeout;
+  bool _isSessionExpired(
+    Option<DateTime> lastLogin,
+    Option<Duration> sessionTimeout,
+  ) {
+    return lastLogin.match(
+      () => false,
+      (lastLogin) => sessionTimeout.match(
+        () => false,
+        (sessionTimeout) {
+          final now = dateService.currentDateTime;
+          final difference = now.difference(lastLogin);
+          return difference > sessionTimeout;
+        },
+      ),
+    );
   }
 
   Future<void> authenticated(
@@ -65,7 +74,8 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
       email: email,
       token: token,
       encodedPasscode: encodedPasscode,
-      lastLogin: now,
+      lastLogin: some(now),
+      sessionTimeout: none(),
     );
 
     emit(
@@ -74,7 +84,8 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
           token: token,
           email: email,
           encodedPasscode: encodedPasscode,
-          lastLogin: now,
+          lastLogin: some(now),
+          sessionTimeout: none(),
         ),
       ),
     );
@@ -88,14 +99,17 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   Future<void> saveSessionTimeout(Duration? duration) async {
     final user = await getAuthenticatedUser();
 
-    user.match(() => null, (user) async {
-      await saveAuthenticatedUser(
-        email: user.email,
-        token: user.token,
-        encodedPasscode: user.encodedPasscode,
-        lastLogin: user.lastLogin,
-        sessionTimeout: duration,
-      );
-    });
+    user.match(
+      () => null,
+      (user) async {
+        await saveAuthenticatedUser(
+          email: user.email,
+          token: user.token,
+          encodedPasscode: user.encodedPasscode,
+          lastLogin: user.lastLogin,
+          sessionTimeout: optionOf(duration),
+        );
+      },
+    );
   }
 }
