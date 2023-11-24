@@ -10,6 +10,7 @@ typedef SessionTimeout = (String, Duration?);
 
 const List<SessionTimeout> entries = [
   ('2 seconds', Duration(seconds: 2)),
+  ('2 minutes', Duration(minutes: 2)),
   ('2 hours', Duration(hours: 2)),
   ('Never', null),
 ];
@@ -21,16 +22,28 @@ class SessionTimeoutCubit extends Cubit<SessionTimeoutState> {
   SessionTimeoutCubit({
     required this.getSessionDetails,
     required this.saveSessionDetails,
-  }) : super(
-          SessionTimeoutState(
-            entries: entries,
-            selected: entries.first,
-          ),
-        );
+  }) : super(const SessionTimeoutLoading(entries: entries));
 
-  SessionTimeout selected() => state.selected;
+  SessionTimeout selected() => state is SessionTimeoutLoaded
+      ? (state as SessionTimeoutLoaded).selected
+      : entries.firstWhere((element) => element.$2 == null);
+
+  Future<void> load() async {
+    final sessionDetails = await getSessionDetails();
+
+    final selected = sessionDetails.match(
+      () => null,
+      (t) => t.sessionTimeout.getOrElse(() => null),
+    );
+
+    final e = entries.firstWhere((element) => element.$2 == selected);
+
+    emit(SessionTimeoutLoaded(entries: entries, selected: e));
+  }
 
   Future<void> setSelected(SessionTimeout sessionTimeout) async {
+    emit(const SessionTimeoutLoading(entries: entries));
+
     final e = entries.firstWhere((element) => element == sessionTimeout);
 
     final sessionDetails = await getSessionDetails();
@@ -38,14 +51,10 @@ class SessionTimeoutCubit extends Cubit<SessionTimeoutState> {
     sessionDetails.map(
       (sessionDetails) async => await saveSessionDetails(
         lastLogin: sessionDetails.lastLogin,
-        sessionTimeout: some(e.$2),
+        sessionTimeout: e.$2 == null ? none() : some(e.$2),
       ),
     );
 
-    emit(
-      state.copyWith(
-        selected: e,
-      ),
-    );
+    emit(SessionTimeoutLoaded(entries: entries, selected: e));
   }
 }

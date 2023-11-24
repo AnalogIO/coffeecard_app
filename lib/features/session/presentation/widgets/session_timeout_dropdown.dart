@@ -12,10 +12,10 @@ class SessionTimeoutDropdown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => sl<SessionTimeoutCubit>(),
+      create: (_) => sl<SessionTimeoutCubit>()..load(),
       child: BlocBuilder<SessionTimeoutCubit, SessionTimeoutState>(
         builder: (context, state) => Dropdown<SessionTimeout>(
-          loading: false,
+          loading: state is SessionTimeoutLoading,
           textStyle: AppTextStyle.settingValue,
           dropdownColor: AppColors.primary,
           value: context.read<SessionTimeoutCubit>().selected(),

@@ -33,11 +33,12 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
 
   Future<void> appStarted() async {
     final authenticatedUser = await getAuthenticatedUser();
-    final sessionDetails = await getSessionDetails();
 
     authenticatedUser.match(
       () => emit(const AuthenticationState.unauthenticated()),
       (authenticatedUser) async {
+        final sessionDetails = await getSessionDetails();
+
         sessionDetails.map(
           (sessionDetails) async {
             final sessionExpired = _isSessionExpired(
@@ -116,6 +117,20 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
 
   Future<void> unauthenticated() async {
     await clearAuthenticatedUser();
+
+    final sessionDetails = await getSessionDetails();
+
+    sessionDetails.match(
+      () async => await saveSessionDetails(
+        lastLogin: none(),
+        sessionTimeout: none(),
+      ),
+      (sessionDetails) async => await saveSessionDetails(
+        lastLogin: none(),
+        sessionTimeout: sessionDetails.sessionTimeout,
+      ),
+    );
+
     emit(const AuthenticationState.unauthenticated());
   }
 }

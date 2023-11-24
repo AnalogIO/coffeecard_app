@@ -31,13 +31,13 @@ class SessionLocalDataSource {
     final jsonString = await storage.read(key: _sessionKey);
 
     if (jsonString == null) {
-      return const None();
+      return none();
     }
 
     final sessionDetails = SessionDetailsModel.fromJson(
       json.decode(jsonString) as Map<String, dynamic>,
     );
 
-    return Some(sessionDetails);
+    return some(sessionDetails);
   }
 }
