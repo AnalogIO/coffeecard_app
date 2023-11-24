@@ -39,7 +39,8 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
       (authenticatedUser) async {
         final sessionDetails = await getSessionDetails();
 
-        sessionDetails.map(
+        sessionDetails.match(
+          () => emit(AuthenticationState.authenticated(authenticatedUser)),
           (sessionDetails) async {
             final sessionExpired = _isSessionExpired(
               sessionDetails.lastLogin,
@@ -50,10 +51,10 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
               await unauthenticated();
               return;
             }
+
+            emit(AuthenticationState.authenticated(authenticatedUser));
           },
         );
-
-        emit(AuthenticationState.authenticated(authenticatedUser));
       },
     );
   }

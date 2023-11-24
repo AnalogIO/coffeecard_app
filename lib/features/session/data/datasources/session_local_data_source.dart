@@ -16,9 +16,7 @@ class SessionLocalDataSource {
     required this.logger,
   });
 
-  Future<void> saveSessionDetails(
-    SessionDetailsModel sessionDetails,
-  ) async {
+  Future<void> saveSessionDetails(SessionDetailsModel sessionDetails) async {
     await storage.write(
       key: _sessionKey,
       value: json.encode(sessionDetails),

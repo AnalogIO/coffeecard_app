@@ -9,8 +9,6 @@ part 'session_timeout_state.dart';
 typedef SessionTimeout = (String, Duration?);
 
 const List<SessionTimeout> entries = [
-  ('2 seconds', Duration(seconds: 2)),
-  ('2 minutes', Duration(minutes: 2)),
   ('2 hours', Duration(hours: 2)),
   ('Never', null),
 ];
