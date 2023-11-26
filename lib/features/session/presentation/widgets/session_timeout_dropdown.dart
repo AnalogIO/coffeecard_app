@@ -19,7 +19,7 @@ class SessionTimeoutDropdown extends StatelessWidget {
           textStyle: AppTextStyle.settingValue,
           dropdownColor: AppColors.primary,
           value: context.read<SessionTimeoutCubit>().selected(),
-          items: entries
+          items: state.entries
               .map(
                 (e) => DropdownMenuItem(
                   value: e,

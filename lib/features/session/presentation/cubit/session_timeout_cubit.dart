@@ -8,51 +8,56 @@ part 'session_timeout_state.dart';
 
 typedef SessionTimeout = (String, Duration?);
 
-const List<SessionTimeout> entries = [
-  ('2 hours', Duration(hours: 2)),
-  ('Never', null),
-];
-
 class SessionTimeoutCubit extends Cubit<SessionTimeoutState> {
   final GetSessionDetails getSessionDetails;
   final SaveSessionDetails saveSessionDetails;
 
+  final List<SessionTimeout> entries;
+
   SessionTimeoutCubit({
     required this.getSessionDetails,
     required this.saveSessionDetails,
-  }) : super(const SessionTimeoutLoading(entries: entries));
+    required this.entries,
+  }) : super(SessionTimeoutLoading(entries: entries));
+
+  SessionTimeout _getMatchingEntry(Duration? duration) =>
+      entries.firstWhere((sessionTimeout) => sessionTimeout.$2 == duration);
 
   SessionTimeout selected() => state is SessionTimeoutLoaded
       ? (state as SessionTimeoutLoaded).selected
-      : entries.firstWhere((element) => element.$2 == null);
+      : _getMatchingEntry(null);
 
   Future<void> load() async {
     final sessionDetails = await getSessionDetails();
 
-    final selected = sessionDetails.match(
+    final selectedDuration = sessionDetails.match(
       () => null,
-      (t) => t.sessionTimeout.getOrElse(() => null),
+      (sessionDetails) => sessionDetails.sessionTimeout.getOrElse(() => null),
     );
 
-    final e = entries.firstWhere((element) => element.$2 == selected);
+    final entry = _getMatchingEntry(selectedDuration);
 
-    emit(SessionTimeoutLoaded(entries: entries, selected: e));
+    emit(SessionTimeoutLoaded(entries: entries, selected: entry));
   }
 
   Future<void> setSelected(SessionTimeout sessionTimeout) async {
-    emit(const SessionTimeoutLoading(entries: entries));
+    emit(SessionTimeoutLoading(entries: entries));
 
-    final e = entries.firstWhere((element) => element == sessionTimeout);
+    final entry = _getMatchingEntry(sessionTimeout.$2);
 
     final sessionDetails = await getSessionDetails();
 
-    sessionDetails.map(
+    final Option<Duration?> timeout = Option.of(entry.$2);
+
+    sessionDetails.match(
+      () async =>
+          await saveSessionDetails(lastLogin: none(), sessionTimeout: timeout),
       (sessionDetails) async => await saveSessionDetails(
         lastLogin: sessionDetails.lastLogin,
-        sessionTimeout: e.$2 == null ? none() : some(e.$2),
+        sessionTimeout: timeout,
       ),
     );
 
-    emit(SessionTimeoutLoaded(entries: entries, selected: e));
+    emit(SessionTimeoutLoaded(entries: entries, selected: entry));
   }
 }

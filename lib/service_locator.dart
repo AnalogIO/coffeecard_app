@@ -128,10 +128,16 @@ void initFeatures() {
 
 void initSession() {
   // bloc
+  const List<SessionTimeout> entries = [
+    ('2 hours', Duration(hours: 2)),
+    ('Never', null),
+  ];
+
   sl.registerFactory(
     () => SessionTimeoutCubit(
       getSessionDetails: sl(),
       saveSessionDetails: sl(),
+      entries: entries,
     ),
   );
 
