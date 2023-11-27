@@ -3,8 +3,6 @@ import 'dart:convert';
 import 'package:coffeecard/features/authentication/data/models/authenticated_user_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../../../fixtures/fixture_reader.dart';
-
 void main() {
   const model = AuthenticatedUserModel(
     email: 'email',
@@ -15,7 +13,11 @@ void main() {
   group('fromJson', () {
     test('should return model', () {
       // arrange
-      final jsonString = fixture('authenticated_user/authenticated_user.json');
+      final jsonString = json.encode({
+        'email': 'email',
+        'token': 'token',
+        'passcode': 'passcode',
+      });
 
       // act
       final actual = AuthenticatedUserModel.fromJson(
