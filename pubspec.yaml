@@ -73,6 +73,9 @@ dependencies:
   # env
   envied: 0.5.1
 
+  # biometric
+  local_auth: 2.1.7
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
