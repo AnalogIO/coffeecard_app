@@ -1,9 +1,11 @@
+import 'package:coffeecard/core/styles/app_colors.dart';
+import 'package:coffeecard/features/biometric/presentation/cubit/biometric_cubit.dart';
+import 'package:coffeecard/service_locator.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:local_auth/local_auth.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BiometricAuthenticationSwitch extends StatefulWidget {
-  const BiometricAuthenticationSwitch({super.key});
+  const BiometricAuthenticationSwitch();
 
   @override
   State<BiometricAuthenticationSwitch> createState() =>
@@ -12,50 +14,35 @@ class BiometricAuthenticationSwitch extends StatefulWidget {
 
 class _BiometricAuthenticationSwitchState
     extends State<BiometricAuthenticationSwitch> {
-  bool value = false;
+  bool enabled = false;
 
   String email = 'test@test.dk'; //FIXME: use users email
 
-  Future<void> biometric() async {
-    final auth = LocalAuthentication();
-
-    final canAuthenticateWithBiometrics = await auth.canCheckBiometrics;
-    final canAuthenticate =
-        canAuthenticateWithBiometrics || await auth.isDeviceSupported();
-
-    print(canAuthenticateWithBiometrics);
-    print(canAuthenticate);
-
-    final List<BiometricType> availableBiometrics =
-        await auth.getAvailableBiometrics();
-
-    print(availableBiometrics);
-
-    try {
-      final didAuthenticate = await auth.authenticate(
-        localizedReason: 'Enable biometrics for $email?',
-        options: const AuthenticationOptions(
-          biometricOnly: true,
-          stickyAuth: true,
-        ),
-      );
-
-      print(didAuthenticate);
-    } on PlatformException catch (e) {
-      print(e);
+  void handleChange(bool toggled) {
+    if (toggled) {
+      context.read<BiometricCubit>().register(email);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Switch(
-      value: value,
-      onChanged: (v) {
-        setState(() => value = v);
-        if (v) {
-          biometric();
-        }
-      },
+    return BlocProvider(
+      create: (context) => sl<BiometricCubit>(),
+      child: BlocBuilder<BiometricCubit, BiometricState>(
+        builder: (context, state) {
+          return Switch(
+            inactiveTrackColor: AppColors.background,
+            inactiveThumbColor: AppColors.primary,
+            activeTrackColor: AppColors.background,
+            activeColor: AppColors.primary,
+            value: enabled,
+            onChanged: (v) {
+              setState(() => enabled = v);
+              handleChange(v);
+            },
+          );
+        },
+      ),
     );
   }
 }

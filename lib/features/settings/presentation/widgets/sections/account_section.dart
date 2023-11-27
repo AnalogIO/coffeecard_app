@@ -3,6 +3,7 @@ import 'package:coffeecard/core/styles/app_colors.dart';
 import 'package:coffeecard/core/widgets/components/dialog.dart';
 import 'package:coffeecard/core/widgets/components/helpers/shimmer_builder.dart';
 import 'package:coffeecard/features/authentication/presentation/cubits/authentication_cubit.dart';
+import 'package:coffeecard/features/biometric/presentation/widgets/biometric_authentication_switch.dart';
 import 'package:coffeecard/features/session/presentation/widgets/session_timeout_dropdown.dart';
 import 'package:coffeecard/features/settings/presentation/pages/change_email_page.dart';
 import 'package:coffeecard/features/settings/presentation/widgets/change_passcode_flow.dart';
@@ -63,7 +64,6 @@ class AccountSection extends StatelessWidget {
             },
           ),
           onTap: _tappableIfUserLoaded(context, changeEmailTapCallback),
-          // },
         ),
         SettingListEntry(
           name: Strings.passcode,
@@ -75,6 +75,11 @@ class AccountSection extends StatelessWidget {
         const SettingListEntry(
           name: Strings.sessionTimeout,
           valueWidget: SessionTimeoutDropdown(),
+          overrideDisableBehaviour: true,
+        ),
+        const SettingListEntry(
+          name: Strings.enableBiometrics,
+          valueWidget: BiometricAuthenticationSwitch(),
           overrideDisableBehaviour: true,
         ),
         SettingListEntry(
