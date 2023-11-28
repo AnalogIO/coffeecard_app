@@ -27,12 +27,17 @@ class LoginCubit extends Cubit<LoginState> {
   void addPasscodeInput(String input) {
     final st = state;
 
-    final String newPasscode;
-    newPasscode = st is LoginTypingPasscode ? st.passcode + input : input;
+    final String newPasscode =
+        st is LoginTypingPasscode ? st.passcode + input : input;
 
     emit(LoginTypingPasscode(newPasscode));
 
-    if (newPasscode.length == 4) _loginRequested();
+    if (newPasscode.length == 4) {
+      final passcode = (state as LoginTypingPasscode).passcode;
+      final encodedPasscode = encodePasscode(passcode);
+
+      attemptLogin(encodedPasscode);
+    }
   }
 
   Future<void> resendVerificationEmail(String email) async {
@@ -48,10 +53,7 @@ class LoginCubit extends Cubit<LoginState> {
     emit(const LoginTypingPasscode(''));
   }
 
-  Future<void> _loginRequested() async {
-    final passcode = (state as LoginTypingPasscode).passcode;
-    final encodedPasscode = encodePasscode(passcode);
-
+  Future<void> attemptLogin(String encodedPasscode) async {
     emit(const LoginLoading());
 
     final either = await loginUser(

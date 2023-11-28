@@ -5,6 +5,7 @@ import 'package:coffeecard/features/authentication/domain/usecases/clear_authent
 import 'package:coffeecard/features/authentication/domain/usecases/get_authenticated_user.dart';
 import 'package:coffeecard/features/authentication/domain/usecases/save_authenticated_user.dart';
 import 'package:coffeecard/features/authentication/presentation/cubits/authentication_cubit.dart';
+import 'package:coffeecard/features/biometric/domain/usecases/get_registered_user.dart';
 import 'package:coffeecard/features/session/domain/entities/session_details.dart';
 import 'package:coffeecard/features/session/domain/usecases/get_session_details.dart';
 import 'package:coffeecard/features/session/domain/usecases/save_session_details.dart';
@@ -22,6 +23,7 @@ import 'authentication_cubit_test.mocks.dart';
     MockSpec<SaveAuthenticatedUser>(),
     MockSpec<GetSessionDetails>(),
     MockSpec<SaveSessionDetails>(),
+    MockSpec<GetRegisteredUser>(),
     MockSpec<DateService>(),
   ],
 )
@@ -32,6 +34,7 @@ void main() {
   late MockSaveAuthenticatedUser saveAuthenticatedUser;
   late MockGetSessionDetails getSessionDetails;
   late MockSaveSessionDetails saveSessionDetails;
+  late MockGetRegisteredUser getRegisteredUser;
   late MockDateService dateService;
 
   setUp(() {
@@ -40,6 +43,7 @@ void main() {
     saveAuthenticatedUser = MockSaveAuthenticatedUser();
     getSessionDetails = MockGetSessionDetails();
     saveSessionDetails = MockSaveSessionDetails();
+    getRegisteredUser = MockGetRegisteredUser();
     dateService = MockDateService();
     cubit = AuthenticationCubit(
       getAuthenticatedUser: getAuthenticatedUser,
@@ -47,6 +51,7 @@ void main() {
       saveAuthenticatedUser: saveAuthenticatedUser,
       getSessionDetails: getSessionDetails,
       saveSessionDetails: saveSessionDetails,
+      getRegisteredUser: getRegisteredUser,
       dateService: dateService,
     );
 

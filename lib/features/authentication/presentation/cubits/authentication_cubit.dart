@@ -3,6 +3,8 @@ import 'package:coffeecard/features/authentication/domain/entities/authenticated
 import 'package:coffeecard/features/authentication/domain/usecases/clear_authenticated_user.dart';
 import 'package:coffeecard/features/authentication/domain/usecases/get_authenticated_user.dart';
 import 'package:coffeecard/features/authentication/domain/usecases/save_authenticated_user.dart';
+import 'package:coffeecard/features/biometric/data/models/user_credentials.dart';
+import 'package:coffeecard/features/biometric/domain/usecases/get_registered_user.dart';
 import 'package:coffeecard/features/session/domain/usecases/get_session_details.dart';
 import 'package:coffeecard/features/session/domain/usecases/save_session_details.dart';
 import 'package:equatable/equatable.dart';
@@ -20,6 +22,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   final GetAuthenticatedUser getAuthenticatedUser;
   final GetSessionDetails getSessionDetails;
   final SaveSessionDetails saveSessionDetails;
+  final GetRegisteredUser getRegisteredUser;
   final DateService dateService;
 
   AuthenticationCubit({
@@ -28,6 +31,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     required this.getAuthenticatedUser,
     required this.getSessionDetails,
     required this.saveSessionDetails,
+    required this.getRegisteredUser,
     required this.dateService,
   }) : super(const AuthenticationState._());
 
@@ -133,5 +137,9 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     );
 
     emit(const AuthenticationState.unauthenticated());
+  }
+
+  Future<Option<UserCredentials>> getBiometricStuff() async {
+    return getRegisteredUser();
   }
 }

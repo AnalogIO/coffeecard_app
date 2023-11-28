@@ -14,6 +14,7 @@ import 'package:coffeecard/features/authentication/domain/usecases/get_authentic
 import 'package:coffeecard/features/authentication/domain/usecases/save_authenticated_user.dart';
 import 'package:coffeecard/features/authentication/presentation/cubits/authentication_cubit.dart';
 import 'package:coffeecard/features/biometric/data/datasources/biometric_local_data_source.dart';
+import 'package:coffeecard/features/biometric/domain/usecases/get_registered_user.dart';
 import 'package:coffeecard/features/biometric/domain/usecases/register_biometrics.dart';
 import 'package:coffeecard/features/biometric/presentation/cubit/biometric_cubit.dart';
 import 'package:coffeecard/features/contributor/data/datasources/contributor_local_data_source.dart';
@@ -144,12 +145,15 @@ void initBiometric() {
       biometricLocalDataSource: sl(),
     ),
   );
+  sl.registerFactory(() => GetRegisteredUser(localDataSource: sl()));
 
   // repository
-  sl.registerFactory(() => BiometricLocalDataSource(
-        storage: sl(),
-        logger: sl(),
-      ));
+  sl.registerFactory(
+    () => BiometricLocalDataSource(
+      storage: sl(),
+      logger: sl(),
+    ),
+  );
 }
 
 void initSession() {
@@ -189,6 +193,7 @@ void initAuthentication() {
       getAuthenticatedUser: sl(),
       getSessionDetails: sl(),
       saveSessionDetails: sl(),
+      getRegisteredUser: sl(),
       dateService: sl(),
     ),
   );

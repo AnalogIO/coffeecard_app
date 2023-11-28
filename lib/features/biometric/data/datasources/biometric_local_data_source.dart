@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:coffeecard/features/biometric/data/models/user_credentials.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:logger/logger.dart';
 
 class BiometricLocalDataSource {
@@ -24,6 +25,15 @@ class BiometricLocalDataSource {
     await storage.write(
       key: _biometricKey,
       value: json.encode(credentials),
+    );
+  }
+
+  Future<Option<UserCredentials>> read() async {
+    final jsonString =
+        Option.fromNullable(await storage.read(key: _biometricKey));
+
+    return jsonString.map(
+      (t) => UserCredentials.fromJson(json.decode(t) as Map<String, dynamic>),
     );
   }
 }
