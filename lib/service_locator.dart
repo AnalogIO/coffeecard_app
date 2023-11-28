@@ -13,6 +13,7 @@ import 'package:coffeecard/features/authentication/domain/usecases/clear_authent
 import 'package:coffeecard/features/authentication/domain/usecases/get_authenticated_user.dart';
 import 'package:coffeecard/features/authentication/domain/usecases/save_authenticated_user.dart';
 import 'package:coffeecard/features/authentication/presentation/cubits/authentication_cubit.dart';
+import 'package:coffeecard/features/biometric/data/datasources/biometric_local_data_source.dart';
 import 'package:coffeecard/features/biometric/domain/usecases/register_biometrics.dart';
 import 'package:coffeecard/features/biometric/presentation/cubit/biometric_cubit.dart';
 import 'package:coffeecard/features/contributor/data/datasources/contributor_local_data_source.dart';
@@ -72,6 +73,7 @@ import 'package:coffeecard/generated/api/shiftplanning_api.swagger.dart'
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:logger/logger.dart';
 
 final GetIt sl = GetIt.instance;
@@ -95,6 +97,7 @@ void initExternal() {
   ignoreValue(sl.registerFactory(() => DateService()));
   ignoreValue(sl.registerFactory(() => ScreenBrightness()));
   ignoreValue(sl.registerLazySingleton(() => ExternalUrlLauncher()));
+  ignoreValue(sl.registerFactory(() => LocalAuthentication()));
 
   ignoreValue(
     sl.registerSingleton<FirebaseAnalyticsEventLogging>(
@@ -134,9 +137,19 @@ void initBiometric() {
   sl.registerFactory(() => BiometricCubit(registerBiometric: sl()));
 
   // use case
-  sl.registerFactory(() => RegisterBiometric());
+  sl.registerFactory(
+    () => RegisterBiometric(
+      localAuthentication: sl(),
+      authenticationLocalDataSource: sl(),
+      biometricLocalDataSource: sl(),
+    ),
+  );
 
   // repository
+  sl.registerFactory(() => BiometricLocalDataSource(
+        storage: sl(),
+        logger: sl(),
+      ));
 }
 
 void initSession() {

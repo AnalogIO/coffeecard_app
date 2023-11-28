@@ -275,8 +275,8 @@ abstract final class Strings {
   static const privacyPolicy = 'Privacy policy';
   static const sessionTimeout = 'Session timeout';
   static const enableBiometrics = 'Enable biometrics';
-  static String enableBiometricsFor(String email) =>
-      'Enable biometrics for $email?';
+  static const enableBiometricAuthentication =
+      'Enable biometrics authentication?';
 
   static const emailShimmerText = 'sample@sample.com';
   static const openingHoursShimmerText = 'Somedays: 8-16';

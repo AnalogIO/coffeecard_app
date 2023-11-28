@@ -1,34 +1,59 @@
 import 'package:coffeecard/core/strings.dart';
+import 'package:coffeecard/features/authentication/data/datasources/authentication_local_data_source.dart';
+import 'package:coffeecard/features/biometric/data/datasources/biometric_local_data_source.dart';
 import 'package:flutter/services.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:local_auth/local_auth.dart';
 
 class RegisterBiometric {
-  Future<Either<String, void>> call(String email) async {
-    final auth = LocalAuthentication();
+  final LocalAuthentication localAuthentication;
+  final AuthenticationLocalDataSource authenticationLocalDataSource;
+  final BiometricLocalDataSource biometricLocalDataSource;
 
-    final canAuthenticateWithBiometrics = await auth.canCheckBiometrics;
-    final canAuthenticate =
-        canAuthenticateWithBiometrics || await auth.isDeviceSupported();
+  RegisterBiometric({
+    required this.localAuthentication,
+    required this.authenticationLocalDataSource,
+    required this.biometricLocalDataSource,
+  });
+
+  Future<Either<String, void>> call() async {
+    final canAuthenticateWithBiometrics =
+        await localAuthentication.canCheckBiometrics;
+    final canAuthenticate = canAuthenticateWithBiometrics ||
+        await localAuthentication.isDeviceSupported();
 
     print(canAuthenticateWithBiometrics);
     print(canAuthenticate);
 
     final List<BiometricType> availableBiometrics =
-        await auth.getAvailableBiometrics();
+        await localAuthentication.getAvailableBiometrics();
 
     print(availableBiometrics);
 
     try {
-      final didAuthenticate = await auth.authenticate(
-        localizedReason: Strings.enableBiometricsFor(email),
+      final didAuthenticate = await localAuthentication.authenticate(
+        localizedReason: Strings.enableBiometricAuthentication,
         options: const AuthenticationOptions(
           biometricOnly: true,
           stickyAuth: true,
         ),
       );
 
-      if (didAuthenticate) {}
+      if (didAuthenticate) {
+        final user = await authenticationLocalDataSource.getAuthenticatedUser();
+
+        return user.match(
+          () => const Left('no user'),
+          (user) async {
+            await biometricLocalDataSource.saveCredentials(
+              user.email,
+              user.encodedPasscode,
+            );
+
+            return const Right(null);
+          },
+        );
+      }
 
       return const Right(null);
     } on PlatformException catch (e) {

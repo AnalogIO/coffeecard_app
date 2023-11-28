@@ -16,11 +16,9 @@ class _BiometricAuthenticationSwitchState
     extends State<BiometricAuthenticationSwitch> {
   bool enabled = false;
 
-  String email = 'test@test.dk'; //FIXME: use users email
-
   void handleChange(BuildContext context, bool toggled) {
     if (toggled) {
-      context.read<BiometricCubit>().register(email);
+      context.read<BiometricCubit>().register();
     }
   }
 

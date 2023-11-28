@@ -9,7 +9,7 @@ class BiometricCubit extends Cubit<BiometricState> {
 
   BiometricCubit({required this.registerBiometric}) : super(BiometricInitial());
 
-  Future<void> register(String email) async {
-    await registerBiometric(email);
+  Future<void> register() async {
+    await registerBiometric();
   }
 }
