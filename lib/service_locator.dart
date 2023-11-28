@@ -13,6 +13,8 @@ import 'package:coffeecard/features/authentication/domain/usecases/clear_authent
 import 'package:coffeecard/features/authentication/domain/usecases/get_authenticated_user.dart';
 import 'package:coffeecard/features/authentication/domain/usecases/save_authenticated_user.dart';
 import 'package:coffeecard/features/authentication/presentation/cubits/authentication_cubit.dart';
+import 'package:coffeecard/features/biometric/domain/usecases/register_biometrics.dart';
+import 'package:coffeecard/features/biometric/presentation/cubit/biometric_cubit.dart';
 import 'package:coffeecard/features/contributor/data/datasources/contributor_local_data_source.dart';
 import 'package:coffeecard/features/contributor/domain/usecases/fetch_contributors.dart';
 import 'package:coffeecard/features/contributor/presentation/cubit/contributor_cubit.dart';
@@ -109,6 +111,7 @@ void initExternal() {
 }
 
 void initFeatures() {
+  initBiometric();
   initSession();
   initAuthentication();
   initOpeningHours();
@@ -124,6 +127,16 @@ void initFeatures() {
   initVoucher();
   initLogin();
   initRegister();
+}
+
+void initBiometric() {
+  // bloc
+  sl.registerFactory(() => BiometricCubit(registerBiometric: sl()));
+
+  // use case
+  sl.registerFactory(() => RegisterBiometric());
+
+  // repository
 }
 
 void initSession() {

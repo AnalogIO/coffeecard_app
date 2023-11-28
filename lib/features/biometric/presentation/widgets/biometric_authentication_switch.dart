@@ -18,7 +18,7 @@ class _BiometricAuthenticationSwitchState
 
   String email = 'test@test.dk'; //FIXME: use users email
 
-  void handleChange(bool toggled) {
+  void handleChange(BuildContext context, bool toggled) {
     if (toggled) {
       context.read<BiometricCubit>().register(email);
     }
@@ -38,7 +38,7 @@ class _BiometricAuthenticationSwitchState
             value: enabled,
             onChanged: (v) {
               setState(() => enabled = v);
-              handleChange(v);
+              handleChange(context, v);
             },
           );
         },
