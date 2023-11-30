@@ -26,15 +26,15 @@ class SessionDetailsModel extends SessionDetails {
   }
 
   static Option<T> _parseOption<T>(
-    Map<String, dynamic> m,
+    Map<String, dynamic> jsonMap,
     String key,
     T Function(String) callback,
   ) {
-    if (!m.containsKey(key)) {
+    if (!jsonMap.containsKey(key)) {
       return none();
     }
 
-    final val = m[key] as String;
+    final val = jsonMap[key] as String;
 
     if (val == 'null') {
       return none();
@@ -43,8 +43,8 @@ class SessionDetailsModel extends SessionDetails {
     return Some(callback(val));
   }
 
-  static Duration _parseDuration(String s) {
-    final parts = s.split(':');
+  static Duration _parseDuration(String duration) {
+    final parts = duration.split(':');
 
     final hours = int.parse(parts[0]);
     final minutes = int.parse(parts[1]);
