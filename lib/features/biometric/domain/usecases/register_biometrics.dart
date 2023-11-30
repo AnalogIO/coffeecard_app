@@ -19,16 +19,13 @@ class RegisterBiometric {
   Future<Either<String, void>> call() async {
     final canAuthenticateWithBiometrics =
         await localAuthentication.canCheckBiometrics;
+    // ignore: unused_local_variable
     final canAuthenticate = canAuthenticateWithBiometrics ||
         await localAuthentication.isDeviceSupported();
 
-    print(canAuthenticateWithBiometrics);
-    print(canAuthenticate);
-
+    // ignore: unused_local_variable
     final List<BiometricType> availableBiometrics =
         await localAuthentication.getAvailableBiometrics();
-
-    print(availableBiometrics);
 
     try {
       final didAuthenticate = await localAuthentication.authenticate(

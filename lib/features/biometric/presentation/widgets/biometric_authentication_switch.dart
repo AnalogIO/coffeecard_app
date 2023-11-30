@@ -1,4 +1,4 @@
-import 'package:coffeecard/core/styles/app_colors.dart';
+import 'package:coffeecard/core/widgets/components/coffee_card_switch.dart';
 import 'package:coffeecard/features/biometric/presentation/cubit/biometric_cubit.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:flutter/material.dart';
@@ -28,16 +28,12 @@ class _BiometricAuthenticationSwitchState
       create: (context) => sl<BiometricCubit>(),
       child: BlocBuilder<BiometricCubit, BiometricState>(
         builder: (context, state) {
-          return Switch(
-            inactiveTrackColor: AppColors.background,
-            inactiveThumbColor: AppColors.primary,
-            activeTrackColor: AppColors.background,
-            activeColor: AppColors.primary,
-            value: enabled,
-            onChanged: (v) {
-              setState(() => enabled = v);
-              handleChange(context, v);
-            },
+          return CoffeeCardSwitch(
+            value: false,
+            onChanged: (toggled) => handleChange(
+              context,
+              toggled,
+            ),
           );
         },
       ),

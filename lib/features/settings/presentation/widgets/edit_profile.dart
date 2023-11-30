@@ -1,5 +1,6 @@
 import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/core/styles/app_text_styles.dart';
+import 'package:coffeecard/core/widgets/components/coffee_card_switch.dart';
 import 'package:coffeecard/core/widgets/components/helpers/responsive.dart';
 import 'package:coffeecard/features/occupation/presentation/pages/change_occupation_page.dart';
 import 'package:coffeecard/features/settings/presentation/pages/change_name_page.dart';
@@ -62,15 +63,13 @@ class EditProfile extends StatelessWidget {
               name: deviceIsSmall(context)
                   ? Strings.appearAnonymousSmall
                   : Strings.appearAnonymous,
-              onTap: () => context
-                  .read<UserCubit>()
-                  .setUserPrivacy(privacyActivated: !user.privacyActivated),
-              valueWidget: Switch(
+              valueWidget: CoffeeCardSwitch(
                 value: user.privacyActivated,
-                // No action needed on change, only tap
-                // ignore: no-empty-block
-                onChanged: (_) {},
+                onChanged: (toggled) => context
+                    .read<UserCubit>()
+                    .setUserPrivacy(privacyActivated: toggled),
               ),
+              overrideDisableBehaviour: true,
             ),
           ],
         ),
