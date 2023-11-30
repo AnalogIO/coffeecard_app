@@ -7,4 +7,15 @@ sealed class BiometricState extends Equatable {
   List<Object> get props => [];
 }
 
-final class BiometricInitial extends BiometricState {}
+final class BiometricLoaded extends BiometricState {
+  final bool hasEnabledBiometrics;
+
+  const BiometricLoaded({required this.hasEnabledBiometrics});
+
+  @override
+  List<Object> get props => [hasEnabledBiometrics];
+}
+
+final class BiometricLoading extends BiometricState {
+  const BiometricLoading();
+}

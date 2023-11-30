@@ -135,7 +135,12 @@ void initFeatures() {
 
 void initBiometric() {
   // bloc
-  sl.registerFactory(() => BiometricCubit(registerBiometric: sl()));
+  sl.registerFactory(
+    () => BiometricCubit(
+      registerBiometric: sl(),
+      getRegisteredUser: sl(),
+    ),
+  );
 
   // use case
   sl.registerFactory(

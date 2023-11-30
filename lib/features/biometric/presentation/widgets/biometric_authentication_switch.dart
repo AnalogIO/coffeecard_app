@@ -25,11 +25,11 @@ class _BiometricAuthenticationSwitchState
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => sl<BiometricCubit>(),
+      create: (context) => sl<BiometricCubit>()..getRegisteredUser(),
       child: BlocBuilder<BiometricCubit, BiometricState>(
         builder: (context, state) {
           return CoffeeCardSwitch(
-            value: false,
+            value: state is BiometricLoaded && state.hasEnabledBiometrics,
             onChanged: (toggled) => handleChange(
               context,
               toggled,
