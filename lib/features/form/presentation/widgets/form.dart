@@ -7,6 +7,7 @@ import 'package:coffeecard/features/form/presentation/bloc/form_bloc.dart';
 import 'package:flutter/material.dart' hide FormState;
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gap/gap.dart';
 
 part 'form_text_field.dart';
 
@@ -86,7 +87,8 @@ class FormBase extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  if (title != null) SectionTitle.register(title!),
+                  if (title != null) SectionTitle(title!),
+                  const Gap(8),
                   _FormTextField(
                     inputValidators: inputValidators,
                     onChanged: (input) {

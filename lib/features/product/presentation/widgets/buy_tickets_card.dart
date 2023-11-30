@@ -4,6 +4,7 @@ import 'package:coffeecard/core/widgets/components/card.dart';
 import 'package:coffeecard/core/widgets/components/helpers/responsive.dart';
 import 'package:coffeecard/features/product/domain/entities/product.dart';
 import 'package:coffeecard/features/product/presentation/functions.dart';
+import 'package:coffeecard/features/purchase/domain/entities/payment_status.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
@@ -21,7 +22,11 @@ class _BuyTicketsCardState extends State<BuyTicketsCard> {
     return buyModal(
       context: context,
       product: product,
-      callback: (context, _) async => Navigator.of(context).pop(),
+      callback: (context, maybePayment) async {
+        if (maybePayment?.status == PaymentStatus.completed) {
+          Navigator.of(context).pop();
+        }
+      },
     );
   }
 

@@ -27,12 +27,9 @@ class _BaristaPerksSectionState extends State<BaristaPerksSection> {
     final roleName = widget.userRole.name.capitalize();
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SectionTitle(Strings.perksTitle(roleName)),
-            UserRoleIndicator(widget.userRole),
-          ],
+        SectionTitle.withSideWidget(
+          Strings.perksTitle(roleName),
+          sideWidget: UserRoleIndicator(widget.userRole),
         ),
         Grid(
           gap: GridGap.normal,
