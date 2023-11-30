@@ -1,5 +1,5 @@
 import 'package:coffeecard/core/widgets/components/coffee_card_switch.dart';
-import 'package:coffeecard/features/biometric/presentation/cubit/biometric_cubit.dart';
+import 'package:coffeecard/features/biometric/presentation/cubit/biometrics_cubit.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,26 +14,29 @@ class BiometricAuthenticationSwitch extends StatefulWidget {
 
 class _BiometricAuthenticationSwitchState
     extends State<BiometricAuthenticationSwitch> {
-  bool enabled = false;
-
   void handleChange(BuildContext context, bool toggled) {
+    final cubit = context.read<BiometricsCubit>();
+
     if (toggled) {
-      context.read<BiometricCubit>().register();
+      cubit.register();
+    } else {
+      cubit.clear();
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => sl<BiometricCubit>()..getRegisteredUser(),
-      child: BlocBuilder<BiometricCubit, BiometricState>(
+      create: (context) => sl<BiometricsCubit>()..loadBiometrics(),
+      child: BlocBuilder<BiometricsCubit, BiometricsState>(
         builder: (context, state) {
           return CoffeeCardSwitch(
-            value: state is BiometricLoaded && state.hasEnabledBiometrics,
+            value: state is BiometricsLoaded && state.hasEnabledBiometrics,
             onChanged: (toggled) => handleChange(
               context,
               toggled,
             ),
+            loading: state is BiometricsLoading,
           );
         },
       ),

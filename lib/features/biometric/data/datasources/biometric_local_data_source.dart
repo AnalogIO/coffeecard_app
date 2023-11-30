@@ -36,4 +36,8 @@ class BiometricLocalDataSource {
       (t) => UserCredentials.fromJson(json.decode(t) as Map<String, dynamic>),
     );
   }
+
+  Future<void> clearBiometrics() async {
+    await storage.delete(key: _biometricKey);
+  }
 }

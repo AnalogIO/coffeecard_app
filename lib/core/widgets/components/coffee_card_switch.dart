@@ -4,34 +4,28 @@ import 'package:flutter/material.dart';
 class CoffeeCardSwitch extends StatefulWidget {
   final void Function(bool)? onChanged;
   final bool value;
+  final bool? loading;
 
-  const CoffeeCardSwitch({this.onChanged, required this.value});
+  const CoffeeCardSwitch({this.onChanged, required this.value, this.loading});
 
   @override
   State<CoffeeCardSwitch> createState() => _CoffeeCardSwitchState();
 }
 
 class _CoffeeCardSwitchState extends State<CoffeeCardSwitch> {
-  late bool enabled;
-
-  @override
-  void initState() {
-    enabled = widget.value;
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
+    if (widget.loading != null && widget.loading!) {
+      return const CircularProgressIndicator();
+    }
+
     return Switch(
       inactiveTrackColor: AppColors.background,
       inactiveThumbColor: AppColors.primary,
       activeTrackColor: AppColors.background,
       activeColor: AppColors.primary,
-      value: enabled,
-      onChanged: (v) {
-        setState(() => enabled = v);
-        widget.onChanged?.call(v);
-      },
+      value: widget.value,
+      onChanged: (v) => setState(() => widget.onChanged?.call(v)),
     );
   }
 }
