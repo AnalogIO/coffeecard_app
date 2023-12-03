@@ -1,0 +1,1 @@
+docker build --build-arg flutter_version=$flutter_version -t docker_tests $project_dir/docker/
