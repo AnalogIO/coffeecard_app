@@ -7,7 +7,9 @@ sealed class UpgraderState extends Equatable {
   List<Object> get props => [];
 }
 
-final class UpgraderLoading extends UpgraderState {}
+final class UpgraderLoading extends UpgraderState {
+  const UpgraderLoading();
+}
 
 final class UpgraderLoaded extends UpgraderState {
   final bool canUpgrade;

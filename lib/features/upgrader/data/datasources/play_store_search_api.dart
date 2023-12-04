@@ -92,8 +92,6 @@ class PlayStoreSearchAPI {
 }
 
 extension PlayStoreResults on PlayStoreSearchAPI {
-  static RegExp releaseNotesSpan = RegExp('>(.*?)</span>');
-
   /// Return field version from Play Store results.
   String? version(Document response) {
     String? version;

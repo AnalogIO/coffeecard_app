@@ -33,7 +33,7 @@ class CanUpgrade {
     return none();
   }
 
-  Future<Option<String>> getiOSVersion() async {
+  Future<Option<String>> getAndroidVersion() async {
     final res = await playStoreAPI.lookupById(ApiUriConstants.androidId);
 
     if (res == null) {
@@ -45,7 +45,7 @@ class CanUpgrade {
     return Option.fromNullable(version);
   }
 
-  Future<Option<String>> getAndroidVersion() async {
+  Future<Option<String>> getiOSVersion() async {
     final res = await appStoreAPI.lookupByBundleId(ApiUriConstants.iOSBundle);
 
     if (res == null) {

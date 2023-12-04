@@ -7,7 +7,7 @@ part 'upgrader_state.dart';
 class UpgraderCubit extends Cubit<UpgraderState> {
   final CanUpgrade canUpgrade;
 
-  UpgraderCubit({required this.canUpgrade}) : super(UpgraderLoading());
+  UpgraderCubit({required this.canUpgrade}) : super(const UpgraderLoading());
 
   Future<void> load() async {
     final uppgradeAvailable = await canUpgrade();
