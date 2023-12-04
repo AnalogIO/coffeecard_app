@@ -89,9 +89,7 @@ class PlayStoreSearchAPI {
     }
     return null;
   }
-}
 
-extension PlayStoreResults on PlayStoreSearchAPI {
   /// Return field version from Play Store results.
   String? version(Document response) {
     String? version;

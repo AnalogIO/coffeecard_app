@@ -106,9 +106,7 @@ class ITunesSearchAPI {
     }
     return null;
   }
-}
 
-extension ITunesResults on ITunesSearchAPI {
   /// Return field version from iTunes results.
   String? version(Map response) {
     String? value;
