@@ -67,13 +67,12 @@ dependencies:
   # functional programming thingies
   fpdart: 1.1.0
 
-  # Upgrade notifier
-  upgrader: 8.2.0
-
   # env
   envied: 0.5.1
-  html: ^0.15.4
-  version: ^3.0.2
+
+  # upgrader
+  html: 0.15.4
+  version: 3.0.2
 
 dev_dependencies:
   flutter_test:

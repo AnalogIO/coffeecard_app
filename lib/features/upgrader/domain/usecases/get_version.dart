@@ -1,6 +1,7 @@
 import 'package:coffeecard/core/external/platform_service.dart';
+import 'package:coffeecard/features/upgrader/data/datasources/itunes_search_api.dart';
+import 'package:coffeecard/features/upgrader/data/datasources/play_store_search_api.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:upgrader/upgrader.dart';
 
 class GetVersion {
   final ITunesSearchAPI appStoreAPI;

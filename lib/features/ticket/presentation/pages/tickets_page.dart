@@ -1,7 +1,6 @@
 import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/core/widgets/components/barista_perks_section.dart';
 import 'package:coffeecard/core/widgets/components/scaffold.dart';
-import 'package:coffeecard/core/widgets/upgrade_alert.dart';
 import 'package:coffeecard/features/ticket/presentation/widgets/shop_section.dart';
 import 'package:coffeecard/features/ticket/presentation/widgets/tickets_section.dart';
 import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
@@ -24,26 +23,24 @@ class TicketsPage extends StatelessWidget {
     final user = (context.read<UserCubit>().state as UserLoaded).user;
     final hasBaristaPerks = user.hasBaristaPerks;
 
-    return UpgradeAlert(
-      child: AppScaffold.withTitle(
-        title: Strings.ticketsPageTitle,
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Expanded(
-              child: ListView(
-                controller: scrollController,
-                shrinkWrap: true,
-                padding: const EdgeInsets.all(16.0),
-                children: [
-                  const TicketSection(),
-                  if (hasBaristaPerks) BaristaPerksSection(userRole: user.role),
-                  const ShopSection(),
-                ],
-              ),
+    return AppScaffold.withTitle(
+      title: Strings.ticketsPageTitle,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Expanded(
+            child: ListView(
+              controller: scrollController,
+              shrinkWrap: true,
+              padding: const EdgeInsets.all(16.0),
+              children: [
+                const TicketSection(),
+                if (hasBaristaPerks) BaristaPerksSection(userRole: user.role),
+                const ShopSection(),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
