@@ -375,6 +375,11 @@ abstract final class Strings {
   static String almost(String time) => 'almost $time';
   static String moreThan(String time) => 'more than $time';
 
+  // Upgrader
+  static const upgraderUpdateAvailable = 'An update is available, click ';
+  static const upgraderHere = 'here';
+  static const upgraderToDownload = ' to download it';
+
   // Errors
   static const error = 'Error';
   static const cantLaunchUrl = 'The app can not launch the Url';

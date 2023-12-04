@@ -2,6 +2,7 @@ import 'package:chopper/chopper.dart';
 import 'package:coffeecard/core/api_uri_constants.dart';
 import 'package:coffeecard/core/external/date_service.dart';
 import 'package:coffeecard/core/external/external_url_launcher.dart';
+import 'package:coffeecard/core/external/platform_service.dart';
 import 'package:coffeecard/core/external/screen_brightness.dart';
 import 'package:coffeecard/core/firebase_analytics_event_logging.dart';
 import 'package:coffeecard/core/ignore_value.dart';
@@ -50,6 +51,10 @@ import 'package:coffeecard/features/ticket/data/datasources/ticket_remote_data_s
 import 'package:coffeecard/features/ticket/domain/usecases/consume_ticket.dart';
 import 'package:coffeecard/features/ticket/domain/usecases/load_tickets.dart';
 import 'package:coffeecard/features/ticket/presentation/cubit/tickets_cubit.dart';
+import 'package:coffeecard/features/upgrader/data/datasources/itunes_search_api.dart';
+import 'package:coffeecard/features/upgrader/data/datasources/play_store_search_api.dart';
+import 'package:coffeecard/features/upgrader/domain/usecases/can_upgrade.dart';
+import 'package:coffeecard/features/upgrader/presentation/cubit/upgrader_cubit.dart';
 import 'package:coffeecard/features/user/data/datasources/user_remote_data_source.dart';
 import 'package:coffeecard/features/user/domain/usecases/get_user.dart';
 import 'package:coffeecard/features/user/domain/usecases/request_account_deletion.dart';
@@ -66,6 +71,7 @@ import 'package:coffeecard/generated/api/shiftplanning_api.swagger.dart'
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
+import 'package:http/http.dart';
 import 'package:logger/logger.dart';
 
 final GetIt sl = GetIt.instance;
@@ -89,6 +95,8 @@ void initExternal() {
   ignoreValue(sl.registerFactory(() => DateService()));
   ignoreValue(sl.registerFactory(() => ScreenBrightness()));
   ignoreValue(sl.registerLazySingleton(() => ExternalUrlLauncher()));
+  ignoreValue(sl.registerLazySingleton(() => PlatformService()));
+  ignoreValue(sl.registerFactory(() => Client()));
 
   ignoreValue(
     sl.registerSingleton<FirebaseAnalyticsEventLogging>(
@@ -105,6 +113,7 @@ void initExternal() {
 }
 
 void initFeatures() {
+  initUpgrader();
   initAuthentication();
   initOpeningHours();
   initOccupation();
@@ -144,6 +153,26 @@ void initAuthentication() {
       storage: sl(),
       logger: sl(),
     ),
+  );
+}
+
+void initUpgrader() {
+  // bloc
+  sl.registerFactory(() => UpgraderCubit(canUpgrade: sl()));
+
+  // use case
+  sl.registerFactory(
+    () => CanUpgrade(
+      appStoreAPI: sl(),
+      playStoreAPI: sl(),
+      platformService: sl(),
+    ),
+  );
+
+  // data source
+  sl.registerLazySingleton(() => ITunesSearchAPI(client: sl(), logger: sl()));
+  sl.registerLazySingleton(
+    () => PlayStoreSearchAPI(client: sl(), logger: sl()),
   );
 }
 

@@ -10,12 +10,12 @@ sealed class UpgraderState extends Equatable {
 final class UpgraderLoading extends UpgraderState {}
 
 final class UpgraderLoaded extends UpgraderState {
-  final String version;
+  final bool canUpgrade;
 
-  const UpgraderLoaded({required this.version});
+  const UpgraderLoaded({required this.canUpgrade});
 
   @override
-  List<Object> get props => [version];
+  List<Object> get props => [canUpgrade];
 }
 
 final class UpgraderError extends UpgraderState {

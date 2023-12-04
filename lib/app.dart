@@ -6,6 +6,7 @@ import 'package:coffeecard/features/authentication/presentation/cubits/authentic
 import 'package:coffeecard/features/environment/presentation/cubit/environment_cubit.dart';
 import 'package:coffeecard/features/product/presentation/cubit/product_cubit.dart';
 import 'package:coffeecard/features/redirection/redirection_router.dart';
+import 'package:coffeecard/features/upgrader/presentation/cubit/upgrader_cubit.dart';
 import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:flutter/material.dart';
@@ -26,19 +27,22 @@ class App extends StatelessWidget {
         BlocProvider.value(value: sl<EnvironmentCubit>()..getConfig()),
         BlocProvider(create: (_) => sl<UserCubit>()),
         BlocProvider.value(value: sl<ProductCubit>()),
+        BlocProvider(create: (_) => sl<UpgraderCubit>()..load()),
       ],
-      child: MainRedirectionRouter(
-        navigatorKey: _navigatorKey,
-        child: MaterialApp(
-          title: Strings.appTitle,
-          theme: analogTheme,
+      child: ScaffoldMessenger(
+        child: MainRedirectionRouter(
           navigatorKey: _navigatorKey,
-          home: BlocBuilder<EnvironmentCubit, EnvironmentState>(
-            builder: (_, state) {
-              return (state is EnvironmentError)
-                  ? SplashErrorPage(errorMessage: state.message)
-                  : const SplashLoadingPage();
-            },
+          child: MaterialApp(
+            title: Strings.appTitle,
+            theme: analogTheme,
+            navigatorKey: _navigatorKey,
+            home: BlocBuilder<EnvironmentCubit, EnvironmentState>(
+              builder: (_, state) {
+                return (state is EnvironmentError)
+                    ? SplashErrorPage(errorMessage: state.message)
+                    : const SplashLoadingPage();
+              },
+            ),
           ),
         ),
       ),

@@ -11,8 +11,8 @@ class ExternalUrlLauncher {
       );
 
   Future<void> launchUrlExternalApplication(
-    Uri url,
     BuildContext context,
+    Uri url,
   ) async {
     if (await canLaunch(url)) {
       final _ = launch(url);

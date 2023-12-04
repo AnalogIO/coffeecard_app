@@ -3,24 +3,30 @@ import 'package:coffeecard/features/upgrader/data/datasources/itunes_search_api.
 import 'package:coffeecard/features/upgrader/data/datasources/play_store_search_api.dart';
 import 'package:fpdart/fpdart.dart';
 
-class GetVersion {
+class CanUpgrade {
   final ITunesSearchAPI appStoreAPI;
   final PlayStoreSearchAPI playStoreAPI;
   final PlatformService platformService;
 
-  GetVersion({
+  CanUpgrade({
     required this.appStoreAPI,
     required this.playStoreAPI,
     required this.platformService,
   });
 
-  Future<Option<String>> call() async {
+  Future<Option<bool>> call() async {
+    final currentVersion = await platformService.currentVersion();
+
     if (platformService.isAndroid()) {
-      return getAndroidVersion();
+      final version = await getAndroidVersion();
+
+      return version.map((version) => version != currentVersion);
     }
 
     if (platformService.isIOS()) {
-      return getiOSVersion();
+      final version = await getiOSVersion();
+
+      return version.map((version) => version != currentVersion);
     }
 
     return none();

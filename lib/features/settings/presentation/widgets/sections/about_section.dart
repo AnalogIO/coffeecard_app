@@ -20,15 +20,15 @@ class AboutSection extends StatelessWidget {
 
   void privacyPolicyTapCallback(BuildContext context) {
     sl<ExternalUrlLauncher>().launchUrlExternalApplication(
-      ApiUriConstants.privacyPolicyUri,
       context,
+      ApiUriConstants.privacyPolicyUri,
     );
   }
 
   void provideFeedbackTapCallback(BuildContext context) {
     sl<ExternalUrlLauncher>().launchUrlExternalApplication(
-      ApiUriConstants.feedbackFormUri,
       context,
+      ApiUriConstants.feedbackFormUri,
     );
   }
 

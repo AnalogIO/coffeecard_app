@@ -56,8 +56,8 @@ class MobilePayService extends PaymentHandler {
       // MobilePay not installed, send user to appstore
       if (buildContext.mounted) {
         await externalUrlLauncher.launchUrlExternalApplication(
-          url,
           buildContext,
+          url,
         );
       }
 
