@@ -13,8 +13,7 @@ class UpgraderCubit extends Cubit<UpgraderState> {
     final uppgradeAvailable = await canUpgrade();
 
     uppgradeAvailable.match(
-      //FIXME: error message
-      () => emit(const UpgraderError(error: 'some error')),
+      () => emit(const UpgraderLoaded(canUpgrade: false)),
       (upgradeAvailable) => emit(UpgraderLoaded(canUpgrade: upgradeAvailable)),
     );
   }

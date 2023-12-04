@@ -1,3 +1,4 @@
+import 'package:coffeecard/core/api_uri_constants.dart';
 import 'package:coffeecard/core/external/platform_service.dart';
 import 'package:coffeecard/features/upgrader/data/datasources/itunes_search_api.dart';
 import 'package:coffeecard/features/upgrader/data/datasources/play_store_search_api.dart';
@@ -33,8 +34,7 @@ class CanUpgrade {
   }
 
   Future<Option<String>> getiOSVersion() async {
-    //FIXME: get id by other means
-    final res = await playStoreAPI.lookupById('dk.analog.digitalclipcard');
+    final res = await playStoreAPI.lookupById(ApiUriConstants.androidId);
 
     if (res == null) {
       return none();
@@ -46,9 +46,7 @@ class CanUpgrade {
   }
 
   Future<Option<String>> getAndroidVersion() async {
-    //FIXME: get bundle id by other means
-    final res =
-        await appStoreAPI.lookupByBundleId('DK.AnalogIO.DigitalCoffeeCard');
+    final res = await appStoreAPI.lookupByBundleId(ApiUriConstants.iOSBundle);
 
     if (res == null) {
       return none();

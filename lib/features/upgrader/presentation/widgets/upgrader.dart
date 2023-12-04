@@ -1,3 +1,5 @@
+import 'package:coffeecard/features/environment/domain/entities/environment.dart';
+import 'package:coffeecard/features/environment/presentation/cubit/environment_cubit.dart';
 import 'package:coffeecard/features/upgrader/presentation/cubit/upgrader_cubit.dart';
 import 'package:coffeecard/features/upgrader/presentation/widgets/upgrader_snackbar.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +14,13 @@ class Upgrader extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<UpgraderCubit, UpgraderState>(
       listener: (context, state) {
+        final currentEnvironment = context.read<EnvironmentCubit>().state;
+
+        if (currentEnvironment is EnvironmentLoaded &&
+            !currentEnvironment.env.isProduction) {
+          return;
+        }
+
         if (state is UpgraderLoaded && state.canUpgrade) {
           ScaffoldMessenger.of(context).showSnackBar(UpgraderSnackbar(context));
         }

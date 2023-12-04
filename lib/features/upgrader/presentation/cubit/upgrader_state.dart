@@ -17,12 +17,3 @@ final class UpgraderLoaded extends UpgraderState {
   @override
   List<Object> get props => [canUpgrade];
 }
-
-final class UpgraderError extends UpgraderState {
-  final String error;
-
-  const UpgraderError({required this.error});
-
-  @override
-  List<Object> get props => [error];
-}

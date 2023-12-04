@@ -1,4 +1,6 @@
+import 'package:coffeecard/core/api_uri_constants.dart';
 import 'package:coffeecard/core/external/external_url_launcher.dart';
+import 'package:coffeecard/core/external/platform_service.dart';
 import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/core/styles/app_colors.dart';
 import 'package:coffeecard/core/styles/app_text_styles.dart';
@@ -18,12 +20,7 @@ class UpgraderSnackbar extends SnackBar {
                   style: AppTextStyle.loginExplainer
                       .copyWith(decoration: TextDecoration.underline),
                   recognizer: TapGestureRecognizer()
-                    //FIXME: use correct URI
-                    ..onTap = () =>
-                        ExternalUrlLauncher().launchUrlExternalApplication(
-                          context,
-                          Uri.parse(''),
-                        ),
+                    ..onTap = () => handleClick(context),
                 ),
                 const TextSpan(text: Strings.upgraderToDownload),
               ],
@@ -40,4 +37,22 @@ class UpgraderSnackbar extends SnackBar {
           duration: const Duration(seconds: 10),
           showCloseIcon: true,
         );
+}
+
+Future<void> handleClick(BuildContext context) async {
+  final platformService = PlatformService();
+
+  final String uri;
+  if (platformService.isAndroid()) {
+    uri = ApiUriConstants.playStoreUrl;
+  } else if (platformService.isIOS()) {
+    uri = ApiUriConstants.appStoreUrl;
+  } else {
+    return;
+  }
+
+  ExternalUrlLauncher().launchUrlExternalApplication(
+    context,
+    Uri.parse(uri),
+  );
 }

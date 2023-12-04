@@ -6,7 +6,7 @@ import 'package:html/dom.dart';
 import 'package:html/parser.dart' show parse;
 import 'package:http/http.dart';
 import 'package:logger/logger.dart';
-import 'package:version/version.dart'; //FIXME: remove this package?
+import 'package:version/version.dart';
 
 class PlayStoreSearchAPI {
   final Client client;
