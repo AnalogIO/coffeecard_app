@@ -1,5 +1,3 @@
-flutter_version=3.16.2
-
 project_dir=$(git rev-parse --show-toplevel)
 
 flutter_dir=$(which flutter | rev | cut -c12- | rev)
