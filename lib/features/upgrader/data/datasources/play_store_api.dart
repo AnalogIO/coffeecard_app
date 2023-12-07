@@ -1,20 +1,16 @@
-/*
- * Copyright (c) 2021 William Kwabla. All rights reserved.
- */
-
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' show parse;
 import 'package:http/http.dart';
 import 'package:logger/logger.dart';
 import 'package:version/version.dart';
 
-class PlayStoreSearchAPI {
+class PlayStoreAPI {
   final Client client;
   final Logger logger;
 
   final String playStorePrefixURL = 'play.google.com';
 
-  PlayStoreSearchAPI({
+  PlayStoreAPI({
     required this.client,
     required this.logger,
   });

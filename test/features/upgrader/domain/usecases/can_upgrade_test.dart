@@ -1,6 +1,6 @@
 import 'package:coffeecard/core/external/platform_service.dart';
-import 'package:coffeecard/features/upgrader/data/datasources/itunes_search_api.dart';
-import 'package:coffeecard/features/upgrader/data/datasources/play_store_search_api.dart';
+import 'package:coffeecard/features/upgrader/data/datasources/app_store_api.dart';
+import 'package:coffeecard/features/upgrader/data/datasources/play_store_api.dart';
 import 'package:coffeecard/features/upgrader/domain/usecases/can_upgrade.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
@@ -10,16 +10,16 @@ import 'package:mockito/mockito.dart';
 
 import 'can_upgrade_test.mocks.dart';
 
-@GenerateMocks([ITunesSearchAPI, PlayStoreSearchAPI, PlatformService])
+@GenerateMocks([AppStoreAPI, PlayStoreAPI, PlatformService])
 void main() {
   late CanUpgrade usecase;
-  late MockITunesSearchAPI appStoreAPI;
-  late MockPlayStoreSearchAPI playStoreAPI;
+  late MockAppStoreAPI appStoreAPI;
+  late MockPlayStoreAPI playStoreAPI;
   late MockPlatformService platformService;
 
   setUp(() {
-    appStoreAPI = MockITunesSearchAPI();
-    playStoreAPI = MockPlayStoreSearchAPI();
+    appStoreAPI = MockAppStoreAPI();
+    playStoreAPI = MockPlayStoreAPI();
     platformService = MockPlatformService();
     usecase = CanUpgrade(
       appStoreAPI: appStoreAPI,

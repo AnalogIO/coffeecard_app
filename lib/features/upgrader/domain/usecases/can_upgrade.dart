@@ -1,12 +1,12 @@
 import 'package:coffeecard/core/api_uri_constants.dart';
 import 'package:coffeecard/core/external/platform_service.dart';
-import 'package:coffeecard/features/upgrader/data/datasources/itunes_search_api.dart';
-import 'package:coffeecard/features/upgrader/data/datasources/play_store_search_api.dart';
+import 'package:coffeecard/features/upgrader/data/datasources/app_store_api.dart';
+import 'package:coffeecard/features/upgrader/data/datasources/play_store_api.dart';
 import 'package:fpdart/fpdart.dart';
 
 class CanUpgrade {
-  final ITunesSearchAPI appStoreAPI;
-  final PlayStoreSearchAPI playStoreAPI;
+  final AppStoreAPI appStoreAPI;
+  final PlayStoreAPI playStoreAPI;
   final PlatformService platformService;
 
   CanUpgrade({

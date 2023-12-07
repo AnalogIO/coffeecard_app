@@ -51,8 +51,8 @@ import 'package:coffeecard/features/ticket/data/datasources/ticket_remote_data_s
 import 'package:coffeecard/features/ticket/domain/usecases/consume_ticket.dart';
 import 'package:coffeecard/features/ticket/domain/usecases/load_tickets.dart';
 import 'package:coffeecard/features/ticket/presentation/cubit/tickets_cubit.dart';
-import 'package:coffeecard/features/upgrader/data/datasources/itunes_search_api.dart';
-import 'package:coffeecard/features/upgrader/data/datasources/play_store_search_api.dart';
+import 'package:coffeecard/features/upgrader/data/datasources/app_store_api.dart';
+import 'package:coffeecard/features/upgrader/data/datasources/play_store_api.dart';
 import 'package:coffeecard/features/upgrader/domain/usecases/can_upgrade.dart';
 import 'package:coffeecard/features/upgrader/presentation/cubit/upgrader_cubit.dart';
 import 'package:coffeecard/features/user/data/datasources/user_remote_data_source.dart';
@@ -170,9 +170,9 @@ void initUpgrader() {
   );
 
   // data source
-  sl.registerLazySingleton(() => ITunesSearchAPI(client: sl(), logger: sl()));
+  sl.registerLazySingleton(() => AppStoreAPI(client: sl(), logger: sl()));
   sl.registerLazySingleton(
-    () => PlayStoreSearchAPI(client: sl(), logger: sl()),
+    () => PlayStoreAPI(client: sl(), logger: sl()),
   );
 }
 

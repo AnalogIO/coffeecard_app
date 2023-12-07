@@ -1,27 +1,19 @@
-/*
- * Copyright (c) 2018-2022 Larry Aasen. All rights reserved.
- */
-
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:logger/logger.dart';
 
-class ITunesSearchAPI {
+class AppStoreAPI {
   final Client client;
   final Logger logger;
 
   final String lookupPrefixURL = 'https://itunes.apple.com/lookup';
 
-  ITunesSearchAPI({
+  AppStoreAPI({
     required this.client,
     required this.logger,
   });
 
-  /// Look up by bundle id.
-  /// Example: look up Google Maps iOS App:
-  /// ```lookupURLByBundleId('com.google.Maps');```
-  /// ```lookupURLByBundleId('com.google.Maps', country: 'FR');```
   Future<Map?> lookupByBundleId(
     String bundleId, {
     String? country = 'US',
@@ -53,10 +45,6 @@ class ITunesSearchAPI {
     }
   }
 
-  /// Look up URL by bundle id.
-  /// Example: look up Google Maps iOS App:
-  /// ```lookupURLByBundleId('com.google.Maps');```
-  /// ```lookupURLByBundleId('com.google.Maps', country: 'FR');```
   String? lookupURLByBundleId(
     String bundleId, {
     String country = 'US',
@@ -72,7 +60,6 @@ class ITunesSearchAPI {
     );
   }
 
-  /// Look up URL by QSP.
   String? lookupURLByQSP(
     Map<String, String?> qsp, {
     bool useCacheBuster = true,
@@ -107,7 +94,6 @@ class ITunesSearchAPI {
     return null;
   }
 
-  /// Return field version from iTunes results.
   String? version(Map response) {
     String? value;
     try {
