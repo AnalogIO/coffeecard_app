@@ -148,7 +148,8 @@ class TextStyleBuilder {
     final isMono = _fontFamily == _AnalogFontFamily.mono;
 
     final letterSpacing = _fontFamily == _AnalogFontFamily.body ? 0.25 : null;
-    final lineHeight = isHeading ? 1.1 : null;
+    const lineHeight = 1.1;
+    final height = isHeading ? lineHeight : null;
     return isMono
         ? TextStyle(
             fontFamily: 'RobotoMono',
@@ -163,7 +164,7 @@ class TextStyleBuilder {
             color: _color,
             decoration: _decoration,
             letterSpacing: letterSpacing,
-            height: lineHeight,
+            height: height,
             fontVariations: [
               FontVariation('wght', _fontWeight),
               if (_fontSize != null) FontVariation('opsz', _fontSize!),
