@@ -71,7 +71,9 @@ dependencies:
   envied: 0.5.1
 
   # upgrader
-  update_available: 3.0.0
+  html: 0.15.4
+  version: 3.0.2
+  package_info_plus: 5.0.1
 
 dev_dependencies:
   flutter_test:

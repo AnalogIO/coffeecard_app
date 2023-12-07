@@ -1,7 +1,6 @@
-import 'dart:io';
-
 import 'package:coffeecard/core/api_uri_constants.dart';
 import 'package:coffeecard/core/external/external_url_launcher.dart';
+import 'package:coffeecard/core/external/platform_service.dart';
 import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/core/styles/app_colors.dart';
 import 'package:coffeecard/core/styles/app_text_styles.dart';
@@ -41,10 +40,12 @@ class UpgraderSnackbar extends SnackBar {
 }
 
 Future<void> handleClick(BuildContext context) async {
+  final platformService = PlatformService();
+
   final String uri;
-  if (Platform.isAndroid) {
+  if (platformService.isAndroid()) {
     uri = ApiUriConstants.playStoreUrl;
-  } else if (Platform.isIOS) {
+  } else if (platformService.isIOS()) {
     uri = ApiUriConstants.appStoreUrl;
   } else {
     return;

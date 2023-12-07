@@ -1,18 +1,59 @@
-import 'package:coffeecard/features/upgrader/data/datasources/upgrader_remote_data_source.dart';
-import 'package:coffeecard/features/upgrader/data/models/update_status.dart';
+import 'package:coffeecard/core/api_uri_constants.dart';
+import 'package:coffeecard/core/external/platform_service.dart';
+import 'package:coffeecard/features/upgrader/data/datasources/itunes_search_api.dart';
+import 'package:coffeecard/features/upgrader/data/datasources/play_store_search_api.dart';
+import 'package:fpdart/fpdart.dart';
 
 class CanUpgrade {
-  final UpgraderRemoteDataSource remoteDataSource;
+  final ITunesSearchAPI appStoreAPI;
+  final PlayStoreSearchAPI playStoreAPI;
+  final PlatformService platformService;
 
-  CanUpgrade({required this.remoteDataSource});
+  CanUpgrade({
+    required this.appStoreAPI,
+    required this.playStoreAPI,
+    required this.platformService,
+  });
 
-  Future<bool> call() async {
-    final updateAvailable = await remoteDataSource.isUpdateAvailable();
+  Future<Option<bool>> call() async {
+    final currentVersion = await platformService.currentVersion();
 
-    return switch (updateAvailable) {
-      UpdateStatus.unknown => false,
-      UpdateStatus.newVersionAvailable => true,
-      UpdateStatus.upToDate => false,
-    };
+    if (platformService.isAndroid()) {
+      final version = await getAndroidVersion();
+
+      return version.map((version) => version != currentVersion);
+    }
+
+    if (platformService.isIOS()) {
+      final version = await getiOSVersion();
+
+      return version.map((version) => version != currentVersion);
+    }
+
+    return none();
+  }
+
+  Future<Option<String>> getAndroidVersion() async {
+    final res = await playStoreAPI.lookupById(ApiUriConstants.androidId);
+
+    if (res == null) {
+      return none();
+    }
+
+    final version = playStoreAPI.version(res);
+
+    return Option.fromNullable(version);
+  }
+
+  Future<Option<String>> getiOSVersion() async {
+    final res = await appStoreAPI.lookupByBundleId(ApiUriConstants.iOSBundle);
+
+    if (res == null) {
+      return none();
+    }
+
+    final version = appStoreAPI.version(res);
+
+    return Option.fromNullable(version);
   }
 }

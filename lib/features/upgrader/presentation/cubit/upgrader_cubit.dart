@@ -10,8 +10,11 @@ class UpgraderCubit extends Cubit<UpgraderState> {
   UpgraderCubit({required this.canUpgrade}) : super(const UpgraderLoading());
 
   Future<void> load() async {
-    final upgradeAvailable = await canUpgrade();
+    final uppgradeAvailable = await canUpgrade();
 
-    emit(UpgraderLoaded(canUpgrade: upgradeAvailable));
+    uppgradeAvailable.match(
+      () => emit(const UpgraderLoaded(canUpgrade: false)),
+      (upgradeAvailable) => emit(UpgraderLoaded(canUpgrade: upgradeAvailable)),
+    );
   }
 }
