@@ -2,6 +2,7 @@ import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/core/widgets/components/barista_perks_section.dart';
 import 'package:coffeecard/core/widgets/components/scaffold.dart';
 import 'package:coffeecard/core/widgets/upgrade_alert.dart';
+import 'package:coffeecard/features/product/domain/entities/purchasable_products.dart';
 import 'package:coffeecard/features/ticket/presentation/widgets/shop_section.dart';
 import 'package:coffeecard/features/ticket/presentation/widgets/tickets_section.dart';
 import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
@@ -22,7 +23,7 @@ class TicketsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = (context.read<UserCubit>().state as UserLoaded).user;
-    final hasBaristaPerks = user.hasBaristaPerks;
+    final perksAvailable = context.read<PurchasableProducts>().perks.isNotEmpty;
 
     return UpgradeAlert(
       child: AppScaffold.withTitle(
@@ -37,7 +38,7 @@ class TicketsPage extends StatelessWidget {
                 padding: const EdgeInsets.all(16.0),
                 children: [
                   const TicketSection(),
-                  if (hasBaristaPerks) BaristaPerksSection(userRole: user.role),
+                  if (perksAvailable) BaristaPerksSection(userRole: user.role),
                   const ShopSection(),
                 ],
               ),
