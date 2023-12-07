@@ -38,7 +38,6 @@ class OccupationForm extends StatelessWidget {
             children: [
               const Gap(16),
               const SectionTitle(Strings.registerOccupationTitle),
-              const Gap(16),
               ClipRRect(
                 borderRadius: const BorderRadius.all(Radius.circular(24)),
                 child: Column(

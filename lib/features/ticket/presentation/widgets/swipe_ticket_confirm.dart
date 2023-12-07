@@ -119,7 +119,9 @@ class _ModalContentState extends State<_ModalContent>
                     child: SlideAction(
                       elevation: 0,
                       text: Strings.useTicket,
-                      textStyle: AppTextStyle.buttonText,
+                      textStyle: AppTextStyle.buttonText.apply(
+                        color: AppColors.white,
+                      ),
                       height: 56,
                       sliderButtonIcon: const Icon(
                         Icons.navigate_next,

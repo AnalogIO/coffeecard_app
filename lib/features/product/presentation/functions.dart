@@ -18,11 +18,18 @@ Future<void> buyModal({
 
   /// Callback that will be run after the purchase modal is closed, but before
   /// the receipt overlay is shown.
+  ///
+  /// [payment] will be null if the purchase was cancelled.
   required Future<void> Function(BuildContext, Payment?) callback,
 }) async {
-  final scrimText = (product.price == 0)
-      ? Strings.paymentConfirmationTopSingle(product.amount, product.name)
-      : Strings.paymentConfirmationTopTickets(product.amount, product.name);
+  // Find the correct text to show in the scrim.
+  const free = 0;
+  const single = 1;
+  final scrimText = switch ((product.price, product.amount)) {
+    (free, single) => Strings.paymentConfirmationTopFreeSingle(product.name),
+    (_, single) => Strings.paymentConfirmationTopSingle(product.name),
+    _ => Strings.paymentConfirmationTopTickets(product.amount, product.name),
+  };
 
   // Create a task that will open the purchase modal and wait for the result.
   final maybePayment = await showModalBottomSheet<Payment>(
@@ -44,29 +51,33 @@ Future<void> buyModal({
   if (!context.mounted) return;
 
   // Show the receipt overlay if the payment was successful.
-  return _afterPurchaseModal(context, maybePayment);
+  if (maybePayment?.status == PaymentStatus.completed) {
+    return _afterPurchaseModal(context, maybePayment!, product);
+  }
 }
 
-Future<void> _afterPurchaseModal(BuildContext context, Payment? payment) async {
-  // Don't do anything if the payment is null or not completed.
-  if (payment == null || payment.status != PaymentStatus.completed) {
-    return;
-  }
-
+Future<void> _afterPurchaseModal(
+  BuildContext context,
+  Payment payment,
+  Product product,
+) async {
   final envState = context.read<EnvironmentCubit>().state;
+  final singleTicketPurchase = product.amount == 1;
 
-  final updateTicketsRequest = context.read<TicketsCubit>().getTickets();
-  final updateReceiptsRequest = context.read<ReceiptCubit>().fetchReceipts();
+  final ticketsCubit = context.read<TicketsCubit>();
+  final receiptCubit = context.read<ReceiptCubit>();
 
-  ReceiptOverlay.show(
-    context: context,
-    isTestEnvironment: envState is EnvironmentLoaded && envState.env.isTest,
-    status: Strings.purchased,
-    productName: payment.productName,
-    timeUsed: payment.purchaseTime,
-  ).ignore();
-
-  // TODO: Explain why we need to await here.
-  await updateTicketsRequest;
-  await updateReceiptsRequest;
+  if (singleTicketPurchase) {
+    await ticketsCubit.useTicket(product.id);
+  } else {
+    ticketsCubit.getTickets();
+    ReceiptOverlay.show(
+      context: context,
+      isTestEnvironment: envState is EnvironmentLoaded && envState.env.isTest,
+      status: Strings.purchased,
+      productName: payment.productName,
+      timeUsed: payment.purchaseTime,
+    ).ignore();
+  }
+  await receiptCubit.fetchReceipts();
 }
