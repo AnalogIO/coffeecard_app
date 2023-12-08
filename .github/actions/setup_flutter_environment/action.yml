@@ -1,29 +1,35 @@
 name: Setup Flutter environment
 description: Setup the Flutter environment
 inputs:
-  prod_release:
-    required: false
-    default: 'false'
-    description: "Is prod release"
-
-env:
-  FLUTTER_VERSION: 3.13.7
+  build_type:
+    required: true
+    description: >
+      Whether to build a development or production version of the app.
+      A 'development' build connects to the development backend for testing,
+      while a 'production' build connects to the production backend.
+      It is an error to specify a build type other than
+      'development' or 'production'.
 
 runs:
   using: "composite"
   steps:
+    - name: Validate build_type
+      uses: ./.github/actions/verify_build_type
+      with:
+        build_type: ${{ inputs.build_type }}
+
     - name: Setup Flutter environment
       uses: subosito/flutter-action@v2.11.0
       with:
-        flutter-version: ${{ env.FLUTTER_VERSION }}
+        flutter-version: 3.13.7
         channel: "stable"
 
     - name: Download dependencies
       run: flutter pub get
       shell: bash
 
-    - name: Replace target URI in Production
-      if: ${{ inputs.prod_release == 'true' }}
+    - name: "[prod] Change target backend to production"
+      if: ${{ inputs.build_type == 'production' }}
       run: sed -i'' -e 's/.env.develop/.env.production/' lib/env/env.dart
       shell: bash
 
