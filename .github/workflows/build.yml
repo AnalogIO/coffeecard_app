@@ -28,6 +28,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4.1.0
+
+      - name: Validate build_type
+        uses: ./.github/actions/verify_build_type
+        with:
+          build_type: ${{ inputs.build_type }}
+
       - name: Determine build version
         id: build_version
         run: |
@@ -53,11 +61,6 @@ jobs:
     runs-on: macos-latest
     needs: [version]
     steps:
-      - name: Validate build_type
-        uses: ./.github/actions/verify_build_type
-        with:
-          build_type: ${{ inputs.build_type }}
-
       - name: Checkout code
         uses: actions/checkout@v4.1.0
 

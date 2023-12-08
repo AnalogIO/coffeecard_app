@@ -20,4 +20,5 @@ runs:
           echo "Error: build_type must be 'development' or 'production'"
           exit 1
         fi
+        echo "Build type: ${{ inputs.build_type }}"
       shell: bash
