@@ -14,8 +14,8 @@ inputs:
     required: false
     default: "dev"
     options:
-    - dev
-    - prod
+      - dev
+      - prod
   signingKeyBase64:
     required: true
     description: "Android signing key b64"
@@ -41,7 +41,7 @@ runs:
     - name: Setup Flutter environment
       uses: ./.github/actions/setup_flutter_environment
       with:
-        prod_release: ${{ inputs.prod_release }}
+        prod_release: ${{ inputs.build_type == 'prod' }}
 
     - name: Build apk (dev)
       if: ${{ inputs.build_type == 'dev' }}
