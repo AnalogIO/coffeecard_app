@@ -162,13 +162,19 @@ abstract final class Strings {
     return "You're buying $amount $title tickets";
   }
 
-  static String paymentConfirmationTopSingle(int amount, String title) {
-    return "You're buying and swiping $amount $title";
+  static String paymentConfirmationTopSingle(String title) {
+    return "You're buying 1 $title";
+  }
+
+  static String paymentConfirmationTopFreeSingle(String title) {
+    return "You're claiming 1 $title";
   }
 
   static String paymentConfirmationBottomPurchase(int price) {
     return 'Pay $price,- with...';
   }
+
+  static String oneCup = '1 cup';
 
   static String amountTickets(int amount) {
     return '$amount tickets';

@@ -26,13 +26,9 @@ class TicketSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SectionTitle(Strings.ticketsMyTickets),
-            OpeningHoursIndicator(),
-          ],
+        const SectionTitle.withSideWidget(
+          Strings.ticketsMyTickets,
+          sideWidget: OpeningHoursIndicator(),
         ),
         BlocConsumer<TicketsCubit, TicketsState>(
           listenWhen: (previous, current) =>
