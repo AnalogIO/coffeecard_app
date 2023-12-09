@@ -14,8 +14,13 @@ on:
         required: true
       build_type:
         type: string
-        required: false
-        default: "dev"
+        required: true
+        description: >
+          Whether to build a development or production version of the app.
+          A 'development' build connects to the development backend for testing,
+          while a 'production' build connects to the production backend.
+          It is an error to specify a build type other than
+          'development' or 'production'.
 
 jobs:
   version:
@@ -23,6 +28,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4.1.0
+
+      - name: Validate build_type
+        uses: ./.github/actions/verify_build_type
+        with:
+          build_type: ${{ inputs.build_type }}
+
       - name: Determine build version
         id: build_version
         run: |
@@ -51,8 +64,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4.1.0
 
-      - name: Build iOS app (dev)
-        if: ${{ inputs.build_type != 'prod' }}
+      - name: "[dev] Build iOS app"
+        if: ${{ inputs.build_type == 'development' }}
         uses: ./.github/actions/build_ios
         with:
           version: ${{ needs.version.outputs.version }}
@@ -64,8 +77,8 @@ jobs:
           store_artifacts: ${{ inputs.store_artifacts }}
           build_type: ${{ inputs.build_type }}
 
-      - name: Build iOS app (prod)
-        if: ${{ inputs.build_type == 'prod' }}
+      - name: "[prod] Build iOS app"
+        if: ${{ inputs.build_type == 'production' }}
         uses: ./.github/actions/build_ios
         with:
           version: ${{ needs.version.outputs.version }}

@@ -23,17 +23,23 @@ inputs:
     required: true
     description: "Store artifact"
   build_type:
-    required: false
-    default: "dev"
-    options:
-    - dev
-    - prod
+    required: true
+    description: >
+      Whether to build a development or production version of the app.
+      A 'development' build connects to the development backend for testing,
+      while a 'production' build connects to the production backend.
+      It is an error to specify a build type other than
+      'development' or 'production'.
 
 runs:
   using: "composite"
   steps:
+    - name: Validate build_type
+      uses: ./.github/actions/verify_build_type
+      with:
+        build_type: ${{ inputs.build_type }}
+
     - name: Install Apple certificate and provisioning profile
-      if: ${{ inputs.prod_release != 'true' }}
       run: .github/scripts/setup_certs.sh
       env:
         APPLE_IOS_SIGNING_CERT: ${{ inputs.apple_ios_signing_cert }}
@@ -45,15 +51,15 @@ runs:
     - name: Setup Flutter environment
       uses: ./.github/actions/setup_flutter_environment
       with:
-        prod_release: ${{ inputs.build_type == 'prod' }}
+        build_type: ${{ inputs.build_type }}
 
-    - name: Build iOS (dev)
-      if: ${{ inputs.build_type != 'prod' }}
+    - name: "[dev] Build iOS app"
+      if: ${{ inputs.build_type == 'development' }}
       run: .github/scripts/build_ios_dev.sh ${{ inputs.version }} ${{ inputs.build_version }}
       shell: bash
 
-    - name: Build iOS (prod)
-      if: ${{ inputs.build_type == 'prod' }}
+    - name: "[prod] Build iOS app"
+      if: ${{ inputs.build_type == 'production' }}
       run: .github/scripts/build_ios_prod.sh ${{ inputs.version }} ${{ inputs.build_version }}
       shell: bash
 

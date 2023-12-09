@@ -38,6 +38,8 @@ class Grid extends StatelessWidget {
 
   int _columns(bool isSmall) => isSmall && singleColumnOnSmallDevice ? 1 : 2;
 
+  int _rows(bool isSmall) => (children.length / _columns(isSmall)).ceil();
+
   @override
   Widget build(BuildContext context) {
     final isSmall = deviceIsSmall(context);
@@ -47,15 +49,12 @@ class Grid extends StatelessWidget {
     if (children.isEmpty) {
       return const SizedBox.shrink();
     }
-    return UnconstrainedBox(
-      constrainedAxis: Axis.horizontal,
-      child: LayoutGrid(
-        columnSizes: List.filled(columns, 1.fr),
-        rowSizes: List.filled(children.length, auto),
-        columnGap: horizontalGap,
-        rowGap: verticalGap,
-        children: children,
-      ),
+    return LayoutGrid(
+      columnSizes: List.filled(columns, 1.fr),
+      rowSizes: List.filled(_rows(isSmall), auto),
+      columnGap: horizontalGap,
+      rowGap: verticalGap,
+      children: children,
     );
   }
 }

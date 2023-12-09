@@ -9,7 +9,7 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       store_artifacts: true
-      build_type: "dev"
+      build_type: development
       tag_name: ${{ github.head_ref }}
     secrets: inherit
 
