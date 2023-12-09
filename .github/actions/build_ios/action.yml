@@ -39,8 +39,7 @@ runs:
       with:
         build_type: ${{ inputs.build_type }}
 
-    - name: "[dev] Install Apple certificate and provisioning profile"
-      if: ${{ inputs.build_type == 'development' }}
+    - name: Install Apple certificate and provisioning profile
       run: .github/scripts/setup_certs.sh
       env:
         APPLE_IOS_SIGNING_CERT: ${{ inputs.apple_ios_signing_cert }}
