@@ -1,0 +1,24 @@
+name: Verify build type
+description: Verify that the build type is either 'development' or 'production'
+
+inputs:
+  build_type:
+    required: true
+    description: >
+      Whether to build a development or production version of the app.
+      A 'development' build connects to the development backend for testing,
+      while a 'production' build connects to the production backend.
+      It is an error to specify a build type other than
+      'development' or 'production'.
+
+runs:
+  using: "composite"
+  steps:
+    - name: Validate build_type
+      run: |
+        if [[ "${{ inputs.build_type }}" != "development" && "${{ inputs.build_type }}" != "production" ]]; then
+          echo "Error: build_type must be 'development' or 'production'"
+          exit 1
+        fi
+        echo "Build type: ${{ inputs.build_type }}"
+      shell: bash
