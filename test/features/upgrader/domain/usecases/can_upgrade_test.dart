@@ -1,10 +1,10 @@
 import 'package:coffeecard/core/external/platform_service.dart';
+import 'package:coffeecard/core/models/platform_type.dart';
 import 'package:coffeecard/features/upgrader/data/datasources/app_store_api.dart';
 import 'package:coffeecard/features/upgrader/data/datasources/play_store_api.dart';
 import 'package:coffeecard/features/upgrader/domain/usecases/can_upgrade.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:html/dom.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
@@ -26,94 +26,88 @@ void main() {
       playStoreAPI: playStoreAPI,
       platformService: platformService,
     );
+
+    provideDummy<Option<String>>(none());
   });
 
   group('call', () {
-    test('should return none if device is not Android or iOS', () async {
+    test('should return false if device is not Android or iOS', () async {
       // arrange
       when(platformService.currentVersion()).thenAnswer((_) async => 'version');
-      when(platformService.isAndroid()).thenReturn(false);
-      when(platformService.isIOS()).thenReturn(false);
+      when(platformService.platformType()).thenReturn(PlatformType.unknown);
 
       // act
       final actual = await usecase();
 
       // assert
-      expect(actual, none());
+      expect(actual, false);
     });
 
-    test('should return some(true) if device is Android and version mismatch',
+    test('should return true if device is Android and version mismatch',
         () async {
       // arrange
       when(platformService.currentVersion())
           .thenAnswer((_) async => 'device_version');
-      when(platformService.isAndroid()).thenReturn(true);
-
-      final document = Document();
-      when(playStoreAPI.lookupById(any)).thenAnswer((_) async => document);
-      when(playStoreAPI.version(document)).thenReturn('external_version');
+      when(platformService.platformType()).thenReturn(PlatformType.android);
+      when(playStoreAPI.lookupVersion(any))
+          .thenAnswer((_) async => some('external_version'));
 
       // act
       final actual = await usecase();
 
       // assert
-      expect(actual, some(true));
+      expect(actual, true);
     });
 
-    test('should return some(false) if device is Android and version match',
+    test('should return false if device is Android and version match',
         () async {
       // arrange
       const version = 'device_version';
 
       when(platformService.currentVersion()).thenAnswer((_) async => version);
-      when(platformService.isAndroid()).thenReturn(true);
+      when(platformService.platformType()).thenReturn(PlatformType.android);
 
-      final document = Document();
-      when(playStoreAPI.lookupById(any)).thenAnswer((_) async => document);
-      when(playStoreAPI.version(document)).thenReturn(version);
+      when(playStoreAPI.lookupVersion(any))
+          .thenAnswer((_) async => some(version));
 
       // act
       final actual = await usecase();
 
       // assert
-      expect(actual, some(false));
+      expect(actual, false);
     });
 
-    test('should return some(true) if device is iOS and version mismatch',
-        () async {
+    test('should return true if device is iOS and version mismatch', () async {
       // arrange
       when(platformService.currentVersion())
           .thenAnswer((_) async => 'device_version');
-      when(platformService.isAndroid()).thenReturn(false);
-      when(platformService.isIOS()).thenReturn(true);
+      when(platformService.platformType()).thenReturn(PlatformType.iOS);
 
-      when(appStoreAPI.lookupByBundleId(any)).thenAnswer((_) async => {});
-      when(appStoreAPI.version(any)).thenReturn('external_version');
+      when(appStoreAPI.lookupVersion(any))
+          .thenAnswer((_) async => some('external_version'));
 
       // act
       final actual = await usecase();
 
       // assert
-      expect(actual, some(true));
+      expect(actual, true);
     });
 
-    test('should return some(false) if device is iOS and version match',
-        () async {
+    test('should return false if device is iOS and version match', () async {
       // arrange
       const version = 'device_version';
 
       when(platformService.currentVersion()).thenAnswer((_) async => version);
-      when(platformService.isAndroid()).thenReturn(false);
-      when(platformService.isIOS()).thenReturn(true);
+      when(platformService.platformType()).thenReturn(PlatformType.iOS);
 
-      when(appStoreAPI.lookupByBundleId(any)).thenAnswer((_) async => {});
-      when(appStoreAPI.version(any)).thenReturn(version);
+      when(appStoreAPI.lookupVersion(any))
+          .thenAnswer((_) async => some(version));
 
       // act
       final actual = await usecase();
 
       // assert
-      expect(actual, some(false));
+      expect(actual, false);
     });
   });
 }

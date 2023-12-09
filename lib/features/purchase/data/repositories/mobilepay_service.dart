@@ -1,9 +1,9 @@
-import 'dart:io';
-
 import 'package:coffeecard/core/api_uri_constants.dart';
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/core/extensions/either_extensions.dart';
 import 'package:coffeecard/core/external/external_url_launcher.dart';
+import 'package:coffeecard/core/external/platform_service.dart';
+import 'package:coffeecard/core/models/platform_type.dart';
 import 'package:coffeecard/features/purchase/data/repositories/payment_handler.dart';
 import 'package:coffeecard/features/purchase/domain/entities/payment.dart';
 import 'package:coffeecard/features/purchase/domain/entities/payment_status.dart';
@@ -68,12 +68,12 @@ class MobilePayService extends PaymentHandler {
   }
 
   Uri _getAppStoreUri() {
-    if (Platform.isAndroid) {
-      return ApiUriConstants.mobilepayAndroid;
-    } else if (Platform.isIOS) {
-      return ApiUriConstants.mobilepayIOS;
-    } else {
-      throw UnsupportedError('Unsupported platform');
-    }
+    final platformService = PlatformService();
+
+    return switch (platformService.platformType()) {
+      PlatformType.android => ApiUriConstants.mobilepayAndroid,
+      PlatformType.iOS => ApiUriConstants.mobilepayIOS,
+      PlatformType.unknown => throw UnsupportedError('Unsupported platform'),
+    };
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart';
 import 'package:logger/logger.dart';
 
@@ -7,101 +8,104 @@ class AppStoreAPI {
   final Client client;
   final Logger logger;
 
-  final String lookupPrefixURL = 'https://itunes.apple.com/lookup';
+  static const prefixUrl = 'https://itunes.apple.com/lookup';
 
   AppStoreAPI({
     required this.client,
     required this.logger,
   });
 
-  Future<Map?> lookupByBundleId(
-    String bundleId, {
-    String? country = 'US',
-    bool useCacheBuster = true,
-  }) async {
-    assert(bundleId.isNotEmpty);
-    if (bundleId.isEmpty) {
-      return null;
-    }
+  Future<Option<String>> lookupVersion(String id) async {
+    final response = await _lookupByBundleId(id);
 
-    final url = lookupURLByBundleId(
-      bundleId,
-      country: country ?? '',
-      useCacheBuster: useCacheBuster,
-    )!;
-    logger.d('upgrader: download: $url');
-
-    try {
-      final response = await client.get(Uri.parse(url));
-
-      logger.d('upgrader: response statusCode: ${response.statusCode}');
-
-      final decodedResults = _decodeResults(response.body);
-      return decodedResults;
-    } catch (e) {
-      logger.d('upgrader: lookupByBundleId exception: $e');
-
-      return null;
-    }
-  }
-
-  String? lookupURLByBundleId(
-    String bundleId, {
-    String country = 'US',
-    bool useCacheBuster = true,
-  }) {
-    if (bundleId.isEmpty) {
-      return null;
-    }
-
-    return lookupURLByQSP(
-      {'bundleId': bundleId, 'country': country.toUpperCase()},
-      useCacheBuster: useCacheBuster,
+    return response.match(
+      () => none(),
+      (response) => version(response),
     );
   }
 
-  String? lookupURLByQSP(
-    Map<String, String?> qsp, {
-    bool useCacheBuster = true,
+  Future<Option<Map>> _lookupByBundleId(
+    String bundleId, {
+    String country = 'EU', //FIXME: validate this works
+  }) async {
+    if (bundleId.isEmpty) {
+      return none();
+    }
+
+    final url = _lookupURLByBundleId(
+      bundleId,
+      country: country,
+    );
+
+    return url.match(
+      () => none(),
+      (url) async {
+        try {
+          final response = await client.get(Uri.parse(url));
+
+          logger.d('upgrader response statusCode: ${response.statusCode}');
+
+          return _decodeResults(response.body);
+        } catch (e) {
+          logger.d('upgrader lookupByBundleId exception: $e');
+
+          return none();
+        }
+      },
+    );
+  }
+
+  Option<String> _lookupURLByBundleId(
+    String bundleId, {
+    String country = 'US',
   }) {
+    if (bundleId.isEmpty) {
+      return none();
+    }
+
+    return _lookupURLByQSP(
+      {'bundleId': bundleId, 'country': country.toUpperCase()},
+    );
+  }
+
+  Option<String> _lookupURLByQSP(Map<String, String?> qsp) {
     if (qsp.isEmpty) {
-      return null;
+      return none();
     }
 
     final parameters = <String>[];
     qsp.forEach((key, value) => parameters.add('$key=$value'));
-    if (useCacheBuster) {
-      parameters.add('_cb=${DateTime.now().microsecondsSinceEpoch}');
-    }
-    final finalParameters = parameters.join('&');
 
-    return '$lookupPrefixURL?$finalParameters';
+    parameters.add('_cb=${DateTime.now().microsecondsSinceEpoch}');
+
+    final allParameters = parameters.join('&');
+
+    return some('$prefixUrl?$allParameters');
   }
 
-  Map? _decodeResults(String jsonResponse) {
-    if (jsonResponse.isNotEmpty) {
-      final decodedResults = json.decode(jsonResponse);
-      if (decodedResults is Map) {
-        final resultCount = decodedResults['resultCount'];
-        if (resultCount == 0) {
-          logger.d(
-            'upgrader.ITunesSearchAPI: results are empty: $decodedResults',
-          );
-        }
-        return decodedResults;
-      }
+  Option<Map> _decodeResults(String jsonResponse) {
+    if (jsonResponse.isEmpty) {
+      return none();
     }
-    return null;
+
+    final decodedResults = json.decode(jsonResponse);
+
+    if (decodedResults is! Map) {
+      return none();
+    }
+
+    return some(decodedResults);
   }
 
-  String? version(Map response) {
-    String? value;
+  Option<String> version(Map response) {
     try {
       // ignore: avoid_dynamic_calls
-      value = response['results'][0]['version'] as String;
+      final version = response['results'][0]['version'] as String;
+      return some(version);
     } catch (e) {
-      logger.d('upgrader.ITunesResults.version: $e');
+      logger.d('upgrader version exception: $e');
     }
-    return value;
+
+    return none();
   }
 }

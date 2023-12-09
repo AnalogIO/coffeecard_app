@@ -1,11 +1,13 @@
 import 'package:coffeecard/core/api_uri_constants.dart';
 import 'package:coffeecard/core/external/external_url_launcher.dart';
 import 'package:coffeecard/core/external/platform_service.dart';
+import 'package:coffeecard/core/models/platform_type.dart';
 import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/core/styles/app_colors.dart';
 import 'package:coffeecard/core/styles/app_text_styles.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:fpdart/fpdart.dart';
 
 class UpgraderSnackbar extends SnackBar {
   UpgraderSnackbar(BuildContext context)
@@ -42,17 +44,16 @@ class UpgraderSnackbar extends SnackBar {
 Future<void> handleClick(BuildContext context) async {
   final platformService = PlatformService();
 
-  final String uri;
-  if (platformService.isAndroid()) {
-    uri = ApiUriConstants.playStoreUrl;
-  } else if (platformService.isIOS()) {
-    uri = ApiUriConstants.appStoreUrl;
-  } else {
-    return;
-  }
+  final Option<String> uri = switch (platformService.platformType()) {
+    PlatformType.android => some(ApiUriConstants.playStoreUrl),
+    PlatformType.iOS => some(ApiUriConstants.appStoreUrl),
+    PlatformType.unknown => none(),
+  };
 
-  ExternalUrlLauncher().launchUrlExternalApplication(
-    context,
-    Uri.parse(uri),
-  );
+  uri.map((uri) {
+    ExternalUrlLauncher().launchUrlExternalApplication(
+      context,
+      Uri.parse(uri),
+    );
+  });
 }
