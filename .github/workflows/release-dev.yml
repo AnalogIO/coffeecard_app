@@ -31,9 +31,7 @@ jobs:
         uses: wzieba/Firebase-Distribution-Github-Action@v1.7.0
         with:
           appId: ${{ secrets.FIREBASE_IOS_APP_ID }}
-          token: ${{ secrets.FIREBASE_TOKEN }}
-          # FIXME: token is deprecated, use serviceCredentialsFileContent instead
-          # serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
+          serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
           groups: analogio-devs
           file: Analog.ipa
           releaseNotes: |
@@ -56,9 +54,7 @@ jobs:
         uses: wzieba/Firebase-Distribution-Github-Action@v1.7.0
         with:
           appId: ${{ secrets.FIREBASE_ANDROID_APP_ID }}
-          token: ${{ secrets.FIREBASE_TOKEN }}
-          # FIXME: token is deprecated, use serviceCredentialsFileContent instead
-          # serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
+          serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
           groups: analogio-devs
           file: android.apk
           releaseNotes: |
