@@ -78,8 +78,8 @@ class CreditsPage extends StatelessWidget {
                   name: Strings.github,
                   onTap: () =>
                       sl<ExternalUrlLauncher>().launchUrlExternalApplication(
-                    ApiUriConstants.analogIOGitHub,
                     context,
+                    ApiUriConstants.analogIOGitHub,
                   ),
                 ),
               ],

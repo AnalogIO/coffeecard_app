@@ -14,6 +14,7 @@ import 'package:coffeecard/features/receipt/presentation/pages/receipts_page.dar
 import 'package:coffeecard/features/settings/presentation/pages/settings_page.dart';
 import 'package:coffeecard/features/ticket/presentation/cubit/tickets_cubit.dart';
 import 'package:coffeecard/features/ticket/presentation/pages/tickets_page.dart';
+import 'package:coffeecard/features/upgrader/presentation/widgets/upgrader.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -123,42 +124,44 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Provider(
-      create: (BuildContext context) => widget.products,
-      child: MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (_) => sl<TicketsCubit>()..getTickets(),
-          ),
-          BlocProvider(
-            create: (_) => sl<ReceiptCubit>()..fetchReceipts(),
-          ),
-          BlocProvider(
-            create: (_) => sl<LeaderboardCubit>()..loadLeaderboard(),
-          ),
-          BlocProvider(
-            create: (_) => sl<OpeningHoursCubit>()..getOpeninghours(),
-          ),
-        ],
-        child: PopScope(
-          onPopInvoked: (_) => onWillPop(),
-          child: Scaffold(
-            backgroundColor: AppColors.background,
-            body: LazyIndexedStack(
-              index: _currentPageIndex,
-              children: _bottomNavAppFlows,
+    return Upgrader(
+      child: Provider(
+        create: (BuildContext context) => widget.products,
+        child: MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (_) => sl<TicketsCubit>()..getTickets(),
             ),
-            bottomNavigationBar: BottomNavigationBar(
-              items: _pages.map((p) => p.bottomNavigationBarItem).toList(),
-              currentIndex: _currentPageIndex,
-              onTap: onBottomNavTap,
-              type: BottomNavigationBarType.fixed,
-              backgroundColor: AppColors.primary,
-              selectedItemColor: AppColors.white,
-              unselectedItemColor: AppColors.white.withOpacity(0.5),
-              selectedFontSize: 12,
-              unselectedLabelStyle: AppTextStyle.bottomNavBarLabel,
-              selectedLabelStyle: AppTextStyle.bottomNavBarLabel,
+            BlocProvider(
+              create: (_) => sl<ReceiptCubit>()..fetchReceipts(),
+            ),
+            BlocProvider(
+              create: (_) => sl<LeaderboardCubit>()..loadLeaderboard(),
+            ),
+            BlocProvider(
+              create: (_) => sl<OpeningHoursCubit>()..getOpeninghours(),
+            ),
+          ],
+          child: PopScope(
+            onPopInvoked: (_) => onWillPop(),
+            child: Scaffold(
+              backgroundColor: AppColors.background,
+              body: LazyIndexedStack(
+                index: _currentPageIndex,
+                children: _bottomNavAppFlows,
+              ),
+              bottomNavigationBar: BottomNavigationBar(
+                items: _pages.map((p) => p.bottomNavigationBarItem).toList(),
+                currentIndex: _currentPageIndex,
+                onTap: onBottomNavTap,
+                type: BottomNavigationBarType.fixed,
+                backgroundColor: AppColors.primary,
+                selectedItemColor: AppColors.white,
+                unselectedItemColor: AppColors.white.withOpacity(0.5),
+                selectedFontSize: 12,
+                unselectedLabelStyle: AppTextStyle.bottomNavBarLabel,
+                selectedLabelStyle: AppTextStyle.bottomNavBarLabel,
+              ),
             ),
           ),
         ),
