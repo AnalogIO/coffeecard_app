@@ -757,6 +757,61 @@
         ]
       }
     },
+    "/api/v2/products/{id}": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Returns a product with the specified id",
+        "operationId": "Products_GetProduct",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The id of the product to be returned",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid credentials"
+          },
+          "404": {
+            "description": "The product with the specified id could not be found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          },
+          {
+            "apikey": []
+          }
+        ]
+      }
+    },
     "/api/v2/products/all": {
       "get": {
         "tags": [
