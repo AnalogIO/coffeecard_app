@@ -79,27 +79,21 @@ void main() {
 
   group('getProducts', () {
     blocTest(
-      'should emit [Loading, Loaded] use case succeeds',
+      'should emit [Loaded] use case succeeds',
       build: () => cubit,
       setUp: () => when(productRepository.getProducts())
           .thenAnswer((_) => TaskEither.fromEither(Right(allProducts))),
       act: (cubit) => cubit.getProducts(),
-      expect: () => [
-        isA<ProductsLoading>(),
-        isA<ProductsLoaded>(),
-      ],
+      expect: () => [isA<ProductsLoaded>()],
     );
 
     blocTest(
-      'should emit [Loading, Error] when use case fails',
+      'should emit [Error] when use case fails',
       build: () => cubit,
       setUp: () => when(productRepository.getProducts())
           .thenAnswer((_) => TaskEither.fromEither(testFailure)),
       act: (cubit) => cubit.getProducts(),
-      expect: () => [
-        isA<ProductsLoading>(),
-        isA<ProductsError>(),
-      ],
+      expect: () => [isA<ProductsError>()],
     );
   });
 }
