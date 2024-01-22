@@ -23,7 +23,7 @@ class LeaderboardRemoteDataSource {
     required this.executor,
   });
 
-  Future<Either<NetworkFailure, List<LeaderboardUser>>> getLeaderboard(
+  Future<Either<Failure, List<LeaderboardUser>>> getLeaderboard(
     LeaderboardFilter category,
     int top,
   ) {
@@ -34,7 +34,7 @@ class LeaderboardRemoteDataSource {
         .mapAll(LeaderboardUserModel.fromDTO);
   }
 
-  Future<Either<NetworkFailure, LeaderboardUser>> getLeaderboardUser(
+  Future<Either<Failure, LeaderboardUser>> getLeaderboardUser(
     LeaderboardFilter category,
   ) {
     return executor

@@ -18,7 +18,7 @@ void main() {
     dataSource = MockOccupationRemoteDataSource();
     usecase = GetOccupations(dataSource: dataSource);
 
-    provideDummy<Either<NetworkFailure, List<OccupationModel>>>(
+    provideDummy<Either<Failure, List<OccupationModel>>>(
       const Left(ConnectionFailure()),
     );
   });

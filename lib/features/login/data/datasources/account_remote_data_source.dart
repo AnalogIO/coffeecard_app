@@ -54,7 +54,7 @@ class AccountRemoteDataSource {
     );
   }
 
-  Future<Either<NetworkFailure, Unit>> resendVerificationEmail(
+  Future<Either<Failure, Unit>> resendVerificationEmail(
     String email,
   ) {
     return executor.executeAndDiscard(
@@ -64,17 +64,17 @@ class AccountRemoteDataSource {
     );
   }
 
-  Future<Either<NetworkFailure, User>> getUser() {
+  Future<Either<Failure, User>> getUser() {
     return executor.execute(apiV2.apiV2AccountGet).map(UserModel.fromResponse);
   }
 
-  Future<Either<NetworkFailure, Unit>> requestPasscodeReset(String email) {
+  Future<Either<Failure, Unit>> requestPasscodeReset(String email) {
     return executor.executeAndDiscard(
       () => apiV1.apiV1AccountForgotpasswordPost(body: EmailDto(email: email)),
     );
   }
 
-  Future<Either<NetworkFailure, bool>> emailExists(String email) {
+  Future<Either<Failure, bool>> emailExists(String email) {
     final body = EmailExistsRequest(email: email);
     return executor
         .execute(() => apiV2.apiV2AccountEmailExistsPost(body: body))

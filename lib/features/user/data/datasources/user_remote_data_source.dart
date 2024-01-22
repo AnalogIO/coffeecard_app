@@ -16,13 +16,13 @@ class UserRemoteDataSource {
   });
 
   /// Get the currently logged in user.
-  Future<Either<NetworkFailure, User>> getUser() {
+  Future<Either<Failure, User>> getUser() {
     return executor.execute(apiV2.apiV2AccountGet).map(UserModel.fromResponse);
   }
 
   /// Updates the details of the currently logged in user based on
   /// the non-null details in [user]
-  Future<Either<NetworkFailure, User>> updateUserDetails(UpdateUser user) {
+  Future<Either<Failure, User>> updateUserDetails(UpdateUser user) {
     return executor
         .execute(
           () => apiV2.apiV2AccountPut(
@@ -39,7 +39,7 @@ class UserRemoteDataSource {
   }
 
   /// Request account deletion for the currently logged in user.
-  Future<Either<NetworkFailure, Unit>> requestAccountDeletion() {
+  Future<Either<Failure, Unit>> requestAccountDeletion() {
     return executor.executeAndDiscard(apiV2.apiV2AccountDelete);
   }
 }

@@ -36,16 +36,16 @@ void main() {
       executor: executor,
     );
 
-    provideDummy<Either<NetworkFailure, v1.TokenDto>>(
+    provideDummy<Either<Failure, v1.TokenDto>>(
       const Left(ConnectionFailure()),
     );
-    provideDummy<Either<NetworkFailure, v2.UserResponse>>(
+    provideDummy<Either<Failure, v2.UserResponse>>(
       const Left(ConnectionFailure()),
     );
-    provideDummy<Either<NetworkFailure, Unit>>(
+    provideDummy<Either<Failure, Unit>>(
       const Left(ConnectionFailure()),
     );
-    provideDummy<Either<NetworkFailure, v2.EmailExistsResponse>>(
+    provideDummy<Either<Failure, v2.EmailExistsResponse>>(
       const Left(ConnectionFailure()),
     );
   });

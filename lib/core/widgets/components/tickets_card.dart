@@ -1,38 +1,47 @@
+import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/core/styles/app_colors.dart';
 import 'package:coffeecard/core/styles/app_text_styles.dart';
 import 'package:coffeecard/core/widgets/components/card.dart';
+import 'package:coffeecard/core/widgets/components/helpers/shimmer_builder.dart';
+import 'package:coffeecard/features/ticket/domain/entities/ticket.dart';
 import 'package:coffeecard/features/ticket/presentation/widgets/swipe_ticket_confirm.dart';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 
-class CoffeeCard extends StatelessWidget {
-  final String title;
-  final int amountOwned;
-  final int productId;
+part 'tickets_card_placeholder.dart';
 
-  const CoffeeCard({
-    required this.title,
-    required this.amountOwned,
-    required this.productId,
-  });
+/// A card representing a group of tickets owned by the user.
+///
+/// See also [NoTicketsPlaceholder], which is used when the user has no tickets.
+class TicketsCard extends StatelessWidget {
+  /// Creates a [TicketsCard] with the given [ticket].
+  const TicketsCard(this.ticket);
+
+  /// A shimmering placeholder for a [TicketsCard].
+  const TicketsCard.loadingPlaceholder() : ticket = const Ticket.empty();
+
+  final Ticket ticket;
+
+  bool get isLoadingPlaceholder => ticket == const Ticket.empty();
 
   @override
   Widget build(BuildContext context) {
-    return CardBase(
-      color: AppColors.ticket,
-      top: CardTitle(
-        title: Text(title, style: AppTextStyle.ownedTicket),
-      ),
-      bottom: CardBottomRow(
-        left: _TicketDots(amountOwned: amountOwned),
-        right: _TicketAmountText(amountOwned: amountOwned),
-      ),
-      gap: 36,
-      onTap: (context) {
-        final _ = showSwipeTicketConfirm(
-          context: context,
-          productName: title,
-          amountOwned: amountOwned,
-          productId: productId,
+    return ShimmerBuilder(
+      showShimmer: isLoadingPlaceholder,
+      builder: (context, colorIfShimmer) {
+        return CardBase(
+          color: isLoadingPlaceholder ? colorIfShimmer : AppColors.ticket,
+          top: CardTitle(
+            title: Text(ticket.product.name, style: AppTextStyle.ownedTicket),
+          ),
+          bottom: CardBottomRow(
+            left: _TicketDots(amountOwned: ticket.amountLeft),
+            right: _TicketAmountText(amountOwned: ticket.amountLeft),
+          ),
+          gap: 36,
+          onTap: (context) {
+            final _ = showSwipeTicketConfirm(context: context, ticket: ticket);
+          },
         );
       },
     );

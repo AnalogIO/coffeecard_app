@@ -24,7 +24,7 @@ void main() {
       executor: executor,
     );
 
-    provideDummy<Either<NetworkFailure, SimplePurchaseResponse>>(
+    provideDummy<Either<Failure, SimplePurchaseResponse>>(
       const Left(ConnectionFailure()),
     );
   });

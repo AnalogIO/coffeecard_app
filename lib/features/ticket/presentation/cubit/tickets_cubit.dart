@@ -1,5 +1,5 @@
 import 'package:coffeecard/features/receipt/domain/entities/receipt.dart';
-import 'package:coffeecard/features/ticket/domain/entities/ticket_count.dart';
+import 'package:coffeecard/features/ticket/domain/entities/ticket.dart';
 import 'package:coffeecard/features/ticket/domain/usecases/consume_ticket.dart';
 import 'package:coffeecard/features/ticket/domain/usecases/load_tickets.dart';
 import 'package:equatable/equatable.dart';
@@ -18,36 +18,34 @@ class TicketsCubit extends Cubit<TicketsState> {
 
   Future<void> getTickets() async {
     emit(const TicketsLoading());
-    refreshTickets();
+    return refreshTickets();
   }
 
-  Future<void> useTicket(int productId) async {
+  Future<void> useTicket(int productId, int menuItemId) async {
     if (state is! TicketsLoaded) return;
 
-    final st = state as TicketsLoaded;
+    final tickets = (state as TicketsLoaded).tickets;
 
-    emit(TicketUsing(tickets: st.tickets));
+    emit(TicketUsing(tickets: tickets));
 
-    final either = await consumeTicket(productId: productId);
+    await consumeTicket
+        .call(productId: productId, menuItemId: menuItemId)
+        .match(
+          (failure) =>
+              TicketsUseError(message: failure.reason, tickets: tickets),
+          (receipt) => TicketUsed(receipt: receipt, tickets: tickets),
+        )
+        .map(emit)
+        .run();
 
-    emit(
-      either.fold(
-        (error) => TicketsUseError(message: error.reason),
-        (receipt) => TicketUsed(receipt: receipt, tickets: st.tickets),
-      ),
-    );
-
-    refreshTickets();
+    return refreshTickets();
   }
 
-  Future<void> refreshTickets() async {
-    final either = await loadTickets();
-
-    emit(
-      either.fold(
-        (error) => TicketsLoadError(message: error.reason),
+  Future<void> refreshTickets() => loadTickets()
+      .match(
+        (failure) => TicketsLoadError(message: failure.reason),
         (tickets) => TicketsLoaded(tickets: tickets),
-      ),
-    );
-  }
+      )
+      .map(emit)
+      .run();
 }

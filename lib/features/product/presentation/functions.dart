@@ -2,8 +2,8 @@ import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/core/styles/app_colors.dart';
 import 'package:coffeecard/features/environment/domain/entities/environment.dart';
 import 'package:coffeecard/features/environment/presentation/cubit/environment_cubit.dart';
-import 'package:coffeecard/features/product/domain/entities/product.dart';
 import 'package:coffeecard/features/product/presentation/widgets/buy_ticket_bottom_modal_sheet.dart';
+import 'package:coffeecard/features/product/product_model.dart';
 import 'package:coffeecard/features/purchase/domain/entities/payment.dart';
 import 'package:coffeecard/features/purchase/domain/entities/payment_status.dart';
 import 'package:coffeecard/features/receipt/presentation/cubit/receipt_cubit.dart';
@@ -68,7 +68,10 @@ Future<void> _afterPurchaseModal(
   final receiptCubit = context.read<ReceiptCubit>();
 
   if (singleTicketPurchase) {
-    await ticketsCubit.useTicket(product.id);
+    await ticketsCubit.useTicket(
+      product.id,
+      product.eligibleMenuItems.first.id,
+    );
   } else {
     ticketsCubit.getTickets();
     ReceiptOverlay.show(

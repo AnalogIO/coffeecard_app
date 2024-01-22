@@ -1,7 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/features/receipt/domain/entities/receipt.dart';
-import 'package:coffeecard/features/ticket/domain/entities/ticket_count.dart';
+import 'package:coffeecard/features/ticket/domain/entities/ticket.dart';
 import 'package:coffeecard/features/ticket/domain/usecases/consume_ticket.dart';
 import 'package:coffeecard/features/ticket/domain/usecases/load_tickets.dart';
 import 'package:coffeecard/features/ticket/presentation/cubit/tickets_cubit.dart';
@@ -26,11 +26,11 @@ void main() {
       consumeTicket: consumeTicket,
     );
 
-    provideDummy<Either<Failure, List<TicketCount>>>(
-      const Left(ConnectionFailure()),
+    provideDummy<TaskEither<Failure, List<Ticket>>>(
+      TaskEither.left(const ConnectionFailure()),
     );
-    provideDummy<Either<Failure, Receipt>>(
-      const Left(ConnectionFailure()),
+    provideDummy<TaskEither<Failure, Receipt>>(
+      TaskEither.left(const ConnectionFailure()),
     );
   });
 
@@ -38,7 +38,7 @@ void main() {
     blocTest<TicketsCubit, TicketsState>(
       'should emit [Loading, Loaded] when use case succeeds',
       build: () => cubit,
-      setUp: () => when(loadTickets()).thenAnswer((_) async => const Right([])),
+      setUp: () => when(loadTickets()).thenAnswer((_) => TaskEither.right([])),
       act: (_) => cubit.getTickets(),
       expect: () => [
         const TicketsLoading(),
@@ -50,7 +50,7 @@ void main() {
       'should emit [Loading, Error] when use case fails',
       build: () => cubit,
       setUp: () => when(loadTickets()).thenAnswer(
-        (_) async => const Left(ServerFailure('some error', 500)),
+        (_) => TaskEither.left(const ServerFailure('some error', 500)),
       ),
       act: (_) => cubit.getTickets(),
       expect: () => [
@@ -66,28 +66,34 @@ void main() {
       'should not emit new state when state is not [Loaded]',
       build: () => cubit,
       setUp: () {
-        when(loadTickets()).thenAnswer((_) async => const Right([]));
-        when(consumeTicket(productId: anyNamed('productId')))
-            .thenAnswer((_) async => Right(testReceipt));
+        when(loadTickets()).thenAnswer((_) => TaskEither.right([]));
+        when(
+          consumeTicket(
+            productId: anyNamed('productId'),
+            menuItemId: anyNamed('menuItemId'),
+          ),
+        ).thenAnswer((_) => TaskEither.right(testReceipt));
       },
-      act: (cubit) => cubit.useTicket(0),
+      act: (cubit) => cubit.useTicket(0, 0),
       expect: () => [],
     );
 
     blocTest<TicketsCubit, TicketsState>(
       'should emit [Using, Used, Loaded] when state is Loaded',
       build: () => cubit,
-      setUp: () {
-        when(loadTickets()).thenAnswer((_) async => const Right([]));
-        when(consumeTicket(productId: anyNamed('productId')))
-            .thenAnswer((_) async => Right(testReceipt));
+      setUp: () async {
+        when(loadTickets()).thenAnswer((_) => TaskEither.right([]));
+        when(
+          consumeTicket(
+            productId: anyNamed('productId'),
+            menuItemId: anyNamed('menuItemId'),
+          ),
+        ).thenAnswer((_) => TaskEither.right(testReceipt));
+        await cubit.getTickets();
       },
       act: (_) async {
-        await cubit.getTickets();
-        cubit.useTicket(0);
+        await cubit.useTicket(0, 0);
       },
-      // skip the initial Loading/Loaded states emitted by getTickets
-      skip: 2,
       expect: () => [
         const TicketUsing(tickets: []),
         TicketUsed(receipt: testReceipt, tickets: const []),
@@ -98,30 +104,34 @@ void main() {
     blocTest<TicketsCubit, TicketsState>(
       'should emit [Using, Error, Loaded] when state is Loaded',
       build: () => cubit,
-      setUp: () {
-        when(loadTickets()).thenAnswer((_) async => const Right([]));
-        when(consumeTicket(productId: anyNamed('productId'))).thenAnswer(
-          (_) async => const Left(ServerFailure('some error', 500)),
+      setUp: () async {
+        when(loadTickets()).thenAnswer((_) => TaskEither.right([]));
+        when(
+          consumeTicket(
+            productId: anyNamed('productId'),
+            menuItemId: anyNamed('menuItemId'),
+          ),
+        ).thenAnswer(
+          (_) => TaskEither.left(const ServerFailure('some error', 500)),
         );
+        await cubit.getTickets();
       },
       act: (_) async {
-        await cubit.getTickets();
-        cubit.useTicket(0);
+        await cubit.useTicket(0, 0);
       },
-      // skip the initial Loading/Loaded states emitted by getTickets
-      skip: 2,
       expect: () => [
         const TicketUsing(tickets: []),
-        const TicketsUseError(message: 'some error'),
+        const TicketsUseError(message: 'some error', tickets: []),
         const TicketsLoaded(tickets: []),
       ],
     );
   });
+
   group('refreshTickets', () {
     blocTest<TicketsCubit, TicketsState>(
       'should emit [Loaded] when use case succeeds',
       build: () => cubit,
-      setUp: () => when(loadTickets()).thenAnswer((_) async => const Right([])),
+      setUp: () => when(loadTickets()).thenAnswer((_) => TaskEither.right([])),
       act: (_) => cubit.refreshTickets(),
       expect: () => [
         const TicketsLoaded(tickets: []),
@@ -132,7 +142,7 @@ void main() {
       'should emit [Error] when use case fails',
       build: () => cubit,
       setUp: () => when(loadTickets()).thenAnswer(
-        (_) async => const Left(ServerFailure('some error', 500)),
+        (_) => TaskEither.left(const ServerFailure('some error', 500)),
       ),
       act: (_) => cubit.refreshTickets(),
       expect: () => [const TicketsLoadError(message: 'some error')],

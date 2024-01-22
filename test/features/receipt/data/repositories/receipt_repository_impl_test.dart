@@ -62,6 +62,7 @@ void main() {
           productName: 'productName',
           timeUsed: DateTime.parse('2023-04-23'),
           id: 0,
+          menuItemName: 'menuItemName',
         );
 
         final testPurchasedReceipt = PurchaseReceipt(

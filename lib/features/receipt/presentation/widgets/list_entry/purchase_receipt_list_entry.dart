@@ -28,7 +28,8 @@ class PurchaseReceiptListEntry extends StatelessWidget {
   Widget build(BuildContext context) {
     return ReceiptListEntry(
       tappable: false,
-      name: receipt.productName,
+      productName: receipt.productName,
+      menuItemName: receipt.productName,
       time: receipt.timeUsed,
       isPurchase: true,
       showShimmer: false,

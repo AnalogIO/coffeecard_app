@@ -17,7 +17,7 @@ void main() {
     remoteDataSource = MockAccountRemoteDataSource();
     usecase = ResendEmail(remoteDataSource: remoteDataSource);
 
-    provideDummy<Either<NetworkFailure, Unit>>(
+    provideDummy<Either<Failure, Unit>>(
       const Left(ConnectionFailure()),
     );
   });

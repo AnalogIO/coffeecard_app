@@ -23,10 +23,10 @@ void main() {
       executor: executor,
     );
 
-    provideDummy<Either<NetworkFailure, MessageResponseDto>>(
+    provideDummy<Either<Failure, MessageResponseDto>>(
       const Left(ConnectionFailure()),
     );
-    provideDummy<Either<NetworkFailure, Unit>>(const Left(ConnectionFailure()));
+    provideDummy<Either<Failure, Unit>>(const Left(ConnectionFailure()));
   });
 
   group('register', () {

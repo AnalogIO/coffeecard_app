@@ -20,7 +20,7 @@ void main() {
     executor = MockNetworkRequestExecutor();
     dataSource = OccupationRemoteDataSource(api: api, executor: executor);
 
-    provideDummy<Either<NetworkFailure, List<ProgrammeDto>>>(
+    provideDummy<Either<Failure, List<ProgrammeDto>>>(
       const Left(ConnectionFailure()),
     );
   });

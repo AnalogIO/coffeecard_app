@@ -1,6 +1,6 @@
 import 'package:coffeecard/core/strings.dart';
-import 'package:coffeecard/features/product/domain/entities/product.dart';
 import 'package:coffeecard/features/product/presentation/functions.dart';
+import 'package:coffeecard/features/product/product_model.dart';
 import 'package:coffeecard/features/ticket/presentation/widgets/shop_card.dart';
 import 'package:flutter/material.dart';
 
