@@ -74,6 +74,8 @@ runs:
         alias: ${{ inputs.alias }}
         keyStorePassword: ${{ inputs.keyStorePassword }}
         keyPassword: ${{ inputs.keyPassword }}
+      env:
+        BUILD_TOOLS_VERSION: ${{ env.BUILD_TOOL_VERSION }}
 
     - name: "[prod] Upload app bundle"
       if: ${{ !!inputs.store_artifacts && inputs.build_type == 'production'}}
