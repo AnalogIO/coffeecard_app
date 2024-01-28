@@ -3,7 +3,7 @@ import 'package:coffeecard/core/styles/app_colors.dart';
 import 'package:coffeecard/core/styles/app_text_styles.dart';
 import 'package:coffeecard/core/widgets/components/bottom_modal_sheet_helper.dart';
 import 'package:coffeecard/core/widgets/components/rounded_button.dart';
-import 'package:coffeecard/features/product/domain/entities/product.dart';
+import 'package:coffeecard/features/product/product_model.dart';
 import 'package:coffeecard/features/purchase/domain/entities/internal_payment_type.dart';
 import 'package:coffeecard/features/purchase/domain/entities/payment.dart';
 import 'package:coffeecard/features/purchase/presentation/widgets/purchase_overlay.dart';

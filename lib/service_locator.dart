@@ -33,9 +33,8 @@ import 'package:coffeecard/features/opening_hours/data/repositories/opening_hour
 import 'package:coffeecard/features/opening_hours/domain/repositories/opening_hours_repository.dart';
 import 'package:coffeecard/features/opening_hours/domain/usecases/get_opening_hours.dart';
 import 'package:coffeecard/features/opening_hours/presentation/cubit/opening_hours_cubit.dart';
-import 'package:coffeecard/features/product/data/datasources/product_remote_data_source.dart';
-import 'package:coffeecard/features/product/domain/usecases/get_all_products.dart';
 import 'package:coffeecard/features/product/presentation/cubit/product_cubit.dart';
+import 'package:coffeecard/features/product/product_repository.dart';
 import 'package:coffeecard/features/purchase/data/datasources/purchase_remote_data_source.dart';
 import 'package:coffeecard/features/reactivation/data/reactivation_authenticator.dart';
 import 'package:coffeecard/features/receipt/data/datasources/receipt_remote_data_source.dart';
@@ -206,14 +205,18 @@ void initUser() {
   );
 
   // use case
-  sl.registerFactory(() => LoadTickets(ticketRemoteDataSource: sl()));
+  sl.registerFactory(
+    () => LoadTickets(
+      ticketRemoteDataSource: sl(),
+      productRepository: sl(),
+    ),
+  );
   sl.registerFactory(() => ConsumeTicket(ticketRemoteDataSource: sl()));
 
   // data source
   sl.registerLazySingleton(
     () => TicketRemoteDataSource(
-      apiV1: sl(),
-      apiV2: sl(),
+      api: sl(),
       executor: sl(),
     ),
   );
@@ -307,15 +310,10 @@ void initEnvironment() {
 
 void initProduct() {
   // bloc
-  sl.registerFactory(() => ProductCubit(getAllProducts: sl()));
+  sl.registerFactory(() => ProductCubit(productRepository: sl()));
 
-  // use case
-  sl.registerFactory(() => GetAllProducts(remoteDataSource: sl()));
-
-  // data source
-  sl.registerLazySingleton(
-    () => ProductRemoteDataSource(api: sl(), executor: sl()),
-  );
+  // repository
+  sl.registerLazySingleton(() => ProductRepository(api: sl(), executor: sl()));
 }
 
 void initVoucher() {

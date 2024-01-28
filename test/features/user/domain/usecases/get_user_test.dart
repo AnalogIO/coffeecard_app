@@ -21,7 +21,7 @@ void main() {
     dataSource = MockUserRemoteDataSource();
     usecase = GetUser(dataSource: dataSource);
 
-    provideDummy<Either<NetworkFailure, User>>(
+    provideDummy<Either<Failure, User>>(
       const Left(ConnectionFailure()),
     );
   });

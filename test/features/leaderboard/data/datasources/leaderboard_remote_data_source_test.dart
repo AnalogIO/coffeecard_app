@@ -11,7 +11,10 @@ import 'package:mockito/mockito.dart';
 
 import 'leaderboard_remote_data_source_test.mocks.dart';
 
-@GenerateMocks([CoffeecardApiV2, NetworkRequestExecutor])
+@GenerateNiceMocks([
+  MockSpec<CoffeecardApiV2>(),
+  MockSpec<NetworkRequestExecutor>(),
+])
 void main() {
   late MockCoffeecardApiV2 apiV2;
   late MockNetworkRequestExecutor executor;
@@ -22,10 +25,10 @@ void main() {
     executor = MockNetworkRequestExecutor();
     dataSource = LeaderboardRemoteDataSource(apiV2: apiV2, executor: executor);
 
-    provideDummy<Either<NetworkFailure, List<LeaderboardEntry>>>(
+    provideDummy<Either<Failure, List<LeaderboardEntry>>>(
       const Left(ConnectionFailure()),
     );
-    provideDummy<Either<NetworkFailure, LeaderboardEntry>>(
+    provideDummy<Either<Failure, LeaderboardEntry>>(
       const Left(ConnectionFailure()),
     );
   });

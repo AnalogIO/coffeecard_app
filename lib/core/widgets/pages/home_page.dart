@@ -8,7 +8,7 @@ import 'package:coffeecard/core/widgets/routers/app_flow.dart';
 import 'package:coffeecard/features/leaderboard/presentation/cubit/leaderboard_cubit.dart';
 import 'package:coffeecard/features/leaderboard/presentation/pages/leaderboard_page.dart';
 import 'package:coffeecard/features/opening_hours/presentation/cubit/opening_hours_cubit.dart';
-import 'package:coffeecard/features/product/domain/entities/purchasable_products.dart';
+import 'package:coffeecard/features/product/purchasable_products.dart';
 import 'package:coffeecard/features/receipt/presentation/cubit/receipt_cubit.dart';
 import 'package:coffeecard/features/receipt/presentation/pages/receipts_page.dart';
 import 'package:coffeecard/features/settings/presentation/pages/settings_page.dart';

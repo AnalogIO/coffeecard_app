@@ -13,14 +13,15 @@ class SwipeReceiptListEntry extends StatelessWidget {
   Widget build(BuildContext context) {
     return ReceiptListEntry(
       tappable: true,
-      name: receipt.productName,
+      productName: receipt.productName,
+      menuItemName: receipt.menuItemName,
       time: receipt.timeUsed,
       isPurchase: false,
       showShimmer: false,
-      topText: receipt.productName,
+      topText: receipt.menuItemName,
       rightText: Strings.oneTicket,
       backgroundColor: AppColors.white,
-      status: Strings.swiped,
+      status: '${Strings.swiped} via ${receipt.productName} ticket',
     );
   }
 }

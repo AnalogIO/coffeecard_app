@@ -31,7 +31,7 @@ void main() {
       buildContext: buildContext,
     );
 
-    provideDummy<Either<NetworkFailure, InitiatePurchase>>(
+    provideDummy<Either<Failure, InitiatePurchase>>(
       const Left(ConnectionFailure()),
     );
   });

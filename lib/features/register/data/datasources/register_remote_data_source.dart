@@ -12,7 +12,7 @@ class RegisterRemoteDataSource {
   final CoffeecardApiV2 apiV2;
   final NetworkRequestExecutor executor;
 
-  Future<Either<NetworkFailure, Unit>> register(
+  Future<Either<Failure, Unit>> register(
     String name,
     String email,
     String encodedPasscode,

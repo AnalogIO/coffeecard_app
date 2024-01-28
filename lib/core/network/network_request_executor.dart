@@ -7,7 +7,8 @@ import 'package:logger/logger.dart';
 part 'network_request_executor_mapping.dart';
 
 typedef _NetworkRequest<BodyType> = Future<Response<BodyType>> Function();
-typedef _ExecutorResult<R> = Future<Either<NetworkFailure, R>>;
+typedef _ExecutorResult<R> = Future<Either<Failure, R>>;
+typedef _ExecutorTaskEither<R> = TaskEither<Failure, R>;
 
 class NetworkRequestExecutor {
   final Logger logger;
@@ -41,6 +42,13 @@ class NetworkRequestExecutor {
       logger.e(e.toString());
       return const Left(ConnectionFailure());
     }
+  }
+
+  /// Executes a network request inside a [TaskEither].
+  ///
+  /// See [execute] for more information.
+  _ExecutorTaskEither<Body> executeAsTask<Body>(_NetworkRequest<Body> request) {
+    return TaskEither(() => execute(request));
   }
 
   /// Executes the network [request] and returns the result as an [Either].

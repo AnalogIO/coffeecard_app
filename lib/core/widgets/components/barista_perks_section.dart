@@ -3,7 +3,7 @@ import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/core/widgets/components/helpers/grid.dart';
 import 'package:coffeecard/core/widgets/components/section_title.dart';
 import 'package:coffeecard/core/widgets/components/user_role_indicator.dart';
-import 'package:coffeecard/features/product/domain/entities/purchasable_products.dart';
+import 'package:coffeecard/features/product/purchasable_products.dart';
 import 'package:coffeecard/features/ticket/presentation/widgets/perk_card.dart';
 import 'package:coffeecard/features/user/domain/entities/role.dart';
 import 'package:flutter/material.dart';

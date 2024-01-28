@@ -28,10 +28,10 @@ void main() {
       executor: executor,
     );
 
-    provideDummy<Either<NetworkFailure, InitiatePurchaseResponse>>(
+    provideDummy<Either<Failure, InitiatePurchaseResponse>>(
       const Left(ConnectionFailure()),
     );
-    provideDummy<Either<NetworkFailure, SinglePurchaseResponse>>(
+    provideDummy<Either<Failure, SinglePurchaseResponse>>(
       const Left(ConnectionFailure()),
     );
   });

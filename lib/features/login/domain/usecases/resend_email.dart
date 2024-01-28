@@ -7,7 +7,7 @@ class ResendEmail {
 
   ResendEmail({required this.remoteDataSource});
 
-  Future<Either<NetworkFailure, void>> call(String email) async {
+  Future<Either<Failure, void>> call(String email) async {
     return remoteDataSource.resendVerificationEmail(email);
   }
 }

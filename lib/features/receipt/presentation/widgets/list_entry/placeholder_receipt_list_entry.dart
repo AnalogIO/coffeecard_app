@@ -9,7 +9,8 @@ class PlaceholderReceiptListEntry extends StatelessWidget {
   Widget build(BuildContext context) {
     return ReceiptListEntry(
       tappable: false,
-      name: Strings.receiptPlaceholderName,
+      productName: Strings.receiptPlaceholderName,
+      menuItemName: Strings.receiptPlaceholderName,
       time: DateTime.now(),
       isPurchase: false,
       showShimmer: true,

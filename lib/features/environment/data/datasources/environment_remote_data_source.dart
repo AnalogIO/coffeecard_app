@@ -13,7 +13,7 @@ class EnvironmentRemoteDataSource {
   final CoffeecardApiV2 apiV2;
   final NetworkRequestExecutor executor;
 
-  Future<Either<NetworkFailure, Environment>> getEnvironmentType() {
+  Future<Either<Failure, Environment>> getEnvironmentType() {
     return executor
         .execute(apiV2.apiV2AppconfigGet)
         .map(Environment.fromAppConfig);

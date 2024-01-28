@@ -17,7 +17,7 @@ void main() {
     dataSource = MockUserRemoteDataSource();
     usecase = RequestAccountDeletion(dataSource: dataSource);
 
-    provideDummy<Either<NetworkFailure, Unit>>(
+    provideDummy<Either<Failure, Unit>>(
       const Left(ConnectionFailure()),
     );
   });

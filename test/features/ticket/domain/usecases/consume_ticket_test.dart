@@ -18,20 +18,21 @@ void main() {
     ticketRemoteDataSource = MockTicketRemoteDataSource();
     usecase = ConsumeTicket(ticketRemoteDataSource: ticketRemoteDataSource);
 
-    provideDummy<Either<NetworkFailure, Receipt>>(
-      const Left(ConnectionFailure()),
+    provideDummy<TaskEither<Failure, Receipt>>(
+      TaskEither.left(const ConnectionFailure()),
     );
   });
 
   test('should call repository', () async {
     // arrange
-    when(ticketRemoteDataSource.useTicket(any))
-        .thenAnswer((_) async => const Left(ServerFailure('some error', 500)));
+    when(ticketRemoteDataSource.useTicket(any, any)).thenAnswer(
+      (_) => TaskEither.left(const ServerFailure('some error', 500)),
+    );
 
     // act
-    await usecase(productId: 0);
+    await usecase(productId: 0, menuItemId: 0).run();
 
     // assert
-    verify(ticketRemoteDataSource.useTicket(any));
+    verify(ticketRemoteDataSource.useTicket(any, any));
   });
 }

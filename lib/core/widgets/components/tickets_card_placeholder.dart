@@ -1,11 +1,8 @@
-import 'package:coffeecard/core/strings.dart';
-import 'package:coffeecard/core/styles/app_colors.dart';
-import 'package:coffeecard/core/styles/app_text_styles.dart';
-import 'package:dotted_border/dotted_border.dart';
-import 'package:flutter/material.dart';
+part of 'tickets_card.dart';
 
-class CoffeeCardPlaceholder extends StatelessWidget {
-  const CoffeeCardPlaceholder();
+/// A widget that shows instead of a [TicketsCard] when the user has no tickets.
+class NoTicketsPlaceholder extends StatelessWidget {
+  const NoTicketsPlaceholder();
 
   @override
   Widget build(BuildContext context) {
