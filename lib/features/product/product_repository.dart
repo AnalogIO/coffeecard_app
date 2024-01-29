@@ -1,6 +1,6 @@
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
-import 'package:coffeecard/features/product/product_model.dart';
+import 'package:coffeecard/features/product/product.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
 import 'package:collection/collection.dart';
 import 'package:fpdart/fpdart.dart';

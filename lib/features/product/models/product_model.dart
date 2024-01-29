@@ -1,4 +1,4 @@
-import 'package:coffeecard/features/product/menu_item_model.dart';
+import 'package:coffeecard/features/product/product.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.models.swagger.dart';
 import 'package:equatable/equatable.dart';
 import 'package:fpdart/fpdart.dart';

@@ -6,7 +6,7 @@ import 'package:coffeecard/core/styles/app_text_styles.dart';
 import 'package:coffeecard/core/widgets/components/bottom_modal_sheet_helper.dart';
 import 'package:coffeecard/core/widgets/components/card.dart';
 import 'package:coffeecard/core/widgets/components/slide_action.dart';
-import 'package:coffeecard/features/product/menu_item_model.dart';
+import 'package:coffeecard/features/product/product.dart';
 import 'package:coffeecard/features/receipt/presentation/cubit/receipt_cubit.dart';
 import 'package:coffeecard/features/ticket/domain/entities/ticket.dart';
 import 'package:coffeecard/features/ticket/presentation/cubit/tickets_cubit.dart';

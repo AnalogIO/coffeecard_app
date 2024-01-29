@@ -1,5 +1,5 @@
 import 'package:coffeecard/core/styles/app_colors.dart';
-import 'package:coffeecard/features/product/product_model.dart';
+import 'package:coffeecard/features/product/product.dart';
 import 'package:coffeecard/features/purchase/data/repositories/payment_handler.dart';
 import 'package:coffeecard/features/purchase/domain/entities/internal_payment_type.dart';
 import 'package:coffeecard/features/purchase/domain/entities/payment.dart';

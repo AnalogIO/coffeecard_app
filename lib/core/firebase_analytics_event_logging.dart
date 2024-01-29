@@ -1,4 +1,4 @@
-import 'package:coffeecard/features/product/product_model.dart';
+import 'package:coffeecard/features/product/product.dart';
 import 'package:coffeecard/features/purchase/domain/entities/payment.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 

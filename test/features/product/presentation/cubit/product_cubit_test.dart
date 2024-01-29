@@ -1,10 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/features/product/menu_item_model.dart';
-import 'package:coffeecard/features/product/presentation/cubit/product_cubit.dart';
-import 'package:coffeecard/features/product/product_model.dart';
-import 'package:coffeecard/features/product/product_repository.dart';
-import 'package:coffeecard/features/product/purchasable_products.dart';
+import 'package:coffeecard/features/product/product.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:mockito/annotations.dart';
