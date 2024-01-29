@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:coffeecard/core/firebase_analytics_event_logging.dart';
-import 'package:coffeecard/features/product/product.dart';
+import 'package:coffeecard/features/product.dart';
 import 'package:coffeecard/features/purchase/domain/entities/payment.dart';
 import 'package:coffeecard/features/purchase/domain/entities/payment_status.dart';
 import 'package:coffeecard/features/purchase/domain/usecases/init_purchase.dart';

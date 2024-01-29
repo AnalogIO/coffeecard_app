@@ -1,4 +1,4 @@
-import 'package:coffeecard/features/product/product.dart';
+import 'package:coffeecard/features/product.dart';
 
 typedef PurchasableProducts = ({
   Iterable<Product> clipCards,

@@ -33,7 +33,7 @@ import 'package:coffeecard/features/opening_hours/data/repositories/opening_hour
 import 'package:coffeecard/features/opening_hours/domain/repositories/opening_hours_repository.dart';
 import 'package:coffeecard/features/opening_hours/domain/usecases/get_opening_hours.dart';
 import 'package:coffeecard/features/opening_hours/presentation/cubit/opening_hours_cubit.dart';
-import 'package:coffeecard/features/product/product.dart';
+import 'package:coffeecard/features/product.dart';
 import 'package:coffeecard/features/purchase/data/datasources/purchase_remote_data_source.dart';
 import 'package:coffeecard/features/reactivation/data/reactivation_authenticator.dart';
 import 'package:coffeecard/features/receipt/data/datasources/receipt_remote_data_source.dart';

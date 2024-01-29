@@ -1,6 +1,6 @@
 import 'package:coffeecard/core/widgets/components/helpers/grid.dart';
 import 'package:coffeecard/core/widgets/components/scaffold.dart';
-import 'package:coffeecard/features/product/product.dart';
+import 'package:coffeecard/features/product.dart';
 import 'package:flutter/material.dart';
 
 /// Generic page for buying products.
