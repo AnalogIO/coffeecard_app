@@ -19,10 +19,10 @@ void main() {
     remoteDataSource = MockLeaderboardRemoteDataSource();
     usecase = GetLeaderboard(remoteDataSource: remoteDataSource);
 
-    provideDummy<Either<NetworkFailure, LeaderboardUser>>(
+    provideDummy<Either<Failure, LeaderboardUser>>(
       const Left(ConnectionFailure()),
     );
-    provideDummy<Either<NetworkFailure, List<LeaderboardUser>>>(
+    provideDummy<Either<Failure, List<LeaderboardUser>>>(
       const Left(ConnectionFailure()),
     );
   });

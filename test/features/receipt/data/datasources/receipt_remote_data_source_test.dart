@@ -1,6 +1,6 @@
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
-import 'package:coffeecard/features/product/data/datasources/product_remote_data_source.dart';
+import 'package:coffeecard/features/product/product_repository.dart';
 import 'package:coffeecard/features/receipt/data/datasources/receipt_remote_data_source.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -11,7 +11,7 @@ import 'package:mockito/mockito.dart';
 import 'receipt_remote_data_source_test.mocks.dart';
 
 @GenerateMocks(
-  [CoffeecardApiV2, ProductRemoteDataSource, NetworkRequestExecutor],
+  [CoffeecardApiV2, ProductRepository, NetworkRequestExecutor],
 )
 void main() {
   late ReceiptRemoteDataSource remoteDataSource;
@@ -26,10 +26,10 @@ void main() {
       executor: executor,
     );
 
-    provideDummy<Either<NetworkFailure, List<SimplePurchaseResponse>>>(
+    provideDummy<Either<Failure, List<SimplePurchaseResponse>>>(
       const Left(ConnectionFailure()),
     );
-    provideDummy<Either<NetworkFailure, List<TicketResponse>>>(
+    provideDummy<Either<Failure, List<TicketResponse>>>(
       const Left(ConnectionFailure()),
     );
   });

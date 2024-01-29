@@ -208,6 +208,74 @@
         }
       }
     },
+    "/api/v2/account/{id}/user-group": {
+      "patch": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "Updates the user group of a user",
+        "operationId": "Account_UpdateAccountUserGroup",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "id of the user whose userGroup will be updated ",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "updateUserGroupRequest",
+          "description": "Update User Group information request  ",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserGroupRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "204": {
+            "description": " The update was processed "
+          },
+          "401": {
+            "description": " Invalid credentials ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": " User not found ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          },
+          {
+            "apikey": []
+          }
+        ]
+      }
+    },
     "/api/v2/account/resend-verification-email": {
       "post": {
         "tags": [
@@ -253,6 +321,82 @@
             }
           }
         }
+      }
+    },
+    "/api/v2/account/search": {
+      "get": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "Searches a user in the database",
+        "operationId": "Account_SearchUsers",
+        "parameters": [
+          {
+            "name": "pageNum",
+            "in": "query",
+            "description": "The page number",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "maximum": 2147483647,
+              "minimum": 0
+            },
+            "x-position": 1
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "A filter to search by Id, Name or Email. When an empty string is given, all users will be returned",
+            "schema": {
+              "type": "string",
+              "default": ""
+            },
+            "x-position": 2
+          },
+          {
+            "name": "pageLength",
+            "in": "query",
+            "description": "The length of a page",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 30,
+              "maximum": 100,
+              "minimum": 1
+            },
+            "x-position": 3
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Users, possible with filter applied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserSearchResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": " Invalid credentials ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          },
+          {
+            "apikey": []
+          }
+        ]
       }
     },
     "/api/v2/appconfig": {
@@ -583,7 +727,7 @@
         "tags": [
           "Products"
         ],
-        "summary": "Returns a list of available products based on a account's user group",
+        "summary": "Returns a list of available products based on a account's user group.",
         "operationId": "Products_GetProducts",
         "responses": {
           "200": {
@@ -598,8 +742,106 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Invalid credentials"
           }
-        }
+        },
+        "security": [
+          {
+            "jwt": []
+          },
+          {
+            "apikey": []
+          }
+        ]
+      }
+    },
+    "/api/v2/products/{id}": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Returns a product with the specified id",
+        "operationId": "Products_GetProduct",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The id of the product to be returned",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid credentials"
+          },
+          "404": {
+            "description": "The product with the specified id could not be found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          },
+          {
+            "apikey": []
+          }
+        ]
+      }
+    },
+    "/api/v2/products/all": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Returns a list of all products",
+        "operationId": "Products_GetAllProducts",
+        "responses": {
+          "200": {
+            "description": "Successful request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductResponse"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          },
+          {
+            "apikey": []
+          }
+        ]
       }
     },
     "/api/v2/purchases": {
@@ -787,6 +1029,71 @@
         ]
       }
     },
+    "/api/v2/tickets/use": {
+      "post": {
+        "tags": [
+          "Tickets"
+        ],
+        "summary": "Uses a ticket (for the given product) on the given menu item",
+        "operationId": "Tickets_UseTicket",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The product id and menu item id to use a ticket for",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UseTicketRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "Successful request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsedTicketResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid credentials"
+          },
+          "403": {
+            "description": "User has no tickets for the product or the menu item is not eligible for the ticket",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The product or menu item could not be found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          },
+          {
+            "apikey": []
+          }
+        ]
+      }
+    },
     "/api/v2/vouchers/issue-vouchers": {
       "post": {
         "tags": [
@@ -938,7 +1245,7 @@
           "name": "John Doe",
           "email": "john@doe.com",
           "password": "[no example provided]",
-          "programme": 1
+          "programmeId": 1
         },
         "additionalProperties": false,
         "required": [
@@ -1206,6 +1513,44 @@
           }
         }
       },
+      "UpdateUserGroupRequest": {
+        "type": "object",
+        "description": "Update the UserGroup property of a user",
+        "example": {
+          "UserGroup": "Barista"
+        },
+        "additionalProperties": false,
+        "required": [
+          "userGroup"
+        ],
+        "properties": {
+          "userGroup": {
+            "description": "The UserGroup of a user",
+            "example": "UserGroup.Barista ",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/UserGroup"
+              }
+            ]
+          }
+        }
+      },
+      "UserGroup": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "Customer",
+          "Barista",
+          "Manager",
+          "Board"
+        ],
+        "enum": [
+          "Customer",
+          "Barista",
+          "Manager",
+          "Board"
+        ]
+      },
       "ResendAccountVerificationEmailRequest": {
         "type": "object",
         "description": "Resend Invite email request",
@@ -1225,6 +1570,94 @@
             "example": "john@doe.com"
           }
         }
+      },
+      "UserSearchResponse": {
+        "type": "object",
+        "description": "Represents a search result",
+        "additionalProperties": false,
+        "required": [
+          "users",
+          "totalUsers"
+        ],
+        "properties": {
+          "users": {
+            "type": "array",
+            "description": "The users that match the query",
+            "example": [
+              {
+                "id": 12232,
+                "name": "John Doe",
+                "email": "johndoe@itu.dk",
+                "userGroup": "Barista",
+                "state": "Active"
+              }
+            ],
+            "items": {
+              "$ref": "#/components/schemas/SimpleUserResponse"
+            }
+          },
+          "totalUsers": {
+            "type": "integer",
+            "description": "The number of users that match the query",
+            "format": "int32",
+            "example": 1
+          }
+        }
+      },
+      "SimpleUserResponse": {
+        "type": "object",
+        "description": "Basic User details",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "User Id",
+            "format": "int32",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "description": "User's Display Name",
+            "example": "Name"
+          },
+          "email": {
+            "type": "string",
+            "description": "User's Email",
+            "example": "john@doe.test"
+          },
+          "userGroup": {
+            "description": "User's User group relationship",
+            "example": "Barista",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/UserGroup"
+              }
+            ]
+          },
+          "state": {
+            "description": "User's State",
+            "example": "Active",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/UserState"
+              }
+            ]
+          }
+        }
+      },
+      "UserState": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "Active",
+          "Deleted",
+          "PendingActivition"
+        ],
+        "enum": [
+          "Active",
+          "Deleted",
+          "PendingActivition"
+        ]
       },
       "AppConfig": {
         "type": "object",
@@ -1402,7 +1835,8 @@
           "numberOfTickets",
           "name",
           "description",
-          "visible"
+          "visible",
+          "allowedUserGroups"
         ],
         "properties": {
           "price": {
@@ -1411,13 +1845,7 @@
             "format": "int32",
             "maximum": 2147483647,
             "minimum": 0,
-            "example": {
-              "Price": 150,
-              "NumberOfTickets": 10,
-              "Name": "Espresso",
-              "Description": "A coffee made by forcing steam through ground coffee beans.",
-              "Visible": false
-            }
+            "example": 150
           },
           "numberOfTickets": {
             "type": "integer",
@@ -1443,6 +1871,14 @@
             "type": "boolean",
             "description": "Gets or sets the visibility of the product.",
             "example": true
+          },
+          "allowedUserGroups": {
+            "type": "array",
+            "description": "Gets or sets the user groups that can access the product.",
+            "example": "Manager, Board ",
+            "items": {
+              "$ref": "#/components/schemas/UserGroup"
+            }
           }
         }
       },
@@ -1454,7 +1890,11 @@
           "Price": 25,
           "NumberOfTickets": 10,
           "Description": "xxx",
-          "Visible": true
+          "Visible": true,
+          "AllowedUserGroups": [
+            "Manager",
+            "Board"
+          ]
         },
         "additionalProperties": false,
         "required": [
@@ -1501,27 +1941,13 @@
           },
           "allowedUserGroups": {
             "type": "array",
+            "description": "Gets or sets the user groups that can access the product.",
+            "example": "Manager, Board ",
             "items": {
               "$ref": "#/components/schemas/UserGroup"
             }
           }
         }
-      },
-      "UserGroup": {
-        "type": "string",
-        "description": "",
-        "x-enumNames": [
-          "Customer",
-          "Barista",
-          "Manager",
-          "Board"
-        ],
-        "enum": [
-          "Customer",
-          "Barista",
-          "Manager",
-          "Board"
-        ]
       },
       "UpdateProductRequest": {
         "type": "object",
@@ -1532,7 +1958,11 @@
           "NumberOfTickets": 10,
           "Name": "Espresso",
           "Description": "A coffee made by forcing steam through ground coffee beans.",
-          "Visible": false
+          "Visible": false,
+          "AllowedUserGroups": [
+            "Manager",
+            "Board"
+          ]
         },
         "additionalProperties": false,
         "required": [
@@ -1540,7 +1970,8 @@
           "price",
           "numberOfTickets",
           "name",
-          "description"
+          "description",
+          "allowedUserGroups"
         ],
         "properties": {
           "id": {
@@ -1582,6 +2013,14 @@
             "description": "Gets or sets the updated visibility of the product. Default is true.",
             "default": true,
             "example": true
+          },
+          "allowedUserGroups": {
+            "type": "array",
+            "description": "Gets or sets the user groups that can access the product.",
+            "example": "Manager, Board ",
+            "items": {
+              "$ref": "#/components/schemas/UserGroup"
+            }
           }
         }
       },
@@ -1594,7 +2033,22 @@
           "numberOfTickets": 10,
           "name": "Coffee clip card",
           "description": "Coffee clip card of 10 clips",
-          "isPerk": true
+          "isPerk": true,
+          "visible": true,
+          "allowedUserGroups": [
+            "Manager",
+            "Board"
+          ],
+          "eligibleMenuItems": [
+            {
+              "id": 1,
+              "name": "Cappuccino"
+            },
+            {
+              "id": 2,
+              "name": "Caffe Latte"
+            }
+          ]
         },
         "additionalProperties": false,
         "required": [
@@ -1603,7 +2057,9 @@
           "numberOfTickets",
           "name",
           "description",
-          "isPerk"
+          "isPerk",
+          "visible",
+          "allowedUserGroups"
         ],
         "properties": {
           "id": {
@@ -1640,6 +2096,54 @@
             "type": "boolean",
             "description": "Eligible due to a user perk privilege ",
             "example": true
+          },
+          "visible": {
+            "type": "boolean",
+            "description": "Visibility of products for users",
+            "example": true
+          },
+          "allowedUserGroups": {
+            "type": "array",
+            "description": "Decides the user groups that can access the product.",
+            "example": "Manager, Board ",
+            "items": {
+              "$ref": "#/components/schemas/UserGroup"
+            }
+          },
+          "eligibleMenuItems": {
+            "type": "array",
+            "description": "The menu items that this product can be used on.",
+            "example": "Cappuccino, Caffe Latte",
+            "items": {
+              "$ref": "#/components/schemas/MenuItemResponse"
+            }
+          }
+        }
+      },
+      "MenuItemResponse": {
+        "type": "object",
+        "description": "Represents a menu item that can be redeemed with a ticket",
+        "example": {
+          "id": 1,
+          "name": "Cappuccino"
+        },
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "name"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Id of menu item",
+            "format": "int32",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of menu item",
+            "minLength": 1,
+            "example": "Cappuccino"
           }
         }
       },
@@ -2069,6 +2573,80 @@
             "description": "Name of product a ticket is for",
             "minLength": 1,
             "example": "Coffee"
+          },
+          "usedOnMenuItemName": {
+            "type": "string",
+            "description": "The name of the menu item that this ticket was used on",
+            "nullable": true,
+            "example": "Cappuccino"
+          }
+        }
+      },
+      "UsedTicketResponse": {
+        "type": "object",
+        "description": "Representing a used ticket for a product",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "dateCreated",
+          "dateUsed",
+          "productName"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Ticket Id",
+            "format": "int32",
+            "example": 122
+          },
+          "dateCreated": {
+            "type": "string",
+            "description": "Issuing date time for ticket in Utc format",
+            "format": "date-time",
+            "minLength": 1,
+            "example": "2022-01-09T21:03:52.2283208Z"
+          },
+          "dateUsed": {
+            "type": "string",
+            "description": "Used date time for ticket in Utc format",
+            "format": "date-time",
+            "minLength": 1,
+            "example": "2022-01-09T21:03:52.2283208Z"
+          },
+          "productName": {
+            "type": "string",
+            "description": "Name of product a ticket is for",
+            "minLength": 1,
+            "example": "Small drink"
+          },
+          "menuItemName": {
+            "type": "string",
+            "description": "Name of the menu item that this ticket was used on",
+            "nullable": true,
+            "example": "Cappuccino"
+          }
+        }
+      },
+      "UseTicketRequest": {
+        "type": "object",
+        "description": "Represents a request to use a ticket.",
+        "additionalProperties": false,
+        "required": [
+          "productId",
+          "menuItemId"
+        ],
+        "properties": {
+          "productId": {
+            "type": "integer",
+            "description": "The id of the product the ticket is for.",
+            "format": "int32",
+            "example": 1
+          },
+          "menuItemId": {
+            "type": "integer",
+            "description": "The id of the menu item to use the ticket on.",
+            "format": "int32",
+            "example": 1
           }
         }
       },

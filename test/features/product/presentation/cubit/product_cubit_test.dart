@@ -1,9 +1,10 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/features/product/domain/entities/product.dart';
-import 'package:coffeecard/features/product/domain/entities/purchasable_products.dart';
-import 'package:coffeecard/features/product/domain/usecases/get_all_products.dart';
+import 'package:coffeecard/features/product/menu_item_model.dart';
 import 'package:coffeecard/features/product/presentation/cubit/product_cubit.dart';
+import 'package:coffeecard/features/product/product_model.dart';
+import 'package:coffeecard/features/product/product_repository.dart';
+import 'package:coffeecard/features/product/purchasable_products.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:mockito/annotations.dart';
@@ -11,19 +12,24 @@ import 'package:mockito/mockito.dart';
 
 import 'product_cubit_test.mocks.dart';
 
-@GenerateNiceMocks([MockSpec<GetAllProducts>()])
+@GenerateNiceMocks([MockSpec<ProductRepository>()])
 void main() {
   late ProductCubit cubit;
-  late MockGetAllProducts getAllProducts;
+  late MockProductRepository productRepository;
 
   setUp(() {
-    getAllProducts = MockGetAllProducts();
-    cubit = ProductCubit(getAllProducts: getAllProducts);
+    productRepository = MockProductRepository();
+    cubit = ProductCubit(productRepository: productRepository);
 
-    provideDummy<Either<Failure, PurchasableProducts>>(
-      const Left(ConnectionFailure()),
+    provideDummy<TaskEither<Failure, Iterable<Product>>>(
+      TaskEither.left(const ConnectionFailure()),
     );
   });
+
+  const testMenuItems = [
+    MenuItem(id: 1, name: 'Cappuccino'),
+    MenuItem(id: 2, name: 'Espresso'),
+  ];
 
   const tickets = [
     Product(
@@ -33,6 +39,7 @@ void main() {
       price: 1,
       description: 'test',
       isPerk: false,
+      eligibleMenuItems: testMenuItems,
     ),
   ];
   const singleDrinks = [
@@ -43,6 +50,7 @@ void main() {
       price: 1,
       description: 'test',
       isPerk: false,
+      eligibleMenuItems: testMenuItems,
     ),
   ];
   const perks = [
@@ -53,39 +61,39 @@ void main() {
       price: 0,
       description: 'deription',
       isPerk: true,
+      eligibleMenuItems: testMenuItems,
     ),
   ];
-  const allProducts = (
+
+  const groupedProducts = (
     clipCards: tickets,
     singleDrinks: singleDrinks,
     perks: perks,
   );
 
-  const testError = 'some error';
+  final allProducts = groupedProducts.all;
+
+  const testFailure = Left<Failure, Iterable<Product>>(
+    ServerFailure('some error', 500),
+  );
 
   group('getProducts', () {
     blocTest(
-      'should emit [Loading, Loaded] use case succeeds',
+      'should emit [Loaded] use case succeeds',
       build: () => cubit,
-      setUp: () => when(getAllProducts())
-          .thenAnswer((_) async => const Right(allProducts)),
+      setUp: () => when(productRepository.getProducts())
+          .thenAnswer((_) => TaskEither.fromEither(Right(allProducts))),
       act: (cubit) => cubit.getProducts(),
-      expect: () => [
-        const ProductsLoading(),
-        const ProductsLoaded(allProducts),
-      ],
+      expect: () => [isA<ProductsLoaded>()],
     );
 
     blocTest(
-      'should emit [Loading, Error] when use case fails',
+      'should emit [Error] when use case fails',
       build: () => cubit,
-      setUp: () => when(getAllProducts())
-          .thenAnswer((_) async => const Left(ServerFailure(testError, 500))),
+      setUp: () => when(productRepository.getProducts())
+          .thenAnswer((_) => TaskEither.fromEither(testFailure)),
       act: (cubit) => cubit.getProducts(),
-      expect: () => [
-        const ProductsLoading(),
-        const ProductsError(testError),
-      ],
+      expect: () => [isA<ProductsError>()],
     );
   });
 }

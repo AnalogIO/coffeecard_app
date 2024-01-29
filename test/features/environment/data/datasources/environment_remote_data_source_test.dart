@@ -24,7 +24,7 @@ void main() {
       executor: executor,
     );
 
-    provideDummy<Either<NetworkFailure, AppConfig>>(
+    provideDummy<Either<Failure, AppConfig>>(
       const Left(ConnectionFailure()),
     );
   });

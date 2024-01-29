@@ -18,7 +18,7 @@ class PurchaseRemoteDataSource {
 
   /// Initiate a new Purchase Request. The return is a purchase request
   /// with payment details on how to pay for the purchase
-  Future<Either<NetworkFailure, InitiatePurchase>> initiatePurchase(
+  Future<Either<Failure, InitiatePurchase>> initiatePurchase(
     int productId,
     PaymentType paymentType,
   ) {
@@ -35,7 +35,7 @@ class PurchaseRemoteDataSource {
   }
 
   /// Get a purchase by its purchase id
-  Future<Either<NetworkFailure, SinglePurchase>> getPurchase(int purchaseId) {
+  Future<Either<Failure, SinglePurchase>> getPurchase(int purchaseId) {
     return executor
         .execute(() => apiV2.apiV2PurchasesIdGet(id: purchaseId))
         .map(SinglePurchaseModel.fromDto);

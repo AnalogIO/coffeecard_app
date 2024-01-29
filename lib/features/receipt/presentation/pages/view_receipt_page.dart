@@ -3,20 +3,15 @@ import 'package:coffeecard/core/widgets/components/helpers/responsive.dart';
 import 'package:coffeecard/core/widgets/components/scaffold.dart';
 import 'package:coffeecard/features/environment/domain/entities/environment.dart';
 import 'package:coffeecard/features/environment/presentation/cubit/environment_cubit.dart';
+import 'package:coffeecard/features/receipt/domain/entities/receipt.dart';
 import 'package:coffeecard/features/receipt/presentation/widgets/receipt_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ViewReceiptPage extends StatelessWidget {
-  final String name;
-  final DateTime time;
-  final String paymentStatus;
+  const ViewReceiptPage({required this.receipt});
 
-  const ViewReceiptPage({
-    required this.name,
-    required this.time,
-    required this.paymentStatus,
-  });
+  final SwipeReceipt receipt;
 
   @override
   Widget build(BuildContext context) {
@@ -29,12 +24,12 @@ class ViewReceiptPage extends StatelessWidget {
             child: Column(
               children: [
                 ReceiptCard(
-                  productName: name,
-                  time: time,
+                  productName: receipt.menuItemName,
+                  time: receipt.timeUsed,
                   isInOverlay: false,
                   isTestEnvironment:
                       state is EnvironmentLoaded && state.env.isTest,
-                  status: paymentStatus,
+                  status: '${Strings.swiped} via ${receipt.productName} ticket',
                 ),
               ],
             ),

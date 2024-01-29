@@ -14,7 +14,12 @@ class ProductsLoading extends ProductState {
 class ProductsLoaded extends ProductState {
   final PurchasableProducts products;
 
-  const ProductsLoaded(this.products);
+  ProductsLoaded(Iterable<Product> products)
+      : products = (
+          clipCards: products.where((p) => p.amount > 1),
+          singleDrinks: products.where((p) => p.amount == 1),
+          perks: products.where((p) => p.isPerk),
+        );
 
   @override
   List<Object?> get props => [products];
@@ -23,8 +28,7 @@ class ProductsLoaded extends ProductState {
 class ProductsError extends ProductState {
   final String error;
 
-  const ProductsError(this.error);
-  ProductsError.fromFailure(Failure failure) : error = failure.reason;
+  ProductsError(Failure failure) : error = failure.reason;
 
   @override
   List<Object?> get props => [error];

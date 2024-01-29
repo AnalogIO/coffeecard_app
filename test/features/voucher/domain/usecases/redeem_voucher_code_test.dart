@@ -18,7 +18,7 @@ void main() {
     dataSource = MockVoucherRemoteDataSource();
     usecase = RedeemVoucherCode(dataSource: dataSource);
 
-    provideDummy<Either<NetworkFailure, RedeemedVoucher>>(
+    provideDummy<Either<Failure, RedeemedVoucher>>(
       const Left(ConnectionFailure()),
     );
   });

@@ -18,7 +18,7 @@ void main() {
     remoteDataSource = MockEnvironmentRemoteDataSource();
     usecase = GetEnvironmentType(remoteDataSource: remoteDataSource);
 
-    provideDummy<Either<NetworkFailure, Environment>>(
+    provideDummy<Either<Failure, Environment>>(
       const Left(ConnectionFailure()),
     );
   });

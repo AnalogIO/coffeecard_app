@@ -32,10 +32,10 @@ void main() {
       executor: executor,
     );
 
-    provideDummy<Either<NetworkFailure, UserResponse>>(
+    provideDummy<Either<Failure, UserResponse>>(
       const Left(ConnectionFailure()),
     );
-    provideDummy<Either<NetworkFailure, Unit>>(
+    provideDummy<Either<Failure, Unit>>(
       const Left(ConnectionFailure()),
     );
   });

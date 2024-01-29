@@ -13,7 +13,7 @@ class OccupationRemoteDataSource {
     required this.executor,
   });
 
-  Future<Either<NetworkFailure, List<OccupationModel>>> getOccupations() {
+  Future<Either<Failure, List<OccupationModel>>> getOccupations() {
     return executor
         .execute(api.apiV1ProgrammesGet)
         .mapAll(OccupationModel.fromDTOV1);

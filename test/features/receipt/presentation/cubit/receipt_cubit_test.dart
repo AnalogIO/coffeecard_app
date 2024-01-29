@@ -58,11 +58,13 @@ void main() {
         id: 1,
         productName: 'Coffee',
         timeUsed: DateTime.now(),
+        menuItemName: 'Espresso',
       ),
       SwipeReceipt(
         id: 2,
         productName: 'Coffee',
         timeUsed: DateTime.now(),
+        menuItemName: 'Espresso',
       ),
     ];
 

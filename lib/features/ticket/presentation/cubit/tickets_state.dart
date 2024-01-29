@@ -12,7 +12,7 @@ class TicketsLoading extends TicketsState {
 }
 
 class TicketsLoaded extends TicketsState {
-  final List<TicketCount> tickets;
+  final List<Ticket> tickets;
 
   const TicketsLoaded({required this.tickets});
 
@@ -20,11 +20,24 @@ class TicketsLoaded extends TicketsState {
   List<Object?> get props => [tickets];
 }
 
-class TicketUsing extends TicketsLoaded {
+class TicketsLoadError extends TicketsState {
+  final String message;
+  const TicketsLoadError({required this.message});
+
+  @override
+  List<Object?> get props => [message];
+}
+
+/// Superclass for all actions that can be performed on the tickets.
+sealed class TicketsAction extends TicketsLoaded {
+  const TicketsAction({required super.tickets});
+}
+
+class TicketUsing extends TicketsAction {
   const TicketUsing({required super.tickets});
 }
 
-class TicketUsed extends TicketsLoaded {
+class TicketUsed extends TicketsAction {
   final Receipt receipt;
 
   const TicketUsed({required this.receipt, required super.tickets});
@@ -33,17 +46,9 @@ class TicketUsed extends TicketsLoaded {
   List<Object?> get props => [receipt, tickets];
 }
 
-class TicketsUseError extends TicketsState {
+class TicketsUseError extends TicketsAction {
   final String message;
-  const TicketsUseError({required this.message});
-
-  @override
-  List<Object?> get props => [message];
-}
-
-class TicketsLoadError extends TicketsState {
-  final String message;
-  const TicketsLoadError({required this.message});
+  const TicketsUseError({required this.message, required super.tickets});
 
   @override
   List<Object?> get props => [message];

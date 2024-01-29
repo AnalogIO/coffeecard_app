@@ -3,6 +3,7 @@ import 'package:coffeecard/core/styles/app_colors.dart';
 import 'package:coffeecard/core/styles/app_text_styles.dart';
 import 'package:coffeecard/core/widgets/components/helpers/shimmer_builder.dart';
 import 'package:coffeecard/core/widgets/list_entry.dart';
+import 'package:coffeecard/features/receipt/domain/entities/receipt.dart';
 import 'package:coffeecard/features/receipt/presentation/pages/view_receipt_page.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -11,7 +12,8 @@ final _formatDateTime = DateFormat('dd/MM/y HH:mm').format;
 
 class ReceiptListEntry extends StatelessWidget {
   final bool tappable;
-  final String name;
+  final String productName;
+  final String menuItemName;
   final DateTime time;
   final bool isPurchase;
   final bool showShimmer;
@@ -22,7 +24,8 @@ class ReceiptListEntry extends StatelessWidget {
 
   const ReceiptListEntry({
     required this.tappable,
-    required this.name,
+    required this.productName,
+    required this.menuItemName,
     required this.time,
     required this.isPurchase,
     required this.showShimmer,
@@ -48,9 +51,12 @@ class ReceiptListEntry extends StatelessWidget {
       closedShape: const RoundedRectangleBorder(),
       openBuilder: (context, _) {
         return ViewReceiptPage(
-          name: name,
-          time: time,
-          paymentStatus: status,
+          receipt: SwipeReceipt(
+            productName: productName,
+            timeUsed: time,
+            id: 0,
+            menuItemName: menuItemName,
+          ),
         );
       },
       closedBuilder: (context, openContainer) {
