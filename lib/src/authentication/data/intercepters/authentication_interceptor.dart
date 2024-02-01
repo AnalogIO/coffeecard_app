@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:chopper/chopper.dart';
-import 'package:coffeecard/features/authentication/data/datasources/authentication_local_data_source.dart';
+import 'package:coffeecard/features/authentication.dart';
 
 class AuthenticationInterceptor implements RequestInterceptor {
   final AuthenticationLocalDataSource localDataSource;

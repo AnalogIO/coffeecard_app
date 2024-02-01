@@ -1,6 +1,6 @@
 import 'package:coffeecard/core/encode_passcode.dart';
 import 'package:coffeecard/core/firebase_analytics_event_logging.dart';
-import 'package:coffeecard/features/authentication/presentation/cubits/authentication_cubit.dart';
+import 'package:coffeecard/features/authentication.dart';
 import 'package:coffeecard/features/login/domain/errors/email_not_verified_failure.dart';
 import 'package:coffeecard/features/login/domain/usecases/login_user.dart';
 import 'package:coffeecard/features/login/domain/usecases/resend_email.dart';

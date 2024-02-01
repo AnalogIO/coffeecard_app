@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:coffeecard/features/authentication/data/models/authenticated_user_model.dart';
+import 'package:coffeecard/features/authentication.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../../fixtures/fixture_reader.dart';

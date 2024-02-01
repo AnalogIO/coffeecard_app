@@ -1,4 +1,4 @@
-import 'package:coffeecard/features/authentication/data/datasources/authentication_local_data_source.dart';
+import 'package:coffeecard/features/authentication.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class ClearAuthenticatedUser {

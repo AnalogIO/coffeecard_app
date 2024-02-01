@@ -1,7 +1,5 @@
 import 'package:chopper/chopper.dart';
-import 'package:coffeecard/features/authentication/data/datasources/authentication_local_data_source.dart';
-import 'package:coffeecard/features/authentication/data/intercepters/authentication_interceptor.dart';
-import 'package:coffeecard/features/authentication/data/models/authenticated_user_model.dart';
+import 'package:coffeecard/features/authentication.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:mockito/annotations.dart';

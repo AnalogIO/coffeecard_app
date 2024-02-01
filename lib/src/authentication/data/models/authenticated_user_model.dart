@@ -1,4 +1,4 @@
-import 'package:coffeecard/features/authentication/domain/entities/authenticated_user.dart';
+import 'package:coffeecard/features/authentication.dart';
 
 class AuthenticatedUserModel extends AuthenticatedUser {
   const AuthenticatedUserModel({

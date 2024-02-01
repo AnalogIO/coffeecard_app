@@ -1,7 +1,6 @@
 import 'dart:convert';
 
-import 'package:coffeecard/features/authentication/data/datasources/authentication_local_data_source.dart';
-import 'package:coffeecard/features/authentication/data/models/authenticated_user_model.dart';
+import 'package:coffeecard/features/authentication.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
