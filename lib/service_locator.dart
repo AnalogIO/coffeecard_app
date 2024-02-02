@@ -6,6 +6,7 @@ import 'package:coffeecard/core/external/screen_brightness.dart';
 import 'package:coffeecard/core/firebase_analytics_event_logging.dart';
 import 'package:coffeecard/core/ignore_value.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
+import 'package:coffeecard/core/store_utils.dart';
 import 'package:coffeecard/env/env.dart';
 import 'package:coffeecard/features/authentication.dart';
 import 'package:coffeecard/features/contributor/data/datasources/contributor_local_data_source.dart';
@@ -123,7 +124,7 @@ void initAuthentication() {
   // repository
   sl.registerLazySingletonAsync<AuthenticationRepository>(
     () async => AuthenticationRepository(
-      store: await Hive.openBox('authenticationInfo'),
+      store: await Hive.openEncryptedBox<AuthenticationInfo>('auth').run(),
       logger: sl(),
     ),
   );
