@@ -38,7 +38,7 @@ void main() {
       firebaseAnalyticsEventLogging: firebaseAnalyticsEventLogging,
     );
 
-    provideDummy<Either<Failure, AuthenticatedUser>>(
+    provideDummy<Either<Failure, AuthenticationInfo>>(
       const Left(ConnectionFailure()),
     );
   });

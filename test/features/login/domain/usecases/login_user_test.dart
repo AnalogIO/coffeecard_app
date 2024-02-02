@@ -18,7 +18,7 @@ void main() {
     remoteDataSource = MockAccountRemoteDataSource();
     usecase = LoginUser(remoteDataSource: remoteDataSource);
 
-    provideDummy<Either<Failure, AuthenticatedUser>>(
+    provideDummy<Either<Failure, AuthenticationInfo>>(
       const Left(ConnectionFailure()),
     );
   });

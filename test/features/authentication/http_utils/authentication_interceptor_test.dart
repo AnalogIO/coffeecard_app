@@ -7,31 +7,37 @@ import 'package:mockito/mockito.dart';
 
 import 'authentication_interceptor_test.mocks.dart';
 
-@GenerateMocks([AuthenticationLocalDataSource])
+@GenerateMocks([AuthenticationRepository])
 void main() {
-  setUp(() {
-    provideDummy<Option<AuthenticatedUserModel>>(none());
+  late MockAuthenticationRepository repo;
+  late AuthenticationInterceptor interceptor;
+  late Request request;
+
+  setUp(() async {
+    provideDummy<TaskOption<AuthenticationInfo>>(TaskOption.none());
+
+    repo = MockAuthenticationRepository();
+    interceptor = AuthenticationInterceptor(repo);
+    request = Request('POST', Uri.parse('url'), Uri.parse('baseurl'));
   });
 
   test(
-    'GIVEN a token in SecureStorage WHEN calling onRequest THEN Authorization Header is added to the request',
+    'GIVEN a token in SecureStorage '
+    'WHEN calling onRequest '
+    'THEN Authorization Header is added to the request',
     () async {
       const token =
           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
 
-      final mockSecureStorage = MockAuthenticationLocalDataSource();
-      when(mockSecureStorage.getAuthenticatedUser()).thenAnswer(
-        (_) async => const Some(
-          AuthenticatedUserModel(
+      when(repo.getAuthenticationInfo()).thenAnswer(
+        (_) => TaskOption.some(
+          const AuthenticationInfo(
             email: 'email',
             token: token,
             encodedPasscode: 'encodedPasscode',
           ),
         ),
       );
-
-      final interceptor = AuthenticationInterceptor(mockSecureStorage);
-      final request = Request('POST', Uri.parse('url'), Uri.parse('baseurl'));
 
       final result = await interceptor.onRequest(request);
 
@@ -41,17 +47,12 @@ void main() {
   );
 
   test(
-    'GIVEN no token in SecureStorage WHEN calling onRequest THEN no Authorization Header is added to the request',
+    'GIVEN no token in SecureStorage '
+    'WHEN calling onRequest '
+    'THEN no Authorization Header is added to the request',
     () async {
-      final mockSecureStorage = MockAuthenticationLocalDataSource();
-      when(mockSecureStorage.getAuthenticatedUser())
-          .thenAnswer((_) async => none());
-
-      final interceptor = AuthenticationInterceptor(mockSecureStorage);
-      final request = Request('POST', Uri.parse('url'), Uri.parse('baseurl'));
-
+      when(repo.getAuthenticationInfo()).thenAnswer((_) => TaskOption.none());
       final result = await interceptor.onRequest(request);
-
       expect(result.headers.containsKey('Authorization'), isFalse);
     },
   );

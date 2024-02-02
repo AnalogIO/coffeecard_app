@@ -30,7 +30,6 @@ import 'package:coffeecard/features/opening_hours/domain/usecases/get_opening_ho
 import 'package:coffeecard/features/opening_hours/presentation/cubit/opening_hours_cubit.dart';
 import 'package:coffeecard/features/product.dart';
 import 'package:coffeecard/features/purchase/data/datasources/purchase_remote_data_source.dart';
-import 'package:coffeecard/features/reactivation/data/reactivation_authenticator.dart';
 import 'package:coffeecard/features/receipt/data/datasources/receipt_remote_data_source.dart';
 import 'package:coffeecard/features/receipt/data/repositories/receipt_repository_impl.dart';
 import 'package:coffeecard/features/receipt/domain/repositories/receipt_repository.dart';
@@ -59,6 +58,7 @@ import 'package:coffeecard/generated/api/shiftplanning_api.swagger.dart'
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:logger/logger.dart';
 
 final GetIt sl = GetIt.instance;
@@ -73,7 +73,7 @@ void configureServices() {
   initHttp();
 
   // provide the account repository to the reactivation authenticator
-  sl<ReactivationAuthenticator>().initialize(sl<AccountRemoteDataSource>());
+  sl<RetryAuthenticator>().initialize(sl<AccountRemoteDataSource>());
 }
 
 void initExternal() {
@@ -117,24 +117,13 @@ void initFeatures() {
 void initAuthentication() {
   // bloc
   sl.registerLazySingleton(
-    () => AuthenticationCubit(
-      clearAuthenticatedUser: sl(),
-      saveAuthenticatedUser: sl(),
-      getAuthenticatedUser: sl(),
-    ),
+    () => AuthenticationCubit(sl()),
   );
 
-  // use case
-  sl.registerFactory(() => ClearAuthenticatedUser(dataSource: sl()));
-  sl.registerFactory(() => SaveAuthenticatedUser(dataSource: sl()));
-  sl.registerFactory(() => GetAuthenticatedUser(dataSource: sl()));
-
   // repository
-
-  // data source
-  sl.registerLazySingleton(
-    () => AuthenticationLocalDataSource(
-      storage: sl(),
+  sl.registerLazySingletonAsync<AuthenticationRepository>(
+    () async => AuthenticationRepository(
+      store: await Hive.openBox('authenticationInfo'),
       logger: sl(),
     ),
   );
@@ -360,8 +349,8 @@ void initRegister() {
 
 void initHttp() {
   ignoreValue(
-    sl.registerSingleton<ReactivationAuthenticator>(
-      ReactivationAuthenticator.uninitialized(serviceLocator: sl),
+    sl.registerSingleton<RetryAuthenticator>(
+      RetryAuthenticator.uninitialized(serviceLocator: sl),
     ),
   );
 
@@ -373,7 +362,7 @@ void initHttp() {
       CoffeecardApi.create(),
       CoffeecardApiV2.create(),
     ],
-    authenticator: sl.get<ReactivationAuthenticator>(),
+    authenticator: sl.get<RetryAuthenticator>(),
   );
 
   final shiftplanningChopper = ChopperClient(

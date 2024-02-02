@@ -8,7 +8,7 @@ class LoginUser {
 
   LoginUser({required this.remoteDataSource});
 
-  Future<Either<Failure, AuthenticatedUser>> call({
+  Future<Either<Failure, AuthenticationInfo>> call({
     required String email,
     required String encodedPasscode,
   }) {

@@ -72,9 +72,11 @@ class LoginCubit extends Cubit<LoginState> {
         firebaseAnalyticsEventLogging.loginEvent();
 
         authenticationCubit.authenticated(
-          user.email,
-          encodedPasscode,
-          user.token,
+          AuthenticationInfo(
+            email: user.email,
+            encodedPasscode: encodedPasscode,
+            token: user.token,
+          ),
         );
       },
     );

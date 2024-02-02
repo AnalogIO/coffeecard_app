@@ -2,7 +2,6 @@ import 'package:chopper/chopper.dart' as chopper;
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/features/authentication.dart';
 import 'package:coffeecard/features/login/data/datasources/account_remote_data_source.dart';
-import 'package:coffeecard/features/reactivation/data/reactivation_authenticator.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
@@ -12,43 +11,50 @@ import 'package:logger/logger.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import 'reactivation_authenticator_test.mocks.dart';
+import 'retry_authenticator_test.mocks.dart';
 
 @GenerateMocks([
   AuthenticationCubit,
   AccountRemoteDataSource,
-  AuthenticationLocalDataSource,
+  AuthenticationRepository,
   Logger,
 ])
 void main() {
   late _FakeGetIt serviceLocator;
   late MockAuthenticationCubit authenticationCubit;
   late MockAccountRemoteDataSource accountRemoteDataSource;
-  late MockAuthenticationLocalDataSource secureStorage;
+  late MockAuthenticationRepository repository;
 
-  late ReactivationAuthenticator authenticator;
+  late RetryAuthenticator authenticator;
 
   setUp(() {
     serviceLocator = _FakeGetIt.fromMockedObjects(
       authenticationCubit: MockAuthenticationCubit(),
       accountRemoteDataSource: MockAccountRemoteDataSource(),
-      authenticationLocalDataSource: MockAuthenticationLocalDataSource(),
+      authenticationRepository: MockAuthenticationRepository(),
       mockLogger: MockLogger(),
     );
 
     authenticationCubit = serviceLocator.getMock<MockAuthenticationCubit>();
     accountRemoteDataSource =
         serviceLocator.getMock<MockAccountRemoteDataSource>();
-    secureStorage = serviceLocator.getMock<MockAuthenticationLocalDataSource>();
+    repository = serviceLocator.getMock<MockAuthenticationRepository>();
 
     authenticator =
-        ReactivationAuthenticator.uninitialized(serviceLocator: serviceLocator);
+        RetryAuthenticator.uninitialized(serviceLocator: serviceLocator);
     authenticator.initialize(accountRemoteDataSource);
 
-    provideDummy<Option<AuthenticatedUserModel>>(none());
-
-    provideDummy<Either<Failure, AuthenticatedUser>>(
+    provideDummy<TaskOption<AuthenticationInfo>>(TaskOption.none());
+    provideDummy<Either<Failure, AuthenticationInfo>>(
       const Left(ConnectionFailure()),
+    );
+    provideDummy<Task<Unit>>(Task.of(unit));
+
+    when(repository.clearAuthenticationInfo()).thenAnswer(
+      (_) => Task.of(unit),
+    );
+    when(repository.saveAuthenticationInfo(any)).thenAnswer(
+      (_) => Task.of(unit),
     );
   });
 
@@ -81,8 +87,8 @@ void main() {
       final request = _requestFromMethod('GET');
       final response = _responseFromStatusCode(401);
 
-      when(secureStorage.getAuthenticatedUser())
-          .thenAnswer((_) async => none());
+      when(repository.getAuthenticationInfo())
+          .thenAnswer((_) => TaskOption.none());
 
       // Act
       final result = await authenticator.authenticate(request, response);
@@ -119,9 +125,9 @@ void main() {
         ),
       );
 
-      when(secureStorage.getAuthenticatedUser()).thenAnswer(
-        (_) async => some(
-          const AuthenticatedUserModel(
+      when(repository.getAuthenticationInfo()).thenAnswer(
+        (_) => TaskOption.some(
+          const AuthenticationInfo(
             email: email,
             token: token,
             encodedPasscode: 'encodedPasscode',
@@ -171,9 +177,9 @@ void main() {
       const oldToken = 'oldToken';
       const newToken = 'newToken';
 
-      when(secureStorage.getAuthenticatedUser()).thenAnswer(
-        (_) async => some(
-          const AuthenticatedUserModel(
+      when(repository.getAuthenticationInfo()).thenAnswer(
+        (_) => TaskOption.some(
+          const AuthenticationInfo(
             email: email,
             token: oldToken,
             encodedPasscode: encodedPasscode,
@@ -182,8 +188,8 @@ void main() {
       );
 
       when(accountRemoteDataSource.login(email, encodedPasscode)).thenAnswer(
-        (_) async => right(
-          const AuthenticatedUser(
+        (_) async => Either.of(
+          const AuthenticationInfo(
             email: email,
             token: newToken,
             encodedPasscode: 'encodedPasscode',
@@ -201,9 +207,9 @@ void main() {
       verify(accountRemoteDataSource.login(email, encodedPasscode)).called(1);
       verifyNoMoreInteractions(accountRemoteDataSource);
 
-      verify(secureStorage.getAuthenticatedUser()).called(1);
-      verify(secureStorage.updateToken(newToken)).called(1);
-      verifyNoMoreInteractions(secureStorage);
+      verify(repository.getAuthenticationInfo().run()).called(1);
+      verify(repository.saveAuthenticationInfo(any).run()).called(1);
+      verifyNoMoreInteractions(repository);
 
       expect(result, isNotNull);
       expect(result!.headers['Authorization'], 'Bearer $newToken');
@@ -226,9 +232,9 @@ void main() {
       int counter = 0;
       String getNewToken() => '${++counter}';
 
-      when(secureStorage.getAuthenticatedUser()).thenAnswer(
-        (_) async => some(
-          const AuthenticatedUserModel(
+      when(repository.getAuthenticationInfo()).thenAnswer(
+        (_) => TaskOption.some(
+          const AuthenticationInfo(
             email: email,
             token: oldToken,
             encodedPasscode: encodedPasscode,
@@ -238,7 +244,7 @@ void main() {
 
       when(accountRemoteDataSource.login(email, encodedPasscode)).thenAnswer(
         (_) async => right(
-          AuthenticatedUser(
+          AuthenticationInfo(
             email: email,
             token: getNewToken(),
             encodedPasscode: 'encodedPasscode',
@@ -278,9 +284,9 @@ void main() {
       const encodedPasscode = 'encodedPasscode';
       const newToken = 'newToken';
 
-      when(secureStorage.getAuthenticatedUser()).thenAnswer(
-        (_) async => some(
-          const AuthenticatedUserModel(
+      when(repository.getAuthenticationInfo()).thenAnswer(
+        (_) => TaskOption.some(
+          const AuthenticationInfo(
             email: email,
             token: newToken,
             encodedPasscode: encodedPasscode,
@@ -290,7 +296,7 @@ void main() {
 
       when(accountRemoteDataSource.login(email, encodedPasscode)).thenAnswer(
         (_) async => right(
-          const AuthenticatedUser(
+          const AuthenticationInfo(
             email: email,
             token: newToken,
             encodedPasscode: 'encodedPasscode',
@@ -311,14 +317,8 @@ void main() {
   );
 }
 
-chopper.Response<T> _responseFromStatusCode<T>(
-  int statusCode, {
-  T? body,
-}) {
-  return chopper.Response(
-    http.Response('', statusCode),
-    body,
-  );
+chopper.Response<T> _responseFromStatusCode<T>(int statusCode, {T? body}) {
+  return chopper.Response(http.Response('', statusCode), body);
 }
 
 chopper.Request _requestFromMethod(String method) {
@@ -329,13 +329,13 @@ class _FakeGetIt extends Fake implements GetIt {
   _FakeGetIt.fromMockedObjects({
     required this.authenticationCubit,
     required this.accountRemoteDataSource,
-    required this.authenticationLocalDataSource,
+    required this.authenticationRepository,
     required this.mockLogger,
   });
 
   final MockAuthenticationCubit authenticationCubit;
   final MockAccountRemoteDataSource accountRemoteDataSource;
-  final MockAuthenticationLocalDataSource authenticationLocalDataSource;
+  final MockAuthenticationRepository authenticationRepository;
   final MockLogger mockLogger;
 
   @override
@@ -357,7 +357,7 @@ class _FakeGetIt extends Fake implements GetIt {
     return switch (T) {
       const (AuthenticationCubit) => authenticationCubit,
       const (AccountRemoteDataSource) => accountRemoteDataSource,
-      const (AuthenticationLocalDataSource) => authenticationLocalDataSource,
+      const (AuthenticationRepository) => authenticationRepository,
       const (Logger) => mockLogger,
       _ => throw UnimplementedError('Mock for $T not implemented.'),
     } as T;
@@ -368,8 +368,7 @@ class _FakeGetIt extends Fake implements GetIt {
     return switch (T) {
       const (MockAuthenticationCubit) => authenticationCubit,
       const (MockAccountRemoteDataSource) => accountRemoteDataSource,
-      const (MockAuthenticationLocalDataSource) =>
-        authenticationLocalDataSource,
+      const (MockAuthenticationRepository) => authenticationRepository,
       const (MockLogger) => mockLogger,
       _ => throw UnimplementedError('Mock for $T not implemented.'),
     } as T;

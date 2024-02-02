@@ -3,22 +3,20 @@ import 'dart:convert';
 import 'package:coffeecard/features/authentication.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../../../fixtures/fixture_reader.dart';
-
 void main() {
-  const model = AuthenticatedUserModel(
-    email: 'email',
-    token: 'token',
-    encodedPasscode: 'passcode',
+  const model = AuthenticationInfo(
+    email: 'a',
+    token: 'b',
+    encodedPasscode: 'c',
   );
 
   group('fromJson', () {
     test('should return model', () {
       // arrange
-      final jsonString = fixture('authenticated_user/authenticated_user.json');
+      const jsonString = '{"email":"a","token":"b","encodedPasscode":"c"}';
 
       // act
-      final actual = AuthenticatedUserModel.fromJson(
+      final actual = AuthenticationInfo.fromJson(
         json.decode(jsonString) as Map<String, dynamic>,
       );
 
@@ -32,11 +30,7 @@ void main() {
       final actual = model.toJson();
 
       // assert
-      final expected = {
-        'email': 'email',
-        'token': 'token',
-        'passcode': 'passcode',
-      };
+      final expected = {'email': 'a', 'token': 'b', 'encodedPasscode': 'c'};
 
       expect(actual, expected);
     });

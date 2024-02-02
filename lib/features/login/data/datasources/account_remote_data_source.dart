@@ -21,7 +21,7 @@ class AccountRemoteDataSource {
     required this.executor,
   });
 
-  Future<Either<Failure, AuthenticatedUser>> login(
+  Future<Either<Failure, AuthenticationInfo>> login(
     String email,
     String encodedPasscode,
   ) async {
@@ -45,7 +45,7 @@ class AccountRemoteDataSource {
         return Left(err);
       },
       (result) => Right(
-        AuthenticatedUser(
+        AuthenticationInfo(
           email: email,
           encodedPasscode: encodedPasscode,
           token: result.token!,

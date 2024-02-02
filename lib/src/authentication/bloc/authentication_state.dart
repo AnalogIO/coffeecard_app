@@ -2,19 +2,19 @@ part of 'authentication_cubit.dart';
 
 class AuthenticationState extends Equatable {
   final AuthenticationStatus status;
-  final AuthenticatedUser? authenticatedUser;
+  final AuthenticationInfo? authenticationInfo;
 
   const AuthenticationState._({
     this.status = AuthenticationStatus.unknown,
-    this.authenticatedUser,
+    this.authenticationInfo,
   });
 
   const AuthenticationState.unknown() : this._();
 
-  const AuthenticationState.authenticated(AuthenticatedUser authenticatedUser)
+  const AuthenticationState.authenticated(AuthenticationInfo authenticationInfo)
       : this._(
           status: AuthenticationStatus.authenticated,
-          authenticatedUser: authenticatedUser,
+          authenticationInfo: authenticationInfo,
         );
 
   const AuthenticationState.unauthenticated()
@@ -23,12 +23,12 @@ class AuthenticationState extends Equatable {
   @override
   List<Object?> get props => [
         status,
-        authenticatedUser,
+        authenticationInfo,
       ];
 
   @override
   String toString() {
-    return 'AuthenticationState{status: $status, user: $authenticatedUser}';
+    return 'AuthenticationState{status: $status, user: $authenticationInfo}';
   }
 }
 

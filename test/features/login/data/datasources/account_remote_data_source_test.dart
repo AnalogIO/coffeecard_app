@@ -54,7 +54,7 @@ void main() {
 
   group('login', () {
     test(
-      'should return [Right<AuthenticatedUser>] when executor returns token',
+      'should return [Right<AuthenticationInfo>] when executor returns token',
       () async {
         // arrange
         when(executor.execute<v1.TokenDto>(any)).thenAnswer(
@@ -68,7 +68,7 @@ void main() {
         expect(
           actual,
           const Right(
-            AuthenticatedUser(
+            AuthenticationInfo(
               email: 'email',
               token: 'token',
               encodedPasscode: 'encodedPasscode',
