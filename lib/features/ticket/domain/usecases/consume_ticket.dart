@@ -1,4 +1,5 @@
 import 'package:coffeecard/core/errors/failures.dart';
+import 'package:coffeecard/core/store_utils.dart';
 import 'package:coffeecard/features/receipt/domain/entities/receipt.dart';
 import 'package:coffeecard/features/ticket/data/datasources/ticket_remote_data_source.dart';
 import 'package:fpdart/fpdart.dart';
@@ -22,10 +23,8 @@ class ConsumeTicket {
     int productId,
     int menuItemId,
   ) {
-    return TaskEither(() async {
-      final cache = await Hive.openBox<int>('lastUsedMenuItemByProductId');
-      await cache.put(productId, menuItemId);
-      return const Right(unit);
-    });
+    return Hive.openBoxAsTask<int>('lastUsedMenuItemByProductId')
+        .flatMap((box) => box.putAsTask(productId, menuItemId))
+        .toTaskEither<Failure>();
   }
 }

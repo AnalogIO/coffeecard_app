@@ -1,3 +1,4 @@
+import 'package:coffeecard/core/store_utils.dart';
 import 'package:coffeecard/features/authentication.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -11,25 +12,30 @@ class AuthenticationRepository {
     required this.logger,
   });
 
+  /// The [Box] used to store the [AuthenticationInfo].
+  ///
+  /// Should be encrypted using [HiveFP.openEncryptedBox].
   final Box<AuthenticationInfo> store;
   final Logger logger;
 
-  /// Store the authentication info in an encrypted Hive box.
   Task<Unit> saveAuthenticationInfo(AuthenticationInfo info) {
-    return Task(() => store.put(_authenticationInfoKey, info))
-        .map((_) => logger.d('Authentication info saved'))
-        .map((_) => unit);
+    return store
+        .putAsTask(_authenticationInfoKey, info)
+        .andThen(() => _logMessage('Authentication info saved.'));
   }
 
   TaskOption<AuthenticationInfo> getAuthenticationInfo() {
-    return TaskOption.fromNullable(store.get(_authenticationInfoKey));
+    return store.getAsTaskOption(_authenticationInfoKey);
   }
 
   Task<Unit> clearAuthenticationInfo() {
-    return Task(() async {
-      await store.clear();
-      logger.d('Authentication info cleared');
-      return unit;
-    });
+    return store
+        .clearAsTask()
+        .andThen(() => _logMessage('Authentication info cleared.'));
   }
+
+  Task<Unit> _logMessage(String message) => Task(() async {
+        logger.d(message);
+        return unit;
+      });
 }

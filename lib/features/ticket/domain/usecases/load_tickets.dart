@@ -54,6 +54,7 @@ class LoadTickets {
     final getCachedMenuItemId = TaskEither<Failure, int>(() async {
       final cache = await Hive.openBox<int>('lastUsedMenuItemByProductId');
       return Either.fromNullable(
+        // TODO(marfavi): Use getAsTaskOption instead.
         cache.get(ticket.product.id),
         () => const LocalStorageFailure('No last used menu item found'),
       );

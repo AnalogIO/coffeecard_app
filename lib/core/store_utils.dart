@@ -54,3 +54,25 @@ extension HiveFP on HiveInterface {
         );
   }
 }
+
+extension HiveBoxFP<E> on Box<E> {
+  /// [Task] wrapper around [put].
+  Task<Unit> putAsTask(dynamic key, E value) {
+    return Task(() => put(key, value)).map((_) => unit);
+  }
+
+  /// [Task] wrapper around [delete].
+  Task<Unit> deleteAsTask(dynamic key) {
+    return Task(() => delete(key)).map((_) => unit);
+  }
+
+  /// [Task] wrapper around [clear].
+  Task<Unit> clearAsTask() {
+    return Task(() => clear()).map((_) => unit);
+  }
+
+  /// [TaskOption] wrapper around [get].
+  TaskOption<E> getAsTaskOption(dynamic key) {
+    return TaskOption(() async => Option.fromNullable(get(key)));
+  }
+}
