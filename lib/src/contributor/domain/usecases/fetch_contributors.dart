@@ -1,6 +1,5 @@
 import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/features/contributor/data/datasources/contributor_local_data_source.dart';
-import 'package:coffeecard/features/contributor/domain/entities/contributor.dart';
+import 'package:coffeecard/features/contributor.dart';
 import 'package:fpdart/fpdart.dart';
 
 class FetchContributors {

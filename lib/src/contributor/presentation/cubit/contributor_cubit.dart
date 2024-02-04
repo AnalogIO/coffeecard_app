@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:coffeecard/features/contributor/domain/entities/contributor.dart';
-import 'package:coffeecard/features/contributor/domain/usecases/fetch_contributors.dart';
+import 'package:coffeecard/features/contributor.dart';
 import 'package:equatable/equatable.dart';
 
 part 'contributor_state.dart';

@@ -1,5 +1,4 @@
-import 'package:coffeecard/features/contributor/data/datasources/contributor_local_data_source.dart';
-import 'package:coffeecard/features/contributor/domain/usecases/fetch_contributors.dart';
+import 'package:coffeecard/features/contributor.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
