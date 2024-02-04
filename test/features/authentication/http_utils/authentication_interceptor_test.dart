@@ -15,7 +15,7 @@ void main() {
   late Request request;
 
   setUp(() {
-    provideDummy<TaskOption<AuthenticationInfo>>(TaskOption.none());
+    provideDummy<TaskOption<String>>(TaskOption.none());
 
     repository = MockAuthenticationRepository();
     interceptor = AuthenticationInterceptor(repository);
@@ -29,15 +29,8 @@ void main() {
     () {
       // arrange
       const token = 'a';
-      when(repository.getAuthenticationInfo()).thenReturn(
-        TaskOption.some(
-          const AuthenticationInfo(
-            email: 'email',
-            token: token,
-            encodedPasscode: 'encodedPasscode',
-          ),
-        ),
-      );
+      when(repository.getAuthenticationToken())
+          .thenReturn(TaskOption.of(token));
 
       // act
       final result = interceptor.onRequest(request);
@@ -53,8 +46,7 @@ void main() {
     'THEN no Authorization Header is added to the request',
     () {
       // arrange
-      when(repository.getAuthenticationInfo()).thenReturn(TaskOption.none());
-
+      when(repository.getAuthenticationToken()).thenReturn(TaskOption.none());
       // act
       final result = interceptor.onRequest(request);
 
