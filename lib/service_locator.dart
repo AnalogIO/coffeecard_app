@@ -6,7 +6,7 @@ import 'package:coffeecard/core/external/screen_brightness.dart';
 import 'package:coffeecard/core/firebase_analytics_event_logging.dart';
 import 'package:coffeecard/core/ignore_value.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
-import 'package:coffeecard/core/store_utils.dart';
+import 'package:coffeecard/core/store/store.dart';
 import 'package:coffeecard/env/env.dart';
 import 'package:coffeecard/features/authentication.dart';
 import 'package:coffeecard/features/contributor/data/datasources/contributor_local_data_source.dart';
@@ -59,7 +59,7 @@ import 'package:coffeecard/generated/api/shiftplanning_api.swagger.dart'
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive_flutter/hive_flutter.dart' hide Box;
 import 'package:logger/logger.dart';
 
 final GetIt sl = GetIt.instance;
@@ -79,6 +79,7 @@ void configureServices() {
 
 void initExternal() {
   ignoreValue(sl.registerSingleton(const FlutterSecureStorage()));
+  ignoreValue(sl.registerSingleton(Store(secureStorage: sl(), hive: Hive)));
 
   ignoreValue(sl.registerFactory(() => DateService()));
   ignoreValue(sl.registerFactory(() => ScreenBrightness()));
@@ -124,7 +125,9 @@ void initAuthentication() {
   // repository
   sl.registerLazySingletonAsync<AuthenticationRepository>(
     () async => AuthenticationRepository(
-      store: await Hive.openEncryptedBox<AuthenticationInfo>('auth').run(),
+      crate: await sl<Store>()
+          .openEncryptedCrate<AuthenticationInfo>('auth')
+          .run(),
       logger: sl(),
     ),
   );
@@ -195,7 +198,12 @@ void initUser() {
       productRepository: sl(),
     ),
   );
-  sl.registerFactory(() => ConsumeTicket(ticketRemoteDataSource: sl()));
+  sl.registerFactory(
+    () async => ConsumeTicket(
+      ticketRemoteDataSource: sl(),
+      crate: await sl<Store>().openCrate<int>('auth').run(),
+    ),
+  );
 
   // data source
   sl.registerLazySingleton(

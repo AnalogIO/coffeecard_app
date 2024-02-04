@@ -1,23 +1,26 @@
+import 'package:coffeecard/core/store/store.dart';
 import 'package:coffeecard/features/authentication.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:logger/logger.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import 'repository_test.mocks.dart';
 
-@GenerateNiceMocks([MockSpec<Box<AuthenticationInfo>>(), MockSpec<Logger>()])
+@GenerateNiceMocks([
+  MockSpec<Crate<AuthenticationInfo>>(),
+  MockSpec<Logger>(),
+])
 void main() {
   late AuthenticationRepository repo;
-  late MockBox store;
+  late MockCrate crate;
   late MockLogger logger;
 
   setUp(() {
-    store = MockBox();
+    crate = MockCrate();
     logger = MockLogger();
-    repo = AuthenticationRepository(store: store, logger: logger);
+    repo = AuthenticationRepository(crate: crate, logger: logger);
   });
 
   const testAuthInfo = AuthenticationInfo(
@@ -25,6 +28,8 @@ void main() {
     token: 'token',
     encodedPasscode: 'encodedPasscode',
   );
+  provideDummy<Task<Unit>>(Task.of(unit));
+  provideDummy<TaskOption<AuthenticationInfo>>(TaskOption.none());
 
   group('saveAuthenticationInfo', () {
     test(
@@ -37,7 +42,7 @@ void main() {
 
         // assert
         verifyInOrder([
-          store.put(any, testAuthInfo),
+          crate.put(any, testAuthInfo),
           logger.d(any),
         ]);
       },
@@ -51,7 +56,7 @@ void main() {
       'THEN the authentication info is returned',
       () {
         // arrange
-        when(store.get(any)).thenAnswer((_) => testAuthInfo);
+        when(crate.get(any)).thenReturn(TaskOption.of(testAuthInfo));
 
         // act
         final actual = repo.getAuthenticationInfo().run();
@@ -75,7 +80,7 @@ void main() {
       'THEN none is returned',
       () {
         // arrange
-        when(store.get(any)).thenAnswer((_) => null);
+        when(crate.get(any)).thenReturn(TaskOption.none());
 
         // act
         final actual = repo.getAuthenticationInfo().run();
@@ -93,13 +98,13 @@ void main() {
       'THEN store.clear() is called and a log message is written',
       () async {
         // arrange
-        when(store.get(any)).thenAnswer((_) => testAuthInfo);
+        when(crate.get(any)).thenReturn(TaskOption.of(testAuthInfo));
 
         // act
         await repo.clearAuthenticationInfo().run();
 
         // assert
-        verify(store.clear()).called(1);
+        verify(crate.clear()).called(1);
         verify(logger.d(any)).called(1);
       },
     );
