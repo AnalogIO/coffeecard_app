@@ -2,6 +2,7 @@ import 'package:chopper/chopper.dart' as chopper;
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/features/authentication.dart';
 import 'package:coffeecard/features/login/data/datasources/account_remote_data_source.dart';
+import 'package:coffeecard/generated/api/coffeecard_api.models.swagger.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart' as http;
@@ -47,6 +48,48 @@ void main() {
     when(repository.clearAuthenticationInfo()).thenReturn(Task.of(unit));
     when(repository.saveAuthenticationInfo(any)).thenReturn(Task.of(unit));
   });
+
+  test(
+    'GIVEN an uninitialized RetryAuthenticator '
+    'WHEN authenticate is called '
+    'THEN it should throw a StateError',
+    () {
+      // Arrange
+      final authenticator = RetryAuthenticator.uninitialized(
+        repository: repository,
+        cubit: authenticationCubit,
+        logger: logger,
+      );
+      final request = _requestFromMethod('GET');
+      final response = _responseFromStatusCode(401);
+
+      // Act
+      final result = authenticator.authenticate(request, response);
+
+      // Assert
+      expect(result, throwsStateError);
+    },
+  );
+
+  test(
+    'GIVEN a 401 response stemming from a request with a LoginDto body '
+    'WHEN authenticate is called '
+    'THEN it should return null',
+    () async {
+      // Arrange
+      final request = _requestFromMethod('POST');
+      final response = _responseFromStatusCode(
+        401,
+        body: const LoginDto(email: 'a', password: 'b', version: 'c'),
+      );
+
+      // Act
+      final result = authenticator.authenticate(request, response);
+
+      // Assert
+      expect(result, completion(isNull));
+    },
+  );
 
   test(
     'GIVEN a response with status code other than 401 '

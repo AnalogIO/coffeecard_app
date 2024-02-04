@@ -91,6 +91,48 @@ void main() {
     );
   });
 
+  group('getAuthenticationToken', () {
+    test(
+      'GIVEN a stored authentication info '
+      'WHEN getAuthenticationToken is called '
+      'THEN the authentication token is returned',
+      () {
+        // arrange
+        when(crate.get(any)).thenReturn(TaskOption.of(testAuthInfo));
+
+        // act
+        final actual = repo.getAuthenticationToken().run();
+
+        // assert
+        expect(
+          actual,
+          completion(
+            isA<Some<String>>().having(
+              (some) => some.value,
+              'Authentication token',
+              testAuthInfo.token,
+            ),
+          ),
+        );
+      },
+    );
+    test(
+      'GIVEN no stored authentication info '
+      'WHEN getAuthenticationToken is called '
+      'THEN none is returned',
+      () {
+        // arrange
+        when(crate.get(any)).thenReturn(TaskOption.none());
+
+        // act
+        final actual = repo.getAuthenticationToken().run();
+
+        // assert
+        expect(actual, completion(isA<None>()));
+      },
+    );
+  });
+
   group('clearAuthenticationInfo', () {
     test(
       'GIVEN a stored authentication info '

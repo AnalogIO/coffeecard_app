@@ -40,7 +40,9 @@ void main() {
         expect(result, isA<Crate<String>>());
       },
     );
+  });
 
+  group('openEncryptedCrate', () {
     test(
       'GIVEN '
       '1) an initialized Store '

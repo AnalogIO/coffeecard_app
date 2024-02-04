@@ -43,4 +43,20 @@ void main() {
       expect(actual, expected);
     },
   );
+
+  test(
+    'GIVEN an AuthenticationInfo object '
+    'WHEN withToken is called '
+    'THEN it should return a new AuthenticationInfo object with the new token',
+    () {
+      // arrange
+      const newToken = 'a';
+
+      // act
+      final actual = testAuthenticationInfo.withToken(newToken);
+
+      // assert
+      expect(actual.token, newToken);
+    },
+  );
 }
