@@ -28,6 +28,10 @@ class AuthenticationRepository {
     return store.getAsTaskOption(_authenticationInfoKey);
   }
 
+  TaskOption<String> getAuthenticationToken() {
+    return getAuthenticationInfo().map((info) => info.token);
+  }
+
   Task<Unit> clearAuthenticationInfo() {
     return store
         .clearAsTask()

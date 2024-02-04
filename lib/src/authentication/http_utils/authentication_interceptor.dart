@@ -11,14 +11,11 @@ class AuthenticationInterceptor implements chopper.RequestInterceptor {
   final AuthenticationRepository repository;
 
   @override
-  FutureOr<chopper.Request> onRequest(chopper.Request request) {
-    return repository.getAuthenticationInfo().match(
-      () => request,
-      (authenticationInfo) {
-        final updatedHeaders = Map.of(request.headers);
-        updatedHeaders['Authorization'] = 'Bearer ${authenticationInfo.token}';
-        return request.copyWith(headers: updatedHeaders);
-      },
-    ).run();
+  FutureOr<chopper.Request> onRequest(chopper.Request originalRequest) {
+    return repository
+        .getAuthenticationToken()
+        .map(originalRequest.withBearerToken)
+        .getOrElse(() => originalRequest)
+        .run();
   }
 }

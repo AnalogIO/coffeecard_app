@@ -1,23 +1,26 @@
 import 'dart:async';
 
-import 'package:chopper/chopper.dart' as chopper;
+import 'package:chopper/chopper.dart';
+import 'package:coffeecard/core/extensions/task_extensions.dart';
 import 'package:coffeecard/core/throttler.dart';
 import 'package:coffeecard/features/authentication.dart';
 import 'package:coffeecard/features/login/data/datasources/account_remote_data_source.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.models.swagger.dart'
     show LoginDto;
 import 'package:fpdart/fpdart.dart';
-import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 
-class RetryAuthenticator extends chopper.Authenticator {
+class RetryAuthenticator extends Authenticator {
   /// Creates a new [RetryAuthenticator] instance.
   ///
   /// This instance is not ready to be used. Call [initialize] before using it.
-  RetryAuthenticator.uninitialized({required GetIt serviceLocator})
-      : _repository = serviceLocator(),
-        _cubit = serviceLocator(),
-        _logger = serviceLocator();
+  RetryAuthenticator.uninitialized({
+    required AuthenticationRepository repository,
+    required AuthenticationCubit cubit,
+    required Logger logger,
+  })  : _repository = repository,
+        _cubit = cubit,
+        _logger = logger;
 
   final AuthenticationRepository _repository;
   final AuthenticationCubit _cubit;
@@ -26,30 +29,30 @@ class RetryAuthenticator extends chopper.Authenticator {
   // Will be set by [initialize].
   late final AccountRemoteDataSource _accountRemoteDataSource;
 
-  final _throttler = Throttler<Option<AuthenticationInfo>>();
-  bool _initialized = false;
+  final _initializationCompleter = Completer<void>();
+  final _throttler = Throttler<Request?>();
 
   /// Initializes the [RetryAuthenticator] by providing the
   /// [AccountRemoteDataSource] to use.
   ///
   /// This method must be called before the [RetryAuthenticator] is used.
   void initialize(AccountRemoteDataSource accountRemoteDataSource) {
-    _initialized = true;
+    _initializationCompleter.complete();
     _accountRemoteDataSource = accountRemoteDataSource;
   }
 
   @override
-  Future<chopper.Request?> authenticate(
-    chopper.Request request,
-    chopper.Response response, [
-    chopper.Request? _,
-  ]) {
-    // If the [ReactivationAuthenticator] is not ready, an error is thrown.
-    assert(
-      _initialized,
-      'ReactivationAuthenticator is not ready. '
-      'Call initialize() before using it.',
-    );
+  Future<Request?> authenticate(
+    Request request,
+    Response response, [
+    Request? _,
+  ]) async {
+    if (!_initializationCompleter.isCompleted) {
+      throw StateError(
+        'This RetryAuthenticator is not ready. '
+        'Call initialize() before using it.',
+      );
+    }
 
     // If the response is not unauthorized, we don't need to do anything.
     if (response.statusCode != 401) {
@@ -63,33 +66,21 @@ class RetryAuthenticator extends chopper.Authenticator {
       return Future.value();
     }
 
-    // Try to refresh the token.
-    final maybeNewToken = Task(() async {
-      // Set a minimum duration for the token refresh to allow for throttling.
-      final minimumDuration = Future.delayed(const Duration(milliseconds: 250));
-
-      final maybeNewAuthenticationInfo = await _retryLogin(request).run();
-      await minimumDuration;
-
-      // Side effect: save the new token or evict the user.
-      final _ = maybeNewAuthenticationInfo.match(
-        _evictUser,
-        _saveNewAuthenticationInfo,
-      );
-      return maybeNewAuthenticationInfo;
-    }).runThrottled(_throttler);
-
-    final maybeNewRequest = TaskOption(() => maybeNewToken).match(
-      () => null,
-      (info) => request..headers['Authorization'] = 'Bearer ${info.token}',
-    );
-
-    return maybeNewRequest.run();
+    return _retryLogin(request)
+        .match(
+          () => _onRetryFailed(),
+          (newAuthInfo) => _onRetrySucceeded(newAuthInfo, request),
+        )
+        // Flatten; transform the Task<Task<Request?>> into a Task<Request?>.
+        .flatMap(identity)
+        .withMinimumDuration(const Duration(milliseconds: 250))
+        .throttleWith(_throttler)
+        .run();
   }
 
   /// Attempt to retrieve new [AuthenticationInfo] by logging in with the
   /// stored credentials.
-  TaskOption<AuthenticationInfo> _retryLogin(chopper.Request request) {
+  TaskOption<AuthenticationInfo> _retryLogin(Request request) {
     _logger.d(
       'Token refresh triggered by request:\n\t${request.method} ${request.url}',
     );
@@ -108,16 +99,20 @@ class RetryAuthenticator extends chopper.Authenticator {
         );
   }
 
-  Task<Unit> _saveNewAuthenticationInfo(AuthenticationInfo newInfo) {
-    return _repository
-        .saveAuthenticationInfo(newInfo)
-        .map((_) => _logger.d('Successfully refreshed token.'))
-        .map((_) => unit);
-  }
-
-  Task<Unit> _evictUser() {
+  /// Handles the side effects of a failed token refresh and returns null.
+  Task<Request?> _onRetryFailed() {
     _logger.e('Failed to refresh token. Signing out.');
     _cubit.unauthenticated();
-    return Task.of(unit);
+    return _repository.clearAuthenticationInfo().map((_) => null);
+  }
+
+  /// Handles the side effects of a successful token refresh and returns the
+  /// new [Request] with the updated token.
+  Task<Request> _onRetrySucceeded(AuthenticationInfo newInfo, Request req) {
+    _logger.d('Successfully refreshed token. Retrying request.');
+
+    return _repository
+        .saveAuthenticationInfo(newInfo)
+        .map((_) => req.withBearerToken(newInfo.token));
   }
 }

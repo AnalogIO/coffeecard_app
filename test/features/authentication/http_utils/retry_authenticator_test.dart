@@ -2,60 +2,50 @@ import 'package:chopper/chopper.dart' as chopper;
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/features/authentication.dart';
 import 'package:coffeecard/features/login/data/datasources/account_remote_data_source.dart';
-import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import 'retry_authenticator_test.mocks.dart';
+import 'test_utils.dart';
 
-@GenerateMocks([
-  AuthenticationCubit,
-  AccountRemoteDataSource,
-  AuthenticationRepository,
-  Logger,
+@GenerateNiceMocks([
+  MockSpec<AuthenticationCubit>(),
+  MockSpec<AccountRemoteDataSource>(),
+  MockSpec<AuthenticationRepository>(),
+  MockSpec<Logger>(),
 ])
 void main() {
-  late _FakeGetIt serviceLocator;
   late MockAuthenticationCubit authenticationCubit;
   late MockAccountRemoteDataSource accountRemoteDataSource;
   late MockAuthenticationRepository repository;
+  late MockLogger logger;
 
   late RetryAuthenticator authenticator;
 
   setUp(() {
-    serviceLocator = _FakeGetIt.fromMockedObjects(
-      authenticationCubit: MockAuthenticationCubit(),
-      accountRemoteDataSource: MockAccountRemoteDataSource(),
-      authenticationRepository: MockAuthenticationRepository(),
-      mockLogger: MockLogger(),
-    );
+    authenticationCubit = MockAuthenticationCubit();
+    accountRemoteDataSource = MockAccountRemoteDataSource();
+    repository = MockAuthenticationRepository();
+    logger = MockLogger();
 
-    authenticationCubit = serviceLocator.getMock<MockAuthenticationCubit>();
-    accountRemoteDataSource =
-        serviceLocator.getMock<MockAccountRemoteDataSource>();
-    repository = serviceLocator.getMock<MockAuthenticationRepository>();
+    authenticator = RetryAuthenticator.uninitialized(
+      repository: repository,
+      cubit: authenticationCubit,
+      logger: logger,
+    )..initialize(accountRemoteDataSource);
 
-    authenticator =
-        RetryAuthenticator.uninitialized(serviceLocator: serviceLocator);
-    authenticator.initialize(accountRemoteDataSource);
+    provideDummy(TaskOption<AuthenticationInfo>.none());
+    provideDummy(
+      Either<Failure, AuthenticationInfo>.left(const ConnectionFailure()),
+    );
+    provideDummy(Task.of(unit));
 
-    provideDummy<TaskOption<AuthenticationInfo>>(TaskOption.none());
-    provideDummy<Either<Failure, AuthenticationInfo>>(
-      const Left(ConnectionFailure()),
-    );
-    provideDummy<Task<Unit>>(Task.of(unit));
-
-    when(repository.clearAuthenticationInfo()).thenAnswer(
-      (_) => Task.of(unit),
-    );
-    when(repository.saveAuthenticationInfo(any)).thenAnswer(
-      (_) => Task.of(unit),
-    );
+    when(repository.clearAuthenticationInfo()).thenReturn(Task.of(unit));
+    when(repository.saveAuthenticationInfo(any)).thenReturn(Task.of(unit));
   });
 
   test(
@@ -68,10 +58,10 @@ void main() {
       final response = _responseFromStatusCode(200);
 
       // Act
-      final result = await authenticator.authenticate(request, response);
+      final result = authenticator.authenticate(request, response);
 
       // Assert
-      expect(result, isNull);
+      expect(result, completion(isNull));
     },
   );
 
@@ -79,7 +69,7 @@ void main() {
     'GIVEN '
     '1) a response with status code 401, '
     '2) no prior calls to authenticate, '
-    'and 3) no stored login credentials '
+    '3) no stored login credentials '
     'WHEN authenticate is called '
     'THEN it should return null',
     () async {
@@ -87,14 +77,13 @@ void main() {
       final request = _requestFromMethod('GET');
       final response = _responseFromStatusCode(401);
 
-      when(repository.getAuthenticationInfo())
-          .thenAnswer((_) => TaskOption.none());
+      when(repository.getAuthenticationInfo()).thenReturn(TaskOption.none());
 
       // Act
-      final result = await authenticator.authenticate(request, response);
+      final result = authenticator.authenticate(request, response);
 
       // Assert
-      expect(result, isNull);
+      expectLater(result, completion(isNull));
     },
   );
 
@@ -102,61 +91,47 @@ void main() {
     'GIVEN '
     '1) response with status code 401, '
     '2) no prior calls to authenticate, '
-    'and 3) stored login credentials that are invalid '
+    '3) stored login credentials that are invalid '
     'WHEN authenticate is called '
     'THEN '
     '1) AccountRemoteDataSource.login should be called with the stored credentials, '
     '2) AuthenticationCubit.unauthenticated should be called, '
-    'and 3) it should return null',
+    '3) authenticate should return null',
     () async {
       // Arrange
-      const email = 'email';
-      const encodedPasscode = 'encodedPasscode';
-      const token = 'token';
-      const reason = 'invalid credentials';
-      final loginRequest = chopper.Request(
-        'method',
-        Uri.parse('test'),
-        Uri.parse('basetest'),
-        body: const LoginDto(
-          email: 'email',
-          password: 'encodedPasscode',
-          version: 'verison',
-        ),
-      );
+      const email = 'a';
+      const encodedPasscode = 'b';
+      const token = 'c';
 
-      when(repository.getAuthenticationInfo()).thenAnswer(
-        (_) => TaskOption.some(
+      when(repository.getAuthenticationInfo()).thenReturn(
+        TaskOption.some(
           const AuthenticationInfo(
             email: email,
             token: token,
-            encodedPasscode: 'encodedPasscode',
+            encodedPasscode: encodedPasscode,
           ),
         ),
       );
       when(accountRemoteDataSource.login(email, encodedPasscode)).thenAnswer(
-        (_) async {
-          //  Simulate a failed login attempt through the NetworkRequestExecutor
-          final _ = await authenticator.authenticate(
-            loginRequest,
-            _responseFromStatusCode(401),
-          );
-          return left(const ServerFailure(reason, 500));
-        },
+        (_) async => Either.left(const ConnectionFailure()),
       );
 
       final request = _requestFromMethod('GET');
       final response = _responseFromStatusCode(401);
 
       // Act
-      final result = await authenticator.authenticate(request, response);
+      final result = authenticator.authenticate(request, response);
 
       // Assert
+      await result;
+      // 1
       verify(accountRemoteDataSource.login(email, encodedPasscode)).called(1);
-      verify(authenticationCubit.unauthenticated()).called(1);
-      expect(result, isNull);
       verifyNoMoreInteractions(accountRemoteDataSource);
+      // 2
+      verify(authenticationCubit.unauthenticated()).called(1);
       verifyNoMoreInteractions(authenticationCubit);
+      // 3
+      expect(result, completion(isNull));
     },
   );
 
@@ -164,21 +139,21 @@ void main() {
     'GIVEN '
     '1) a response with status code 401, '
     '2) no prior calls to authenticate, '
-    'and 3) valid stored login credentials '
+    '3) valid stored login credentials '
     'WHEN authenticate is called '
     'THEN '
     '1) AccountRemoteDataSource.login should be called with the stored credentials, '
-    '2) SecureStorage.updateToken should be called, '
-    'and 3) it should return a new request with the updated token',
+    '2) repository should save the new authentication info, '
+    '3) authenticate should return a new request with the updated token',
     () async {
       // Arrange
-      const email = 'email';
-      const encodedPasscode = 'encodedPasscode';
-      const oldToken = 'oldToken';
-      const newToken = 'newToken';
+      const email = 'a';
+      const encodedPasscode = 'b';
+      const oldToken = 'c';
+      const newToken = 'd';
 
-      when(repository.getAuthenticationInfo()).thenAnswer(
-        (_) => TaskOption.some(
+      when(repository.getAuthenticationInfo()).thenReturn(
+        TaskOption.some(
           const AuthenticationInfo(
             email: email,
             token: oldToken,
@@ -192,7 +167,7 @@ void main() {
           const AuthenticationInfo(
             email: email,
             token: newToken,
-            encodedPasscode: 'encodedPasscode',
+            encodedPasscode: encodedPasscode,
           ),
         ),
       );
@@ -201,18 +176,19 @@ void main() {
       final response = _responseFromStatusCode(401);
 
       // Act
-      final result = await authenticator.authenticate(request, response);
+      final result = authenticator.authenticate(request, response);
 
       // Assert
+      await result;
+      // 1
       verify(accountRemoteDataSource.login(email, encodedPasscode)).called(1);
       verifyNoMoreInteractions(accountRemoteDataSource);
-
+      // 2
       verify(repository.getAuthenticationInfo().run()).called(1);
       verify(repository.saveAuthenticationInfo(any).run()).called(1);
       verifyNoMoreInteractions(repository);
-
-      expect(result, isNotNull);
-      expect(result!.headers['Authorization'], 'Bearer $newToken');
+      // 3
+      expect(result, requestHavingAuthHeader(equals('Bearer $newToken')));
     },
   );
 
@@ -220,20 +196,22 @@ void main() {
     'GIVEN '
     '1) a response with status code 401, '
     '2) a prior call to authenticate is running, '
-    'and 3) and stored valid login credentials exist '
+    '3) and stored valid login credentials exist '
     'WHEN authenticate is called '
-    'THEN it should return a new request with the updated token',
+    'THEN '
+    '1) it should return a new request with the updated token '
+    '2) it should not call the login method again',
     () async {
       // Arrange
-      const email = 'email';
-      const encodedPasscode = 'encodedPasscode';
-      const oldToken = 'oldToken';
+      const email = 'a';
+      const encodedPasscode = 'b';
+      const oldToken = 'c';
 
       int counter = 0;
       String getNewToken() => '${++counter}';
 
-      when(repository.getAuthenticationInfo()).thenAnswer(
-        (_) => TaskOption.some(
+      when(repository.getAuthenticationInfo()).thenReturn(
+        TaskOption.some(
           const AuthenticationInfo(
             email: email,
             token: oldToken,
@@ -247,7 +225,7 @@ void main() {
           AuthenticationInfo(
             email: email,
             token: getNewToken(),
-            encodedPasscode: 'encodedPasscode',
+            encodedPasscode: encodedPasscode,
           ),
         ),
       );
@@ -262,14 +240,13 @@ void main() {
       final call2 = authenticator.authenticate(request, response);
 
       // Assert
-      final result1 = await call1;
-      expect(result1, isNotNull);
-      expect(result1!.headers['Authorization'], 'Bearer 1');
-
-      // Both calls should have the same new token
-      final result2 = await call2;
-      expect(result2, isNotNull);
-      expect(result2!.headers['Authorization'], 'Bearer 1');
+      // 1
+      expect(call1, requestHavingAuthHeader(equals('Bearer 1')));
+      expect(call2, requestHavingAuthHeader(equals('Bearer 1')));
+      // 2
+      await Future.wait([call1, call2]);
+      verify(accountRemoteDataSource.login(email, encodedPasscode)).called(1);
+      verifyNoMoreInteractions(accountRemoteDataSource);
     },
   );
 
@@ -280,9 +257,9 @@ void main() {
     'THEN it should return a new request with the updated token',
     () async {
       // Arrange
-      const email = 'email';
-      const encodedPasscode = 'encodedPasscode';
-      const newToken = 'newToken';
+      const email = 'a';
+      const encodedPasscode = 'b';
+      const newToken = 'c';
 
       when(repository.getAuthenticationInfo()).thenAnswer(
         (_) => TaskOption.some(
@@ -299,7 +276,7 @@ void main() {
           const AuthenticationInfo(
             email: email,
             token: newToken,
-            encodedPasscode: 'encodedPasscode',
+            encodedPasscode: encodedPasscode,
           ),
         ),
       );
@@ -308,11 +285,10 @@ void main() {
       final response = _responseFromStatusCode(401);
 
       // Act
-      final result = await authenticator.authenticate(request, response);
+      final result = authenticator.authenticate(request, response);
 
       // Assert
-      expect(result, isNotNull);
-      expect(result!.headers['Authorization'], 'Bearer $newToken');
+      expect(result, requestHavingAuthHeader(equals('Bearer $newToken')));
     },
   );
 }
@@ -323,54 +299,4 @@ chopper.Response<T> _responseFromStatusCode<T>(int statusCode, {T? body}) {
 
 chopper.Request _requestFromMethod(String method) {
   return chopper.Request(method, Uri.parse('test'), Uri.parse('basetest'));
-}
-
-class _FakeGetIt extends Fake implements GetIt {
-  _FakeGetIt.fromMockedObjects({
-    required this.authenticationCubit,
-    required this.accountRemoteDataSource,
-    required this.authenticationRepository,
-    required this.mockLogger,
-  });
-
-  final MockAuthenticationCubit authenticationCubit;
-  final MockAccountRemoteDataSource accountRemoteDataSource;
-  final MockAuthenticationRepository authenticationRepository;
-  final MockLogger mockLogger;
-
-  @override
-  // We don't care about the parameter types, so we can ignore the warning
-  // ignore: type_annotate_public_apis
-  T call<T extends Object>({String? instanceName, param1, param2, Type? type}) {
-    return get<T>(
-      instanceName: instanceName,
-      param1: param1,
-      param2: param2,
-      type: type,
-    );
-  }
-
-  @override
-  // We don't care about the parameter types, so we can ignore the warning
-  // ignore: type_annotate_public_apis
-  T get<T extends Object>({String? instanceName, param1, param2, Type? type}) {
-    return switch (T) {
-      const (AuthenticationCubit) => authenticationCubit,
-      const (AccountRemoteDataSource) => accountRemoteDataSource,
-      const (AuthenticationRepository) => authenticationRepository,
-      const (Logger) => mockLogger,
-      _ => throw UnimplementedError('Mock for $T not implemented.'),
-    } as T;
-  }
-
-  /// Given a mocked type, get the mocked object for the given type.
-  T getMock<T extends Mock>() {
-    return switch (T) {
-      const (MockAuthenticationCubit) => authenticationCubit,
-      const (MockAccountRemoteDataSource) => accountRemoteDataSource,
-      const (MockAuthenticationRepository) => authenticationRepository,
-      const (MockLogger) => mockLogger,
-      _ => throw UnimplementedError('Mock for $T not implemented.'),
-    } as T;
-  }
 }

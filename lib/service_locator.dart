@@ -351,7 +351,11 @@ void initRegister() {
 void initHttp() {
   ignoreValue(
     sl.registerSingleton<RetryAuthenticator>(
-      RetryAuthenticator.uninitialized(serviceLocator: sl),
+      RetryAuthenticator.uninitialized(
+        repository: sl(),
+        cubit: sl(),
+        logger: sl(),
+      ),
     ),
   );
 

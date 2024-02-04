@@ -7,13 +7,13 @@ import 'package:mockito/mockito.dart';
 
 import 'authentication_cubit_test.mocks.dart';
 
-@GenerateMocks([AuthenticationRepository])
+@GenerateNiceMocks([MockSpec<AuthenticationRepository>()])
 void main() {
   late AuthenticationCubit cubit;
   late MockAuthenticationRepository repo;
 
-  provideDummy<TaskOption<AuthenticationInfo>>(TaskOption.none());
-  provideDummy<Task<Unit>>(Task.of(unit));
+  provideDummy(TaskOption<AuthenticationInfo>.none());
+  provideDummy(Task.of(unit));
 
   setUp(() {
     repo = MockAuthenticationRepository();
@@ -21,10 +21,10 @@ void main() {
     provideDummy<Option<AuthenticationInfo>>(none());
   });
 
-  const testAuthenticationInfo = AuthenticationInfo(
-    email: 'email',
-    token: 'token',
-    encodedPasscode: 'encodedPasscode',
+  const testAuthInfo = AuthenticationInfo(
+    email: 'a',
+    token: 'b',
+    encodedPasscode: 'c',
   );
 
   test('initial state is AuthenticationState.unknown', () {
@@ -33,38 +33,40 @@ void main() {
 
   group('appStarted', () {
     blocTest<AuthenticationCubit, AuthenticationState>(
-      'should emit [Unauthenticated] when no user is stored',
+      'GIVEN no authentication info is stored '
+      'WHEN appStarted is called '
+      'THEN emit [AuthenticationState.unauthenticated()]',
       build: () => cubit,
-      setUp: () => when(repo.getAuthenticationInfo())
-          .thenAnswer((_) => TaskOption.none()),
+      setUp: () =>
+          when(repo.getAuthenticationInfo()).thenReturn(TaskOption.none()),
       act: (_) => cubit.appStarted(),
       expect: () => [const AuthenticationState.unauthenticated()],
     );
 
     blocTest<AuthenticationCubit, AuthenticationState>(
-      'should emit [Authenticated] when a user is stored',
+      'GIVEN authentication info is stored '
+      'WHEN appStarted is called '
+      'THEN emit [AuthenticationState.authenticated]',
       build: () => cubit,
       setUp: () => when(repo.getAuthenticationInfo())
-          .thenAnswer((_) => TaskOption.some(testAuthenticationInfo)),
+          .thenReturn(TaskOption.of(testAuthInfo)),
       act: (_) => cubit.appStarted(),
-      expect: () => [
-        const AuthenticationState.authenticated(testAuthenticationInfo),
-      ],
+      expect: () => [const AuthenticationState.authenticated(testAuthInfo)],
     );
   });
 
   group('authenticated', () {
     blocTest<AuthenticationCubit, AuthenticationState>(
-      'should emit [Authenticated] and save the user to storage',
+      'GIVEN an authentication info '
+      'WHEN authenticated is called '
+      'THEN emit [AuthenticationState.authenticated] and save the info',
       build: () => cubit,
-      setUp: () => when(repo.saveAuthenticationInfo(testAuthenticationInfo))
-          .thenAnswer((_) => Task.of(unit)),
-      act: (_) => cubit.authenticated(testAuthenticationInfo),
-      expect: () =>
-          [const AuthenticationState.authenticated(testAuthenticationInfo)],
-      verify: (_) => verify(
-        repo.saveAuthenticationInfo(testAuthenticationInfo),
-      ),
+      setUp: () => when(repo.saveAuthenticationInfo(testAuthInfo))
+          .thenReturn(Task.of(unit)),
+      act: (_) => cubit.authenticated(testAuthInfo),
+      expect: () => [const AuthenticationState.authenticated(testAuthInfo)],
+      verify: (_) =>
+          verify(repo.saveAuthenticationInfo(testAuthInfo)).called(1),
     );
   });
 
@@ -73,10 +75,10 @@ void main() {
       'should emit [Unauthenticated] and clear the user from storage',
       build: () => cubit,
       setUp: () =>
-          when(repo.clearAuthenticationInfo()).thenAnswer((_) => Task.of(unit)),
+          when(repo.clearAuthenticationInfo()).thenReturn(Task.of(unit)),
       act: (_) => cubit.unauthenticated(),
       expect: () => [const AuthenticationState.unauthenticated()],
-      verify: (_) => verify(repo.clearAuthenticationInfo()),
+      verify: (_) => verify(repo.clearAuthenticationInfo()).called(1),
     );
   });
 }

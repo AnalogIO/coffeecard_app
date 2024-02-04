@@ -2,7 +2,8 @@ import 'package:fpdart/fpdart.dart';
 
 /// A utility class for throttling the execution of asynchronous tasks.
 ///
-/// This class allows you to limit the rate at which a task is executed by
+/// {@template throttler}
+/// A [Throttler] allows you to limit the rate at which a task is executed by
 /// ensuring that only one task runs through the [Throttler] at any given time.
 /// If a task is already running, subsequent calls to execute a task will
 /// instead return the currently running task.
@@ -36,7 +37,11 @@ import 'package:fpdart/fpdart.dart';
 ///   // 5
 /// }
 /// ```
+/// {@endtemplate}
 class Throttler<T> {
+  /// Creates a new [Throttler] instance for [Future]s that return a [T].
+  ///
+  /// {@macro throttler}
   Throttler();
 
   Future<T>? _storedTask;
@@ -52,9 +57,10 @@ class Throttler<T> {
 }
 
 extension ThrottlerX<T> on Task<T> {
-  /// Throttles this task using the given [throttler].
+  /// Adds the given [throttler] to this task.
   ///
   /// If no task is currently running through the [throttler], starts this task
   /// and stores it. Otherwise, returns the currently running task.
-  Future<T> runThrottled(Throttler<T> throttler) => throttler.throttle(this);
+  Task<T> throttleWith(Throttler<T> throttler) =>
+      Task(() => throttler.throttle(this));
 }

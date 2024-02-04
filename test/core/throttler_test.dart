@@ -28,7 +28,7 @@ void main() {
     'WHEN a task is throttled '
     'THEN it should execute the task',
     () async {
-      await incrementTask.runThrottled(throttler);
+      await incrementTask.throttleWith(throttler).run();
       expect(counter, 1);
     },
   );
@@ -40,10 +40,11 @@ void main() {
     () async {
       // Throttle a task that will wait for the completer to complete,
       // and then increment the counter.
-      final task1 = incrementAndWaitTask(completer).runThrottled(throttler);
+      final task1 =
+          incrementAndWaitTask(completer).throttleWith(throttler).run();
 
       // Throttle a task that will increment the counter immediately.
-      final task2 = incrementTask.runThrottled(throttler);
+      final task2 = incrementTask.throttleWith(throttler).run();
 
       // Since task2 was run while task1 was still running,
       // their futures should be identical.
@@ -61,13 +62,14 @@ void main() {
     () async {
       // Throttle a task that will wait for the completer to complete,
       // and then increment the counter.
-      final task1 = incrementAndWaitTask(completer).runThrottled(throttler);
+      final task1 =
+          incrementAndWaitTask(completer).throttleWith(throttler).run();
 
       // Throttle another task that will increment the counter immediately.
-      final task2 = incrementTask.runThrottled(throttler);
+      final task2 = incrementTask.throttleWith(throttler).run();
 
       // Throttle one more task that will increment the counter immediately.
-      final task3 = incrementTask.runThrottled(throttler);
+      final task3 = incrementTask.throttleWith(throttler).run();
 
       // Since task2 and task3 were run while task1 was still running,
       // all futures should be identical.
@@ -89,10 +91,10 @@ void main() {
     'THEN it should execute the task',
     () async {
       // Throttle a task and wait for completion.
-      await incrementTask.runThrottled(throttler);
+      await incrementTask.throttleWith(throttler).run();
 
       // Throttle another task and wait for completion.
-      await incrementTask.runThrottled(throttler);
+      await incrementTask.throttleWith(throttler).run();
 
       // The counter should have incremented twice.
       expect(counter, 2);

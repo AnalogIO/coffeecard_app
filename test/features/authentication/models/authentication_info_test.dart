@@ -4,35 +4,43 @@ import 'package:coffeecard/features/authentication.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  const model = AuthenticationInfo(
+  const testAuthenticationInfo = AuthenticationInfo(
     email: 'a',
     token: 'b',
     encodedPasscode: 'c',
   );
 
-  group('fromJson', () {
-    test('should return model', () {
+  test(
+    'GIVEN a json encoded authentication info '
+    'WHEN fromJson is called '
+    'THEN it should return an AuthenticationInfo object with expected values',
+    () {
       // arrange
-      const jsonString = '{"email":"a","token":"b","encodedPasscode":"c"}';
+      const jsonEncodedInfo = '{"email":"a","token":"b","encodedPasscode":"c"}';
 
       // act
       final actual = AuthenticationInfo.fromJson(
-        json.decode(jsonString) as Map<String, dynamic>,
+        json.decode(jsonEncodedInfo) as Map<String, dynamic>,
       );
 
       // assert
-      expect(actual, model);
-    });
-  });
-  group('toJson', () {
-    test('should return map', () {
-      // act
-      final actual = model.toJson();
+      expect(actual, testAuthenticationInfo);
+    },
+  );
 
-      // assert
+  test(
+    'GIVEN an AuthenticationInfo object '
+    'WHEN toJson is called '
+    'THEN it should return a json encoded map with expected values',
+    () {
+      // arrange
       final expected = {'email': 'a', 'token': 'b', 'encodedPasscode': 'c'};
 
+      // act
+      final actual = testAuthenticationInfo.toJson();
+
+      // assert
       expect(actual, expected);
-    });
-  });
+    },
+  );
 }
