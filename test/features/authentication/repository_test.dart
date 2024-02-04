@@ -61,7 +61,10 @@ void main() {
           actual,
           completion(
             isA<Some<AuthenticationInfo>>().having(
-                (some) => some.value, 'AuthenticationInfo', testAuthInfo),
+              (some) => some.value,
+              'AuthenticationInfo',
+              testAuthInfo,
+            ),
           ),
         );
       },
