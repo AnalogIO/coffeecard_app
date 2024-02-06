@@ -5,18 +5,21 @@ import 'package:equatable/equatable.dart';
 part 'voucher_state.dart';
 
 class VoucherCubit extends Cubit<VoucherState> {
-  final RedeemVoucherCode redeemVoucherCode;
+  VoucherCubit({required this.voucherCodeRepository})
+      : super(const VoucherInitial());
 
-  VoucherCubit({required this.redeemVoucherCode}) : super(VoucherInitial());
+  final VoucherCodeRepository voucherCodeRepository;
 
-  Future<void> redeemVoucher(String voucher) async {
-    emit(VoucherLoading());
+  Future<void> redeemVoucherCode(String voucher) {
+    emit(const VoucherLoading());
 
-    final either = await redeemVoucherCode(voucher);
-
-    either.fold(
-      (error) => emit(VoucherError(error.reason)),
-      (redeemedVoucher) => emit(VoucherSuccess(redeemedVoucher)),
-    );
+    return voucherCodeRepository
+        .redeemVoucherCode(voucher)
+        .match(
+          (error) => VoucherError(error.reason),
+          VoucherSuccess.new,
+        )
+        .map(emit)
+        .run();
   }
 }

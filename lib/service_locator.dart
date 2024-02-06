@@ -313,13 +313,11 @@ void initProduct() {
 
 void initVoucher() {
   // bloc
+  sl.registerFactory(() => VoucherCubit(voucherCodeRepository: sl()));
 
-  // use case
-  sl.registerFactory(() => RedeemVoucherCode(dataSource: sl()));
-
-  // data source
+  // repository
   sl.registerLazySingleton(
-    () => VoucherRemoteDataSource(api: sl(), executor: sl()),
+    () => VoucherCodeRepository(api: sl(), executor: sl()),
   );
 }
 

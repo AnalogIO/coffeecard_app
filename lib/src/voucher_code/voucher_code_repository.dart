@@ -4,20 +4,20 @@ import 'package:coffeecard/features/voucher_code.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
 import 'package:fpdart/fpdart.dart';
 
-class VoucherRemoteDataSource {
-  final CoffeecardApiV2 api;
-  final NetworkRequestExecutor executor;
-
-  VoucherRemoteDataSource({
+class VoucherCodeRepository {
+  const VoucherCodeRepository({
     required this.api,
     required this.executor,
   });
 
-  Future<Either<Failure, RedeemedVoucher>> redeemVoucher(String voucher) {
+  final CoffeecardApiV2 api;
+  final NetworkRequestExecutor executor;
+
+  TaskEither<Failure, RedeemedVoucher> redeemVoucherCode(String voucher) {
     return executor
-        .execute(
+        .executeAsTask(
           () => api.apiV2VouchersVoucherCodeRedeemPost(voucherCode: voucher),
         )
-        .map(RedeemedVoucherModel.fromDTO);
+        .map(RedeemedVoucher.fromDTO);
   }
 }

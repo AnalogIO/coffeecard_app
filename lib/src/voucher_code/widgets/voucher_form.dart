@@ -13,11 +13,9 @@ class VoucherForm extends StatelessWidget {
       label: Strings.voucherCode,
       hint: Strings.voucherHint,
       inputValidators: [
-        InputValidators.nonEmptyString(
-          errorMessage: Strings.voucherEmpty,
-        ),
+        InputValidators.nonEmptyString(errorMessage: Strings.voucherEmpty),
       ],
-      onSubmit: context.read<VoucherCubit>().redeemVoucher,
+      onSubmit: context.read<VoucherCubit>().redeemVoucherCode,
     );
   }
 }

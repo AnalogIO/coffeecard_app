@@ -6,10 +6,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 part 'product_state.dart';
 
 class ProductCubit extends Cubit<ProductState> {
-  final ProductRepository productRepository;
-
   ProductCubit({required this.productRepository})
       : super(const ProductsLoading());
+
+  final ProductRepository productRepository;
 
   Future<void> getProducts() => productRepository
       .getProducts()

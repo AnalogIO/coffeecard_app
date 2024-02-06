@@ -7,10 +7,15 @@ sealed class VoucherState extends Equatable {
   List<Object> get props => [];
 }
 
-class VoucherInitial extends VoucherState {}
+class VoucherInitial extends VoucherState {
+  const VoucherInitial();
+}
 
-class VoucherLoading extends VoucherState {}
+class VoucherLoading extends VoucherState {
+  const VoucherLoading();
+}
 
+// FIXME: Make error states a common class?
 class VoucherError extends VoucherState {
   final String error;
 
