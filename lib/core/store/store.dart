@@ -10,9 +10,6 @@ part 'crate.dart';
 ///
 /// Powered by Hive and FlutterSecureStorage to provide both encrypted and
 /// unencrypted storage.
-///
-/// Store is a singleton and should first be initialized with [init] before
-/// being accessed through [instance].
 class Store {
   const Store({
     required FlutterSecureStorage secureStorage,

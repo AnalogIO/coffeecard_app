@@ -69,9 +69,6 @@ dependencies:
   # functional programming thingies
   fpdart: 1.1.0
 
-  # Upgrade notifier
-  upgrader: 8.2.0
-
   # env
   envied: 0.5.1
 

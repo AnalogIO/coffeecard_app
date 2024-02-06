@@ -15,7 +15,7 @@ Future<void> main() async {
   await Hive.initFlutter();
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.development);
-  configureServices();
+  await configureServices();
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
 
   runApp(App());

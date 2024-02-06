@@ -9,7 +9,6 @@ import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/core/store/store.dart';
 import 'package:coffeecard/env/env.dart';
 import 'package:coffeecard/features/authentication.dart';
-import 'package:coffeecard/features/contributor.dart';
 import 'package:coffeecard/features/environment/data/datasources/environment_remote_data_source.dart';
 import 'package:coffeecard/features/environment/domain/usecases/get_environment_type.dart';
 import 'package:coffeecard/features/environment/presentation/cubit/environment_cubit.dart';
@@ -60,12 +59,72 @@ import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart' hide Box;
 import 'package:logger/logger.dart';
 
+// FIXME: Get rid of this file.
 final GetIt sl = GetIt.instance;
 
-void configureServices() {
-  ignoreValue(sl.registerSingleton(Logger()));
+Future<void> configureServices() async {
+  sl.registerSingleton(Logger());
+  sl.registerSingleton(const FlutterSecureStorage());
+  sl.registerSingleton(Store(secureStorage: sl(), hive: Hive));
 
-  initFeatures();
+  final authRepoCrate =
+      await sl.get<Store>().openEncryptedCrate<String>('auth').run();
+  sl.registerLazySingleton<AuthenticationRepository>(
+    () => AuthenticationRepository(crate: authRepoCrate, logger: sl()),
+  );
+  sl.registerLazySingleton(() => AuthenticationCubit(sl()));
+
+  sl.registerFactory(() => OpeningHoursCubit(fetchOpeningHours: sl()));
+  sl.registerFactory(() => GetOpeningHours(repository: sl()));
+  sl.registerLazySingleton(() => OpeningHoursLocalDataSource());
+  sl.registerFactory<OpeningHoursRepository>(
+    () => OpeningHoursRepositoryImpl(dataSource: sl(), dateService: sl()),
+  );
+
+  sl.registerFactory(() => OccupationCubit(getOccupations: sl()));
+  sl.registerFactory(() => GetOccupations(dataSource: sl()));
+  sl.registerLazySingleton(
+    () => OccupationRemoteDataSource(api: sl(), executor: sl()),
+  );
+
+  sl.registerFactory(
+    () => UserCubit(
+      getUser: sl(),
+      requestAccountDeletion: sl(),
+      updateUserDetails: sl(),
+    ),
+  );
+  sl.registerFactory(
+    () => LoadTickets(ticketRemoteDataSource: sl(), productRepository: sl()),
+  );
+  final consumeTicketCrate =
+      await sl<Store>().openCrate<int>('lastUsedMenuItemByProductId').run();
+  sl.registerFactory(
+    () => ConsumeTicket(
+      ticketRemoteDataSource: sl(),
+      crate: consumeTicketCrate,
+    ),
+  );
+  sl.registerLazySingleton(
+    () => TicketRemoteDataSource(api: sl(), executor: sl()),
+  );
+  sl.registerFactory(() => GetUser(dataSource: sl()));
+  sl.registerFactory(() => RequestAccountDeletion(dataSource: sl()));
+  sl.registerFactory(() => UpdateUserDetails(dataSource: sl()));
+  sl.registerLazySingleton(
+    () => UserRemoteDataSource(apiV2: sl(), executor: sl()),
+  );
+
+  initReceipt();
+  initTicket();
+  initPayment();
+  initLeaderboard();
+  initEnvironment();
+  initProduct();
+  initVoucher();
+  initLogin();
+  initRegister();
+
   initExternal();
 
   // Reactivation authenticator (uninitalized), http client and interceptors
@@ -73,12 +132,11 @@ void configureServices() {
 
   // provide the account repository to the reactivation authenticator
   sl<RetryAuthenticator>().initialize(sl<AccountRemoteDataSource>());
+
+  await sl.allReady();
 }
 
 void initExternal() {
-  ignoreValue(sl.registerSingleton(const FlutterSecureStorage()));
-  ignoreValue(sl.registerSingleton(Store(secureStorage: sl(), hive: Hive)));
-
   ignoreValue(sl.registerFactory(() => DateService()));
   ignoreValue(sl.registerFactory(() => ScreenBrightness()));
   ignoreValue(sl.registerLazySingleton(() => ExternalUrlLauncher()));
@@ -97,14 +155,11 @@ void initExternal() {
   );
 }
 
-void initFeatures() {
-  initAuthentication();
-  initOpeningHours();
+Future<void> initFeatures() async {
   initOccupation();
-  initUser();
+  await initUser();
   initReceipt();
   initTicket();
-  initContributor();
   initPayment();
   initLeaderboard();
   initEnvironment();
@@ -112,46 +167,6 @@ void initFeatures() {
   initVoucher();
   initLogin();
   initRegister();
-}
-
-void initAuthentication() {
-  // bloc
-  sl.registerLazySingleton(
-    () => AuthenticationCubit(sl()),
-  );
-
-  // repository
-  sl.registerLazySingletonAsync<AuthenticationRepository>(
-    () async => AuthenticationRepository(
-      crate: await sl<Store>()
-          .openEncryptedCrate<AuthenticationInfo>('auth')
-          .run(),
-      logger: sl(),
-    ),
-  );
-}
-
-void initOpeningHours() {
-  // bloc
-  sl.registerFactory(
-    () => OpeningHoursCubit(fetchOpeningHours: sl()),
-  );
-
-  // use case
-  sl.registerFactory(() => GetOpeningHours(repository: sl()));
-
-  // data source
-  sl.registerLazySingleton<OpeningHoursLocalDataSource>(
-    () => OpeningHoursLocalDataSource(),
-  );
-
-  // repository
-  sl.registerFactory<OpeningHoursRepository>(
-    () => OpeningHoursRepositoryImpl(
-      dataSource: sl(),
-      dateService: sl(),
-    ),
-  );
 }
 
 void initTicket() {
@@ -179,7 +194,7 @@ void initOccupation() {
   );
 }
 
-void initUser() {
+Future<void> initUser() async {
   // bloc
   sl.registerFactory(
     () => UserCubit(
@@ -196,10 +211,13 @@ void initUser() {
       productRepository: sl(),
     ),
   );
+
+  final crate =
+      await sl<Store>().openCrate<int>('lastUsedMenuItemByProductId').run();
   sl.registerFactory(
-    () async => ConsumeTicket(
+    () => ConsumeTicket(
       ticketRemoteDataSource: sl(),
-      crate: await sl<Store>().openCrate<int>('auth').run(),
+      crate: crate,
     ),
   );
 
@@ -242,17 +260,6 @@ void initReceipt() {
   sl.registerLazySingleton(
     () => ReceiptRemoteDataSource(apiV2: sl(), executor: sl()),
   );
-}
-
-void initContributor() {
-  // bloc
-  sl.registerFactory(() => ContributorCubit(fetchContributors: sl()));
-
-  // use case
-  sl.registerFactory(() => FetchContributors(dataSource: sl()));
-
-  // data source
-  sl.registerLazySingleton(() => ContributorLocalDataSource());
 }
 
 void initPayment() {

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:coffeecard/core/store/store.dart';
 import 'package:coffeecard/features/authentication.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -9,7 +11,7 @@ import 'package:mockito/mockito.dart';
 import 'repository_test.mocks.dart';
 
 @GenerateNiceMocks([
-  MockSpec<Crate<AuthenticationInfo>>(),
+  MockSpec<Crate<String>>(),
   MockSpec<Logger>(),
 ])
 void main() {
@@ -42,7 +44,7 @@ void main() {
 
         // assert
         verifyInOrder([
-          crate.put(any, testAuthInfo),
+          crate.put(any, json.encode(testAuthInfo.toJson())),
           logger.d(any),
         ]);
       },
@@ -56,7 +58,8 @@ void main() {
       'THEN the authentication info is returned',
       () {
         // arrange
-        when(crate.get(any)).thenReturn(TaskOption.of(testAuthInfo));
+        when(crate.get(any))
+            .thenReturn(TaskOption.of(json.encode(testAuthInfo.toJson())));
 
         // act
         final actual = repo.getAuthenticationInfo().run();
@@ -98,7 +101,8 @@ void main() {
       'THEN the authentication token is returned',
       () {
         // arrange
-        when(crate.get(any)).thenReturn(TaskOption.of(testAuthInfo));
+        when(crate.get(any))
+            .thenReturn(TaskOption.of(json.encode(testAuthInfo.toJson())));
 
         // act
         final actual = repo.getAuthenticationToken().run();
@@ -140,7 +144,8 @@ void main() {
       'THEN store.clear() is called and a log message is written',
       () async {
         // arrange
-        when(crate.get(any)).thenReturn(TaskOption.of(testAuthInfo));
+        when(crate.get(any))
+            .thenReturn(TaskOption.of(json.encode(testAuthInfo.toJson())));
 
         // act
         await repo.clearAuthenticationInfo().run();
