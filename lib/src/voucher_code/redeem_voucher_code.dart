@@ -1,6 +1,5 @@
 import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/features/voucher/data/datasources/voucher_remote_data_source.dart';
-import 'package:coffeecard/features/voucher/domain/entities/redeemed_voucher.dart';
+import 'package:coffeecard/features/voucher_code.dart';
 import 'package:fpdart/fpdart.dart';
 
 class RedeemVoucherCode {

@@ -1,6 +1,6 @@
 import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/features/shared/form.dart';
-import 'package:coffeecard/features/voucher/presentation/cubit/voucher_cubit.dart';
+import 'package:coffeecard/features/voucher_code.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

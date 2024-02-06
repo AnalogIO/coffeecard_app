@@ -1,8 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/features/voucher/domain/entities/redeemed_voucher.dart';
-import 'package:coffeecard/features/voucher/domain/usecases/redeem_voucher_code.dart';
-import 'package:coffeecard/features/voucher/presentation/cubit/voucher_cubit.dart';
+import 'package:coffeecard/features/voucher_code.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:mockito/annotations.dart';

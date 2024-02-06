@@ -1,7 +1,6 @@
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
-import 'package:coffeecard/features/voucher/data/datasources/voucher_remote_data_source.dart';
-import 'package:coffeecard/features/voucher/data/models/redeemed_voucher_model.dart';
+import 'package:coffeecard/features/voucher_code.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';

@@ -45,9 +45,7 @@ import 'package:coffeecard/features/user/domain/usecases/get_user.dart';
 import 'package:coffeecard/features/user/domain/usecases/request_account_deletion.dart';
 import 'package:coffeecard/features/user/domain/usecases/update_user_details.dart';
 import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
-import 'package:coffeecard/features/voucher/data/datasources/voucher_remote_data_source.dart';
-import 'package:coffeecard/features/voucher/domain/usecases/redeem_voucher_code.dart';
-import 'package:coffeecard/features/voucher/presentation/cubit/voucher_cubit.dart';
+import 'package:coffeecard/features/voucher_code.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart'
     hide $JsonSerializableConverter;
@@ -315,7 +313,6 @@ void initProduct() {
 
 void initVoucher() {
   // bloc
-  sl.registerFactory(() => VoucherCubit(redeemVoucherCode: sl()));
 
   // use case
   sl.registerFactory(() => RedeemVoucherCode(dataSource: sl()));

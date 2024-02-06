@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:coffeecard/features/voucher/domain/entities/redeemed_voucher.dart';
-import 'package:coffeecard/features/voucher/domain/usecases/redeem_voucher_code.dart';
+import 'package:coffeecard/features/voucher_code.dart';
 import 'package:equatable/equatable.dart';
 
 part 'voucher_state.dart';
