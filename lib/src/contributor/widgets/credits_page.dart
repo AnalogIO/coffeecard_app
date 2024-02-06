@@ -13,6 +13,8 @@ import 'package:coffeecard/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
+// FIXME: If this widget belongs here, then the feature should be renamed to
+//  "credits" and this feature should contain more than just the contributors.
 class CreditsPage extends StatelessWidget {
   static Route get route => MaterialPageRoute(builder: (_) => CreditsPage());
 
