@@ -31,7 +31,7 @@ void main() {
     encodedPasscode: 'encodedPasscode',
   );
   provideDummy<Task<Unit>>(Task.of(unit));
-  provideDummy<TaskOption<AuthenticationInfo>>(TaskOption.none());
+  provideDummy<TaskOption<String>>(TaskOption.none());
 
   group('saveAuthenticationInfo', () {
     test(
