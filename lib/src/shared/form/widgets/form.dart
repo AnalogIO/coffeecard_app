@@ -1,9 +1,8 @@
 import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/core/styles/app_colors.dart';
-import 'package:coffeecard/core/validator/input_validator.dart';
 import 'package:coffeecard/core/widgets/components/rounded_button.dart';
 import 'package:coffeecard/core/widgets/components/section_title.dart';
-import 'package:coffeecard/features/form/presentation/bloc/form_bloc.dart';
+import 'package:coffeecard/features/shared/form.dart';
 import 'package:flutter/material.dart' hide FormState;
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -79,7 +78,6 @@ class FormBase extends StatelessWidget {
         listenWhen: (_, current) => autoSubmitValidInput && current.canSubmit,
         listener: (_, state) => onSubmit(state.text),
         builder: (context, state) {
-          final bloc = context.read<FormBloc>();
           return Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -93,12 +91,16 @@ class FormBase extends StatelessWidget {
                     inputValidators: inputValidators,
                     onChanged: (input) {
                       if (!state.loading) {
-                        bloc.add(FormValidateRequested());
+                        context.read<FormBloc>().add(FormValidateRequested());
                       }
-                      bloc.add(FormValidateStarted(input: input));
+                      context
+                          .read<FormBloc>()
+                          .add(FormValidateStarted(input: input));
                     },
                     onEditingComplete: () {
-                      bloc.add(FormToggleErrorDisplay(displayError: true));
+                      context
+                          .read<FormBloc>()
+                          .add(FormToggleErrorDisplay(displayError: true));
                       if (state.canSubmit) {
                         onSubmit(state.text);
                       }

@@ -94,7 +94,7 @@ class _FormTextFieldState extends State<_FormTextField> {
   Widget build(BuildContext context) {
     return BlocBuilder<FormBloc, FormState>(
       builder: (context, state) {
-        final maybeError = state.error.fold((l) => l, (r) => null);
+        final maybeError = state.validationStatus.fold((l) => l, (r) => null);
 
         return Container(
           margin: const EdgeInsets.only(bottom: 12),

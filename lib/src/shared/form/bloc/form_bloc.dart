@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:coffeecard/core/debouncing.dart';
-import 'package:coffeecard/core/validator/input_validator.dart';
+import 'package:coffeecard/features/shared/form.dart';
 import 'package:equatable/equatable.dart';
 import 'package:fpdart/fpdart.dart';
 
@@ -25,7 +24,7 @@ class FormBloc extends Bloc<FormEvent, FormState> {
               state.copyWith(
                 loading: false,
                 canSubmit: false,
-                error: either,
+                validationStatus: either,
                 shouldDisplayError: validator.forceErrorMessage ? true : null,
               ),
             );
@@ -37,7 +36,7 @@ class FormBloc extends Bloc<FormEvent, FormState> {
             loading: false,
             text: text,
             canSubmit: true,
-            error: const Right(null),
+            validationStatus: const Right(unit),
           ),
         );
       },

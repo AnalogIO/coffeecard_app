@@ -1,10 +1,9 @@
 import 'package:coffeecard/core/ignore_value.dart';
 import 'package:coffeecard/core/strings.dart';
-import 'package:coffeecard/core/validator/input_validator.dart';
 import 'package:coffeecard/core/widgets/components/dialog.dart';
 import 'package:coffeecard/core/widgets/components/loading_overlay.dart';
-import 'package:coffeecard/features/form/presentation/widgets/form.dart';
 import 'package:coffeecard/features/login/data/datasources/account_remote_data_source.dart';
+import 'package:coffeecard/features/shared/form.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:fpdart/fpdart.dart';
@@ -34,7 +33,7 @@ class ForgotPasscodeForm extends StatelessWidget {
             return emailExistsResult.fold(
               (error) => const Left(Strings.emailValidationError),
               (emailExists) => emailExists
-                  ? const Right(null)
+                  ? const Right(unit)
                   : const Left(Strings.forgotPasscodeNoAccountExists),
             );
           },

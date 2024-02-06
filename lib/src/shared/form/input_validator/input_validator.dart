@@ -1,21 +1,17 @@
 import 'dart:async';
 
-import 'package:coffeecard/core/validator/email_is_valid.dart';
 import 'package:fpdart/fpdart.dart';
 
 part 'input_validator_helpers.dart';
 
-/// Either an input error message (String) or a valid input (void).
-typedef ErrorEither = Either<String, void>;
-
-/// A content validator for `AppForm`s.
+/// A content validator for [FormBase] widgets.
 ///
 /// Example:
 /// ```dart
 /// class ExampleForm extends StatelessWidget {
 ///   @override
 ///   Widget build(BuildContext context) {
-///     return AppForm(
+///     return FormBase(
 ///       inputValidators: [
 ///         InputValidator.bool(
 ///           validate: (input) => input.length == 4,
@@ -54,14 +50,14 @@ class InputValidator {
   }) : this(
           validate: (String input) async {
             final validInput = await validate(input);
-            return validInput ? const Right(null) : Left(errorMessage);
+            return validInput ? const Right(unit) : Left(errorMessage);
           },
           forceErrorMessage: forceErrorMessage,
         );
 
   /// The input validator. Either returns an
   /// error message (left) or success (right).
-  final FutureOr<ErrorEither> Function(String input) validate;
+  final FutureOr<Either<String, Unit>> Function(String input) validate;
 
   /// If failing this input validator should show an error message,
   /// even if the user has not pressed submit yet.

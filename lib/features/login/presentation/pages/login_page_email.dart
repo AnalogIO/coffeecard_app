@@ -1,5 +1,4 @@
 import 'package:coffeecard/core/strings.dart';
-import 'package:coffeecard/core/validator/email_is_valid.dart';
 import 'package:coffeecard/core/widgets/fast_slide_transition.dart';
 import 'package:coffeecard/features/login/presentation/pages/login_page_base.dart';
 import 'package:coffeecard/features/login/presentation/pages/login_page_passcode.dart';
@@ -7,6 +6,12 @@ import 'package:coffeecard/features/login/presentation/widgets/login_cta.dart';
 import 'package:coffeecard/features/login/presentation/widgets/login_email_text_field.dart';
 import 'package:coffeecard/features/register/presentation/pages/register_flow.dart';
 import 'package:flutter/material.dart';
+
+// FIXME: Duplicate code.
+//  Rewrite the LoginPageEmail widget to use the Form widget,
+//  such that we can use input validators.
+final _isValidEmail =
+    RegExp(r'^[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]{2,}').hasMatch;
 
 class LoginPageEmail extends StatefulWidget {
   const LoginPageEmail({this.transitionDuration = Duration.zero});
@@ -50,7 +55,7 @@ class _LoginPageEmailState extends State<LoginPageEmail>
   void _validateEmail(BuildContext context, String email) {
     if (email.isEmpty) {
       error = Strings.loginEnterEmailError;
-    } else if (!emailIsValid(email)) {
+    } else if (!_isValidEmail(email)) {
       error = Strings.loginInvalidEmailError;
     } else {
       final _ =
