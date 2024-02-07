@@ -1,7 +1,7 @@
 import 'package:coffeecard/core/styles/app_colors.dart';
 import 'package:coffeecard/core/widgets/pages/home_page.dart';
 import 'package:coffeecard/features/authentication.dart';
-import 'package:coffeecard/features/environment/presentation/cubit/environment_cubit.dart';
+import 'package:coffeecard/features/environment.dart';
 import 'package:coffeecard/features/login/presentation/pages/login_page_email.dart';
 import 'package:coffeecard/features/product.dart';
 import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';

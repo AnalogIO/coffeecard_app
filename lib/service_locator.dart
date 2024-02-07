@@ -9,9 +9,6 @@ import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/core/store/store.dart';
 import 'package:coffeecard/env/env.dart';
 import 'package:coffeecard/features/authentication.dart';
-import 'package:coffeecard/features/environment/data/datasources/environment_remote_data_source.dart';
-import 'package:coffeecard/features/environment/domain/usecases/get_environment_type.dart';
-import 'package:coffeecard/features/environment/presentation/cubit/environment_cubit.dart';
 import 'package:coffeecard/features/leaderboard/data/datasources/leaderboard_remote_data_source.dart';
 import 'package:coffeecard/features/leaderboard/domain/usecases/get_leaderboard.dart';
 import 'package:coffeecard/features/leaderboard/presentation/cubit/leaderboard_cubit.dart';
@@ -117,7 +114,6 @@ Future<void> configureServices() async {
   initTicket();
   initPayment();
   initLeaderboard();
-  initEnvironment();
   initProduct();
   initVoucher();
   initLogin();
@@ -160,7 +156,6 @@ Future<void> initFeatures() async {
   initTicket();
   initPayment();
   initLeaderboard();
-  initEnvironment();
   initProduct();
   initVoucher();
   initLogin();
@@ -284,22 +279,6 @@ void initLeaderboard() {
   // data source
   sl.registerLazySingleton(
     () => LeaderboardRemoteDataSource(apiV2: sl(), executor: sl()),
-  );
-}
-
-void initEnvironment() {
-  // bloc
-  sl.registerLazySingleton(() => EnvironmentCubit(getEnvironmentType: sl()));
-
-  // use case
-  sl.registerFactory(() => GetEnvironmentType(remoteDataSource: sl()));
-
-  // data source
-  sl.registerLazySingleton(
-    () => EnvironmentRemoteDataSource(
-      apiV2: sl(),
-      executor: sl(),
-    ),
   );
 }
 

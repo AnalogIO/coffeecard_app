@@ -1,0 +1,4 @@
+enum Environment {
+  production,
+  testing,
+}

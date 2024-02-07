@@ -5,8 +5,7 @@ import 'package:coffeecard/core/widgets/components/error_section.dart';
 import 'package:coffeecard/core/widgets/components/loading_overlay.dart';
 import 'package:coffeecard/core/widgets/components/section_title.dart';
 import 'package:coffeecard/core/widgets/components/tickets_card.dart';
-import 'package:coffeecard/features/environment/domain/entities/environment.dart';
-import 'package:coffeecard/features/environment/presentation/cubit/environment_cubit.dart';
+import 'package:coffeecard/features/environment.dart';
 import 'package:coffeecard/features/opening_hours/presentation/widgets/opening_hours_indicator.dart';
 import 'package:coffeecard/features/receipt/domain/entities/receipt.dart';
 import 'package:coffeecard/features/receipt/presentation/widgets/receipt_overlay.dart';
@@ -100,7 +99,7 @@ class TicketSection extends StatelessWidget {
       productName:
           receipt is SwipeReceipt ? receipt.menuItemName : receipt.productName,
       timeUsed: receipt.timeUsed,
-      isTestEnvironment: envState is EnvironmentLoaded && envState.env.isTest,
+      isTestEnvironment: envState.isTestingEnvironment,
       status: receipt is PurchaseReceipt
           ? receipt.paymentStatus.toString()
           : '${Strings.swiped} via ${receipt.productName} ticket',

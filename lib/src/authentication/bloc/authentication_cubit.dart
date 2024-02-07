@@ -23,19 +23,15 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
         .run();
   }
 
-  Future<void> authenticated(AuthenticationInfo authenticationInfo) async {
-    return repository
-        .saveAuthenticationInfo(authenticationInfo)
-        .map((_) => AuthenticationState.authenticated(authenticationInfo))
-        .map(emit)
-        .run();
-  }
+  Future<void> authenticated(AuthenticationInfo info) => repository
+      .saveAuthenticationInfo(info)
+      .map((_) => AuthenticationState.authenticated(info))
+      .map(emit)
+      .run();
 
-  Future<void> unauthenticated() async {
-    return repository
-        .clearAuthenticationInfo()
-        .map((_) => const AuthenticationState.unauthenticated())
-        .map(emit)
-        .run();
-  }
+  Future<void> unauthenticated() => repository
+      .clearAuthenticationInfo()
+      .map((_) => const AuthenticationState.unauthenticated())
+      .map(emit)
+      .run();
 }
