@@ -43,8 +43,12 @@ class _ModalContentState extends State<_ModalContent>
   late Animation<double> _fadeInAnimation;
   late Animation<double> _fadeBetweenAnimation;
 
-  late Ticket _heroTag = widget.ticket;
-  _TicketUseState _state = const _SelectProduct();
+  late Ticket _ticket = widget.ticket;
+
+  late _TicketUseState _state = switch (_ticket.product.eligibleMenuItems) {
+    [final onlyMenuItem] => _ConfirmSwipe(onlyMenuItem),
+    _ => const _SelectProduct(),
+  };
 
   late Option<MenuItem> _selectedMenuItem = widget.ticket.lastUsedMenuItem;
 
@@ -107,7 +111,7 @@ class _ModalContentState extends State<_ModalContent>
               ],
             ),
             Hero(
-              tag: _heroTag,
+              tag: _ticket,
               // SingleChildScrollView to avoid the temporary overflow
               // error during the hero animation.
               child: SingleChildScrollView(
@@ -255,7 +259,7 @@ class _ModalContentState extends State<_ModalContent>
             outerColor: AppColors.primary,
             onSubmit: () async {
               // Disable hero animation in the reverse direction
-              setState(() => _heroTag = const Ticket.empty());
+              setState(() => _ticket = const Ticket.empty());
               final ticketCubit = widget.context.read<TicketsCubit>();
               final receiptCubit = widget.context.read<ReceiptCubit>();
               final productId = widget.ticket.product.id;
