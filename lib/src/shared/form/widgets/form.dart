@@ -91,7 +91,9 @@ class FormBase extends StatelessWidget {
                     inputValidators: inputValidators,
                     onChanged: (input) {
                       if (!state.loading) {
-                        context.read<FormBloc>().add(FormValidateRequested());
+                        context
+                            .read<FormBloc>()
+                            .add(const FormValidateRequested());
                       }
                       context
                           .read<FormBloc>()
@@ -100,7 +102,7 @@ class FormBase extends StatelessWidget {
                     onEditingComplete: () {
                       context
                           .read<FormBloc>()
-                          .add(FormToggleErrorDisplay(displayError: true));
+                          .add(const FormToggleErrorDisplay(showError: true));
                       if (state.canSubmit) {
                         onSubmit(state.text);
                       }

@@ -17,9 +17,8 @@ class VoucherLoading extends VoucherState {
 
 // FIXME: Make error states a common class?
 class VoucherError extends VoucherState {
-  final String error;
-
   const VoucherError(this.error);
+  final String error;
 
   @override
   List<Object> get props => [error];

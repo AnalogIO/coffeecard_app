@@ -6,6 +6,7 @@ import 'package:fpdart/fpdart.dart';
 part 'form_event.dart';
 part 'form_state.dart';
 
+// FIXME: Utilise TaskEither for async validation
 class FormBloc extends Bloc<FormEvent, FormState> {
   FormBloc({required this.validators, required this.debounce})
       : super(const FormState()) {
@@ -44,7 +45,7 @@ class FormBloc extends Bloc<FormEvent, FormState> {
     );
 
     on<FormToggleErrorDisplay>((event, emit) {
-      emit(state.copyWith(shouldDisplayError: event.displayError));
+      emit(state.copyWith(shouldDisplayError: event.showError));
     });
   }
 
