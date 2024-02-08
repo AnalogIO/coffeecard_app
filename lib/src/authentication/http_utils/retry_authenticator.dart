@@ -4,7 +4,7 @@ import 'package:chopper/chopper.dart';
 import 'package:coffeecard/core/extensions/task_extensions.dart';
 import 'package:coffeecard/core/throttler.dart';
 import 'package:coffeecard/features/authentication.dart';
-import 'package:coffeecard/features/login/data/datasources/account_remote_data_source.dart';
+import 'package:coffeecard/features/login.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.models.swagger.dart'
     show LoginDto;
 import 'package:fpdart/fpdart.dart';

@@ -1,9 +1,6 @@
 import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/core/widgets/fast_slide_transition.dart';
-import 'package:coffeecard/features/login/presentation/pages/login_page_base.dart';
-import 'package:coffeecard/features/login/presentation/pages/login_page_passcode.dart';
-import 'package:coffeecard/features/login/presentation/widgets/login_cta.dart';
-import 'package:coffeecard/features/login/presentation/widgets/login_email_text_field.dart';
+import 'package:coffeecard/features/login.dart';
 import 'package:coffeecard/features/register/presentation/pages/register_flow.dart';
 import 'package:flutter/material.dart';
 

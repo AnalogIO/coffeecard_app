@@ -1,4 +1,4 @@
-import 'package:coffeecard/features/login/presentation/widgets/passcode_dot.dart';
+import 'package:coffeecard/features/login.dart';
 import 'package:flutter/material.dart';
 
 class LoginPasscodeDots extends StatelessWidget {

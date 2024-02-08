@@ -1,5 +1,5 @@
 import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/features/login/data/datasources/account_remote_data_source.dart';
+import 'package:coffeecard/features/login.dart';
 import 'package:fpdart/fpdart.dart';
 
 class ResendEmail {
