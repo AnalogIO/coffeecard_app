@@ -279,6 +279,10 @@ abstract final class Strings {
   static const deleteAccount = 'Delete account';
   static const credits = 'Credits';
   static const privacyPolicy = 'Privacy policy';
+  static const sessionTimeout = 'Session timeout';
+  static const enableBiometrics = 'Enable biometrics';
+  static const enableBiometricAuthentication =
+      'Enable biometrics authentication?';
 
   static const emailShimmerText = 'sample@sample.com';
   static const openingHoursShimmerText = 'Somedays: 8-16';

@@ -2,17 +2,21 @@ import 'package:coffeecard/core/styles/app_colors.dart';
 import 'package:coffeecard/core/styles/app_text_styles.dart';
 import 'package:flutter/material.dart';
 
-class Dropdown<FilterCategory> extends StatelessWidget {
+class Dropdown<T> extends StatelessWidget {
   final bool loading;
-  final FilterCategory value;
-  final List<DropdownMenuItem<FilterCategory>>? items;
-  final void Function(FilterCategory?) onChanged;
+  final T value;
+  final List<DropdownMenuItem<T>> items;
+  final void Function(T?) onChanged;
+  final TextStyle? textStyle;
+  final Color? dropdownColor;
 
   const Dropdown({
     required this.loading,
     required this.value,
     required this.items,
     required this.onChanged,
+    this.textStyle,
+    this.dropdownColor,
   });
 
   Container get _underline {
@@ -29,17 +33,18 @@ class Dropdown<FilterCategory> extends StatelessWidget {
     );
   }
 
-  Color get _color => loading ? AppColors.lightGray : AppColors.white;
+  Color get _color =>
+      loading ? AppColors.lightGray : (dropdownColor ?? AppColors.white);
 
   @override
   Widget build(BuildContext context) {
     return Theme(
       data: ThemeData(disabledColor: AppColors.lightGray),
       child: DropdownButton(
-        dropdownColor: AppColors.secondary,
+        dropdownColor: dropdownColor ?? AppColors.secondary,
         underline: _underline,
         icon: Icon(Icons.arrow_drop_down, color: _color),
-        style: AppTextStyle.buttonText,
+        style: textStyle ?? AppTextStyle.buttonText,
         value: value,
         items: items,
         onChanged: loading ? null : onChanged,

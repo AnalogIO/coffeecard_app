@@ -13,6 +13,11 @@ import 'package:coffeecard/features/authentication/domain/usecases/clear_authent
 import 'package:coffeecard/features/authentication/domain/usecases/get_authenticated_user.dart';
 import 'package:coffeecard/features/authentication/domain/usecases/save_authenticated_user.dart';
 import 'package:coffeecard/features/authentication/presentation/cubits/authentication_cubit.dart';
+import 'package:coffeecard/features/biometric/data/datasources/biometric_local_data_source.dart';
+import 'package:coffeecard/features/biometric/domain/usecases/clear_biometrics.dart';
+import 'package:coffeecard/features/biometric/domain/usecases/get_registered_user.dart';
+import 'package:coffeecard/features/biometric/domain/usecases/register_biometrics.dart';
+import 'package:coffeecard/features/biometric/presentation/cubit/biometrics_cubit.dart';
 import 'package:coffeecard/features/contributor/data/datasources/contributor_local_data_source.dart';
 import 'package:coffeecard/features/contributor/domain/usecases/fetch_contributors.dart';
 import 'package:coffeecard/features/contributor/presentation/cubit/contributor_cubit.dart';
@@ -45,6 +50,10 @@ import 'package:coffeecard/features/receipt/presentation/cubit/receipt_cubit.dar
 import 'package:coffeecard/features/register/data/datasources/register_remote_data_source.dart';
 import 'package:coffeecard/features/register/domain/usecases/register_user.dart';
 import 'package:coffeecard/features/register/presentation/cubit/register_cubit.dart';
+import 'package:coffeecard/features/session/data/datasources/session_local_data_source.dart';
+import 'package:coffeecard/features/session/domain/usecases/get_session_details.dart';
+import 'package:coffeecard/features/session/domain/usecases/save_session_details.dart';
+import 'package:coffeecard/features/session/presentation/cubit/session_timeout_cubit.dart';
 import 'package:coffeecard/features/ticket/data/datasources/ticket_remote_data_source.dart';
 import 'package:coffeecard/features/ticket/domain/usecases/consume_ticket.dart';
 import 'package:coffeecard/features/ticket/domain/usecases/load_tickets.dart';
@@ -65,6 +74,7 @@ import 'package:coffeecard/generated/api/shiftplanning_api.swagger.dart'
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:logger/logger.dart';
 
 final GetIt sl = GetIt.instance;
@@ -88,6 +98,7 @@ void initExternal() {
   ignoreValue(sl.registerFactory(() => DateService()));
   ignoreValue(sl.registerFactory(() => ScreenBrightness()));
   ignoreValue(sl.registerLazySingleton(() => ExternalUrlLauncher()));
+  ignoreValue(sl.registerFactory(() => LocalAuthentication()));
 
   ignoreValue(
     sl.registerSingleton<FirebaseAnalyticsEventLogging>(
@@ -104,6 +115,8 @@ void initExternal() {
 }
 
 void initFeatures() {
+  initBiometric();
+  initSession();
   initAuthentication();
   initOpeningHours();
   initOccupation();
@@ -120,6 +133,64 @@ void initFeatures() {
   initRegister();
 }
 
+void initBiometric() {
+  // bloc
+  sl.registerFactory(
+    () => BiometricsCubit(
+      registerBiometric: sl(),
+      getRegisteredUser: sl(),
+      clearBiometrics: sl(),
+    ),
+  );
+
+  // use case
+  sl.registerFactory(
+    () => RegisterBiometric(
+      localAuthentication: sl(),
+      authenticationLocalDataSource: sl(),
+      biometricLocalDataSource: sl(),
+    ),
+  );
+  sl.registerFactory(() => GetRegisteredUser(localDataSource: sl()));
+  sl.registerFactory(() => ClearBiometrics(localDataSource: sl()));
+
+  // repository
+  sl.registerFactory(
+    () => BiometricLocalDataSource(
+      storage: sl(),
+      logger: sl(),
+    ),
+  );
+}
+
+void initSession() {
+  // bloc
+  const List<SessionTimeout> entries = [
+    ('2 hours', Duration(hours: 2)),
+    ('Never', null),
+  ];
+
+  sl.registerFactory(
+    () => SessionTimeoutCubit(
+      getSessionDetails: sl(),
+      saveSessionDetails: sl(),
+      entries: entries,
+    ),
+  );
+
+  // use case
+  sl.registerFactory(() => GetSessionDetails(dataSource: sl()));
+  sl.registerFactory(() => SaveSessionDetails(dataSource: sl()));
+
+  // repository
+  sl.registerLazySingleton(
+    () => SessionLocalDataSource(
+      storage: sl(),
+      logger: sl(),
+    ),
+  );
+}
+
 void initAuthentication() {
   // bloc
   sl.registerLazySingleton(
@@ -127,6 +198,10 @@ void initAuthentication() {
       clearAuthenticatedUser: sl(),
       saveAuthenticatedUser: sl(),
       getAuthenticatedUser: sl(),
+      getSessionDetails: sl(),
+      saveSessionDetails: sl(),
+      getRegisteredUser: sl(),
+      dateService: sl(),
     ),
   );
 

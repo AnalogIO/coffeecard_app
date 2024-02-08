@@ -32,7 +32,11 @@ class AuthenticationState extends Equatable {
   }
 }
 
-enum AuthenticationStatus { unknown, authenticated, unauthenticated }
+enum AuthenticationStatus {
+  unknown,
+  authenticated,
+  unauthenticated,
+}
 
 extension AuthenticationStatusIs on AuthenticationStatus {
   bool get isUnknown => this == AuthenticationStatus.unknown;

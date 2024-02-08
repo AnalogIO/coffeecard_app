@@ -103,8 +103,7 @@ class _MainRedirectionRouterState extends State<MainRedirectionRouter> {
   /// Redirects the user to the login page based.
   /// The route (animation) is determined by the [firstNavigation] flag.
   void redirectToLogin() {
-    final Route route;
-    route = firstNavigation
+    final route = firstNavigation
         ? LoginPageEmail.routeFromSplash
         : LoginPageEmail.routeFromLogout;
 

@@ -1,12 +1,17 @@
 import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/core/validator/email_is_valid.dart';
 import 'package:coffeecard/core/widgets/fast_slide_transition.dart';
+import 'package:coffeecard/features/authentication/presentation/cubits/authentication_cubit.dart';
+import 'package:coffeecard/features/login/presentation/cubit/login_cubit.dart';
 import 'package:coffeecard/features/login/presentation/pages/login_page_base.dart';
 import 'package:coffeecard/features/login/presentation/pages/login_page_passcode.dart';
 import 'package:coffeecard/features/login/presentation/widgets/login_cta.dart';
 import 'package:coffeecard/features/login/presentation/widgets/login_email_text_field.dart';
 import 'package:coffeecard/features/register/presentation/pages/register_flow.dart';
+import 'package:coffeecard/service_locator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:local_auth/local_auth.dart';
 
 class LoginPageEmail extends StatefulWidget {
   const LoginPageEmail({this.transitionDuration = Duration.zero});
@@ -35,6 +40,7 @@ class _LoginPageEmailState extends State<LoginPageEmail>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
+  late LocalAuthentication _authentication;
 
   String? _error;
   String? get error => _error;
@@ -71,6 +77,8 @@ class _LoginPageEmailState extends State<LoginPageEmail>
       ),
     );
 
+    _authentication = LocalAuthentication();
+
     super.initState();
   }
 
@@ -80,9 +88,49 @@ class _LoginPageEmailState extends State<LoginPageEmail>
     super.dispose();
   }
 
+  Future<bool> theThing() async {
+    final canAuthenticateWithBiometrics =
+        await _authentication.canCheckBiometrics;
+    final canAuthenticate = canAuthenticateWithBiometrics ||
+        await _authentication.isDeviceSupported();
+
+    return canAuthenticate;
+  }
+
   @override
   Widget build(BuildContext context) {
     final _ = _controller.forward();
+
+    final canAuthenticate = theThing();
+
+    canAuthenticate.then((x) {
+      if (!x) {
+        return;
+      }
+
+      context.read<AuthenticationCubit>().getRegisteredUser().then((user) {
+        user.match(
+          () => null,
+          (user) {
+            _authentication
+                .authenticate(localizedReason: 'Sign in?')
+                .then((authenticated) {
+              if (!authenticated) {
+                return;
+              }
+
+              LoginCubit(
+                email: user.email,
+                loginUser: sl(),
+                resendEmail: sl(),
+                authenticationCubit: sl(),
+                firebaseAnalyticsEventLogging: sl(),
+              ).attemptLogin(user.encodedPasscode);
+            });
+          },
+        );
+      });
+    });
 
     return FadeTransition(
       opacity: _animation,

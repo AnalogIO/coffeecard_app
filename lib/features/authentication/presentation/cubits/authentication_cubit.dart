@@ -1,9 +1,15 @@
+import 'package:coffeecard/core/external/date_service.dart';
 import 'package:coffeecard/features/authentication/domain/entities/authenticated_user.dart';
 import 'package:coffeecard/features/authentication/domain/usecases/clear_authenticated_user.dart';
 import 'package:coffeecard/features/authentication/domain/usecases/get_authenticated_user.dart';
 import 'package:coffeecard/features/authentication/domain/usecases/save_authenticated_user.dart';
+import 'package:coffeecard/features/biometric/data/models/user_credentials.dart';
+import 'package:coffeecard/features/biometric/domain/usecases/get_registered_user.dart';
+import 'package:coffeecard/features/session/domain/usecases/get_session_details.dart';
+import 'package:coffeecard/features/session/domain/usecases/save_session_details.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fpdart/fpdart.dart';
 
 part 'authentication_state.dart';
 
@@ -14,11 +20,19 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   final ClearAuthenticatedUser clearAuthenticatedUser;
   final SaveAuthenticatedUser saveAuthenticatedUser;
   final GetAuthenticatedUser getAuthenticatedUser;
+  final GetSessionDetails getSessionDetails;
+  final SaveSessionDetails saveSessionDetails;
+  final GetRegisteredUser getRegisteredUser;
+  final DateService dateService;
 
   AuthenticationCubit({
     required this.clearAuthenticatedUser,
     required this.saveAuthenticatedUser,
     required this.getAuthenticatedUser,
+    required this.getSessionDetails,
+    required this.saveSessionDetails,
+    required this.getRegisteredUser,
+    required this.dateService,
   }) : super(const AuthenticationState._());
 
   Future<void> appStarted() async {
@@ -26,8 +40,47 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
 
     authenticatedUser.match(
       () => emit(const AuthenticationState.unauthenticated()),
-      (authenticatedUser) =>
-          emit(AuthenticationState.authenticated(authenticatedUser)),
+      (authenticatedUser) async {
+        final sessionDetails = await getSessionDetails();
+
+        sessionDetails.match(
+          () => emit(AuthenticationState.authenticated(authenticatedUser)),
+          (sessionDetails) async {
+            final sessionExpired = _isSessionExpired(
+              sessionDetails.lastLogin,
+              sessionDetails.sessionTimeout,
+            );
+
+            if (sessionExpired) {
+              await unauthenticated();
+              return;
+            }
+
+            emit(AuthenticationState.authenticated(authenticatedUser));
+          },
+        );
+      },
+    );
+  }
+
+  bool _isSessionExpired(
+    Option<DateTime> lastLogin,
+    Option<Duration?> sessionTimeout,
+  ) {
+    return lastLogin.match(
+      () => false,
+      (lastLogin) => sessionTimeout.match(
+        () => false,
+        (sessionTimeout) {
+          if (sessionTimeout == null) {
+            return false;
+          }
+
+          final now = dateService.currentDateTime;
+          final difference = now.difference(lastLogin);
+          return difference > sessionTimeout;
+        },
+      ),
     );
   }
 
@@ -40,6 +93,20 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
       email: email,
       token: token,
       encodedPasscode: encodedPasscode,
+    );
+
+    final sessionDetails = await getSessionDetails();
+
+    final now = some(dateService.currentDateTime);
+    sessionDetails.match(
+      () async => await saveSessionDetails(
+        lastLogin: now,
+        sessionTimeout: none(),
+      ),
+      (sessionDetails) async => await saveSessionDetails(
+        lastLogin: now,
+        sessionTimeout: sessionDetails.sessionTimeout,
+      ),
     );
 
     emit(
@@ -55,6 +122,24 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
 
   Future<void> unauthenticated() async {
     await clearAuthenticatedUser();
+
+    final sessionDetails = await getSessionDetails();
+
+    sessionDetails.match(
+      () async => await saveSessionDetails(
+        lastLogin: none(),
+        sessionTimeout: none(),
+      ),
+      (sessionDetails) async => await saveSessionDetails(
+        lastLogin: none(),
+        sessionTimeout: sessionDetails.sessionTimeout,
+      ),
+    );
+
     emit(const AuthenticationState.unauthenticated());
+  }
+
+  Future<Option<UserCredentials>> getBiometricStuff() async {
+    return getRegisteredUser();
   }
 }
