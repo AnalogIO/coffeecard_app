@@ -2,13 +2,13 @@ import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/core/styles/app_text_styles.dart';
 import 'package:coffeecard/core/widgets/components/loading_overlay.dart';
 import 'package:coffeecard/core/widgets/components/rounded_button.dart';
-import 'package:coffeecard/features/environment/presentation/cubit/environment_cubit.dart';
+import 'package:coffeecard/features/environment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 
 class SplashErrorPage extends StatefulWidget {
-  const SplashErrorPage({required this.errorMessage});
+  const SplashErrorPage(this.errorMessage);
   final String errorMessage;
 
   @override
@@ -23,7 +23,7 @@ class _SplashErrorPageState extends State<SplashErrorPage> {
     // may not be obvious that a load is happening with no internet
     await Future.wait<void>([
       Future.delayed(const Duration(milliseconds: 200)),
-      context.read<EnvironmentCubit>().getConfig(),
+      context.read<EnvironmentCubit>().loadEnvironment(),
     ]);
 
     if (mounted) {

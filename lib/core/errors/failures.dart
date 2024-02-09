@@ -53,3 +53,8 @@ class ServerFailure extends NetworkFailure {
 class ConnectionFailure extends NetworkFailure {
   const ConnectionFailure() : super('connection refused');
 }
+
+/// An unknown failure that is not expected to occur.
+class UnknownFailure extends Failure {
+  const UnknownFailure(super.reason);
+}

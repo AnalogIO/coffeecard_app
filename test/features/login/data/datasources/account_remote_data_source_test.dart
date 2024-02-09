@@ -1,7 +1,7 @@
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
-import 'package:coffeecard/features/authentication/domain/entities/authenticated_user.dart';
-import 'package:coffeecard/features/login/data/datasources/account_remote_data_source.dart';
+import 'package:coffeecard/features/authentication.dart';
+import 'package:coffeecard/features/login.dart';
 import 'package:coffeecard/features/occupation/data/models/occupation_model.dart';
 import 'package:coffeecard/features/user/data/models/user_model.dart';
 import 'package:coffeecard/features/user/domain/entities/role.dart';
@@ -54,7 +54,7 @@ void main() {
 
   group('login', () {
     test(
-      'should return [Right<AuthenticatedUser>] when executor returns token',
+      'should return [Right<AuthenticationInfo>] when executor returns token',
       () async {
         // arrange
         when(executor.execute<v1.TokenDto>(any)).thenAnswer(
@@ -68,7 +68,7 @@ void main() {
         expect(
           actual,
           const Right(
-            AuthenticatedUser(
+            AuthenticationInfo(
               email: 'email',
               token: 'token',
               encodedPasscode: 'encodedPasscode',

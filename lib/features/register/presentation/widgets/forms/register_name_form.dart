@@ -1,11 +1,10 @@
 import 'package:coffeecard/core/ignore_value.dart';
 import 'package:coffeecard/core/strings.dart';
-import 'package:coffeecard/core/validator/input_validator.dart';
 import 'package:coffeecard/core/widgets/components/dialog.dart';
 import 'package:coffeecard/core/widgets/components/helpers/unordered_list_builder.dart';
 import 'package:coffeecard/core/widgets/components/loading_overlay.dart';
-import 'package:coffeecard/features/form/presentation/widgets/form.dart';
 import 'package:coffeecard/features/register/presentation/cubit/register_cubit.dart';
+import 'package:coffeecard/features/shared/form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';

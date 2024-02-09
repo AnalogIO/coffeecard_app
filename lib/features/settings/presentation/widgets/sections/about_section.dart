@@ -1,7 +1,7 @@
 import 'package:coffeecard/core/api_uri_constants.dart';
 import 'package:coffeecard/core/external/external_url_launcher.dart';
 import 'package:coffeecard/core/strings.dart';
-import 'package:coffeecard/features/contributor/presentation/pages/credits_page.dart';
+import 'package:coffeecard/features/contributor.dart';
 import 'package:coffeecard/features/opening_hours/presentation/cubit/opening_hours_cubit.dart';
 import 'package:coffeecard/features/opening_hours/presentation/pages/opening_hours_page.dart';
 import 'package:coffeecard/features/settings/presentation/pages/faq_page.dart';

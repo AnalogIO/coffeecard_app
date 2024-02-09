@@ -1,8 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:coffeecard/core/errors/failures.dart';
 import 'package:coffeecard/core/firebase_analytics_event_logging.dart';
-import 'package:coffeecard/features/product/menu_item_model.dart';
-import 'package:coffeecard/features/product/product_model.dart';
+import 'package:coffeecard/features/product.dart';
 import 'package:coffeecard/features/purchase/domain/entities/payment.dart';
 import 'package:coffeecard/features/purchase/domain/entities/payment_status.dart';
 import 'package:coffeecard/features/purchase/domain/usecases/init_purchase.dart';

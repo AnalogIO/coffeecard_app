@@ -1,6 +1,5 @@
 import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/features/product/menu_item_model.dart';
-import 'package:coffeecard/features/product/product_repository.dart';
+import 'package:coffeecard/features/product.dart';
 import 'package:coffeecard/features/ticket/data/datasources/ticket_remote_data_source.dart';
 import 'package:coffeecard/features/ticket/domain/entities/ticket.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.models.swagger.dart';
@@ -55,6 +54,7 @@ class LoadTickets {
     final getCachedMenuItemId = TaskEither<Failure, int>(() async {
       final cache = await Hive.openBox<int>('lastUsedMenuItemByProductId');
       return Either.fromNullable(
+        // TODO(marfavi): Use getAsTaskOption instead.
         cache.get(ticket.product.id),
         () => const LocalStorageFailure('No last used menu item found'),
       );

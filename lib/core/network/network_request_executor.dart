@@ -8,6 +8,7 @@ part 'network_request_executor_mapping.dart';
 
 typedef _NetworkRequest<BodyType> = Future<Response<BodyType>> Function();
 typedef _ExecutorResult<R> = Future<Either<Failure, R>>;
+// FIXME: Attempt to change back to NetworkFailure for Left type?
 typedef _ExecutorTaskEither<R> = TaskEither<Failure, R>;
 
 class NetworkRequestExecutor {

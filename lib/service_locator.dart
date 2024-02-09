@@ -6,25 +6,13 @@ import 'package:coffeecard/core/external/screen_brightness.dart';
 import 'package:coffeecard/core/firebase_analytics_event_logging.dart';
 import 'package:coffeecard/core/ignore_value.dart';
 import 'package:coffeecard/core/network/network_request_executor.dart';
+import 'package:coffeecard/core/store/store.dart';
 import 'package:coffeecard/env/env.dart';
-import 'package:coffeecard/features/authentication/data/datasources/authentication_local_data_source.dart';
-import 'package:coffeecard/features/authentication/data/intercepters/authentication_interceptor.dart';
-import 'package:coffeecard/features/authentication/domain/usecases/clear_authenticated_user.dart';
-import 'package:coffeecard/features/authentication/domain/usecases/get_authenticated_user.dart';
-import 'package:coffeecard/features/authentication/domain/usecases/save_authenticated_user.dart';
-import 'package:coffeecard/features/authentication/presentation/cubits/authentication_cubit.dart';
-import 'package:coffeecard/features/contributor/data/datasources/contributor_local_data_source.dart';
-import 'package:coffeecard/features/contributor/domain/usecases/fetch_contributors.dart';
-import 'package:coffeecard/features/contributor/presentation/cubit/contributor_cubit.dart';
-import 'package:coffeecard/features/environment/data/datasources/environment_remote_data_source.dart';
-import 'package:coffeecard/features/environment/domain/usecases/get_environment_type.dart';
-import 'package:coffeecard/features/environment/presentation/cubit/environment_cubit.dart';
+import 'package:coffeecard/features/authentication.dart';
 import 'package:coffeecard/features/leaderboard/data/datasources/leaderboard_remote_data_source.dart';
 import 'package:coffeecard/features/leaderboard/domain/usecases/get_leaderboard.dart';
 import 'package:coffeecard/features/leaderboard/presentation/cubit/leaderboard_cubit.dart';
-import 'package:coffeecard/features/login/data/datasources/account_remote_data_source.dart';
-import 'package:coffeecard/features/login/domain/usecases/login_user.dart';
-import 'package:coffeecard/features/login/domain/usecases/resend_email.dart';
+import 'package:coffeecard/features/login.dart';
 import 'package:coffeecard/features/occupation/data/datasources/occupation_remote_data_source.dart';
 import 'package:coffeecard/features/occupation/domain/usecases/get_occupations.dart';
 import 'package:coffeecard/features/occupation/presentation/cubit/occupation_cubit.dart';
@@ -33,10 +21,8 @@ import 'package:coffeecard/features/opening_hours/data/repositories/opening_hour
 import 'package:coffeecard/features/opening_hours/domain/repositories/opening_hours_repository.dart';
 import 'package:coffeecard/features/opening_hours/domain/usecases/get_opening_hours.dart';
 import 'package:coffeecard/features/opening_hours/presentation/cubit/opening_hours_cubit.dart';
-import 'package:coffeecard/features/product/presentation/cubit/product_cubit.dart';
-import 'package:coffeecard/features/product/product_repository.dart';
+import 'package:coffeecard/features/product.dart';
 import 'package:coffeecard/features/purchase/data/datasources/purchase_remote_data_source.dart';
-import 'package:coffeecard/features/reactivation/data/reactivation_authenticator.dart';
 import 'package:coffeecard/features/receipt/data/datasources/receipt_remote_data_source.dart';
 import 'package:coffeecard/features/receipt/data/repositories/receipt_repository_impl.dart';
 import 'package:coffeecard/features/receipt/domain/repositories/receipt_repository.dart';
@@ -54,9 +40,7 @@ import 'package:coffeecard/features/user/domain/usecases/get_user.dart';
 import 'package:coffeecard/features/user/domain/usecases/request_account_deletion.dart';
 import 'package:coffeecard/features/user/domain/usecases/update_user_details.dart';
 import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
-import 'package:coffeecard/features/voucher/data/datasources/voucher_remote_data_source.dart';
-import 'package:coffeecard/features/voucher/domain/usecases/redeem_voucher_code.dart';
-import 'package:coffeecard/features/voucher/presentation/cubit/voucher_cubit.dart';
+import 'package:coffeecard/features/voucher_code.dart';
 import 'package:coffeecard/generated/api/coffeecard_api.swagger.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart'
     hide $JsonSerializableConverter;
@@ -65,26 +49,86 @@ import 'package:coffeecard/generated/api/shiftplanning_api.swagger.dart'
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hive_flutter/hive_flutter.dart' hide Box;
 import 'package:logger/logger.dart';
 
+// FIXME: Get rid of this file.
 final GetIt sl = GetIt.instance;
 
-void configureServices() {
-  ignoreValue(sl.registerSingleton(Logger()));
+Future<void> configureServices() async {
+  sl.registerSingleton(Logger());
+  sl.registerSingleton(const FlutterSecureStorage());
+  sl.registerSingleton(Store(secureStorage: sl(), hive: Hive));
 
-  initFeatures();
+  final authRepoCrate =
+      await sl.get<Store>().openEncryptedCrate<String>('auth').run();
+  sl.registerLazySingleton<AuthenticationRepository>(
+    () => AuthenticationRepository(crate: authRepoCrate, logger: sl()),
+  );
+  sl.registerLazySingleton(() => AuthenticationCubit(sl()));
+
+  sl.registerFactory(() => OpeningHoursCubit(fetchOpeningHours: sl()));
+  sl.registerFactory(() => GetOpeningHours(repository: sl()));
+  sl.registerLazySingleton(() => OpeningHoursLocalDataSource());
+  sl.registerFactory<OpeningHoursRepository>(
+    () => OpeningHoursRepositoryImpl(dataSource: sl(), dateService: sl()),
+  );
+
+  sl.registerFactory(() => OccupationCubit(getOccupations: sl()));
+  sl.registerFactory(() => GetOccupations(dataSource: sl()));
+  sl.registerLazySingleton(
+    () => OccupationRemoteDataSource(api: sl(), executor: sl()),
+  );
+
+  sl.registerFactory(
+    () => UserCubit(
+      getUser: sl(),
+      requestAccountDeletion: sl(),
+      updateUserDetails: sl(),
+    ),
+  );
+  sl.registerFactory(
+    () => LoadTickets(ticketRemoteDataSource: sl(), productRepository: sl()),
+  );
+  final consumeTicketCrate =
+      await sl<Store>().openCrate<int>('lastUsedMenuItemByProductId').run();
+  sl.registerFactory(
+    () => ConsumeTicket(
+      ticketRemoteDataSource: sl(),
+      crate: consumeTicketCrate,
+    ),
+  );
+  sl.registerLazySingleton(
+    () => TicketRemoteDataSource(api: sl(), executor: sl()),
+  );
+  sl.registerFactory(() => GetUser(dataSource: sl()));
+  sl.registerFactory(() => RequestAccountDeletion(dataSource: sl()));
+  sl.registerFactory(() => UpdateUserDetails(dataSource: sl()));
+  sl.registerLazySingleton(
+    () => UserRemoteDataSource(apiV2: sl(), executor: sl()),
+  );
+
+  initReceipt();
+  initTicket();
+  initPayment();
+  initLeaderboard();
+  initProduct();
+  initVoucher();
+  initLogin();
+  initRegister();
+
   initExternal();
 
   // Reactivation authenticator (uninitalized), http client and interceptors
   initHttp();
 
   // provide the account repository to the reactivation authenticator
-  sl<ReactivationAuthenticator>().initialize(sl<AccountRemoteDataSource>());
+  sl<RetryAuthenticator>().initialize(sl<AccountRemoteDataSource>());
+
+  await sl.allReady();
 }
 
 void initExternal() {
-  ignoreValue(sl.registerSingleton(const FlutterSecureStorage()));
-
   ignoreValue(sl.registerFactory(() => DateService()));
   ignoreValue(sl.registerFactory(() => ScreenBrightness()));
   ignoreValue(sl.registerLazySingleton(() => ExternalUrlLauncher()));
@@ -103,70 +147,17 @@ void initExternal() {
   );
 }
 
-void initFeatures() {
-  initAuthentication();
-  initOpeningHours();
+Future<void> initFeatures() async {
   initOccupation();
-  initUser();
+  await initUser();
   initReceipt();
   initTicket();
-  initContributor();
   initPayment();
   initLeaderboard();
-  initEnvironment();
   initProduct();
   initVoucher();
   initLogin();
   initRegister();
-}
-
-void initAuthentication() {
-  // bloc
-  sl.registerLazySingleton(
-    () => AuthenticationCubit(
-      clearAuthenticatedUser: sl(),
-      saveAuthenticatedUser: sl(),
-      getAuthenticatedUser: sl(),
-    ),
-  );
-
-  // use case
-  sl.registerFactory(() => ClearAuthenticatedUser(dataSource: sl()));
-  sl.registerFactory(() => SaveAuthenticatedUser(dataSource: sl()));
-  sl.registerFactory(() => GetAuthenticatedUser(dataSource: sl()));
-
-  // repository
-
-  // data source
-  sl.registerLazySingleton(
-    () => AuthenticationLocalDataSource(
-      storage: sl(),
-      logger: sl(),
-    ),
-  );
-}
-
-void initOpeningHours() {
-  // bloc
-  sl.registerFactory(
-    () => OpeningHoursCubit(fetchOpeningHours: sl()),
-  );
-
-  // use case
-  sl.registerFactory(() => GetOpeningHours(repository: sl()));
-
-  // data source
-  sl.registerLazySingleton<OpeningHoursLocalDataSource>(
-    () => OpeningHoursLocalDataSource(),
-  );
-
-  // repository
-  sl.registerFactory<OpeningHoursRepository>(
-    () => OpeningHoursRepositoryImpl(
-      dataSource: sl(),
-      dateService: sl(),
-    ),
-  );
 }
 
 void initTicket() {
@@ -194,7 +185,7 @@ void initOccupation() {
   );
 }
 
-void initUser() {
+Future<void> initUser() async {
   // bloc
   sl.registerFactory(
     () => UserCubit(
@@ -211,7 +202,15 @@ void initUser() {
       productRepository: sl(),
     ),
   );
-  sl.registerFactory(() => ConsumeTicket(ticketRemoteDataSource: sl()));
+
+  final crate =
+      await sl<Store>().openCrate<int>('lastUsedMenuItemByProductId').run();
+  sl.registerFactory(
+    () => ConsumeTicket(
+      ticketRemoteDataSource: sl(),
+      crate: crate,
+    ),
+  );
 
   // data source
   sl.registerLazySingleton(
@@ -254,17 +253,6 @@ void initReceipt() {
   );
 }
 
-void initContributor() {
-  // bloc
-  sl.registerFactory(() => ContributorCubit(fetchContributors: sl()));
-
-  // use case
-  sl.registerFactory(() => FetchContributors(dataSource: sl()));
-
-  // data source
-  sl.registerLazySingleton(() => ContributorLocalDataSource());
-}
-
 void initPayment() {
   // bloc
 
@@ -292,22 +280,6 @@ void initLeaderboard() {
   );
 }
 
-void initEnvironment() {
-  // bloc
-  sl.registerLazySingleton(() => EnvironmentCubit(getEnvironmentType: sl()));
-
-  // use case
-  sl.registerFactory(() => GetEnvironmentType(remoteDataSource: sl()));
-
-  // data source
-  sl.registerLazySingleton(
-    () => EnvironmentRemoteDataSource(
-      apiV2: sl(),
-      executor: sl(),
-    ),
-  );
-}
-
 void initProduct() {
   // bloc
   sl.registerFactory(() => ProductCubit(productRepository: sl()));
@@ -318,14 +290,11 @@ void initProduct() {
 
 void initVoucher() {
   // bloc
-  sl.registerFactory(() => VoucherCubit(redeemVoucherCode: sl()));
+  sl.registerFactory(() => VoucherCubit(voucherCodeRepository: sl()));
 
-  // use case
-  sl.registerFactory(() => RedeemVoucherCode(dataSource: sl()));
-
-  // data source
+  // repository
   sl.registerLazySingleton(
-    () => VoucherRemoteDataSource(api: sl(), executor: sl()),
+    () => VoucherCodeRepository(api: sl(), executor: sl()),
   );
 }
 
@@ -366,8 +335,12 @@ void initRegister() {
 
 void initHttp() {
   ignoreValue(
-    sl.registerSingleton<ReactivationAuthenticator>(
-      ReactivationAuthenticator.uninitialized(serviceLocator: sl),
+    sl.registerSingleton<RetryAuthenticator>(
+      RetryAuthenticator.uninitialized(
+        repository: sl(),
+        cubit: sl(),
+        logger: sl(),
+      ),
     ),
   );
 
@@ -379,7 +352,7 @@ void initHttp() {
       CoffeecardApi.create(),
       CoffeecardApiV2.create(),
     ],
-    authenticator: sl.get<ReactivationAuthenticator>(),
+    authenticator: sl.get<RetryAuthenticator>(),
   );
 
   final shiftplanningChopper = ChopperClient(

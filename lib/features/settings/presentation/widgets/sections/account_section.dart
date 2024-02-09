@@ -2,14 +2,14 @@ import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/core/styles/app_colors.dart';
 import 'package:coffeecard/core/widgets/components/dialog.dart';
 import 'package:coffeecard/core/widgets/components/helpers/shimmer_builder.dart';
-import 'package:coffeecard/features/authentication/presentation/cubits/authentication_cubit.dart';
+import 'package:coffeecard/features/authentication.dart';
 import 'package:coffeecard/features/settings/presentation/pages/change_email_page.dart';
 import 'package:coffeecard/features/settings/presentation/widgets/change_passcode_flow.dart';
 import 'package:coffeecard/features/settings/presentation/widgets/setting_value_text.dart';
 import 'package:coffeecard/features/settings/presentation/widgets/settings_group.dart';
 import 'package:coffeecard/features/settings/presentation/widgets/settings_list_entry.dart';
 import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
-import 'package:coffeecard/features/voucher/presentation/pages/redeem_voucher_page.dart';
+import 'package:coffeecard/features/voucher_code.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

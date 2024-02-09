@@ -1,7 +1,6 @@
 import 'package:coffeecard/core/strings.dart';
-import 'package:coffeecard/core/validator/input_validator.dart';
-import 'package:coffeecard/features/form/presentation/widgets/form.dart';
-import 'package:coffeecard/features/login/data/datasources/account_remote_data_source.dart';
+import 'package:coffeecard/features/login.dart';
+import 'package:coffeecard/features/shared/form.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:fpdart/fpdart.dart';
@@ -30,7 +29,7 @@ class RegisterEmailForm extends StatelessWidget {
               (l) => const Left(Strings.emailValidationError),
               (r) => r
                   ? Left(Strings.registerEmailInUse(text))
-                  : const Right(null),
+                  : const Right(unit),
             );
           },
         ),

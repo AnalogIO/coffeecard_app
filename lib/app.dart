@@ -1,13 +1,15 @@
+import 'package:coffeecard/core/network/network_request_executor.dart';
 import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/core/styles/theme.dart';
 import 'package:coffeecard/core/widgets/pages/splash/splash_error_page.dart';
 import 'package:coffeecard/core/widgets/pages/splash/splash_loading_page.dart';
-import 'package:coffeecard/features/authentication/presentation/cubits/authentication_cubit.dart';
-import 'package:coffeecard/features/environment/presentation/cubit/environment_cubit.dart';
-import 'package:coffeecard/features/product/presentation/cubit/product_cubit.dart';
+import 'package:coffeecard/features/authentication.dart';
+import 'package:coffeecard/features/product.dart';
 import 'package:coffeecard/features/redirection/redirection_router.dart';
 import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
+import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
 import 'package:coffeecard/service_locator.dart';
+import 'package:coffeecard/src/environment/environment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,25 +22,40 @@ class App extends StatelessWidget {
     // Force screen orientation to portrait
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
-    return MultiBlocProvider(
+    return MultiRepositoryProvider(
       providers: [
-        BlocProvider.value(value: sl<AuthenticationCubit>()..appStarted()),
-        BlocProvider.value(value: sl<EnvironmentCubit>()..getConfig()),
-        BlocProvider(create: (_) => sl<UserCubit>()),
-        BlocProvider.value(value: sl<ProductCubit>()),
+        RepositoryProvider.value(value: sl<CoffeecardApiV2>()),
+        RepositoryProvider.value(value: sl<NetworkRequestExecutor>()),
+        RepositoryProvider(
+          create: (context) => EnvironmentRepository(
+            apiV2: context.read(),
+            executor: context.read(),
+          ),
+        ),
       ],
-      child: MainRedirectionRouter(
-        navigatorKey: _navigatorKey,
-        child: MaterialApp(
-          title: Strings.appTitle,
-          theme: analogTheme,
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider.value(value: sl<AuthenticationCubit>()..appStarted()),
+          BlocProvider(
+            create: (context) =>
+                EnvironmentCubit(repository: context.read())..loadEnvironment(),
+          ),
+          BlocProvider(create: (_) => sl<UserCubit>()),
+          BlocProvider.value(value: sl<ProductCubit>()),
+        ],
+        child: MainRedirectionRouter(
           navigatorKey: _navigatorKey,
-          home: BlocBuilder<EnvironmentCubit, EnvironmentState>(
-            builder: (_, state) {
-              return (state is EnvironmentError)
-                  ? SplashErrorPage(errorMessage: state.message)
-                  : const SplashLoadingPage();
-            },
+          child: MaterialApp(
+            title: Strings.appTitle,
+            theme: analogTheme,
+            navigatorKey: _navigatorKey,
+            home: BlocBuilder<EnvironmentCubit, EnvironmentState>(
+              builder: (_, state) => switch (state) {
+                EnvironmentLoadError(:final message) =>
+                  SplashErrorPage(message),
+                _ => const SplashLoadingPage(),
+              },
+            ),
           ),
         ),
       ),
