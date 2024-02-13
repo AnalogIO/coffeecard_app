@@ -1,16 +1,14 @@
-import 'package:coffeecard/core/extensions/string_extensions.dart';
 import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/core/styles/app_colors.dart';
 import 'package:coffeecard/core/styles/app_text_styles.dart';
 import 'package:coffeecard/core/widgets/components/dialog.dart';
-import 'package:coffeecard/features/user/domain/entities/role.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 class UserRoleIndicator extends StatelessWidget {
   const UserRoleIndicator(this.userRole);
 
-  final Role userRole;
+  final String userRole;
 
   @override
   Widget build(BuildContext context) {
@@ -28,10 +26,7 @@ class UserRoleIndicator extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            userRole.name.capitalize(),
-            style: AppTextStyle.baristaButton,
-          ),
+          Text(userRole, style: AppTextStyle.baristaButton),
           const Gap(8),
           const Icon(
             Icons.info_outline,
@@ -46,7 +41,7 @@ class UserRoleIndicator extends StatelessWidget {
   Future<void> showDialog(BuildContext context) {
     return appDialog(
       context: context,
-      title: userRole.name.capitalize(),
+      title: userRole,
       children: [
         Text(Strings.baristaPerksExplainer, style: AppTextStyle.settingKey),
       ],
