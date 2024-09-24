@@ -23,7 +23,7 @@ Future<Payment?> showPurchaseOverlay({
       builder: (_) {
         return PopScope(
           // Will prevent Android back button from closing overlay.
-          onPopInvoked: (_) async => false,
+          canPop: false,
           child: BlocProvider(
             create: (context) {
               final paymentHandler =

@@ -7,10 +7,10 @@ class LoadingOverlay {
         barrierColor: AppColors.scrim,
         barrierDismissible: false,
         builder: (_) {
-          return PopScope(
+          return const PopScope(
             // Will prevent Android back button from closing overlay.
-            onPopInvoked: (_) async => false,
-            child: const Center(
+            canPop: false,
+            child: Center(
               child: CircularProgressIndicator(color: AppColors.white),
             ),
           );

@@ -22,7 +22,6 @@ class ExternalUrlLauncher {
     if (context.mounted) {
       final _ = showDialog(
         context: context,
-        barrierDismissible: true,
         builder: (BuildContext context) {
           return const AlertDialog(
             title: Text(Strings.error),

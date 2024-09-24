@@ -20,14 +20,14 @@ class RoundedButton extends StatelessWidget {
   final Color backgroundColor;
   final Color foregroundColor;
 
-  Color _getBackgroundColor(Set<MaterialState> states) {
-    return (states.contains(MaterialState.disabled))
+  Color _getBackgroundColor(Set<WidgetState> states) {
+    return (states.contains(WidgetState.disabled))
         ? AppColors.lightGray
         : backgroundColor;
   }
 
-  Color _getForegroundColor(Set<MaterialState> states) {
-    return (states.contains(MaterialState.disabled))
+  Color _getForegroundColor(Set<WidgetState> states) {
+    return (states.contains(WidgetState.disabled))
         ? AppColors.gray
         : foregroundColor;
   }
@@ -36,11 +36,11 @@ class RoundedButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ButtonStyle(
-        foregroundColor: MaterialStateProperty.resolveWith(_getForegroundColor),
-        maximumSize: MaterialStateProperty.all(Size.infinite),
-        backgroundColor: MaterialStateProperty.resolveWith(_getBackgroundColor),
-        shape: MaterialStateProperty.all(const StadiumBorder()),
-        padding: MaterialStateProperty.all(
+        foregroundColor: WidgetStateProperty.resolveWith(_getForegroundColor),
+        maximumSize: WidgetStateProperty.all(Size.infinite),
+        backgroundColor: WidgetStateProperty.resolveWith(_getBackgroundColor),
+        shape: WidgetStateProperty.all(const StadiumBorder()),
+        padding: WidgetStateProperty.all(
           const EdgeInsets.symmetric(horizontal: 16),
         ),
       ),

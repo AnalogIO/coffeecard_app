@@ -35,7 +35,7 @@ void main() {
       final interceptor = AuthenticationInterceptor(mockSecureStorage);
       final request = Request('POST', Uri.parse('url'), Uri.parse('baseurl'));
 
-      final result = await interceptor.onRequest(request);
+      final result = await request.send();
 
       expect(result.headers.containsKey('Authorization'), isTrue);
       expect(result.headers['Authorization'], equals('Bearer $token'));
