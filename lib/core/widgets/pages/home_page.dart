@@ -141,7 +141,6 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
         child: PopScope(
-          canPop: onWillPop,
           child: Scaffold(
             backgroundColor: AppColors.background,
             body: LazyIndexedStack(
