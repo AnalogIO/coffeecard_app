@@ -113,7 +113,7 @@ class _BottomModalSheetButtonBarState
                 context: context,
               );
 
-              if (!mounted) return;
+              if (!context.mounted) return;
               // Remove this bottom modal sheet.
               Navigator.pop<Payment>(
                 context,
@@ -146,7 +146,7 @@ class _BottomModalSheetButtonBarState
               context: context,
             );
 
-            if (!mounted) return;
+            if (!context.mounted) return;
             // Remove this bottom modal sheet.
             Navigator.pop<Payment>(
               context,

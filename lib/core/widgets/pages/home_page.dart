@@ -47,7 +47,7 @@ class _HomePageState extends State<HomePage> {
       ..add(newFlowIndex);
   }
 
-  Future<bool> onWillPop() async {
+  bool get onWillPop {
     // If back arrow is present on page, go back in the current flow
     {
       final currentFlow = _navFlowsStack.last;
@@ -141,7 +141,6 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
         child: PopScope(
-          onPopInvoked: (_) => onWillPop(),
           child: Scaffold(
             backgroundColor: AppColors.background,
             body: LazyIndexedStack(

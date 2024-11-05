@@ -84,14 +84,12 @@ void main() {
             TicketResponse(
               id: 0,
               dateCreated: DateTime.parse('2023-05-23'),
-              dateUsed: null,
               productId: 0,
               productName: 'A',
             ),
             TicketResponse(
               id: 0,
               dateCreated: DateTime.parse('2023-05-23'),
-              dateUsed: null,
               productId: 0,
               productName: 'B',
             ),

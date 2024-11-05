@@ -1,13 +1,13 @@
 import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/core/widgets/components/barista_perks_section.dart';
 import 'package:coffeecard/core/widgets/components/scaffold.dart';
-import 'package:coffeecard/core/widgets/upgrade_alert.dart';
 import 'package:coffeecard/features/product/purchasable_products.dart';
 import 'package:coffeecard/features/ticket/presentation/widgets/shop_section.dart';
 import 'package:coffeecard/features/ticket/presentation/widgets/tickets_section.dart';
 import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:upgrader/upgrader.dart';
 
 class TicketsPage extends StatelessWidget {
   const TicketsPage({required this.scrollController});

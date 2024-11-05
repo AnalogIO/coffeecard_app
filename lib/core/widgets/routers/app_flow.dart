@@ -19,14 +19,10 @@ class _AppFlowState extends State<AppFlow> {
     navigatorKey = widget.navigatorKey ?? GlobalKey<NavigatorState>();
   }
 
-  Future<bool> _didPopRoute() async {
-    return navigatorKey.currentState!.maybePop();
-  }
-
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      onPopInvoked: (_) async => !await _didPopRoute(),
+      // onPopInvoked: (_) async => !await _didPopRoute(),
       child: Navigator(
         key: navigatorKey,
         onGenerateRoute: (_) => widget.initialRoute,

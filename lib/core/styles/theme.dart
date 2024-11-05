@@ -23,5 +23,5 @@ final ThemeData analogTheme = ThemeData(
   ),
   colorScheme: ColorScheme.fromSwatch(
     primarySwatch: AppColors.createMaterialColor(AppColors.primary),
-  ).copyWith(background: AppColors.background),
+  ).copyWith(surface: AppColors.background),
 );

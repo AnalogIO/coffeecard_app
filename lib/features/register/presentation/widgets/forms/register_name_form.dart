@@ -44,7 +44,7 @@ class _RegisterNameFormState extends State<RegisterNameForm> {
     ignoreValue(LoadingOverlay.show(context));
     // Allow keyboard to disappear before showing dialog
     ignoreValue(await Future.delayed(const Duration(milliseconds: 350)));
-    if (!mounted) return;
+    if (!context.mounted) return;
 
     // Shows the terms to the user before proceeding with the registration.
     await appDialog(
@@ -65,7 +65,7 @@ class _RegisterNameFormState extends State<RegisterNameForm> {
           child: const Text(Strings.buttonDecline),
           onPressed: () {
             closeAppDialog(context);
-            if (mounted) LoadingOverlay.hide(context);
+            if (context.mounted) LoadingOverlay.hide(context);
           },
         ),
         TextButton(
