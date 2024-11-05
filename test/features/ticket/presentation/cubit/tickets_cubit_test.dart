@@ -36,25 +36,23 @@ void main() {
 
   group('getTickets', () {
     blocTest<TicketsCubit, TicketsState>(
-      'should emit [Loading, Loaded] when use case succeeds',
+      'should emit [Loaded] when use case succeeds',
       build: () => cubit,
       setUp: () => when(loadTickets()).thenAnswer((_) => TaskEither.right([])),
       act: (_) => cubit.getTickets(),
       expect: () => [
-        const TicketsLoading(),
         const TicketsLoaded(tickets: []),
       ],
     );
 
     blocTest<TicketsCubit, TicketsState>(
-      'should emit [Loading, Error] when use case fails',
+      'should emit [Error] when use case fails',
       build: () => cubit,
       setUp: () => when(loadTickets()).thenAnswer(
         (_) => TaskEither.left(const ServerFailure('some error', 500)),
       ),
       act: (_) => cubit.getTickets(),
       expect: () => [
-        const TicketsLoading(),
         const TicketsLoadError(message: 'some error'),
       ],
     );
@@ -131,21 +129,32 @@ void main() {
     blocTest<TicketsCubit, TicketsState>(
       'should emit [Loaded] when use case succeeds',
       build: () => cubit,
-      setUp: () => when(loadTickets()).thenAnswer((_) => TaskEither.right([])),
-      act: (_) => cubit.refreshTickets(),
-      expect: () => [
-        const TicketsLoaded(tickets: []),
+      setUp: () async {
+        when(loadTickets()).thenAnswer((_) => TaskEither.right([]));
+        await cubit.getTickets();
+      },
+      act: (cubit) => cubit.refreshTickets(),
+      expect: () => const [
+        TicketsRefreshing(tickets: []),
+        TicketsLoaded(tickets: []),
       ],
     );
 
     blocTest<TicketsCubit, TicketsState>(
       'should emit [Error] when use case fails',
       build: () => cubit,
-      setUp: () => when(loadTickets()).thenAnswer(
-        (_) => TaskEither.left(const ServerFailure('some error', 500)),
-      ),
-      act: (_) => cubit.refreshTickets(),
-      expect: () => [const TicketsLoadError(message: 'some error')],
+      setUp: () async {
+        when(loadTickets()).thenAnswer((_) => TaskEither.right([]));
+        await cubit.getTickets();
+        when(loadTickets()).thenAnswer(
+          (_) => TaskEither.left(const ServerFailure('some error', 500)),
+        );
+      },
+      act: (cubit) => cubit.refreshTickets(),
+      expect: () => const [
+        TicketsRefreshing(tickets: []),
+        TicketsLoadError(message: 'some error'),
+      ],
     );
   });
 }

@@ -17,8 +17,17 @@ class TicketsCubit extends Cubit<TicketsState> {
   }) : super(const TicketsLoading());
 
   Future<void> getTickets() async {
-    emit(const TicketsLoading());
-    return refreshTickets();
+    return _refreshTickets();
+  }
+
+  Future<void> refreshTickets() async {
+    switch (state) {
+      case final TicketsLoaded loaded:
+        emit(TicketsRefreshing(tickets: loaded.tickets));
+        return _refreshTickets();
+      default:
+        return;
+    }
   }
 
   Future<void> useTicket(int productId, int menuItemId) async {
@@ -38,10 +47,10 @@ class TicketsCubit extends Cubit<TicketsState> {
         .map(emit)
         .run();
 
-    return refreshTickets();
+    return _refreshTickets();
   }
 
-  Future<void> refreshTickets() => loadTickets()
+  Future<void> _refreshTickets() => loadTickets()
       .match(
         (failure) => TicketsLoadError(message: failure.reason),
         (tickets) => TicketsLoaded(tickets: tickets),
