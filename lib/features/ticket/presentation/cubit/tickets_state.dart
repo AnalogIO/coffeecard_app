@@ -51,5 +51,12 @@ class TicketsUseError extends TicketsAction {
   const TicketsUseError({required this.message, required super.tickets});
 
   @override
-  List<Object?> get props => [message];
+  List<Object?> get props => [message, tickets];
+}
+
+class TicketsRefreshing extends TicketsLoaded {
+  const TicketsRefreshing({required super.tickets});
+
+  @override
+  List<Object?> get props => [tickets];
 }

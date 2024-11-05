@@ -193,7 +193,7 @@ abstract final class Strings {
   static const purchaseSuccess = 'Success';
   static const purchaseRejectedOrCanceled = 'Payment rejected or canceled';
   static const purchaseRejectedOrCanceledMessage =
-      'The payment was rejected or cancelled. No tickets have been added to your account';
+      'Seems like the payment was rejected or cancelled. Please double check that the purchase was cancelled on MobilePay.';
   static const purchaseError = "Uh oh, we couldn't complete that purchase";
   static const purchaseTimeout = 'Purchase timed out';
   static const purchaseTimeoutMessage =

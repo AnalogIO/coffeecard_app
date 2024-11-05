@@ -30,6 +30,9 @@ class RedeemVoucherPage extends StatelessWidget {
               return;
             }
             final _ = LoadingOverlay.hide(context);
+            // Refresh tickets, so the user sees the redeemed ticket(s)
+            // (we also refresh tickets in case of failure as a fail-safe)
+            context.read<TicketsCubit>().refreshTickets();
             if (state is VoucherSuccess) return _onSuccess(context, state);
             if (state is VoucherError) return _onError(context, state);
           },
@@ -40,9 +43,6 @@ class RedeemVoucherPage extends StatelessWidget {
   }
 
   void _onSuccess(BuildContext context, VoucherSuccess state) {
-    // Refresh tickets, so the user sees the redeemed ticket(s)
-    context.read<TicketsCubit>().refreshTickets();
-
     appDialog(
       context: context,
       title: Strings.voucherRedeemed,
