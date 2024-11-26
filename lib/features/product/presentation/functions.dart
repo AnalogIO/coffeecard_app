@@ -2,6 +2,7 @@ import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/core/styles/app_colors.dart';
 import 'package:coffeecard/features/environment/domain/entities/environment.dart';
 import 'package:coffeecard/features/environment/presentation/cubit/environment_cubit.dart';
+import 'package:coffeecard/features/product/menu_item_model.dart';
 import 'package:coffeecard/features/product/presentation/widgets/buy_ticket_bottom_modal_sheet.dart';
 import 'package:coffeecard/features/product/product_model.dart';
 import 'package:coffeecard/features/purchase/domain/entities/payment.dart';
@@ -11,6 +12,7 @@ import 'package:coffeecard/features/receipt/presentation/widgets/receipt_overlay
 import 'package:coffeecard/features/ticket/presentation/cubit/tickets_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fpdart/fpdart.dart' hide State;
 
 Future<void> buyModal({
   required BuildContext context,
@@ -32,7 +34,7 @@ Future<void> buyModal({
   };
 
   // Create a task that will open the purchase modal and wait for the result.
-  final maybePayment = await showModalBottomSheet<Payment>(
+  final maybeTuple = await showModalBottomSheet<(Payment?, Option<MenuItem>)>(
     context: context,
     barrierColor: AppColors.scrim,
     backgroundColor: Colors.transparent,
@@ -43,6 +45,10 @@ Future<void> buyModal({
     ),
   );
 
+  if (maybeTuple == null) return;
+
+  final (maybePayment, maybeItem) = maybeTuple;
+
   if (!context.mounted) return;
 
   // Run the callback with the result of the purchase modal.
@@ -52,7 +58,7 @@ Future<void> buyModal({
 
   // Show the receipt overlay if the payment was successful.
   if (maybePayment?.status == PaymentStatus.completed) {
-    return _afterPurchaseModal(context, maybePayment!, product);
+    return _afterPurchaseModal(context, maybePayment!, product, maybeItem);
   }
 }
 
@@ -60,6 +66,7 @@ Future<void> _afterPurchaseModal(
   BuildContext context,
   Payment payment,
   Product product,
+  Option<MenuItem> maybeMenuItem,
 ) async {
   final envState = context.read<EnvironmentCubit>().state;
   final singleTicketPurchase = product.amount == 1;
@@ -68,9 +75,13 @@ Future<void> _afterPurchaseModal(
   final receiptCubit = context.read<ReceiptCubit>();
 
   if (singleTicketPurchase) {
+    final menuItemId = maybeMenuItem.match(
+      () => product.eligibleMenuItems.first.id,
+      (menuItem) => menuItem.id,
+    );
     await ticketsCubit.useTicket(
       product.id,
-      product.eligibleMenuItems.first.id,
+      menuItemId,
     );
   } else {
     ticketsCubit.getTickets();
