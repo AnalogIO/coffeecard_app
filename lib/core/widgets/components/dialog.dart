@@ -10,7 +10,7 @@ Future<void> appDialog({
   required bool dismissible,
   bool transparentBarrier = false,
 }) async {
-  return showDialog(
+  return showAdaptiveDialog(
     context: context,
     barrierDismissible: dismissible,
     barrierColor: transparentBarrier ? Colors.transparent : AppColors.scrim,
