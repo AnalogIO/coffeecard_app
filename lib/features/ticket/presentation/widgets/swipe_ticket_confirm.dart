@@ -303,7 +303,7 @@ class _ModalContentState extends State<_ModalContent>
           const Gap(8),
           SlideAction(
             elevation: 0,
-            text: Strings.useTicket,
+            text: widget.isPerk ? Strings.claimPerk : Strings.useTicket,
             textStyle: AppTextStyle.buttonText.apply(color: AppColors.white),
             height: 56,
             sliderButtonIcon: const Icon(Icons.navigate_next, size: 48),
