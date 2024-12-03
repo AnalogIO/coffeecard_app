@@ -70,6 +70,7 @@ Future<void> _afterPurchaseModal(
   if (singleTicketPurchase) {
     await ticketsCubit.useTicket(
       product.id,
+      // The first eligible menu item is used as the default.
       product.eligibleMenuItems.first.id,
     );
   } else {

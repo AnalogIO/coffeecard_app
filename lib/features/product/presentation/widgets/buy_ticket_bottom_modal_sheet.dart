@@ -96,34 +96,6 @@ class _BottomModalSheetButtonBarState
   Widget build(BuildContext context) {
     final productPrice = widget.product.price;
     final productId = widget.product.id;
-    final isFreeProduct = productPrice == 0;
-
-    if (isFreeProduct) {
-      return Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _BottomModalSheetButton(
-            text: 'Redeem product',
-            productId: productId,
-            price: productPrice,
-            onTap: () async {
-              final payment = await showPurchaseOverlay(
-                paymentType: InternalPaymentType.free,
-                product: widget.product,
-                context: context,
-              );
-
-              if (!context.mounted) return;
-              // Remove this bottom modal sheet.
-              Navigator.pop<Payment>(
-                context,
-                payment,
-              );
-            },
-          ),
-        ],
-      );
-    }
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

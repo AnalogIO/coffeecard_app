@@ -146,6 +146,7 @@ abstract final class Strings {
   static const emptyCoffeeCardTextBottom =
       'Use the section below to shop tickets.';
   static const useTicket = 'Use ticket';
+  static const claimPerk = 'Claim product';
 
   // "Buy ticket" card
   static const paymentOptionMobilePay = 'MobilePay';
