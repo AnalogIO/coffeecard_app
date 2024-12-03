@@ -128,7 +128,10 @@ class LoadedTicketsSection extends StatelessWidget {
             .map(
               (ticket) => Padding(
                 padding: const EdgeInsets.only(bottom: 12.0),
-                child: Hero(tag: ticket, child: TicketsCard(ticket)),
+                child: Hero(
+                  tag: 'ticket_${ticket.product.id}',
+                  child: TicketsCard(ticket),
+                ),
               ),
             )
             .toList(),
