@@ -154,7 +154,7 @@ class _HomePageState extends State<HomePage> {
               type: BottomNavigationBarType.fixed,
               backgroundColor: AppColors.primary,
               selectedItemColor: AppColors.white,
-              unselectedItemColor: AppColors.white.withOpacity(0.5),
+              unselectedItemColor: AppColors.white.withValues(alpha: 0.5),
               selectedFontSize: 12,
               unselectedLabelStyle: AppTextStyle.bottomNavBarLabel,
               selectedLabelStyle: AppTextStyle.bottomNavBarLabel,

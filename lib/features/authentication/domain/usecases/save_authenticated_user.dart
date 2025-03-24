@@ -10,7 +10,7 @@ class SaveAuthenticatedUser {
     required String email,
     required String token,
     required String encodedPasscode,
-  }) async {
+  }) {
     return dataSource.saveAuthenticatedUser(
       AuthenticatedUserModel(
         email: email,

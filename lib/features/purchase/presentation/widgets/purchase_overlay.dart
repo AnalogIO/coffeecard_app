@@ -15,7 +15,7 @@ Future<Payment?> showPurchaseOverlay({
   required BuildContext context,
   required Product product,
   required InternalPaymentType paymentType,
-}) async =>
+}) =>
     showDialog<Payment>(
       context: context,
       barrierColor: AppColors.scrim,
@@ -38,7 +38,7 @@ Future<Payment?> showPurchaseOverlay({
               );
             },
             child: BlocListener<PurchaseCubit, PurchaseState>(
-              listener: (context, state) async {
+              listener: (context, state) {
                 if (state is PurchaseCompleted) {
                   final payment = state.payment;
                   Navigator.pop<Payment>(context, payment);

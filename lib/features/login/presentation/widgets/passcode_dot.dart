@@ -19,7 +19,7 @@ class PasscodeDot extends StatelessWidget {
       height: 20,
       margin: const EdgeInsets.symmetric(horizontal: 7, vertical: 15),
       decoration: BoxDecoration(
-        color: fill.withOpacity(opacity),
+        color: fill.withValues(alpha: opacity),
         shape: BoxShape.circle,
       ),
       duration: const Duration(milliseconds: 150),

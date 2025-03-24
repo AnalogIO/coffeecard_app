@@ -22,7 +22,7 @@ class Tappable extends StatelessWidget {
   Color? get splashColor =>
       (color == AppColors.white || color == AppColors.primary)
           ? null
-          : AppColors.primary.withOpacity(0.12);
+          : AppColors.primary.withValues(alpha: 0.12);
 
   @override
   Widget build(BuildContext context) {

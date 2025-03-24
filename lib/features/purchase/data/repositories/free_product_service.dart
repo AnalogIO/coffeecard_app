@@ -13,7 +13,7 @@ class FreeProductService extends PaymentHandler {
   });
 
   @override
-  Future<Either<Failure, Payment>> initPurchase(int productId) async {
+  Future<Either<Failure, Payment>> initPurchase(int productId) {
     return remoteDataSource
         .initiatePurchase(
           productId,

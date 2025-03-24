@@ -21,7 +21,7 @@ class StatisticsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<void> refresh() async =>
+    Future<void> refresh() =>
         context.read<LeaderboardCubit>().loadLeaderboard();
 
     final userState = context.watch<UserCubit>().state;

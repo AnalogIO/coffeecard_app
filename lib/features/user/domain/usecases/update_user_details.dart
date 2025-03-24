@@ -15,7 +15,7 @@ class UpdateUserDetails {
     required String? encodedPasscode,
     required bool? privacyActivated,
     required int? occupationId,
-  }) async {
+  }) {
     return dataSource.updateUserDetails(
       UpdateUser(
         name: name,

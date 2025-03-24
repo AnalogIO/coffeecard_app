@@ -189,7 +189,7 @@ void main() {
           (_) async => const Right(PaymentStatus.reserved),
         );
       },
-      act: (_) async => cubit.validatePurchaseStatusAtInterval(
+      act: (_) => cubit.validatePurchaseStatusAtInterval(
         createTestPayment(PaymentStatus.completed),
         maxIterations: 1,
       ),
@@ -207,7 +207,7 @@ void main() {
           (_) async => const Left(ServerFailure(testError, 500)),
         );
       },
-      act: (_) async => cubit.checkPurchaseStatus(
+      act: (_) => cubit.checkPurchaseStatus(
         createTestPayment(PaymentStatus.completed),
         () async {},
       ),
@@ -222,7 +222,7 @@ void main() {
           (_) async => const Right(PaymentStatus.completed),
         );
       },
-      act: (_) async => cubit.checkPurchaseStatus(
+      act: (_) => cubit.checkPurchaseStatus(
         createTestPayment(PaymentStatus.completed),
         () async {},
       ),
@@ -238,7 +238,7 @@ void main() {
           (_) async => const Right(PaymentStatus.error),
         );
       },
-      act: (_) async => cubit.checkPurchaseStatus(
+      act: (_) => cubit.checkPurchaseStatus(
         createTestPayment(PaymentStatus.completed),
         () async {},
       ),
@@ -254,7 +254,7 @@ void main() {
           (_) async => const Right(PaymentStatus.refunded),
         );
       },
-      act: (_) async => cubit.checkPurchaseStatus(
+      act: (_) => cubit.checkPurchaseStatus(
         createTestPayment(PaymentStatus.completed),
         () async {},
       ),
@@ -270,7 +270,7 @@ void main() {
           (_) async => const Right(PaymentStatus.refunded),
         );
       },
-      act: (_) async => cubit.checkPurchaseStatus(
+      act: (_) => cubit.checkPurchaseStatus(
         createTestPayment(PaymentStatus.completed),
         () async {},
       ),

@@ -150,7 +150,7 @@ class SlideActionState extends State<SlideAction>
                   key: _sliderKey,
                   child: GestureDetector(
                     onHorizontalDragUpdate: onHorizontalDragUpdate,
-                    onHorizontalDragEnd: (details) async {
+                    onHorizontalDragEnd: (details) {
                       _endDx = _dx;
                       if (_progress <= 0.8 || widget.onSubmit == null) {
                         final _ = _cancelAnimation();

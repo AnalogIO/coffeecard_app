@@ -24,7 +24,7 @@ void main() {
     );
   });
 
-  test('should return opening hours', () async {
+  test('should return opening hours', () {
     // arrange
     const theOpeningHours = OpeningHours(
       allOpeningHours: {},
