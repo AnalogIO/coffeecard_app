@@ -60,14 +60,14 @@ runs:
     - name: "[dev] Build Android app (apk)"
       if: ${{ inputs.build_type == 'development' }}
       run: |
-        flutter build apk --flavor development --release --build-name ${{ inputs.version }} --build-number ${{ inputs.build_version }} --target lib/main_development.dart
+        flutter build apk --flavor development --release --build-name ${{ inputs.version }} --build-number ${{ inputs.build_version }} --target lib/main.dart
         mv build/app/outputs/flutter-apk/app-development-release.apk android.apk
       shell: bash
 
     - name: "[prod] Build Android app (app bundle)"
       if: ${{ inputs.build_type == 'production' }}
       run: |
-        flutter build appbundle --flavor production --release --build-name ${{ inputs.version }} --build-number ${{ inputs.build_version }} --target lib/main_production.dart
+        flutter build appbundle --flavor production --release --build-name ${{ inputs.version }} --build-number ${{ inputs.build_version }} --target lib/main.dart
         mv build/app/outputs/bundle/productionRelease/app-production-release.aab android.aab
       shell: bash
 

@@ -1,6 +1,5 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/core/firebase_analytics_event_logging.dart';
 import 'package:coffeecard/features/authentication/domain/entities/authenticated_user.dart';
 import 'package:coffeecard/features/authentication/presentation/cubits/authentication_cubit.dart';
 import 'package:coffeecard/features/login/domain/usecases/login_user.dart';
@@ -17,27 +16,22 @@ import 'login_cubit_test.mocks.dart';
   AuthenticationCubit,
   LoginUser,
   ResendEmail,
-  FirebaseAnalyticsEventLogging,
 ])
 void main() {
   late LoginCubit cubit;
   late MockAuthenticationCubit authenticationCubit;
   late MockLoginUser loginUser;
   late MockResendEmail resendEmail;
-  late MockFirebaseAnalyticsEventLogging firebaseAnalyticsEventLogging;
 
   setUp(() {
     authenticationCubit = MockAuthenticationCubit();
     loginUser = MockLoginUser();
     resendEmail = MockResendEmail();
-    firebaseAnalyticsEventLogging = MockFirebaseAnalyticsEventLogging();
     cubit = LoginCubit(
-      email: '',
-      authenticationCubit: authenticationCubit,
-      loginUser: loginUser,
-      resendEmail: resendEmail,
-      firebaseAnalyticsEventLogging: firebaseAnalyticsEventLogging,
-    );
+        email: '',
+        authenticationCubit: authenticationCubit,
+        loginUser: loginUser,
+        resendEmail: resendEmail);
 
     provideDummy<Either<Failure, AuthenticatedUser>>(
       const Left(ConnectionFailure()),

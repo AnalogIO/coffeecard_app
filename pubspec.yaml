@@ -60,12 +60,6 @@ dependencies:
   # brightness
   screen_brightness: 2.1.2
 
-  # firebase
-  firebase_core: 3.12.1
-  firebase_analytics: 11.4.4
-  firebase_crashlytics: 4.3.4
-  firebase_performance: 0.10.1+4
-
   # functional programming thingies
   fpdart: 1.1.1
 
