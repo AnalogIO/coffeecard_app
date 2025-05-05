@@ -9,13 +9,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 part 'login_state.dart';
 
 class LoginCubit extends Cubit<LoginState> {
-  final String email;
   final AuthenticationCubit authenticationCubit;
   final LoginUser loginUser;
   final ResendEmail resendEmail;
 
   LoginCubit({
-    required this.email,
     required this.authenticationCubit,
     required this.loginUser,
     required this.resendEmail,
@@ -29,7 +27,7 @@ class LoginCubit extends Cubit<LoginState> {
 
     emit(LoginTypingPasscode(newPasscode));
 
-    if (newPasscode.length == 4) _loginRequested();
+    // if (newPasscode.length == 4) _loginRequested();
   }
 
   Future<void> resendVerificationEmail(String email) async {
@@ -45,15 +43,11 @@ class LoginCubit extends Cubit<LoginState> {
     emit(const LoginTypingPasscode(''));
   }
 
-  Future<void> _loginRequested() async {
-    final passcode = (state as LoginTypingPasscode).passcode;
-    final encodedPasscode = encodePasscode(passcode);
-
+  Future<void> loginRequested(String email) async {
     emit(const LoginLoading());
 
     final either = await loginUser(
-      email: email,
-      encodedPasscode: encodedPasscode,
+      email: email
     );
 
     either.fold(
@@ -66,11 +60,7 @@ class LoginCubit extends Cubit<LoginState> {
         emit(LoginError(error.reason));
       },
       (user) {
-        authenticationCubit.authenticated(
-          user.email,
-          encodedPasscode,
-          user.token,
-        );
+        // snackbar "check mail"
       },
     );
   }

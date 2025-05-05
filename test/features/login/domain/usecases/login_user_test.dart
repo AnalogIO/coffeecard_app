@@ -34,7 +34,6 @@ void main() {
     // act
     final actual = await usecase(
       email: 'email',
-      encodedPasscode: 'encodedPasscode',
     );
 
     // assert
