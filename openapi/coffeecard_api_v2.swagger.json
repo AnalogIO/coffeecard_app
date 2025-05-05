@@ -1,5 +1,5 @@
 {
-  "x-generator": "NSwag v13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))",
+  "x-generator": "NSwag v14.0.0.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))",
   "openapi": "3.0.0",
   "info": {
     "title": "Cafe Analog CoffeeCard API",
@@ -338,8 +338,8 @@
             "schema": {
               "type": "integer",
               "format": "int32",
-              "maximum": 2147483647,
-              "minimum": 0
+              "maximum": 2147483647.0,
+              "minimum": 0.0
             },
             "x-position": 1
           },
@@ -349,7 +349,8 @@
             "description": "A filter to search by Id, Name or Email. When an empty string is given, all users will be returned",
             "schema": {
               "type": "string",
-              "default": ""
+              "default": "",
+              "nullable": true
             },
             "x-position": 2
           },
@@ -361,19 +362,151 @@
               "type": "integer",
               "format": "int32",
               "default": 30,
-              "maximum": 100,
-              "minimum": 1
+              "maximum": 100.0,
+              "minimum": 1.0
             },
             "x-position": 3
           }
         ],
         "responses": {
+          "401": {
+            "description": " Invalid credentials ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
           "200": {
             "description": "Users, possible with filter applied",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/UserSearchResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          },
+          {
+            "apikey": []
+          }
+        ]
+      }
+    },
+    "/api/v2/account/login": {
+      "post": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "Sends a magic link to the user's email to login",
+        "operationId": "Account_Login",
+        "requestBody": {
+          "x-name": "request",
+          "description": "User's email",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserLoginRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/v2/account/auth": {
+      "post": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "Authenticates the user with the token hash from a magic link",
+        "operationId": "Account_Authenticate",
+        "requestBody": {
+          "x-name": "token",
+          "description": "The token hash from the magic link",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TokenLoginRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "A JSON Web Token used to authenticate for other endpoints and a refresh token to re-authenticate without a new magic link",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserLoginResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageResponseDto"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/v2/statistics/unused-clips": {
+      "post": {
+        "tags": [
+          "AdminStatistics"
+        ],
+        "summary": "Sum unused clip cards within a given period per productId",
+        "operationId": "AdminStatistics_GetUnusedClips",
+        "requestBody": {
+          "x-name": "unusedClipsRequest",
+          "description": "Request object containing start and end date of the query",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UnusedClipsRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": " Products with tickets that match the criteria ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UnusedClipsResponse"
+                  }
                 }
               }
             }
@@ -590,6 +723,133 @@
         ]
       }
     },
+    "/api/v2/menuitems": {
+      "get": {
+        "tags": [
+          "MenuItems"
+        ],
+        "summary": "Returns a list of all menu items",
+        "operationId": "MenuItems_GetAllMenuItems",
+        "responses": {
+          "200": {
+            "description": "Successful request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MenuItemResponse"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          },
+          {
+            "apikey": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "MenuItems"
+        ],
+        "summary": "Adds a menu item",
+        "operationId": "MenuItems_AddMenuItem",
+        "requestBody": {
+          "x-name": "menuItem",
+          "description": "Menu item to add",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddMenuItemRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "201": {
+            "description": "Menu item successfully added",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MenuItemResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          },
+          {
+            "apikey": []
+          }
+        ]
+      }
+    },
+    "/api/v2/menuitems/{id}": {
+      "put": {
+        "tags": [
+          "MenuItems"
+        ],
+        "summary": "Updates a menu item",
+        "operationId": "MenuItems_UpdateMenuItem",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Menu item id to update",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "menuItem",
+          "description": "Menu item to update",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateMenuItemRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "Menu item successfully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MenuItemResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          },
+          {
+            "apikey": []
+          }
+        ]
+      }
+    },
     "/api/v2/mobilepay/webhook": {
       "post": {
         "tags": [
@@ -604,7 +864,8 @@
             "in": "header",
             "description": "Webhook signature",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "nullable": true
             },
             "x-position": 2
           }
@@ -647,11 +908,11 @@
         "tags": [
           "Products"
         ],
-        "summary": "Adds a new product to the database.",
+        "summary": "Adds a new product",
         "operationId": "Products_AddProduct",
         "requestBody": {
           "x-name": "addProductRequest",
-          "description": "The request containing the details of the product to be added and allowed user groups.",
+          "description": "The request containing the details of the product to be added and allowed user groups",
           "content": {
             "application/json": {
               "schema": {
@@ -663,52 +924,12 @@
           "x-position": 1
         },
         "responses": {
-          "200": {
-            "description": "The request was successful, and the product was added.",
+          "201": {
+            "description": "The newly added product",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ChangedProductResponse"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "jwt": []
-          },
-          {
-            "apikey": []
-          }
-        ]
-      },
-      "put": {
-        "tags": [
-          "Products"
-        ],
-        "summary": "Updates a product with the specified changes.",
-        "operationId": "Products_UpdateProduct",
-        "requestBody": {
-          "x-name": "product",
-          "description": "The request containing the changes to be applied to the product.",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateProductRequest"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "200": {
-            "description": "The request was successful, and the product was updated.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ChangedProductResponse"
+                  "$ref": "#/components/schemas/ProductResponse"
                 }
               }
             }
@@ -758,6 +979,60 @@
       }
     },
     "/api/v2/products/{id}": {
+      "put": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Updates a product with the specified changes.",
+        "operationId": "Products_UpdateProduct",
+        "parameters": [
+          {
+            "name": "id",
+            "x-originalName": "productId",
+            "in": "path",
+            "required": true,
+            "description": "Product Id",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "product",
+          "description": "The request containing the changes to be applied to the product",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProductRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "The product was updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          },
+          {
+            "apikey": []
+          }
+        ]
+      },
       "get": {
         "tags": [
           "Products"
@@ -767,6 +1042,7 @@
         "parameters": [
           {
             "name": "id",
+            "x-originalName": "productId",
             "in": "path",
             "required": true,
             "description": "The id of the product to be returned",
@@ -928,6 +1204,67 @@
         ]
       }
     },
+    "/api/v2/purchases/user/{userId}": {
+      "get": {
+        "tags": [
+          "Purchases"
+        ],
+        "summary": "Get all purchases for a user",
+        "operationId": "Purchases_GetAllPurchasesForUser",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "description": "User Id",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Purchases",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SimplePurchaseResponse"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid credentials"
+          },
+          "403": {
+            "description": "User not allowed to view purchases for given user"
+          },
+          "404": {
+            "description": "User with userId not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          },
+          {
+            "apikey": []
+          }
+        ]
+      }
+    },
     "/api/v2/purchases/{id}": {
       "get": {
         "tags": [
@@ -971,6 +1308,54 @@
                 }
               }
             }
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          },
+          {
+            "apikey": []
+          }
+        ]
+      }
+    },
+    "/api/v2/purchases/{id}/refund": {
+      "put": {
+        "tags": [
+          "Purchases"
+        ],
+        "summary": "Refunds a payment",
+        "operationId": "Purchases_RefundPurchase",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "database id of purchase",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Purchase after being refunded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimplePurchaseResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": ""
+          },
+          "403": {
+            "description": ""
           }
         },
         "security": [
@@ -1218,6 +1603,47 @@
           }
         ]
       }
+    },
+    "/api/v2/webhooks/accounts/user-group": {
+      "put": {
+        "tags": [
+          "Webhooks"
+        ],
+        "summary": "Update user groups in bulk",
+        "operationId": "Webhooks_UpdateUserGroups",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The request containing the new user groups",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WebhookUpdateUserGroupRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "The user groups were updated"
+          },
+          "401": {
+            "description": "Invalid credentials"
+          },
+          "400": {
+            "description": "Bad request. See explanation"
+          }
+        },
+        "security": [
+          {
+            "jwt": []
+          },
+          {
+            "apikey": []
+          }
+        ]
+      }
     }
   },
   "components": {
@@ -1287,7 +1713,8 @@
         "additionalProperties": false,
         "properties": {
           "message": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -1537,7 +1964,7 @@
       },
       "UserGroup": {
         "type": "string",
-        "description": "",
+        "description": "Represents the different groups that a user can belong to.",
         "x-enumNames": [
           "Customer",
           "Barista",
@@ -1576,10 +2003,16 @@
         "description": "Represents a search result",
         "additionalProperties": false,
         "required": [
-          "users",
-          "totalUsers"
+          "totalUsers",
+          "users"
         ],
         "properties": {
+          "totalUsers": {
+            "type": "integer",
+            "description": "The number of users that match the query",
+            "format": "int32",
+            "example": 1
+          },
           "users": {
             "type": "array",
             "description": "The users that match the query",
@@ -1595,12 +2028,6 @@
             "items": {
               "$ref": "#/components/schemas/SimpleUserResponse"
             }
-          },
-          "totalUsers": {
-            "type": "integer",
-            "description": "The number of users that match the query",
-            "format": "int32",
-            "example": 1
           }
         }
       },
@@ -1647,7 +2074,7 @@
       },
       "UserState": {
         "type": "string",
-        "description": "",
+        "description": "Represents the state of a User.",
         "x-enumNames": [
           "Active",
           "Deleted",
@@ -1658,6 +2085,141 @@
           "Deleted",
           "PendingActivition"
         ]
+      },
+      "UserLoginRequest": {
+        "type": "object",
+        "description": "User login request object",
+        "example": {
+          "email": "john@doe.com"
+        },
+        "additionalProperties": false,
+        "required": [
+          "email",
+          "loginType"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "Email of user",
+            "format": "email",
+            "minLength": 1,
+            "example": "john@doe.com"
+          },
+          "loginType": {
+            "description": "Defines which application should open on login",
+            "example": "Shifty",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/LoginType"
+              }
+            ]
+          }
+        }
+      },
+      "LoginType": {
+        "type": "string",
+        "description": "Enum for applications to log in to",
+        "x-enumNames": [
+          "Shifty",
+          "App"
+        ],
+        "enum": [
+          "Shifty",
+          "App"
+        ]
+      },
+      "UserLoginResponse": {
+        "type": "object",
+        "description": "User login response object",
+        "example": {
+          "jwt": "[no example provided]",
+          "refreshToken": "[no example provided]"
+        },
+        "additionalProperties": false,
+        "required": [
+          "jwt",
+          "refreshToken"
+        ],
+        "properties": {
+          "jwt": {
+            "type": "string",
+            "description": "JSON Web Token with claims for the user logging in",
+            "minLength": 1
+          },
+          "refreshToken": {
+            "type": "string",
+            "description": "Token used to obtain a new JWT token on expiration",
+            "minLength": 1
+          }
+        }
+      },
+      "TokenLoginRequest": {
+        "type": "object",
+        "description": "Magic link request object",
+        "example": {
+          "token": "[no example provided]"
+        },
+        "additionalProperties": false,
+        "required": [
+          "token"
+        ],
+        "properties": {
+          "token": {
+            "type": "string",
+            "description": "Magic link token",
+            "minLength": 1,
+            "example": "[no example provided]"
+          }
+        }
+      },
+      "UnusedClipsResponse": {
+        "type": "object",
+        "description": "Initialize a response with unused clips data",
+        "additionalProperties": false,
+        "properties": {
+          "productId": {
+            "type": "integer",
+            "description": "The id of the product",
+            "format": "int32",
+            "example": 1
+          },
+          "productName": {
+            "type": "string",
+            "description": "The name of the product",
+            "example": "Americano "
+          },
+          "ticketsLeft": {
+            "type": "integer",
+            "description": "The number of tickets unused in a purchase",
+            "format": "int32",
+            "example": 8
+          },
+          "unusedPurchasesValue": {
+            "type": "number",
+            "description": "The value of the unused purchases of a given product",
+            "format": "decimal",
+            "example": 40.2
+          }
+        }
+      },
+      "UnusedClipsRequest": {
+        "type": "object",
+        "description": "Initialize a request for data with unused clips.",
+        "additionalProperties": false,
+        "properties": {
+          "startDate": {
+            "type": "string",
+            "description": "The start date of unused tickets query.",
+            "format": "date-time",
+            "example": "2021-02-08"
+          },
+          "endDate": {
+            "type": "string",
+            "description": "The end date of unused tickets query.",
+            "format": "date-time",
+            "example": "2024-02-08"
+          }
+        }
       },
       "AppConfig": {
         "type": "object",
@@ -1766,6 +2328,73 @@
           "Total"
         ]
       },
+      "MenuItemResponse": {
+        "type": "object",
+        "description": "Represents a menu item that can be redeemed with a ticket",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "name",
+          "active"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Id of menu item",
+            "format": "int32",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of menu item",
+            "minLength": 1,
+            "example": "Cappuccino"
+          },
+          "active": {
+            "type": "boolean",
+            "description": "Whether or not this menu item is active",
+            "example": true
+          }
+        }
+      },
+      "AddMenuItemRequest": {
+        "type": "object",
+        "description": "Initiate a new menuitem add request.",
+        "additionalProperties": false,
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Gets or sets the name of the product.",
+            "minLength": 1,
+            "example": "Latte"
+          }
+        }
+      },
+      "UpdateMenuItemRequest": {
+        "type": "object",
+        "description": "Initiate an update product request.",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "active"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Gets or sets the updated name of the product.",
+            "minLength": 1,
+            "example": "Espresso"
+          },
+          "active": {
+            "type": "boolean",
+            "description": "Gets or sets the updated active status of the product.",
+            "example": true
+          }
+        }
+      },
       "MobilePayWebhook": {
         "type": "object",
         "description": "MobilePay webhook invocation request \nCode documentation based on MobilePay Developer: Webhooks",
@@ -1823,204 +2452,6 @@
             "type": "string",
             "description": "Internal MobilePay representation of a type.",
             "example": "payment"
-          }
-        }
-      },
-      "ChangedProductResponse": {
-        "type": "object",
-        "description": "Represents the product response.",
-        "additionalProperties": false,
-        "required": [
-          "price",
-          "numberOfTickets",
-          "name",
-          "description",
-          "visible",
-          "allowedUserGroups"
-        ],
-        "properties": {
-          "price": {
-            "type": "integer",
-            "description": "Gets or sets the price of the product.",
-            "format": "int32",
-            "maximum": 2147483647,
-            "minimum": 0,
-            "example": 150
-          },
-          "numberOfTickets": {
-            "type": "integer",
-            "description": "Gets or sets the number of tickets associated with the product.",
-            "format": "int32",
-            "maximum": 2147483647,
-            "minimum": 0,
-            "example": 5
-          },
-          "name": {
-            "type": "string",
-            "description": "Gets or sets the name of the product.",
-            "minLength": 1,
-            "example": "Espresso "
-          },
-          "description": {
-            "type": "string",
-            "description": "Gets or sets the description of the product.",
-            "minLength": 1,
-            "example": "A homemade espresso from fresh beans "
-          },
-          "visible": {
-            "type": "boolean",
-            "description": "Gets or sets the visibility of the product.",
-            "example": true
-          },
-          "allowedUserGroups": {
-            "type": "array",
-            "description": "Gets or sets the user groups that can access the product.",
-            "example": "Manager, Board ",
-            "items": {
-              "$ref": "#/components/schemas/UserGroup"
-            }
-          }
-        }
-      },
-      "AddProductRequest": {
-        "type": "object",
-        "description": "Initiate a new product add request.",
-        "example": {
-          "Name": "Latte",
-          "Price": 25,
-          "NumberOfTickets": 10,
-          "Description": "xxx",
-          "Visible": true,
-          "AllowedUserGroups": [
-            "Manager",
-            "Board"
-          ]
-        },
-        "additionalProperties": false,
-        "required": [
-          "price",
-          "numberOfTickets",
-          "name",
-          "description",
-          "allowedUserGroups"
-        ],
-        "properties": {
-          "price": {
-            "type": "integer",
-            "description": "Gets or sets the price of the product.",
-            "format": "int32",
-            "maximum": 2147483647,
-            "minimum": 0,
-            "example": 10
-          },
-          "numberOfTickets": {
-            "type": "integer",
-            "description": "Gets or sets the number of tickets associated with the product.",
-            "format": "int32",
-            "maximum": 2147483647,
-            "minimum": 0,
-            "example": 5
-          },
-          "name": {
-            "type": "string",
-            "description": "Gets or sets the name of the product.",
-            "minLength": 1,
-            "example": "Latte "
-          },
-          "description": {
-            "type": "string",
-            "description": "Gets or sets the description of the product.",
-            "minLength": 1,
-            "example": "A homemade latte with soy milk "
-          },
-          "visible": {
-            "type": "boolean",
-            "description": "Gets or sets the visibility of the product. Default is true.",
-            "default": true,
-            "example": true
-          },
-          "allowedUserGroups": {
-            "type": "array",
-            "description": "Gets or sets the user groups that can access the product.",
-            "example": "Manager, Board ",
-            "items": {
-              "$ref": "#/components/schemas/UserGroup"
-            }
-          }
-        }
-      },
-      "UpdateProductRequest": {
-        "type": "object",
-        "description": "Initiate an update product request.",
-        "example": {
-          "Id": 1,
-          "Price": 150,
-          "NumberOfTickets": 10,
-          "Name": "Espresso",
-          "Description": "A coffee made by forcing steam through ground coffee beans.",
-          "Visible": false,
-          "AllowedUserGroups": [
-            "Manager",
-            "Board"
-          ]
-        },
-        "additionalProperties": false,
-        "required": [
-          "id",
-          "price",
-          "numberOfTickets",
-          "name",
-          "description",
-          "allowedUserGroups"
-        ],
-        "properties": {
-          "id": {
-            "type": "integer",
-            "description": "Gets or sets the ID of the product to update.",
-            "format": "int32",
-            "example": 1
-          },
-          "price": {
-            "type": "integer",
-            "description": "Gets or sets the updated price of the product.",
-            "format": "int32",
-            "maximum": 2147483647,
-            "minimum": 0,
-            "example": 10
-          },
-          "numberOfTickets": {
-            "type": "integer",
-            "description": "Gets or sets the updated number of tickets associated with the product.",
-            "format": "int32",
-            "maximum": 2147483647,
-            "minimum": 0,
-            "example": 5
-          },
-          "name": {
-            "type": "string",
-            "description": "Gets or sets the updated name of the product.",
-            "minLength": 1,
-            "example": "Espresso "
-          },
-          "description": {
-            "type": "string",
-            "description": "Gets or sets the updated description of the product.",
-            "minLength": 1,
-            "example": "A homemade espresso from fresh beans "
-          },
-          "visible": {
-            "type": "boolean",
-            "description": "Gets or sets the updated visibility of the product. Default is true.",
-            "default": true,
-            "example": true
-          },
-          "allowedUserGroups": {
-            "type": "array",
-            "description": "Gets or sets the user groups that can access the product.",
-            "example": "Manager, Board ",
-            "items": {
-              "$ref": "#/components/schemas/UserGroup"
-            }
           }
         }
       },
@@ -2113,37 +2544,159 @@
           "eligibleMenuItems": {
             "type": "array",
             "description": "The menu items that this product can be used on.",
-            "example": "Cappuccino, Caffe Latte",
+            "example": [
+              "Cappuccino",
+              "Caffe Latte"
+            ],
             "items": {
               "$ref": "#/components/schemas/MenuItemResponse"
             }
           }
         }
       },
-      "MenuItemResponse": {
+      "AddProductRequest": {
         "type": "object",
-        "description": "Represents a menu item that can be redeemed with a ticket",
-        "example": {
-          "id": 1,
-          "name": "Cappuccino"
-        },
+        "description": "Initiate a new product add request.",
         "additionalProperties": false,
         "required": [
-          "id",
-          "name"
+          "price",
+          "numberOfTickets",
+          "name",
+          "description",
+          "visible",
+          "allowedUserGroups",
+          "menuItemIds"
         ],
         "properties": {
-          "id": {
+          "price": {
             "type": "integer",
-            "description": "Id of menu item",
+            "description": "Gets or sets the price of the product.",
             "format": "int32",
-            "example": 1
+            "maximum": 2147483647.0,
+            "minimum": 0.0,
+            "example": 10
+          },
+          "numberOfTickets": {
+            "type": "integer",
+            "description": "Gets or sets the number of tickets associated with the product.",
+            "format": "int32",
+            "maximum": 2147483647.0,
+            "minimum": 0.0,
+            "example": 5
           },
           "name": {
             "type": "string",
-            "description": "Name of menu item",
+            "description": "Gets or sets the name of the product.",
             "minLength": 1,
-            "example": "Cappuccino"
+            "example": "Latte"
+          },
+          "description": {
+            "type": "string",
+            "description": "Gets or sets the description of the product.",
+            "minLength": 1,
+            "example": "A homemade latte with soy milk"
+          },
+          "visible": {
+            "type": "boolean",
+            "description": "Gets or sets the visibility of the product. Default is true.",
+            "default": true,
+            "example": true
+          },
+          "allowedUserGroups": {
+            "type": "array",
+            "description": "Gets or sets the user groups that can access the product.",
+            "example": [
+              "Manager",
+              "Board"
+            ],
+            "items": {
+              "$ref": "#/components/schemas/UserGroup"
+            }
+          },
+          "menuItemIds": {
+            "type": "array",
+            "description": "Gets or sets the menu items that are eligible for the product.",
+            "example": [
+              1,
+              2
+            ],
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        }
+      },
+      "UpdateProductRequest": {
+        "type": "object",
+        "description": "Initiate an update product request.",
+        "additionalProperties": false,
+        "required": [
+          "price",
+          "numberOfTickets",
+          "name",
+          "description",
+          "visible",
+          "allowedUserGroups",
+          "menuItemIds"
+        ],
+        "properties": {
+          "price": {
+            "type": "integer",
+            "description": "Gets or sets the updated price of the product.",
+            "format": "int32",
+            "maximum": 2147483647.0,
+            "minimum": 0.0,
+            "example": 10
+          },
+          "numberOfTickets": {
+            "type": "integer",
+            "description": "Gets or sets the updated number of tickets associated with the product.",
+            "format": "int32",
+            "maximum": 2147483647.0,
+            "minimum": 0.0,
+            "example": 5
+          },
+          "name": {
+            "type": "string",
+            "description": "Gets or sets the updated name of the product.",
+            "minLength": 1,
+            "example": "Espresso"
+          },
+          "description": {
+            "type": "string",
+            "description": "Gets or sets the updated description of the product.",
+            "minLength": 1,
+            "example": "A homemade espresso from fresh beans"
+          },
+          "visible": {
+            "type": "boolean",
+            "description": "Gets or sets the updated visibility of the product. Default is true.",
+            "default": true,
+            "example": true
+          },
+          "allowedUserGroups": {
+            "type": "array",
+            "description": "Gets or sets the user groups that can access the product.",
+            "example": [
+              "Manager",
+              "Board"
+            ],
+            "items": {
+              "$ref": "#/components/schemas/UserGroup"
+            }
+          },
+          "menuItemIds": {
+            "type": "array",
+            "description": "Gets or sets the eligible menu items for the product.",
+            "example": [
+              1,
+              2
+            ],
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
           }
         }
       },
@@ -2306,8 +2859,13 @@
       "PaymentDetails": {
         "type": "object",
         "discriminator": {
-          "propertyName": "discriminator"
+          "propertyName": "discriminator",
+          "mapping": {
+            "MobilePayPaymentDetails": "#/components/schemas/MobilePayPaymentDetails",
+            "FreePurchasePaymentDetails": "#/components/schemas/FreePurchasePaymentDetails"
+          }
         },
+        "description": "Payment details",
         "x-abstract": true,
         "additionalProperties": false,
         "required": [
@@ -2355,9 +2913,6 @@
           },
           {
             "type": "object",
-            "discriminator": {
-              "propertyName": "discriminator"
-            },
             "description": "MobilePay Payment details",
             "example": {
               "paymentType": "MobilePay",
@@ -2368,9 +2923,7 @@
             "additionalProperties": false,
             "required": [
               "mobilePayAppRedirectUri",
-              "paymentId",
-              "state",
-              "discriminator"
+              "paymentId"
             ],
             "properties": {
               "mobilePayAppRedirectUri": {
@@ -2384,15 +2937,6 @@
                 "description": "MobilePay Id for a payment",
                 "minLength": 1,
                 "example": "186d2b31-ff25-4414-9fd1-bfe9807fa8b7"
-              },
-              "state": {
-                "type": "string",
-                "description": "MobilePay state",
-                "nullable": true,
-                "example": "Initiated"
-              },
-              "discriminator": {
-                "type": "string"
               }
             }
           }
@@ -2405,23 +2949,12 @@
           },
           {
             "type": "object",
-            "discriminator": {
-              "propertyName": "discriminator"
-            },
             "description": "Payment details for a free purchase",
             "example": {
               "paymentType": "FreeProduct",
               "orderId": "f5cb3e0f-3b9b-4f50-8c4f-a7450f300a5c"
             },
-            "additionalProperties": false,
-            "required": [
-              "discriminator"
-            ],
-            "properties": {
-              "discriminator": {
-                "type": "string"
-              }
-            }
+            "additionalProperties": false
           }
         ]
       },
@@ -2532,12 +3065,10 @@
       "TicketResponse": {
         "type": "object",
         "description": "Representing a ticket for a product",
-        "example": "{\n    \"id\": 122,\n    \"dateCreated\": \"2022-01-09T21:03:52.2283208Z\",\n    \"dateUsed\": \"2022-01-09T21:03:52.2283208Z\",\n    \"productId\": 1,\n    \"productName: \"Coffee\"\n}",
         "additionalProperties": false,
         "required": [
           "id",
           "dateCreated",
-          "dateUsed",
           "productId",
           "productName"
         ],
@@ -2739,6 +3270,49 @@
             "description": "The requester of the voucher codes",
             "minLength": 1,
             "example": "John Doe"
+          }
+        }
+      },
+      "WebhookUpdateUserGroupRequest": {
+        "type": "object",
+        "description": "Represents a request to update user groups in bulk",
+        "additionalProperties": false,
+        "required": [
+          "privilegedUsers"
+        ],
+        "properties": {
+          "privilegedUsers": {
+            "type": "array",
+            "description": "List of accounts and their new user groups",
+            "items": {
+              "$ref": "#/components/schemas/AccountUserGroup"
+            }
+          }
+        }
+      },
+      "AccountUserGroup": {
+        "type": "object",
+        "description": "Represents an account user group update",
+        "additionalProperties": false,
+        "required": [
+          "accountId",
+          "userGroup"
+        ],
+        "properties": {
+          "accountId": {
+            "type": "integer",
+            "description": "The account id",
+            "format": "int32",
+            "example": 1
+          },
+          "userGroup": {
+            "description": "The user group",
+            "example": "Barista",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/UserGroup"
+              }
+            ]
           }
         }
       }
