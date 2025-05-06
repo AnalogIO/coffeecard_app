@@ -14,21 +14,4 @@ void main() {
     );
     expect(find.text('Small drink'), findsOneWidget);
   });
-
-  // TODO(marfavi): Due to the use of OS-specific rendering of golden files,
-  //  this test will fail on Windows and Mac. We should find a way to make
-  //  golden tests platform-independent.
-  testWidgets(
-    'Tickets card matches golden file',
-    (tester) async {
-      await tester.pumpWidget(
-        MaterialApp(home: Scaffold(body: TicketsCard(testTicket))),
-      );
-      await expectLater(
-        find.byType(TicketsCard),
-        matchesGoldenFile('goldens/tickets_card.png'),
-      );
-    },
-    skip: true,
-  );
 }
