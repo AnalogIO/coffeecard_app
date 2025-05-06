@@ -1,6 +1,5 @@
 import 'package:chopper/chopper.dart' show Response;
 import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/core/firebase_analytics_event_logging.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:logger/logger.dart';
 
@@ -12,12 +11,8 @@ typedef _ExecutorTaskEither<R> = TaskEither<Failure, R>;
 
 class NetworkRequestExecutor {
   final Logger logger;
-  final FirebaseAnalyticsEventLogging firebaseLogger;
 
-  const NetworkRequestExecutor({
-    required this.logger,
-    required this.firebaseLogger,
-  });
+  const NetworkRequestExecutor({required this.logger});
 
   /// Executes a network request and returns an [Either].
   ///
@@ -65,17 +60,8 @@ class NetworkRequestExecutor {
     return result.map((_) => unit);
   }
 
-  /// Logs the response to the console and to Firebase.
-  ///
-  /// Does not log 401 responses to Firebase since these are expected when
-  /// the user is not logged in.
+  /// Logs the response to the console.
   void _logResponse<Body>(Response<Body> response) {
     logger.e(response.toString());
-
-    final ignoreCodes = [401];
-
-    if (!ignoreCodes.contains(response.statusCode)) {
-      firebaseLogger.errorEvent(response.toString());
-    }
   }
 }

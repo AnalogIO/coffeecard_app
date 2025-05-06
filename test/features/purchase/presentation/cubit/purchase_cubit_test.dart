@@ -1,6 +1,5 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:coffeecard/core/errors/failures.dart';
-import 'package:coffeecard/core/firebase_analytics_event_logging.dart';
 import 'package:coffeecard/features/product/menu_item_model.dart';
 import 'package:coffeecard/features/product/product_model.dart';
 import 'package:coffeecard/features/purchase/domain/entities/payment.dart';
@@ -15,13 +14,10 @@ import 'package:mockito/mockito.dart';
 
 import 'purchase_cubit_test.mocks.dart';
 
-@GenerateMocks(
-  [InitPurchase, VerifyPurchaseStatus, FirebaseAnalyticsEventLogging],
-)
+@GenerateMocks([InitPurchase, VerifyPurchaseStatus])
 void main() {
   late MockInitPurchase initPurchase;
   late MockVerifyPurchaseStatus verifyPurchaseStatus;
-  late MockFirebaseAnalyticsEventLogging firebaseAnalyticsEventLogging;
   late PurchaseCubit cubit;
 
   const testMenuItems = [
@@ -42,12 +38,10 @@ void main() {
   setUp(() {
     initPurchase = MockInitPurchase();
     verifyPurchaseStatus = MockVerifyPurchaseStatus();
-    firebaseAnalyticsEventLogging = MockFirebaseAnalyticsEventLogging();
     cubit = PurchaseCubit(
       product: testProduct,
       initPurchase: initPurchase,
       verifyPurchaseStatus: verifyPurchaseStatus,
-      firebaseAnalyticsEventLogging: firebaseAnalyticsEventLogging,
     );
 
     provideDummy<Either<Failure, Payment>>(
@@ -74,10 +68,6 @@ void main() {
     blocTest<PurchaseCubit, PurchaseState>(
       'should not emit new state if state is not [Initial]',
       build: () => cubit,
-      setUp: () {
-        when(firebaseAnalyticsEventLogging.beginCheckoutEvent(any))
-            .thenReturn(null);
-      },
       seed: () => const PurchaseError(testError),
       act: (_) => cubit.pay(),
       expect: () => [],
@@ -87,8 +77,6 @@ void main() {
       'should emit [Started, Error] if use case fails',
       build: () => cubit,
       setUp: () {
-        when(firebaseAnalyticsEventLogging.beginCheckoutEvent(any))
-            .thenReturn(null);
         when(initPurchase(any))
             .thenAnswer((_) async => const Left(ServerFailure(testError, 500)));
       },
@@ -103,8 +91,6 @@ void main() {
       'should emit [Started, Completed] if payment is completed',
       build: () => cubit,
       setUp: () {
-        when(firebaseAnalyticsEventLogging.beginCheckoutEvent(any))
-            .thenReturn(null);
         when(initPurchase(any)).thenAnswer(
           (_) async => Right(createTestPayment(PaymentStatus.completed)),
         );
@@ -120,8 +106,6 @@ void main() {
       'should emit [Started, Processing] if payment is awaiting',
       build: () => cubit,
       setUp: () {
-        when(firebaseAnalyticsEventLogging.beginCheckoutEvent(any))
-            .thenReturn(null);
         when(initPurchase(any)).thenAnswer(
           (_) async => Right(createTestPayment(PaymentStatus.awaitingPayment)),
         );
@@ -137,8 +121,6 @@ void main() {
       'should emit [Started, Rejected] if payment is rejected',
       build: () => cubit,
       setUp: () {
-        when(firebaseAnalyticsEventLogging.beginCheckoutEvent(any))
-            .thenReturn(null);
         when(initPurchase(any)).thenAnswer(
           (_) async => Right(createTestPayment(PaymentStatus.rejectedPayment)),
         );
