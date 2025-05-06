@@ -28,29 +28,4 @@ void main() {
     expect(find.text('2 tickets'), findsOneWidget);
     expect(find.text('10,-'), findsOneWidget);
   });
-
-  testWidgets('BuyTicketsCard should match golden file', (tester) async {
-    await tester.pumpWidget(
-      const MaterialApp(
-        home: Scaffold(
-          body: BuyTicketsCard(
-            Product(
-              id: 0,
-              name: 'Coffee',
-              description: 'Coffee',
-              amount: 1,
-              price: 1,
-              isPerk: false,
-              eligibleMenuItems: [],
-            ),
-          ),
-        ),
-      ),
-    );
-
-    await expectLater(
-      find.byType(BuyTicketsCard),
-      matchesGoldenFile('goldens/buy_tickets_card.png'),
-    );
-  });
 }

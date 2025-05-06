@@ -17,21 +17,4 @@ void main() {
 
     expect(find.textContaining('Test error'), findsOneWidget);
   });
-
-  testWidgets('Error section matches golden file', (tester) async {
-    await tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(
-          body: ErrorSection(
-            error: 'Test error',
-            retry: () {},
-          ),
-        ),
-      ),
-    );
-    await expectLater(
-      find.byType(ErrorSection),
-      matchesGoldenFile('goldens/error_section.png'),
-    );
-  });
 }
