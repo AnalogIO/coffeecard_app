@@ -8,7 +8,7 @@ class GetUser {
 
   GetUser({required this.dataSource});
 
-  Future<Either<Failure, User>> call() async {
+  Future<Either<Failure, User>> call() {
     return dataSource.getUser();
   }
 }

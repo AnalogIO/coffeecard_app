@@ -7,7 +7,7 @@ class RequestAccountDeletion {
 
   RequestAccountDeletion({required this.dataSource});
 
-  Future<Either<Failure, Unit>> call() async {
+  Future<Either<Failure, Unit>> call() {
     return dataSource.requestAccountDeletion();
   }
 }

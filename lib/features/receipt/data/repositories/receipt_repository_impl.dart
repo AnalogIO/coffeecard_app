@@ -22,7 +22,7 @@ class ReceiptRepositoryImpl implements ReceiptRepository {
 
         return userPurchasesEither.fold(
           (error) => Left(error),
-          (userPurchases) async {
+          (userPurchases) {
             final allTickets = [...userReceipts, ...userPurchases];
             allTickets.sort((a, b) => b.timeUsed.compareTo(a.timeUsed));
             return Right(allTickets);

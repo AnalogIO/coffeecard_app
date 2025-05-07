@@ -16,7 +16,7 @@ class TicketsCubit extends Cubit<TicketsState> {
     required this.consumeTicket,
   }) : super(const TicketsLoading());
 
-  Future<void> getTickets() async {
+  Future<void> getTickets() {
     return _refreshTickets();
   }
 

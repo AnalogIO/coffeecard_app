@@ -35,7 +35,7 @@ void main() {
           (_) => Future.value(const Left(ServerFailure('some error', 500))),
         ),
       },
-      act: (_) async => cubit.fetchOccupations(),
+      act: (_) => cubit.fetchOccupations(),
       expect: () => [
         const OccupationLoading(),
         const OccupationError(message: 'some error'),
@@ -48,7 +48,7 @@ void main() {
       setUp: () => when(getOccupations()).thenAnswer(
         (_) => Future.value(const Right([])),
       ),
-      act: (_) async => cubit.fetchOccupations(),
+      act: (_) => cubit.fetchOccupations(),
       expect: () => [
         const OccupationLoading(),
         const OccupationLoaded(occupations: []),

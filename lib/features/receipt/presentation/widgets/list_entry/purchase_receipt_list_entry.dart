@@ -37,7 +37,7 @@ class PurchaseReceiptListEntry extends StatelessWidget {
       rightText: priceText,
       backgroundColor: receipt.paymentStatus == PaymentStatus.completed
           ? AppColors.slightlyHighlighted
-          : AppColors.lightGray.withOpacity(0.5),
+          : AppColors.lightGray.withValues(alpha: 0.5),
       status: '${receipt.paymentStatus}',
     );
   }

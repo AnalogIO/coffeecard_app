@@ -9,7 +9,7 @@ Future<void> appDialog({
   required List<Widget> actions,
   required bool dismissible,
   bool transparentBarrier = false,
-}) async {
+}) {
   return showDialog(
     context: context,
     barrierDismissible: dismissible,

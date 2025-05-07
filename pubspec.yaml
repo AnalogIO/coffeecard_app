@@ -8,7 +8,7 @@ version: 0.0.0+1
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
-  flutter: 3.24.4
+  flutter: 3.29.2
 
 dependencies:
   flutter:
@@ -23,81 +23,75 @@ dependencies:
   cached_network_image: 3.4.1
 
   # Chopper api and rest client
-  logger: 2.4.0
-  chopper: 8.0.2
+  logger: 2.5.0
+  chopper: 8.1.0
 
   # storage
-  flutter_secure_storage: 9.2.2
+  flutter_secure_storage: 9.2.4
   hive: 2.2.3
   hive_flutter: 1.1.0
 
   # dependency injection
-  get_it: 8.0.0
+  get_it: 8.0.3
 
   # State management
-  flutter_bloc: 8.1.6
-  bloc: 8.1.4
-  stream_transform: 2.1.0
+  flutter_bloc: 9.1.0
+  bloc: 9.0.0
+  stream_transform: 2.1.1
   provider: 6.1.2
 
   # Utility
-  meta: 1.15.0
-  equatable: 2.0.5
-  collection: 1.18.0
+  meta: 1.16.0
+  equatable: 2.0.7
+  collection: 1.19.1
 
   # Internationalization and date formatting
-  intl: 0.19.0
+  intl: 0.20.2
 
   # Url Launcher
-  url_launcher: 6.3.0
+  url_launcher: 6.3.1
 
   # crypto
-  crypto: 3.0.5
+  crypto: 3.0.6
 
   # rest
-  http: 1.2.2
+  http: 1.3.0
 
   # brightness
-  screen_brightness: 1.0.1
-
-  # firebase
-  firebase_core: 3.5.0
-  firebase_analytics: 11.3.2
-  firebase_crashlytics: 4.1.2
-  firebase_performance: 0.10.0+7
+  screen_brightness: 2.1.2
 
   # functional programming thingies
-  fpdart: 1.1.0
+  fpdart: 1.1.1
 
   # Upgrade notifier
-  upgrader: 10.3.0
+  upgrader: 11.3.1
 
   # env
-  envied: 0.5.4+1
+  envied: 1.1.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  build_runner: 2.4.11
+  build_runner: 2.4.15
 
-  flutter_launcher_icons: 0.14.1
-  flutter_native_splash: 2.4.1
+  flutter_launcher_icons: 0.14.3
+  flutter_native_splash: 2.4.5
 
   # unit testing
-  mockito: 5.4.4
-  bloc_test: 9.1.7
+  mockito: 5.4.5
+  bloc_test: 10.0.0
 
   # Chopper api and rest client
-  chopper_generator: 8.0.2
-  json_serializable: 6.8.0
+  chopper_generator: 8.1.0
+  json_serializable: 6.9.4
   swagger_dart_code_generator: 3.0.1
 
   # linter
-  lint: 2.3.0
+  lint: 2.8.0
 
   # env
-  envied_generator: 0.5.4+1
+  envied_generator: 1.1.1
 
 # update splash screen:
 # flutter pub run flutter_native_splash:create

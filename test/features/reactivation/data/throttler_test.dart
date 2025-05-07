@@ -37,7 +37,7 @@ void main() {
     'GIVEN a throttler with no previous calls '
     'WHEN a task is throttled twice in parallel '
     'THEN the futures returned by runThrottled should be identical',
-    () async {
+    () {
       // Throttle a task that will wait for the completer to complete,
       // and then increment the counter.
       final task1 = incrementAndWaitTask(completer).runThrottled(throttler);

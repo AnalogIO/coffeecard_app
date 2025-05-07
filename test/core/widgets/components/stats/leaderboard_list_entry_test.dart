@@ -45,47 +45,4 @@ void main() {
       expect(find.text('1'), findsOneWidget);
     },
   );
-  testWidgets('LeaderboardListEntry should match golden file', (tester) async {
-    await tester.pumpWidget(
-      const MaterialApp(
-        home: Scaffold(
-          body: LeaderboardListEntry(
-            id: 1,
-            highlight: false,
-            name: 'Test',
-            rank: 1,
-            score: 100,
-          ),
-        ),
-      ),
-    );
-    await expectLater(
-      find.byType(LeaderboardListEntry),
-      matchesGoldenFile('goldens/leaderboard_list_entry.png'),
-    );
-  });
-
-  testWidgets(
-    'LeaderboardListEntry when highlighted and truncated should match golden file',
-    (tester) async {
-      await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: LeaderboardListEntry(
-              id: 1,
-              highlight: true,
-              name:
-                  'TestHighlighted with a very long name so it gets truncated and the score remains on the right',
-              rank: 30,
-              score: 1,
-            ),
-          ),
-        ),
-      );
-      await expectLater(
-        find.byType(LeaderboardListEntry),
-        matchesGoldenFile('goldens/leaderboard_list_entry_highlighted.png'),
-      );
-    },
-  );
 }

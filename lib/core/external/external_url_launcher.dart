@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart' as url_launch;
 
 class ExternalUrlLauncher {
-  Future<bool> canLaunch(Uri uri) async => url_launch.canLaunchUrl(uri);
+  Future<bool> canLaunch(Uri uri) => url_launch.canLaunchUrl(uri);
 
-  Future<void> launch(Uri uri) async => url_launch.launchUrl(
+  Future<void> launch(Uri uri) => url_launch.launchUrl(
         uri,
         mode: url_launch.LaunchMode.externalApplication,
       );

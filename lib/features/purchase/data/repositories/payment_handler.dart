@@ -40,9 +40,7 @@ abstract class PaymentHandler {
     };
   }
 
-  Future<Either<Failure, PaymentStatus>> verifyPurchase(
-    int purchaseId,
-  ) async {
+  Future<Either<Failure, PaymentStatus>> verifyPurchase(int purchaseId) {
     // Call API endpoint, receive PaymentStatus
     return remoteDataSource
         .getPurchase(purchaseId)

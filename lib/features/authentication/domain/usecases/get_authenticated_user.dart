@@ -7,7 +7,7 @@ class GetAuthenticatedUser {
 
   GetAuthenticatedUser({required this.dataSource});
 
-  Future<Option<AuthenticatedUser>> call() async {
+  Future<Option<AuthenticatedUser>> call() {
     return dataSource.getAuthenticatedUser();
   }
 }

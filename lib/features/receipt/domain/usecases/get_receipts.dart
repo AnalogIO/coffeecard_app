@@ -8,7 +8,7 @@ class GetReceipts {
 
   GetReceipts({required this.repository});
 
-  Future<Either<Failure, List<Receipt>>> call() async {
+  Future<Either<Failure, List<Receipt>>> call() {
     return repository.getUserReceipts();
   }
 }

@@ -128,7 +128,7 @@ class _FormTextFieldState extends State<_FormTextField> {
                 letterSpacing: 0,
               ),
               filled: true,
-              fillColor: AppColors.white.withOpacity(opacityLevel),
+              fillColor: AppColors.white.withValues(alpha: opacityLevel),
               contentPadding: const EdgeInsets.only(
                 top: 8,
                 bottom: 12,
