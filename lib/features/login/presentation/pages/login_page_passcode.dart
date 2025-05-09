@@ -7,8 +7,6 @@ import 'package:coffeecard/core/widgets/fast_slide_transition.dart';
 import 'package:coffeecard/features/login/presentation/cubit/login_cubit.dart';
 import 'package:coffeecard/features/login/presentation/pages/forgot_passcode_page.dart';
 import 'package:coffeecard/features/login/presentation/pages/login_page_base.dart';
-import 'package:coffeecard/features/login/presentation/widgets/login_passcode_dots.dart';
-import 'package:coffeecard/features/login/presentation/widgets/numpad/numpad.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,24 +25,19 @@ class LoginPagePasscode extends StatefulWidget {
 }
 
 class _LoginPagePasscodeState extends State<LoginPagePasscode> {
-  void _forgotPasscode(BuildContext context) {
-    final _ = Navigator.push(
-      context,
-      ForgotPasscodePage.routeWith(initialValue: widget.email),
-    );
-  }
+  Future<void> resendMagicLink(LoginCubit cubit) async {
+    cubit.resendMagicLink(widget.email);
 
-  Future<void> resendEmailCallback(LoginCubit cubit) async {
-    cubit.resendVerificationEmail(widget.email);
+    // TODO: replace with actual dialogue
     await appDialog(
       context: context,
-      title: Strings.loginVerificationEmailSent,
+      title: 'fuck you',
       children: [
-        Text(Strings.loginVerificationEmailBody(widget.email)),
+        const Text('you piece of shit'),
       ],
       actions: [
         TextButton(
-          child: const Text(Strings.buttonOK),
+          child: const Text('fucking ok then'),
           onPressed: () => closeAppDialog(context),
         ),
       ],
@@ -73,25 +66,19 @@ class _LoginPagePasscodeState extends State<LoginPagePasscode> {
         },
         buildWhen: (_, current) => current is! LoginLoading,
         builder: (context, state) {
-          final passcode = (state is LoginTypingPasscode) ? state.passcode : '';
-
           return LoginPageBase(
             resizeToAvoidBottomInset: false,
             title: widget.email,
-            inputWidget: LoginPasscodeDots(
-              passcodeLength: passcode.length,
-              hasError: state is LoginError,
-            ),
-            defaultHint: Strings.loginPasscodeHint,
+            inputWidget: Container(),
+            defaultHint:
+                'Vi har sendt en mail til ${widget.email} med et link du kan bruge til at logge ind.',
             error: state is LoginError ? state.errorMessage : null,
             ctaChildren: [
-              if (state is LoginEmailNotVerified)
-                RoundedButton.bright(
-                  text: Strings.loginResendVerificationEmail,
-                  onTap: () => resendEmailCallback(context.read<LoginCubit>()),
-                ),
+              RoundedButton.bright(
+                text: 'Ikke fået den? Send igen',
+                onTap: () => resendMagicLink(context.read<LoginCubit>()),
+              ),
             ],
-            bottomWidget: Numpad(forgotPasscodeAction: _forgotPasscode),
           );
         },
       ),

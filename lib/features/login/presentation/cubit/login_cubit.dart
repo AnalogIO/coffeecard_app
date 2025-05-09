@@ -5,6 +5,7 @@ import 'package:coffeecard/features/login/domain/usecases/login_user.dart';
 import 'package:coffeecard/features/login/domain/usecases/resend_email.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fpdart/fpdart.dart';
 
 part 'login_state.dart';
 
@@ -38,6 +39,16 @@ class LoginCubit extends Cubit<LoginState> {
     return either.fold(
       (err) => emit(LoginError(err.reason)),
       (_) => clearPasscode(),
+    );
+  }
+
+  Future<void> resendMagicLink(String email) async {
+    // TODO: Send et kald der beder om et magic link
+    final either = left('Not implemented');
+
+    either.fold(
+      (error) => emit(LoginError(error)),
+      (_) => emit(const LoginEmailNotVerified('')),
     );
   }
 
