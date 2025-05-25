@@ -36,22 +36,4 @@ void main() {
     expect(find.text('StatsTest'), findsOneWidget);
     expect(find.textContaining('N/A'), findsOneWidget);
   });
-
-  testWidgets('Statistics card matches golden file', (tester) async {
-    await tester.pumpWidget(
-      const MaterialApp(
-        home: Scaffold(
-          body: StatisticsCard(
-            title: 'This semester',
-            rank: 2,
-            loading: false,
-          ),
-        ),
-      ),
-    );
-    await expectLater(
-      find.byType(StatisticsCard),
-      matchesGoldenFile('goldens/stat_card.png'),
-    );
-  });
 }

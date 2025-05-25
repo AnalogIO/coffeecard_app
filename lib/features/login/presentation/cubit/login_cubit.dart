@@ -59,7 +59,7 @@ class LoginCubit extends Cubit<LoginState> {
 
         emit(LoginError(error.reason));
       },
-      (user) {
+      (_) {
         // snackbar "check mail"
       },
     );

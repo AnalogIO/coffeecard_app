@@ -25,7 +25,7 @@ on:
 jobs:
   version:
     name: Versioning
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout code
@@ -58,11 +58,14 @@ jobs:
 
   build_ios:
     name: Build iOS App
-    runs-on: macos-latest
+    runs-on: macos-15
     needs: [version]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4.1.0
+
+      - name: Set Xcode version
+        run: sudo xcode-select -s /Applications/Xcode_16.3.app
 
       - name: "[dev] Build iOS app"
         if: ${{ inputs.build_type == 'development' }}
@@ -92,7 +95,7 @@ jobs:
 
   build_android:
     name: Build Android App
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [version]
     steps:
       - name: Checkout code
