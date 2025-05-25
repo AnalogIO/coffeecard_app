@@ -47,6 +47,7 @@ class _HomePageState extends State<HomePage> {
       ..add(newFlowIndex);
   }
 
+  // TODO(marfavi): When did this method become unused?
   bool get onWillPop {
     // If back arrow is present on page, go back in the current flow
     {
@@ -141,6 +142,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
         child: PopScope(
+          canPop: false,
           child: Scaffold(
             backgroundColor: AppColors.background,
             body: LazyIndexedStack(
