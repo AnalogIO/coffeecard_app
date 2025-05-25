@@ -34,7 +34,7 @@ The application is brewed using these SDK versions:
 | SDK     | Version        |
 | ------- | -------------- |
 | Dart    | >=3.0.0 <4.0.0 |
-| Flutter | 3.29.2         |
+| Flutter | 3.32.0         |
 
 ## 📚 Documentation
 

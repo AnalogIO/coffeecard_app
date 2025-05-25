@@ -121,8 +121,8 @@ class OccupationListEntry extends StatelessWidget {
       valueWidget: Radio(
         value: occupation,
         groupValue: selected,
+        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
         // On tap handler is set on the whole list entry; ignore the tap here
-        // ignore: no-empty-block
         onChanged: (_) {},
       ),
       onTap: () => onTap(occupation),
