@@ -67,6 +67,7 @@ class EditProfile extends StatelessWidget {
                   .setUserPrivacy(privacyActivated: !user.privacyActivated),
               valueWidget: Switch(
                 value: user.privacyActivated,
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 trackColor: WidgetStateProperty.resolveWith<Color>((states) {
                   if (states.contains(WidgetState.selected)) {
                     return AppColors.secondary;
