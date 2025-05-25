@@ -52,8 +52,8 @@ class SettingListEntry extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 50,
+    return Container(
+      constraints: const BoxConstraints(minHeight: 56),
       child: ListEntry(
         onTap: _disabled ? null : onTap,
         sideToExpand: sideToExpand,

@@ -66,8 +66,8 @@ class EditProfile extends StatelessWidget {
                   .setUserPrivacy(privacyActivated: !user.privacyActivated),
               valueWidget: Switch(
                 value: user.privacyActivated,
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 // No action needed on change, only tap
-                // ignore: no-empty-block
                 onChanged: (_) {},
               ),
             ),
