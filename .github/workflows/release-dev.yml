@@ -18,7 +18,7 @@ jobs:
 
   upload_ios:
     name: Upload iOS build to Firebase App Distribution
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [build, test]
 
     steps:
@@ -41,7 +41,7 @@ jobs:
 
   upload_android:
     name: Upload Android build to Firebase App Distribution
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [build, test]
 
     steps:

@@ -18,7 +18,7 @@ jobs:
 
   release_ios:
     name: Upload iOS build to App Store connect
-    runs-on: macos-latest
+    runs-on: macos-15
     needs: [build, test]
 
     steps:
@@ -36,7 +36,7 @@ jobs:
 
   release_android:
     name: Upload Android build to Play Store
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [build, test]
 
     steps:
