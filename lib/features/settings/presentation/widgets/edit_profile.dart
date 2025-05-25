@@ -1,4 +1,5 @@
 import 'package:coffeecard/core/strings.dart';
+import 'package:coffeecard/core/styles/app_colors.dart';
 import 'package:coffeecard/core/styles/app_text_styles.dart';
 import 'package:coffeecard/core/widgets/components/helpers/responsive.dart';
 import 'package:coffeecard/features/occupation/presentation/pages/change_occupation_page.dart';
@@ -66,8 +67,13 @@ class EditProfile extends StatelessWidget {
                   .setUserPrivacy(privacyActivated: !user.privacyActivated),
               valueWidget: Switch(
                 value: user.privacyActivated,
+                trackColor: WidgetStateProperty.resolveWith<Color>((states) {
+                  if (states.contains(WidgetState.selected)) {
+                    return AppColors.secondary;
+                  }
+                  return AppColors.lightGray;
+                }),
                 // No action needed on change, only tap
-                // ignore: no-empty-block
                 onChanged: (_) {},
               ),
             ),
