@@ -16,6 +16,7 @@ import 'package:coffeecard/features/ticket/presentation/cubit/tickets_cubit.dart
 import 'package:coffeecard/features/ticket/presentation/pages/tickets_page.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
@@ -37,48 +38,55 @@ class _HomePageState extends State<HomePage> {
 
   void onNavFlowChange(int newFlowIndex) {
     setState(() => _currentPageIndex = newFlowIndex);
-
+    // Reset the stack when visiting the first tab
     if (newFlowIndex == 0) {
       _navFlowsStack = [0];
       return;
     }
+    // Move flow index to top of stack (if present); otherwise add it to stack
     _navFlowsStack
       ..remove(newFlowIndex)
       ..add(newFlowIndex);
   }
 
-  // TODO(marfavi): When did this method become unused?
-  bool get onWillPop {
+  void onWillPop() {
     // If back arrow is present on page, go back in the current flow
     {
       final currentFlow = _navFlowsStack.last;
       final currentNavigator = _pages[currentFlow].navigatorKey.currentState!;
       if (currentNavigator.canPop()) {
-        return true;
+        debugPrint('Going back in the focused flow');
+        return currentNavigator.pop();
       }
     }
 
-    if (_navFlowsStack.removeLast() == 0) {
-      return true;
+    // Pop the current flow index off the stack
+    final _ = _navFlowsStack.removeLast();
+
+    // Exit app if the stack is now empty, or change the the page
+    if (_navFlowsStack.isEmpty) {
+      SystemNavigator.pop(animated: true);
+    } else {
+      setState(() => _currentPageIndex = _navFlowsStack.last);
     }
-    setState(() => _currentPageIndex = _navFlowsStack.last);
-    return false;
   }
 
   void onBottomNavTap(int index) {
+    // Tapped tab is different than the active tab; navigate to that flow
     if (index != _currentPageIndex) {
       onNavFlowChange(index);
       return;
     }
 
-    // Reset navigation stack
-    {
-      final navigatorKey = _pages[index].navigatorKey;
-      navigatorKey.currentState!.popUntil((route) => route.isFirst);
-    }
+    // Tapped tab is the same as active tab at this point
+    // Either go to the flow's root or scroll to page's top.
 
-    // Scroll to the top of the page
-    {
+    final navigatorKey = _pages[index].navigatorKey;
+    if (navigatorKey.currentState!.canPop()) {
+      // User was not at the "root" of the flow; go there
+      return navigatorKey.currentState!.popUntil((route) => route.isFirst);
+    } else {
+      // User was "root" of the flow; scroll to page top
       final scrollController = _pages[index].scrollController;
       final ms = () {
         // We divide by d in the next line, so make sure it cannot be zero
@@ -86,7 +94,6 @@ class _HomePageState extends State<HomePage> {
         final t = ((1 - 150 / d) * 1500).ceil();
         return max(t, 100);
       }();
-
       scrollController.animateTo(
         0,
         duration: Duration(milliseconds: ms),
@@ -143,6 +150,7 @@ class _HomePageState extends State<HomePage> {
         ],
         child: PopScope(
           canPop: false,
+          onPopInvokedWithResult: (_, __) => onWillPop(),
           child: Scaffold(
             backgroundColor: AppColors.background,
             body: LazyIndexedStack(
