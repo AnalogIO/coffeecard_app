@@ -86,7 +86,7 @@ class _HomePageState extends State<HomePage> {
       // User was not at the "root" of the flow; go there
       navigatorKey.currentState!.popUntil((route) => route.isFirst);
     } else {
-      // User was "root" of the flow; scroll to page top
+      // User was at the "root" of the flow; scroll to page top
       final scrollController = _pages[index].scrollController;
       final ms = () {
         // We divide by d in the next line, so make sure it cannot be zero
