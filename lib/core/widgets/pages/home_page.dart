@@ -63,7 +63,7 @@ class _HomePageState extends State<HomePage> {
     // Pop the current flow index off the stack
     final _ = _navFlowsStack.removeLast();
 
-    // Exit app if the stack is now empty, or change the the page
+    // Exit app if the stack is now empty, or change the page
     if (_navFlowsStack.isEmpty) {
       SystemNavigator.pop(animated: true);
     } else {
