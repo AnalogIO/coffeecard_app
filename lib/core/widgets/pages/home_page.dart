@@ -84,7 +84,7 @@ class _HomePageState extends State<HomePage> {
     final navigatorKey = _pages[index].navigatorKey;
     if (navigatorKey.currentState!.canPop()) {
       // User was not at the "root" of the flow; go there
-      return navigatorKey.currentState!.popUntil((route) => route.isFirst);
+      navigatorKey.currentState!.popUntil((route) => route.isFirst);
     } else {
       // User was "root" of the flow; scroll to page top
       final scrollController = _pages[index].scrollController;
