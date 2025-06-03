@@ -28,7 +28,6 @@ void main() {
     loginUser = MockLoginUser();
     resendEmail = MockResendEmail();
     cubit = LoginCubit(
-        email: '',
         authenticationCubit: authenticationCubit,
         loginUser: loginUser,
         resendEmail: resendEmail);
