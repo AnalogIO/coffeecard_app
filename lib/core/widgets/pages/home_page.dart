@@ -55,7 +55,6 @@ class _HomePageState extends State<HomePage> {
       final currentFlow = _navFlowsStack.last;
       final currentNavigator = _pages[currentFlow].navigatorKey.currentState!;
       if (currentNavigator.canPop()) {
-        debugPrint('Going back in the focused flow');
         return currentNavigator.pop();
       }
     }
