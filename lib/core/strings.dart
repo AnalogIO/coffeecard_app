@@ -4,8 +4,7 @@ abstract final class Strings {
   // Titles for the app bar.
   static const ticketsPageTitle = 'Tickets';
   static const statsPageTitle = 'Statistics';
-  static const buyOneDrinkPageTitle = 'Buy one drink';
-  static const buyOtherPageTitle = 'Buy other';
+  static const buyOneDrinkPageTitle = 'Buy merch';
   static const redeemVoucherPageTitle = 'Redeem voucher';
 
   // Titles for the navigation bar.

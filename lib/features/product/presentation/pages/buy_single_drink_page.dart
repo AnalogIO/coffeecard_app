@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BuySingleDrinkPage extends StatelessWidget {
+  /// Formerly a page used for buying a single drink, now used to buy merch.
   const BuySingleDrinkPage();
 
   static Route get route =>
