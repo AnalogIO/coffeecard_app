@@ -27,7 +27,7 @@ class ShopSection extends StatelessWidget {
             ),
             ShopCard(
               title: Strings.buyOneDrink,
-              icon: Icons.coffee,
+              icon: Icons.shopping_bag,
               onTapped: (_) =>
                   Navigator.push(context, BuySingleDrinkPage.route),
             ),
