@@ -53,8 +53,7 @@ abstract final class Strings {
   static const ticketsMyTickets = 'My tickets';
   static const shopText = 'Shop';
   static const buyTickets = 'Buy tickets';
-  static const buyOneDrink = 'Buy one drink';
-  static const buyOther = 'Buy syrup, jugs etc.';
+  static const buyOneDrink = 'Buy merch';
   static const redeemVoucher = 'Redeem voucher';
   static const newLabel = 'NEW';
   static const comingSoonLabel = 'COMING SOON';
