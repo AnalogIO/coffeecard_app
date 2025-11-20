@@ -64,6 +64,13 @@ class AccountRemoteDataSource {
     );
   }
 
+  Future<Either<Failure, Unit>> sendMagicLink(
+    String email,
+  ) {
+    return executor.executeAndDiscard(() => 
+    apiV2.apiV2AccountLoginPost(body: UserLoginRequest(email: email, loginType: 'Shifty')));
+  }
+
   Future<Either<Failure, User>> getUser() {
     return executor.execute(apiV2.apiV2AccountGet).map(UserModel.fromResponse);
   }

@@ -1,12 +1,14 @@
 import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/core/validator/email_is_valid.dart';
 import 'package:coffeecard/core/widgets/fast_slide_transition.dart';
+import 'package:coffeecard/features/login/presentation/cubit/login_cubit.dart';
 import 'package:coffeecard/features/login/presentation/pages/login_page_base.dart';
-import 'package:coffeecard/features/login/presentation/pages/login_page_passcode.dart';
 import 'package:coffeecard/features/login/presentation/widgets/login_cta.dart';
 import 'package:coffeecard/features/login/presentation/widgets/login_email_text_field.dart';
 import 'package:coffeecard/features/register/presentation/pages/register_flow.dart';
+import 'package:coffeecard/service_locator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginPageEmail extends StatefulWidget {
   const LoginPageEmail({this.transitionDuration = Duration.zero});
@@ -53,8 +55,7 @@ class _LoginPageEmailState extends State<LoginPageEmail>
     } else if (!emailIsValid(email)) {
       error = Strings.loginInvalidEmailError;
     } else {
-      final _ =
-          Navigator.push(context, LoginPagePasscode.routeWith(email: email));
+      final _ = context.read<LoginCubit>().loginRequested(email);
     }
   }
 
@@ -84,7 +85,12 @@ class _LoginPageEmailState extends State<LoginPageEmail>
   Widget build(BuildContext context) {
     final _ = _controller.forward();
 
-    return FadeTransition(
+    return BlocProvider(
+      create: (_) => LoginCubit(
+        loginUser: sl(),
+        resendEmail: sl(),
+        authenticationCubit: sl(),
+      ), child: FadeTransition(
       opacity: _animation,
       child: LoginPageBase(
         resizeToAvoidBottomInset: false,
@@ -100,6 +106,6 @@ class _LoginPageEmailState extends State<LoginPageEmail>
           LoginCTA(text: Strings.loginCreateAccount, onPressed: _register),
         ],
       ),
-    );
+    ));
   }
 }
