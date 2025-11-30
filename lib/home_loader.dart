@@ -33,7 +33,7 @@ class _HomeLoaderState extends State<HomeLoader> {
 
       if (userLoaded && productState is ProductsLoaded) {
         // Navigate to actual home page with products
-        context.go('/home', extra: productState.products);
+        context.go('/home');
       } else {
         // Handle loading failure
         context.read<AuthenticationCubit>().unauthenticated();
