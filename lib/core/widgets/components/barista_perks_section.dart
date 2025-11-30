@@ -3,6 +3,7 @@ import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/core/widgets/components/helpers/grid.dart';
 import 'package:coffeecard/core/widgets/components/section_title.dart';
 import 'package:coffeecard/core/widgets/components/user_role_indicator.dart';
+import 'package:coffeecard/features/product/presentation/cubit/product_cubit.dart';
 import 'package:coffeecard/features/product/purchasable_products.dart';
 import 'package:coffeecard/features/ticket/presentation/widgets/perk_card.dart';
 import 'package:coffeecard/features/user/domain/entities/role.dart';
@@ -23,22 +24,29 @@ class BaristaPerksSection extends StatefulWidget {
 class _BaristaPerksSectionState extends State<BaristaPerksSection> {
   @override
   Widget build(BuildContext context) {
-    final perks = context.watch<PurchasableProducts>().perks;
     final roleName = widget.userRole.name.capitalize();
-    return Column(
-      children: [
-        SectionTitle.withSideWidget(
-          Strings.perksTitle(roleName),
-          sideWidget: UserRoleIndicator(widget.userRole),
-        ),
-        Grid(
-          gap: GridGap.normal,
-          gapSmall: GridGap.tight,
-          singleColumnOnSmallDevice: true,
-          children: perks.map(PerkCard.fromProduct).toList(),
-        ),
-        const Gap(16),
-      ],
+    return BlocBuilder(
+      builder: (context, state) {
+        if (state is ProductsLoaded){
+          return Column(
+            children: [
+              SectionTitle.withSideWidget(
+                Strings.perksTitle(roleName),
+                sideWidget: UserRoleIndicator(widget.userRole),
+              ),
+              Grid(
+                gap: GridGap.normal,
+                gapSmall: GridGap.tight,
+                singleColumnOnSmallDevice: true,
+                children: state.products.perks.map(PerkCard.fromProduct).toList(),
+              ),
+              const Gap(16),
+            ],
+          );
+        } else {
+          return const CircularProgressIndicator();
+        }
+      },
     );
   }
 }

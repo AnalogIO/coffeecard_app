@@ -21,13 +21,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({required this.products});
-  const HomePage._({required this.products});
-  final PurchasableProducts products;
-
-  static Route routeWith({required PurchasableProducts products}) {
-    return MaterialPageRoute(builder: (_) => HomePage._(products: products));
-  }
+  const HomePage();
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -131,44 +125,41 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Provider(
-      create: (BuildContext context) => widget.products,
-      child: MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (_) => sl<TicketsCubit>()..getTickets(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => sl<TicketsCubit>()..getTickets(),
+        ),
+        BlocProvider(
+          create: (_) => sl<ReceiptCubit>()..fetchReceipts(),
+        ),
+        BlocProvider(
+          create: (_) => sl<LeaderboardCubit>()..loadLeaderboard(),
+        ),
+        BlocProvider(
+          create: (_) => sl<OpeningHoursCubit>()..getOpeninghours(),
+        ),
+      ],
+      child: PopScope(
+        canPop: false,
+        onPopInvokedWithResult: (_, __) => onWillPop(),
+        child: Scaffold(
+          backgroundColor: AppColors.background,
+          body: LazyIndexedStack(
+            index: _currentPageIndex,
+            children: _bottomNavAppFlows,
           ),
-          BlocProvider(
-            create: (_) => sl<ReceiptCubit>()..fetchReceipts(),
-          ),
-          BlocProvider(
-            create: (_) => sl<LeaderboardCubit>()..loadLeaderboard(),
-          ),
-          BlocProvider(
-            create: (_) => sl<OpeningHoursCubit>()..getOpeninghours(),
-          ),
-        ],
-        child: PopScope(
-          canPop: false,
-          onPopInvokedWithResult: (_, __) => onWillPop(),
-          child: Scaffold(
-            backgroundColor: AppColors.background,
-            body: LazyIndexedStack(
-              index: _currentPageIndex,
-              children: _bottomNavAppFlows,
-            ),
-            bottomNavigationBar: BottomNavigationBar(
-              items: _pages.map((p) => p.bottomNavigationBarItem).toList(),
-              currentIndex: _currentPageIndex,
-              onTap: onBottomNavTap,
-              type: BottomNavigationBarType.fixed,
-              backgroundColor: AppColors.primary,
-              selectedItemColor: AppColors.white,
-              unselectedItemColor: AppColors.white.withValues(alpha: 0.5),
-              selectedFontSize: 12,
-              unselectedLabelStyle: AppTextStyle.bottomNavBarLabel,
-              selectedLabelStyle: AppTextStyle.bottomNavBarLabel,
-            ),
+          bottomNavigationBar: BottomNavigationBar(
+            items: _pages.map((p) => p.bottomNavigationBarItem).toList(),
+            currentIndex: _currentPageIndex,
+            onTap: onBottomNavTap,
+            type: BottomNavigationBarType.fixed,
+            backgroundColor: AppColors.primary,
+            selectedItemColor: AppColors.white,
+            unselectedItemColor: AppColors.white.withValues(alpha: 0.5),
+            selectedFontSize: 12,
+            unselectedLabelStyle: AppTextStyle.bottomNavBarLabel,
+            selectedLabelStyle: AppTextStyle.bottomNavBarLabel,
           ),
         ),
       ),

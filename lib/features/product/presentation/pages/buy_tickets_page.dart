@@ -1,4 +1,5 @@
 import 'package:coffeecard/core/strings.dart';
+import 'package:coffeecard/features/product/presentation/cubit/product_cubit.dart';
 import 'package:coffeecard/features/product/presentation/pages/buy_products_page.dart';
 import 'package:coffeecard/features/product/purchasable_products.dart';
 import 'package:flutter/material.dart';
@@ -12,9 +13,16 @@ class BuyTicketsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BuyProductsPage(
-      title: Strings.buyTickets,
-      products: context.watch<PurchasableProducts>().clipCards,
+    return BlocBuilder<ProductCubit, ProductState>(
+      builder: (context, state) {
+        if (state is ProductsLoaded) {
+          return BuyProductsPage(
+            title: Strings.buyTickets,
+            products: state.products.clipCards,
+          );
+        }
+        return const CircularProgressIndicator();
+      },
     );
   }
 }

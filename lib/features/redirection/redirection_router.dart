@@ -10,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fpdart/fpdart.dart' hide State;
 
+// TODO delete this file, it is no longer used
+
 /// A router widget that handles the top-level redirection logic for the app
 /// (i.e. switching between the login flow and the home flow).
 ///
@@ -118,10 +120,6 @@ class _MainRedirectionRouterState extends State<MainRedirectionRouter> {
 
   /// Redirects the user to the home page.
   void redirectToHome(PurchasableProducts products) {
-    final route = HomePage.routeWith(products: products);
-    widget.navigatorKey.currentState!
-        .pushAndRemoveUntil(route, (_) => false)
-        .ignore();
   }
 
   @override

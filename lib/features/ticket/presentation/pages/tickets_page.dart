@@ -1,6 +1,7 @@
 import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/core/widgets/components/barista_perks_section.dart';
 import 'package:coffeecard/core/widgets/components/scaffold.dart';
+import 'package:coffeecard/features/product/presentation/cubit/product_cubit.dart';
 import 'package:coffeecard/features/product/purchasable_products.dart';
 import 'package:coffeecard/features/ticket/presentation/cubit/tickets_cubit.dart';
 import 'package:coffeecard/features/ticket/presentation/widgets/shop_section.dart';
@@ -23,33 +24,38 @@ class TicketsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = (context.read<UserCubit>().state as UserLoaded).user;
-    final perksAvailable = context.read<PurchasableProducts>().perks.isNotEmpty;
+    final productState = context.read<ProductCubit>().state;
+    final perksAvailable = productState is ProductsLoaded && productState.products.perks.isNotEmpty;
 
     return UpgradeAlert(
-      child: AppScaffold.withTitle(
-        title: Strings.ticketsPageTitle,
-        body: RefreshIndicator(
-          onRefresh: context.read<TicketsCubit>().getTickets,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Expanded(
-                child: ListView(
-                  controller: scrollController,
-                  shrinkWrap: true,
-                  padding: const EdgeInsets.all(16.0),
+      child: BlocBuilder<UserCubit, UserState>(
+        builder: (context, state) {
+            return AppScaffold.withTitle(
+              title: Strings.ticketsPageTitle,
+              body: RefreshIndicator(
+                onRefresh: context.read<TicketsCubit>().getTickets,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    const TicketSection(),
-                    if (perksAvailable)
-                      BaristaPerksSection(userRole: user.role),
-                    const ShopSection(),
+                    Expanded(
+                      child: ListView(
+                        controller: scrollController,
+                        shrinkWrap: true,
+                        padding: const EdgeInsets.all(16.0),
+                        children:
+                        [
+                          const TicketSection(),
+                          if (state is UserLoaded && perksAvailable )
+                            BaristaPerksSection(userRole: state.user.role),
+                          const ShopSection(),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
-            ],
-          ),
-        ),
+            );
+          }
       ),
     );
   }

@@ -7,7 +7,6 @@ import 'package:coffeecard/features/authentication/presentation/cubits/authentic
 import 'package:coffeecard/features/environment/presentation/cubit/environment_cubit.dart';
 import 'package:coffeecard/features/login/presentation/pages/login_page_email.dart';
 import 'package:coffeecard/features/product/presentation/cubit/product_cubit.dart';
-import 'package:coffeecard/features/product/purchasable_products.dart';
 import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
 import 'package:coffeecard/service_locator.dart';
 import 'package:flutter/material.dart';
@@ -28,10 +27,7 @@ class App extends StatelessWidget {
       ),
       GoRoute(
         path: '/home',
-        builder: (context, state) {
-          final products = context.read<ProductCubit>().state as ProductsLoaded;
-          return HomePage(products: products.products);
-        }
+        builder: (context, state) => const HomePage()
       ),
       GoRoute(
         path: '/error',
@@ -42,7 +38,7 @@ class App extends StatelessWidget {
     redirect: (context, state) {
       final authCubit = context.read<AuthenticationCubit>();
       final envCubit = context.read<EnvironmentCubit>();
-      final productCubit = context.read<ProductCubit>();
+      final userCubit = context.read<UserCubit>();
 
       final authStatus = authCubit.state.status;
       final envState = envCubit.state;
@@ -61,9 +57,8 @@ class App extends StatelessWidget {
         return '/login?fromSplash=true';
       }
 
-      // If authenticated but not on home, redirect to home
-      // Note: You'll need to handle user/product loading separately
-      if (!state.uri.path.startsWith('/home') && productCubit.state is ProductsLoaded) {
+      // If authenticated and the user has been loaded, but not on home, redirect to home
+      if (!state.uri.path.startsWith('/home') && userCubit.state is UserLoaded) {
         return '/home';
       }
 
@@ -72,7 +67,7 @@ class App extends StatelessWidget {
     refreshListenable: RouterRefreshNotifier(
       sl<AuthenticationCubit>(),
       sl<EnvironmentCubit>(),
-      sl<ProductCubit>()
+      sl<UserCubit>()
     ),
   );
 
@@ -98,13 +93,13 @@ class App extends StatelessWidget {
 }
 
 class RouterRefreshNotifier extends ChangeNotifier {
-  RouterRefreshNotifier(this.authCubit, this.envCubit, this.productCubit) {
+  RouterRefreshNotifier(this.authCubit, this.envCubit, this.userCubit) {
     authCubit.stream.listen((_) => notifyListeners());
     envCubit.stream.listen((_) => notifyListeners());
-    productCubit.stream.listen((_) => notifyListeners());
+    userCubit.stream.listen((_) => notifyListeners());
   }
 
   final AuthenticationCubit authCubit;
   final EnvironmentCubit envCubit;
-  final ProductCubit productCubit;
+  final UserCubit userCubit;
 }
