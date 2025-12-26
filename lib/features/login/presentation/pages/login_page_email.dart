@@ -53,6 +53,7 @@ class _LoginPageEmailState extends State<LoginPageEmail>
     } else if (!emailIsValid(email)) {
       error = Strings.loginInvalidEmailError;
     } else {
+      // TODO: Send et kald der beder om et magic link
       final _ =
           Navigator.push(context, LoginPagePasscode.routeWith(email: email));
     }
