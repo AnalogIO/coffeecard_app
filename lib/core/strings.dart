@@ -314,6 +314,11 @@ abstract final class Strings {
   static const name = 'Name';
   static const occupation = 'Occupation';
   static const occupationPlaceholder = 'Occupation name fullname';
+  static const profilePicture = 'Profile Picture';
+  static const chooseProfilePicture = 'Choose your profile picture';
+  static const changeProfilePicture = 'Change Profile Picture';
+  static const chooseIcon = 'Choose Icon';
+  static const chooseColor = 'Choose Color';
   static const appearAnonymous = 'Appear anonymous on leaderboard';
   static const appearAnonymousSmall = 'Appear anonymous';
   static const yourProfileDescription =
