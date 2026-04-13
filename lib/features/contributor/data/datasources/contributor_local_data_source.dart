@@ -38,6 +38,11 @@ class ContributorLocalDataSource {
         githubUrl: 'https://github.com/TTA777',
         avatarUrl: 'https://avatars.githubusercontent.com/u/39203167?v=4',
       ),
+      Contributor(
+        name: 'Stine-Helena',
+        githubUrl: 'https://github.com/StineHelena',
+        avatarUrl: 'https://avatars.githubusercontent.com/u/179689613?s=400&v=4',
+      ),
     ];
   }
 }
