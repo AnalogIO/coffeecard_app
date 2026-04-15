@@ -43,7 +43,6 @@ void main() {
             paymentDetails: const MobilePayPaymentDetails(
               mobilePayAppRedirectUri: 'mobilePayAppRedirectUri',
               paymentId: 'paymentId',
-              state: 'state',
               discriminator: 'discriminator',
               paymentType: 'paymentType',
               orderId: 'orderId',

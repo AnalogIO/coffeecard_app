@@ -6,6 +6,8 @@ class UpdateUser extends Equatable {
   final String? encodedPasscode;
   final bool? privacyActivated;
   final int? occupationId;
+  final int? profileIconId;
+  final int? profileBackgroundColorId;
 
   const UpdateUser({
     this.name,
@@ -13,6 +15,8 @@ class UpdateUser extends Equatable {
     this.encodedPasscode,
     this.privacyActivated,
     this.occupationId,
+    this.profileIconId,
+    this.profileBackgroundColorId,
   });
 
   @override
@@ -23,6 +27,8 @@ class UpdateUser extends Equatable {
       encodedPasscode,
       privacyActivated,
       occupationId,
+      profileIconId,
+      profileBackgroundColorId,
     ];
   }
 }

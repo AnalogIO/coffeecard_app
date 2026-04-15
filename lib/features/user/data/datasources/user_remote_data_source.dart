@@ -32,6 +32,8 @@ class UserRemoteDataSource {
               email: user.email,
               privacyActivated: user.privacyActivated,
               password: user.encodedPasscode,
+              profileIcon: user.profileIconId,
+              backgroundColor: user.profileBackgroundColorId,
             ),
           ),
         )

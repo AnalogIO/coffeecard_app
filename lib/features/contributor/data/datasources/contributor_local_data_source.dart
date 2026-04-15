@@ -38,6 +38,11 @@ class ContributorLocalDataSource {
         githubUrl: 'https://github.com/TTA777',
         avatarUrl: 'https://avatars.githubusercontent.com/u/39203167?v=4',
       ),
+      Contributor(
+        name: 'Alberte Victoria Nayberg Bülow',
+        githubUrl: 'https://github.com/AVNBuelow',
+        avatarUrl: 'https://avatars.githubusercontent.com/u/145335990?v=4',
+      ),
     ];
   }
 }

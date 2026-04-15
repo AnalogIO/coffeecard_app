@@ -9,6 +9,7 @@ class Tappable extends StatelessWidget {
   final double elevation;
   final GestureTapCallback? onTap;
   final Widget child;
+
   const Tappable({
     this.color = Colors.transparent,
     this.padding = EdgeInsets.zero,

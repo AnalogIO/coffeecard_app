@@ -90,6 +90,14 @@ class UserCubit extends Cubit<UserState> {
     updateUser(UpdateUser(occupationId: occupationId));
   }
 
+  Future<void> setUserProfileImage(
+      {required int profileIconId, required int colorId}) async {
+    updateUser(UpdateUser(
+      profileIconId: profileIconId,
+      profileBackgroundColorId: colorId,
+    ));
+  }
+
   void requestUserAccountDeletion() {
     requestAccountDeletion().ignore();
   }

@@ -27,6 +27,7 @@ enum PaymentStatus {
       PurchaseStatus.pendingpayment => PaymentStatus.awaitingPayment,
       PurchaseStatus.refunded => PaymentStatus.refunded,
       PurchaseStatus.swaggerGeneratedUnknown => PaymentStatus.error,
+      PurchaseStatus.expired => throw UnimplementedError(),
     };
   }
 
