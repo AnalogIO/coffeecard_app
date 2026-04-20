@@ -40,18 +40,21 @@ void main() {
           rankSemester: 0,
           rankTotal: 0,
           role: Role.customer,
+          icon: 0,
+          background: 0,
         ),
       ),
     );
 
     // act
     await usecase(
-      name: 'name',
-      email: 'email',
-      encodedPasscode: 'encodedPasscode',
-      privacyActivated: false,
-      occupationId: 0,
-    );
+        name: 'name',
+        email: 'email',
+        encodedPasscode: 'encodedPasscode',
+        privacyActivated: false,
+        occupationId: 0,
+        profileIconId: 6,
+        profileBackgroundId: 2);
 
     // assert
     verify(dataSource.updateUserDetails(any));

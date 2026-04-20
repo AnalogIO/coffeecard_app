@@ -60,6 +60,8 @@ class UserCubit extends Cubit<UserState> {
       name: user.name,
       occupationId: user.occupationId,
       privacyActivated: user.privacyActivated,
+      profileIconId: user.profileIconId,
+      profileBackgroundId: user.profileBackgroundColorId,
     );
 
     emit(

@@ -12,6 +12,8 @@ class User extends Equatable {
   final int rankSemester;
   final int rankTotal;
   final Role role;
+  final int? icon;
+  final int? background;
 
   const User({
     required this.id,
@@ -23,6 +25,8 @@ class User extends Equatable {
     required this.rankSemester,
     required this.rankTotal,
     required this.role,
+    required this.icon,
+    required this.background,
   });
 
   bool get hasBaristaPerks {
@@ -36,17 +40,18 @@ class User extends Equatable {
     }
   }
 
-  User copyWith({
-    int? id,
-    String? name,
-    String? email,
-    bool? privacyActivated,
-    Occupation? occupation,
-    int? rankMonth,
-    int? rankSemester,
-    int? rankTotal,
-    Role? role,
-  }) {
+  User copyWith(
+      {int? id,
+      String? name,
+      String? email,
+      bool? privacyActivated,
+      Occupation? occupation,
+      int? rankMonth,
+      int? rankSemester,
+      int? rankTotal,
+      Role? role,
+      int? icon,
+      int? background}) {
     return User(
       id: id ?? this.id,
       name: name ?? this.name,
@@ -57,6 +62,8 @@ class User extends Equatable {
       rankSemester: rankSemester ?? this.rankSemester,
       rankTotal: rankTotal ?? this.rankTotal,
       role: role ?? this.role,
+      icon: icon ?? this.icon,
+      background: background ?? this.background,
     );
   }
 
@@ -72,6 +79,8 @@ class User extends Equatable {
       rankMonth,
       rankSemester,
       rankTotal,
+      icon,
+      background,
     ];
   }
 }

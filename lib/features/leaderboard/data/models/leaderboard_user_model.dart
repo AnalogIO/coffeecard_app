@@ -8,15 +8,18 @@ class LeaderboardUserModel extends LeaderboardUser {
     required super.score,
     required super.name,
     required super.highlight,
+    required super.icon,
+    required super.background,
   });
 
   factory LeaderboardUserModel.fromDTO(LeaderboardEntry dto) {
     return LeaderboardUserModel(
-      id: dto.id!,
-      rank: dto.rank!,
-      score: dto.score!,
-      name: dto.name!,
-      highlight: false,
-    );
+        id: dto.id!,
+        rank: dto.rank!,
+        score: dto.score!,
+        name: dto.name!,
+        highlight: false,
+        icon: dto.profileIconId,
+        background: dto.profileBackgroundColor);
   }
 }

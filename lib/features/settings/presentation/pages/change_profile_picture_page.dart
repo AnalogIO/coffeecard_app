@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 
-final images = List.generate(9, (i) => i)
+final images = List.generate(10, (i) => i)
     .map((image) => CoffeeImage.fromId(image: image, size: 40))
     .toList();
 

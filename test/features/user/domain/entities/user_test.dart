@@ -15,6 +15,8 @@ void main() {
       rankSemester: 1,
       rankTotal: 1,
       role: role,
+      icon: 1,
+      background: 1,
     );
   }
 

@@ -14,6 +14,8 @@ class LeaderboardListEntry extends StatelessWidget {
   final int rank;
   final bool highlight;
   final bool isPlaceholder;
+  final int? icon;
+  final int? background;
 
   const LeaderboardListEntry({
     required this.id,
@@ -21,6 +23,8 @@ class LeaderboardListEntry extends StatelessWidget {
     required this.score,
     required this.rank,
     required this.highlight,
+    this.icon,
+    this.background,
   }) : isPlaceholder = false;
 
   const LeaderboardListEntry.placeholder()
@@ -29,7 +33,9 @@ class LeaderboardListEntry extends StatelessWidget {
         score = 0,
         rank = 10,
         highlight = false,
-        isPlaceholder = true;
+        isPlaceholder = true,
+        icon = null,
+        background = null;
 
   String get _scoreText =>
       '$score ${score != 1 ? Strings.statCups : Strings.statCup}';
@@ -49,7 +55,7 @@ class LeaderboardListEntry extends StatelessWidget {
                 child: _LeaderboardRankMedal(rank),
               ),
               const Gap(16),
-              UserIcon.small(id: id),
+              UserIcon.small(userId: id, icon: icon, background: background),
               const Gap(10),
               Flexible(
                 child: ColoredBox(
@@ -81,6 +87,7 @@ class LeaderboardListEntry extends StatelessWidget {
 
 class _LeaderboardRankMedal extends StatelessWidget {
   const _LeaderboardRankMedal(this.rank);
+
   final int rank;
 
   String get rankString => rank == 0 ? '-' : '$rank';

@@ -82,6 +82,8 @@ void main() {
             rank: 0,
             score: 0,
             name: 'name',
+            profileIconId: 0,
+            profileBackgroundColor: 0,
           ),
         ),
       );
@@ -101,6 +103,8 @@ void main() {
             score: 0,
             name: 'name',
             highlight: false,
+            icon: 0,
+            background: 0,
           ),
         ),
       );

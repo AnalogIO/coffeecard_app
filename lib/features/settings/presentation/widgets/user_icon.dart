@@ -1,10 +1,12 @@
 import 'package:coffeecard/core/widgets/images/coffee_image.dart';
-import 'package:coffeecard/features/settings/presentation/pages/change_profile_picture_page.dart';
 import 'package:flutter/material.dart';
 
 class UserIcon extends StatelessWidget {
-  const UserIcon.large({required this.id}) : size = 100;
-  const UserIcon.small({required this.id}) : size = 40;
+  const UserIcon.large({required this.userId, this.icon, this.background})
+      : size = 100;
+
+  const UserIcon.small({required this.userId, this.icon, this.background})
+      : size = 40;
 
   static List<Color> getColors() {
     return colors;
@@ -23,15 +25,17 @@ class UserIcon extends StatelessWidget {
     const Color(0xff86b4c3),
   ];
 
-  final int id;
+  final int userId;
   final double size;
+  final int? icon;
+  final int? background;
 
   @override
   Widget build(BuildContext context) {
+    final images = List.generate(10, (i) => i); // [0..9]
 
-    final images = List.generate(9, (i) => i); // [0..8]
-
-    final image = id % images.length;
+    final image = icon ?? userId % images.length;
+    final color = background ?? userId % colors.length;
 
     return Stack(
       alignment: Alignment.center,
@@ -41,7 +45,7 @@ class UserIcon extends StatelessWidget {
           height: size,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: colors[id % colors.length],
+            color: colors[color],
           ),
         ),
         CoffeeImage.fromId(image: image, size: size),

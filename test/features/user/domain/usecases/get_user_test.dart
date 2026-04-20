@@ -40,6 +40,8 @@ void main() {
           rankSemester: 0,
           rankTotal: 0,
           role: Role.customer,
+          icon: 0,
+          background: 0,
         ),
       ),
     );

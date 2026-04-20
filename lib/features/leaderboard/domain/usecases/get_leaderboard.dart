@@ -38,8 +38,11 @@ class GetLeaderboard {
             id: leaderboardUser.id,
             name: leaderboardUser.name,
             score: leaderboardUser.score,
-            highlight: leaderboardUser.id == user.id, // is current user
+            highlight: leaderboardUser.id == user.id,
+            // is current user
             rank: leaderboardUser.rank,
+            icon: leaderboardUser.icon,
+            background: leaderboardUser.background,
           ),
         )
         .toList();
@@ -53,6 +56,8 @@ class GetLeaderboard {
           highlight: true,
           score: user.score,
           rank: user.rank,
+          icon: user.icon,
+          background: user.background,
         ),
       );
     }

@@ -34,6 +34,8 @@ void main() {
       score: 0,
       name: 'name',
       highlight: true,
+      icon: 0,
+      background: 0,
     );
 
     test('should return [Left] if getLeaderboardUser fails', () async {
@@ -96,6 +98,8 @@ void main() {
         score: 0,
         name: 'name',
         highlight: false,
+        icon: 0,
+        background: 0,
       );
 
       final testLeaderboard = [testUser];
@@ -111,6 +115,8 @@ void main() {
           score: 0,
           name: 'name',
           highlight: true,
+          icon: 0,
+          background: 0,
         ),
       ]);
     });
@@ -123,6 +129,8 @@ void main() {
         score: 0,
         name: 'name',
         highlight: false,
+        icon: 0,
+        background: 0,
       );
 
       final List<LeaderboardUser> testLeaderboard = [];
@@ -138,6 +146,8 @@ void main() {
           score: 0,
           name: 'name',
           highlight: true,
+          icon: 0,
+          background: 0,
         ),
       ]);
     });

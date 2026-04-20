@@ -1712,7 +1712,9 @@
           "rankAllTime": 15,
           "rankSemester": 4,
           "rankMonth": 5,
-          "role": "Barista"
+          "role": "Barista",
+          "profilePictureId": 6,
+          "profileBackgroundColor": 1
         },
         "additionalProperties": false,
         "required": [
@@ -1785,6 +1787,20 @@
             "description": "User's rank current month",
             "format": "int32",
             "example": 5
+          },
+          "profilePictureId": {
+            "type": "integer",
+            "description": "User's profile icon",
+            "format": "int32",
+            "nullable": true,
+            "example": 6
+          },
+          "profileBackgroundColor": {
+            "type": "integer",
+            "description": "User's background color for profile picture",
+            "format": "int32",
+            "nullable": true,
+            "example": 1
           }
         }
       },
@@ -1917,7 +1933,8 @@
           "PortaFilter",
           "IcedDrink",
           "FilterMachine",
-          "CoffeeGrinder"
+          "CoffeeGrinder",
+          "Teabag"
         ],
         "enum": [
           "CoffeeCup",
@@ -1928,7 +1945,8 @@
           "PortaFilter",
           "IcedDrink",
           "FilterMachine",
-          "CoffeeGrinder"
+          "CoffeeGrinder",
+          "Teabag"
         ]
       },
       "PictureBackgroundColor": {
@@ -2337,12 +2355,7 @@
       "LeaderboardEntry": {
         "type": "object",
         "description": "A user on the leaderboard",
-        "example": {
-          "id": "1",
-          "name": "John Doe",
-          "rank": 2,
-          "score": 25
-        },
+        "example": "{\n    \"id\": \"1\",\n    \"name\": \"John Doe\",\n    \"rank\": 2,\n    \"score\": 25\n    \"profileIconId\": 4,\n    \"profileBackgroundColor\": 1\n}",
         "additionalProperties": false,
         "properties": {
           "id": {
@@ -2361,6 +2374,20 @@
             "description": "Leaderboard rank",
             "format": "int32",
             "example": 2
+          },
+          "profileIconId": {
+            "type": "integer",
+            "description": "User's profile icon",
+            "format": "int32",
+            "nullable": true,
+            "example": "TeaBag"
+          },
+          "profileBackgroundColor": {
+            "type": "integer",
+            "description": "User's profile picture background color",
+            "format": "int32",
+            "nullable": true,
+            "example": "Moss Green"
           },
           "score": {
             "type": "integer",

@@ -25,7 +25,8 @@ class EditProfile extends StatelessWidget {
     return Column(
       children: [
         const Gap(24),
-        UserIcon.large(id: user.id),
+        UserIcon.large(
+            userId: user.id, icon: user.icon, background: user.background),
         const Gap(12),
         Text(
           user.name,
@@ -61,10 +62,11 @@ class EditProfile extends StatelessWidget {
             ),
             SettingListEntry(
               name: Strings.profilePicture,
-              valueWidget: SettingDescription(
+              valueWidget: const SettingDescription(
                 text: Strings.chooseProfilePicture,
               ),
-              onTap: () => Navigator.push(context, ChangeProfilePicturePage.route),
+              onTap: () =>
+                  Navigator.push(context, ChangeProfilePicturePage.route),
             ),
             SettingListEntry(
               name: deviceIsSmall(context)

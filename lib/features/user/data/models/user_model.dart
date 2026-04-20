@@ -4,17 +4,18 @@ import 'package:coffeecard/features/user/domain/entities/user.dart';
 import 'package:coffeecard/generated/api/coffeecard_api_v2.swagger.dart';
 
 class UserModel extends User {
-  const UserModel({
-    required super.id,
-    required super.name,
-    required super.email,
-    required super.privacyActivated,
-    required super.occupation,
-    required super.rankMonth,
-    required super.rankSemester,
-    required super.rankTotal,
-    required super.role,
-  });
+  const UserModel(
+      {required super.id,
+      required super.name,
+      required super.email,
+      required super.privacyActivated,
+      required super.occupation,
+      required super.rankMonth,
+      required super.rankSemester,
+      required super.rankTotal,
+      required super.role,
+      required super.icon,
+      required super.background});
 
   factory UserModel.fromResponse(UserResponse response) {
     final programmeDto =
@@ -30,6 +31,8 @@ class UserModel extends User {
       rankSemester: response.rankSemester,
       rankTotal: response.rankAllTime,
       role: Role.fromJson(response.role),
+      icon: response.profilePictureId,
+      background: response.profileBackgroundColor,
     );
   }
 }

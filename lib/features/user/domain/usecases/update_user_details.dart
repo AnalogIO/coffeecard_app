@@ -15,15 +15,18 @@ class UpdateUserDetails {
     required String? encodedPasscode,
     required bool? privacyActivated,
     required int? occupationId,
+    required int? profileIconId,
+    required int? profileBackgroundId,
   }) {
     return dataSource.updateUserDetails(
       UpdateUser(
-        name: name,
-        email: email,
-        encodedPasscode: encodedPasscode,
-        privacyActivated: privacyActivated,
-        occupationId: occupationId,
-      ),
+          name: name,
+          email: email,
+          encodedPasscode: encodedPasscode,
+          privacyActivated: privacyActivated,
+          occupationId: occupationId,
+          profileIconId: profileIconId,
+          profileBackgroundColorId: profileBackgroundId),
     );
   }
 }

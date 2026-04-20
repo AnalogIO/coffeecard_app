@@ -32,6 +32,8 @@ void main() {
       score: 0,
       rank: 0,
       highlight: true,
+      icon: 0,
+      background: 0,
     ),
   ];
 

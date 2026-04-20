@@ -16,6 +16,8 @@ class ProfileSection extends StatelessWidget {
             id: user.id,
             name: user.name,
             occupation: user.occupation.fullName,
+            icon: user.icon,
+            background: user.background,
           ),
         _ => const UserCard.placeholder(),
       },

@@ -50,6 +50,8 @@ void main() {
     rankSemester: 0,
     rankTotal: 0,
     role: Role.customer,
+    icon: 0,
+    background: 0,
   );
 
   group('fetchUserDetails', () {
@@ -132,6 +134,8 @@ void main() {
           name: anyNamed('name'),
           occupationId: anyNamed('occupationId'),
           privacyActivated: anyNamed('privacyActivated'),
+          profileIconId: anyNamed('profileIconId'),
+          profileBackgroundId: anyNamed('profileBackgroundId'),
         ),
       ).thenAnswer(
         (_) async => const Left(
@@ -156,6 +160,8 @@ void main() {
           name: anyNamed('name'),
           occupationId: anyNamed('occupationId'),
           privacyActivated: anyNamed('privacyActivated'),
+          profileIconId: anyNamed('profileIconId'),
+          profileBackgroundId: anyNamed('profileBackgroundId'),
         ),
       ).thenAnswer(
         (_) async => const Right(testUser),

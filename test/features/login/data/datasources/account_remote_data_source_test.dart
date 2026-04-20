@@ -112,6 +112,8 @@ void main() {
               rankMonth: 0,
               rankSemester: 0,
               role: 'Barista',
+              profilePictureId: 0,
+              profileBackgroundColor: 0,
             ),
           ),
         );
@@ -137,6 +139,8 @@ void main() {
               rankSemester: 0,
               rankTotal: 0,
               role: Role.barista,
+              icon: 0,
+              background: 0,
             ),
           ),
         );

@@ -23,6 +23,8 @@ class LeaderboardListView extends StatelessWidget {
               score: user.score,
               rank: user.rank,
               highlight: user.highlight,
+              icon: user.icon,
+              background: user.background,
             ),
           )
           .toList(),

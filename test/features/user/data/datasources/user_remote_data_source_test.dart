@@ -54,6 +54,8 @@ void main() {
     rankSemester: 0,
     rankTotal: 0,
     role: Role.customer,
+    icon: 0,
+    background: 0,
   );
 
   group('getUser', () {
@@ -86,6 +88,8 @@ void main() {
             rankMonth: 0,
             rankSemester: 0,
             role: 'Customer',
+            profilePictureId: 0,
+            profileBackgroundColor: 0,
           ),
         ),
       );
@@ -128,6 +132,8 @@ void main() {
             rankMonth: 0,
             rankSemester: 0,
             role: 'Customer',
+            profilePictureId: 0,
+            profileBackgroundColor: 0,
           ),
         ),
       );

@@ -13,18 +13,24 @@ class UserCard extends StatelessWidget {
     required this.name,
     required this.occupation,
     required this.id,
+    this.icon,
+    this.background,
   }) : isPlaceholder = false;
 
   const UserCard.placeholder()
       : id = 0,
         isPlaceholder = true,
         name = Strings.loading,
-        occupation = Strings.occupationPlaceholder;
+        occupation = Strings.occupationPlaceholder,
+        icon = null,
+        background = null;
 
   final int id;
   final String name;
   final String occupation;
   final bool isPlaceholder;
+  final int? icon;
+  final int? background;
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +52,8 @@ class UserCard extends StatelessWidget {
               return Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  UserIcon.small(id: id),
+                  UserIcon.small(
+                      userId: id, icon: icon, background: background),
                   const Gap(8),
                   Expanded(
                     child: Column(
