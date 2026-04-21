@@ -18,7 +18,7 @@ jobs:
 
   release_ios:
     name: Upload iOS build to App Store connect
-    runs-on: macos-15
+    runs-on: macos-26
     needs: [build, test]
 
     steps:
