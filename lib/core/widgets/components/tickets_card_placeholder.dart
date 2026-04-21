@@ -7,12 +7,13 @@ class NoTicketsPlaceholder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DottedBorder(
-      color: AppColors.secondary,
-      strokeWidth: 2,
-      borderType: BorderType.RRect,
-      radius: const Radius.circular(24),
-      padding: const EdgeInsets.symmetric(vertical: 60),
-      dashPattern: const [8, 4],
+      options: const RoundedRectDottedBorderOptions(
+        color: AppColors.secondary,
+        strokeWidth: 2,
+        radius: Radius.circular(24),
+        padding: EdgeInsets.symmetric(vertical: 60),
+        dashPattern: [8, 4],
+      ),
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
