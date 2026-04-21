@@ -20,7 +20,7 @@ jobs:
           build_type: development
 
       - name: Check formatting
-        run: dart format --set-exit-if-changed lib/
+        run: find lib -name "*.dart" ! -path "lib/generated/*" ! -path "lib/env/*" | xargs dart format --set-exit-if-changed
 
       - name: Static Analysis
         run: flutter analyze
