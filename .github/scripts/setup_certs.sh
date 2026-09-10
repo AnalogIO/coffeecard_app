@@ -16,12 +16,7 @@ security unlock-keychain -p "$APPLE_KEYCHAIN_PW" $KEYCHAIN_PATH
 
 # import certificate to keychain
 security import $CERTIFICATE_PATH -P "$APPLE_IOS_SIGNING_CERT_PW" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
-
-# add the new keychain to the search list without dropping the existing
-# keychains, since they hold the Apple WWDR/root certs needed to validate
-# the signing certificate's trust chain
-EXISTING_KEYCHAINS=$(security list-keychains -d user | tr -d '"')
-security list-keychain -d user -s $KEYCHAIN_PATH $EXISTING_KEYCHAINS
+security list-keychain -d user -s $KEYCHAIN_PATH
 
 # apply provisioning profile
 mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
