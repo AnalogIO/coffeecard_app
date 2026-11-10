@@ -46,7 +46,11 @@ class LoginPageBase extends StatelessWidget {
                       constraints:
                           BoxConstraints(minHeight: constraints.maxHeight - 48),
                       child: Align(
-                        alignment: Alignment.bottomCenter,
+                        // Sign-in: logo and form centred. Passcode: content
+                        // sits above the numpad.
+                        alignment: bottomWidget == null
+                            ? Alignment.center
+                            : Alignment.bottomCenter,
                         child: ConstrainedBox(
                           constraints: const BoxConstraints(maxWidth: 440),
                           child: Column(
