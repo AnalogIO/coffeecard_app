@@ -24,19 +24,9 @@ class _LoginEmailTextFieldState extends State<LoginEmailTextField> {
   final _focusNode = FocusNode();
 
   @override
-  void initState() {
-    // Focus the text field after animations have completed
-    () async {
-      final _ = await Future.delayed(widget.autoFocusDelay);
-      if (mounted) _focusNode.requestFocus();
-    }();
-
-    super.initState();
-  }
-
-  @override
   void dispose() {
     _controller.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
 
@@ -48,19 +38,21 @@ class _LoginEmailTextFieldState extends State<LoginEmailTextField> {
 
     InputDecoration getInputDecoration() {
       final border = OutlineInputBorder(
-        borderRadius: const BorderRadius.all(Radius.circular(32)),
+        borderRadius: const BorderRadius.all(Radius.circular(20)),
         borderSide: widget.hasError
             ? const BorderSide(color: AppColors.errorOnDark, width: 2)
-            : const BorderSide(color: Colors.transparent, width: 0),
+            : const BorderSide(color: Color(0xffD4CDC3)),
       );
 
       return InputDecoration(
-        constraints: const BoxConstraints(maxWidth: 260),
+        constraints: const BoxConstraints(maxWidth: 480),
         hintStyle: const TextStyle(color: AppColors.gray),
         hintText: Strings.loginHintEmail,
+        prefixIcon: const Icon(Icons.mail_outline_rounded, size: 20),
         border: const OutlineInputBorder(),
         enabledBorder: border,
-        focusedBorder: border,
+        focusedBorder: border.copyWith(
+            borderSide: const BorderSide(color: AppColors.secondary, width: 2)),
         filled: true,
         fillColor: AppColors.white,
         suffixIcon: IconButton(
@@ -69,7 +61,7 @@ class _LoginEmailTextFieldState extends State<LoginEmailTextField> {
           onPressed: onSubmit,
           tooltip: Strings.loginTooltipContinue,
         ),
-        contentPadding: const EdgeInsets.only(top: 12, bottom: 12, left: 24),
+        contentPadding: const EdgeInsets.only(top: 20, bottom: 20, left: 20),
       );
     }
 
@@ -78,6 +70,8 @@ class _LoginEmailTextFieldState extends State<LoginEmailTextField> {
       autocorrect: false,
       focusNode: _focusNode,
       keyboardType: TextInputType.emailAddress,
+      autofillHints: const [AutofillHints.email],
+      textInputAction: TextInputAction.next,
       decoration: getInputDecoration(),
       style: const TextStyle(color: AppColors.primary),
       cursorWidth: 1,

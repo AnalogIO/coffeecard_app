@@ -1,19 +1,41 @@
 import 'package:flutter/material.dart';
 
 abstract final class AppColors {
-  static const primary = Color(0xff362619);
-  static const secondary = Color(0xff785B38);
-  static const background = Color(0xffE5E2D7);
-  static const ticket = Color(0xffD9CB9D);
+  // Brand palette, aligned with cafeanalog.dk (espresso on cream).
+  static const espresso = Color(0xff362619);
+  static const roast = Color(0xff2A1D13);
+  static const caramel = Color(0xffD9B98A);
+  static const crema = Color(0xffF1E8DA);
+  static const cream = Color(0xffF9F8F2);
+  static const paper = Color(0xffFFFFFF);
+  static const grounds = Color(0xff6B5A4A);
+  static const groundsDark = Color(0xff4A3626);
+  static const open = Color(0xff2F6B4F);
+
+  /// Hairline borders on cards and grouped lists.
+  static const border = Color(0xffECE5D8);
+  static const divider = Color(0xffF1ECE2);
+
+  /// Solid surfaces used where glass is unavailable (Android, Reduce
+  /// Transparency / increased contrast on iOS).
+  static const tonal = Color(0xffEFE4D3);
+  static const navSurface = Color(0xffF1EAE0);
+  static const navIndicator = Color(0xffDCC7A8);
+
+  // Semantic aliases kept for existing widgets.
+  static const primary = espresso;
+  static const secondary = grounds;
+  static const background = cream;
+  static const ticket = caramel;
 
   static const white = Color(0xffFAFAFA);
   static const gray = Color(0xff767676);
   static const lightGray = Color(0xffC2C2C2);
 
-  static const slightlyHighlighted = Color(0xffFEF4D2);
+  static const slightlyHighlighted = Color(0xffFEF8EA);
   static const success = Color(0xff006F02);
   static const errorOnDark = Color(0xffFF7215);
-  static const errorOnBright = Color(0xffA80000);
+  static const errorOnBright = Color(0xffA8321E);
   static const testEnvironmentReceipt = errorOnBright;
 
   /// Modal backdrop

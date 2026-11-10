@@ -38,7 +38,13 @@ class TicketsPage extends StatelessWidget {
                 child: ListView(
                   controller: scrollController,
                   shrinkWrap: true,
-                  padding: const EdgeInsets.all(16.0),
+                  // Keep the last card clear of a floating navigation bar.
+                  padding: EdgeInsets.fromLTRB(
+                    16,
+                    8,
+                    16,
+                    16 + MediaQuery.paddingOf(context).bottom,
+                  ),
                   children: [
                     const TicketSection(),
                     if (perksAvailable)

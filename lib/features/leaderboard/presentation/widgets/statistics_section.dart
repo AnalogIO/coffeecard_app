@@ -1,5 +1,4 @@
 import 'package:coffeecard/core/strings.dart';
-import 'package:coffeecard/core/widgets/components/helpers/grid.dart';
 import 'package:coffeecard/core/widgets/components/section_title.dart';
 import 'package:coffeecard/features/leaderboard/presentation/widgets/statistics_card.dart';
 import 'package:coffeecard/features/user/domain/entities/user.dart';
@@ -34,28 +33,36 @@ class _YourStatsGrid extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const SectionTitle(Strings.statsYourStats),
-          Grid(
-            singleColumnOnSmallDevice: false,
-            gap: GridGap.tightVertical,
-            gapSmall: GridGap.tight,
-            children: [
-              StatisticsCard(
-                title: Strings.statCardMonth,
-                rank: user?.rankMonth ?? 0,
-                loading: isUserLoading,
-              ),
-              StatisticsCard(
-                title: Strings.statCardSemester,
-                rank: user?.rankSemester ?? 0,
-                loading: isUserLoading,
-              ),
-              StatisticsCard(
-                title: Strings.statCardTotal,
-                rank: user?.rankTotal ?? 0,
-                loading: isUserLoading,
-              ),
-            ],
+          const SectionTitle(Strings.statsYourRank),
+          IntrinsicHeight(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Expanded(
+                  child: StatisticsCard(
+                    title: Strings.statsFilterMonth,
+                    rank: user?.rankMonth ?? 0,
+                    loading: isUserLoading,
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: StatisticsCard(
+                    title: Strings.statsFilterSemester,
+                    rank: user?.rankSemester ?? 0,
+                    loading: isUserLoading,
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: StatisticsCard(
+                    title: Strings.statsFilterAllTime,
+                    rank: user?.rankTotal ?? 0,
+                    loading: isUserLoading,
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),

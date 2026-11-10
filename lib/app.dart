@@ -31,6 +31,7 @@ class App extends StatelessWidget {
         navigatorKey: _navigatorKey,
         child: MaterialApp(
           title: Strings.appTitle,
+          debugShowCheckedModeBanner: false,
           theme: analogTheme,
           navigatorKey: _navigatorKey,
           home: BlocBuilder<EnvironmentCubit, EnvironmentState>(

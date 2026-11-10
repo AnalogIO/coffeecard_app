@@ -61,10 +61,10 @@ class _FormTextFieldState extends State<_FormTextField> {
     return TextInputType.text;
   }
 
-  UnderlineInputBorder get _defaultBorder {
-    return const UnderlineInputBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
-      borderSide: BorderSide(color: AppColors.gray),
+  OutlineInputBorder get _defaultBorder {
+    return const OutlineInputBorder(
+      borderRadius: BorderRadius.all(Radius.circular(20)),
+      borderSide: BorderSide(color: Color(0xffD4CDC3)),
     );
   }
 
@@ -118,9 +118,9 @@ class _FormTextFieldState extends State<_FormTextField> {
             decoration: InputDecoration(
               border: _defaultBorder,
               enabledBorder: _defaultBorder,
-              focusedBorder: const UnderlineInputBorder(
-                borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
-                borderSide: BorderSide(color: AppColors.secondary, width: 2),
+              focusedBorder: const OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+                borderSide: BorderSide(color: AppColors.espresso, width: 2),
               ),
               labelText: widget.label,
               labelStyle: const TextStyle(
@@ -128,19 +128,17 @@ class _FormTextFieldState extends State<_FormTextField> {
                 letterSpacing: 0,
               ),
               filled: true,
-              fillColor: AppColors.white.withValues(alpha: opacityLevel),
-              contentPadding: const EdgeInsets.only(
-                top: 8,
-                bottom: 12,
-                left: 16,
-                right: 16,
+              fillColor: AppColors.paper.withValues(alpha: opacityLevel),
+              contentPadding: const EdgeInsets.symmetric(
+                vertical: 18,
+                horizontal: 18,
               ),
               helperText: widget.hint,
               helperMaxLines: 2,
-              helperStyle: const TextStyle(
+              helperStyle: AppTextStyle.ui(
+                12,
+                weight: 500,
                 color: AppColors.secondary,
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
               ),
               errorText: state.shouldDisplayError ? maybeError : null,
               errorMaxLines: 2,

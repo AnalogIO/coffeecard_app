@@ -8,7 +8,7 @@ class EnvironmentBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const ColoredBox(
-      color: AppColors.primary,
+      color: AppColors.background,
       child: Center(child: EnvironmentButton()),
     );
   }

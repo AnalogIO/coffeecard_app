@@ -14,6 +14,7 @@ class ShopSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        const SizedBox(height: 20),
         const SectionTitle(Strings.shopText),
         Grid(
           singleColumnOnSmallDevice: false,
@@ -22,12 +23,14 @@ class ShopSection extends StatelessWidget {
           children: [
             ShopCard(
               title: Strings.buyTickets,
-              icon: Icons.confirmation_num,
+              optionalText: Strings.buyTicketsSubtitle,
+              icon: Icons.confirmation_num_outlined,
               onTapped: (_) => Navigator.push(context, BuyTicketsPage.route),
             ),
             ShopCard(
               title: Strings.buyOneDrink,
-              icon: Icons.shopping_bag,
+              optionalText: Strings.buyOneDrinkSubtitle,
+              icon: Icons.sell_outlined,
               onTapped: (_) =>
                   Navigator.push(context, BuySingleDrinkPage.route),
             ),

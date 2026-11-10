@@ -20,8 +20,8 @@ class SwipeReceiptListEntry extends StatelessWidget {
       showShimmer: false,
       topText: receipt.menuItemName,
       rightText: Strings.oneTicket,
-      backgroundColor: AppColors.white,
-      status: '${Strings.swiped} via ${receipt.productName} ticket',
+      backgroundColor: AppColors.paper,
+      status: '${receipt.productName} ticket',
     );
   }
 }

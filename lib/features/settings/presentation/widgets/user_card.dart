@@ -29,9 +29,12 @@ class UserCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 2,
+      elevation: 0,
+      color: AppColors.paper,
+      margin: EdgeInsets.zero,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(24.0)),
+        side: BorderSide(color: AppColors.border),
       ),
       child: Tappable(
         onTap: isPlaceholder
@@ -39,7 +42,7 @@ class UserCard extends StatelessWidget {
             : () => Navigator.push(context, YourProfilePage.route),
         borderRadius: const BorderRadius.all(Radius.circular(24.0)),
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+          padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
           child: ShimmerBuilder(
             showShimmer: isPlaceholder,
             builder: (context, colorIfShimmer) {
@@ -73,8 +76,7 @@ class UserCard extends StatelessWidget {
                     ),
                   ),
                   const Gap(16),
-                  const Icon(Icons.edit, color: AppColors.primary),
-                  const Gap(12),
+                  const Icon(Icons.chevron_right, color: AppColors.grounds),
                 ],
               );
             },

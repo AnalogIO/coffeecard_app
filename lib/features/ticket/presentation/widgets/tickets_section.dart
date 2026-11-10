@@ -3,7 +3,6 @@ import 'package:coffeecard/core/styles/app_text_styles.dart';
 import 'package:coffeecard/core/widgets/components/dialog.dart';
 import 'package:coffeecard/core/widgets/components/error_section.dart';
 import 'package:coffeecard/core/widgets/components/loading_overlay.dart';
-import 'package:coffeecard/core/widgets/components/section_title.dart';
 import 'package:coffeecard/core/widgets/components/tickets_card.dart';
 import 'package:coffeecard/features/environment/domain/entities/environment.dart';
 import 'package:coffeecard/features/environment/presentation/cubit/environment_cubit.dart';
@@ -26,10 +25,11 @@ class TicketSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SectionTitle.withSideWidget(
-          Strings.ticketsMyTickets,
-          sideWidget: OpeningHoursIndicator(),
+        const Align(
+          alignment: Alignment.centerLeft,
+          child: OpeningHoursIndicator(),
         ),
+        const Gap(14),
         BlocConsumer<TicketsCubit, TicketsState>(
           listenWhen: (previous, current) => current is TicketsAction,
           listener: (context, state) {
@@ -122,19 +122,29 @@ class LoadedTicketsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: maybeTickets.fold(
         () => [const NoTicketsPlaceholder()],
-        (tickets) => tickets
-            .map(
-              (ticket) => Padding(
-                padding: const EdgeInsets.only(bottom: 12.0),
-                child: Hero(
-                  tag: 'ticket_${ticket.product.id}',
-                  child: TicketsCard(ticket),
-                ),
+        (tickets) => [
+          Padding(
+            padding: const EdgeInsets.only(left: 4, bottom: 12),
+            child: Text(
+              Strings.ticketsSummary(
+                cards: tickets.length,
+                ticketsLeft: tickets.fold(0, (sum, t) => sum + t.amountLeft),
               ),
-            )
-            .toList(),
+              style: AppTextStyle.ticketLabel.copyWith(fontSize: 12),
+            ),
+          ),
+          for (final (index, ticket) in tickets.indexed)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 14),
+              child: Hero(
+                tag: 'ticket_${ticket.product.id}',
+                child: TicketsCard(ticket, tone: TicketTone.forIndex(index)),
+              ),
+            ),
+        ],
       ),
     );
   }

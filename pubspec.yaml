@@ -100,7 +100,7 @@ dev_dependencies:
 flutter_native_splash:
   color: "#362619"
   android_12:
-    color: "#E5E2D7"
+    color: "#F9F8F2"
 
 # update launcher icon:
 # flutter pub run flutter_launcher_icons:main
@@ -131,9 +131,10 @@ flutter:
     - assets/profile_icons/
 
   fonts:
-    - family: RobotoFlex
+    # Lexend is the typeface of cafeanalog.dk (SIL OFL, see OFL.txt).
+    - family: Lexend
       fonts:
-        - asset: assets/fonts/roboto_flex/RobotoFlex.ttf
+        - asset: assets/fonts/lexend/Lexend.ttf
     - family: RobotoMono
       fonts:
         - asset: assets/fonts/roboto_mono/RobotoMono-Regular.ttf

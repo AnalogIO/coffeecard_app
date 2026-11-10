@@ -49,8 +49,8 @@ class ListEntry extends StatelessWidget {
   Widget build(BuildContext context) {
     final childWidget = DecoratedBox(
       decoration: BoxDecoration(
-        color: backgroundColor ?? AppColors.white,
-        border: const Border(bottom: BorderSide(color: AppColors.lightGray)),
+        color: backgroundColor ?? AppColors.paper,
+        border: const Border(bottom: BorderSide(color: AppColors.divider)),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),

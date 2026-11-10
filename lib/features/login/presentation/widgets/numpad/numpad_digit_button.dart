@@ -1,3 +1,4 @@
+import 'package:coffeecard/core/styles/app_colors.dart';
 import 'package:coffeecard/core/styles/app_text_styles.dart';
 import 'package:coffeecard/core/widgets/components/helpers/responsive.dart';
 import 'package:coffeecard/features/login/presentation/cubit/login_cubit.dart';
@@ -17,9 +18,11 @@ class NumpadDigitButton extends StatelessWidget {
       },
       child: Text(
         digit,
-        style: deviceIsSmall(context)
-            ? AppTextStyle.ticketsCount
-            : AppTextStyle.numpadDigit,
+        style: AppTextStyle.ui(
+          deviceIsSmall(context) ? 26 : 30,
+          weight: 500,
+          color: AppColors.cream,
+        ),
       ),
     );
   }

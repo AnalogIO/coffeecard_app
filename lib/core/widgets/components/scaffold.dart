@@ -1,10 +1,12 @@
 import 'package:coffeecard/core/styles/app_colors.dart';
 import 'package:coffeecard/core/styles/app_text_styles.dart';
+import 'package:coffeecard/core/widgets/design/glass_surface.dart';
 import 'package:coffeecard/features/environment/domain/entities/environment.dart';
 import 'package:coffeecard/features/environment/presentation/cubit/environment_cubit.dart';
 import 'package:coffeecard/features/environment/presentation/widgets/environment_banner.dart';
 import 'package:coffeecard/features/environment/presentation/widgets/environment_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AppScaffold extends StatelessWidget {
@@ -28,7 +30,7 @@ class AppScaffold extends StatelessWidget {
     this.applyPadding = false,
     this.resizeToAvoidBottomInset = true,
     required this.body,
-  })  : title = Text(title, style: AppTextStyle.pageTitle),
+  })  : title = Text(title, style: AppTextStyle.largeTitle),
         backgroundColor = AppColors.background,
         // Use default app bar height
         appBarHeight = null;
@@ -40,12 +42,26 @@ class AppScaffold extends StatelessWidget {
   ///
   /// The body's background color is, by default, the same as the app bar.
   const AppScaffold.withoutTitle({
-    this.backgroundColor = AppColors.primary,
+    this.backgroundColor = AppColors.roast,
     this.resizeToAvoidBottomInset = true,
     required this.body,
   })  : title = null,
         applyPadding = false,
         appBarHeight = 48;
+
+  /// Root tab pages get the large title; pages with a back button get a
+  /// compact one so it doesn't crowd the arrow.
+  Widget? _adaptiveTitle(BuildContext context) {
+    final title = this.title;
+    final canPop = ModalRoute.of(context)?.canPop ?? false;
+    if (!canPop || title is! Text) return title;
+    return Text(
+      title.data ?? '',
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+      style: AppTextStyle.sectionTitle,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,13 +71,18 @@ class AppScaffold extends StatelessWidget {
       // between the AppBar and the _EnvironmentBanner.
       // The actual background of the body is defined
       // in the child of the Expanded widget below.
-      backgroundColor: AppColors.primary,
+      backgroundColor: backgroundColor,
       appBar: AppBar(
-        title: hasTitle ? title : const EnvironmentButton(),
+        title: hasTitle ? _adaptiveTitle(context) : const EnvironmentButton(),
         centerTitle: hasTitle ? null : true,
         toolbarHeight: appBarHeight,
-        backgroundColor: AppColors.primary,
-        iconTheme: const IconThemeData(color: AppColors.white),
+        backgroundColor: hasTitle ? AppColors.background : AppColors.roast,
+        surfaceTintColor: Colors.transparent,
+        scrolledUnderElevation: 0,
+        systemOverlayStyle:
+            hasTitle ? SystemUiOverlayStyle.dark : SystemUiOverlayStyle.light,
+        iconTheme: IconThemeData(
+            color: hasTitle ? AppColors.primary : AppColors.white),
       ),
       body: BlocBuilder<EnvironmentCubit, EnvironmentState>(
         builder: (_, state) {
@@ -76,7 +97,7 @@ class AppScaffold extends StatelessWidget {
                 child: Container(
                   padding: applyPadding ? const EdgeInsets.all(16) : null,
                   color: backgroundColor,
-                  child: body,
+                  child: hasTitle ? body : CoffeeBackdrop(child: body),
                 ),
               ),
             ],

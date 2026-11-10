@@ -1,4 +1,5 @@
 import 'package:coffeecard/core/strings.dart';
+import 'package:coffeecard/core/styles/app_colors.dart';
 import 'package:coffeecard/core/widgets/components/helpers/responsive.dart';
 import 'package:coffeecard/core/widgets/components/scaffold.dart';
 import 'package:coffeecard/features/environment/domain/entities/environment.dart';
@@ -23,13 +24,26 @@ class ViewReceiptPage extends StatelessWidget {
             padding: EdgeInsets.all(deviceIsSmall(context) ? 24 : 48),
             child: Column(
               children: [
-                ReceiptCard(
-                  productName: receipt.menuItemName,
-                  time: receipt.timeUsed,
-                  isInOverlay: false,
-                  isTestEnvironment:
-                      state is EnvironmentLoaded && state.env.isTest,
-                  status: '${Strings.swiped} via ${receipt.productName} ticket',
+                DecoratedBox(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(28),
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColors.espresso.withValues(alpha: .10),
+                        blurRadius: 32,
+                        offset: const Offset(0, 12),
+                      ),
+                    ],
+                  ),
+                  child: ReceiptCard(
+                    productName: receipt.menuItemName,
+                    time: receipt.timeUsed,
+                    isInOverlay: false,
+                    isTestEnvironment:
+                        state is EnvironmentLoaded && state.env.isTest,
+                    status:
+                        '${Strings.swiped} via ${receipt.productName} ticket',
+                  ),
                 ),
               ],
             ),

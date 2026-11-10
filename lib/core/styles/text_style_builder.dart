@@ -142,34 +142,30 @@ class TextStyleBuilder {
 
   TextStyle _build() {
     final isHeading = _fontFamily == _AnalogFontFamily.heading;
-    final isBody = _fontFamily == _AnalogFontFamily.body;
     final isMono = _fontFamily == _AnalogFontFamily.mono;
 
-    final letterSpacing = _fontFamily == _AnalogFontFamily.body ? 0.25 : null;
-    const lineHeight = 1.1;
-    final height = isHeading ? lineHeight : null;
-    return isMono
-        ? TextStyle(
-            fontFamily: 'RobotoMono',
-            fontSize: _fontSize,
-            fontWeight: _fontWeights[_fontWeight],
-            color: _color,
-            decoration: _decoration,
-          )
-        : TextStyle(
-            fontFamily: 'RobotoFlex',
-            fontSize: _fontSize,
-            color: _color,
-            decoration: _decoration,
-            letterSpacing: letterSpacing,
-            height: height,
-            fontVariations: [
-              FontVariation('wght', _fontWeight),
-              if (_fontSize != null) FontVariation('opsz', _fontSize!),
-              if (isHeading) ..._headingParametricAxes,
-              if (isBody) ..._bodyParametricAxes,
-            ],
-          );
+    if (isMono) {
+      return TextStyle(
+        fontFamily: 'RobotoMono',
+        fontSize: _fontSize,
+        fontWeight: _fontWeights[_fontWeight],
+        color: _color,
+        decoration: _decoration,
+      );
+    }
+
+    // Lexend (the cafeanalog.dk typeface) is a variable font with a single
+    // weight axis. fontWeight is set too so bold-text accessibility and
+    // fallbacks keep working.
+    return TextStyle(
+      fontFamily: 'Lexend',
+      fontSize: _fontSize,
+      color: _color,
+      decoration: _decoration,
+      height: isHeading ? 1.15 : null,
+      fontWeight: _fontWeights[_fontWeight],
+      fontVariations: [FontVariation('wght', _fontWeight)],
+    );
   }
 }
 
@@ -195,31 +191,6 @@ class _TextStyleBuilderWithoutSize {
 }
 
 enum _AnalogFontFamily { heading, body, mono }
-
-const _bodyParametricAxes = [
-  FontVariation('wdth', 108), // width axis
-  FontVariation('XOPQ', 96), // parametric thick stroke axis
-  FontVariation('YOPQ', 79), // parametric thin stroke axis
-  FontVariation('XTRA', 468), // paramatric counter width axis
-  FontVariation('YTUC', 712), // parametric upper case axis
-  FontVariation('YTLC', 514), // parametric lower case axis
-  FontVariation('YTAS', 750), // parametric ascender height axis
-  FontVariation('YTDE', -203), // parametric descender depth axis
-  FontVariation('YTFI', 750), // parametric figure height axis
-];
-
-const _headingParametricAxes = [
-  FontVariation('wdth', 100), // width axis
-  FontVariation('GRAD', -25), // grade axis
-  FontVariation('XOPQ', 96), // parametric thick stroke axis
-  FontVariation('YOPQ', 79), // parametric thin stroke axis
-  FontVariation('XTRA', 468), // paramatric counter width axis
-  FontVariation('YTUC', 712), // parametric upper case axis
-  FontVariation('YTLC', 539), // parametric lower case axis
-  FontVariation('YTAS', 685), // parametric ascender height axis
-  FontVariation('YTDE', -178), // parametric descender depth axis
-  FontVariation('YTFI', 735), // parametric figure height axis
-];
 
 // Map font weights to FontWeight enum values.
 const Map<num, FontWeight> _fontWeights = {

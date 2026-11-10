@@ -1,12 +1,10 @@
+import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/core/styles/app_colors.dart';
 import 'package:coffeecard/core/styles/app_text_styles.dart';
-import 'package:coffeecard/core/widgets/components/card.dart';
-import 'package:coffeecard/core/widgets/components/helpers/responsive.dart';
 import 'package:coffeecard/features/product/presentation/functions.dart';
 import 'package:coffeecard/features/product/product_model.dart';
 import 'package:coffeecard/features/purchase/domain/entities/payment_status.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 
 class BuyTicketsCard extends StatefulWidget {
   final Product product;
@@ -32,51 +30,70 @@ class _BuyTicketsCardState extends State<BuyTicketsCard> {
 
   @override
   Widget build(BuildContext context) {
-    return CardBase(
-      color: AppColors.white,
-      gap: deviceIsSmall(context) ? 48 : 64,
-      top: CardTitle(
-        title: Text(widget.product.name, style: AppTextStyle.ownedTicket),
-        description:
-            Text(widget.product.description, style: AppTextStyle.explainer),
+    final product = widget.product;
+    final radius = BorderRadius.circular(24);
+
+    return Material(
+      color: AppColors.paper,
+      shape: RoundedRectangleBorder(
+        borderRadius: radius,
+        side: const BorderSide(color: AppColors.border),
       ),
-      bottom: CardBottomRow(
-        left: _TicketPrice(
-          amount: widget.product.amount,
-          price: widget.product.price,
+      child: InkWell(
+        borderRadius: radius,
+        onTap: () => onTap(context, product),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            children: [
+              Container(
+                width: 52,
+                height: 52,
+                decoration: BoxDecoration(
+                  color: AppColors.crema,
+                  borderRadius: BorderRadius.circular(18),
+                ),
+                child: const Icon(
+                  Icons.local_cafe_outlined,
+                  color: AppColors.espresso,
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(product.name, style: AppTextStyle.ui(17, weight: 600)),
+                    if (product.description.isNotEmpty) ...[
+                      const SizedBox(height: 2),
+                      Text(
+                        product.description,
+                        style: AppTextStyle.ui(13, color: AppColors.grounds),
+                      ),
+                    ],
+                    const SizedBox(height: 6),
+                    Text(
+                      _amountDisplayName(product.amount),
+                      style: AppTextStyle.receiptItemDate,
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 12),
+              Text(
+                Strings.price(product.price),
+                style: AppTextStyle.ticketFigure.copyWith(
+                  fontSize: 17,
+                  color: AppColors.roast,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
-      onTap: (context) => onTap(context, widget.product),
     );
   }
 }
 
-class _TicketPrice extends StatelessWidget {
-  const _TicketPrice({required this.amount, required this.price});
-
-  final int amount;
-  final int price;
-
-  String get _amountDisplayName {
-    final s = amount != 1 ? 's' : '';
-    return '$amount ticket$s';
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Flex(
-      direction: deviceIsSmall(context) ? Axis.horizontal : Axis.vertical,
-      verticalDirection: deviceIsSmall(context)
-          ? VerticalDirection.down
-          : VerticalDirection.up,
-      crossAxisAlignment: deviceIsSmall(context)
-          ? CrossAxisAlignment.end
-          : CrossAxisAlignment.stretch,
-      children: [
-        Text('$price,-', style: AppTextStyle.sectionTitle),
-        if (deviceIsSmall(context)) const Gap(8),
-        Text(_amountDisplayName, style: AppTextStyle.explainerDark),
-      ],
-    );
-  }
-}
+String _amountDisplayName(int amount) =>
+    '$amount ticket${amount != 1 ? 's' : ''}';
