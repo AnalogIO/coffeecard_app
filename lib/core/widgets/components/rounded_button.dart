@@ -37,9 +37,11 @@ class RoundedButton extends StatelessWidget {
     return ElevatedButton(
       style: ButtonStyle(
         foregroundColor: WidgetStateProperty.resolveWith(_getForegroundColor),
-        maximumSize: WidgetStateProperty.all(Size.infinite),
+        minimumSize: WidgetStateProperty.all(const Size(48, 54)),
+        elevation: WidgetStateProperty.all(0),
         backgroundColor: WidgetStateProperty.resolveWith(_getBackgroundColor),
-        shape: WidgetStateProperty.all(const StadiumBorder()),
+        shape: WidgetStateProperty.all(
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
         padding: WidgetStateProperty.all(
           const EdgeInsets.symmetric(horizontal: 16),
         ),

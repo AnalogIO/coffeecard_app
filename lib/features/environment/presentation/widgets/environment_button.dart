@@ -52,10 +52,10 @@ class EnvironmentButton extends StatelessWidget {
               dismissible: true,
             ),
             style: TextButton.styleFrom(
-              backgroundColor: AppColors.white,
+              backgroundColor: AppColors.background.withValues(alpha: .92),
               padding: const EdgeInsets.only(left: 16, right: 12),
               shape: const StadiumBorder(),
-              visualDensity: VisualDensity.comfortable,
+              visualDensity: VisualDensity.compact,
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,

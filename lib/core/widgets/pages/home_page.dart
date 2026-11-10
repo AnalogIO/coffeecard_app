@@ -2,8 +2,8 @@ import 'dart:math';
 
 import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/core/styles/app_colors.dart';
-import 'package:coffeecard/core/styles/app_text_styles.dart';
 import 'package:coffeecard/core/widgets/components/helpers/lazy_indexed_stack.dart';
+import 'package:coffeecard/core/widgets/design/analog_nav_bar.dart';
 import 'package:coffeecard/core/widgets/routers/app_flow.dart';
 import 'package:coffeecard/features/leaderboard/presentation/cubit/leaderboard_cubit.dart';
 import 'package:coffeecard/features/leaderboard/presentation/pages/leaderboard_page.dart';
@@ -156,17 +156,11 @@ class _HomePageState extends State<HomePage> {
               index: _currentPageIndex,
               children: _bottomNavAppFlows,
             ),
-            bottomNavigationBar: BottomNavigationBar(
-              items: _pages.map((p) => p.bottomNavigationBarItem).toList(),
+            extendBody: AnalogNavBar.floats(context),
+            bottomNavigationBar: AnalogNavBar(
+              items: _pages.map((p) => p.navItem).toList(),
               currentIndex: _currentPageIndex,
               onTap: onBottomNavTap,
-              type: BottomNavigationBarType.fixed,
-              backgroundColor: AppColors.primary,
-              selectedItemColor: AppColors.white,
-              unselectedItemColor: AppColors.white.withValues(alpha: 0.5),
-              selectedFontSize: 12,
-              unselectedLabelStyle: AppTextStyle.bottomNavBarLabel,
-              selectedLabelStyle: AppTextStyle.bottomNavBarLabel,
             ),
           ),
         ),
@@ -178,36 +172,39 @@ class _HomePageState extends State<HomePage> {
 class PageSettings {
   final ScrollController scrollController;
   final GlobalKey<NavigatorState> navigatorKey;
-  final BottomNavigationBarItem bottomNavigationBarItem;
+  final AnalogNavItem navItem;
 
-  PageSettings({
-    required this.bottomNavigationBarItem,
-  })  : scrollController = ScrollController(),
+  PageSettings({required this.navItem})
+      : scrollController = ScrollController(),
         navigatorKey = GlobalKey<NavigatorState>();
 }
 
 final _pages = <PageSettings>[
   PageSettings(
-    bottomNavigationBarItem: const BottomNavigationBarItem(
-      icon: Icon(Icons.confirmation_num),
+    navItem: const AnalogNavItem(
+      icon: Icons.local_cafe_outlined,
+      selectedIcon: Icons.local_cafe,
       label: Strings.ticketsNavTitle,
     ),
   ),
   PageSettings(
-    bottomNavigationBarItem: const BottomNavigationBarItem(
-      icon: Icon(Icons.receipt),
+    navItem: const AnalogNavItem(
+      icon: Icons.receipt_long_outlined,
+      selectedIcon: Icons.receipt_long,
       label: Strings.receiptsNavTitle,
     ),
   ),
   PageSettings(
-    bottomNavigationBarItem: const BottomNavigationBarItem(
-      icon: Icon(Icons.leaderboard_rounded),
+    navItem: const AnalogNavItem(
+      icon: Icons.leaderboard_outlined,
+      selectedIcon: Icons.leaderboard,
       label: Strings.statsNavTitle,
     ),
   ),
   PageSettings(
-    bottomNavigationBarItem: const BottomNavigationBarItem(
-      icon: Icon(Icons.settings),
+    navItem: const AnalogNavItem(
+      icon: Icons.tune_outlined,
+      selectedIcon: Icons.tune,
       label: Strings.settingsNavTitle,
     ),
   ),

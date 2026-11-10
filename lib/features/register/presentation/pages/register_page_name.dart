@@ -68,7 +68,10 @@ class RegisterPageName extends StatelessWidget {
               const TextSpan(text: Strings.registerSuccessBody),
               TextSpan(
                 text: email,
-                style: const TextStyle(fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontVariations: [FontVariation('wght', 700)],
+                ),
               ),
               const TextSpan(text: '.'),
             ],

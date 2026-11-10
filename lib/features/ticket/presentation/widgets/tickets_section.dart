@@ -124,17 +124,16 @@ class LoadedTicketsSection extends StatelessWidget {
     return Column(
       children: maybeTickets.fold(
         () => [const NoTicketsPlaceholder()],
-        (tickets) => tickets
-            .map(
-              (ticket) => Padding(
-                padding: const EdgeInsets.only(bottom: 12.0),
-                child: Hero(
-                  tag: 'ticket_${ticket.product.id}',
-                  child: TicketsCard(ticket),
-                ),
+        (tickets) => [
+          for (final (index, ticket) in tickets.indexed)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 14),
+              child: Hero(
+                tag: 'ticket_${ticket.product.id}',
+                child: TicketsCard(ticket, tone: TicketTone.forIndex(index)),
               ),
-            )
-            .toList(),
+            ),
+        ],
       ),
     );
   }

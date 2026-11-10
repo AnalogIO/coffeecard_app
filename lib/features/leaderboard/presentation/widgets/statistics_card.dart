@@ -1,9 +1,7 @@
 import 'package:coffeecard/core/styles/app_colors.dart';
 import 'package:coffeecard/core/styles/app_text_styles.dart';
-import 'package:coffeecard/core/widgets/components/card.dart';
 import 'package:coffeecard/core/widgets/components/helpers/shimmer_builder.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class StatisticsCard extends StatelessWidget {
   final String title;
@@ -18,38 +16,45 @@ class StatisticsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CardBase(
-      dense: true,
-      gap: 24,
-      color: AppColors.white,
-      top: CardTitle(
-        title: Text(
-          title,
-          style: AppTextStyle.settingKey,
-        ),
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: AppColors.paper,
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: AppColors.border),
       ),
-      bottom: CardBottomRow(
-        right: ShimmerBuilder(
-          showShimmer: loading,
-          builder: (context, colorIfShimmer) {
-            return ColoredBox(
-              color: colorIfShimmer,
-              child: Text.rich(
-                TextSpan(
-                  text: '${rank == 0 ? 'N/A' : rank}',
-                  style: AppTextStyle.ticketsCount,
-                  children: [
-                    if (rank != 0)
-                      TextSpan(
-                        text: formatLeaderboardPostfix(rank),
-                        style: AppTextStyle.leaderboardScore,
-                      ),
-                  ],
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(title, style: AppTextStyle.ui(13, color: AppColors.grounds)),
+          const Spacer(),
+          const SizedBox(height: 12),
+          ShimmerBuilder(
+            showShimmer: loading,
+            builder: (context, colorIfShimmer) {
+              return ColoredBox(
+                color: colorIfShimmer,
+                child: Text.rich(
+                  TextSpan(
+                    text: '${rank == 0 ? 'N/A' : rank}',
+                    style: AppTextStyle.ticketFigure.copyWith(
+                      fontSize: 24,
+                      color: AppColors.roast,
+                    ),
+                    children: [
+                      if (rank != 0)
+                        TextSpan(
+                          text: formatLeaderboardPostfix(rank),
+                          style: AppTextStyle.leaderboardScore,
+                        ),
+                    ],
+                  ),
                 ),
-              ),
-            );
-          },
-        ),
+              );
+            },
+          ),
+        ],
       ),
     );
   }

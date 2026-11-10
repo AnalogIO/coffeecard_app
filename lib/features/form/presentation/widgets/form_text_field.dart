@@ -137,10 +137,10 @@ class _FormTextFieldState extends State<_FormTextField> {
               ),
               helperText: widget.hint,
               helperMaxLines: 2,
-              helperStyle: const TextStyle(
+              helperStyle: AppTextStyle.ui(
+                12,
+                weight: 500,
                 color: AppColors.secondary,
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
               ),
               errorText: state.shouldDisplayError ? maybeError : null,
               errorMaxLines: 2,

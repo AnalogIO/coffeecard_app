@@ -7,17 +7,35 @@ abstract final class AppTextStyle {
   static final _body = TextStyleBuilder.body;
   static final _mono = TextStyleBuilder.mono;
 
+  /// Plain UI text in Lexend at the given size and weight.
+  static TextStyle ui(
+    double size, {
+    double weight = 400,
+    Color color = AppColors.roast,
+  }) =>
+      _body.size(size).weight(weight).color(color).style;
+
   // Heading text
   static final pageTitle = _heading.size(24).color(AppColors.white).style;
 
-  static final ownedTicket = _heading.size(24).color(AppColors.primary).style;
+  static final ownedTicket =
+      _heading.size(24).weight(600).color(AppColors.roast).style;
 
-  static final loginTitle = _heading.size(18).color(AppColors.white).style;
+  static final loginTitle =
+      _heading.size(18).weight(600).color(AppColors.white).style;
 
   static final comingSoonShopCardTitle =
       loginTitle.copyWith(color: AppColors.gray);
 
-  static final sectionTitle = loginTitle.copyWith(color: AppColors.primary);
+  static final sectionTitle =
+      _heading.size(20).weight(600).color(AppColors.roast).style;
+
+  /// Large page title shown under the navigation bar.
+  static final largeTitle = _heading
+      .size(32)
+      .color(AppColors.roast)
+      .style
+      .copyWith(letterSpacing: -0.8);
 
   static final environmentNotifier =
       _heading.size(12).color(AppColors.primary).style;
@@ -84,6 +102,13 @@ abstract final class AppTextStyle {
   // Mono text
   static final numpadDigit =
       _mono.size(33).color(AppColors.primary).bold().style;
+
+  /// Big remaining-ticket figure on a clip card.
+  static final ticketFigure = _mono.size(40).bold().style.copyWith(height: 1.1);
+
+  /// Small caps label in the receipt voice (e.g. "CLIP CARD", "ACCOUNT").
+  static final ticketLabel =
+      _mono.size(11).color(AppColors.grounds).style.copyWith(letterSpacing: .9);
 
   static final ticketsCount =
       _mono.size(24).color(AppColors.primary).bold().style;

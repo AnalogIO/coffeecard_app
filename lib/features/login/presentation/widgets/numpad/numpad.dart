@@ -44,73 +44,64 @@ class _NumpadState extends State<Numpad> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final _ = _controller.forward();
+    final labelStyle = AppTextStyle.numpadText.copyWith(color: AppColors.cream);
 
-    const borderInside = BorderSide(color: AppColors.lightGray, width: 2);
+    Widget row(List<Widget> keys) => Padding(
+          padding: const EdgeInsets.symmetric(vertical: 7),
+          child: Row(children: [for (final k in keys) Expanded(child: k)]),
+        );
 
     return SlideTransition(
-      position: _animation,
-      child: BlocBuilder<LoginCubit, LoginState>(
-        builder: (context, state) {
-          return ColoredBox(
-            color: AppColors.white,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
-              child: Table(
-                border: const TableBorder(
-                  horizontalInside: borderInside,
-                  verticalInside: borderInside,
-                ),
-                children: [
-                  const TableRow(
-                    children: [
-                      NumpadDigitButton('1'),
-                      NumpadDigitButton('2'),
-                      NumpadDigitButton('3'),
-                    ],
+      position: MediaQuery.of(context).disableAnimations
+          ? const AlwaysStoppedAnimation(Offset.zero)
+          : _animation,
+      child: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 340),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(24, 8, 24, 16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                row(const [
+                  NumpadDigitButton('1'),
+                  NumpadDigitButton('2'),
+                  NumpadDigitButton('3'),
+                ]),
+                row(const [
+                  NumpadDigitButton('4'),
+                  NumpadDigitButton('5'),
+                  NumpadDigitButton('6'),
+                ]),
+                row(const [
+                  NumpadDigitButton('7'),
+                  NumpadDigitButton('8'),
+                  NumpadDigitButton('9'),
+                ]),
+                row([
+                  NumpadButton(
+                    filled: false,
+                    onPressed: widget.forgotPasscodeAction,
+                    child: Text(Strings.loginForgot, style: labelStyle),
                   ),
-                  const TableRow(
-                    children: [
-                      NumpadDigitButton('4'),
-                      NumpadDigitButton('5'),
-                      NumpadDigitButton('6'),
-                    ],
+                  const NumpadDigitButton('0'),
+                  NumpadButton(
+                    filled: false,
+                    semanticLabel: Strings.numpadDelete,
+                    onPressed: (context) {
+                      context.read<LoginCubit>().clearPasscode();
+                    },
+                    child: const Icon(
+                      Icons.backspace_outlined,
+                      size: 26,
+                      color: AppColors.cream,
+                    ),
                   ),
-                  const TableRow(
-                    children: [
-                      NumpadDigitButton('7'),
-                      NumpadDigitButton('8'),
-                      NumpadDigitButton('9'),
-                    ],
-                  ),
-                  TableRow(
-                    children: [
-                      TableCell(
-                        verticalAlignment: TableCellVerticalAlignment.fill,
-                        child: NumpadButton(
-                          onPressed: widget.forgotPasscodeAction,
-                          child: Text(
-                            Strings.loginForgot,
-                            style: AppTextStyle.numpadText,
-                          ),
-                        ),
-                      ),
-                      const NumpadDigitButton('0'),
-                      TableCell(
-                        verticalAlignment: TableCellVerticalAlignment.fill,
-                        child: NumpadButton(
-                          onPressed: (context) {
-                            context.read<LoginCubit>().clearPasscode();
-                          },
-                          child: const Icon(Icons.backspace, size: 24),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                ]),
+              ],
             ),
-          );
-        },
+          ),
+        ),
       ),
     );
   }

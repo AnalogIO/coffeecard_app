@@ -1,4 +1,5 @@
 import 'package:coffeecard/core/styles/app_colors.dart';
+import 'package:coffeecard/core/styles/app_text_styles.dart';
 import 'package:flutter/material.dart';
 
 class LoginCTA extends StatelessWidget {
@@ -12,17 +13,12 @@ class LoginCTA extends StatelessWidget {
     return TextButton(
       onPressed: () => onPressed(context),
       style: const ButtonStyle(
-        visualDensity: VisualDensity.compact,
+        minimumSize: WidgetStatePropertyAll(Size(44, 48)),
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
       ),
       child: Text(
         text,
-        style: const TextStyle(
-          color: AppColors.white,
-          fontSize: 12,
-          fontWeight: FontWeight.normal,
-          decoration: TextDecoration.underline,
-        ),
+        style: AppTextStyle.ui(14, weight: 500, color: AppColors.white),
       ),
     );
   }

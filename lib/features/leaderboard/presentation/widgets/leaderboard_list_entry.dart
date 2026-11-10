@@ -56,7 +56,7 @@ class LeaderboardListEntry extends StatelessWidget {
                   color: colorIfShimmer,
                   child: Text(
                     name,
-                    style: AppTextStyle.textField,
+                    style: AppTextStyle.ui(15, weight: highlight ? 600 : 400),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -71,7 +71,7 @@ class LeaderboardListEntry extends StatelessWidget {
         builder: (context, colorIfShimmer) {
           return ColoredBox(
             color: colorIfShimmer,
-            child: Text(_scoreText),
+            child: Text(_scoreText, style: AppTextStyle.leaderboardScore),
           );
         },
       ),

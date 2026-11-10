@@ -85,7 +85,9 @@ class _LoginPageEmailState extends State<LoginPageEmail>
     final _ = _controller.forward();
 
     return FadeTransition(
-      opacity: _animation,
+      opacity: MediaQuery.of(context).disableAnimations
+          ? const AlwaysStoppedAnimation(1.0)
+          : _animation,
       child: LoginPageBase(
         resizeToAvoidBottomInset: false,
         title: Strings.loginSignIn,

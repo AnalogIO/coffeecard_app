@@ -1,4 +1,3 @@
-import 'package:coffeecard/core/widgets/components/helpers/grid.dart';
 import 'package:coffeecard/core/widgets/components/scaffold.dart';
 import 'package:coffeecard/features/product/presentation/widgets/buy_tickets_card.dart';
 import 'package:coffeecard/features/product/product_model.dart';
@@ -17,14 +16,16 @@ class BuyProductsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppScaffold.withTitle(
       title: title,
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Grid(
-          gap: GridGap.normal,
-          gapSmall: GridGap.tight,
-          singleColumnOnSmallDevice: true,
-          children: products.map(BuyTicketsCard.new).toList(),
+      body: ListView.separated(
+        padding: EdgeInsets.fromLTRB(
+          16,
+          8,
+          16,
+          16 + MediaQuery.paddingOf(context).bottom,
         ),
+        itemCount: products.length,
+        separatorBuilder: (_, __) => const SizedBox(height: 12),
+        itemBuilder: (_, index) => BuyTicketsCard(products.elementAt(index)),
       ),
     );
   }

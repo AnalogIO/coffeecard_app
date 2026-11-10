@@ -26,7 +26,7 @@ class ReceiptOverlay {
     if (context.mounted) {
       result = await showDialog<T>(
         context: context,
-        barrierColor: AppColors.scrim,
+        barrierColor: AppColors.roast.withValues(alpha: .94),
         builder: (context) {
           return Padding(
             padding: EdgeInsets.all(deviceIsSmall(context) ? 24 : 48),
@@ -42,9 +42,13 @@ class ReceiptOverlay {
                     status: status,
                   ),
                   const Gap(12),
+                  const Gap(12),
                   Text(
                     Strings.receiptTapAnywhereToDismiss,
-                    style: AppTextStyle.explainerBright,
+                    style: AppTextStyle.ui(
+                      14,
+                      color: AppColors.cream.withValues(alpha: .75),
+                    ),
                   ),
                 ],
               ),

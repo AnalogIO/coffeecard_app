@@ -23,11 +23,13 @@ abstract final class Strings {
   static const loginInvalidEmailError = 'Please enter a valid email';
 
   static const loginSignIn = 'Sign in';
+  static const loginTagline = 'The cosiest corner of ITU';
   static const loginCreateAccount = "Don't have an account? Make one";
   static const loginSignInOtherAccount = 'Sign in using another account';
 
   static const loginForgotYourPasscode = 'Forgot your passcode?';
   static const loginForgot = 'Forgot?';
+  static const numpadDelete = 'Delete digit';
 
   // Barista hub
   static const baristaTickets = 'Barista tickets';
@@ -51,6 +53,11 @@ abstract final class Strings {
 
   // Tickets
   static const ticketsMyTickets = 'My tickets';
+  static const ticketClipCard = 'CLIP CARD';
+  static const ticketLeft = 'LEFT';
+  static const ticketUse = 'Use';
+  static const buyTicketsSubtitle = 'Clip cards';
+  static const buyOneDrinkSubtitle = 'Single items';
   static const shopText = 'Shop';
   static const buyTickets = 'Buy tickets';
   static const buyOneDrink = 'Buy merch';
@@ -207,6 +214,7 @@ abstract final class Strings {
   static const swiped = 'Swiped';
 
   static const receiptFilterAll = 'Swipes & purchases';
+  static const receiptFilterAllShort = 'All';
   static const receiptFilterSwipes = 'Swipes';
   static const receiptFilterPurchases = 'Purchases';
 
@@ -236,12 +244,14 @@ abstract final class Strings {
 
   // Statistics page
   static const statsYourStats = 'Your stats';
+  static const statsYourRank = 'Your rank';
   static const statsLeaderboards = 'Leaderboards';
 
   static const statsShowTopDrinkerFor = 'Show top drinkers';
   static const statsFilterSemester = 'Semester';
   static const statsFilterMonth = 'Month';
   static const statsFilterTotal = 'Total';
+  static const statsFilterAllTime = 'All time';
 
   static const statCardMonth = 'Your rank this month';
   static const statCardSemester = 'Your rank this semester';

@@ -163,7 +163,7 @@ class _ModalContentState extends State<_ModalContent>
               // error during the hero animation.
               child: SingleChildScrollView(
                 child: CardBase(
-                  color: AppColors.ticket,
+                  color: AppColors.cream,
                   gap: 36,
                   top: titleWidget,
                   bottom: AnimatedSize(
@@ -304,12 +304,16 @@ class _ModalContentState extends State<_ModalContent>
           SlideAction(
             elevation: 0,
             text: widget.isPerk ? Strings.claimPerk : Strings.useTicket,
-            textStyle: AppTextStyle.buttonText.apply(color: AppColors.white),
-            height: 56,
-            sliderButtonIcon: const Icon(Icons.navigate_next, size: 48),
-            sliderButtonIconPadding: 0,
-            innerColor: AppColors.white,
-            outerColor: AppColors.primary,
+            textStyle: AppTextStyle.buttonText.apply(color: AppColors.cream),
+            height: 64,
+            sliderButtonIcon: const Icon(
+              Icons.arrow_forward_rounded,
+              size: 28,
+              color: AppColors.espresso,
+            ),
+            sliderButtonIconPadding: 14,
+            innerColor: AppColors.cream,
+            outerColor: AppColors.espresso,
             onSubmit: () async {
               // Disable hero animation in the reverse direction
               setState(() => _heroTag = '');

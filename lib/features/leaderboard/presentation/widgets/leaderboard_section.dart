@@ -1,10 +1,10 @@
 import 'package:coffeecard/core/strings.dart';
+import 'package:coffeecard/core/styles/app_colors.dart';
 import 'package:coffeecard/core/widgets/components/section_title.dart';
 import 'package:coffeecard/features/leaderboard/presentation/cubit/leaderboard_cubit.dart';
 import 'package:coffeecard/features/leaderboard/presentation/widgets/leaderboard_list_view.dart';
 import 'package:coffeecard/features/leaderboard/presentation/widgets/leaderboard_list_view_placeholder.dart';
-import 'package:coffeecard/features/leaderboard/presentation/widgets/statistics_dropdown.dart';
-import 'package:coffeecard/features/receipt/presentation/widgets/filter_bar.dart';
+import 'package:coffeecard/features/leaderboard/presentation/widgets/statistics_period_filter.dart';
 import 'package:coffeecard/features/user/presentation/cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -22,27 +22,35 @@ class LeaderboardSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        const Gap(16),
-        const Padding(
-          padding: EdgeInsets.only(left: 16),
-          child: SectionTitle(Strings.statsLeaderboards),
-        ),
-        FilterBar(
-          title: Strings.statsShowTopDrinkerFor,
-          dropdown: StatisticsDropdown(),
-        ),
-        if (loading)
-          const LeaderboardListViewPlaceholder()
-        else
-          LeaderboardListView(
-            // if not loading, then these states must be loaded
-            statsState: leaderboardState as LeaderboardLoaded,
-            userState: userState as UserLoaded,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const Gap(24),
+          const SectionTitle(Strings.statsLeaderboards),
+          const StatisticsPeriodFilter(),
+          const Gap(12),
+          DecoratedBox(
+            position: DecorationPosition.foreground,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(24),
+              border: Border.all(color: AppColors.border),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(24),
+              child: loading
+                  ? const LeaderboardListViewPlaceholder()
+                  : LeaderboardListView(
+                      // if not loading, then these states must be loaded
+                      statsState: leaderboardState as LeaderboardLoaded,
+                      userState: userState as UserLoaded,
+                    ),
+            ),
           ),
-      ],
+          const Gap(16),
+        ],
+      ),
     );
   }
 }
