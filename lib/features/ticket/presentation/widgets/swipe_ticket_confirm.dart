@@ -264,18 +264,10 @@ class _ModalContentState extends State<_ModalContent>
             children: [
               Expanded(
                 child: DecoratedBox(
-                  decoration: const BoxDecoration(
-                    color: AppColors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(8),
-                      topRight: Radius.circular(8),
-                    ),
-                    border: BorderDirectional(
-                      bottom: BorderSide(
-                        color: AppColors.secondary,
-                        width: 2,
-                      ),
-                    ),
+                  decoration: BoxDecoration(
+                    color: AppColors.paper,
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: AppColors.border),
                   ),
                   child: DropdownButton<MenuItem>(
                     hint: const Text('Select a menu item...'),
@@ -291,7 +283,7 @@ class _ModalContentState extends State<_ModalContent>
                       horizontal: 16,
                       vertical: 8,
                     ),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(20),
                     focusColor: AppColors.primary,
                     underline: const SizedBox.shrink(),
                     dropdownColor: AppColors.white,
@@ -299,7 +291,14 @@ class _ModalContentState extends State<_ModalContent>
                 ),
               ),
               const Gap(16),
-              IconButton.filledTonal(
+              IconButton.filled(
+                style: IconButton.styleFrom(
+                  backgroundColor: AppColors.espresso,
+                  foregroundColor: AppColors.cream,
+                  disabledBackgroundColor: AppColors.tonal,
+                  disabledForegroundColor: AppColors.grounds,
+                  minimumSize: const Size.square(56),
+                ),
                 onPressed: _selectedMenuItem.match(
                   () => null,
                   (menuItem) => () async {
@@ -310,8 +309,8 @@ class _ModalContentState extends State<_ModalContent>
                     setState(() => _state = _ConfirmSwipe(menuItem));
                   },
                 ),
-                icon: const Icon(Icons.navigate_next),
-                iconSize: 36,
+                icon: const Icon(Icons.arrow_forward_rounded),
+                iconSize: 26,
               ),
             ],
           ),

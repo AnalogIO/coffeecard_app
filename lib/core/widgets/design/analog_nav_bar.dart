@@ -18,7 +18,7 @@ class AnalogNavItem {
 /// The app's main navigation.
 ///
 /// iOS: a floating Liquid Glass capsule with a lens behind the active tab.
-/// Android: a Material 3 [NavigationBar] on a solid tonal surface.
+/// Android: a Material 3 style bar (pill indicator) on a solid tonal surface.
 class AnalogNavBar extends StatelessWidget {
   const AnalogNavBar({
     required this.items,
@@ -37,17 +37,10 @@ class AnalogNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (!floats(context)) {
-      return NavigationBar(
-        selectedIndex: currentIndex,
-        onDestinationSelected: onTap,
-        destinations: [
-          for (final item in items)
-            NavigationDestination(
-              icon: Icon(item.icon),
-              selectedIcon: Icon(item.selectedIcon),
-              label: item.label,
-            ),
-        ],
+      return _MaterialNavBar(
+        items: items,
+        currentIndex: currentIndex,
+        onTap: onTap,
       );
     }
 
@@ -141,6 +134,106 @@ class _GlassTab extends StatelessWidget {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Material 3 style navigation bar for Android.
+///
+/// Built by hand instead of using [NavigationBar]: in this app the stock
+/// widget's indicator pill lagged one tab behind on Android.
+class _MaterialNavBar extends StatelessWidget {
+  const _MaterialNavBar({
+    required this.items,
+    required this.currentIndex,
+    required this.onTap,
+  });
+
+  final List<AnalogNavItem> items;
+  final int currentIndex;
+  final ValueChanged<int> onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: AppColors.navSurface,
+      child: SafeArea(
+        top: false,
+        child: SizedBox(
+          height: 80,
+          child: Row(
+            children: [
+              for (final (index, item) in items.indexed)
+                Expanded(
+                  child: _MaterialTab(
+                    item: item,
+                    selected: index == currentIndex,
+                    onTap: () => onTap(index),
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _MaterialTab extends StatelessWidget {
+  const _MaterialTab({
+    required this.item,
+    required this.selected,
+    required this.onTap,
+  });
+
+  final AnalogNavItem item;
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final color = selected ? AppColors.roast : const Color(0xff5E4F43);
+    return Semantics(
+      button: true,
+      selected: selected,
+      label: item.label,
+      excludeSemantics: true,
+      child: InkResponse(
+        onTap: onTap,
+        containedInkWell: true,
+        highlightShape: BoxShape.rectangle,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: 64,
+              height: 32,
+              decoration: BoxDecoration(
+                color: selected ? AppColors.navIndicator : null,
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Icon(
+                selected ? item.selectedIcon : item.icon,
+                size: 24,
+                color: color,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              item.label,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              textScaler:
+                  MediaQuery.textScalerOf(context).clamp(maxScaleFactor: 1.3),
+              style: AppTextStyle.ui(
+                12,
+                weight: selected ? 600 : 500,
+                color: color,
+              ),
+            ),
+          ],
         ),
       ),
     );

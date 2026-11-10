@@ -88,7 +88,7 @@ void main() {
       );
     });
 
-    testWidgets('uses a Material 3 NavigationBar on Android', (tester) async {
+    testWidgets('uses a solid Material bar on Android', (tester) async {
       int? tapped;
       await tester.pumpWidget(
         _app(
@@ -100,9 +100,18 @@ void main() {
           platform: TargetPlatform.android,
         ),
       );
-      expect(find.byType(NavigationBar), findsOneWidget);
+      expect(find.byType(GlassSurface), findsNothing);
       await tester.tap(find.text('Receipts'));
       expect(tapped, 1);
+      expect(
+        tester.getSemantics(find.bySemanticsLabel('Tickets')),
+        matchesSemantics(
+          label: 'Tickets',
+          isButton: true,
+          isSelected: true,
+          hasSelectedState: true,
+        ),
+      );
     });
   });
 
