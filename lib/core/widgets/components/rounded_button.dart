@@ -6,8 +6,8 @@ class RoundedButton extends StatelessWidget {
   const RoundedButton({
     required this.text,
     required this.onTap,
-  })  : backgroundColor = AppColors.primary,
-        foregroundColor = AppColors.white;
+  })  : backgroundColor = AppColors.espresso,
+        foregroundColor = AppColors.cream;
 
   const RoundedButton.bright({
     required this.text,
@@ -22,13 +22,13 @@ class RoundedButton extends StatelessWidget {
 
   Color _getBackgroundColor(Set<WidgetState> states) {
     return (states.contains(WidgetState.disabled))
-        ? AppColors.lightGray
+        ? AppColors.tonal
         : backgroundColor;
   }
 
   Color _getForegroundColor(Set<WidgetState> states) {
     return (states.contains(WidgetState.disabled))
-        ? AppColors.gray
+        ? AppColors.grounds
         : foregroundColor;
   }
 
@@ -40,8 +40,7 @@ class RoundedButton extends StatelessWidget {
         minimumSize: WidgetStateProperty.all(const Size(48, 54)),
         elevation: WidgetStateProperty.all(0),
         backgroundColor: WidgetStateProperty.resolveWith(_getBackgroundColor),
-        shape: WidgetStateProperty.all(
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
+        shape: WidgetStateProperty.all(const StadiumBorder()),
         padding: WidgetStateProperty.all(
           const EdgeInsets.symmetric(horizontal: 16),
         ),

@@ -44,7 +44,7 @@ class _NumpadState extends State<Numpad> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final _ = _controller.forward();
-    final labelStyle = AppTextStyle.numpadText.copyWith(color: AppColors.cream);
+    final labelStyle = AppTextStyle.ui(15, weight: 500, color: AppColors.cream);
 
     Widget row(List<Widget> keys) => Padding(
           padding: const EdgeInsets.symmetric(vertical: 7),

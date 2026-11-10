@@ -18,10 +18,10 @@ class NumpadDigitButton extends StatelessWidget {
       },
       child: Text(
         digit,
-        style: AppTextStyle.numpadDigit.copyWith(
+        style: AppTextStyle.ui(
+          deviceIsSmall(context) ? 26 : 30,
+          weight: 500,
           color: AppColors.cream,
-          fontSize: deviceIsSmall(context) ? 26 : 30,
-          fontWeight: FontWeight.w500,
         ),
       ),
     );

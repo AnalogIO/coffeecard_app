@@ -49,6 +49,20 @@ class AppScaffold extends StatelessWidget {
         applyPadding = false,
         appBarHeight = 48;
 
+  /// Root tab pages get the large title; pages with a back button get a
+  /// compact one so it doesn't crowd the arrow.
+  Widget? _adaptiveTitle(BuildContext context) {
+    final title = this.title;
+    final canPop = ModalRoute.of(context)?.canPop ?? false;
+    if (!canPop || title is! Text) return title;
+    return Text(
+      title.data ?? '',
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+      style: AppTextStyle.sectionTitle,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,7 +73,7 @@ class AppScaffold extends StatelessWidget {
       // in the child of the Expanded widget below.
       backgroundColor: backgroundColor,
       appBar: AppBar(
-        title: hasTitle ? title : const EnvironmentButton(),
+        title: hasTitle ? _adaptiveTitle(context) : const EnvironmentButton(),
         centerTitle: hasTitle ? null : true,
         toolbarHeight: appBarHeight,
         backgroundColor: hasTitle ? AppColors.background : AppColors.roast,

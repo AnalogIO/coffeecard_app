@@ -41,8 +41,7 @@ class LoginPageBase extends StatelessWidget {
                   return SingleChildScrollView(
                     keyboardDismissBehavior:
                         ScrollViewKeyboardDismissBehavior.onDrag,
-                    padding: EdgeInsets.fromLTRB(28, 24, 28,
-                        MediaQuery.viewInsetsOf(context).bottom + 24),
+                    padding: const EdgeInsets.fromLTRB(28, 24, 28, 24),
                     child: ConstrainedBox(
                       constraints:
                           BoxConstraints(minHeight: constraints.maxHeight - 48),
@@ -75,10 +74,18 @@ class LoginPageBase extends StatelessWidget {
                                   crossAxisAlignment:
                                       CrossAxisAlignment.stretch,
                                   children: [
-                                    Text(title,
-                                        textAlign: TextAlign.left,
+                                    FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        title,
+                                        maxLines: 1,
                                         style: AppTextStyle.pageTitle.copyWith(
-                                            fontSize: 24, letterSpacing: -.5)),
+                                          fontSize: 24,
+                                          letterSpacing: -.5,
+                                        ),
+                                      ),
+                                    ),
                                     const Gap(20),
                                     inputWidget,
                                     if (error != null ||
