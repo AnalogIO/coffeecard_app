@@ -31,6 +31,7 @@ class GlassSurface extends StatelessWidget {
     this.radius = 28,
     this.padding = EdgeInsets.zero,
     this.elevated = true,
+    this.sheet = false,
   });
 
   final Widget child;
@@ -42,6 +43,9 @@ class GlassSurface extends StatelessWidget {
 
   /// Whether to draw the soft drop shadow that lifts the surface.
   final bool elevated;
+
+  /// A more opaque variant for sheets that hold text and controls.
+  final bool sheet;
 
   static const _blurSigma = 22.0;
 
@@ -70,7 +74,7 @@ class GlassSurface extends StatelessWidget {
 
     final tint = dark
         ? AppColors.cream.withValues(alpha: .10)
-        : const Color(0xffFCFAF6).withValues(alpha: .52);
+        : const Color(0xffFCFAF6).withValues(alpha: sheet ? .84 : .52);
     final rim = Colors.white.withValues(alpha: dark ? .18 : .75);
 
     return DecoratedBox(

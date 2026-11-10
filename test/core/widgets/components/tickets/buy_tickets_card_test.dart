@@ -26,6 +26,6 @@ void main() {
     expect(find.text('CoffeeTitle'), findsOneWidget);
     expect(find.text('CoffeeDescription'), findsOneWidget);
     expect(find.text('2 tickets'), findsOneWidget);
-    expect(find.text('10,-'), findsOneWidget);
+    expect(find.text('10 Kr.'), findsOneWidget);
   });
 }

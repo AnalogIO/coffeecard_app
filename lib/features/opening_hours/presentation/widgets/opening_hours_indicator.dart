@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/core/styles/app_colors.dart';
 import 'package:coffeecard/core/styles/app_text_styles.dart';
+import 'package:coffeecard/core/widgets/design/glass_surface.dart';
 import 'package:coffeecard/features/opening_hours/domain/entities/timeslot.dart';
 import 'package:coffeecard/features/opening_hours/presentation/cubit/opening_hours_cubit.dart';
-import 'package:coffeecard/features/opening_hours/presentation/widgets/analog_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fpdart/fpdart.dart' show Option, Some;
@@ -38,11 +38,11 @@ class _OpeningHoursIndicatorState extends State<OpeningHoursIndicator> {
   String get currentWeekday => DateFormat.E().format(DateTime.now());
 
   (Color, String) openColorAndText(Timeslot timeslot) => (
-        AppColors.success,
+        AppColors.open,
         '$currentWeekday: ${timeslot.format(context)}',
       );
   (Color, String) get closedColorAndText => (
-        AppColors.errorOnBright,
+        AppColors.grounds,
         '${Strings.openingHoursIndicatorPrefix} ${Strings.closed}',
       );
 
@@ -77,18 +77,28 @@ class _Content extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTextStyle(
-      style: AppTextStyle.openingHoursIndicator.copyWith(color: color),
-      child: Theme(
-        data: Theme.of(context)
-            .copyWith(iconTheme: IconThemeData(color: color, size: 18)),
-        child: Row(
-          children: [
-            const Icon(AnalogIcons.closed),
-            const Gap(8),
-            Text(text),
-          ],
-        ),
+    return GlassSurface(
+      radius: 20,
+      elevated: false,
+      padding: const EdgeInsets.fromLTRB(12, 9, 16, 9),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 8,
+            height: 8,
+            decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+          ),
+          const Gap(8),
+          Flexible(
+            child: Text(
+              text,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: AppTextStyle.ui(13, weight: 500),
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -1,3 +1,4 @@
+import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/core/styles/app_colors.dart';
 import 'package:coffeecard/core/styles/app_text_styles.dart';
 import 'package:coffeecard/features/product/presentation/functions.dart';
@@ -80,7 +81,7 @@ class _BuyTicketsCardState extends State<BuyTicketsCard> {
               ),
               const SizedBox(width: 12),
               Text(
-                '${product.price},-',
+                Strings.price(product.price),
                 style: AppTextStyle.ticketFigure.copyWith(
                   fontSize: 17,
                   color: AppColors.roast,

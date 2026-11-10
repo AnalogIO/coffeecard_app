@@ -34,8 +34,10 @@ Future<void> buyModal({
   // Create a task that will open the purchase modal and wait for the result.
   final maybePayment = await showModalBottomSheet<Payment>(
     context: context,
-    barrierColor: AppColors.scrim,
+    barrierColor: AppColors.roast.withValues(alpha: .35),
     backgroundColor: Colors.transparent,
+    elevation: 0,
+    showDragHandle: false,
     useRootNavigator: true,
     builder: (_) => BuyTicketBottomModalSheet(
       product: product,

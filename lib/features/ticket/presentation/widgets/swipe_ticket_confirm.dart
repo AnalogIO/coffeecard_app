@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:coffeecard/core/strings.dart';
 import 'package:coffeecard/core/styles/app_colors.dart';
 import 'package:coffeecard/core/styles/app_text_styles.dart';
-import 'package:coffeecard/core/widgets/components/bottom_modal_sheet_helper.dart';
 import 'package:coffeecard/core/widgets/components/card.dart';
 import 'package:coffeecard/core/widgets/components/slide_action.dart';
+import 'package:coffeecard/core/widgets/design/glass_surface.dart';
 import 'package:coffeecard/features/product/menu_item_model.dart';
 import 'package:coffeecard/features/product/product_model.dart';
 import 'package:coffeecard/features/purchase/domain/entities/internal_payment_type.dart';
@@ -139,38 +139,64 @@ class _ModalContentState extends State<_ModalContent>
         ),
     };
 
+    final left = widget.ticket.amountLeft;
+
     return SafeArea(
+      minimum: const EdgeInsets.only(bottom: 8),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: 8),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            BottomModalSheetHelper(
-              children: [
-                Text(
-                  Strings.confirmSwipe,
-                  style: AppTextStyle.explainerBright,
-                ),
-                Text(
-                  Strings.tapHereToCancel,
-                  style: AppTextStyle.explainerBright,
-                ),
-              ],
-            ),
             Hero(
               tag: _heroTag,
               // SingleChildScrollView to avoid the temporary overflow
               // error during the hero animation.
               child: SingleChildScrollView(
-                child: CardBase(
-                  color: AppColors.cream,
-                  gap: 36,
-                  top: titleWidget,
-                  bottom: AnimatedSize(
-                    alignment: Alignment.bottomCenter,
-                    duration: const Duration(milliseconds: 350),
-                    curve: Curves.fastLinearToSlowEaseIn,
-                    child: actionWidget,
+                child: Material(
+                  type: MaterialType.transparency,
+                  child: GlassSurface(
+                    sheet: true,
+                    radius: 40,
+                    padding: const EdgeInsets.fromLTRB(20, 22, 20, 8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Text(
+                          Strings.confirmSwipe.toUpperCase(),
+                          style: AppTextStyle.ticketLabel,
+                        ),
+                        const Gap(8),
+                        titleWidget,
+                        if (!widget.isPerk) ...[
+                          const Gap(16),
+                          _TicketsLeftChange(before: left, after: left - 1),
+                        ],
+                        const Gap(16),
+                        AnimatedSize(
+                          alignment: Alignment.bottomCenter,
+                          duration: const Duration(milliseconds: 350),
+                          curve: Curves.fastLinearToSlowEaseIn,
+                          child: actionWidget,
+                        ),
+                        const Gap(4),
+                        TextButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          style: TextButton.styleFrom(
+                            minimumSize: const Size.fromHeight(48),
+                            foregroundColor: AppColors.groundsDark,
+                          ),
+                          child: Text(
+                            Strings.buttonCancel,
+                            style: AppTextStyle.ui(
+                              15,
+                              weight: 500,
+                              color: AppColors.groundsDark,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -300,7 +326,6 @@ class _ModalContentState extends State<_ModalContent>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const Gap(8),
           SlideAction(
             elevation: 0,
             text: widget.isPerk ? Strings.claimPerk : Strings.useTicket,
@@ -341,6 +366,56 @@ class _ModalContentState extends State<_ModalContent>
   }
 }
 
+/// "7 → 6": how many tickets are left before and after this swipe.
+class _TicketsLeftChange extends StatelessWidget {
+  const _TicketsLeftChange({required this.before, required this.after});
+
+  final int before;
+  final int after;
+
+  @override
+  Widget build(BuildContext context) {
+    final figure = AppTextStyle.ticketFigure.copyWith(
+      fontSize: 26,
+      color: AppColors.roast,
+    );
+    return Semantics(
+      label: Strings.ticketsLeftChange(before, after),
+      excludeSemantics: true,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
+        decoration: BoxDecoration(
+          color: AppColors.paper,
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(color: AppColors.border),
+        ),
+        child: Row(
+          children: [
+            Text('$before', style: figure),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 12),
+              child: Icon(
+                Icons.arrow_forward_rounded,
+                size: 20,
+                color: AppColors.grounds,
+              ),
+            ),
+            Text('$after', style: figure),
+            const Gap(16),
+            Expanded(
+              child: Text(
+                Strings.ticketsLeftAfter,
+                textAlign: TextAlign.right,
+                style: AppTextStyle.ui(13, color: AppColors.groundsDark),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 // original author https://stackoverflow.com/a/44404763
 class _HeroDialogRoute<T> extends PageRoute<T> {
   _HeroDialogRoute({required this.builder});
@@ -360,7 +435,7 @@ class _HeroDialogRoute<T> extends PageRoute<T> {
   bool get maintainState => true;
 
   @override
-  Color get barrierColor => AppColors.scrim;
+  Color get barrierColor => AppColors.roast.withValues(alpha: .35);
 
   @override
   Widget buildTransitions(

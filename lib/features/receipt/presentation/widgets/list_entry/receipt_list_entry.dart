@@ -7,7 +7,7 @@ import 'package:coffeecard/features/receipt/presentation/pages/view_receipt_page
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-final _formatDateTime = DateFormat('d MMM · HH:mm').format;
+final _formatDateTime = DateFormat('HH:mm').format;
 
 class ReceiptListEntry extends StatelessWidget {
   final bool tappable;

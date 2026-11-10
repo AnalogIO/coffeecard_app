@@ -54,6 +54,10 @@ abstract final class Strings {
   // Tickets
   static const ticketsMyTickets = 'My tickets';
   static const ticketClipCard = 'CLIP CARD';
+  static String ticketsSummary(
+          {required int cards, required int ticketsLeft}) =>
+      '$cards ${cards == 1 ? 'CARD' : 'CARDS'} · '
+      '$ticketsLeft ${ticketsLeft == 1 ? 'TICKET' : 'TICKETS'} LEFT';
   static const ticketLeft = 'LEFT';
   static const ticketUse = 'Use';
   static const buyTicketsSubtitle = 'Clip cards';
@@ -155,11 +159,16 @@ abstract final class Strings {
 
   // "Buy ticket" card
   static const paymentOptionMobilePay = 'MobilePay';
+  static const payWithMobilePay = 'Pay with MobilePay';
+  static const purchaseTotal = 'Total';
   static const paymentOptionOther = 'Other...';
   static const paymentOptionOtherComingSoon = 'This feature is coming soon';
 
   // Modal explainer
   static const confirmSwipe = 'Confirm use of ticket';
+  static const ticketsLeftAfter = 'tickets left after this';
+  static String ticketsLeftChange(int before, int after) =>
+      '$before tickets now, $after left after this';
   static const confirmPurchase = 'Confirm purchase';
   static const tapHereToCancel = 'Tap here to cancel';
   static const String paymentConfirmationButtonRedeem = 'Get your free product';
@@ -177,7 +186,7 @@ abstract final class Strings {
   }
 
   static String paymentConfirmationBottomPurchase(int price) {
-    return 'Pay $price,- with...';
+    return 'Pay ${Strings.price(price)} with...';
   }
 
   static String oneCup = '1 cup';
@@ -187,7 +196,7 @@ abstract final class Strings {
   }
 
   static String price(int price) {
-    return '$price,-';
+    return '$price Kr.';
   }
 
   static const free = 'FREE';
